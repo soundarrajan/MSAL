@@ -159,7 +159,7 @@
                                                 <span class="input-group-addon" ng-click="triggerModal('general', 'masters_vessellist', $ctrl.vesselDetailsFields.Vessel.caption | translate, '$ctrl.request.vesselDetails.vessel','','',$ctrl.vesselDetailsFields.Vessel.name)" ng-class="{'disabled' : ($ctrl.isReadonlyForm || $ctrl.request.id)}" ng-disabled="$ctrl.request.id || $ctrl.disableAllFields">
                                                     <i class="fa fa-search"></i>
                                                 </span>
-                                                <span class="input-group-addon" data-toggle="modal" ng-click="$ctrl.getVesselSchedules()" href="#route_schedule" data-html="true" tooltip data-original-title="View Vessel Voyage" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
+                                                <span class="input-group-addon" data-toggle="modal" ng-click="$ctrl.getVesselSchedules()" href="#route_schedule" data-html="true" tooltip data-original-title="View Vessel Voyage" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields || ($ctrl.request.requestStatus.id == $ctrl.STATUS['Cancelled'].id)">
                                                     <i class="fa fa-anchor"></i>
                                                 </span>
                                             </div>
@@ -589,8 +589,8 @@
                                             </label>
                                             <div class="form-group-sm00">
                                                 <div class="input-group col-md-7">
-                                                    <input decode-input-format name="ports" id="id_Ports" ng-model="dumm" class="typeahead form-control" ng-class="{'ng-invalid': $ctrl.request.locations.length == 0}" uib-typeahead="destPort as destPort.name for destPort in updateDestinations($viewValue, 'BunkerablePort')" type="text" typeahead-on-select="addTypeLocation(dumm.id, dumm)" typeahead-loading="$ctrl.loadedTypeaheadPort" typeahead-wait-ms="100" ng-model-options="{ allowInvalid: false, debounce: 100 }" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
-                                                    <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_bunkerableport', 'Bunkerable Port', '$ctrl.new_location' ,'','', 'ports', $ctrl.request.vesselDetails.vessel)" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields">
+                                                    <input decode-input-format name="ports" id="id_Ports" ng-model="dumm" class="typeahead form-control" ng-class="{'ng-invalid': $ctrl.request.locations.length == 0}" uib-typeahead="destPort as destPort.name for destPort in updateDestinations($viewValue, 'BunkerablePort')" type="text" typeahead-on-select="addTypeLocation(dumm.id, dumm)" typeahead-loading="$ctrl.loadedTypeaheadPort" typeahead-wait-ms="100" ng-model-options="{ allowInvalid: false, debounce: 100 }" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields || ($ctrl.request.requestStatus.id == $ctrl.STATUS['Cancelled'].id)">
+                                                    <span class="input-group-addon" ng-class="{'disabled' : $ctrl.isReadonlyForm}" ng-click="triggerModal('general', 'procurement_bunkerableport', 'Bunkerable Port', '$ctrl.new_location' ,'','', 'ports', $ctrl.request.vesselDetails.vessel)" ng-disabled="!$ctrl.request.vesselDetails.vessel || $ctrl.disableAllFields || ($ctrl.request.requestStatus.id == $ctrl.STATUS['Cancelled'].id)">
                                                         <!-- procurement_bunkerableport -->
                                                         <!-- masters_locationlist -->
                                                         <i class="fa fa-search"></i>
@@ -956,7 +956,7 @@
                                                     <th id="generatedThId199">
                                                         &nbsp;
                                                         <span class="st-btn-icon" ng-show="!$ctrl.isReadonlyForm">
-                                                            <a id="product_addRow_header" ng-click="$ctrl.addEmptyProduct(location.products, true, locationIdx)" ng-disabled="$ctrl.disableAllFields">
+                                                            <a id="product_addRow_header" ng-click="$ctrl.addEmptyProduct(location.products, true, locationIdx)" ng-disabled="$ctrl.disableAllFields || ($ctrl.request.requestStatus.id == $ctrl.STATUS['Cancelled'].id)">
                                                                 <i class="fa fa-plus clickable"></i>
                                                             </a>
                                                         </span>
@@ -982,7 +982,7 @@
 
                                                     <td>
                                                         <span class="st-btn-icon" ng-show="!$ctrl.isReadonlyForm">
-                                                            <a id="product_addRow_{{ $index }}" ng-click="$ctrl.addEmptyProduct(location.products, true, locationIdx)" ng-disabled="$ctrl.disableAllFields">
+                                                            <a id="product_addRow_{{ $index }}" ng-click="$ctrl.addEmptyProduct(location.products, true, locationIdx)" ng-disabled="$ctrl.disableAllFields || ($ctrl.request.requestStatus.id == $ctrl.STATUS['Cancelled'].id)">
                                                                 <i class="fa fa-plus clickable"></i>
                                                             </a>
                                                         </span>
