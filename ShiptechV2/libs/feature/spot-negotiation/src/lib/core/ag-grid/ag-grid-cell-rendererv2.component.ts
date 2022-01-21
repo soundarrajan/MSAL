@@ -295,36 +295,37 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
             pricePopupTrigger.openMenu()
           "
         >
-          <div
-            id="custom-form-field"
-            style="display:relative;"
-            [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
-          >
-            <mat-form-field
-              class="without-search currency-select-trigger"
-              appearance="none"
-              [formGroup]="myFormGroup"
-            >
+        <div
+        id="custom-form-field"
+        [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
+        >
+        <mat-form-field
+        class="without-search currency-select-trigger"
+        appearance="none"
+        >
+        <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
+        <!-- ** {{params.currency}} --  -->
+        ** {{paramsDataClone.currency}} -- 
               <mat-label>Select Field</mat-label>
               <mat-select
                 disableOptionCentering
-                [(ngModel)]="select"
-                formControlName="frequency"
+                [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
+                (selectionChange)="onCurrencyChange($event, params)"
               >
                 <mat-select-trigger overlayPanelClass="123class">
-                  {{ myFormGroup.controls['frequency'].value }}
+                  {{ getCurrencyCode(params.currency) }}
                 </mat-select-trigger>
                 <mat-option [disabled]>Change Currency </mat-option>
                 <mat-option
                   class="currency-mat-select"
-                  *ngFor="let frequency of frequencyArr"
-                  [value]="frequency.key"
+                  *ngFor="let currency of currencyList"
+                  [value]="currency.id"
                 >
                   <span>
-                    <mat-radio-button>{{
-                      frequency.abbriviation
-                    }}</mat-radio-button></span
+                    <mat-radio-button>
+                      {{currency.code}}
+                    </mat-radio-button></span
                   >
                 </mat-option>
               </mat-select>
@@ -655,12 +656,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   counterpartyColumns: string[] = ['counterparty', 'blank'];
   counterpartyList = [];
   visibleCounterpartyList = [];
+  currencyList = [];
   currentRequestInfo: any;
   tenantService: any;
   currentRequestData: any[];
   locationsRows: any[];
   currentRequestSmallInfo: any;
   searchValue: string;
+  paramsDataClone: any;
 
   constructor(
     @Inject(DecimalPipe)
@@ -679,11 +682,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let requestOffers = this.params.data.requestOffers;
 
     this.myFormGroup = new FormGroup({
-      frequency: new FormControl('')
+      currency: new FormControl('')
     });
+    this.paramsDataClone = _.cloneDeep(this.params.data);
+    this.paramsDataClone.currency  = 1;
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.tenantService = spotNegotiation.tenantConfigurations;
+      this.currencyList = spotNegotiation.staticLists.filter( (el) => el.name == "Currency" )[0].items;
       // Fetching counterparty list
       if (spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
@@ -765,7 +771,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   frequencyArr = [
-    { key: '$', abbriviation: 'USD' },
+    { key: '$', abbriviation: 'USDa' },
     { key: '€', abbriviation: 'EURO' },
     { key: '£', abbriviation: 'GBP' }
   ];
@@ -1157,6 +1163,40 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       newValue: e.target.value,
       event: e
     });
+  }
+  onCurrencyChange(e, params) {
+    let currentCurrency = params.currency;
+    
+    var rowNode = params.api.getRowNode(params.node.id);
+    var newData = _.cloneDeep(params.data);
+    newData.currency = currentCurrency;
+    this.paramsDataClone.currency = currentCurrency;
+    newData.requestOffers.map( (el) => {
+      return el.currencyId = currentCurrency;
+    })
+
+//  let updatedRow = { ...this.params.data };
+//             updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
+//             updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
+//             updatedRow.requestOffers =
+//               priceDetailsRes.sellerOffers[0].requestOffers;
+//             console.log(updatedRow);
+//             // Update the store
+      this.store.dispatch(new EditLocationRow(newData));
+      this.params.node.setData(newData);
+   
+    
+    // rowNode.setData(newData);
+
+    // console.log(params);
+    // params.data.requestOffers.map( (el) => {
+    //   return el.currencyId = currentCurrency;
+    // })
+    // this.changeDetector.detectChanges();
+  }
+  getCurrencyCode(currencyId) {
+    let currency = this.currencyList.filter(el => el.id == currencyId)[0];
+    return currency ? currency.code : false;
   }
 
   checkedHandler(event) {
