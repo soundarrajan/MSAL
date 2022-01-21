@@ -1,7 +1,7 @@
-﻿commit 9d5ed564a34b5bc6033198dbb9fe6dd2b4d4dcd6
+﻿commit 26770a12039f7f0a0be5fa308535969717a0ba6e
 Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Jan 21 11:49:30 2022 +0200
+Date:   Fri Jan 21 13:56:02 2022 +0200
 
-    Added  rounding off based on the configuration for Invoice rate from additional cost
+    Fixed Amount calculation of product details in  Invoice screen
 
 branch: master

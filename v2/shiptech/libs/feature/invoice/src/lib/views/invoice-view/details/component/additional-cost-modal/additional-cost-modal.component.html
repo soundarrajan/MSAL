@@ -360,7 +360,11 @@
                       [(ngModel)]="additionalCost.value.invoiceQuantity"
                       (keypress)="keyPressNumber($event)"
                       autocomplete="off"
-                      (ngModelChange)="
+                      (blur)="
+                        additionalCost.value.invoiceQuantity = roundDownValue(
+                          additionalCost.value.invoiceQuantity,
+                          'quantity'
+                        );
                         invoiceConvertUom('cost', additionalCost.key)
                       "
                       quantityFormat
@@ -436,7 +440,11 @@
                       [(ngModel)]="additionalCost.value.invoiceRate"
                       (keypress)="keyPressNumber($event)"
                       priceFormat
-                      (ngModelChange)="
+                      (blur)="
+                        additionalCost.value.invoiceRate = roundDownValue(
+                          additionalCost.value.invoiceRate,
+                          'price'
+                        );
                         invoiceConvertUom('cost', additionalCost.key)
                       "
                     />

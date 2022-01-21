@@ -676,6 +676,31 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     }
   }
 
+  roundDownValue(value, currentRowIndex, type) {
+    console.log(value);
+    if (type == 'quantity') {
+      let quantityPrecision = this.tenantService.quantityPrecision;
+      let plainNumber = this.convertDecimalSeparatorStringToNumber(value);
+      let roundedValue = this._decimalPipe.transform(
+        plainNumber,
+        '1.' + quantityPrecision + '-' + quantityPrecision
+      );
+      return roundedValue;
+    } else if (type == 'price') {
+      let pricePrecision = this.formValues.productDetails[currentRowIndex]
+        .pricePrecision
+        ? this.formValues.productDetails[currentRowIndex].pricePrecision
+        : this.tenantService.pricePrecision;
+      let plainNumber = this.convertDecimalSeparatorStringToNumber(value);
+      let roundedValue = this._decimalPipe.transform(
+        plainNumber,
+        '1.' + pricePrecision + '-' + pricePrecision
+      );
+
+      return roundedValue;
+    }
+  }
+
   /**
    * truncate to decimal place.
    */
