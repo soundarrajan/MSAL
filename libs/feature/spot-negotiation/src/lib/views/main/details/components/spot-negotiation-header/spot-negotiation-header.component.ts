@@ -34,6 +34,7 @@ import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib
 
 import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-request-popup/search-request-popup.component';
 import { SpotnegoSearchCtpyComponent } from '../spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
+import { ConfirmdialogComponent } from '../spot-negotiation-popups/confirmdialog/confirmdialog.component';
 @Component({
   selector: 'app-spot-negotiation-header',
   templateUrl: './spot-negotiation-header.component.html',
@@ -131,8 +132,37 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }, 100);
   }
 
-  removeRequest(i) {
-    alert('asd');
+  delinkRequest(item) {
+    if(item.status.toLowerCase().includes("stemmed")) {
+      this.toastr.error("Request cannot be delinked as an order has already been created.");
+      return;
+    }
+    const dialogRef = this.dialog.open(ConfirmdialogComponent, {
+      width: '500px',
+      height: '250px',
+      maxWidth: '500px',
+      panelClass: 'confirm-dialog',
+      data: {
+        message: "Are you sure you want de-link the request?",
+      }
+    });   
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        alert("yes");
+        const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
+        let payload = {
+          groupId: parseInt(RequestGroupId),
+          requestId: item.id,
+        };
+    
+        const response = this._spotNegotiationService.delinkRequest(payload);  
+        response.subscribe((res: any) => {
+          console.log(res)
+        });      
+      } else {
+        alert("nope");        
+      }
+    }); 
   }
 
   removeDuplicatesRequest(array, key) {
