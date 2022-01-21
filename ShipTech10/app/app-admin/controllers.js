@@ -737,7 +737,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         if (!$scope.delayAccessRendering) {
             $scope.delayAccessRendering = [];
         }
-        let userId = $rootScope.entity_id;
+        let userId = !$rootScope.entity_id || $rootScope.entity_id == '' ? '0' : $rootScope.entity_id;
         $rootScope.listOfVesselTypes = [];
         $.each($scope.entities, (key, val) => {
             Factory_Admin.getTabData(val.id, userId, (response) => {
