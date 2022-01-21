@@ -676,16 +676,30 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     }
   }
 
+  /**
+   * truncate to decimal place.
+   */
+  truncateToDecimals(num, dec) {
+    const calcDec = Math.pow(10, dec);
+    return Math.trunc(num * calcDec) / calcDec;
+  }
+
   amountFormatValue(value) {
     if (typeof value == 'undefined' || !value) {
       return null;
     }
-    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let amountPrecision = this.tenantService.amountPrecision;
+
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
     if (isNaN(number)) {
       return null;
     }
     if (plainNumber) {
+      if (amountPrecision) {
+        plainNumber = this.truncateToDecimals(plainNumber, amountPrecision);
+      }
+      console.log(plainNumber);
       if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {
@@ -1241,14 +1255,19 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
       } else {
         this.toastr.error('Selected product already exists');
       }
-      if(rowData.delivery.physicalSupplierCounterparty && rowData.delivery.physicalSupplierCounterparty.name) {
-        rowData.delivery.physicalSupplierCounterparty.name = this.htmlDecode(rowData.delivery.physicalSupplierCounterparty.name);
+      if (
+        rowData.delivery.physicalSupplierCounterparty &&
+        rowData.delivery.physicalSupplierCounterparty.name
+      ) {
+        rowData.delivery.physicalSupplierCounterparty.name = this.htmlDecode(
+          rowData.delivery.physicalSupplierCounterparty.name
+        );
       }
     }
     this.selectedProductLine = null;
     this.changeDetectorRef.detectChanges();
   }
-  
+
   htmlDecode(str: string): string {
     const decode = function(str) {
       return str.replace(/&#(\d+);/g, function(match, dec) {
@@ -1260,7 +1279,9 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   }
 
   physicalSupplierCounterpartyChange(value, line) {
-    this.formValues.productDetails[line].physicalSupplierCounterparty = this.htmlDecode(value);
+    this.formValues.productDetails[
+      line
+    ].physicalSupplierCounterparty = this.htmlDecode(value);
     if (!value) {
       this.formValues.productDetails[line].physicalSupplierCounterparty = null;
     }
