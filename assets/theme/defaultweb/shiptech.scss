@@ -11711,7 +11711,7 @@ width: 25px;
       #custom-form-field{
         height: 21px;
         display: flex;
-        width: 26px;
+        width: 50px;
         margin: 0;
         &.priceCalculated{
           height: 16px;
@@ -12554,7 +12554,7 @@ width: 25px;
   font-weight: 400;
   color: #ffffff;
   background: #364150 !important;
-  overflow:  hidden !important;
+  overflow:  auto !important;
   .mat-option-text{
     color:#ffffff;
   }
