@@ -70,7 +70,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
-      this.requestOptions = spotNegotiation.requests;
+      if(this.currentRequestInfo && spotNegotiation.requests){
+      this.requestOptions = spotNegotiation.requests.filter(r => r.id != this.currentRequestInfo.id);}
       this.tenantConfiguration = spotNegotiation.tenantConfigurations;
       this.setTabItems();
     });
@@ -333,6 +334,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           ).displayName;
         }
+        row.totalOffer = priceDetailsArray[index].totalOffer;
+        row.totalCost = priceDetailsArray[index].totalCost;
         this.UpdateProductsSelection(requestLocations, row);
         //row.totalOffer = priceDetailsArray[index].totalOffer;
         return row;
@@ -354,6 +357,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
             x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
           ).displayName;
         }
+        row.totalOffer = detailsForCurrentRow[0].totalOffer;
+        row.totalCost = detailsForCurrentRow[0].totalCost;
         this.UpdateProductsSelection(requestLocations, row);
       }
       return row;
@@ -464,6 +469,13 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   displaySuccessMsg() {
+    debugger;
+    this.selectedSellerList = [];
+    var Selectedfinaldata = this.FilterselectedRowForRFQ();
+    if (Selectedfinaldata.length == 0) {
+      this.toaster.error('Atleast 1 product should be selected');
+      return;
+    }
     this.toaster.show(
       '<div class="message cust-msg">Successfully Duplicated to:</div><div class="requests"><span class="circle internal"></span><span class="label">Req 12322 - Afif</span><span class="circle external"></span><span class="label">Req 12323 - Al Mashrab</span></div>',
       '',

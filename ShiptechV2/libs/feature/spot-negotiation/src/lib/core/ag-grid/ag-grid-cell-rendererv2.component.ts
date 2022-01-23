@@ -353,7 +353,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
             (click)="otherdetailspopup($event, params)"
             *ngIf="
               params.value > 0 &&
-              params.data.requestOffers[params.index].supplyQuantity == null
+              params.data.requestOffers[params.index]?.supplyQuantity == null
             "
           ></div>
           <div
@@ -364,7 +364,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
             #menuTriggerHover="matMenuTrigger"
             *ngIf="
               params.value > 0 &&
-              params.data.requestOffers[params.index].supplyQuantity != null
+              params.data.requestOffers[params.index]?.supplyQuantity != null
             "
           ></div>
         </div>
