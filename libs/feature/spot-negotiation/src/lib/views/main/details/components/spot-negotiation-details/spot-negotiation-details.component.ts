@@ -1042,6 +1042,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           ).displayName;
         }
+        row.totalOffer = priceDetailsArray[index].totalOffer;
+        row.totalCost = priceDetailsArray[index].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
 
         return row;
@@ -1063,6 +1065,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
           ).displayName;
         }
+        row.totalOffer = detailsForCurrentRow[0].totalOffer;
+        row.totalCost = detailsForCurrentRow[0].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
       }
       return row;
