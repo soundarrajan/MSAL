@@ -70,8 +70,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
-      if(this.currentRequestInfo && spotNegotiation.requests){
-      this.requestOptions = spotNegotiation.requests.filter(r => r.id != this.currentRequestInfo.id);}
+      this.requestOptions = spotNegotiation.requests;
       this.tenantConfiguration = spotNegotiation.tenantConfigurations;
       this.setTabItems();
     });
@@ -476,15 +475,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error('Atleast 1 product should be selected');
       return;
     }
-    this.toaster.show(
-      '<div class="message cust-msg">Successfully Duplicated to:</div><div class="requests"><span class="circle internal"></span><span class="label">Req 12322 - Afif</span><span class="circle external"></span><span class="label">Req 12323 - Al Mashrab</span></div>',
-      '',
-      {
-        enableHtml: true,
-        toastClass: 'toast-alert cust-alert toast-darkGrey',
-        timeOut: 2000
-      }
-    );
+    this.toaster.show('Offer price copied successfully');
   }
 
   amendRFQ() {
