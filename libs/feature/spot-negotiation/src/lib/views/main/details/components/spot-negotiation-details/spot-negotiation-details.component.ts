@@ -349,7 +349,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               amount: productDetails.amount,
               targetDifference: productDetails.targetDifference,
               price: productDetails.price,
-              cost: productDetails.cost
+              cost: productDetails.cost,
+              isOfferPriceCopied: false
             }
           ]
         }
