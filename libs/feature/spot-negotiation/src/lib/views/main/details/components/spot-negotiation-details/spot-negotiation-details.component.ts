@@ -939,64 +939,102 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return row;
   }
 
+  removeCounterpartyAPI(rowData: any, rowIndex: number, gridApi: any){
+
+    this.spinner.show();
+    this.spotNegotiationService
+      .RemoveCounterparty(rowData.id)
+      .subscribe((res: any) => {
+        this.spinner.hide();
+        if (res.status) {
+          let dataRows = [];
+          gridApi.forEachNode(node => dataRows.push(node.data)); 
+          dataRows = dataRows.splice(rowIndex, 1);
+          //gridApi.applyTransaction({ remove: dataRows });
+          gridApi.updateRowData({ remove: dataRows });
+          this.toastr.success(
+            'Counterparty has been removed from negotiation succesfully.'
+          );
+          this.store.dispatch(
+            new RemoveCounterparty({ rowId: rowData.id })
+          );
+          if (res['requestLocationSellers'] && res['sellerOffers']) {
+            const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+              res['requestLocationSellers'],
+              res['sellerOffers']
+            );
+            this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+          }
+          if (res.isGroupDeleted) {
+            const baseOrigin = new URL(window.location.href).origin;
+            window.open(
+              `${baseOrigin}/#/edit-request/${rowData.requestId}`,
+              '_self'
+            );
+          }
+        } else {
+          if (res.isRequestStemmed) {
+            this.toastr.warning(
+              'Counterparty has a stemmed order and cannot be removed from negotiation.'
+            );
+          } else if (res.message && res.message.length > 0) {
+            this.toastr.warning(res.message);
+          } else {
+            this.toastr.error(res);
+          }
+        }
+      });
+  }
+  isStemmedproduct(rowData){
+    const locations = this.store.selectSnapshot(
+      (state: SpotNegotiationStoreModel) => {
+        return state['spotNegotiation'].locations;
+      }
+    );
+      for (let index = 0; index < rowData.requestOffers.length; index++) {
+        let selectedlocations =locations.filter(
+              row => row.locationId == rowData.locationId
+            );
+              if(selectedlocations.length != 0 && selectedlocations[0].requestProducts){
+              let locationsprod = selectedlocations[0].requestProducts.filter(
+              row1 => row1.id == rowData.requestOffers[index].requestProductId
+              );
+              if(locationsprod.length != 0){
+                if(locationsprod[0].status && locationsprod[0].status == 'Stemmed'){
+                  return true;
+                }
+              }
+        }
+      }
+      return false
+  }
   removeCounterpartyRowClicked(rowData: any, rowIndex: number, gridApi: any) {
-    const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
-      width: '600px',
-      data: {
-        sellerName: rowData.sellerCounterpartyName,
-        isRFQSent:
-          rowData.requestOffers?.filter(ro => !ro.isRfqskipped).length > 0
-            ? true
-            : false
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.spinner.show();
-        this.spotNegotiationService
-          .RemoveCounterparty(rowData.id)
-          .subscribe((res: any) => {
-            this.spinner.hide();
-            if (res.status) {
-              let dataRows = [];
-              gridApi.forEachNode(node => dataRows.push(node.data));
-              dataRows = dataRows.splice(rowIndex, 1);
-              //gridApi.applyTransaction({ remove: dataRows });
-              gridApi.updateRowData({ remove: dataRows });
-              this.toastr.success(
-                'Counterparty has been removed from negotiation succesfully.'
-              );
-              this.store.dispatch(
-                new RemoveCounterparty({ rowId: rowData.id })
-              );
-              if (res['requestLocationSellers'] && res['sellerOffers']) {
-                const futureLocationsRows = this.getLocationRowsWithPriceDetails(
-                  res['requestLocationSellers'],
-                  res['sellerOffers']
-                );
-                this.store.dispatch(new SetLocationsRows(futureLocationsRows));
-              }
-              if (res.isGroupDeleted) {
-                const baseOrigin = new URL(window.location.href).origin;
-                window.open(
-                  `${baseOrigin}/#/edit-request/${rowData.requestId}`,
-                  '_self'
-                );
-              }
-            } else {
-              if (res.isRequestStemmed) {
-                this.toastr.warning(
-                  'Counterparty has a stemmed order and cannot be removed from negotiation.'
-                );
-              } else if (res.message && res.message.length > 0) {
-                this.toastr.warning(res.message);
-              } else {
-                this.toastr.error(res);
-              }
-            }
-          });
-      }
-    });
+  if(rowData.requestOffers != undefined){
+    if(this.isStemmedproduct(rowData)){
+      this.toastr.warning(
+        'Counterparty has a stemmed order and cannot be removed from negotiation.'
+      );
+      return
+    }else{
+      const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
+        width: '600px',
+        data: {
+          sellerName: rowData.sellerCounterpartyName,
+          isRFQSent:
+            rowData.requestOffers?.filter(ro => !ro.isRfqskipped).length > 0
+              ? true
+              : false
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+         this.removeCounterpartyAPI(rowData, rowIndex, gridApi);
+        }
+      });
+    }
+  }else{
+   this.removeCounterpartyAPI(rowData, rowIndex, gridApi);
+  }
   }
 
   onCostChanged(locationRows: any) {
