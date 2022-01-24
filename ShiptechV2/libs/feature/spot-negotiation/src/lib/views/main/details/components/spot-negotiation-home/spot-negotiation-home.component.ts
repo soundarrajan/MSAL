@@ -325,7 +325,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.id === priceDetailsArray[index].requestLocationSellerId
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
-        row.isSelected = priceDetailsArray[index].isSelected;
+        //row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId =
           priceDetailsArray[index].physicalSupplierCounterpartyId;
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
@@ -348,7 +348,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       // We found something
       if (detailsForCurrentRow.length > 0) {
         row.requestOffers = detailsForCurrentRow[0].requestOffers;
-        row.isSelected = detailsForCurrentRow[0].isSelected;
+        //row.isSelected = detailsForCurrentRow[0].isSelected;
         row.physicalSupplierCounterpartyId =
           detailsForCurrentRow[0].physicalSupplierCounterpartyId;
         if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
@@ -468,14 +468,21 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   displaySuccessMsg() {
-    debugger;
     this.selectedSellerList = [];
     var Selectedfinaldata = this.FilterselectedRowForRFQ();
     if (Selectedfinaldata.length == 0) {
       this.toaster.error('Atleast 1 product should be selected');
       return;
     }
-    this.toaster.show('Offer price copied successfully');
+    this.toaster.show(
+      '<div class="message cust-msg">Successfully Duplicated to:</div><div class="requests"><span class="circle internal"></span><span class="label">Req 12322 - Afif</span><span class="circle external"></span><span class="label">Req 12323 - Al Mashrab</span></div>',
+      '',
+      {
+        enableHtml: true,
+        toastClass: 'toast-alert cust-alert toast-darkGrey',
+        timeOut: 2000
+      }
+    );
   }
 
   amendRFQ() {

@@ -364,6 +364,13 @@ export class EmailPreviewPopupComponent implements OnInit {
     rowsArray.forEach((row, index) => {
       let currentLocProd = currentRequestData.filter(row1 => row1.locationId == row.locationId);
 
+      let currentLocProdCount = currentRequestData[0].requestProducts.length;
+      for (let index = 0; index < currentLocProdCount; index++) {
+        let indx = index + 1;
+        let val = 'checkProd' + indx;
+        row[val] = false;
+        row.isSelected = false;
+      }
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
         index < priceDetailsArray.length &&
@@ -371,7 +378,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         priceDetailsArray[index]?.requestLocationSellerId
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers;
-        row.isSelected = priceDetailsArray[index].isSelected;
+        //row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId = priceDetailsArray[index].physicalSupplierCounterpartyId;
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
           row.physicalSupplierCounterpartyName = counterpartyList.find(x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId).displayName;
@@ -391,7 +398,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       // We found something
       if (detailsForCurrentRow.length > 0) {
         row.requestOffers = detailsForCurrentRow[0].requestOffers;
-        row.isSelected = detailsForCurrentRow[0].isSelected;
+        //row.isSelected = detailsForCurrentRow[0].isSelected;
         row.physicalSupplierCounterpartyId = detailsForCurrentRow[0].physicalSupplierCounterpartyId;
         if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
           row.physicalSupplierCounterpartyName = counterpartyList.find(x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId).displayName;
