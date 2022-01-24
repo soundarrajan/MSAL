@@ -1009,7 +1009,9 @@ export class SmartOperatorComponent implements OnInit {
       titleEle.click();
   }
   public setRowCount(gridOptions){
-    this.rowCount = gridOptions.api.getDisplayedRowCount();
+    if(gridOptions && gridOptions.api) {
+      this.rowCount = gridOptions.api.getDisplayedRowCount();
+    }
   }
 
   // public onPageChange(input){

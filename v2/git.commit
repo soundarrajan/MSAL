@@ -1,7 +1,11 @@
-﻿commit 26770a12039f7f0a0be5fa308535969717a0ba6e
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Fri Jan 21 13:56:02 2022 +0200
+﻿commit 0a16f82dfe118091517ce4a25c92e24eb1cc5790
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Mon Jan 24 09:53:59 2022 +0000
 
-    Fixed Amount calculation of product details in  Invoice screen
+    Merged PR 15600: 37957 - Request TableView Display issue fix
+    
+    37957 - Request TableView Display issue fix
+    
+    Related work items: #37957
 
 branch: master
