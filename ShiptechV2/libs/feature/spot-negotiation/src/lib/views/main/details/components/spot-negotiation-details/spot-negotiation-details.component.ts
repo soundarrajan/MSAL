@@ -22,6 +22,7 @@ import { SpotNegotiationService } from '../../../../../services/spot-negotiation
 import {
   DeleteSeller,
   EditLocationRow,
+  EditLocationRowOriData,
   RemoveCounterparty,
   SetCounterpartyList,
   SetLocationsRows
@@ -325,6 +326,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       let updatedRow = { ...rowdata };
       updatedRow = this.isselectedrowfun(updatedRow, event.node.selected);
       this.store.dispatch(new EditLocationRow(updatedRow));
+      this.store.dispatch(new EditLocationRowOriData(updatedRow));
       event.node.setData(updatedRow);
     }
   }
@@ -555,6 +557,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             );
             // Update the store
             this.store.dispatch(new EditLocationRow(updatedRow));
+            this.store.dispatch(new EditLocationRowOriData(updatedRow));
             // Save to the cloud
             this.saveRowToCloud(updatedRow, colDef['product']);
             // setTimeout(() => {
