@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { Select, Store } from '@ngxs/store';
-import { SelectSeller, EditLocationRow } from '../../store/actions/ag-grid-row.action';
+import { SelectSeller, EditLocationRow, EditLocationRowOriData } from '../../store/actions/ag-grid-row.action';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -185,6 +185,7 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
         // this.toaster.success('Updated successfully.');
         // Update the store
         this.store.dispatch(new EditLocationRow(updatedRow));
+        this.store.dispatch(new EditLocationRowOriData(updatedRow));
         params.node.setData(updatedRow);
       }
       else{
