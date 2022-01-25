@@ -28,8 +28,7 @@ import {
   SetLocationsRows,
   SetCounterpartyList,
   SetLocationsRowsPriceDetails,
-  EditCounterpartyList,
-  EditLocationRowOriData
+  EditCounterpartyList
 } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { RemoveCounterpartyComponent } from '../../views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
@@ -814,7 +813,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     updatedRow = this.formatRowData(updatedRow, params);
     // Update the store
     this.store.dispatch(new EditLocationRow(updatedRow));
-    this.store.dispatch(new EditLocationRowOriData(updatedRow));
     params.node.setData(updatedRow);
   }
 
@@ -899,7 +897,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             console.log(updatedRow);
             // Update the store
             this.store.dispatch(new EditLocationRow(updatedRow));
-            this.store.dispatch(new EditLocationRowOriData(updatedRow));
             this.params.node.setData(updatedRow);
           });
       });
@@ -1226,7 +1223,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
                   updatedRow.physicalSupplierCounterpartyName =
                     PreviousPhySupplier[0].name;
                   this.store.dispatch(new EditLocationRow(updatedRow));
-                  this.store.dispatch(new EditLocationRowOriData(updatedRow));
 
                   //this.store.dispatch(new EditCounterpartyList(updatedRow));
                   return (valid = true);
@@ -1235,7 +1231,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
                 updatedRow.physicalSupplierCounterpartyId = null;
                 updatedRow.physicalSupplierCounterpartyName = null;
                 this.store.dispatch(new EditLocationRow(updatedRow));
-                this.store.dispatch(new EditLocationRowOriData(updatedRow));
               }
             }
           });
