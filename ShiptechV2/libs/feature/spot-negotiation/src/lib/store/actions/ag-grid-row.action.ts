@@ -66,6 +66,12 @@ export class AddCounterpartyToLocations{
 
   constructor(public payload: any) {}
 }
+export class AddCounterpartyToLocationsonoriData{
+  static readonly type = '[Counterparty] Add';
+
+  constructor(public payload: any) {}
+}
+
 export class RemoveCounterparty {
   static readonly type = '[Counterparty] Remove';
 

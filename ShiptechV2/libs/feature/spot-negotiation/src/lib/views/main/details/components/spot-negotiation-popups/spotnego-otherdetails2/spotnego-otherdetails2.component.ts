@@ -13,7 +13,7 @@ import _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import { SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import { SetLocationsRows, SetLocationsRowsOriData } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 import { OrderListGridViewModel } from '@shiptech/core/ui/components/delivery/view-model/order-list-grid-view-model.service';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgxMatDateAdapter, NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
@@ -669,6 +669,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
           otherDetails_data
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        this.store.dispatch(new SetLocationsRowsOriData(futureLocationsRows));
       } else {
         this.toastr.error(res.message);
         return;
