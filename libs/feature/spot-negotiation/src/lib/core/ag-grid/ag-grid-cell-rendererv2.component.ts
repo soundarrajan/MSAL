@@ -915,13 +915,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   openEmailPreview(params) {
-    if (this.currentRequestInfo.requestLocations.filter(loc => loc.id === params.data.requestLocationId
-    ).map(prod =>
-      prod.requestProducts.map((e, i) => params.data['checkProd' + (i + 1)] ? e.id : undefined).filter(x => x)
-    )[0].length == 0) {
-      this.toastr.error('Please select a product against the seller in order to preview email.');
-      return;
-    }
+    // if (this.currentRequestInfo.requestLocations.filter(loc => loc.id === params.data.requestLocationId
+    // ).map(prod =>
+    //   prod.requestProducts.map((e, i) => params.data['checkProd' + (i + 1)] ? e.id : undefined).filter(x => x)
+    // )[0].length == 0) {
+    //   this.toastr.error('Please select a product against the seller in order to preview email.');
+    //   return;
+    // }
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
       width: '80vw',
       height: '90vh',
