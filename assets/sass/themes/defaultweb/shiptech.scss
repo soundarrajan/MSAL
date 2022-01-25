@@ -22499,3 +22499,7 @@ mat-form-field {
 .document-status {
   top: 5px !important;
 }
+
+.ag-grid-v2.documents-list .ag-header-cell {
+  padding-left: unset !important;
+}
