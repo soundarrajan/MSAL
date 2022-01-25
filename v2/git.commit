@@ -1,11 +1,11 @@
-﻿commit 0a16f82dfe118091517ce4a25c92e24eb1cc5790
+﻿commit 7145cd8bfdca607db6cef1d4413fd4143c53eb2e
 Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Mon Jan 24 09:53:59 2022 +0000
+Date:   Tue Jan 25 09:46:12 2022 +0000
 
-    Merged PR 15600: 37957 - Request TableView Display issue fix
+    Merged PR 15613: 34555 contract update changes
     
-    37957 - Request TableView Display issue fix
+    34555 contract update changes
     
-    Related work items: #37957
+    Related work items: #34555, #38118, #38125, #38129, #38131
 
 branch: master
