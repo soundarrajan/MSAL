@@ -126,6 +126,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           this.spinner.hide();
           this.toastr.error(response);
         } else {
+          this.additionalCostList = _.cloneDeep(response.payload);
           this.createAdditionalCostTypes();
           if (this.rowData?.requestOffers?.length > 0) {
             const firstOffer = this.rowData.requestOffers[0];
