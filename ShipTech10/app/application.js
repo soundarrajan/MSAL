@@ -633,18 +633,20 @@ angular
                     console.log("Page Load duration", loadDuration);
                     window.loggedAppBootTime = true;
                     if (appInsightsInstance) {
-                        window.angularJsApplicationStart = false
-                        console.log("******", appInsightsInstance);
-                        appInsightsInstance.trackMetric(
-                            {   
-                                name: `Page Load : ${window.location.href}`, 
-                                average: loadDuration
-                            },
-                            window.location
-                        );
-                        appInsightsInstance.trackPageView();
-                                           
+                        if(!window.tabBecameInactive) {
+                            window.angularJsApplicationStart = false
+                            console.log("******", appInsightsInstance);
+                            appInsightsInstance.trackMetric(
+                                {   
+                                    name: `Page Load : ${window.location.href}`, 
+                                    average: loadDuration
+                                },
+                                window.location
+                            );
+                            appInsightsInstance.trackPageView();                                           
+                        }
                     }
+                    window.tabBecameInactive = false;
                 }
             })
 

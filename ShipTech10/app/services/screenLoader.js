@@ -235,7 +235,7 @@ angular.module('shiptech').config([
                             routeCall = `api/${ config.config.url.split('/api/')[1]}`;
                         }
                         if (routeExceptions.indexOf(routeCall) == -1) {
-                        	console.log("loader*****************", routeCall);
+                        	// console.log("loader*****************", routeCall);
                             /* APP INSIGHTS LOGGER*/
                             if (typeof window.intervalLoaderWatch == 'undefined' || !window.intervalLoaderWatch) {
                                 window.intervalLoaderWatch = setInterval(() => {

@@ -3632,7 +3632,11 @@
                                         $rootScope.$broadcast('getPortCallNameForEachLocation', $scope.options[field.Name][locationId], locationId);
                                     }
                                 } else {
-                                    $scope.options[field.Name] = _.orderBy(callback, [item => item.name.toLowerCase()], ['asc']);
+                                    $scope.options[field.Name] = _.orderBy(callback, (item) => {
+                                        if(item.name) {
+                                            return item.name.toLowerCase();
+                                        }
+                                    }, ['asc']);
                                 }
                                 if (vm.app_id == 'masters' && vm.screen_id == 'vessel') {
                                     vm.checkSpecGroup(field);
@@ -8036,8 +8040,6 @@
             $scope.CurrentadditionalCostsdetails  = formvalues;
             if($scope.formValues != undefined && $scope.formValues.additionalCosts != undefined)
             {
-            console.log("1111111111", $scope.formValues.additionalCosts);
-            console.log("1111111111", $rootScope.RootTempadditionalCosts)
                 if($rootScope.RootTempadditionalCosts == undefined){
                     $rootScope.RootTempadditionalCosts = angular.copy($scope.formValues.additionalCosts);
                 }
