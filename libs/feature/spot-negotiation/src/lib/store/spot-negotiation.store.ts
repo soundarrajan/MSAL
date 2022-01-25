@@ -25,8 +25,7 @@ import {
   SetCurrentRequestSmallInfo,
   SetAvailableContracts,
   SetRequests,
-  SetTenantConfigurations,
-  AddCounterpartyToLocationsonoriData
+  SetTenantConfigurations
 } from './actions/request-group-actions';
 
 export class SpotNegotiationStoreModel {
@@ -370,37 +369,6 @@ export class SpotNegotiationStore {
       locationsRows: ctpys
     });
   }
-
-   // Rows lists
-   @Action(AddCounterpartyToLocationsonoriData)
-   AddCounterpartyToLocationsonoriData(
-     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-     { payload }: AddCounterpartyToLocationsonoriData
-   ) {
-     const state = getState();
-     payload.map(c=> 
-       {
-         if(c.requestOffers == undefined){
-           var payloadReq = state.requests.find(x=> x.id === c.requestId);
-           if(payloadReq && payloadReq.requestLocations ){
-             var reqLocation = payloadReq.requestLocations.find(y=> y.locationId === c.locationId);
-           }
-           if(reqLocation && reqLocation.requestProducts){
-           for(let index = 0; index < reqLocation.requestProducts.length; index++) 
-           {
-             let indx = index +1;
-             let val = "checkProd" + indx;
-             c[val] = c.isSelected;
-           }
-         }
-       }
-     });
-     var ctpys = [...state.LocationsOriData, ...payload];
- 
-     patchState({
-       LocationsOriData: ctpys
-     });
-   }
 
   @Selector()
   static locationRows(state: SpotNegotiationStoreModel) {

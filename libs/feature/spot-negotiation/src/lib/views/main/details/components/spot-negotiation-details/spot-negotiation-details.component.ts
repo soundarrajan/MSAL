@@ -25,8 +25,7 @@ import {
   EditLocationRowOriData,
   RemoveCounterparty,
   SetCounterpartyList,
-  SetLocationsRows,
-  SetLocationsRowsOriData
+  SetLocationsRows
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.store';
 import { Observable } from 'rxjs';
@@ -1054,7 +1053,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             res['sellerOffers']
           );
           this.store.dispatch(new SetLocationsRows(futureLocationsRows));
-          this.store.dispatch(new SetLocationsRowsOriData(futureLocationsRows));
         }
       });
   }
