@@ -198,6 +198,7 @@
                           priceFormat
                           [(ngModel)]="offerAdditionalCost.price"
                           (ngModelChange)="
+                          checkIfItsEmptyString(j, 'price');
                             additionalCostNameChanged(
                               offerAdditionalCost,
                               true,
@@ -303,6 +304,7 @@
                       (keypress)="keyPressNumber($event)"
                       [(ngModel)]="offerAdditionalCost.extras"
                       (ngModelChange)="
+                        checkIfItsEmptyString(j, 'extras');
                         additionalCostNameChanged(
                           offerAdditionalCost,
                           true,

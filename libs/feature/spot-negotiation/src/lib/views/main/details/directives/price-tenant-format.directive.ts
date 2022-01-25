@@ -19,7 +19,8 @@ export class PriceTenantFormatDirective implements OnInit {
   format: any;
   DECIMAL_SEPARATOR: string;
   THOUSANDS_SEPARATOR: string;
-  pricePrecision: number;
+
+  @Input() pricePrecision: number;
 
   constructor(
     private elementRef: ElementRef,
@@ -32,7 +33,6 @@ export class PriceTenantFormatDirective implements OnInit {
       this.tenantService.pricePrecision +
       '-' +
       this.tenantService.pricePrecision;
-    this.pricePrecision = this.tenantService.pricePrecision;
     // TODO comes from configuration settings
     this.DECIMAL_SEPARATOR = '.';
     this.THOUSANDS_SEPARATOR = "'";
@@ -44,37 +44,26 @@ export class PriceTenantFormatDirective implements OnInit {
     }
   }
 
-  roundDown(value, pricePrecision) {
-    var precisionFactor = 1;
-    var response = 0;
-    var intvalue = parseFloat(value);
-    if (pricePrecision == 1) {
-      precisionFactor = 10;
-    }
-    if (pricePrecision == 2) {
-      precisionFactor = 100;
-    }
-    if (pricePrecision == 3) {
-      precisionFactor = 1000;
-    }
-    if (pricePrecision == 4) {
-      precisionFactor = 10000;
-    }
-    response = Math.floor(intvalue * precisionFactor) / precisionFactor;
-    return response.toString();
-  }
-
   @HostListener('blur', ['$event.target.value'])
   onBlur(value) {
     let viewValue = `${value}`;
     let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
     if (plainNumber) {
-      plainNumber = this.roundDown(plainNumber, this.pricePrecision);
-      // this.el.value = this.roundDown(plainNumber, this.pricePrecision);
-      this.el.value = this._decimalPipe.transform(
-        plainNumber,
-        '1.' + this.pricePrecision + '-' + this.pricePrecision
-      );
+      if (this.pricePrecision == 0) {
+        this.el.value = plainNumber;
+      } else {
+        var numberPrecision = this.tenantService.pricePrecision;
+        if ((<any>this.el).attributes.precision) {
+          var precision = (<any>this.el).attributes.precision.value;
+          if (precision) {
+            numberPrecision = precision;
+          }
+        }
+        this.el.value = this._decimalPipe.transform(
+          plainNumber,
+          '1.' + numberPrecision + '-' + numberPrecision
+        );
+      }
     }
   }
 }
