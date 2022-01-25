@@ -263,6 +263,10 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
     let selectedData = selectedNodes.map(node => node.data);
     let selectedRow = selectedData[0];
     console.log(selectedData);
+    if (!selectedRow) {
+      this.toastr.error('Please select a row !');
+      return;
+    }
     const request: IDocumentsUpdateIsVerifiedRequest = {
       id: selectedRow.id,
       isVerified: true
@@ -340,7 +344,7 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
       headerName: 'Document Name',
       headerTooltip: 'Document Name',
       field: 'name',
-      width: 250,
+      width: 200,
       cellRendererFramework: AGGridCellActionsDocumentsComponent,
       cellRendererParams: { type: 'document-name-download' }
     },
@@ -355,7 +359,7 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
       headerName: 'File Type',
       headerTooltip: 'File Type',
       field: 'fileType',
-      width: 100
+      width: 120
     },
     {
       headerName: 'Entity',
@@ -367,25 +371,26 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
       headerName: 'Reference No.',
       headerTooltip: 'Reference No.',
       field: 'referenceNo',
-      width: 125
+      width: 170
     },
     {
       headerName: 'Uploaded by',
       headerTooltip: 'Uploaded By',
       field: 'uploadedBy.name',
-      width: 150
+      width: 160
     },
     {
       headerName: 'Uploaded On',
       headerTooltip: 'Uploaded On',
       field: 'uploadedOn',
-      width: 150
+      width: 160
     },
     {
       headerName: 'Status',
       headerTooltip: 'Status',
       field: 'status',
       width: 150,
+      headerClass: ['document-status'],
       cellRendererFramework: AGGridCellV2RendererComponent,
       cellClass: ['aggridtextalign-center', 'document-status'],
       cellRendererParams: function(params) {
@@ -405,13 +410,13 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
       headerName: 'Verified By',
       headerTooltip: 'Verified By',
       field: 'verifiedBy.name',
-      width: 100
+      width: 160
     },
     {
       headerName: 'Verified On',
       headerTooltip: 'Verified On',
       field: 'verifiedOn',
-      width: 120
+      width: 160
     },
     {
       headerName: 'Add Views/Notes',
@@ -423,15 +428,16 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
     },
     {
       headerName: 'Download',
-      suppressMenu: true,
-      sortable: false,
       width: 100,
+      suppressMenu: true,
       headerTooltip: 'Download',
       field: 'download',
       headerClass: ['pd-0'],
       cellClass: ['aggridtextalign-left'],
       cellRendererFramework: AGGridCellActionsDocumentsComponent,
-      cellRendererParams: { type: 'download' }
+      cellRendererParams: { type: 'download' },
+      sortable: false,
+      filter: false
     }
   ];
 }
