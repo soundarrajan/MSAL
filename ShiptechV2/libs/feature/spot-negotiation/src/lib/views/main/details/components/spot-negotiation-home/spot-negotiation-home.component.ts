@@ -235,7 +235,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           if (result && result instanceof Array) {
             var sellers = [];
             result.forEach(element => {
-              if (element.selected === true) {
+              if (element.selected === true || element.sellerSelection) {
                 const selectItems = this.selectedSellerList.filter(
                   item => item.RequestId === element.id
                 );
