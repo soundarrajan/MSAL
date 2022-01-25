@@ -49,6 +49,7 @@ import { IDocumentsUpdateNotesRequest } from '@shiptech/core/services/masters-ap
           matInput
           [(ngModel)]="docNotes"
           matTooltip="{{ docNotes }}"
+          autocomplete="off"
           (blur)="updateNotes()"
         />
       </div>
