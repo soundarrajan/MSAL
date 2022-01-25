@@ -28,7 +28,8 @@ import {
 import {
   SetCurrentRequestSmallInfo,
   SetAvailableContracts,
-  AddRequest
+  AddRequest,
+  AddCounterpartyToLocationsonoriData
 } from '../../../../../store/actions/request-group-actions';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 
@@ -246,6 +247,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         this.store.dispatch(
           new AddCounterpartyToLocations(futureLocationsRows)
         );
+        this.store.dispatch(
+          new AddCounterpartyToLocationsonoriData(futureLocationsRows)
+        );
       } else {
         this.toastr.error(res.message);
         return;
@@ -432,6 +436,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
               ) {
                 this.store.dispatch(
                   new AddCounterpartyToLocations(res['requestLocationSellers'])
+                );
+                this.store.dispatch(
+                  new AddCounterpartyToLocationsonoriData(res['requestLocationSellers'])
                 );
               }
               const requests = this.store.selectSnapshot(

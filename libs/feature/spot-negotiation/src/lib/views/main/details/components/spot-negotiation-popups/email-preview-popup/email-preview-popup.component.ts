@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
   SetLocationsRows,
+  SetLocationsRowsOriData,
   SetLocationsRowsPriceDetails,
 } from '../../../../../../store/actions/ag-grid-row.action';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -346,6 +347,7 @@ export class EmailPreviewPopupComponent implements OnInit {
           res['sellerOffers']
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        this.store.dispatch(new SetLocationsRowsOriData(futureLocationsRows));
 
         this.changeDetector.detectChanges();
       }
