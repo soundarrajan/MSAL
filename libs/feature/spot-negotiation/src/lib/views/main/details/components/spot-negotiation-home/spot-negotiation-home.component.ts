@@ -16,6 +16,7 @@ import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from '../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
   SetLocationsRows,
+  SetLocationsRowsOriData,
   SetLocationsRowsPriceDetails
 } from '../../../../../store/actions/ag-grid-row.action';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
@@ -147,11 +148,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   confirmorderpopup() {
-    const locationsRows = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.locationsRows;
+    const locationsRowsOriData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRowsOriData;
     });
     let isallow = false;
-    locationsRows.forEach((element, lkey) => {
+    locationsRowsOriData.forEach((element, lkey) => {
       if (element.requestOffers == undefined && element.isSelected) {
         isallow = true;
       }
@@ -278,8 +279,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       }
 
-      const locationsRows = this.store.selectSnapshot<string>((state: any) => {
-        return state.spotNegotiation.locationsRows;
+      const locationsRowsOriData = this.store.selectSnapshot<string>((state: any) => {
+        return state.spotNegotiation.locationsRowsOriData;
       });
 
       const requestGroupID = this.store.selectSnapshot<string>((state: any) => {
@@ -291,10 +292,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
       // );
 
       const futureLocationsRows = this.getLocationRowsWithPriceDetails(
-        JSON.parse(JSON.stringify(locationsRows)),
+        JSON.parse(JSON.stringify(locationsRowsOriData)),
         res['sellerOffers']
       );
       this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+      this.store.dispatch(new SetLocationsRowsOriData(futureLocationsRows));
 
       this.changeDetector.detectChanges();
     });
@@ -396,7 +398,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation }) => {
       spotNegotiation.requests.forEach(req => {
         req.requestLocations.forEach(element => {
-          spotNegotiation.locationsRows.forEach(element1 => {
+          spotNegotiation.locationsRowsOriData.forEach(element1 => {
             if (element.id == element1.requestLocationId) {
               if (
                 element1['checkProd1'] ||
@@ -567,9 +569,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
           return;
         }
 
-        const locationsRows = this.store.selectSnapshot<string>(
+        const locationsRowsOriData = this.store.selectSnapshot<string>(
           (state: any) => {
-            return state.spotNegotiation.locationsRows;
+            return state.spotNegotiation.locationsRowsOriData;
           }
         );
 
@@ -584,10 +586,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
 
         const futureLocationsRows = this.getLocationRowsWithPriceDetails(
-          JSON.parse(JSON.stringify(locationsRows)),
+          JSON.parse(JSON.stringify(locationsRowsOriData)),
           res['sellerOffers']
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        this.store.dispatch(new SetLocationsRowsOriData(futureLocationsRows));
 
         this.changeDetector.detectChanges();
       });
@@ -664,6 +667,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           res['sellerOffers']
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        this.store.dispatch(new SetLocationsRowsOriData(futureLocationsRows));
 
         this.changeDetector.detectChanges();
 
