@@ -7,7 +7,6 @@ import {
   AddCounterpartyToLocations,
   AddRequest,
   EditLocationRow,
-  EditLocationRowOriData,
   SetLocationsRowsPriceDetails,
   SelectSeller,
   DeleteSeller,
@@ -284,21 +283,6 @@ export class SpotNegotiationStore {
     });
   }
 
-  // Rows lists
-  @Action(EditLocationRowOriData)
-  EditLocationRowOriData(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-    { payload }: EditLocationRowOriData
-  ) {
-    patchState({
-      LocationsOriData: getState().LocationsOriData.map(row => {
-        if (row.id === payload.id) {
-          return payload;
-        }
-        return row;
-      })
-    });
-  }
   @Action(SelectSeller)
   addUser({ getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: SelectSeller) {
