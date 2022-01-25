@@ -1,11 +1,11 @@
-﻿commit 7145cd8bfdca607db6cef1d4413fd4143c53eb2e
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Tue Jan 25 09:46:12 2022 +0000
+﻿commit 90e8534bffd5fe00e32ccddbffedca303844f8f3
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Tue Jan 25 14:41:31 2022 +0000
 
-    Merged PR 15613: 34555 contract update changes
+    Merged PR 15620: Add flag to detect tab change and prevent AppInsights logging
     
-    34555 contract update changes
+    Add flag to detect tab change and prevent AppInsights logging
     
-    Related work items: #34555, #38118, #38125, #38129, #38131
+    Related work items: #36324, #37496
 
 branch: master

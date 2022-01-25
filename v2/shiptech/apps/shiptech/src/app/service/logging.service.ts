@@ -51,6 +51,9 @@ export class MyMonitoringService {
   }
 
   logMetric(name: string, average: number, properties?: { [key: string]: any }) {
+    if((<any>window).tabBecameInactive) {
+       return false; 
+    }     
     this.appInsights.context.user.id = '{id: ' + this.store.selectSnapshot(UserProfileState.user).id  + '; name: ' + this.store.selectSnapshot(UserProfileState.user).name + ' }';
     this.appInsights.setAuthenticatedUserContext(this.store.selectSnapshot(UserProfileState.user).name);       
     this.appInsights.trackMetric({ name: name, average: average }, properties);
