@@ -154,7 +154,7 @@ export class EmailPreviewPopupComponent implements OnInit {
           this.subject = this.previewTemplate.subject;
           this.content = this.previewTemplate.content;
           this.from = this.previewTemplate.From;
-          this.filesList = this.previewTemplate.AttachmentsList;
+          this.filesList = this.previewTemplate.attachmentsList;
         }
         else {
           this.clearData();
