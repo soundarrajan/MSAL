@@ -37,6 +37,7 @@ export const SpotNegotiationApiPaths = {
   getEmailLogsPreview: `api/masters/emaillogs/get`,
   getRequestList: `api/procurement/rfq/selectRequest`,
   getBestContract: `api/procurement/request/bestContract`,
+  getExchangeRate: `price/getExchangeRate`,
   getLocationCosts: `price/locationCosts`,
   saveOfferAdditionalCosts: `price/saveOfferAdditionalCosts`,
   getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`,
@@ -201,6 +202,24 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http
       .post<any>(
         `${this._procurementApiUrl}/${SpotNegotiationApiPaths.getBestContract}`,
+        { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+          )
+        )
+      );
+  }
+  @ObservableException()
+  getExchangeRate(payload: any): Observable<any> {    
+    return this.http
+      .post<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getExchangeRate}`,
         { Payload: payload }
       )
       .pipe(

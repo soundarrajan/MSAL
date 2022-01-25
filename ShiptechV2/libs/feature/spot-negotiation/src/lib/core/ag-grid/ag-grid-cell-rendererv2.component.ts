@@ -305,7 +305,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
         >
         <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
         <!-- ** {{params.currency}} --  -->
-        ** {{paramsDataClone.currency}} -- 
+        <!-- ** {{paramsDataClone.currency}} --  -->
               <mat-label>Select Field</mat-label>
               <mat-select
                 disableOptionCentering
@@ -314,7 +314,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
                 (selectionChange)="onCurrencyChange($event, params)"
               >
                 <mat-select-trigger overlayPanelClass="123class">
-                  {{ getCurrencyCode(params.currency) }}
+                  {{ getCurrencyCode(paramsDataClone.currency) }}
                 </mat-select-trigger>
                 <mat-option [disabled]>Change Currency </mat-option>
                 <mat-option
@@ -685,7 +685,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       currency: new FormControl('')
     });
     this.paramsDataClone = _.cloneDeep(this.params.data);
-    this.paramsDataClone.currency  = 1;
+    if(this.paramsDataClone.requestOffers) {
+      this.paramsDataClone.currency  = this.paramsDataClone.requestOffers[0].currencyId;
+      this.paramsDataClone.oldCurrency  = this.paramsDataClone.currency;
+    }
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.tenantService = spotNegotiation.tenantConfigurations;
@@ -1165,34 +1168,42 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
   }
   onCurrencyChange(e, params) {
-    let currentCurrency = params.currency;
+    var fromCurrency = this.paramsDataClone.oldCurrency 
+    let toCurrency = this.paramsDataClone.currency;
     
     var rowNode = params.api.getRowNode(params.node.id);
     var newData = _.cloneDeep(params.data);
-    newData.currency = currentCurrency;
-    this.paramsDataClone.currency = currentCurrency;
+    newData.currency = toCurrency;
     newData.requestOffers.map( (el) => {
-      return el.currencyId = currentCurrency;
+      return el.currencyId = toCurrency;
     })
 
-//  let updatedRow = { ...this.params.data };
-//             updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
-//             updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
-//             updatedRow.requestOffers =
-//               priceDetailsRes.sellerOffers[0].requestOffers;
-//             console.log(updatedRow);
-//             // Update the store
-      this.store.dispatch(new EditLocationRow(newData));
-      this.params.node.setData(newData);
-   
-    
-    // rowNode.setData(newData);
+    let payload = {
+      "fromCurrencyId": fromCurrency,
+      "toCurrencyId": toCurrency,
+      "toCurrencyCode": this.getCurrencyCode(toCurrency)
+    } 
+    const response = this._spotNegotiationService.getExchangeRate(payload);
+    response.subscribe((res: any) => {
+      if (res.status || true) {
+        let productDetails = <any>{};
+        productDetails.totalPrice = Number(productDetails.price) + productDetails.cost; // Amount = Total Price * Max. Quantity
+        productDetails.amount = productDetails.totalPrice * params.product.maxQuantity;
 
-    // console.log(params);
-    // params.data.requestOffers.map( (el) => {
-    //   return el.currencyId = currentCurrency;
-    // })
-    // this.changeDetector.detectChanges();
+        // Target Difference = Total Price - Target Price
+        productDetails.targetDifference = productDetails.totalPrice - (params.product.requestGroupProducts ? params.product.requestGroupProducts.targetPrice : 0);
+        productDetails.targetDifference = params.product.requestGroupProducts.targetPrice == 0 ? 0 : productDetails.targetDifference;
+        
+        console.log(res);
+        this.paramsDataClone.oldCurrency = this.paramsDataClone.currency
+      } else {
+        this.paramsDataClone.currency = this.paramsDataClone.oldCurrency
+        this.toastr.warning(res.message);
+      }
+    });
+
+    // this.store.dispatch(new EditLocationRow(newData));
+    // this.params.node.setData(newData);
   }
   getCurrencyCode(currencyId) {
     let currency = this.currencyList.filter(el => el.id == currencyId)[0];
