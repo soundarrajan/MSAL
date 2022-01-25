@@ -126,7 +126,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           this.spinner.hide();
           this.toastr.error(response);
         } else {
-          this.additionalCostList = _.cloneDeep(response.payload);
           this.createAdditionalCostTypes();
           if (this.rowData?.requestOffers?.length > 0) {
             const firstOffer = this.rowData.requestOffers[0];
@@ -242,7 +241,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function(
           object: any
         ) {
-          return object.requestProductId == product.id;
+          return object.requestProductId == product.id && object.price;
         });
         if (findRowDataOfferIndex != -1) {
           applicableForItemsArray.push({
@@ -919,6 +918,18 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     } else {
       event.preventDefault();
       return false;
+    }
+  }
+
+  checkIfItsEmptyString(index, type) {
+    if (type == 'extras') {
+      if (this.offerAdditionalCostList[index].extras === '') {
+        this.offerAdditionalCostList[index].extras = null;
+      }
+    } else if (type == 'price') {
+      if (this.offerAdditionalCostList[index].price === '') {
+        this.offerAdditionalCostList[index].price = null;
+      }
     }
   }
 }
