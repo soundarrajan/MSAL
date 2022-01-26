@@ -374,7 +374,12 @@
                       matInput
                       [(ngModel)]="productDetail.value.invoiceQuantity"
                       autocomplete="off"
-                      (ngModelChange)="
+                      (blur)="
+                        productDetail.value.invoiceQuantity = roundDownValue(
+                          productDetail.value.invoiceQuantity,
+                          productDetail.key,
+                          'quantity'
+                        );
                         invoiceConvertUom('product', productDetail.key)
                       "
                       quantityFormat
@@ -441,7 +446,12 @@
                       [(ngModel)]="productDetail.value.invoiceRate"
                       priceFormat
                       [attr.precision]="productDetail.value.pricePrecision"
-                      (ngModelChange)="
+                      (blur)="
+                        productDetail.value.invoiceRate = roundDownValue(
+                          productDetail.value.invoiceRate,
+                          productDetail.key,
+                          'price'
+                        );
                         invoiceConvertUom('product', productDetail.key)
                       "
                     />
@@ -545,7 +555,10 @@
                       class="free-text-field"
                       type="text"
                       matInput
-                      [ngModel]="productDetail.value.physicalSupplierCounterparty | htmlDecodeReadonly: 'name'"
+                      [ngModel]="
+                        productDetail.value.physicalSupplierCounterparty
+                          | htmlDecodeReadonly: 'name'
+                      "
                       (ngModelChange)="
                         physicalSupplierCounterpartyChange(
                           $event,
@@ -553,7 +566,8 @@
                         )
                       "
                       [matTooltip]="
-                        productDetail.value?.physicalSupplierCounterparty?.name | htmlDecodeReadonly
+                        productDetail.value?.physicalSupplierCounterparty?.name
+                          | htmlDecodeReadonly
                       "
                       [matTooltipPosition]="'above'"
                       matTooltipClass="custom-tooltip"
@@ -572,21 +586,21 @@
                         )
                       "
                     >
-                    <mat-option
-                      *ngFor="
-                        let option of filterPhysicalSupplierLine(
-                          productDetail.value.physicalSupplierCounterparty &&
-                            productDetail.value.physicalSupplierCounterparty
-                              .name
-                            ? productDetail.value.physicalSupplierCounterparty
+                      <mat-option
+                        *ngFor="
+                          let option of filterPhysicalSupplierLine(
+                            productDetail.value.physicalSupplierCounterparty &&
+                              productDetail.value.physicalSupplierCounterparty
                                 .name
-                            : productDetail.value.physicalSupplierCounterparty
-                        )
-                      "
-                      [value]="option"
-                    >
-                      {{ option.name }}
-                    </mat-option>
+                              ? productDetail.value.physicalSupplierCounterparty
+                                  .name
+                              : productDetail.value.physicalSupplierCounterparty
+                          )
+                        "
+                        [value]="option"
+                      >
+                        {{ option.name }}
+                      </mat-option>
                     </mat-autocomplete>
                   </mat-form-field>
                   <div class="ui-inputgroup shiptech-searchbox">
@@ -853,8 +867,13 @@
                           >
                             <input
                               matInput
-                              [ngModel]="productDetail.value.description | htmlDecodeReadonly"
-                              (ngModelChange)="productDetail.value.description = $event"
+                              [ngModel]="
+                                productDetail.value.description
+                                  | htmlDecodeReadonly
+                              "
+                              (ngModelChange)="
+                                productDetail.value.description = $event
+                              "
                             />
                           </mat-form-field>
                         </div>
