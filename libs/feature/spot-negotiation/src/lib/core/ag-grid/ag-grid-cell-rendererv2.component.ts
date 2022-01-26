@@ -1177,24 +1177,35 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     newData.requestOffers.map( (el) => {
       return el.currencyId = toCurrency;
     })
-
+    
     let payload = {
       "fromCurrencyId": fromCurrency,
       "toCurrencyId": toCurrency,
       "toCurrencyCode": this.getCurrencyCode(toCurrency)
     } 
+    
+    // this.store.selectSnapshot<any>((state: any) => {
+      //   if (state.spotNegotiation.locationsRows.length > 0) {
+        //     const selectItems = state.spotNegotiation.locationsRows.filter(
+          //       item =>
+          //         item.locationId === this.params.data.locationId &&
+          //         item.sellerCounterpartyId ===
+          //           this.params.data.sellerCounterpartyId &&
+          //         item.physicalSupplierCounterpartyId === this.params.data.physicalSupplierCounterpartyId
+          //     );
+          //     console.log(selectItems);
+    //   }
+    // });
+    // let totalOffer = params.data.totalOffer;
+    
     const response = this._spotNegotiationService.getExchangeRate(payload);
     response.subscribe((res: any) => {
-      if (res.status || true) {
-        let productDetails = <any>{};
-        productDetails.totalPrice = Number(productDetails.price) + productDetails.cost; // Amount = Total Price * Max. Quantity
-        productDetails.amount = productDetails.totalPrice * params.product.maxQuantity;
-
-        // Target Difference = Total Price - Target Price
-        productDetails.targetDifference = productDetails.totalPrice - (params.product.requestGroupProducts ? params.product.requestGroupProducts.targetPrice : 0);
-        productDetails.targetDifference = params.product.requestGroupProducts.targetPrice == 0 ? 0 : productDetails.targetDifference;
+      if (res.status) {
+        this.store.dispatch(new EditLocationRow(newData));
+        this.params.node.setData(newData);
         
-        console.log(res);
+        /* params.data has all the data for applyExchangeRate */
+
         this.paramsDataClone.oldCurrency = this.paramsDataClone.currency
       } else {
         this.paramsDataClone.currency = this.paramsDataClone.oldCurrency
@@ -1202,8 +1213,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
 
-    // this.store.dispatch(new EditLocationRow(newData));
-    // this.params.node.setData(newData);
   }
   getCurrencyCode(currencyId) {
     let currency = this.currencyList.filter(el => el.id == currencyId)[0];
