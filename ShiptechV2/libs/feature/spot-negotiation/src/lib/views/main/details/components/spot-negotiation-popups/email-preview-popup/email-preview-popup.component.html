@@ -76,7 +76,7 @@
                         (change)="fileBrowseHandler($event.target.files)" />
                     <div class="file-list" *ngFor="let item of filesList">
                         <span class="attachment-icon"></span>
-                        <span>{{item}}</span>
+                        <span>{{item.name}}</span>
                     </div>    
                 </div>
                 <div class="email-draft">    
