@@ -702,13 +702,11 @@ export class ShiptechCustomHeaderGroup {
                         index
                       );
                       this.store.dispatch(new EditLocations(updatedRow1));
-                      console.log(filterLocationsRows);
                       for (let i = 0; i < filterLocationsRows.length; i++) {
                         const productDetails = this.getRowProductDetails(
                           filterLocationsRows[i],
                           updatedRow1.requestProducts[index].id
                         );
-                        console.log(productDetails);
                         this.updateTargetDifference(
                           productDetails,
                           updatedRow1.requestProducts[index]
@@ -719,7 +717,6 @@ export class ShiptechCustomHeaderGroup {
                           productDetails,
                           updatedRow1.requestProducts[index].id
                         );
-                        console.log(futureRow);
                         this.store.dispatch(new EditLocationRow(futureRow));
                       }
                     }
@@ -798,8 +795,6 @@ export class ShiptechCustomHeaderGroup {
   }
 
   updateTargetDifference(productDetails, product) {
-    console.log(productDetails);
-    console.log(productDetails);
     // Target Difference = Total Price - Target Price
     productDetails.targetDifference = productDetails.totalPrice
       ? productDetails.totalPrice -
@@ -811,7 +806,6 @@ export class ShiptechCustomHeaderGroup {
       product.requestGroupProducts.targetPrice == 0
         ? 0
         : productDetails.targetDifference;
-    console.log(productDetails);
   }
 
   addCounterpartiesToLocation(reqLocationId: number) {
