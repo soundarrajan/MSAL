@@ -28,7 +28,8 @@ import {
 import {
   SetCurrentRequestSmallInfo,
   SetAvailableContracts,
-  AddRequest
+  AddRequest,
+  DelinkRequest
 } from '../../../../../store/actions/request-group-actions';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 
@@ -137,9 +138,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       this.toastr.error("Request cannot be delinked as an order has already been created.");
       return;
     }
+    if (this.requestOptions.length <= 1) {
+      this.toastr.error("You cannot delink the last request in the group");
+      return;
+    } 
     const dialogRef = this.dialog.open(ConfirmdialogComponent, {
-      width: '500px',
-      height: '250px',
+      width: '400px',
+      height: '180px',
       maxWidth: '500px',
       panelClass: 'confirm-dialog',
       data: {
@@ -148,19 +153,32 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     });   
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        alert("yes");
         const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
         let payload = {
           groupId: parseInt(RequestGroupId),
           requestId: item.id,
         };
     
+        
+        /* commented out until API is fixed */
         const response = this._spotNegotiationService.delinkRequest(payload);  
         response.subscribe((res: any) => {
-          console.log(res)
-        });      
-      } else {
-        alert("nope");        
+          if(res) {
+            this.toastr.success(`Request ${item.id} was succesfully delinked`);
+            /* select first request if selected reqeust is delinked */
+            if(this.requestOptions[this.selReqIndex].id == item.id ) {
+              if(this.selReqIndex == 0) {
+                this.selectRequest(null, 1, this.requestOptions[1]);
+                this.selReqIndex = 0;
+              } else {
+                this.selectRequest(null, 0, this.requestOptions[0]);
+                this.selReqIndex = 0;
+              }
+            }
+            /* update store requests */
+            this.store.dispatch(new DelinkRequest(item.id));
+          }
+        });           
       }
     }); 
   }
@@ -483,7 +501,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   selectRequest(event, i, selected) {
-    event.preventDefault();
+    if(event) {
+      event.preventDefault();
+    }
     this.selReqIndex = i;
 
     // Stop if clicked on same request;

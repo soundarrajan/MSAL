@@ -1,76 +1,18 @@
-.spot-nego-title {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 16px;
-  color: #364150;
+.confirm-button {
+    background: #1d9fff;
+    height: 27px;
+    line-height: 21px !important;
+    border-radius: 5px !important;
+    font-weight: 400;
+    font-size: 14px;
+    color: #fff !important;
+    border: none;
+    padding: 0 20px;
+    margin-top: 15px;
+    float: right;
+    cursor: pointer;
 }
 
-hr {
-  border: 0;
-  border-top: 1px solid rgba(0, 0, 0, .1);
-  margin-bottom: 10px;
-}
-.spot-popup-header-container {
-  padding: 20px 20px 10px 20px;
-}
-
-.best-contract-table-header {
-  width: 100%;
-  border-collapse: collapse;
-  padding-right: 5px;
-  overflow-y: scroll;
-  background: #e9eaec;
-  padding-left: 5px;
-  padding-top: 5px;
-  border-radius: 5px 5px 0 0;
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-    thead tr {
-      th {
-        color: #fff;
-        font-size: 14px;
-        font-weight: 100;
-        padding: 6px;
-        width: 150px;
-        background: #364150;
-        &:first-child {
-          border-radius: 5px 0 0 0;
-        }
-        &:last-child {
-          border-radius: 0 5px 0 0;
-        }
-      }
-    }
-  }
-}
-
-.bestContract-table-wrapper {
-  background: #e9eaec;
-  padding: 5px;
-  max-height: 300px;
-  overflow: auto;
-  padding-top:0;
-  border-radius: 0 0 5px 5px;
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-    tbody {
-      tr {
-        td {
-          color: #37414f;
-          padding: 10px;
-          background-color: #fff;
-          font-weight: 400;
-          border: 1px solid #e0e1e4;
-          width: 150px;
-          font-size: 13px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-      }
-    }
-  }
+.warning-text {
+  border-top: 1px solid #e8e9eb;
 }
