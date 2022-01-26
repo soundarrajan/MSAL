@@ -1,6 +1,6 @@
 import { Injectable, InjectionToken } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
@@ -55,6 +55,7 @@ export const SpotNegotiationApiPaths = {
   getEmailLogsPreview: `api/masters/emaillogs/get`,
   getRequestList: `api/procurement/rfq/selectRequest`,
   getBestContract: `api/procurement/request/bestContract`,
+  delinkRequest: `Groups/deleteRequest`,
   getLocationCosts: `price/locationCosts`,
   saveOfferAdditionalCosts: `price/saveOfferAdditionalCosts`,
   getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`,
@@ -227,6 +228,29 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .post<any>(
         `${this._procurementApiUrl}/${SpotNegotiationApiPaths.getBestContract}`,
         { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  delinkRequest(payload: any): Observable<any> {
+    const options = {
+      headers: new HttpHeaders(),
+      body: {...payload},
+    };
+    return this.http
+      .delete<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.delinkRequest}`,
+        options
       )
       .pipe(
         map((body: any) => body),

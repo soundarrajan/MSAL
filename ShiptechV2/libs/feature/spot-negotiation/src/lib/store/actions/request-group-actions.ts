@@ -44,6 +44,11 @@ export class AddRequest{
 
   constructor(public payload: any) {}
 }
+export class DelinkRequest{
+  static readonly type = '[DelinkRequest] Set';
+
+  constructor(public payload: any) {}
+}
 export class AddCounterpartyToLocations{
   static readonly type = '[Add Counterparty] Add';
 
