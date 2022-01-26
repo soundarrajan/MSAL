@@ -6,6 +6,7 @@ import {
   SetLocationsRows,
   AddCounterpartyToLocations,
   AddRequest,
+  DelinkRequest,
   EditLocationRow,
   SetLocationsRowsPriceDetails,
   SelectSeller,
@@ -321,6 +322,18 @@ export class SpotNegotiationStore {
     var ctpys = [...state.requests, ...payload];
     patchState({
       requests: ctpys
+    });
+  }
+  /* delink Request */
+  @Action(DelinkRequest)
+  DelinkRequest(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: DelinkRequest
+  ) {
+    const state = getState();
+    let remainingRequests = state.requests.filter( (e) => e.id != payload );
+    patchState({
+      requests: remainingRequests
     });
   }
   // Rows lists
