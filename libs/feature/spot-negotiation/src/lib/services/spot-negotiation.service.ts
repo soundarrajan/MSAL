@@ -360,6 +360,11 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.getExchangeRate(payload);
   }
 
+  @ObservableException()
+  applyExchangeRate(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.applyExchangeRate(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }
