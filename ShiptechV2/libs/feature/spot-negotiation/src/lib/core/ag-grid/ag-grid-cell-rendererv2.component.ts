@@ -1168,7 +1168,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
   }
   onCurrencyChange(e, params) {
-    var fromCurrency = this.paramsDataClone.oldCurrency 
+    var fromCurrency = this.paramsDataClone.oldCurrency ;
+    // var fromCurrency = this.tenantService.currencyId;
     let toCurrency = this.paramsDataClone.currency;
     
     var rowNode = params.api.getRowNode(params.node.id);
@@ -1183,33 +1184,44 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       "toCurrencyId": toCurrency,
       "toCurrencyCode": this.getCurrencyCode(toCurrency)
     } 
-    
-    // this.store.selectSnapshot<any>((state: any) => {
-      //   if (state.spotNegotiation.locationsRows.length > 0) {
-        //     const selectItems = state.spotNegotiation.locationsRows.filter(
-          //       item =>
-          //         item.locationId === this.params.data.locationId &&
-          //         item.sellerCounterpartyId ===
-          //           this.params.data.sellerCounterpartyId &&
-          //         item.physicalSupplierCounterpartyId === this.params.data.physicalSupplierCounterpartyId
-          //     );
-          //     console.log(selectItems);
-    //   }
-    // });
-    // let totalOffer = params.data.totalOffer;
-    
+        
     const response = this._spotNegotiationService.getExchangeRate(payload);
     response.subscribe((res: any) => {
       if (res.status) {
         this.store.dispatch(new EditLocationRow(newData));
         this.params.node.setData(newData);
+        let requestOffers = this.params.data.requestOffers.map( (e) => {
+          return {
+            "id": e.id,
+            "totalPrice": e.totalPrice * res.exchangeRateValue,
+            "amount": e.amount * res.exchangeRateValue,
+            "targetDifference": e.targetDifference * res.exchangeRateValue,
+            "currencyId": toCurrency          
+          }
+        })
+        let payload = {
+          "Offers": {
+            "id": this.params.data.requestOffers[0].offerId,
+            "totalOffer": this.params.data.totalOffer * res.exchangeRateValue,
+            "requestOffers": requestOffers,
+          }       
+        };  
+        
+        const applyExchangeRateResponse = this._spotNegotiationService.applyExchangeRate(payload);
+        applyExchangeRateResponse.subscribe((res: any) => {
+            if (res.status) {
+              this.paramsDataClone.oldCurrency = this.paramsDataClone.currency
+            } else {
+              this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
+            }
+        });
         
         /* params.data has all the data for applyExchangeRate */
 
-        this.paramsDataClone.oldCurrency = this.paramsDataClone.currency
       } else {
-        this.paramsDataClone.currency = this.paramsDataClone.oldCurrency
+        this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
         this.toastr.warning(res.message);
+        this.changeDetector.detectChanges();
       }
     });
 
