@@ -134,10 +134,21 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   delinkRequest(item) {
-    if(item.status.toLowerCase().includes("stemmed")) {
+
+
+    var canDelinkStemmed = true;
+    item.requestLocations.forEach(location => {
+      location.requestProducts.forEach(product => {
+        if(!product.contractId && product.status.toLowerCase().includes("stemmed")) {
+          canDelinkStemmed = false;
+        }
+      });  
+    });
+    if(!canDelinkStemmed) {
       this.toastr.error("Request cannot be delinked as an order has already been created.");
       return;
     }
+
     if (this.requestOptions.length <= 1) {
       this.toastr.error("You cannot delink the last request in the group");
       return;
