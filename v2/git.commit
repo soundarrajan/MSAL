@@ -1,11 +1,11 @@
-﻿commit 90e8534bffd5fe00e32ccddbffedca303844f8f3
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Jan 25 14:41:31 2022 +0000
+﻿commit 81af49e01e8399cf1bbccda5799cea77238acd6d
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Thu Jan 27 07:29:12 2022 +0000
 
-    Merged PR 15620: Add flag to detect tab change and prevent AppInsights logging
+    Merged PR 15646: 38070 - SO comments popup UI fix
     
-    Add flag to detect tab change and prevent AppInsights logging
+    38070 - SO comments popup UI fix
     
-    Related work items: #36324, #37496
+    Related work items: #38070
 
 branch: master
