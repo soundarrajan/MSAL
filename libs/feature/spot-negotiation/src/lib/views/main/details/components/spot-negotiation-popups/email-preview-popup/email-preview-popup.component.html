@@ -230,19 +230,11 @@
             </div>
           </mat-menu>
           <ng-container *ngFor="let file of filesList">
-            <div
-              class="recipientClass file-list-container"
-              *ngIf="file.isIncludedInMail"
-            >
+            <div *ngIf="file.isIncludedInMail" class="file-list">
               <span class="attachment-icon"></span>
-              <input
-                [readonly]="readonly"
-                class="cust-input-field"
-                matInput
-                value="{{ file.name }}"
-                style="border: none;"
-                (click)="downloadDocument(file)"
-              />
+              <span (click)="downloadDocument(file)" class="cust-input-field">{{
+                file.name
+              }}</span>
               <div
                 [style.visibility]="readonly ? 'hidden' : 'visible'"
                 class="close-icon"
