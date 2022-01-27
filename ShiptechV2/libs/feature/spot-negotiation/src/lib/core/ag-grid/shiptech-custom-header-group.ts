@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 import {
   AddCounterpartyToLocations,
+  EditLocationRow,
   EditLocations
 } from '../../store/actions/ag-grid-row.action';
 import { AvailabletermcontractspopupComponent } from '../../views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
@@ -26,6 +27,7 @@ import {
 import { count, filter, map } from 'rxjs/operators';
 import moment from 'moment';
 import { BestcontractpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/bestcontractpopup/bestcontractpopup.component';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -253,11 +255,8 @@ import { BestcontractpopupComponent } from '../../views/main/details/components/
               Best Contract
               <span class="eye-icon"></span>
             </div>
-            <div
-              class="value"
-              (keydown)="editQty($event)"
-            >
-              {{getBestContractPrice(params)}}
+            <div class="value" (keydown)="editQty($event)">
+              {{ getBestContractPrice(params) }}
             </div>
           </div>
         </div>
@@ -312,7 +311,7 @@ export class ShiptechCustomHeaderGroup {
     this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.availableContracts = spotNegotiation.availableContracts;
-      
+
       // Fetching counterparty list
       if (
         this.counterpartyList.length === 0 &&
@@ -321,7 +320,7 @@ export class ShiptechCustomHeaderGroup {
         this.counterpartyList = spotNegotiation.counterpartyList;
         this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
       }
-    });   
+    });
   }
 
   constructor(
@@ -499,46 +498,54 @@ export class ShiptechCustomHeaderGroup {
     console.log(params.requestLocationId);
     console.log(params.product.id);
     console.log(this.availableContracts);
-    if(!this.availableContracts) {
+    if (!this.availableContracts) {
       return;
     }
-    let currentCellContracts = this.availableContracts.filter((el) => {
-      return el.requestProductId == params.product.id && el.requestLocationId == params.requestLocationId;
-    })
-    if(currentCellContracts.length == 0) {
-      this.toastr.info("No Contracts available");
+    let currentCellContracts = this.availableContracts.filter(el => {
+      return (
+        el.requestProductId == params.product.id &&
+        el.requestLocationId == params.requestLocationId
+      );
+    });
+    if (currentCellContracts.length == 0) {
+      this.toastr.info('No Contracts available');
       return;
     }
     const dialogRef = this.dialog.open(BestcontractpopupComponent, {
       width: '1164px',
       panelClass: 'best-contract-popup',
       data: {
-        data : currentCellContracts,
-        info : {
-          locationName : params.product.productName,
-          productName : params.product.productName
+        data: currentCellContracts,
+        info: {
+          locationName: params.product.productName,
+          productName: params.product.productName
         }
       }
     });
   }
 
-  getBestContractPrice(params) : any {
+  getBestContractPrice(params): any {
     console.log(params.requestLocationId);
-    console.log(params.product.id);   
-    console.log(this.availableContracts); 
-    if(this.availableContracts) {
-      let currentCellContracts = this.availableContracts.filter((el) => {
-        return el.requestProductId == params.product.id && el.requestLocationId == params.requestLocationId;
-      })
-      let prices = Object.keys( currentCellContracts ).map(function ( key ) { return currentCellContracts[key].fixedPrice; });
-      let min = Math.min.apply( null, prices );
+    console.log(params.product.id);
+    console.log(this.availableContracts);
+    if (this.availableContracts) {
+      let currentCellContracts = this.availableContracts.filter(el => {
+        return (
+          el.requestProductId == params.product.id &&
+          el.requestLocationId == params.requestLocationId
+        );
+      });
+      let prices = Object.keys(currentCellContracts).map(function(key) {
+        return currentCellContracts[key].fixedPrice;
+      });
+      let min = Math.min.apply(null, prices);
       console.log(currentCellContracts);
       console.log(min);
-      if(min && min != "Infinity") {
+      if (min && min != 'Infinity') {
         return `$ ${this.priceFormatValue(min)}`;
       }
     }
-    return "--";
+    return '--';
   }
 
   editQty(e: any): any {
@@ -665,8 +672,10 @@ export class ShiptechCustomHeaderGroup {
       response.subscribe((res: any) => {
         if (res.status) {
           let locations = [];
+          let locationsRows = [];
           this.store.subscribe(({ spotNegotiation, ...props }) => {
             locations = spotNegotiation.locations;
+            locationsRows = spotNegotiation.locationsRows;
             JSON.parse(JSON.stringify(locations));
           });
           if (locations.length > 0) {
@@ -675,6 +684,12 @@ export class ShiptechCustomHeaderGroup {
                 element.id == this.requestLocationId &&
                 element.requestProducts
               ) {
+                let filterLocationsRows = _.filter(locationsRows, function(
+                  elem
+                ) {
+                  return elem.requestLocationId == element.id;
+                });
+                console.log(filterLocationsRows);
                 element.requestProducts.forEach((element1, index) => {
                   if (
                     element1.id == this.requestProductId &&
@@ -687,6 +702,23 @@ export class ShiptechCustomHeaderGroup {
                         index
                       );
                       this.store.dispatch(new EditLocations(updatedRow1));
+                      for (let i = 0; i < filterLocationsRows.length; i++) {
+                        const productDetails = this.getRowProductDetails(
+                          filterLocationsRows[i],
+                          updatedRow1.requestProducts[index].id
+                        );
+                        this.updateTargetDifference(
+                          productDetails,
+                          updatedRow1.requestProducts[index]
+                        );
+
+                        let futureRow = this.setRowProductDetails(
+                          filterLocationsRows[i],
+                          productDetails,
+                          updatedRow1.requestProducts[index].id
+                        );
+                        this.store.dispatch(new EditLocationRow(futureRow));
+                      }
                     }
                   }
                 });
@@ -711,6 +743,69 @@ export class ShiptechCustomHeaderGroup {
       ].requestGroupProducts.targetPrice = this.targetValue;
     }
     return updaterow;
+  }
+
+  setRowProductDetails(row, details, productId) {
+    // returns a row;
+    let futureRow = JSON.parse(JSON.stringify(row));
+
+    if (!futureRow.requestOffers) {
+      return futureRow;
+    }
+
+    for (let i = 0; i < futureRow.requestOffers.length; i++) {
+      if (futureRow.requestOffers[i].requestProductId == productId) {
+        futureRow.requestOffers[i] = details;
+        break;
+      }
+    }
+    return futureRow;
+  }
+
+  getRowProductDetails(row, productId) {
+    let futureRow = JSON.parse(JSON.stringify(row));
+
+    const emptyPriceDetails = {
+      amount: null,
+      contactCounterpartyId: null,
+      currencyId: null,
+      id: null,
+      offerId: null,
+      price: null,
+      priceQuantityUomId: null,
+      quotedProductId: null,
+      requestProductId: productId,
+      targetDifference: null,
+      totalPrice: null
+    };
+
+    if (!futureRow.requestOffers) {
+      return emptyPriceDetails;
+    }
+
+    const priceDetails = futureRow.requestOffers.find(
+      item => item.requestProductId === productId
+    );
+
+    if (priceDetails) {
+      return priceDetails;
+    }
+
+    return emptyPriceDetails;
+  }
+
+  updateTargetDifference(productDetails, product) {
+    // Target Difference = Total Price - Target Price
+    productDetails.targetDifference = productDetails.totalPrice
+      ? productDetails.totalPrice -
+        (product.requestGroupProducts
+          ? product.requestGroupProducts.targetPrice
+          : 0)
+      : null;
+    productDetails.targetDifference =
+      product.requestGroupProducts.targetPrice == 0
+        ? 0
+        : productDetails.targetDifference;
   }
 
   addCounterpartiesToLocation(reqLocationId: number) {

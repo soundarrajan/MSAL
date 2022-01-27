@@ -1,94 +1,263 @@
 <div class="email-preview-popup">
-    <div class="header">
-        <div class="title">Email Preview</div>
-        <div style="display: flex; margin: 7px -10px 0px -10px;">
-            <span [hidden] = "readonly" style="margin-top: 16px; color: #c4c4c4;">Template:</span>
-            <div id="custom-form-field" style="width: 100px !important; margin: 0px 7px;">
-                <mat-form-field [style.visibility] ="readonly? 'hidden': 'visible'" class="without-search" appearance="none">
-                    <mat-select [(value)]="selected" disableOptionCentering (selectionChange)="getPreviewTemplate()">
-                        <mat-option value="MultipleRfqNewRFQEmailTemplate">RFQ</mat-option>
-                        <mat-option value="MultipleRfqAmendRFQEmailTemplate">Amend RFQ</mat-option>
-                        <mat-option value="RequoteRFQEmailTemplate">Requote</mat-option>
-                        <mat-option value="MultipleRfqRevokeRFQEmailTemplate">Revoke RFQ</mat-option>                        
-                    </mat-select>                    
-                </mat-form-field>
-            </div>
-            <div class="header-btn">
-                
-                <span [hidden]="readonly" class="seperator-line"></span>
-                <button [hidden]="readonly" style="border: none; border-radius: 5px; width: 165px !important;" class="blue-button h-25" (click)="revertChanges()">Discard saved preview</button>
-                <button [hidden]="readonly" style="border: none; border-radius: 5px;" class="blue-button h-25" (click)="saveAndSendRFQ(false)">Save</button>
-                <button [hidden]="readonly" style="border: none; border-radius: 5px;" class="blue-button h-25" (click)="saveAndSendRFQ(true)">Save & Send</button>
-                <span [hidden]="readonly" class="seperator-line"></span>
-                <span  class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
-            </div>
-        </div>
+  <div class="header">
+    <div class="title">Email Preview</div>
+    <div style="display: flex; margin: 7px -10px 0px -10px;">
+      <span [hidden]="readonly" style="margin-top: 16px; color: #c4c4c4;"
+        >Template:</span
+      >
+      <div
+        id="custom-form-field"
+        style="width: 100px !important; margin: 0px 7px;"
+      >
+        <mat-form-field
+          [style.visibility]="readonly ? 'hidden' : 'visible'"
+          class="without-search"
+          appearance="none"
+        >
+          <mat-select
+            [(value)]="selected"
+            disableOptionCentering
+            (selectionChange)="getPreviewTemplate()"
+          >
+            <mat-option value="MultipleRfqNewRFQEmailTemplate">RFQ</mat-option>
+            <mat-option value="MultipleRfqAmendRFQEmailTemplate"
+              >Amend RFQ</mat-option
+            >
+            <mat-option value="RequoteRFQEmailTemplate">Requote</mat-option>
+            <mat-option value="MultipleRfqRevokeRFQEmailTemplate"
+              >Revoke RFQ</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="header-btn">
+        <span [hidden]="readonly" class="seperator-line"></span>
+        <button
+          [hidden]="readonly"
+          style="border: none; border-radius: 5px; width: 165px !important;"
+          class="blue-button h-25"
+          (click)="revertChanges()"
+        >
+          Discard saved preview
+        </button>
+        <button
+          [hidden]="readonly"
+          style="border: none; border-radius: 5px;"
+          class="blue-button h-25"
+          (click)="saveAndSendRFQ(false)"
+        >
+          Save
+        </button>
+        <button
+          [hidden]="readonly"
+          style="border: none; border-radius: 5px;"
+          class="blue-button h-25"
+          (click)="saveAndSendRFQ(true)"
+        >
+          Save & Send
+        </button>
+        <span [hidden]="readonly" class="seperator-line"></span>
+        <span
+          class="close"
+          style="cursor:pointer;"
+          [mat-dialog-close]="true"
+        ></span>
+      </div>
     </div>
-    <mat-dialog-content>
-        <div class="email-container">
-            <div class="section1">
-                <span class="text">Contact Details</span>
-                <div style="display: flex; margin: 10px 0px;">
-                    <div style="flex: 0 0 5%">
-                        <span class="text">To:</span>
-                    </div>
-                    <div style="display: flex; flex: 0 0 95%; align-items: center; flex-wrap: wrap;">
-                        <div class="recipientClass" style="margin: 0px 5px; display:  flex;height:25px;" *ngFor="let item of to">
-                            <input [readonly]="readonly" class="cust-input-field" matInput value="{{item}}" style="border: none;">
-                            <div [style.visibility] ="readonly? 'hidden': 'visible'" class="close-icon" (click)="RemoveEmailId(item,'toEmail')"></div>
-                        </div>
-                        <div [style.visibility] ="readonly? 'hidden': 'visible'" class="add-new" style="padding-top:3px;">
-                            <input #toemail matInput placeholder="+Add New" [hidden]="readonly" [(ngModel)]="toEmail" (change)="addTo(toemail.value)">
-                        </div>
-                    </div>                 
-                </div>
-                <div style="display: flex; margin: 10px 0px;">
-                    <div style="flex: 0 0 5%">
-                        <span class="text">Cc:</span>
-                    </div>
-                    <div style="display: flex; flex: 0 0 95%; align-items: center; flex-wrap: wrap;">
-                        <div class="recipientClass" style="margin: 0px 5px; display: flex;height:25px;" *ngFor="let item of cc">
-                            <input [readonly]="readonly"  class="cust-input-field" matInput value="{{item}}" style="border: none;">
-                            <div [style.visibility] ="readonly? 'hidden': 'visible'" class="close-icon flex-shrink-1" (click)="RemoveEmailId(item,'ccEmail')"></div>
-                        </div>
-                        <div [style.visibility] ="readonly? 'hidden': 'visible'"  class="add-new" style="padding-top:3px;">
-                            <input  #ccemail matInput placeholder="+Add New" [(ngModel)]="ccEmail" (change)="addCc(ccemail.value)">
-                        </div>
-                    </div>                 
-                </div>
-                <div style="display: flex; margin: 10px 0px;">
-                    <div style="flex: 0 0 5%">
-                        <span class="text">Subject:</span>
-                    </div>
-                    <div style="display: flex; flex: 0 0 95%">                        
-                        <!-- <span class="subject">{{subject}}</span> -->
-                        <input [readonly]="readonly" matInput  class="subject" [(ngModel)]="subject">
-                    </div>                 
-                </div>
+  </div>
+  <mat-dialog-content>
+    <div class="email-container">
+      <div class="section1">
+        <span class="text">Contact Details</span>
+        <div style="display: flex; margin: 10px 0px;">
+          <div style="flex: 0 0 5%">
+            <span class="text">To:</span>
+          </div>
+          <div
+            style="display: flex; flex: 0 0 95%; align-items: center; flex-wrap: wrap;"
+          >
+            <div
+              class="recipientClass"
+              style="margin: 0px 5px; display:  flex;height:25px;"
+              *ngFor="let item of to"
+            >
+              <input
+                [readonly]="readonly"
+                class="cust-input-field"
+                matInput
+                value="{{ item }}"
+                style="border: none;"
+              />
+              <div
+                [style.visibility]="readonly ? 'hidden' : 'visible'"
+                class="close-icon"
+                (click)="RemoveEmailId(item, 'toEmail')"
+              ></div>
             </div>
-            <div class="section2">
-                <div [style.visibility] ="readonly? 'hidden': 'visible'" style="display: flex; margin: 15px; align-items: center;">
-                    <span class="text">Attachments:</span>
-                    <label class="add-doc" for="getFile">
-                        <span [hidden]="readonly" class="add-doc-plus"></span>
-                    </label>
-                    <input type="file" id="getFile" class="get-file" multiple
-                        (change)="fileBrowseHandler($event.target.files)" />
-                    <div class="file-list" *ngFor="let item of filesList">
-                        <span class="attachment-icon"></span>
-                        <span>{{item}}</span>
-                    </div>    
-                </div>
-                <div class="email-draft">    
-                    <ckeditor [disabled] ="readonly" [editor]="Editor" [(ngModel)]="content"></ckeditor>
-                </div>
+            <div
+              [style.visibility]="readonly ? 'hidden' : 'visible'"
+              class="add-new"
+              style="padding-top:3px;"
+            >
+              <input
+                #toemail
+                matInput
+                placeholder="+Add New"
+                [hidden]="readonly"
+                [(ngModel)]="toEmail"
+                (change)="addTo(toemail.value)"
+              />
             </div>
+          </div>
         </div>
-    </mat-dialog-content>
+        <div style="display: flex; margin: 10px 0px;">
+          <div style="flex: 0 0 5%">
+            <span class="text">Cc:</span>
+          </div>
+          <div
+            style="display: flex; flex: 0 0 95%; align-items: center; flex-wrap: wrap;"
+          >
+            <div
+              class="recipientClass"
+              style="margin: 0px 5px; display: flex;height:25px;"
+              *ngFor="let item of cc"
+            >
+              <input
+                [readonly]="readonly"
+                class="cust-input-field"
+                matInput
+                value="{{ item }}"
+                style="border: none;"
+              />
+              <div
+                [style.visibility]="readonly ? 'hidden' : 'visible'"
+                class="close-icon flex-shrink-1"
+                (click)="RemoveEmailId(item, 'ccEmail')"
+              ></div>
+            </div>
+            <div
+              [style.visibility]="readonly ? 'hidden' : 'visible'"
+              class="add-new"
+              style="padding-top:3px;"
+            >
+              <input
+                #ccemail
+                matInput
+                placeholder="+Add New"
+                [(ngModel)]="ccEmail"
+                (change)="addCc(ccemail.value)"
+              />
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; margin: 10px 0px;">
+          <div style="flex: 0 0 5%">
+            <span class="text">Subject:</span>
+          </div>
+          <div style="display: flex; flex: 0 0 95%">
+            <!-- <span class="subject">{{subject}}</span> -->
+            <input
+              [readonly]="readonly"
+              matInput
+              class="subject"
+              [(ngModel)]="subject"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="section2">
+        <div
+          [style.visibility]="readonly ? 'hidden' : 'visible'"
+          style="display: flex; margin: 15px; align-items: center;"
+        >
+          <span class="text">Attachments:</span>
+          <label class="add-doc" [matMenuTriggerFor]="menu">
+            <span [hidden]="readonly" class="add-doc-plus"></span>
+          </label>
+          <mat-menu #menu="matMenu" class="document-type-modal">
+            <div
+              [ngClass]="{
+                'container-modal': !expandDocumentPopUp,
+                'container-modal-expand': expandDocumentPopUp
+              }"
+            >
+              <div class="col-md-12 header-container">
+                <div class="select-container col-md-10">
+                  <span class="search-lookup"> </span>
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="Document Name"
+                    name="document-type-search"
+                    class="search-input"
+                    autocomplete="off"
+                    [(ngModel)]="searchDocumentModel"
+                    (click)="$event.stopPropagation(); $event.preventDefault()"
+                    (input)="searchDocumentList($event.target.value)"
+                  />
+                </div>
+                <div
+                  class="col-md-2"
+                  (click)="$event.stopPropagation(); $event.preventDefault()"
+                >
+                  <img
+                    [ngClass]="{
+                      'expand-img': expandDocumentPopUp
+                    }"
+                    (click)="expandDocumentPopUp = !expandDocumentPopUp"
+                    alt="Shiptech"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII="
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row document-type-container-header">
+                Document Name
+              </div>
+              <mat-radio-group
+                class="document-type-container"
+                [(ngModel)]="document"
+                name="selected-document-type"
+                (change)="addFilesList($event); searchDocumentModel = null"
+              >
+                <mat-radio-button
+                  class="document-type-container-radio-button"
+                  *ngFor="let document of documentListForSearch"
+                  [value]="document"
+                >
+                  {{ document.name }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </mat-menu>
+          <ng-container *ngFor="let file of filesList">
+            <div *ngIf="file.isIncludedInMail" class="file-list">
+              <span class="attachment-icon"></span>
+              <span (click)="downloadDocument(file)" class="cust-input-field">{{
+                file.name
+              }}</span>
+              <div
+                [style.visibility]="readonly ? 'hidden' : 'visible'"
+                class="close-icon"
+                (click)="removeAttachment(file)"
+              ></div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="email-draft">
+          <ckeditor
+            [disabled]="readonly"
+            [editor]="Editor"
+            [(ngModel)]="content"
+          ></ckeditor>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
 </div>
 <ngx-spinner
   bdColor="rgba(51,51,51,0.8)"
   size="medium"
   color="#fff"
-  type="ball-spin-clockwise-fade">
+  type="ball-spin-clockwise-fade"
+>
 </ngx-spinner>

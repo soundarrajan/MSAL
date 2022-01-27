@@ -14,6 +14,11 @@ export class AddRequest{
 
   constructor(public payload: any) {}
 }
+export class DelinkRequest{
+  static readonly type = '[DelinkRequest] Set';
+
+  constructor(public payload: any) {}
+}
 export class SetRequestList {
   static readonly type = '[Request List] Set';
 

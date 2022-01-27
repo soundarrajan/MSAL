@@ -211,7 +211,7 @@
           <input matInput disabled style="color:white;" [value]="params.value">
         </mat-form-field> -->
       </div>
-      <div class="comments">
+      <div class="sod-comments">
         <div>Comments</div>
         <div class="value">{{getComments(params.colDef?.field)}}</div>
         <!-- <mat-form-field appearance="fill">
@@ -252,7 +252,7 @@
             (click)="$event.stopPropagation();" placeholder="Please enter a numeric value">
         </mat-form-field>
       </div>
-      <div class="comments">
+      <div class="sod-comments">
         <div>Comments</div>
         <mat-form-field appearance="fill">
           <textarea matInput #cmnt [value]="getComments(params.colDef?.field)" (keyup)="onEditCell(inpt.value,cmnt.value)"
@@ -301,7 +301,7 @@
           </mat-checkbox>
         </div>
       </div>
-      <div class="comments">
+      <div class="sod-comments">
         <div>Comments</div>
         <div class="value">{{getComments(params.colDef?.field)}}</div>
         <!-- <mat-form-field appearance="fill">
@@ -350,7 +350,7 @@
           </mat-checkbox>
         </div>
       </div>
-      <div class="comments">
+      <div class="sod-comments">
         <div>Comments</div>
         <mat-form-field appearance="fill">
           <textarea matInput #cmnt [value]="getComments(params.colDef?.field)" (keyup)="onEditCheckboxComment(isChecked,cmnt.value,$event)"
