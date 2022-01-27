@@ -134,12 +134,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   delinkRequest(item) {
-
-
     var canDelinkStemmed = true;
     item.requestLocations.forEach(location => {
       location.requestProducts.forEach(product => {
-        if(!product.contractId && product.status.toLowerCase().includes("stemmed")) {
+        if(!product.isContract && product.status.toLowerCase().includes("stemmed")) {
           canDelinkStemmed = false;
         }
       });  
