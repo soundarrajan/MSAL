@@ -126,7 +126,7 @@
                 <div class="custom-label" matTooltip="Future Request">Future Request</div>
               </div>
             </ng-template>
-            <section *ngIf="tab3" id="smart-operator-grid" style="height: 92%;width: 100%;">
+            <section *ngIf="tab3" id="smart-operator-grid">
               <div class="smart-operatorr-content" style="position: relative; width: 100%; height: 100%">
                 <shiptech-future-request-grid [columnDefs]="columnDefs" *ngIf="futureRequest.isActive">
                 </shiptech-future-request-grid>

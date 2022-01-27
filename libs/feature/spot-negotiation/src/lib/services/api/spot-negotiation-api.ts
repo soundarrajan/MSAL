@@ -1,12 +1,30 @@
 import { Injectable, InjectionToken } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
 
 import { catchError, map } from 'rxjs/operators';
 import { ISpotNegotiationApiService } from './spot-negotiation.api.service.interface';
+import {
+  IDocumentsCreateUploadRequest,
+  IDocumentsCreateUploadResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import {
+  IDocumentsDeleteRequest,
+  IDocumentsDeleteResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
+import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
+import {
+  IDocumentsUpdateIsVerifiedRequest,
+  IDocumentsUpdateIsVerifiedResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
+import { IDocumentsListResponse } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
+import {
+  IDocumentsUpdateNotesRequest,
+  IDocumentsUpdateNotesResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
 
 export const SpotNegotiationApiPaths = {
   // tenantConfiguration: `api/admin/tenantConfiguration/get`,
@@ -37,13 +55,21 @@ export const SpotNegotiationApiPaths = {
   getEmailLogsPreview: `api/masters/emaillogs/get`,
   getRequestList: `api/procurement/rfq/selectRequest`,
   getBestContract: `api/procurement/request/bestContract`,
+  delinkRequest: `Groups/deleteRequest`,
   getExchangeRate: `price/getExchangeRate`,
   applyExchangeRate: `price/applyExchangeRate`,
   getLocationCosts: `price/locationCosts`,
   saveOfferAdditionalCosts: `price/saveOfferAdditionalCosts`,
   getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`,
   getUomConversionFactor: `api/masters/uoms/convertQuantity`,
-  getRangeTotalAdditionalCosts: `api/procurement/order/getRangeTotalAdditionalCosts`
+  getRangeTotalAdditionalCosts: `api/procurement/order/getRangeTotalAdditionalCosts`,
+  getDocumentTypeList: `/api/masters/documenttype/list`,
+  uploadDocument: `api/masters/documentupload/create`,
+  getDocuments: `api/masters/documentupload/list`,
+  deleteDocument: `api/masters/documentupload/delete`,
+  downloadDocument: `api/masters/documentupload/download`,
+  updateIsVerifiedDocument: `api/masters/documentupload/update`,
+  updateNotes: `api/masters/documentupload/notes`
 };
 
 @Injectable({
@@ -241,6 +267,29 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .put<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.applyExchangeRate}`,
         payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  delinkRequest(payload: any): Observable<any> {
+    const options = {
+      headers: new HttpHeaders(),
+      body: {...payload},
+    };
+    return this.http
+      .delete<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.delinkRequest}`,
+        options
       )
       .pipe(
         map((body: any) => body),
@@ -813,6 +862,95 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
             body.error.ErrorMessage
               ? body.error.ErrorMessage
               : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  getDocumentTypeList(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.getDocumentTypeList}`,
+        { Payload: request }
+      )
+      .pipe(
+        map((body: any) => body.payload),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  uploadFile(
+    request: IDocumentsCreateUploadRequest
+  ): Observable<IDocumentsCreateUploadResponse> {
+    return this.http.post<IDocumentsCreateUploadResponse>(
+      `${this._masterApiUrl}/${SpotNegotiationApiPaths.uploadDocument}`,
+      request
+    );
+  }
+
+  @ObservableException()
+  deleteDocument(
+    request: IDocumentsDeleteRequest
+  ): Observable<IDocumentsDeleteResponse> {
+    return this.http.post<IDocumentsDeleteResponse>(
+      `${this._masterApiUrl}/${SpotNegotiationApiPaths.deleteDocument}`,
+      { payload: { ...request } }
+    );
+  }
+
+  @ObservableException()
+  updateIsVerifiedDocument(
+    request: IDocumentsUpdateIsVerifiedRequest
+  ): Observable<IDocumentsUpdateIsVerifiedResponse> {
+    return this.http.post<IDocumentsListResponse>(
+      `${this._masterApiUrl}/${SpotNegotiationApiPaths.updateIsVerifiedDocument}`,
+      { payload: { ...request } }
+    );
+  }
+
+  @ObservableException()
+  updateNotes(
+    request: IDocumentsUpdateNotesRequest
+  ): Observable<IDocumentsUpdateNotesResponse> {
+    return this.http.post<IDocumentsUpdateNotesResponse>(
+      `${this._masterApiUrl}/${SpotNegotiationApiPaths.updateNotes}`,
+      { payload: { ...request } }
+    );
+  }
+
+  @ObservableException()
+  downloadDocument(request: IDocumentsDownloadRequest): Observable<Blob> {
+    return this.http.post(
+      `${this._masterApiUrl}/${SpotNegotiationApiPaths.downloadDocument}`,
+      request,
+      {
+        responseType: 'blob'
+      }
+    );
+  }
+
+  @ObservableException()
+  getDocuments(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.getDocuments}`,
+        { Payload: request }
+      )
+      .pipe(
+        map((body: any) => body.payload),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
           )
         )
       );
