@@ -332,6 +332,8 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
           </div>
           <input
             class="inputField"
+            id="{{params.data.locationId}}/{{params.index}}/{{params.rowIndex}}"
+            (keyup.enter)="ongetfocus($event, params)"
             (change)="onPriceChange($event, params)"
             autofocus
             #inputSection
@@ -1148,6 +1150,50 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     e.target.parentElement.classList.add('active');
   }
 
+  returnrowindex(params){
+    const locations = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    const locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    let StartLocation = locations.findIndex(row => row.locationId == params.data.locationId);
+    let startrow = params.rowIndex;
+    let paramsindex = params.index;
+    for (let st = StartLocation; st < locations.length; st++) {
+      
+            let currentlocationprodlen = locations[st].requestProducts.length -1;
+            let currentlocationsrows = locationsRows.filter(loc => loc.locationId == locations[st].locationId);
+            let Endrow = currentlocationsrows.length;
+            if(currentlocationsrows.length > 0){
+              for (let index = startrow; index < Endrow; index++) {
+                let nextindex = index + 1;
+                if(currentlocationsrows[nextindex] && currentlocationsrows[nextindex].requestOffers){
+                  return currentlocationsrows[nextindex].locationId + '/' + paramsindex + '/' + nextindex;
+                }
+                else{
+                  if(paramsindex < currentlocationprodlen){
+                      index = -2;
+                      paramsindex = paramsindex + 1;
+                  }
+                  else{
+                    startrow = -1;
+                    paramsindex = 0;
+                  }
+                }
+              }
+            }
+    }
+}
+
+  ongetfocus(event, params){
+    let idValue = this.returnrowindex(params);
+   let element = document.getElementById(idValue);
+   if(element){
+     element.focus();
+   } 
+ }
+
   onPriceChange(e, params) {
     // const futureValue = e.target.value;
 
@@ -1162,7 +1208,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       colDef: params.colDef,
       data: params.data,
       newValue: e.target.value,
-      event: e
+      event: e,
+      elementidValue: this.returnrowindex(params)
     });
   }
 
