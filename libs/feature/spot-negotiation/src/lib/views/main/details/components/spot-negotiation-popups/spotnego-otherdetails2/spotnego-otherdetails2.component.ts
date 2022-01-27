@@ -494,13 +494,14 @@ export class SpotnegoOtherdetails2Component implements OnInit {
         if (element1.requestOffers != undefined) {
           element1.requestOffers.forEach(reqOff => {
             if (reqOff.requestProductId == this.selectedProductList.column.userProvidedColDef.product.id && element1.id == this.selectedProductList.data.id && ele.locationId == element1.locationId) {
-              let etaDate;
+              let etaDate,reqProd;
               if (reqOff.supplyDeliveryDate == null) {
                 etaDate =ele.recentEta??ele.eta;
               } else {
                 etaDate = reqOff.supplyDeliveryDate;
               }
-              otherDetailsPayload = this.ConstructOtherDetailsPayload(reqOff, etaDate);
+              reqProd= ele.requestProducts.filter(item => item.id === reqOff.requestProductId);
+              otherDetailsPayload = this.ConstructOtherDetailsPayload(reqOff, etaDate,reqProd);
               this.otherDetailsItems.push(otherDetailsPayload[0]);
             }
           });
@@ -532,7 +533,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     }
   }
   //Construct UI Value's to bind the popup grid
-  ConstructOtherDetailsPayload(requestOffers, etaDate) {
+  ConstructOtherDetailsPayload(requestOffers, etaDate,reqProd) {
     let QtyUomId;
     if (requestOffers.supplyQuantityUomId == null) {
       QtyUomId = requestOffers.priceQuantityUomId??this.tenantConfiguration.uomId;
@@ -546,10 +547,11 @@ export class SpotnegoOtherdetails2Component implements OnInit {
         RequestOfferId: requestOffers.id,
         SupplyQuantity: this.tenantFormat.quantity(requestOffers.supplyQuantity) ? this.tenantFormat.quantity(requestOffers.supplyQuantity) : '',
         SupplyDeliveryDate: etaDate ? moment(etaDate).format(this.dateFormat_rel_SupplyDate) : '',
-        product: {
+        product:requestOffers.quotedProductId==reqProd[0].productId?'': {
           id: requestOffers.quotedProductId,
-          name: this.productList.find(x => x.id == requestOffers.quotedProductId).name,
+          name:this.productList.find(x => x.id == requestOffers.quotedProductId).name,
         },
+        QuotedProductId:requestOffers.quotedProductId,
         uom: {
           id: QtyUomId,
           name: this.uomList.find(x => x.id == QtyUomId).name,  //Default Uom is Id:5
@@ -629,10 +631,10 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   }
   /// save request Change
   saveOtherDetails() {
-    if (this.otherDetailsItems[this.productIndex].product=='' || this.otherDetailsItems[this.productIndex].product == undefined || this.otherDetailsItems[this.productIndex].SupplyQuantity == undefined || this.otherDetailsItems[this.productIndex].SupplyQuantity=='' || this.otherDetailsItems[this.productIndex].SupplyDeliveryDate=='') {
-      this.toastr.warning('Fill the required fields quotedProduct ,supplyQuantity & supplyDeliveryDate');
-      return;
-    }
+    // if (this.otherDetailsItems[this.productIndex].product=='' || this.otherDetailsItems[this.productIndex].product == undefined || this.otherDetailsItems[this.productIndex].SupplyQuantity == undefined || this.otherDetailsItems[this.productIndex].SupplyQuantity=='' || this.otherDetailsItems[this.productIndex].SupplyDeliveryDate=='') {
+    //   this.toastr.warning('Fill the required fields quotedProduct ,supplyQuantity & supplyDeliveryDate');
+    //   return;
+    // }
     let isAllow = false;
     /// If the user is trying to capture product same as that in the request under same location
     this.locations.forEach(ele => {
@@ -684,7 +686,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
             reqOff.supplyQuantity = requestChangeData.SupplyQuantity;
             reqOff.supplyDeliveryDate = requestChangeData.SupplyDeliveryDate;
             reqOff.supplyQuantityUomId = requestChangeData.SupplyQuantityUomId;
-            reqOff.quotedProductId = requestChangeData.QuotedProductId;
+            reqOff.quotedProductId = requestChangeData.QuotedProductId==undefined?this.otherDetailsItems[this.productIndex].QuotedProductId:requestChangeData.QuotedProductId;
             reqOff.isSupplyQuantityEdited=true;
             reqOff.priceQuantityUomId= requestChangeData.SupplyQuantityUomId;
           }
