@@ -1,11 +1,7 @@
-﻿commit 81af49e01e8399cf1bbccda5799cea77238acd6d
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Thu Jan 27 07:29:12 2022 +0000
+﻿commit 9904be8c17de06134b18ac7a72bede15c6b5cdd9
+Author: Avram Ioana <Ioana.Avram@24software.ro>
+Date:   Thu Jan 27 10:49:06 2022 +0200
 
-    Merged PR 15646: 38070 - SO comments popup UI fix
-    
-    38070 - SO comments popup UI fix
-    
-    Related work items: #38070
+    Worked on 38061
 
 branch: master

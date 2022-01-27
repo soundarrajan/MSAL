@@ -2765,19 +2765,30 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.showMoreButtons = !this.showMoreButtons;
   }
 
+  /**
+   * truncate to decimal place.
+   */
+  truncateToDecimals(num, dec) {
+    const calcDec = Math.pow(10, dec);
+    return Math.trunc(num * calcDec) / calcDec;
+  }
+
   amountFormatValue(value) {
-    if (typeof value == 'undefined' || value == null) {
+    if (typeof value == 'undefined' || !value) {
       return null;
     }
-    if (value.toString().includes('e')) {
-      value = value.toString().split('e')[0];
-    }
-    const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let amountPrecision = this.tenantService.amountPrecision;
+
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
     if (isNaN(number)) {
       return null;
     }
     if (plainNumber) {
+      if (amountPrecision) {
+        plainNumber = this.truncateToDecimals(plainNumber, amountPrecision);
+      }
+      console.log(plainNumber);
       if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {
