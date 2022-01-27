@@ -523,7 +523,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           minWidth: 125,
           cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
           cellRendererFramework: AGGridCellRendererV2Component,
-          valueSetter: ({ colDef, data, newValue, event }) => {
+          valueSetter: ({ colDef, data, newValue, event,elementidValue }) => {
             let updatedRow = { ...data };
             let _this = this;
 
@@ -542,7 +542,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 'Physical supplier is mandatory for quoting the price.'
               );
               event.target.value = '';
-              event.target.focus();
+              setTimeout(() => {
+                event.target.focus();
+              }, 300);
               return false;
             }
 
@@ -555,6 +557,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             );
             // Update the store
             this.store.dispatch(new EditLocationRow(updatedRow));
+
+            setTimeout(() => {
+              let element = document.getElementById(elementidValue);
+              if(element){
+                element.focus();
+              } 
+            }, 300);
             // Save to the cloud
             this.saveRowToCloud(updatedRow, colDef['product']);
             // setTimeout(() => {
