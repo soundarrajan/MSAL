@@ -20,6 +20,7 @@ import { Store } from '@ngxs/store';
 import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/lib/core/models/spnego-addcounterparty.model';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 import {
   AddCounterpartyToLocations,
   SetLocations,
@@ -87,6 +88,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   constructor(
     private store: Store,
     private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
     private renderer: Renderer2,
@@ -170,9 +172,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     
         
         /* commented out until API is fixed */
+        this.spinner.show();
         const response = this._spotNegotiationService.delinkRequest(payload);  
         response.subscribe((res: any) => {
-          if(res) {
+          this.spinner.hide();
+          if(!isNaN(res)) {            
             this.toastr.success(`Request ${item.id} was succesfully delinked`);
             /* select first request if selected reqeust is delinked */
             if(this.requestOptions[this.selReqIndex].id == item.id ) {
@@ -344,7 +348,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         index < priceDetailsArray?.length &&
         row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
-        row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
         row.requestOffers.forEach(element1 => {
           if (
             element1.requestProductId != undefined &&
@@ -390,7 +394,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
         // We found something
         if (detailsForCurrentRow.length > 0) {
-          row.requestOffers = detailsForCurrentRow[0].requestOffers;
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
           row.requestOffers.forEach(element1 => {
             if (
               element1.requestProductId != undefined &&

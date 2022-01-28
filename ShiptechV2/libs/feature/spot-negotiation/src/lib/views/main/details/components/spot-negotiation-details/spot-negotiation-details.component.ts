@@ -1081,7 +1081,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         index < priceDetailsArray.length &&
         row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
-        row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
         row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId =
           priceDetailsArray[index].physicalSupplierCounterpartyId;
@@ -1104,7 +1104,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       // We found something
       if (detailsForCurrentRow.length > 0) {
-        row.requestOffers = detailsForCurrentRow[0].requestOffers;
+        row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
         row.isSelected = detailsForCurrentRow[0].isSelected;
         row.physicalSupplierCounterpartyId =
           detailsForCurrentRow[0].physicalSupplierCounterpartyId;
