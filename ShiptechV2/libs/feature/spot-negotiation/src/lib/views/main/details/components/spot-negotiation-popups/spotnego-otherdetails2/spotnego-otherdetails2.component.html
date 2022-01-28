@@ -265,7 +265,13 @@
                           </div>
                         </div>
   
-                        <div class="custom-form-field create-new-formula-form-field">
+                        <div   class="custom-form-field create-new-formula-form-field"
+                                [ngClass]="{
+                                  darkTheme: switchTheme,
+                                  lightTheme: !switchTheme
+                                }"
+                              >
+                        <div class="split-field">
                           <mat-form-field
                             class="without-search long-label-field input-field-container"
                             style="width: 64%;border: none;"
@@ -301,6 +307,7 @@
                             </mat-select>
                           </mat-form-field>
                         </div>
+                      </div>
                         <div
                         class="custom-form-field"
                         [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"

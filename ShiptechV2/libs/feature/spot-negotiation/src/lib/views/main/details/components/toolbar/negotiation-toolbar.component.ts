@@ -79,8 +79,6 @@ export class NegotiationToolbarComponent
       } else {
         console.log(res);
         // Populate Store
-        res.tenantConfiguration.reportUrl =
-          'https://reports.shiptech.com/Home/EmbedReportWorkspace?groupid=a8810a15-07b0-4693-9087-ddc50ebac9e5&id=Vessel Schedule Report';
 
         this.store.dispatch(
           new SetTenantConfigurations(res.tenantConfiguration)
@@ -135,6 +133,7 @@ export class NegotiationToolbarComponent
         routerLinkActiveOptions: { exact: true }
       }
     ];
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {

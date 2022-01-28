@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title>Shiptech</title>
     <base href="/" />
-
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="data:;base64,iVBORw0KGgo=" />
 
@@ -32,4 +32,12 @@
     </shiptech-root>
     <app-redirect></app-redirect>
   </body>
+    <script>
+      /* detect tab change to prevent sending data to AppInisghts when tab becames inactive */
+      document.addEventListener("visibilitychange", event => {
+        if (document.visibilityState !== "visible") {
+          window.tabBecameInactive = true;
+        }
+      })
+    </script>
 </html>

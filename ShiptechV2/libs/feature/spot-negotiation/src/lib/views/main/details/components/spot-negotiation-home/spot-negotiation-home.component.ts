@@ -35,6 +35,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   navigationItems: any[];
   navBar: any;
   requestOptions: any;
+  requestOptionsToDuplicatePrice: any;
   isOpen: boolean = false;
 
   @ViewChild(AgGridDatetimePickerToggleComponent)
@@ -71,6 +72,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.requestOptions = spotNegotiation.requests;
+      if(this.requestOptionsToDuplicatePrice && this.currentRequestInfo){
+        this.requestOptionsToDuplicatePrice = spotNegotiation.requests.filter(r => r.id != this.currentRequestInfo.id);}
       this.tenantConfiguration = spotNegotiation.tenantConfigurations;
       this.setTabItems();
     });
@@ -235,7 +238,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           if (result && result instanceof Array) {
             var sellers = [];
             result.forEach(element => {
-              if (element.selected === true) {
+              if (element.selected === true || element.sellerSelection) {
                 const selectItems = this.selectedSellerList.filter(
                   item => item.RequestId === element.id
                 );
@@ -324,8 +327,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
         index < priceDetailsArray.length &&
         row.id === priceDetailsArray[index].requestLocationSellerId
       ) {
-        row.requestOffers = priceDetailsArray[index].requestOffers;
-        row.isSelected = priceDetailsArray[index].isSelected;
+        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
+        //row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId =
           priceDetailsArray[index].physicalSupplierCounterpartyId;
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
@@ -333,6 +336,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           ).displayName;
         }
+        row.totalOffer = priceDetailsArray[index].totalOffer;
+        row.totalCost = priceDetailsArray[index].totalCost;
         this.UpdateProductsSelection(requestLocations, row);
         //row.totalOffer = priceDetailsArray[index].totalOffer;
         return row;
@@ -345,8 +350,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
       // We found something
       if (detailsForCurrentRow.length > 0) {
-        row.requestOffers = detailsForCurrentRow[0].requestOffers;
-        row.isSelected = detailsForCurrentRow[0].isSelected;
+        row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
+        //row.isSelected = detailsForCurrentRow[0].isSelected;
         row.physicalSupplierCounterpartyId =
           detailsForCurrentRow[0].physicalSupplierCounterpartyId;
         if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
@@ -354,6 +359,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
             x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
           ).displayName;
         }
+        row.totalOffer = detailsForCurrentRow[0].totalOffer;
+        row.totalCost = detailsForCurrentRow[0].totalCost;
         this.UpdateProductsSelection(requestLocations, row);
       }
       return row;
@@ -464,6 +471,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   displaySuccessMsg() {
+    this.selectedSellerList = [];
+    var Selectedfinaldata = this.FilterselectedRowForRFQ();
+    if (Selectedfinaldata.length == 0) {
+      this.toaster.error('Atleast 1 product should be selected');
+      return;
+    }
     this.toaster.show(
       '<div class="message cust-msg">Successfully Duplicated to:</div><div class="requests"><span class="circle internal"></span><span class="label">Req 12322 - Afif</span><span class="circle external"></span><span class="label">Req 12323 - Al Mashrab</span></div>',
       '',
