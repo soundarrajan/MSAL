@@ -110,16 +110,13 @@ $red: red;
       }
     }
     .count-circle {
-      background-color: #364150;
-      min-width: 20px;
-      height: 20px;
-      border-radius: 9999px;
-      color: #fff;
-      line-height: 20px;
-      text-align: center;
-      width: auto;
-      margin-right: 5px;
-      padding: 0 5px;
+      width: 22px;
+      height: 22px;
+      border-radius: 22px;
+      font-size: 11px;
+      padding: 5px 2px !important;
+      display: inline-block;
+      font-weight: 500;
     }
     .pin {
       top: 6px !important;
@@ -231,5 +228,30 @@ $red: red;
 }
 
 .preference-mat-field .mat-form-field-infix {
-    border-top-width: 2px;
+  border-top-width: 2px;
+}
+
+.count-circle span {
+  margin-left: -1px;
+  margin-top: -3px;
+  display: block;
+}
+
+.mat-dialog-actions {
+  padding-bottom: 25px !important;
+}
+
+.blue-button {
+  background-color: #1cabe0 !important;
+  border: none;
+  border-radius: 3px !important;
+  color: #fff !important;
+  padding: 0 8px !important;
+  text-align: center;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  white-space: nowrap !important;
+  font-weight: 400;
+  font-size: 14px;
+  margin: 0 5px !important;
 }
