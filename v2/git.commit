@@ -1,7 +1,11 @@
-﻿commit 9904be8c17de06134b18ac7a72bede15c6b5cdd9
-Author: Avram Ioana <Ioana.Avram@24software.ro>
-Date:   Thu Jan 27 10:49:06 2022 +0200
+﻿commit 18c6f56c02d4027defcdfcaefa7cb865a042fbc2
+Author: Ioana Avram <Ioana.Avram@24software.ro>
+Date:   Fri Jan 28 08:19:21 2022 +0000
 
-    Worked on 38061
+    Merged PR 15664: Fixed footer for the control tower list screen and Filter count UI
+    
+    Fixed footer for the control tower list screen and Filter count UI
+    
+    Related work items: #37408, #37411
 
 branch: master

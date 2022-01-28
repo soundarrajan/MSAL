@@ -1,5 +1,9 @@
 <div class="export-excel">
-  <div class="excel-icon"></div>
+  <div
+    class="excel-icon"
+    (click)="exportTo(exportType.exportToExcel)"
+    *ngIf="hasExportToExcel"
+  ></div>
   <div
     class="export-icon"
     (click)="exportTo(exportType.exportToExcel)"
