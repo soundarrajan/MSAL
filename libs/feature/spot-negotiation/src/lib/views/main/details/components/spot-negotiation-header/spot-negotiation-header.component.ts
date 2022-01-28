@@ -155,7 +155,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     } 
     const dialogRef = this.dialog.open(ConfirmdialogComponent, {
       width: '400px',
-      height: '180px',
       maxWidth: '500px',
       panelClass: 'confirm-dialog',
       data: {
