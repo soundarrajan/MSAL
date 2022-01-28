@@ -1276,17 +1276,45 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     newData.requestOffers.map(el => {
       return (el.currencyId = toCurrency);
     });
-    if (this.baseUomId == this.paramsDataClone.currency) {
-      this.store.dispatch(new EditLocationRow(newData));
-      this.params.node.setData(newData);
-      return;
-    }
 
     let payload = {
       fromCurrencyId: fromCurrency,
       toCurrencyId: toCurrency,
       toCurrencyCode: this.getCurrencyCode(toCurrency)
     };
+
+    if (this.baseUomId == this.paramsDataClone.currency) {
+      let requestOffers = this.params.data.requestOffers.map(e => {
+        return {
+          id: e.id,
+          totalPrice: e.totalPrice,
+          amount: e.amount,
+          targetDifference: e.targetDifference,
+          currencyId: toCurrency
+        };
+      });
+      let payload = {
+        Offers: {
+          id: this.params.data.requestOffers[0].offerId,
+          totalOffer: this.params.data.totalOffer,
+          requestOffers: requestOffers
+        }
+      };
+
+      const applyExchangeRate = this._spotNegotiationService.applyExchangeRate(
+        payload
+      );
+      let futureRowData = _.cloneDeep(newData);
+      applyExchangeRate.subscribe((res: any) => {
+        if (res.status) {
+          this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
+          this.store.dispatch(new EditLocationRow(futureRowData));
+        } else {
+          this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
+        }
+      });
+      return;
+    }
 
     const response = this._spotNegotiationService.getExchangeRate(payload);
     response.subscribe((res: any) => {
