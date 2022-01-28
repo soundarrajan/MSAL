@@ -833,6 +833,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           this.changeDetectorRef.detectChanges();
           this.toastr.success('Offer Additional Cost saved successfully.');
         } else this.toastr.error('Please try again later.');
+        
+      this.closeDialog();
       });
   }
 
