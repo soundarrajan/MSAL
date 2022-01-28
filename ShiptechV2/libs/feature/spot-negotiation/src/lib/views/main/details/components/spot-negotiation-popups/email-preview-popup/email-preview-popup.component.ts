@@ -54,6 +54,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   document: any;
   documentListForSearch: any = [];
   selectedDocument: any;
+  documentPopUp: any;
   constructor(
     public dialogRef: MatDialogRef<EmailPreviewPopupComponent>,
     private store: Store,
@@ -447,7 +448,11 @@ export class EmailPreviewPopupComponent implements OnInit {
         index < priceDetailsArray.length &&
         row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
+        row.requestOffers = priceDetailsArray[
+          index
+        ].requestOffers?.sort((a, b) =>
+          a.requestProductId > b.requestProductId ? 1 : -1
+        );
         //row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId =
           priceDetailsArray[index].physicalSupplierCounterpartyId;
@@ -470,7 +475,9 @@ export class EmailPreviewPopupComponent implements OnInit {
 
       // We found something
       if (detailsForCurrentRow.length > 0) {
-        row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
+        row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
+          (a, b) => (a.requestProductId > b.requestProductId ? 1 : -1)
+        );
         //row.isSelected = detailsForCurrentRow[0].isSelected;
         row.physicalSupplierCounterpartyId =
           detailsForCurrentRow[0].physicalSupplierCounterpartyId;
@@ -638,5 +645,12 @@ export class EmailPreviewPopupComponent implements OnInit {
         this.appErrorHandler.handleError(ModuleError.DocumentDownloadError);
       }
     );
+  }
+
+  resetDocumentData() {
+    this.searchDocumentModel = null;
+    this.documentPopUp = null;
+    this.documentListForSearch = _.cloneDeep(this.documentsList);
+    this.expandDocumentPopUp = false;
   }
 }
