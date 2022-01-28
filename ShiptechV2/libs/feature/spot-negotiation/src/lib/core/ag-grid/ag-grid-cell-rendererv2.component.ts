@@ -36,6 +36,7 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -670,7 +671,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   currentRequestSmallInfo: any;
   searchValue: string;
   paramsDataClone: any;
-
+  generalTenantSettings: any;
+  baseUomId: any;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -681,8 +683,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     private _spotNegotiationService: SpotNegotiationService,
     public format: TenantFormattingService,
     private changeDetector: ChangeDetectorRef,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private tenantSettingsService: TenantSettingsService
+  ) {
+    this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
+    this.baseUomId = this.generalTenantSettings.tenantFormats.currency.id;
+    console.log(this.generalTenantSettings);
+  }
 
   ngOnInit() {
     let requestOffers = this.params.data.requestOffers;
@@ -1269,6 +1276,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     newData.requestOffers.map(el => {
       return (el.currencyId = toCurrency);
     });
+    if (this.baseUomId == this.paramsDataClone.currency) {
+      this.store.dispatch(new EditLocationRow(newData));
+      this.params.node.setData(newData);
+      return;
+    }
 
     let payload = {
       fromCurrencyId: fromCurrency,
