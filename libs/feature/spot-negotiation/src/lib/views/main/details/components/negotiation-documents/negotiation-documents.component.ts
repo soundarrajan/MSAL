@@ -51,6 +51,7 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
   entityId: string;
   isReadOnly: boolean = false;
   responseList: any;
+  documentTypePopUp: any;
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -168,8 +169,17 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
   radioDocumentTypeChange($event: MatRadioChange) {
     if ($event.value) {
       this.selectedDocumentType = $event.value;
+      this.documentType = null;
+      this.changeDetector.detectChanges();
       console.log(this.selectedDocumentType);
     }
+  }
+
+  resetDocumentData() {
+    this.searchDocumentTypeModel = null;
+    this.documentTypePopUp = null;
+    this.documentTypeListForSearch = _.cloneDeep(this.documentTypeList);
+    this.expandDocumentTypePopUp = false;
   }
 
   searchDocumentTypeList(value: string): void {
