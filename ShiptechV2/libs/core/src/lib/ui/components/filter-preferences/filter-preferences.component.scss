@@ -236,3 +236,22 @@ $red: red;
   margin-top: -3px;
   display: block;
 }
+
+.mat-dialog-actions {
+  padding-bottom: 25px !important;
+}
+
+.blue-button {
+  background-color: #1cabe0 !important;
+  border: none;
+  border-radius: 3px !important;
+  color: #fff !important;
+  padding: 0 8px !important;
+  text-align: center;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  white-space: nowrap !important;
+  font-weight: 400;
+  font-size: 14px;
+  margin: 0 5px !important;
+}
