@@ -104,6 +104,7 @@ export interface ITypedColDef<TData = any, TField = any>
   ) => Partial<CSSStyleDeclaration>;
   field?: keyof TData;
   dtoForExport?: string;
+  tooltip?: any;
   wrapText?: boolean;
   cellRendererSelector?: (
     params: ITypedCellRendererParams<TData, TField>

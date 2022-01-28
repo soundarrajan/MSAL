@@ -1,16 +1,34 @@
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   ChangeDetectionStrategy,
   Component,
   OnInit,
   ViewChild
 } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
 import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
-import { AGGridCellRendererComponent } from '../../../../../core/ag-grid/ag-grid-cell-renderer.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { Store } from '@ngxs/store';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import _ from 'lodash';
+import { MatRadioChange } from '@angular/material/radio';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { FileUpload } from 'primeng/fileupload';
+import {
+  IDocumentsCreateUploadDetailsDto,
+  IDocumentsCreateUploadDto
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
+import { ModuleError } from './error-handling/module-error';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { AGGridCellV2RendererComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-renderer-v2.component';
+import { AGGridCellActionsDocumentsComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-actions-documents.component';
+import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
 
 @Component({
   selector: 'app-negotiation-documents',
@@ -18,13 +36,256 @@ import { AGGridCellRendererComponent } from '../../../../../core/ag-grid/ag-grid
   styleUrls: ['./negotiation-documents.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NegotiationDocumentsComponent implements OnInit {
+export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
+  @ViewChild('uploadComponent', { static: false }) uploadedFiles: FileUpload;
+  public rowData_grid = [];
   public gridOptions_data: GridOptions;
-  myControl = new FormControl();
-  options: string[] = ['Additional Document', 'Contract Document'];
-  placeholder: string = '';
-  filteredOptions: Observable<string[]>;
-  constructor() {
+  documentTypeList: any[];
+  documentType: any = null;
+  expandDocumentTypePopUp: boolean = false;
+  searchDocumentTypeModel: any = null;
+  selectedDocumentType: any = null;
+  documentTypeListForSearch: any[];
+  file: File;
+  entityName: string = 'Negotiation';
+  entityId: string;
+  isReadOnly: boolean = false;
+  responseList: any;
+  constructor(
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private changeDetector: ChangeDetectorRef,
+    private store: Store,
+    private spinner: NgxSpinnerService,
+    private spotNegotiationService: SpotNegotiationService,
+    private router: Router,
+    private toastr: ToastrService,
+    private appErrorHandler: AppErrorHandler,
+    private format: TenantFormattingService
+  ) {
+    this.route.params.pipe().subscribe(params => {
+      this.entityId = params.spotNegotiationId;
+    });
+    this.setupAgGrid();
+    this.getDocumentTypeList();
+  }
+
+  getDocumentTypeList() {
+    const payload = {
+      Order: null,
+      PageFilters: {
+        Filters: []
+      },
+      SortList: {
+        SortList: []
+      },
+      Filters: [
+        {
+          ColumnName: 'ReferenceNo',
+          Value: this.entityId.toString()
+        },
+        {
+          ColumnName: 'TransactionTypeId',
+          Value: 2
+        }
+      ],
+      SearchText: null,
+      Pagination: {
+        Skip: 0,
+        Take: 9999
+      }
+    };
+    this.spotNegotiationService
+      .getDocumentTypeList(payload)
+      .subscribe((response: any) => {
+        if (typeof response === 'string') {
+          this.toastr.error(response);
+        } else {
+          console.log(response);
+          this.documentTypeListForSearch = _.cloneDeep(response);
+          this.documentTypeList = _.cloneDeep(response);
+        }
+      });
+  }
+
+  getDocumentsList() {
+    const payload = {
+      Order: null,
+      PageFilters: {
+        Filters: []
+      },
+      SortList: {
+        SortList: []
+      },
+      Filters: [
+        {
+          ColumnName: 'ReferenceNo',
+          Value: this.entityId.toString()
+        },
+        {
+          ColumnName: 'TransactionTypeId',
+          Value: 2
+        }
+      ],
+      SearchText: null,
+      Pagination: {
+        Skip: 0,
+        Take: 9999
+      }
+    };
+    this.spinner.show();
+    this.spotNegotiationService
+      .getDocuments(payload)
+      .subscribe((response: any) => {
+        if (typeof response === 'string') {
+          this.spinner.hide();
+          this.toastr.error(response);
+        } else {
+          this.spinner.hide();
+          console.log(response);
+          this.responseList = _.cloneDeep(response);
+          for (let i = 0; i < this.responseList.length; i++) {
+            this.responseList[i].uploadedOn = this.format.date(
+              this.responseList[i].uploadedOn
+            );
+            this.responseList[i].verifiedOn = this.format.date(
+              this.responseList[i].verifiedOn
+            );
+            this.responseList[i].status = this.responseList[i].isVerified
+              ? 'Verified'
+              : 'Unverified';
+          }
+          this.rowData_grid = _.cloneDeep(this.responseList);
+          this.changeDetector.detectChanges();
+        }
+      });
+  }
+
+  displayFn(documentType): string {
+    return documentType && documentType.name ? documentType.name : '';
+  }
+
+  radioDocumentTypeChange($event: MatRadioChange) {
+    if ($event.value) {
+      this.selectedDocumentType = $event.value;
+      console.log(this.selectedDocumentType);
+    }
+  }
+
+  searchDocumentTypeList(value: string): void {
+    let filterDocumentType = this.documentTypeList.filter(documentType =>
+      documentType.name.toLowerCase().includes(value.trim().toLowerCase())
+    );
+    console.log(filterDocumentType);
+    this.documentTypeListForSearch = [...filterDocumentType];
+  }
+
+  selectDocumentType(event: MatAutocompleteSelectedEvent) {
+    this.selectedDocumentType = event.option.value;
+    console.log(this.selectedDocumentType);
+  }
+
+  public filterDocumentTypeList() {
+    if (this.selectedDocumentType) {
+      const filterValue = this.selectedDocumentType.name
+        ? this.selectedDocumentType.name
+        : this.selectedDocumentType;
+      if (this.documentTypeList) {
+        const list = this.documentTypeList
+          .filter((item: any) =>
+            item.name.toLowerCase().includes(filterValue.trim().toLowerCase())
+          )
+          .splice(0, 10);
+        return list;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  clearUploadedFiles(): void {
+    this.uploadedFiles.clear();
+  }
+
+  ngAfterViewInit(): void {
+    this.uploadedFiles.uploadHandler.subscribe((event: FileUpload) => {
+      console.log(this.selectedDocumentType);
+      if (!this.selectedDocumentType) {
+        this.appErrorHandler.handleError(ModuleError.DocumentTypeNotSelected);
+        this.clearUploadedFiles();
+      } else {
+        this.file = event.files[0];
+        console.log(this.file);
+        const requestPayload: IDocumentsCreateUploadDto = {
+          Payload: <IDocumentsCreateUploadDetailsDto>{
+            name: event.files[0].name,
+            documentType: {
+              id: this.selectedDocumentType.id,
+              name: this.selectedDocumentType.name
+            },
+            size: event.files[0].size,
+            fileType: event.files[0].type,
+            referenceNo: parseFloat(this.entityId),
+            transactionType: {
+              id: 2,
+              name: 'Offer'
+            }
+          }
+        };
+        const formRequest: FormData = new FormData();
+        formRequest.append('file', event.files[0]);
+        formRequest.append('request', JSON.stringify(requestPayload));
+        this.spinner.show();
+
+        this.spotNegotiationService.uploadFile(formRequest).subscribe(
+          () => {
+            this.spinner.hide();
+            this.toastr.success('Document saved !');
+            this.getDocumentsList();
+          },
+          () => {
+            this.spinner.hide();
+            this.appErrorHandler.handleError(ModuleError.UploadDocumentFailed);
+          }
+        );
+
+        this.clearUploadedFiles();
+        this.selectedDocumentType = null;
+        this.file = null;
+      }
+    });
+  }
+
+  updateIsVerifiedDocument(): void {
+    let selectedNodes = this.gridOptions_data.api.getSelectedNodes();
+    let selectedData = selectedNodes.map(node => node.data);
+    let selectedRow = selectedData[0];
+    console.log(selectedData);
+    if (!selectedRow) {
+      this.toastr.error('Please select a row !');
+      return;
+    }
+    const request: IDocumentsUpdateIsVerifiedRequest = {
+      id: selectedRow.id,
+      isVerified: true
+    };
+    this.spotNegotiationService.updateIsVerifiedDocument(request).subscribe(
+      () => {},
+      () => {
+        this.appErrorHandler.handleError(
+          ModuleError.UpdateIsVerifiedDocumentFailed
+        );
+      },
+      () => {
+        this.toastr.success('Document verified !');
+        this.getDocumentsList();
+      }
+    );
+  }
+
+  setupAgGrid() {
     this.gridOptions_data = <GridOptions>{
       defaultColDef: {
         resizable: true,
@@ -40,7 +301,7 @@ export class NegotiationDocumentsComponent implements OnInit {
       onGridReady: params => {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
-        // this.gridOptions_data.api.sizeColumnsToFit();
+        this.gridOptions_data.api.sizeColumnsToFit();
         this.gridOptions_data.api.setRowData(this.rowData_grid);
       },
       onColumnResized: function(params) {
@@ -61,110 +322,19 @@ export class NegotiationDocumentsComponent implements OnInit {
     };
   }
 
-  ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
-  }
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter(option =>
-      option.toLowerCase().includes(filterValue)
-    );
-  }
-
-  files: any[] = [];
-  public doc_type;
-
-  public enableFileUpload: boolean = false;
-  public enableDrag: boolean = false;
-  enableUpload(e) {
-    this.doc_type = e.value;
-    this.enableFileUpload = true;
-    this.enableDrag = true;
-  }
-
-  /**
-   * on file drop handler
-   */
-  onFileDropped($event) {
-    this.prepareFilesList($event);
-  }
-
-  /**
-   * handle file from browsing
-   */
-  fileBrowseHandler(files) {
-    this.prepareFilesList(files);
-  }
-
-  /**
-   * Delete file from files list
-   * @param index (File index)
-   */
-  deleteFile(index: number) {
-    this.files.splice(index, 1);
-  }
-
-  /**
-   * Convert Files list to normal array list
-   * @param files (Files List)
-   */
-  prepareFilesList(files: Array<any>) {
-    for (const item of files) {
-      item.progress = 0;
-      this.files.push(item);
-      this.uploadDocument(this.files, this.doc_type);
-    }
-  }
-
-  uploadDocument(doc, doctype) {
-    var lastfile = doc[doc.length - 1];
-    var file = lastfile.name.split('.');
-    let filename = file[0];
-    let fileformat = file[1].toUpperCase();
-    this.gridOptions_data.api.applyTransaction({
-      add: [
-        {
-          doc_name: filename,
-          size: '199KB',
-          doc_type: 'Contract',
-          file_type: doctype,
-          entity: 'Contract',
-          ref_no: '123678',
-          uploaded_by: 'Alexander',
-          uploaded_on: '12/11/20',
-          status: 'Verified',
-          verified_by: 'Yusuf',
-          add_views: 'Document uploaded',
-          download: ''
-        }
-      ]
-    });
-  }
+  ngOnInit() {}
 
   private columnDef_grid = [
-    /* {
-      resizable: false,
-      width: 20,
-      suppressMenu: true,
-      headerClass: ['aggridtextalign-center'],
-      headerName: "",
-      cellClass: ['aggridtextalign-left'],
-      cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: { type: 'row-remove-icon' }
-    }, */
     {
       headerName: '',
       field: 'check',
       filter: true,
       suppressMenu: true,
-      width: 20,
+      width: 50,
       checkboxSelection: true,
       resizable: false,
       suppressMovable: true,
-      cellRendererFramework: AGGridCellActionsComponent,
+      cellRendererFramework: AGGridCellActionsDocumentsComponent,
       cellRendererParams: { type: 'row-remove-icon-with-checkbox' },
       headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
       cellClass:
@@ -173,53 +343,56 @@ export class NegotiationDocumentsComponent implements OnInit {
     {
       headerName: 'Document Name',
       headerTooltip: 'Document Name',
-      field: 'doc_name',
-      width: 150
+      field: 'name',
+      width: 200,
+      cellRendererFramework: AGGridCellActionsDocumentsComponent,
+      cellRendererParams: { type: 'document-name-download' }
     },
     { headerName: 'Size', headerTooltip: 'Size', field: 'size', width: 100 },
     {
       headerName: 'Document Type',
       headerTooltip: 'Document Type',
-      field: 'doc_type',
-      width: 100
+      field: 'documentType.name',
+      width: 200
     },
     {
       headerName: 'File Type',
       headerTooltip: 'File Type',
-      field: 'file_type',
-      width: 100
+      field: 'fileType',
+      width: 120
     },
     {
       headerName: 'Entity',
       headerTooltip: 'Entity',
-      field: 'entity',
+      field: 'transactionType.name',
       width: 100
     },
     {
       headerName: 'Reference No.',
       headerTooltip: 'Reference No.',
-      field: 'ref_no',
-      width: 125
+      field: 'referenceNo',
+      width: 170
     },
     {
       headerName: 'Uploaded by',
       headerTooltip: 'Uploaded By',
-      field: 'uploaded_by',
-      width: 150
+      field: 'uploadedBy.name',
+      width: 160
     },
     {
       headerName: 'Uploaded On',
       headerTooltip: 'Uploaded On',
-      field: 'uploaded_on',
-      width: 120
+      field: 'uploadedOn',
+      width: 160
     },
     {
       headerName: 'Status',
       headerTooltip: 'Status',
       field: 'status',
       width: 150,
-      cellRendererFramework: AGGridCellRendererComponent,
-      cellClass: ['aggridtextalign-center'],
+      headerClass: ['document-status'],
+      cellRendererFramework: AGGridCellV2RendererComponent,
+      cellClass: ['aggridtextalign-center', 'document-status'],
       cellRendererParams: function(params) {
         var classArray: string[] = [];
         classArray.push('aggridtextalign-center');
@@ -236,82 +409,35 @@ export class NegotiationDocumentsComponent implements OnInit {
     {
       headerName: 'Verified By',
       headerTooltip: 'Verified By',
-      field: 'verified_by',
-      width: 100
+      field: 'verifiedBy.name',
+      width: 160
     },
     {
       headerName: 'Verified On',
       headerTooltip: 'Verified On',
-      field: 'verified_on',
-      width: 120
+      field: 'verifiedOn',
+      width: 160
     },
     {
       headerName: 'Add Views/Notes',
       headerTooltip: 'Add Views/Notes',
-      field: 'add_views',
+      field: 'notes',
       width: 200,
-      cellRendererFramework: AGGridCellRendererV2Component,
+      cellRendererFramework: AGGridCellActionsDocumentsComponent,
       cellRendererParams: { type: 'dashed-border-notes' }
     },
     {
       headerName: 'Download',
-      suppressMenu: true,
-      sortable: false,
       width: 100,
+      suppressMenu: true,
       headerTooltip: 'Download',
       field: 'download',
       headerClass: ['pd-0'],
       cellClass: ['aggridtextalign-left'],
-      cellRendererFramework: AGGridCellActionsComponent,
-      cellRendererParams: { type: 'download' }
-    }
-  ];
-
-  private rowData_grid = [
-    {
-      doc_name: 'Sept contract',
-      size: '199KB',
-      doc_type: 'Contract',
-      file_type: 'PDF',
-      entity: 'Contract',
-      ref_no: '123678',
-      uploaded_by: 'Alexander',
-      uploaded_on: '12/11/20',
-      status: 'Verified',
-      verified_by: 'Yusuf',
-      verified_on: '12/11/20',
-      add_views: 'Document uploaded',
-      download: ''
-    },
-    {
-      doc_name: 'Demo contract',
-      size: '199KB',
-      doc_type: 'BDN',
-      file_type: 'PDF',
-      entity: 'Contract',
-      ref_no: '123678',
-      uploaded_by: 'Reshma',
-      uploaded_on: '12/11/20',
-      status: 'Verified',
-      verified_by: 'Yusuf',
-      verified_on: '12/11/20',
-      add_views: 'Document uploaded',
-      download: ''
-    },
-    {
-      doc_name: 'Demo contract',
-      size: '199KB',
-      doc_type: 'Invoice',
-      file_type: 'PDF',
-      entity: 'Contract',
-      ref_no: '123678',
-      uploaded_by: 'Reshma',
-      uploaded_on: '12/11/20',
-      status: 'Unverified',
-      verified_by: 'Yusuf',
-      verified_on: '12/11/20',
-      add_views: 'Document uploaded',
-      download: ''
+      cellRendererFramework: AGGridCellActionsDocumentsComponent,
+      cellRendererParams: { type: 'download' },
+      sortable: false,
+      filter: false
     }
   ];
 }

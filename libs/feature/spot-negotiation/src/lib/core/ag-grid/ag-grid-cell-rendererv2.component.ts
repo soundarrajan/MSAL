@@ -333,6 +333,8 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
           </div>
           <input
             class="inputField"
+            id="{{params.data.locationId}}/{{params.index}}/{{params.rowIndex}}"
+            (keyup.enter)="ongetfocus($event, params)"
             (change)="onPriceChange($event, params)"
             autofocus
             #inputSection
@@ -354,7 +356,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
             (click)="otherdetailspopup($event, params)"
             *ngIf="
               params.value > 0 &&
-              params.data.requestOffers[params.index].supplyQuantity == null
+              params.data.requestOffers[params.index]?.supplyQuantity == null
             "
           ></div>
           <div
@@ -365,7 +367,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
             #menuTriggerHover="matMenuTrigger"
             *ngIf="
               params.value > 0 &&
-              params.data.requestOffers[params.index].supplyQuantity != null
+              params.data.requestOffers[params.index]?.supplyQuantity != null
             "
           ></div>
         </div>
@@ -676,7 +678,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     public format: TenantFormattingService,
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit() {
     let requestOffers = this.params.data.requestOffers;
@@ -716,10 +718,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   setValuefun(params) {
     this.searchValue = '';
     let counterpartyList = this.store.selectSnapshot<any>((state: any) => {
-      if(params.physicalSupplierCounterpartyId != null || params.physicalSupplierCounterpartyName == null ){
+      if (params.physicalSupplierCounterpartyId != null || params.physicalSupplierCounterpartyName == null) {
         return state.spotNegotiation.counterpartyList.filter(x => x.supplier == true).slice(0, 7)
       }
-      else{
+      else {
         return state.spotNegotiation.counterpartyList.slice(0, 7);
       }
     });
@@ -865,7 +867,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let requestLocationId = this.params.data.requestLocationId;
     let findRequestLocationIndex = _.findIndex(
       this.currentRequestSmallInfo?.requestLocations,
-      function(object: any) {
+      function (object: any) {
         return object.id == requestLocationId;
       }
     );
@@ -914,10 +916,17 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       height: '562px',
       panelClass: 'additional-cost-popup'
     });
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   openEmailPreview(params) {
+    // if (this.currentRequestInfo.requestLocations.filter(loc => loc.id === params.data.requestLocationId
+    // ).map(prod =>
+    //   prod.requestProducts.map((e, i) => params.data['checkProd' + (i + 1)] ? e.id : undefined).filter(x => x)
+    // )[0].length == 0) {
+    //   this.toastr.error('Please select a product against the seller in order to preview email.');
+    //   return;
+    // }
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
       width: '80vw',
       height: '90vh',
@@ -925,7 +934,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       data: params.data
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   openSellerContactPopup(params) {
@@ -940,7 +949,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   openCounterpartyPopup(locationId) {
@@ -989,7 +998,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.sellerName) {
-          this.editedSeller = result.sellerName;
+        this.editedSeller = result.sellerName;
       }
     });
   }
@@ -1000,7 +1009,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       panelClass: ['additional-cost-popup', 'supplier-contact-popup']
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   requestChange(e, params) {
@@ -1015,7 +1024,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       var itemsToUpdate = [];
       let rowData = [];
 
-      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
+      params.api.forEachNodeAfterFilterAndSort(function (rowNode, index) {
         if (!rowNode.isSelected() === true) {
           return;
         }
@@ -1116,7 +1125,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       var itemsToUpdate = [];
       let rowData = [];
 
-      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
+      params.api.forEachNodeAfterFilterAndSort(function (rowNode, index) {
         if (!rowNode.isSelected() === true) {
           return;
         }
@@ -1141,11 +1150,55 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       panelClass: 'additional-cost-popup',
       data: params
     });
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
   onRightClickMenuOpened(e) {
     e.target.parentElement.classList.add('active');
   }
+
+  returnrowindex(params){
+    const locations = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    const locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    let StartLocation = locations.findIndex(row => row.locationId == params.data.locationId);
+    let startrow = params.rowIndex;
+    let paramsindex = params.index;
+    for (let st = StartLocation; st < locations.length; st++) {
+      
+            let currentlocationprodlen = locations[st].requestProducts.length -1;
+            let currentlocationsrows = locationsRows.filter(loc => loc.locationId == locations[st].locationId);
+            let Endrow = currentlocationsrows.length;
+            if(currentlocationsrows.length > 0){
+              for (let index = startrow; index < Endrow; index++) {
+                let nextindex = index + 1;
+                if(currentlocationsrows[nextindex] && currentlocationsrows[nextindex].requestOffers){
+                  return currentlocationsrows[nextindex].locationId + '/' + paramsindex + '/' + nextindex;
+                }
+                else{
+                  if(paramsindex < currentlocationprodlen){
+                      index = -2;
+                      paramsindex = paramsindex + 1;
+                  }
+                  else{
+                    startrow = -1;
+                    paramsindex = 0;
+                  }
+                }
+              }
+            }
+    }
+}
+
+  ongetfocus(event, params){
+    let idValue = this.returnrowindex(params);
+   let element = document.getElementById(idValue);
+   if(element){
+     element.focus();
+   } 
+ }
 
   onPriceChange(e, params) {
     // const futureValue = e.target.value;
@@ -1161,7 +1214,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       colDef: params.colDef,
       data: params.data,
       newValue: e.target.value,
-      event: e
+      event: e,
+      elementidValue: this.returnrowindex(params)
     });
   }
   onCurrencyChange(e, params) {
@@ -1223,7 +1277,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   updatePhysicalSupplier() {
     let valid = false;
-    if(!this.phySupplierId){
+    if (!this.phySupplierId) {
       this.toastr.warning('Invalid or same physical supplier selected, Please try selecting it again.');
       return;
     }
@@ -1234,7 +1288,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           item =>
             item.locationId === this.params.data.locationId &&
             item.sellerCounterpartyId ===
-              this.params.data.sellerCounterpartyId &&
+            this.params.data.sellerCounterpartyId &&
             item.physicalSupplierCounterpartyId === this.phySupplierId &&
             item.id !== this.params.data.id
         );

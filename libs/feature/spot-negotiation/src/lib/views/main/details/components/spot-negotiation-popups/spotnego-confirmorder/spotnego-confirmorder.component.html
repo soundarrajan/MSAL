@@ -33,7 +33,7 @@
 
          <!-- Expansion for each location in this current request -->
         <ng-template matExpansionPanelContent>
-          <div *ngFor="let location of request.requestLocations" style="height: 120px; overflow-y: scroll;">
+          <div *ngFor="let location of request.requestLocations" style="height: auto; overflow-y: scroll;">
 
           <div class="row second-header" style="padding: 0px 4px; justify-content: space-between;">
             <div class="col-12 bold-text">{{location.locationName}}</div>
@@ -61,12 +61,12 @@
           </div>
 
           <!--  //getSelectedLocationRowsForLocation(location.locationId, request.id) -->
-          <div class="row " *ngFor="let requestOfferItem of requestOfferItems | keyvalue: originalOrder" [attr.data-index]="i"> 
+          <div class="row " *ngFor="let requestOfferItem of requestOfferItems | keyvalue: originalOrder" [attr.data-index]="i">
             <div class="product-terms ">
               <div class="operations-details-block" style="height: auto;">
                 <div style="height: auto;">
                   <table *ngIf="location.id==requestOfferItem.value.RequestLocationId && requestOfferItem.value.OfferPrice>0">
-                    <tbody > 
+                    <tbody >
                       <!-- #scrollMe1 [scrollTop]="scrollMe1.scrollHeight" -->
                       <tr id="commentList">
                         <!-- <td class="w-80">12321</td>-->
@@ -87,7 +87,7 @@
                           [(ngModel)]="requestOfferItem.value.ConfirmedQuantity"
                           autocomplete="off"
                           (blur)="totalprice(requestOfferItem.key)"
-                        /></td>  
+                        /></td>
                         <td class=""> {{requestOfferItem.value.UomName}}</td>
                         <td class="">{{requestOfferItem.value.currencyName}} {{format.price(requestOfferItem.value.OfferPrice)||0}}</td>
                         <td class="">{{requestOfferItem.value.currencyName}} {{format.price(requestOfferItem.value.TotalPrice)}}</td>

@@ -18,10 +18,10 @@ export interface AdditionalCostViewModel {
   maxQuantityUom: string;
   maxQtyUomId?: number;
   maxQuantityUomId?: number;
-  price: number;
+  price: any;
   ratePerUom?: number;
   amount: number;
-  extras: number;
+  extras: any;
   extraAmount?: number;
   totalAmount: number;
   comment: string;
