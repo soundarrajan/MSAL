@@ -443,6 +443,16 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.delinkRequest(payload);
   }
 
+  @ObservableException()
+  getExchangeRate(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getExchangeRate(payload);
+  }
+
+  @ObservableException()
+  applyExchangeRate(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.applyExchangeRate(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }
