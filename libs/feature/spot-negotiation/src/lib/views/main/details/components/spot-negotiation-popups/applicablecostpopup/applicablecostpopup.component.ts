@@ -195,6 +195,7 @@ export class ApplicablecostpopupComponent implements OnInit {
           this.enableSave = false;
         } else this.toastr.error('Please try again later.');
       });
+      this.closeDialog();
   }
 
   formatCostItemForDisplay(locationAdditionalCosts: any) {
