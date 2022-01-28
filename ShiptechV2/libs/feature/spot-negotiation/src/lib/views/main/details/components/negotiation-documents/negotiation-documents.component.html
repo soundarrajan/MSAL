@@ -57,6 +57,7 @@
                     [disabled]="false"
                     [ngClass]="{ 'search-icon-disabled': false }"
                     class="search-icon search-icon-bg"
+                    (click)="resetDocumentData()"
                     [matMenuTriggerFor]="menu"
                   >
                     <div class="img"></div>
@@ -110,11 +111,10 @@
                       </div>
                       <mat-radio-group
                         class="document-type-container"
-                        [(ngModel)]="documentType"
+                        [(ngModel)]="documentTypePopUp"
                         name="selected-document-type"
                         (change)="
                           radioDocumentTypeChange($event);
-                          selectedDocumentType = null;
                           searchDocumentTypeModel = null
                         "
                       >

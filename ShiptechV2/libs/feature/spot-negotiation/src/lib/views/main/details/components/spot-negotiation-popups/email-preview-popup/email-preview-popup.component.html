@@ -171,7 +171,11 @@
           style="display: flex; margin: 15px; align-items: center;"
         >
           <span class="text">Attachments:</span>
-          <label class="add-doc" [matMenuTriggerFor]="menu">
+          <label
+            class="add-doc"
+            [matMenuTriggerFor]="menu"
+            (click)="resetDocumentData()"
+          >
             <span [hidden]="readonly" class="add-doc-plus"></span>
           </label>
           <mat-menu #menu="matMenu" class="document-type-modal">
@@ -215,7 +219,7 @@
               </div>
               <mat-radio-group
                 class="document-type-container"
-                [(ngModel)]="document"
+                [(ngModel)]="documentPopUp"
                 name="selected-document-type"
                 (change)="addFilesList($event); searchDocumentModel = null"
               >
