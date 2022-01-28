@@ -521,7 +521,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         // BusinessId: this.previewTemplate.comment.businessId,
         // SecondBusinessId: this.previewTemplate.comment.secondBusinessId,
         // ThirdBusinessId: this.previewTemplate.comment.thirdBusinessId,
-        AttachmentsList: this.previewTemplate.comment.attachmentsList
+        AttachmentsList: this.previewTemplate.attachmentsList
       };
 
       this.spinner.show();
