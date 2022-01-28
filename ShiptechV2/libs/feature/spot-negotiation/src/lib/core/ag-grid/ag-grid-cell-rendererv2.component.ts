@@ -295,23 +295,24 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
             pricePopupTrigger.openMenu()
           "
         >
-        <div
-        id="custom-form-field"
-        [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
-        >
-        <mat-form-field
-        class="without-search currency-select-trigger"
-        appearance="none"
-        >
-        <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
-        <!-- ** {{params.currency}} --  -->
-        <!-- ** {{paramsDataClone.currency}} --  -->
+          <div
+            id="custom-form-field"
+            [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
+          >
+            <mat-form-field
+              class="without-search currency-select-trigger"
+              appearance="none"
+            >
+              <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
+              <!-- ** {{params.currency}} --  -->
+              <!-- ** {{paramsDataClone.currency}} --  -->
               <mat-label>Select Field</mat-label>
               <mat-select
                 disableOptionCentering
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
+                [disabled]="params.index != 0"
               >
                 <mat-select-trigger overlayPanelClass="123class">
                   {{ getCurrencyCode(paramsDataClone.currency) }}
@@ -324,7 +325,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
                 >
                   <span>
                     <mat-radio-button>
-                      {{currency.code}}
+                      {{ currency.code }}
                     </mat-radio-button></span
                   >
                 </mat-option>
@@ -333,7 +334,9 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
           </div>
           <input
             class="inputField"
-            id="{{params.data.locationId}}/{{params.index}}/{{params.rowIndex}}"
+            id="{{ params.data.locationId }}/{{ params.index }}/{{
+              params.rowIndex
+            }}"
             (keyup.enter)="ongetfocus($event, params)"
             (change)="onPriceChange($event, params)"
             autofocus
@@ -494,7 +497,8 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
             <button
               mat-button
               class="mid-blue-button proceed-btn"
-              (click)="updatePhysicalSupplier()">
+              (click)="updatePhysicalSupplier()"
+            >
               Proceed
             </button>
           </div>
@@ -678,7 +682,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     public format: TenantFormattingService,
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit() {
     let requestOffers = this.params.data.requestOffers;
@@ -687,14 +691,19 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       currency: new FormControl('')
     });
     this.paramsDataClone = _.cloneDeep(this.params.data);
-    if(this.paramsDataClone.requestOffers) {
-      this.paramsDataClone.currency  = this.paramsDataClone.requestOffers[0].currencyId;
-      this.paramsDataClone.oldCurrency  = this.paramsDataClone.currency;
+    if (this.params.colDef.headerName == 'Offer price') {
+      console.log(this.params);
+    }
+    if (this.paramsDataClone.requestOffers) {
+      this.paramsDataClone.currency = this.paramsDataClone.requestOffers[0].currencyId;
+      this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
     }
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.tenantService = spotNegotiation.tenantConfigurations;
-      this.currencyList = spotNegotiation.staticLists.filter( (el) => el.name == "Currency" )[0].items;
+      this.currencyList = spotNegotiation.staticLists.filter(
+        el => el.name == 'Currency'
+      )[0].items;
       // Fetching counterparty list
       if (spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
@@ -721,10 +730,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   setValuefun(params) {
     this.searchValue = '';
     let counterpartyList = this.store.selectSnapshot<any>((state: any) => {
-      if (params.physicalSupplierCounterpartyId != null || params.physicalSupplierCounterpartyName == null) {
-        return state.spotNegotiation.counterpartyList.filter(x => x.supplier == true).slice(0, 7)
-      }
-      else {
+      if (
+        params.physicalSupplierCounterpartyId != null ||
+        params.physicalSupplierCounterpartyName == null
+      ) {
+        return state.spotNegotiation.counterpartyList
+          .filter(x => x.supplier == true)
+          .slice(0, 7);
+      } else {
         return state.spotNegotiation.counterpartyList.slice(0, 7);
       }
     });
@@ -870,7 +883,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let requestLocationId = this.params.data.requestLocationId;
     let findRequestLocationIndex = _.findIndex(
       this.currentRequestSmallInfo?.requestLocations,
-      function (object: any) {
+      function(object: any) {
         return object.id == requestLocationId;
       }
     );
@@ -919,7 +932,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       height: '562px',
       panelClass: 'additional-cost-popup'
     });
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   openEmailPreview(params) {
@@ -937,7 +950,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       data: params.data
     });
 
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   openSellerContactPopup(params) {
@@ -952,7 +965,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   openCounterpartyPopup(locationId) {
@@ -1012,7 +1025,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       panelClass: ['additional-cost-popup', 'supplier-contact-popup']
     });
 
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   requestChange(e, params) {
@@ -1027,7 +1040,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       var itemsToUpdate = [];
       let rowData = [];
 
-      params.api.forEachNodeAfterFilterAndSort(function (rowNode, index) {
+      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
         if (!rowNode.isSelected() === true) {
           return;
         }
@@ -1128,7 +1141,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       var itemsToUpdate = [];
       let rowData = [];
 
-      params.api.forEachNodeAfterFilterAndSort(function (rowNode, index) {
+      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
         if (!rowNode.isSelected() === true) {
           return;
         }
@@ -1153,55 +1166,65 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       panelClass: 'additional-cost-popup',
       data: params
     });
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(result => {});
   }
   onRightClickMenuOpened(e) {
     e.target.parentElement.classList.add('active');
   }
 
-  returnrowindex(params){
+  returnrowindex(params) {
     const locations = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locations;
     });
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
-    let StartLocation = locations.findIndex(row => row.locationId == params.data.locationId);
+    let StartLocation = locations.findIndex(
+      row => row.locationId == params.data.locationId
+    );
     let startrow = params.rowIndex;
     let paramsindex = params.index;
     for (let st = StartLocation; st < locations.length; st++) {
-      
-            let currentlocationprodlen = locations[st].requestProducts.length -1;
-            let currentlocationsrows = locationsRows.filter(loc => loc.locationId == locations[st].locationId);
-            let Endrow = currentlocationsrows.length;
-            if(currentlocationsrows.length > 0){
-              for (let index = startrow; index < Endrow; index++) {
-                let nextindex = index + 1;
-                if(currentlocationsrows[nextindex] && currentlocationsrows[nextindex].requestOffers){
-                  return currentlocationsrows[nextindex].locationId + '/' + paramsindex + '/' + nextindex;
-                }
-                else{
-                  if(paramsindex < currentlocationprodlen){
-                      index = -2;
-                      paramsindex = paramsindex + 1;
-                  }
-                  else{
-                    startrow = -1;
-                    paramsindex = 0;
-                  }
-                }
-              }
+      let currentlocationprodlen = locations[st].requestProducts.length - 1;
+      let currentlocationsrows = locationsRows.filter(
+        loc => loc.locationId == locations[st].locationId
+      );
+      let Endrow = currentlocationsrows.length;
+      if (currentlocationsrows.length > 0) {
+        for (let index = startrow; index < Endrow; index++) {
+          let nextindex = index + 1;
+          if (
+            currentlocationsrows[nextindex] &&
+            currentlocationsrows[nextindex].requestOffers
+          ) {
+            return (
+              currentlocationsrows[nextindex].locationId +
+              '/' +
+              paramsindex +
+              '/' +
+              nextindex
+            );
+          } else {
+            if (paramsindex < currentlocationprodlen) {
+              index = -2;
+              paramsindex = paramsindex + 1;
+            } else {
+              startrow = -1;
+              paramsindex = 0;
             }
+          }
+        }
+      }
     }
-}
+  }
 
-  ongetfocus(event, params){
+  ongetfocus(event, params) {
     let idValue = this.returnrowindex(params);
-   let element = document.getElementById(idValue);
-   if(element){
-     element.focus();
-   } 
- }
+    let element = document.getElementById(idValue);
+    if (element) {
+      element.focus();
+    }
+  }
 
   onPriceChange(e, params) {
     // const futureValue = e.target.value;
@@ -1221,65 +1244,85 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       elementidValue: this.returnrowindex(params)
     });
   }
+
+  setNewRowData(newData, exchangeRateValue) {
+    for (let i = 0; i < newData.requestOffers.length; i++) {
+      newData.requestOffers[i].totalPrice =
+        newData.requestOffers[i].totalPrice / exchangeRateValue;
+      newData.requestOffers[i].amount =
+        newData.requestOffers[i].amount / exchangeRateValue;
+      newData.requestOffers[i].targetDifference =
+        newData.requestOffers[i].targetDifference / exchangeRateValue;
+    }
+    newData.totalOffer = newData.totalOffer / exchangeRateValue;
+    return newData;
+  }
+
   onCurrencyChange(e, params) {
-    var fromCurrency = this.paramsDataClone.oldCurrency ;
+    var fromCurrency = this.paramsDataClone.oldCurrency;
     // var fromCurrency = this.tenantService.currencyId;
     let toCurrency = this.paramsDataClone.currency;
-    
+
     var rowNode = params.api.getRowNode(params.node.id);
     var newData = _.cloneDeep(params.data);
     newData.currency = toCurrency;
-    newData.requestOffers.map( (el) => {
-      return el.currencyId = toCurrency;
-    })
-    
+    newData.requestOffers.map(el => {
+      return (el.currencyId = toCurrency);
+    });
+
     let payload = {
-      "fromCurrencyId": fromCurrency,
-      "toCurrencyId": toCurrency,
-      "toCurrencyCode": this.getCurrencyCode(toCurrency)
-    } 
-        
+      fromCurrencyId: fromCurrency,
+      toCurrencyId: toCurrency,
+      toCurrencyCode: this.getCurrencyCode(toCurrency)
+    };
+
     const response = this._spotNegotiationService.getExchangeRate(payload);
     response.subscribe((res: any) => {
       if (res.status) {
         this.store.dispatch(new EditLocationRow(newData));
         this.params.node.setData(newData);
-        let requestOffers = this.params.data.requestOffers.map( (e) => {
+        let requestOffers = this.params.data.requestOffers.map(e => {
           return {
-            "id": e.id,
-            "totalPrice": e.totalPrice / res.exchangeRateValue,
-            "amount": e.amount / res.exchangeRateValue,
-            "targetDifference": e.targetDifference / res.exchangeRateValue,
-            "currencyId": toCurrency          
-          }
-        })
-        let payload = {
-          "Offers": {
-            "id": this.params.data.requestOffers[0].offerId,
-            "totalOffer": this.params.data.totalOffer / res.exchangeRateValue,
-            "requestOffers": requestOffers,
-          }       
-        };  
-        
-        const applyExchangeRate = this._spotNegotiationService.applyExchangeRate(payload);
-        applyExchangeRate.subscribe((res: any) => {
-            if (res.status) {
-              this.paramsDataClone.oldCurrency = this.paramsDataClone.currency
-            } else {
-              this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
-            }
+            id: e.id,
+            totalPrice: e.totalPrice / res.exchangeRateValue,
+            amount: e.amount / res.exchangeRateValue,
+            targetDifference: e.targetDifference / res.exchangeRateValue,
+            currencyId: toCurrency
+          };
         });
-        
-        /* params.data has all the data for applyExchangeRate */
+        let payload = {
+          Offers: {
+            id: this.params.data.requestOffers[0].offerId,
+            totalOffer: this.params.data.totalOffer / res.exchangeRateValue,
+            requestOffers: requestOffers
+          }
+        };
 
+        const applyExchangeRate = this._spotNegotiationService.applyExchangeRate(
+          payload
+        );
+        let futureRowData = this.setNewRowData(
+          _.cloneDeep(newData),
+          res.exchangeRateValue
+        );
+        applyExchangeRate.subscribe((res: any) => {
+          if (res.status) {
+            this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
+            this.store.dispatch(new EditLocationRow(futureRowData));
+          } else {
+            this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
+          }
+        });
+
+        /* params.data has all the data for applyExchangeRate */
       } else {
         this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
         this.toastr.warning(res.message);
         this.changeDetector.detectChanges();
       }
     });
-
   }
+
   getCurrencyCode(currencyId) {
     let currency = this.currencyList.filter(el => el.id == currencyId)[0];
     return currency ? currency.code : false;
@@ -1310,7 +1353,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   updatePhysicalSupplier() {
     let valid = false;
     if (!this.phySupplierId) {
-      this.toastr.warning('Invalid or same physical supplier selected, Please try selecting it again.');
+      this.toastr.warning(
+        'Invalid or same physical supplier selected, Please try selecting it again.'
+      );
       return;
     }
 
@@ -1320,7 +1365,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           item =>
             item.locationId === this.params.data.locationId &&
             item.sellerCounterpartyId ===
-            this.params.data.sellerCounterpartyId &&
+              this.params.data.sellerCounterpartyId &&
             item.physicalSupplierCounterpartyId === this.phySupplierId &&
             item.id !== this.params.data.id
         );
@@ -1359,7 +1404,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
     if (valid) {
-      this.toastr.error('Physical supplier already available against the given the Seller.');
+      this.toastr.error(
+        'Physical supplier already available against the given the Seller.'
+      );
       return;
     } else {
     }
