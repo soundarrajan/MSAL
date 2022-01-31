@@ -231,9 +231,15 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
       //current RequestGroupId
       let RequestGroupId = parseInt(this.requestOptions[0].requestGroupId);
-
+      this.requestOptions = this.store.selectSnapshot(
+        (state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].requests;
+        }
+      );
       //Looping through all the Request Locations
-      this.requestOptions[0].requestLocations.forEach(reqLoc => {
+      this.requestOptions.forEach(request => {
+        request.requestLocations.forEach(reqLoc => {
+      // this.requestOptions[0].requestLocations.forEach(reqLoc => {
         let perLocationCtpys = this.selectedCounterparty.map(
           val =>
             <SpnegoAddCounterpartyModel>{
@@ -268,6 +274,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         );
         selectedCounterparties.push(...perLocationCtpys);
       });
+    });
 
       return selectedCounterparties;
     } else {
