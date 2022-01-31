@@ -1,11 +1,13 @@
-﻿commit 34c064a284d569cff927fb36ed97a2ef56b1d139
+﻿commit e0e8420e23025e9a54066703543eccf8fc9d4817
 Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Mon Jan 31 03:40:47 2022 +0000
+Date:   Mon Jan 31 10:06:39 2022 +0000
 
-    Merged PR 15676: 38046 SOD comments Fetch on Save - Issue fix
+    Merged PR 15684: 38288, 38046 - SO After BunkerSave events
     
-    38046 SOD comments Fetch on Save - Issue fix
+    38288, 38046 - SO After BunkerSave events
+    1. To fetch BP & Req. comments if there is change in SOD comment section
+    2. To fetch currentROB if saved with Vessel role
     
-    Related work items: #38046
+    Related work items: #38046, #38288
 
 branch: master

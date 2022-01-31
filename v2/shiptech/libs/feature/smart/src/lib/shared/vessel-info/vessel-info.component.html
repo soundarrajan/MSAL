@@ -311,7 +311,8 @@
           (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole"
           [vesselRef]="vesselData"
           [changeROB]="this.currentROBChange.asObservable()"
-          (voyage_detail)="getVoyageDetail($event)">
+          (voyage_detail)="getVoyageDetail($event)"
+          (bunkerPlanSaved)="bunkerPlanSaved()">
         </app-bunkering-plan>
       </div>
     </mat-expansion-panel>
