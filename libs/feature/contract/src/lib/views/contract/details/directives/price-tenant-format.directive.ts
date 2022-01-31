@@ -51,7 +51,7 @@ export class PriceTenantFormatDirective implements OnInit {
     let viewValue = `${value}`;
     let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
     if (plainNumber) {
-        plainNumber = this.roundDown(plainNumber, this.pricePrecision);
+        // plainNumber = this.roundDown(plainNumber, this.pricePrecision);
         // this.el.value = this.roundDown(plainNumber, this.pricePrecision);
         this.el.value = this._decimalPipe.transform(plainNumber, '1.' + this.pricePrecision + '-' + this.pricePrecision);
     }
