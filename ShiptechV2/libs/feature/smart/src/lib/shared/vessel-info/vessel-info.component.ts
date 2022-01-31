@@ -630,6 +630,14 @@ export class VesselInfoComponent implements OnInit {
     this.localService.setBunkerPlanState(false);
     event.stopPropagation();
     this.currentBplan.toggleSave();
+    if(this.currentBplan.sodCommentsUpdated) {
+      this.currentBplan.sodCommentsUpdated = false;
+      this.loadComments();
+    }
+  }
+  
+  loadComments() {
+    this.child.loadComments();
   }
 
   sendCurrentBPlan(event){
