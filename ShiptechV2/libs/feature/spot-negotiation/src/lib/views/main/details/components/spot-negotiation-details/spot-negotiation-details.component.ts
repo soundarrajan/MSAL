@@ -562,7 +562,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               let element = document.getElementById(elementidValue);
               if(element){
                 element.focus();
-              } 
+              }
             }, 300);
             // Save to the cloud
             this.saveRowToCloud(updatedRow, colDef['product']);
@@ -957,7 +957,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.spinner.hide();
         if (res.status) {
           let dataRows = [];
-          gridApi.forEachNode(node => dataRows.push(node.data)); 
+          gridApi.forEachNode(node => dataRows.push(node.data));
           dataRows = dataRows.splice(rowIndex, 1);
           //gridApi.applyTransaction({ remove: dataRows });
           gridApi.updateRowData({ remove: dataRows });
@@ -1083,13 +1083,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
         row.isSelected = priceDetailsArray[index].isSelected;
-        row.physicalSupplierCounterpartyId =
-          priceDetailsArray[index].physicalSupplierCounterpartyId;
-        if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
-          row.physicalSupplierCounterpartyName = counterpartyList.find(
-            x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
-          ).displayName;
-        }
+        // row.physicalSupplierCounterpartyId =
+        //   priceDetailsArray[index].physicalSupplierCounterpartyId;
+        // if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
+        //   row.physicalSupplierCounterpartyName = counterpartyList.find(
+        //     x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
+        //   ).displayName;
+        // }
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
@@ -1106,13 +1106,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       if (detailsForCurrentRow.length > 0) {
         row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
         row.isSelected = detailsForCurrentRow[0].isSelected;
-        row.physicalSupplierCounterpartyId =
-          detailsForCurrentRow[0].physicalSupplierCounterpartyId;
-        if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
-          row.physicalSupplierCounterpartyName = counterpartyList.find(
-            x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
-          ).displayName;
-        }
+        // row.physicalSupplierCounterpartyId =
+        //   detailsForCurrentRow[0].physicalSupplierCounterpartyId;
+        // if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
+        //   row.physicalSupplierCounterpartyName = counterpartyList.find(
+        //     x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
+        //   ).displayName;
+        // }
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
