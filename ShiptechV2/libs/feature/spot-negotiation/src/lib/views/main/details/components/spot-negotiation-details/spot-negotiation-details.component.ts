@@ -1009,7 +1009,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               row1 => row1.id == rowData.requestOffers[index].requestProductId
               );
               if(locationsprod.length != 0){
-                if(locationsprod[0].status && locationsprod[0].status == 'Stemmed'){
+                if(locationsprod[0].status && locationsprod[0].status == 'Stemmed' && rowData.requestOffers[index].price != null){
                   return true;
                 }
               }
