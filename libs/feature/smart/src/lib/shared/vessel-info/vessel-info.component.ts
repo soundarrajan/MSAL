@@ -634,6 +634,10 @@ export class VesselInfoComponent implements OnInit {
       this.currentBplan.sodCommentsUpdated = false;
       this.loadComments();
     }
+    let storeVesselData = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
+    if(storeVesselData.userRole == "Vessel") {
+      this.loadROBArbitrage();
+    }
   }
   
   loadComments() {
