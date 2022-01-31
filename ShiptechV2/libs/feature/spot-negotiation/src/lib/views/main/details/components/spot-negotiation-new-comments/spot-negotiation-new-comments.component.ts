@@ -40,6 +40,19 @@ export class SpotNegotiationNewCommentsComponent
         // this.requestInfo.negoSupplierComments = 'Supply comments';
         // this.requestInfo.negoVesselAgentComments = 'Vessel and Agent comments';
 
+        this.requestInfo.negoGeneralComments = this.transform(
+          this.requestInfo.negoGeneralComments
+        );
+        this.requestInfo.negoPerformanceComments = this.transform(
+          this.requestInfo.negoPerformanceComments
+        );
+        this.requestInfo.negoSupplierComments = this.transform(
+          this.requestInfo.negoSupplierComments
+        );
+        this.requestInfo.negoVesselAgentComments = this.transform(
+          this.requestInfo.negoVesselAgentComments
+        );
+
         this.editableGeneralComment =
           this.requestInfo?.negoGeneralComments?.length > 0 ? false : true;
         this.editablePerformanceComment =
@@ -89,5 +102,18 @@ export class SpotNegotiationNewCommentsComponent
       t.moveStart('character', len);
       t.select();
     }
+  }
+
+  transform(str: any, property?: string): any {
+    var decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
+        return String.fromCharCode(dec);
+      });
+    };
+    if (str && str[property]) {
+      str[property] = decode(_.unescape(str[property]));
+      return str;
+    }
+    return decode(_.unescape(str));
   }
 }

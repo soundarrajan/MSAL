@@ -168,7 +168,7 @@
                     </div>
                     <div style="padding: 0px 20px;">
                       <span class="comments-text">
-                        {{ requestInfo?.comments }}
+                        {{ requestInfo?.comments | htmlDecodeReadonly }}
                       </span>
                     </div>
                   </div>
@@ -188,7 +188,7 @@
                     </div>
                     <div style="padding: 0px 20px;">
                       <span class="comments-text">
-                        {{ requestInfo?.supplierComments }}
+                        {{ requestInfo?.supplierComments | htmlDecodeReadonly }}
                       </span>
                     </div>
                   </div>
@@ -204,7 +204,9 @@
                     </div>
                     <div style="padding: 0px 20px;">
                       <span class="comments-text">
-                        {{ requestInfo?.vesselAgentComments }}
+                        {{
+                          requestInfo?.vesselAgentComments | htmlDecodeReadonly
+                        }}
                       </span>
                     </div>
                   </div>
