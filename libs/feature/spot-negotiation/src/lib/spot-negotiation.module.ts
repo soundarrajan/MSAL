@@ -94,6 +94,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { AGGridCellV2RendererComponent } from './core/ag-grid/ag-grid-cell-renderer-v2.component';
 import { AGGridCellActionsDocumentsComponent } from './core/ag-grid/ag-grid-cell-actions-documents.component';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { SharedModule } from '@shiptech/core/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -138,7 +139,8 @@ import { TabMenuModule } from 'primeng/tabmenu';
     DeliveryModule,
     DeliveryRoutingModule,
     WunderBarModule,
-    FileUploadModule
+    FileUploadModule,
+    SharedModule
   ],
   declarations: [
     MainSpotNegotiationComponent,
