@@ -28,6 +28,7 @@ export class BunkeringPlanComponent implements OnInit {
   public rowCount: Number;
   public gridSaved: boolean;
   public gridChanged: boolean = false;
+  public sodCommentsUpdated: boolean = false;
   public rowData ;
   public bPlanData: any;
   public selectedPort: any = [];
@@ -848,6 +849,9 @@ export class BunkeringPlanComponent implements OnInit {
     // this.gridOptions.api.applyTransaction({
     //   update: [data]
     // })
+  }
+  sodCommentsUpdatedEvent() {
+    this.sodCommentsUpdated = true;
   }
 
   calculateSOA(column){
