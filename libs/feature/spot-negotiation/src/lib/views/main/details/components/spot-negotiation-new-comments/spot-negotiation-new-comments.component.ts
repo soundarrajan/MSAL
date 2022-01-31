@@ -8,7 +8,10 @@ import {
 } from '@angular/core';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Store } from '@ngxs/store';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import _ from 'lodash';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-spot-negotiation-new-comments',
@@ -31,7 +34,13 @@ export class SpotNegotiationNewCommentsComponent
 
   notYet: string = ' - ';
 
-  constructor(private store: Store, public changeDetector: ChangeDetectorRef) {
+  constructor(
+    private store: Store,
+    public changeDetector: ChangeDetectorRef,
+    private spotNegotiationService: SpotNegotiationService,
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService
+  ) {
     this.store.subscribe(({ spotNegotiation }) => {
       if (spotNegotiation.currentRequestSmallInfo) {
         this.requestInfo = _.cloneDeep(spotNegotiation.currentRequestSmallInfo);
@@ -115,5 +124,43 @@ export class SpotNegotiationNewCommentsComponent
       return str;
     }
     return decode(_.unescape(str));
+  }
+
+  saveComment(type) {
+    console.log(type);
+    let payload = {};
+    if (type == 'general') {
+      payload = {
+        RequestId: this.requestInfo.id,
+        NegoGeneralComments: this.requestInfo.negoGeneralComments
+      };
+    } else if (type == 'performance') {
+      payload = {
+        RequestId: this.requestInfo.id,
+        NegoPerformanceComments: this.requestInfo.negoPerformanceComments
+      };
+    } else if (type == 'supplier') {
+      payload = {
+        RequestId: this.requestInfo.id,
+        NegoSupplierComments: this.requestInfo.negoSupplierComments
+      };
+    } else if (type == 'vesselAndAgent') {
+      payload = {
+        RequestId: this.requestInfo.id,
+        NegoVesselAgentComments: this.requestInfo.negoVesselAgentComments
+      };
+    }
+
+    this.spinner.show();
+    this.spotNegotiationService
+      .updateNegotiationComments(payload)
+      .subscribe((response: any) => {
+        this.spinner.hide();
+        console.log(response);
+        if (response.status) {
+        } else {
+          console.log('Eroare');
+        }
+      });
   }
 }

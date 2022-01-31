@@ -69,7 +69,8 @@ export const SpotNegotiationApiPaths = {
   deleteDocument: `api/masters/documentupload/delete`,
   downloadDocument: `api/masters/documentupload/download`,
   updateIsVerifiedDocument: `api/masters/documentupload/update`,
-  updateNotes: `api/masters/documentupload/notes`
+  updateNotes: `api/masters/documentupload/notes`,
+  updateNegotiationComments: `groups/updateComments`
 };
 
 @Injectable({
@@ -207,25 +208,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   @ObservableException()
   getBestContract(request: any): Observable<any> {
     let payload = {
-                    Order: null,
-                    PageFilters: {
-                        Filters: []
-                    },
-                    SortList: {
-                        SortList: []
-                    },
-                    Filters : [
-                      {
-                      ColumnName: "RequestId",
-                      Value: request
-                      }
-                    ],
-                    SearchText: null,
-                    Pagination: {
-                        Skip: 0,
-                        Take: 99999
-                    }                
-                };    
+      Order: null,
+      PageFilters: {
+        Filters: []
+      },
+      SortList: {
+        SortList: []
+      },
+      Filters: [
+        {
+          ColumnName: 'RequestId',
+          Value: request
+        }
+      ],
+      SearchText: null,
+      Pagination: {
+        Skip: 0,
+        Take: 99999
+      }
+    };
     return this.http
       .post<any>(
         `${this._procurementApiUrl}/${SpotNegotiationApiPaths.getBestContract}`,
@@ -243,7 +244,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       );
   }
   @ObservableException()
-  getExchangeRate(payload: any): Observable<any> {    
+  getExchangeRate(payload: any): Observable<any> {
     return this.http
       .post<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getExchangeRate}`,
@@ -262,7 +263,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   @ObservableException()
-  applyExchangeRate(payload: any): Observable<any> {    
+  applyExchangeRate(payload: any): Observable<any> {
     return this.http
       .put<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.applyExchangeRate}`,
@@ -284,7 +285,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   delinkRequest(payload: any): Observable<any> {
     const options = {
       headers: new HttpHeaders(),
-      body: {...payload},
+      body: { ...payload }
     };
     return this.http
       .delete<any>(
@@ -946,6 +947,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body.payload),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  updateNegotiationComments(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updateNegotiationComments}`,
+        { Payload: request }
+      )
+      .pipe(
+        map((body: any) => body),
         catchError((body: any) =>
           of(
             body.error.ErrorMessage && body.error.Reference
