@@ -1,11 +1,11 @@
-﻿commit 18c6f56c02d4027defcdfcaefa7cb865a042fbc2
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Jan 28 08:19:21 2022 +0000
+﻿commit 34c064a284d569cff927fb36ed97a2ef56b1d139
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Mon Jan 31 03:40:47 2022 +0000
 
-    Merged PR 15664: Fixed footer for the control tower list screen and Filter count UI
+    Merged PR 15676: 38046 SOD comments Fetch on Save - Issue fix
     
-    Fixed footer for the control tower list screen and Filter count UI
+    38046 SOD comments Fetch on Save - Issue fix
     
-    Related work items: #37408, #37411
+    Related work items: #38046
 
 branch: master

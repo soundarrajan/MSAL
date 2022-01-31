@@ -1417,9 +1417,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     }
 
     if (number) {
-      plainNumber = this.roundDown(plainNumber, pricePrecision);
+      // plainNumber = this.roundDown(plainNumber, pricePrecision);
       return this._decimalPipe.transform(
-        plainNumber,
+        number,
         '1.' + pricePrecision + '-' + pricePrecision
       );
     }
