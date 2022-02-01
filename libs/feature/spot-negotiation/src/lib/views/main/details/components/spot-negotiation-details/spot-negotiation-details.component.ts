@@ -384,6 +384,22 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
     });
   }
+
+  formatRowDataPrice(row, product, field, newValue) {
+    const productDetails = this.getRowProductDetails(row, product.id);
+
+    //Change with new value
+    switch (field) {
+      case 'offPrice':
+        productDetails.price = Number(newValue.toString().replace(/,/g, ''));
+        break;
+
+      default:
+        break;
+    }
+    let futureRow = this.setRowProductDetails(row, productDetails, product.id);
+    return futureRow;
+  }
   // Calculate row fields and return new row;
   formatRowData(row, product, field, newValue) {
     const productDetails = this.getRowProductDetails(row, product.id);
@@ -565,6 +581,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               return false;
             }
 
+            // Do calculation here;
+            updatedRow = this.formatRowDataPrice(
+              updatedRow,
+              colDef['product'],
+              colDef.field,
+              newValue
+            );
+
             this.checkAdditionalCost(updatedRow, updatedRow, colDef, newValue);
 
             setTimeout(() => {
@@ -730,17 +754,26 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           i++
         ) {
           let offerLine = priceDetailsRes.sellerOffers[0].requestOffers[i];
-          let findElement = _.find(sellerOffers.requestOffers, function(
-            object
-          ) {
-            return object.id == offerLine.id;
-          });
-          if (findElement) {
-            updatedRow.cost = offerLine.cost;
+          let findElementIndex = _.findIndex(
+            sellerOffers.requestOffers,
+            function(object: any) {
+              return object.id == offerLine.id;
+            }
+          );
+          if (findElementIndex != -1) {
+            updatedRow.requestOffers[findElementIndex].cost = offerLine.cost;
+            updatedRow.requestOffers[findElementIndex].price = offerLine.price;
+            updatedRow.requestOffers[findElementIndex].totalPrice =
+              offerLine.totalPrice;
+            updatedRow.requestOffers[findElementIndex].amount =
+              offerLine.amount;
+            updatedRow.requestOffers[findElementIndex].targetDifference =
+              offerLine.targetDifference;
           }
         }
         console.log(updatedRow);
-        // Do calculation here;
+
+        //Do the calculation here
         updatedRow = this.formatRowData(
           updatedRow,
           colDef['product'],
@@ -796,12 +829,22 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               this.getSellerLine(updatedRow, colDef, newValue);
               return;
             }
+
             let {
               productList,
               applicableForItems,
               totalMaxQuantity,
               maxQuantityUomId
             } = this.buildApplicableForItems(requestLocation, sellerOffers);
+
+            this.recalculatePercentAdditionalCosts(
+              response.locationAdditionalCosts,
+              true,
+              productList,
+              offerAdditionalCostList,
+              sellerOffers
+            );
+
             console.log(productList);
             console.log(applicableForItems);
             console.log(totalMaxQuantity);
