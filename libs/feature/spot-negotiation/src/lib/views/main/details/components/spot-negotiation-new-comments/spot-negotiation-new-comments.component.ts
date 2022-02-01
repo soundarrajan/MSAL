@@ -62,14 +62,7 @@ export class SpotNegotiationNewCommentsComponent
           this.requestInfo.negoVesselAgentComments
         );
 
-        this.editableGeneralComment =
-          this.requestInfo?.negoGeneralComments?.length > 0 ? false : true;
-        this.editablePerformanceComment =
-          this.requestInfo?.negoPerformanceComments?.length > 0 ? false : true;
-        this.editableSupplyComment =
-          this.requestInfo?.negoSupplierComments?.length > 0 ? false : true;
-        this.editableVesselAndAgentComment =
-          this.requestInfo?.negoVesselAgentComments?.length > 0 ? false : true;
+        this.checkEditableFields();
 
         console.log(this.requestInfo);
       }
@@ -126,6 +119,17 @@ export class SpotNegotiationNewCommentsComponent
     return decode(_.unescape(str));
   }
 
+  checkEditableFields() {
+    this.editableGeneralComment =
+      this.requestInfo?.negoGeneralComments?.length > 0 ? false : true;
+    this.editablePerformanceComment =
+      this.requestInfo?.negoPerformanceComments?.length > 0 ? false : true;
+    this.editableSupplyComment =
+      this.requestInfo?.negoSupplierComments?.length > 0 ? false : true;
+    this.editableVesselAndAgentComment =
+      this.requestInfo?.negoVesselAgentComments?.length > 0 ? false : true;
+  }
+
   saveComment(type) {
     console.log(type);
     let payload = {};
@@ -151,13 +155,12 @@ export class SpotNegotiationNewCommentsComponent
       };
     }
 
-    this.spinner.show();
     this.spotNegotiationService
       .updateNegotiationComments(payload)
       .subscribe((response: any) => {
-        this.spinner.hide();
         console.log(response);
         if (response.status) {
+          this.checkEditableFields();
         } else {
           console.log('Eroare');
         }

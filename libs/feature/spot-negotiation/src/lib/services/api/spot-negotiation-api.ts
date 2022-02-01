@@ -960,7 +960,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   @ObservableException()
   updateNegotiationComments(request: any): Observable<any> {
     return this.http
-      .post<any>(
+      .put<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updateNegotiationComments}`,
         { Payload: request }
       )
