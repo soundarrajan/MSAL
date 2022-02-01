@@ -582,6 +582,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               return false;
             }
 
+            this.endpointCount = 0;
+
             // Do calculation here;
             updatedRow = this.formatRowDataPrice(
               updatedRow,
@@ -914,7 +916,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             updatedRow,
             colDef,
             newValue,
-            index
+            i
           );
         }
       }
@@ -1131,6 +1133,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       case COST_TYPE_IDS.FLAT:
         additionalCost.amount = parseFloat(additionalCost.price);
         productComponent = this.isProductComponent(additionalCost);
+        if (!locationAdditionalCostFlag) {
+          offerAdditionalCostList[index].amountIsCalculated = true;
+        }
         break;
 
       case COST_TYPE_IDS.UNIT:
@@ -1153,6 +1158,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                   additionalCost.prodConv[i] *
                   parseFloat(additionalCost.price);
             }
+          }
+          if (!locationAdditionalCostFlag) {
+            offerAdditionalCostList[index].amountIsCalculated = true;
           }
         }
         break;
@@ -1191,10 +1199,18 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           additionalCost.amount =
             (totalAmount * parseFloat(additionalCost.price)) / 100;
         }
+        if (!locationAdditionalCostFlag) {
+          offerAdditionalCostList[index].amountIsCalculated = true;
+        } else {
+          locationAdditionalCostsList[index].amountIsCalculated = true;
+        }
         break;
       case COST_TYPE_IDS.RANGE:
       case COST_TYPE_IDS.TOTAL:
         additionalCost.amount = parseFloat(additionalCost.price) || 0;
+        if (!locationAdditionalCostFlag) {
+          offerAdditionalCostList[index].amountIsCalculated = true;
+        }
         break;
     }
 
@@ -1220,11 +1236,29 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     if (isNaN(additionalCost.ratePerUom)) {
       additionalCost.ratePerUom = null;
     }
-    console.log(additionalCost);
+    let checkAdditionalCostRowIndex = _.findIndex(
+      offerAdditionalCostList,
+      function(obj: any) {
+        return !obj.amountIsCalculated;
+      }
+    );
+    let checkLocationCostRowIndex = _.findIndex(
+      locationAdditionalCostsList,
+      function(obj: any) {
+        return (
+          !obj.amountIsCalculated && obj.costTypeId == COST_TYPE_IDS.PERCENT
+        );
+      }
+    );
+    console.log(checkAdditionalCostRowIndex);
+    console.log(offerAdditionalCostList);
+    console.log(checkLocationCostRowIndex);
+    console.log(locationAdditionalCostsList);
 
     if (
       this.endpointCount == 0 &&
-      index == offerAdditionalCostList.length - 1
+      checkAdditionalCostRowIndex == -1 &&
+      checkLocationCostRowIndex == -1
     ) {
       this.saveAdditionalCosts(
         offerAdditionalCostList,
