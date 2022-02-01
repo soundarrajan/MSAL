@@ -1310,6 +1310,8 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }
 
         ctrl.getProductViewFromStaticLists = function(landingPage) {
+            var landingPageRedirectUrl = $location.$$absUrl;
+
             let productTypeViewId = (landingPage?.id) ? landingPage.id : angular.copy(ctrl.listsCache.ProductView[0].id);
             let findProductViewIndexFromListCache = _.findIndex(ctrl.listsCache.ProductView, function(obj) {
                 return obj.id == productTypeViewId;
@@ -1328,18 +1330,21 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     $rootScope.productTypeView = $rootScope.productTypeView ? angular.copy($rootScope.productTypeView) : angular.copy(ctrl.listsCache.ProductView[findProductViewIndexFromListCache]);
                     ctrl.productTypeView = angular.copy($rootScope.productTypeView);
                 }
+                landingPageRedirectUrl = false;
             } else if (window.location.href.indexOf('schedule-dashboard-timeline') == -1) {
                 //if user has a default landing page as request list
                 if (landingPage && landingPage.id == 4) {
-                    $state.go(STATE.ALL_REQUESTS_TABLE);
+                    landingPageRedirectUrl = `${landingPageRedirectUrl}all-requests-table`
                 } else if (landingPage && [5,6,7].indexOf(landingPage?.id)>-1) {
-                    $window.open($location.$$absUrl.replace('#'+$location.$$path, `v2/control-tower/control-tower-list-view/${landingPage?.id}`), '_self');
-                    // $window.open(`http://localhost:9016/v2/control-tower/control-tower-list-view/${landingPage?.id}`, '_self');
+                    landingPageRedirectUrl = $location.$$absUrl.replace('#'+$location.$$path, `v2/control-tower/control-tower-list-view/${landingPage?.id}`)
                 }
+                localStorage.setItem("landingPageRedirectUrl", landingPageRedirectUrl);
+                window.location.href = landingPageRedirectUrl;
             } else {
                 //if user click on schedule dahboard timeline from menu and has default landing page as request list
                 $rootScope.productTypeView = $rootScope.productTypeView ? angular.copy($rootScope.productTypeView) : ctrl.listsCache.ProductView[0];
                 ctrl.productTypeView = angular.copy($rootScope.productTypeView);
+                landingPageRedirectUrl = false;
             }
         }
 
@@ -1350,11 +1355,15 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
         // Get data and initialize timeline
         async function doTimeline() {
+            $("body > #app").css("opacity", 0);
             Factory_Admin.getUsername(true, (response) => {
                 if(response) {
                     $rootScope.landingPage = angular.copy(response?.payload?.landingPage);
                     ctrl.getProductViewFromStaticLists(response?.payload?.landingPage);
                     if ((response.payload.landingPage && [1, 2, 3].indexOf(response.payload.landingPage.id) != -1 ) || window.location.href.indexOf('schedule-dashboard-timeline') != -1) {
+                        setTimeout(() => {
+                            $("body > #app").css("opacity", 1);
+                        });
                         $rootScope.$broadcast('$setProductTypeView', {
                             productTypeView: ctrl.productTypeView
                         });
