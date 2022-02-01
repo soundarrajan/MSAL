@@ -1239,7 +1239,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     let checkAdditionalCostRowIndex = _.findIndex(
       offerAdditionalCostList,
       function(obj: any) {
-        return !obj.amountIsCalculated;
+        return !obj.amountIsCalculated && obj.isAllProductsCost;
       }
     );
     let checkLocationCostRowIndex = _.findIndex(
