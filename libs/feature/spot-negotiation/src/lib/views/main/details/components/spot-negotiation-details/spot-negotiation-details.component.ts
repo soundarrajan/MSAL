@@ -239,6 +239,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   applicableForItems: any = [];
   additionalCostList: any = [];
   additionalCostTypes: any = [];
+  endpointCount: number = 0;
 
   constructor(
     @Inject(DOCUMENT) private _document: HTMLDocument,
@@ -726,6 +727,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       )
     };
 
+    console.log('Save additional cost');
+
     console.log(payload);
     this.spotNegotiationService
       .saveOfferAdditionalCosts(payload)
@@ -817,6 +820,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         .subscribe((response: any) => {
           if (typeof response === 'string') {
             this.getSellerLine(updatedRow, colDef, newValue);
+            return;
           } else {
             console.log(response);
             let offerAdditionalCostList = _.cloneDeep(
@@ -842,7 +846,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               true,
               productList,
               offerAdditionalCostList,
-              sellerOffers
+              sellerOffers,
+              response.locationAdditionalCosts,
+              updatedRow,
+              colDef,
+              newValue,
+              -1
             );
 
             console.log(productList);
@@ -865,17 +874,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                   cost,
                   offerAdditionalCostList,
                   productList,
-                  sellerOffers
+                  sellerOffers,
+                  response.locationAdditionalCosts,
+                  updatedRow,
+                  colDef,
+                  newValue,
+                  i
                 );
               }
             }
-            this.saveAdditionalCosts(
-              offerAdditionalCostList,
-              response.locationAdditionalCosts,
-              updatedRow,
-              colDef,
-              newValue
-            );
           }
         });
     }
@@ -886,7 +893,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     locationAdditionalCostFlag,
     productList,
     offerAdditionalCostList,
-    rowData
+    rowData,
+    locationAdditionalCostsList,
+    updatedRow,
+    colDef,
+    newValue,
+    index
   ) {
     for (let i = 0; i < additionalCostList.length; i++) {
       if (!additionalCostList[i].isDeleted) {
@@ -897,7 +909,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             locationAdditionalCostFlag,
             productList,
             offerAdditionalCostList,
-            rowData
+            rowData,
+            locationAdditionalCostsList,
+            updatedRow,
+            colDef,
+            newValue,
+            index
           );
         }
       }
@@ -908,14 +925,24 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     additionalCost,
     offerAdditionalCostList,
     productList,
-    rowData
+    rowData,
+    locationAdditionalCostsList,
+    updatedRow,
+    colDef,
+    newValue,
+    index
   ) {
     if (additionalCost.costTypeId == 2) {
       this.addPriceUomChanged(
         additionalCost,
         productList,
         offerAdditionalCostList,
-        rowData
+        rowData,
+        locationAdditionalCostsList,
+        updatedRow,
+        colDef,
+        newValue,
+        index
       );
     } else {
       this.calculateAdditionalCostAmounts(
@@ -923,7 +950,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         false,
         productList,
         offerAdditionalCostList,
-        rowData
+        rowData,
+        locationAdditionalCostsList,
+        updatedRow,
+        colDef,
+        newValue,
+        index
       );
     }
   }
@@ -932,7 +964,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     additionalCost,
     productList,
     offerAdditionalCostList,
-    rowData
+    rowData,
+    locationAdditionalCostsList,
+    updatedRow,
+    colDef,
+    newValue,
+    index
   ) {
     if (!additionalCost.priceUomId) {
       return;
@@ -947,7 +984,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         i,
         productList,
         offerAdditionalCostList,
-        rowData
+        rowData,
+        locationAdditionalCostsList,
+        updatedRow,
+        colDef,
+        newValue,
+        index
       );
     }
   }
@@ -958,7 +1000,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     i,
     productList,
     offerAdditionalCostList,
-    rowData
+    rowData,
+    locationAdditionalCostsList,
+    updatedRow,
+    colDef,
+    newValue,
+    index
   ) {
     this.getConvertedUOM(
       prod.productId,
@@ -969,7 +1016,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       i,
       productList,
       offerAdditionalCostList,
-      rowData
+      rowData,
+      locationAdditionalCostsList,
+      updatedRow,
+      colDef,
+      newValue,
+      index
     );
   }
 
@@ -982,7 +1034,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     i,
     productList,
     offerAdditionalCostList,
-    rowData
+    rowData,
+    locationAdditionalCostsList,
+    updatedRow,
+    colDef,
+    newValue,
+    index
   ) {
     let payload = {
       Payload: {
@@ -1005,15 +1062,24 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           false,
           productList,
           offerAdditionalCostList,
-          rowData
+          rowData,
+          locationAdditionalCostsList,
+          updatedRow,
+          colDef,
+          newValue,
+          index
         );
         // this.recalculatePercentAdditionalCosts(offerAdditionalCostList, false);
       }
     } else {
+      this.endpointCount += 1;
+      console.log('Endpoint Count', this.endpointCount);
       this.spotNegotiationService
         .getUomConversionFactor(payload)
         .pipe(finalize(() => {}))
         .subscribe((result: any) => {
+          this.endpointCount -= 1;
+          console.log('After Endpoint Count', this.endpointCount);
           if (typeof result == 'string') {
             this.toastr.error(result);
           } else {
@@ -1029,7 +1095,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 false,
                 productList,
                 offerAdditionalCostList,
-                rowData
+                rowData,
+                locationAdditionalCostsList,
+                updatedRow,
+                colDef,
+                newValue,
+                index
               );
             }
           }
@@ -1045,7 +1116,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     locationAdditionalCostFlag,
     productList,
     offerAdditionalCostList,
-    rowData
+    rowData,
+    locationAdditionalCostsList,
+    updatedRow,
+    colDef,
+    newValue,
+    index
   ) {
     let totalAmount, productComponent;
     if (!additionalCost.costTypeId) {
@@ -1145,6 +1221,19 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       additionalCost.ratePerUom = null;
     }
     console.log(additionalCost);
+
+    if (
+      this.endpointCount == 0 &&
+      index == offerAdditionalCostList.length - 1
+    ) {
+      this.saveAdditionalCosts(
+        offerAdditionalCostList,
+        locationAdditionalCostsList,
+        updatedRow,
+        colDef,
+        newValue
+      );
+    }
   }
 
   /**
