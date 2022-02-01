@@ -1,5 +1,5 @@
 import { SpotNegotiationStoreModel } from './../../../../../store/spot-negotiation.store';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, finalize } from 'rxjs/operators';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {
@@ -29,6 +29,20 @@ import {
 import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.store';
 import { Observable } from 'rxjs';
 import { RemoveCounterpartyComponent } from '../remove-counterparty-confirmation/remove-counterparty-confirmation';
+import { AdditionalCostViewModel } from 'libs/feature/spot-negotiation/src/lib/core/models/additional-costs-model';
+
+export const COMPONENT_TYPE_IDS = {
+  TAX_COMPONENT: 1,
+  PRODUCT_COMPONENT: 2
+};
+
+export const COST_TYPE_IDS = {
+  FLAT: 1,
+  UNIT: 2,
+  PERCENT: 3,
+  RANGE: 4,
+  TOTAL: 5
+};
 
 @Component({
   selector: 'app-spot-negotiation-details',
@@ -222,6 +236,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   rowSelection: string;
   Isspotgridrefresh: boolean;
   CurrentRequestLocationsData: any[];
+  applicableForItems: any = [];
+  additionalCostList: any = [];
+  additionalCostTypes: any = [];
 
   constructor(
     @Inject(DOCUMENT) private _document: HTMLDocument,
@@ -523,7 +540,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           minWidth: 125,
           cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
           cellRendererFramework: AGGridCellRendererV2Component,
-          valueSetter: ({ colDef, data, newValue, event,elementidValue }) => {
+          valueSetter: ({ colDef, data, newValue, event, elementidValue }) => {
             let updatedRow = { ...data };
             let _this = this;
 
@@ -548,24 +565,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               return false;
             }
 
-            // Do calculation here;
-            updatedRow = this.formatRowData(
-              updatedRow,
-              colDef['product'],
-              colDef.field,
-              newValue
-            );
-            // Update the store
-            this.store.dispatch(new EditLocationRow(updatedRow));
+            this.checkAdditionalCost(updatedRow, updatedRow, colDef, newValue);
 
             setTimeout(() => {
               let element = document.getElementById(elementidValue);
-              if(element){
+              if (element) {
                 element.focus();
               }
             }, 300);
-            // Save to the cloud
-            this.saveRowToCloud(updatedRow, colDef['product']);
+
             // setTimeout(() => {
             // //  alert(1)
             //   _this.gridOptions_counterparty.api.selectAll();
@@ -681,6 +689,561 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     };
   }
 
+  saveAdditionalCosts(
+    offerAdditionalCostList,
+    locationAdditionalCostsList,
+    updatedRow,
+    colDef,
+    newValue
+  ) {
+    let payload = {
+      additionalCosts: offerAdditionalCostList.concat(
+        locationAdditionalCostsList
+      )
+    };
+
+    console.log(payload);
+    this.spotNegotiationService
+      .saveOfferAdditionalCosts(payload)
+      .subscribe((res: any) => {
+        if (res.status) {
+          this.getSellerLine(updatedRow, colDef, newValue);
+        } else this.toastr.error('Please try again later.');
+      });
+  }
+
+  getSellerLine(sellerOffers, colDef, newValue) {
+    const groupId = parseFloat(this.route.snapshot.params.spotNegotiationId);
+    const requestLocationSellerId = sellerOffers.id;
+    console.log(groupId);
+    console.log(requestLocationSellerId);
+    this.spotNegotiationService
+      .getPriceDetailsById(groupId, requestLocationSellerId)
+      .subscribe((priceDetailsRes: any) => {
+        this.spinner.hide();
+        let updatedRow = { ...sellerOffers };
+        updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
+        updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
+        for (
+          let i = 0;
+          i < priceDetailsRes.sellerOffers[0].requestOffers.length;
+          i++
+        ) {
+          let offerLine = priceDetailsRes.sellerOffers[0].requestOffers[i];
+          let findElement = _.find(sellerOffers.requestOffers, function(
+            object
+          ) {
+            return object.id == offerLine.id;
+          });
+          if (findElement) {
+            updatedRow.cost = offerLine.cost;
+          }
+        }
+        console.log(updatedRow);
+        // Do calculation here;
+        updatedRow = this.formatRowData(
+          updatedRow,
+          colDef['product'],
+          colDef.field,
+          newValue
+        );
+
+        // Update the store
+        this.store.dispatch(new EditLocationRow(updatedRow));
+
+        // Save to the cloud
+        this.saveRowToCloud(updatedRow, colDef['product']);
+      });
+  }
+
+  checkAdditionalCost(sellerOffers, updatedRow, colDef, newValue) {
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
+    });
+    let requestLocationId = sellerOffers.requestLocationId;
+    let findRequestLocationIndex = _.findIndex(
+      this.currentRequestSmallInfo?.requestLocations,
+      function(object: any) {
+        return object.id == requestLocationId;
+      }
+    );
+    if (findRequestLocationIndex != -1) {
+      let requestLocation = this.currentRequestSmallInfo?.requestLocations[
+        findRequestLocationIndex
+      ];
+      console.log('CurrentLocation');
+      console.log(requestLocation);
+      const payload = {
+        offerId: sellerOffers.requestOffers[0].offerId,
+        requestLocationId: sellerOffers.requestLocationId,
+        isLocationBased: false
+      };
+      this.spinner.show();
+      this.spotNegotiationService
+        .getAdditionalCosts(payload)
+        .subscribe((response: any) => {
+          if (typeof response === 'string') {
+            this.getSellerLine(updatedRow, colDef, newValue);
+          } else {
+            console.log(response);
+            let offerAdditionalCostList = _.cloneDeep(
+              response.offerAdditionalCosts
+            ) as AdditionalCostViewModel[];
+            if (
+              offerAdditionalCostList.length == 0 &&
+              response.locationAdditionalCosts.length == 0
+            ) {
+              this.getSellerLine(updatedRow, colDef, newValue);
+              return;
+            }
+            let {
+              productList,
+              applicableForItems,
+              totalMaxQuantity,
+              maxQuantityUomId
+            } = this.buildApplicableForItems(requestLocation, sellerOffers);
+            console.log(productList);
+            console.log(applicableForItems);
+            console.log(totalMaxQuantity);
+            console.log(maxQuantityUomId);
+            for (let i = 0; i < offerAdditionalCostList.length; i++) {
+              console.log(offerAdditionalCostList[i]);
+              if (offerAdditionalCostList[i].isAllProductsCost) {
+                let cost = offerAdditionalCostList[i];
+                this.onApplicableForChange(
+                  cost,
+                  sellerOffers,
+                  totalMaxQuantity,
+                  maxQuantityUomId
+                );
+                console.log(cost);
+
+                this.additionalCostNameChanged(
+                  cost,
+                  offerAdditionalCostList,
+                  productList,
+                  sellerOffers
+                );
+              }
+            }
+            this.saveAdditionalCosts(
+              offerAdditionalCostList,
+              response.locationAdditionalCosts,
+              updatedRow,
+              colDef,
+              newValue
+            );
+          }
+        });
+    }
+  }
+
+  recalculatePercentAdditionalCosts(
+    additionalCostList,
+    locationAdditionalCostFlag,
+    productList,
+    offerAdditionalCostList,
+    rowData
+  ) {
+    for (let i = 0; i < additionalCostList.length; i++) {
+      if (!additionalCostList[i].isDeleted) {
+        if (additionalCostList[i].costTypeId == COST_TYPE_IDS.PERCENT) {
+          additionalCostList[i].totalAmount = 0;
+          this.calculateAdditionalCostAmounts(
+            additionalCostList[i],
+            locationAdditionalCostFlag,
+            productList,
+            offerAdditionalCostList,
+            rowData
+          );
+        }
+      }
+    }
+  }
+
+  additionalCostNameChanged(
+    additionalCost,
+    offerAdditionalCostList,
+    productList,
+    rowData
+  ) {
+    if (additionalCost.costTypeId == 2) {
+      this.addPriceUomChanged(
+        additionalCost,
+        productList,
+        offerAdditionalCostList,
+        rowData
+      );
+    } else {
+      this.calculateAdditionalCostAmounts(
+        additionalCost,
+        false,
+        productList,
+        offerAdditionalCostList,
+        rowData
+      );
+    }
+  }
+
+  addPriceUomChanged(
+    additionalCost,
+    productList,
+    offerAdditionalCostList,
+    rowData
+  ) {
+    if (!additionalCost.priceUomId) {
+      return;
+    }
+    additionalCost.prodConv = _.cloneDeep([]);
+
+    for (let i = 0; i < productList.length; i++) {
+      let prod = productList[i];
+      this.setConvertedAddCost(
+        prod,
+        additionalCost,
+        i,
+        productList,
+        offerAdditionalCostList,
+        rowData
+      );
+    }
+  }
+
+  setConvertedAddCost(
+    prod,
+    additionalCost,
+    i,
+    productList,
+    offerAdditionalCostList,
+    rowData
+  ) {
+    this.getConvertedUOM(
+      prod.productId,
+      1,
+      prod.uomId,
+      additionalCost.priceUomId,
+      additionalCost,
+      i,
+      productList,
+      offerAdditionalCostList,
+      rowData
+    );
+  }
+
+  getConvertedUOM(
+    productId,
+    quantity,
+    fromUomId,
+    toUomId,
+    additionalCost,
+    i,
+    productList,
+    offerAdditionalCostList,
+    rowData
+  ) {
+    let payload = {
+      Payload: {
+        ProductId: productId,
+        Quantity: quantity,
+        FromUomId: fromUomId,
+        ToUomId: toUomId
+      }
+    };
+
+    if (toUomId == fromUomId) {
+      additionalCost.prodConv[i] = 1;
+      if (
+        additionalCost.priceUomId &&
+        additionalCost.prodConv &&
+        additionalCost.prodConv.length == productList.length
+      ) {
+        this.calculateAdditionalCostAmounts(
+          additionalCost,
+          false,
+          productList,
+          offerAdditionalCostList,
+          rowData
+        );
+        // this.recalculatePercentAdditionalCosts(offerAdditionalCostList, false);
+      }
+    } else {
+      this.spotNegotiationService
+        .getUomConversionFactor(payload)
+        .pipe(finalize(() => {}))
+        .subscribe((result: any) => {
+          if (typeof result == 'string') {
+            this.toastr.error(result);
+          } else {
+            console.log(result);
+            additionalCost.prodConv[i] = _.cloneDeep(result);
+            if (
+              additionalCost.priceUomId &&
+              additionalCost.prodConv &&
+              additionalCost.prodConv.length == productList.length
+            ) {
+              this.calculateAdditionalCostAmounts(
+                additionalCost,
+                false,
+                productList,
+                offerAdditionalCostList,
+                rowData
+              );
+            }
+          }
+        });
+    }
+  }
+
+  /**
+   * Calculates the amount-related fields of an additional cost, as per FSD p. 139: Amount, Extras Amount, Total Amount.
+   */
+  calculateAdditionalCostAmounts(
+    additionalCost,
+    locationAdditionalCostFlag,
+    productList,
+    offerAdditionalCostList,
+    rowData
+  ) {
+    let totalAmount, productComponent;
+    if (!additionalCost.costTypeId) {
+      return additionalCost;
+    }
+    switch (additionalCost.costTypeId) {
+      case COST_TYPE_IDS.FLAT:
+        additionalCost.amount = parseFloat(additionalCost.price);
+        productComponent = this.isProductComponent(additionalCost);
+        break;
+
+      case COST_TYPE_IDS.UNIT:
+        additionalCost.amount = 0;
+        productComponent = this.isProductComponent(additionalCost);
+        if (
+          additionalCost.priceUomId &&
+          additionalCost.prodConv &&
+          additionalCost.prodConv.length == productList.length
+        ) {
+          for (let i = 0; i < productList.length; i++) {
+            let product = productList[i];
+            if (
+              additionalCost.isAllProductsCost ||
+              product.id == additionalCost.requestProductId
+            ) {
+              additionalCost.amount =
+                additionalCost.amount +
+                product.maxQuantity *
+                  additionalCost.prodConv[i] *
+                  parseFloat(additionalCost.price);
+            }
+          }
+        }
+        break;
+
+      case COST_TYPE_IDS.PERCENT:
+        productComponent = this.isProductComponent(additionalCost);
+        if (additionalCost.isAllProductsCost || !productComponent) {
+          totalAmount = this.sumProductAmounts(rowData.requestOffers);
+        } else {
+          let findProductIndex = _.findIndex(rowData.requestOffers, function(
+            object: any
+          ) {
+            return object.requestProductId == additionalCost.requestProductId;
+          });
+          if (findProductIndex != -1) {
+            let product = rowData.requestOffers[findProductIndex];
+            totalAmount = product.amount;
+          }
+        }
+        console.log(productComponent);
+        console.log(totalAmount);
+        if (productComponent) {
+          additionalCost.amount = (totalAmount * additionalCost.price) / 100;
+        } else {
+          if (!locationAdditionalCostFlag) {
+            totalAmount =
+              totalAmount +
+              this.sumProductComponentAdditionalCostAmounts(
+                offerAdditionalCostList
+              );
+          }
+
+          additionalCost.amount =
+            (totalAmount * parseFloat(additionalCost.price)) / 100;
+        }
+        break;
+      case COST_TYPE_IDS.RANGE:
+      case COST_TYPE_IDS.TOTAL:
+        additionalCost.amount = parseFloat(additionalCost.price) || 0;
+        break;
+    }
+
+    if (isNaN(additionalCost.amount)) {
+      additionalCost.amount = null;
+    }
+
+    additionalCost.extraAmount =
+      (additionalCost.extras / 100) * additionalCost.amount;
+
+    if (isNaN(additionalCost.extraAmount)) {
+      additionalCost.extraAmount = null;
+    }
+
+    additionalCost.totalAmount =
+      additionalCost.amount + additionalCost.extraAmount || 0;
+    if (isNaN(additionalCost.totalAmount)) {
+      additionalCost.totalAmount = null;
+    }
+
+    additionalCost.ratePerUom =
+      additionalCost.totalAmount / additionalCost.maxQuantity;
+    if (isNaN(additionalCost.ratePerUom)) {
+      additionalCost.ratePerUom = null;
+    }
+    console.log(additionalCost);
+  }
+
+  /**
+   * Sum the Amount field of all products.
+   */
+  sumProductAmounts(products) {
+    let result = 0;
+    for (let i = 0; i < products.length; i++) {
+      result = result + Number(products[i].amount);
+    }
+    return result;
+  }
+
+  /**
+   * Sum the amounts of all additional costs that are NOT tax component additional costs.
+   */
+  sumProductComponentAdditionalCostAmounts(additionalCostList) {
+    let result = 0;
+    if (!additionalCostList.length) {
+      return;
+    }
+    for (let i = 0; i < additionalCostList.length; i++) {
+      if (!additionalCostList[i].isDeleted) {
+        if (
+          this.isProductComponent(additionalCostList[i]) ||
+          additionalCostList[i].costTypeId !== COST_TYPE_IDS.PERCENT
+        ) {
+          result = result + additionalCostList[i].totalAmount;
+        }
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Checks if the given additional cost belongs
+   * to the ProductComponent category.
+   */
+  isProductComponent(additionalCost) {
+    if (!additionalCost.additionalCostId) {
+      return false;
+    }
+    additionalCost.isTaxComponent = false;
+    if (
+      this.additionalCostTypes[additionalCost.additionalCostId].componentType
+    ) {
+      additionalCost.isTaxComponent = !(
+        this.additionalCostTypes[additionalCost.additionalCostId].componentType
+          .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
+      );
+      if (additionalCost.isTaxComponent) {
+        // console.log("Tax:" + additionalCost.additionalCost.name)
+      } else {
+        additionalCost.isTaxComponent = false;
+      }
+      return (
+        this.additionalCostTypes[additionalCost.additionalCostId].componentType
+          .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
+      );
+    }
+
+    return null;
+  }
+
+  onApplicableForChange(cost, rowData, totalMaxQuantity, maxQuantityUomId) {
+    cost.requestOfferIds = this.getRequestOfferIds(rowData);
+    cost.currencyId = this.getCurrencyId(rowData);
+
+    cost.maxQuantity = totalMaxQuantity;
+    cost.maxQuantityUomId = maxQuantityUomId;
+    console.log(cost);
+  }
+
+  getRequestOfferIds(rowData) {
+    let requestOfferIds = [];
+    for (let i = 0; i < rowData.requestOffers.length; i++) {
+      requestOfferIds.push(rowData.requestOffers[i].id);
+    }
+
+    return requestOfferIds.join(',');
+  }
+
+  getRequestProductIds(rowData) {
+    let requestProductsIds = [];
+
+    for (let i = 0; i < rowData.requestOffers.length; i++) {
+      requestProductsIds.push(rowData.requestOffers[i].requestProductId);
+    }
+
+    return requestProductsIds;
+  }
+
+  getCurrencyId(rowData) {
+    return rowData.requestOffers[0].currencyId;
+  }
+
+  /**
+   * Create Applicable For dropdown values
+   */
+
+  buildApplicableForItems(requestLocation, rowData) {
+    let applicableForItems = [];
+    let productList = [];
+    let applicableForItemsArray = [];
+    let totalMaxQuantity = 0;
+    let maxQuantityUomId = null;
+    requestLocation.requestProducts.forEach((product: any, index) => {
+      if (product.status != 'Stemmed') {
+        let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function(
+          object: any
+        ) {
+          return object.requestProductId == product.id && object.price;
+        });
+        if (findRowDataOfferIndex != -1) {
+          applicableForItemsArray.push({
+            id: product.id,
+            name: product.productName,
+            productId: product.productId
+          });
+
+          totalMaxQuantity = totalMaxQuantity + product.maxQuantity;
+          maxQuantityUomId = product.uomId;
+
+          productList.push(product);
+        }
+      }
+    });
+    if (applicableForItemsArray.length > 1) {
+      const allElement = { id: 0, name: 'All' };
+      applicableForItems = _.cloneDeep(
+        [allElement].concat(applicableForItemsArray)
+      );
+      console.log(applicableForItems);
+    } else {
+      this.applicableForItems = _.cloneDeep(applicableForItemsArray);
+    }
+
+    return {
+      productList: productList,
+      applicableForItems: applicableForItems,
+      totalMaxQuantity,
+      maxQuantityUomId
+    };
+  }
+
   checkHighlight({ product }, requestProductsLength) {
     var smallestTotalPrice = Infinity;
     var smallestOffer = Infinity;
@@ -786,6 +1349,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       this.uomsMap = new Map(data.uoms.map(key => [key.id, key.name]));
     });
 
+    this.getAdditionalCosts();
+
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       if (!this.shouldUpdate({ spotNegotiation })) {
         return null;
@@ -871,6 +1436,36 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.isEnabledView = true;
   }
 
+  getAdditionalCosts() {
+    this.spotNegotiationService
+      .getMasterAdditionalCosts({})
+      .subscribe((response: any) => {
+        if (typeof response === 'string') {
+          this.spinner.hide();
+          this.toastr.error(response);
+        } else {
+          this.additionalCostList = _.cloneDeep(
+            response.payload.filter(e => e.isDeleted == false)
+          );
+          this.createAdditionalCostTypes();
+        }
+      });
+  }
+
+  createAdditionalCostTypes() {
+    for (let i = 0; i < this.additionalCostList.length; i++) {
+      if (
+        typeof this.additionalCostTypes[this.additionalCostList[i].id] ==
+        'undefined'
+      ) {
+        this.additionalCostTypes[this.additionalCostList[i].id] = [];
+      }
+      this.additionalCostTypes[
+        this.additionalCostList[i].id
+      ] = this.additionalCostList[i];
+    }
+  }
+
   dataManupulation() {}
 
   resizeGrid() {
@@ -948,8 +1543,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return row;
   }
 
-  removeCounterpartyAPI(rowData: any, rowIndex: number, gridApi: any){
-
+  removeCounterpartyAPI(rowData: any, rowIndex: number, gridApi: any) {
     this.spinner.show();
     this.spotNegotiationService
       .RemoveCounterparty(rowData.id)
@@ -964,9 +1558,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           this.toastr.success(
             'Counterparty has been removed from negotiation succesfully.'
           );
-          this.store.dispatch(
-            new RemoveCounterparty({ rowId: rowData.id })
-          );
+          this.store.dispatch(new RemoveCounterparty({ rowId: rowData.id }));
           if (res['requestLocationSellers'] && res['sellerOffers']) {
             const futureLocationsRows = this.getLocationRowsWithPriceDetails(
               res['requestLocationSellers'],
@@ -994,56 +1586,63 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         }
       });
   }
-  isStemmedproduct(rowData){
+  isStemmedproduct(rowData) {
     const locations = this.store.selectSnapshot(
       (state: SpotNegotiationStoreModel) => {
         return state['spotNegotiation'].locations;
       }
     );
-      for (let index = 0; index < rowData.requestOffers.length; index++) {
-        let selectedlocations =locations.filter(
-              row => row.locationId == rowData.locationId
-            );
-              if(selectedlocations.length != 0 && selectedlocations[0].requestProducts){
-              let locationsprod = selectedlocations[0].requestProducts.filter(
-              row1 => row1.id == rowData.requestOffers[index].requestProductId
-              );
-              if(locationsprod.length != 0){
-                if(locationsprod[0].status && locationsprod[0].status == 'Stemmed' && rowData.requestOffers[index].price != null){
-                  return true;
-                }
-              }
+    for (let index = 0; index < rowData.requestOffers.length; index++) {
+      let selectedlocations = locations.filter(
+        row => row.locationId == rowData.locationId
+      );
+      if (
+        selectedlocations.length != 0 &&
+        selectedlocations[0].requestProducts
+      ) {
+        let locationsprod = selectedlocations[0].requestProducts.filter(
+          row1 => row1.id == rowData.requestOffers[index].requestProductId
+        );
+        if (locationsprod.length != 0) {
+          if (
+            locationsprod[0].status &&
+            locationsprod[0].status == 'Stemmed' &&
+            rowData.requestOffers[index].price != null
+          ) {
+            return true;
+          }
         }
       }
-      return false
+    }
+    return false;
   }
   removeCounterpartyRowClicked(rowData: any, rowIndex: number, gridApi: any) {
-  if(rowData.requestOffers != undefined){
-    if(this.isStemmedproduct(rowData)){
-      this.toastr.warning(
-        'Counterparty has a stemmed order and cannot be removed from negotiation.'
-      );
-      return
-    }else{
-      const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
-        width: '600px',
-        data: {
-          sellerName: rowData.sellerCounterpartyName,
-          isRFQSent:
-            rowData.requestOffers?.filter(ro => !ro.isRfqskipped).length > 0
-              ? true
-              : false
-        }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-         this.removeCounterpartyAPI(rowData, rowIndex, gridApi);
-        }
-      });
+    if (rowData.requestOffers != undefined) {
+      if (this.isStemmedproduct(rowData)) {
+        this.toastr.warning(
+          'Counterparty has a stemmed order and cannot be removed from negotiation.'
+        );
+        return;
+      } else {
+        const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
+          width: '600px',
+          data: {
+            sellerName: rowData.sellerCounterpartyName,
+            isRFQSent:
+              rowData.requestOffers?.filter(ro => !ro.isRfqskipped).length > 0
+                ? true
+                : false
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.removeCounterpartyAPI(rowData, rowIndex, gridApi);
+          }
+        });
+      }
+    } else {
+      this.removeCounterpartyAPI(rowData, rowIndex, gridApi);
     }
-  }else{
-   this.removeCounterpartyAPI(rowData, rowIndex, gridApi);
-  }
   }
 
   onCostChanged(locationRows: any) {
@@ -1081,7 +1680,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         index < priceDetailsArray.length &&
         row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
+        row.requestOffers = priceDetailsArray[
+          index
+        ].requestOffers?.sort((a, b) =>
+          a.requestProductId > b.requestProductId ? 1 : -1
+        );
         row.isSelected = priceDetailsArray[index].isSelected;
         // row.physicalSupplierCounterpartyId =
         //   priceDetailsArray[index].physicalSupplierCounterpartyId;
@@ -1104,7 +1707,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       // We found something
       if (detailsForCurrentRow.length > 0) {
-        row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
+        row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
+          (a, b) => (a.requestProductId > b.requestProductId ? 1 : -1)
+        );
         row.isSelected = detailsForCurrentRow[0].isSelected;
         // row.physicalSupplierCounterpartyId =
         //   detailsForCurrentRow[0].physicalSupplierCounterpartyId;
