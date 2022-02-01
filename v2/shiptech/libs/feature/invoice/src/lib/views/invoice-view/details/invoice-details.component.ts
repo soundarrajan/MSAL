@@ -2222,7 +2222,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.chipData[1].statusColorCode = this.statusColorCode;
 
     if (ivs) {
-      this.chipData[2].Data = ivs.invoiceAmountGrandTotal
+      this.chipData[2].Data = ivs.invoiceAmountGrandTotal !== null
         ? `${this.amountFormatValue(
             ivs.invoiceAmountGrandTotal?.toString()
           )} ${currencyCode}`
@@ -2240,7 +2240,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.chipData[5].Data = ivs?.provisionalInvoiceNo
         ? ivs?.provisionalInvoiceNo?.toString()
         : '';
-      this.chipData[6].Data = ivs?.provisionalInvoiceAmount
+      this.chipData[6].Data = ivs?.provisionalInvoiceAmount !== null
         ? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()) +
           ' ' +
           currencyCode
@@ -2774,7 +2774,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   amountFormatValue(value) {
-    if (typeof value == 'undefined' || !value) {
+    if (typeof value == 'undefined' || value == null) {
       return null;
     }
     let amountPrecision = this.tenantService.amountPrecision;

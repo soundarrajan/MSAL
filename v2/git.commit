@@ -1,13 +1,11 @@
-﻿commit e0e8420e23025e9a54066703543eccf8fc9d4817
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Mon Jan 31 10:06:39 2022 +0000
+﻿commit 57bc24d8298fc10dc34bf9aa64a45c3c3cd0a084
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Tue Feb 1 10:40:17 2022 +0000
 
-    Merged PR 15684: 38288, 38046 - SO After BunkerSave events
+    Merged PR 15706: Change display for null values in invoice summary
     
-    38288, 38046 - SO After BunkerSave events
-    1. To fetch BP & Req. comments if there is change in SOD comment section
-    2. To fetch currentROB if saved with Vessel role
+    Change display for null values in invoice summary
     
-    Related work items: #38046, #38288
+    Related work items: #38259
 
 branch: master
