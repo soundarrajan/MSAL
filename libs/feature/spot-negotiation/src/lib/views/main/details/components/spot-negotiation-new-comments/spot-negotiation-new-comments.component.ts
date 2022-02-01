@@ -163,6 +163,7 @@ export class SpotNegotiationNewCommentsComponent
           this.checkEditableFields();
         } else {
           console.log('Eroare');
+          this.toastr.error('An error has occurred!');
         }
       });
   }
