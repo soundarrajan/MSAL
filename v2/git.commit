@@ -1,11 +1,11 @@
-﻿commit 57bc24d8298fc10dc34bf9aa64a45c3c3cd0a084
+﻿commit de7aa18d54861c58de5f751c1762a705af7b263d
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Feb 1 10:40:17 2022 +0000
+Date:   Tue Feb 1 12:06:49 2022 +0000
 
-    Merged PR 15706: Change display for null values in invoice summary
+    Merged PR 15709: Disable loading spinner for certain contract screen fileds
     
-    Change display for null values in invoice summary
+    Disable loading spinner for certain contract screen fileds
     
-    Related work items: #38259
+    Related work items: #38307
 
 branch: master
