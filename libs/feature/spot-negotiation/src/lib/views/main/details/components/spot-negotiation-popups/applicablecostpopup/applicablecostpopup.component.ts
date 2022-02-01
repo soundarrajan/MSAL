@@ -69,6 +69,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   requestLocation: any;
   sellers: any;
   saveButtonClicked: boolean = false;
+  invalidCostId: number;
 
   constructor(
     public dialogRef: MatDialogRef<ApplicablecostpopupComponent>,
@@ -171,6 +172,10 @@ export class ApplicablecostpopupComponent implements OnInit {
   saveLocationAdditionalCosts() {
     if (!this.enableSave) {
       this.toastr.warning('No changes are made to perform save.');
+      return;
+    }
+    if(this.invalidCostId){
+      this.toastr.error('Range/Total cost cannot be saved due to request quantity is greater than the defined cost quantity.')
       return;
     }
 
@@ -280,6 +285,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   onCostSelectionChange(selectedCostId: number, selectedIndex: number) {
+    this.invalidCostId = 0;
     let cost = this.locationBasedCosts[selectedIndex];
     const selectedCost = this.locationCosts.find((cost: any) => {
       return cost.id === selectedCostId;
@@ -352,6 +358,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     selectedApplicableForId: number,
     selectedIndex: number
   ) {
+    this.invalidCostId = 0;
     let cost = this.locationBasedCosts[selectedIndex];
     cost.requestProductId =
       selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
@@ -571,6 +578,9 @@ export class ApplicablecostpopupComponent implements OnInit {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
+          if(response.price === 0){
+            this.invalidCostId = cost.locationAdditionalCostId;
+          }
           cost.price = response.price;
           cost.currencyId = response.currencyId;
           cost.amount = response.price;
@@ -707,6 +717,9 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   removeLocationCost(key: number) {
+    if(this.locationBasedCosts[key].locationAdditionalCostId === this.invalidCostId){
+      this.invalidCostId = 0;
+    }
     if (this.locationBasedCosts[key].id) {
       this.locationBasedCosts[key].isDeleted = true;
     } else {
