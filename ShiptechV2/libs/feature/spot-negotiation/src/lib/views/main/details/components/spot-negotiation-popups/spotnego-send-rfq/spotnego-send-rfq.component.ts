@@ -30,7 +30,6 @@ export class SpotnegoSendRfqComponent implements OnInit {
   }
 
   public toggleCheckbox(checkbox: any, item: any): void {
-    debugger;
     if (checkbox.checked) {
       item.selected = true;
     } else {

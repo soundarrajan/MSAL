@@ -1,18 +1,141 @@
-.email-preview-popup .email-container .ccClass:hover .close-icon, .email-preview-popup .email-container .recipientClass:hover .close-icon {
-    display: block;
-    cursor: pointer;
-    padding-right: 5px;
-    content: url("data:image/svg+xml;charset=utf-8,%3Csvg width='12' height='12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12A6 6 0 106 0a6 6 0 000 12z' fill='%23F48484'/%3E%3Cpath d='M11.959 6.688L8.622 3.352 3.52 8.64l3.303 3.303a6.001 6.001 0 005.136-5.256z' fill='%23F48484'/%3E%3Cpath d='M8.305 8.708a.468.468 0 01-.332-.137L3.431 4.028a.468.468 0 11.662-.663l4.543 4.543a.468.468 0 01-.331.8z' fill='%23fff'/%3E%3Cpath d='M3.761 8.707a.468.468 0 01-.331-.8l4.543-4.543a.468.468 0 11.662.663L4.093 8.57a.467.467 0 01-.332.137z' fill='%23fff'/%3E%3C/svg%3E");
+.email-preview-popup .email-container .ccClass:hover .close-icon,
+.email-preview-popup .email-container .recipientClass:hover .close-icon {
+  display: block;
+  cursor: pointer;
+  padding-right: 5px;
+  content: url("data:image/svg+xml;charset=utf-8,%3Csvg width='12' height='12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 12A6 6 0 106 0a6 6 0 000 12z' fill='%23F48484'/%3E%3Cpath d='M11.959 6.688L8.622 3.352 3.52 8.64l3.303 3.303a6.001 6.001 0 005.136-5.256z' fill='%23F48484'/%3E%3Cpath d='M8.305 8.708a.468.468 0 01-.332-.137L3.431 4.028a.468.468 0 11.662-.663l4.543 4.543a.468.468 0 01-.331.8z' fill='%23fff'/%3E%3Cpath d='M3.761 8.707a.468.468 0 01-.331-.8l4.543-4.543a.468.468 0 11.662.663L4.093 8.57a.467.467 0 01-.332.137z' fill='%23fff'/%3E%3C/svg%3E");
 }
 
-.email-preview-popup .email-container .ccClass .close-icon, .email-preview-popup .email-container .recipientClass .close-icon{
-    display: none;
+.email-preview-popup .email-container .ccClass .close-icon,
+.email-preview-popup .email-container .recipientClass .close-icon {
+  display: none;
 }
 :host ::ng-deep .ck-editor__editable_inline {
+  max-height: 450px !important;
+}
+.custome-border {
+  border: none;
+  border-radius: 5px;
+}
 
-    max-height: 450px !important;
-   
-   }
-   .custome-border {
-    border: none; border-radius: 5px;
-   }
+.documents-container {
+  background-color: white;
+}
+
+.drag-drop-upload-v2 {
+  margin: 0px;
+  padding: 15px !important;
+}
+
+.mid-blue-button {
+  background: #1d9fff;
+  height: 27px;
+  line-height: 21px !important;
+  border-radius: 5px !important;
+  font-weight: 400;
+  font-size: 14px;
+  color: #fff !important;
+  border: none;
+}
+
+.cust-header-btn {
+  cursor: pointer;
+  width: 115px;
+  height: 30px;
+  margin: 0 5px;
+}
+
+.container-modal {
+  background: #364150;
+  border: 1px solid #364150;
+  box-sizing: border-box;
+  box-shadow: 0 6px 7px rgb(0 0 0 / 25%);
+  padding: 10px;
+}
+
+.container-modal-expand {
+  background: #364150;
+  border: 1px solid #364150;
+  box-sizing: border-box;
+  box-shadow: 0 6px 7px rgb(0 0 0 / 25%);
+  padding: 10px;
+  width: 50vw;
+}
+
+.header-container {
+  display: inline-flex;
+  padding-right: unset !important;
+  padding-left: unset !important;
+}
+
+.select-container {
+  height: 40px;
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  border-radius: 4px;
+  display: inline-flex;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.search-lookup {
+  width: 15%;
+  padding: 12px;
+}
+
+.search-input {
+  position: relative;
+  height: 40px;
+  width: 90%;
+  float: right;
+  color: #fff;
+}
+
+.expand-img {
+  float: right;
+}
+
+input.search-input::placeholder {
+  color: white !important;
+}
+
+.document-type-container-header {
+  padding-top: 10px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #fff;
+}
+
+.mat-menu-panel {
+  max-width: max-content !important;
+  max-height: 50vh;
+}
+
+.file-name {
+  margin-top: 10px;
+}
+
+.file-list-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e0e1e4;
+  border-radius: 2px;
+  color: #4a71c2;
+  padding: 5px;
+  margin: 0px 5px;
+}
+
+.email-preview-popup .email-container .section2 .cust-input-field {
+  padding: 5px 7px;
+  width: 156px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  display: flex;
+  text-overflow: ellipsis;
+}

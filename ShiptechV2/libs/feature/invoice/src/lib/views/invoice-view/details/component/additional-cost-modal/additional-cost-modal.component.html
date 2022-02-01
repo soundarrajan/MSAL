@@ -300,7 +300,7 @@
           <td class="padding" style="max-width: initial;min-width: 200px">
             <div class="non-editable-container">
               <div style="float: left;">
-                {{ quantityFormatValue(additionalCost.value.estimatedRate) }}
+                {{ priceFormatValue(additionalCost.value.estimatedRate) }}
               </div>
               <div style="float: right;">
                 {{ formValues.invoiceRateCurrency.code }} /
@@ -360,7 +360,11 @@
                       [(ngModel)]="additionalCost.value.invoiceQuantity"
                       (keypress)="keyPressNumber($event)"
                       autocomplete="off"
-                      (ngModelChange)="
+                      (blur)="
+                        additionalCost.value.invoiceQuantity = roundDownValue(
+                          additionalCost.value.invoiceQuantity,
+                          'quantity'
+                        );
                         invoiceConvertUom('cost', additionalCost.key)
                       "
                       quantityFormat
@@ -435,8 +439,12 @@
                       autocomplete="off"
                       [(ngModel)]="additionalCost.value.invoiceRate"
                       (keypress)="keyPressNumber($event)"
-                      quantityFormat
-                      (ngModelChange)="
+                      priceFormat
+                      (blur)="
+                        additionalCost.value.invoiceRate = roundDownValue(
+                          additionalCost.value.invoiceRate,
+                          'price'
+                        );
                         invoiceConvertUom('cost', additionalCost.key)
                       "
                     />

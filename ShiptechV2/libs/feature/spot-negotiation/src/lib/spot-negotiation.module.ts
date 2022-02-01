@@ -55,6 +55,7 @@ import { MarketpricehistorypopupComponent } from './views/main/details/component
 import { LocPanDataComponent } from './views/main/details/components/loc-pan-data/loc-pan-data.component';
 import { ApplicablecostpopupComponent } from './views/main/details/components/spot-negotiation-popups/applicablecostpopup/applicablecostpopup.component';
 import { BestcontractpopupComponent } from './views/main/details/components/spot-negotiation-popups/bestcontractpopup/bestcontractpopup.component';
+import { ConfirmdialogComponent } from './views/main/details/components/spot-negotiation-popups/confirmdialog/confirmdialog.component';
 import { SpotNegotiationNewCommentsComponent } from './views/main/details/components/spot-negotiation-new-comments/spot-negotiation-new-comments.component';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
@@ -89,10 +90,15 @@ import { NegotiationToolbarComponent } from './views/main/details/components/too
 import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.module';
 import { NegotiationDocumentsComponent } from './views/main/details/components/negotiation-documents/negotiation-documents.component';
 import { NegotiationReportComponent } from './views/main/details/components/negotiation-report/negotiation-report.component';
+import { FileUploadModule } from 'primeng/fileupload';
+import { AGGridCellV2RendererComponent } from './core/ag-grid/ag-grid-cell-renderer-v2.component';
+import { AGGridCellActionsDocumentsComponent } from './core/ag-grid/ag-grid-cell-actions-documents.component';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 @NgModule({
   imports: [
     CommonModule,
+    TabMenuModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -131,7 +137,8 @@ import { NegotiationReportComponent } from './views/main/details/components/nego
     CKEditorModule,
     DeliveryModule,
     DeliveryRoutingModule,
-    WunderBarModule
+    WunderBarModule,
+    FileUploadModule
   ],
   declarations: [
     MainSpotNegotiationComponent,
@@ -157,6 +164,7 @@ import { NegotiationReportComponent } from './views/main/details/components/nego
     LocPanDataComponent,
     ApplicablecostpopupComponent,
     BestcontractpopupComponent,
+    ConfirmdialogComponent,
     SpotNegotiationNewCommentsComponent,
     NegotiationToolbarComponent,
 
@@ -164,6 +172,8 @@ import { NegotiationReportComponent } from './views/main/details/components/nego
     AGGridCellRendererComponent,
     AGGridCellRendererV2Component,
     ShiptechCustomHeaderGroup,
+    AGGridCellV2RendererComponent,
+    AGGridCellActionsDocumentsComponent,
 
     CustomHeaderGroupNotify,
     CustomHeaderGroup,
@@ -188,12 +198,15 @@ import { NegotiationReportComponent } from './views/main/details/components/nego
   entryComponents: [
     MainSpotNegotiationComponent,
     AGGridCellRendererComponent,
+    AGGridCellV2RendererComponent,
+    AGGridCellActionsDocumentsComponent,
     AGGridCellRendererV2Component,
     AGGridCellActionsComponent,
     ShiptechCustomHeaderGroup,
     SellerratingpopupComponent,
     ApplicablecostpopupComponent,
     BestcontractpopupComponent,
+    ConfirmdialogComponent,
     SpotnegoOfferpricehistoryComponent,
     MarketpricehistorypopupComponent,
     AvailabletermcontractspopupComponent,

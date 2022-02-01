@@ -95,6 +95,7 @@ export class AppComponent implements OnInit {
         event instanceof NavigationError
       ) {
         this.isLoading = false;
+        console.log("****** Event : ", event)
         this.document.body.classList = [event.url.replace(/\//g, '-')];
         setTimeout(() => {
           if (!this.loggedBootTime) {
@@ -123,6 +124,8 @@ export class AppComponent implements OnInit {
         delete (<any>window).lastCall;
         delete (<any>window).visibleLoader;
         delete (<any>window).openedScreenLoaders;
+        (<any>window).tabBecameInactive = false;
+
       }
     });
   }

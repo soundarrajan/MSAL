@@ -25,6 +25,7 @@ import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/se
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { SetTenantConfigurations } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
+import _ from 'lodash';
 
 @Component({
   selector: 'shiptech-negotiation-toolbar',
@@ -38,6 +39,7 @@ export class NegotiationToolbarComponent
   activeTab: any;
   negotiationId: any;
   disabled: boolean;
+  tenantConfiguration: any;
 
   @Input('activeTab') set _setActiveTab(activeTab) {
     this.activeTab = activeTab;
@@ -77,63 +79,60 @@ export class NegotiationToolbarComponent
       } else {
         console.log(res);
         // Populate Store
-        res.tenantConfiguration.reportUrl =
-          'https://reports.shiptech.com/Home/EmbedReportWorkspace?groupid=a8810a15-07b0-4693-9087-ddc50ebac9e5&id=Vessel Schedule Report';
 
         this.store.dispatch(
           new SetTenantConfigurations(res.tenantConfiguration)
         );
-        if (!res.tenantConfiguration.isNegotiationReport) {
-          this.menuItems[1].disabled = true;
-        }
+        this.tenantConfiguration = _.cloneDeep(res.tenantConfiguration);
+        this.createMenuItems();
       }
     });
   }
 
   createMenuItems() {
+    const routeLinkToNegotiationDetails = [
+      '/',
+      KnownPrimaryRoutes.SpotNegotiation,
+      this.negotiationId
+    ];
+    let disabled = !this.tenantConfiguration?.isNegotiationReport;
     this.menuItems = [
       {
-        label: 'Negotiation',
-        url: parseFloat(this.negotiationId)
-          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}`
-          : null,
-        routerLinkActiveOptions: { exact: true },
-        styleClass: 'tab',
-        activeTab: false,
-        disabled: false
+        label: 'Main Page',
+        routerLink: [
+          ...routeLinkToNegotiationDetails,
+          KnownSpotNegotiationRoutes.details
+        ],
+        routerLinkActiveOptions: { exact: true }
       },
       {
         label: 'Report',
-        url: parseFloat(this.negotiationId)
-          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/report`
-          : null,
+        routerLink: disabled
+          ? null
+          : [
+              ...routeLinkToNegotiationDetails,
+              KnownSpotNegotiationRoutes.reportPath
+            ],
         routerLinkActiveOptions: { exact: true },
-        styleClass: 'tab',
-        activeTab: this.activeTab == 'report' ? true : false,
-        disabled: false
+        disabled
       },
       {
         label: 'Documents',
-        url: parseFloat(this.negotiationId)
-          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/documents`
-          : null,
-        routerLinkActiveOptions: { exact: true },
-        styleClass: 'tab',
-        activeTab: this.activeTab == 'documents' ? true : false,
-        disabled: false
+        routerLink: [
+          ...routeLinkToNegotiationDetails,
+          KnownSpotNegotiationRoutes.documentsPath
+        ],
+        routerLinkActiveOptions: { exact: true }
       },
       {
         label: 'Email Log',
-        url: parseFloat(this.negotiationId)
-          ? `${this.baseOrigin}/v2/group-of-requests/${this.negotiationId}/email-log`
-          : null,
-        routerLinkActiveOptions: { exact: true },
-        styleClass: 'tab',
-        activeTab: this.activeTab == 'email' ? true : false,
-        disabled: false
+        routerLink: [
+          ...routeLinkToNegotiationDetails,
+          KnownSpotNegotiationRoutes.emailLog
+        ],
+        routerLinkActiveOptions: { exact: true }
       }
     ];
-
     this.changeDetectorRef.detectChanges();
   }
 

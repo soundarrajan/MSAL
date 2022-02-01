@@ -1,0 +1,17 @@
+<div id="confirmation-popup">
+    <div class="close-btn">
+      <mat-icon class="icon" (click)="close()">close</mat-icon>
+    </div>
+    <div class="warning-title"><span class="warning-icon-yellow" ></span><span style="padding-left: 5px;">Warning</span></div>
+    <div class="warning-text" style="text-align: justify;">{{message}}</div>  
+  <div class="action-btn">
+    <button class="confirm-button" [mat-dialog-close]="true">
+      <span>Yes</span>
+    </button>
+  <!-- </div>
+  <div class="action-btn"> -->
+    <button class="cancel-button mr-4" [mat-dialog-close]="false">
+      <span>No</span>
+    </button>
+  </div>  
+</div>

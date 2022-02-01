@@ -198,6 +198,7 @@
                           priceFormat
                           [(ngModel)]="offerAdditionalCost.price"
                           (ngModelChange)="
+                          checkIfItsEmptyString(j, 'price');
                             additionalCostNameChanged(
                               offerAdditionalCost,
                               true,
@@ -303,6 +304,7 @@
                       (keypress)="keyPressNumber($event)"
                       [(ngModel)]="offerAdditionalCost.extras"
                       (ngModelChange)="
+                        checkIfItsEmptyString(j, 'extras');
                         additionalCostNameChanged(
                           offerAdditionalCost,
                           true,
@@ -406,7 +408,10 @@
                         *ngFor="let option of additionalCostList"
                         [value]="option.id"
                       >
-                        {{ option.name }}
+                       <div *ngIf = "option.isLocationBased">
+                         {{ option.CostDescription }}
+                        </div>
+                        {{ option.Name}}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>

@@ -8,6 +8,23 @@ import { ObservableException } from '@shiptech/core/utils/decorators/observable-
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { Router } from '@angular/router';
 import { SpotNegotiationApi } from './api/spot-negotiation-api';
+import {
+  IDocumentsCreateUploadRequest,
+  IDocumentsCreateUploadResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import {
+  IDocumentsDeleteRequest,
+  IDocumentsDeleteResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
+import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
+import {
+  IDocumentsUpdateIsVerifiedRequest,
+  IDocumentsUpdateIsVerifiedResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
+import {
+  IDocumentsUpdateNotesRequest,
+  IDocumentsUpdateNotesResponse
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
 
 @Injectable()
 export class SpotNegotiationService extends BaseStoreService
@@ -345,13 +362,95 @@ export class SpotNegotiationService extends BaseStoreService
     );
   }
 
-    /**
+  /**
    * @param requestId
    *
    */
   @ObservableException()
   getBestContract(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.getBestContract(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  getDocumentTypeList(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getDocumentTypeList(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  uploadFile(
+    payload: IDocumentsCreateUploadRequest
+  ): Observable<IDocumentsCreateUploadResponse> {
+    return this.spotNegotiationApi.uploadFile(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  deleteDocument(
+    payload: IDocumentsDeleteRequest
+  ): Observable<IDocumentsDeleteResponse> {
+    return this.spotNegotiationApi.deleteDocument(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  updateIsVerifiedDocument(
+    payload: IDocumentsUpdateIsVerifiedRequest
+  ): Observable<IDocumentsUpdateIsVerifiedResponse> {
+    return this.spotNegotiationApi.updateIsVerifiedDocument(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  updateNotes(
+    payload: IDocumentsUpdateNotesRequest
+  ): Observable<IDocumentsUpdateNotesResponse> {
+    return this.spotNegotiationApi.updateNotes(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  getDocuments(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getDocuments(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  downloadDocument(payload: IDocumentsDownloadRequest): Observable<Blob> {
+    return this.spotNegotiationApi.downloadDocument(payload);
+  }
+
+  /**
+   * @param payload
+   */
+  @ObservableException()
+  delinkRequest(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.delinkRequest(payload);
+  }
+
+  @ObservableException()
+  getExchangeRate(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getExchangeRate(payload);
+  }
+
+  @ObservableException()
+  applyExchangeRate(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.applyExchangeRate(payload);
   }
 
   ngOnDestroy(): void {

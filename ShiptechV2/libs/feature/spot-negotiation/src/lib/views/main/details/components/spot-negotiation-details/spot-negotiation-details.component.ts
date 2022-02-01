@@ -349,7 +349,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               amount: productDetails.amount,
               targetDifference: productDetails.targetDifference,
               price: productDetails.price,
-              cost: productDetails.cost
+              cost: productDetails.cost,
+              isOfferPriceCopied: false
             }
           ]
         }
@@ -522,7 +523,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           minWidth: 125,
           cellClass: 'hoverCell grey-opacity-cell pad-lr-0',
           cellRendererFramework: AGGridCellRendererV2Component,
-          valueSetter: ({ colDef, data, newValue, event }) => {
+          valueSetter: ({ colDef, data, newValue, event,elementidValue }) => {
             let updatedRow = { ...data };
             let _this = this;
 
@@ -541,7 +542,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 'Physical supplier is mandatory for quoting the price.'
               );
               event.target.value = '';
-              event.target.focus();
+              setTimeout(() => {
+                event.target.focus();
+              }, 300);
               return false;
             }
 
@@ -554,6 +557,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             );
             // Update the store
             this.store.dispatch(new EditLocationRow(updatedRow));
+
+            setTimeout(() => {
+              let element = document.getElementById(elementidValue);
+              if(element){
+                element.focus();
+              }
+            }, 300);
             // Save to the cloud
             this.saveRowToCloud(updatedRow, colDef['product']);
             // setTimeout(() => {
@@ -854,7 +864,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       });
 
       // Detect change and update the ui
-      this.changeDetector.detectChanges();
+      if (!this.changeDetector['destroyed']) {
+        this.changeDetector.detectChanges();
+      }
     });
     this.isEnabledView = true;
   }
@@ -936,79 +948,119 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return row;
   }
 
+  removeCounterpartyAPI(rowData: any, rowIndex: number, gridApi: any){
+
+    this.spinner.show();
+    this.spotNegotiationService
+      .RemoveCounterparty(rowData.id)
+      .subscribe((res: any) => {
+        this.spinner.hide();
+        if (res.status) {
+          let dataRows = [];
+          gridApi.forEachNode(node => dataRows.push(node.data));
+          dataRows = dataRows.splice(rowIndex, 1);
+          //gridApi.applyTransaction({ remove: dataRows });
+          gridApi.updateRowData({ remove: dataRows });
+          this.toastr.success(
+            'Counterparty has been removed from negotiation succesfully.'
+          );
+          this.store.dispatch(
+            new RemoveCounterparty({ rowId: rowData.id })
+          );
+          if (res['requestLocationSellers'] && res['sellerOffers']) {
+            const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+              res['requestLocationSellers'],
+              res['sellerOffers']
+            );
+            this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+          }
+          if (res.isGroupDeleted) {
+            const baseOrigin = new URL(window.location.href).origin;
+            window.open(
+              `${baseOrigin}/#/edit-request/${rowData.requestId}`,
+              '_self'
+            );
+          }
+        } else {
+          if (res.isRequestStemmed) {
+            this.toastr.warning(
+              'Counterparty has a stemmed order and cannot be removed from negotiation.'
+            );
+          } else if (res.message && res.message.length > 0) {
+            this.toastr.warning(res.message);
+          } else {
+            this.toastr.error(res);
+          }
+        }
+      });
+  }
+  isStemmedproduct(rowData){
+    const locations = this.store.selectSnapshot(
+      (state: SpotNegotiationStoreModel) => {
+        return state['spotNegotiation'].locations;
+      }
+    );
+      for (let index = 0; index < rowData.requestOffers.length; index++) {
+        let selectedlocations =locations.filter(
+              row => row.locationId == rowData.locationId
+            );
+              if(selectedlocations.length != 0 && selectedlocations[0].requestProducts){
+              let locationsprod = selectedlocations[0].requestProducts.filter(
+              row1 => row1.id == rowData.requestOffers[index].requestProductId
+              );
+              if(locationsprod.length != 0){
+                if(locationsprod[0].status && locationsprod[0].status == 'Stemmed' && rowData.requestOffers[index].price != null){
+                  return true;
+                }
+              }
+        }
+      }
+      return false
+  }
   removeCounterpartyRowClicked(rowData: any, rowIndex: number, gridApi: any) {
-    const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
-      width: '600px',
-      data: {
-        sellerName: rowData.sellerCounterpartyName,
-        isRFQSent:
-          rowData.requestOffers?.filter(ro => !ro.isRfqskipped).length > 0
-            ? true
-            : false
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.spinner.show();
-        this.spotNegotiationService
-          .RemoveCounterparty(rowData.id)
-          .subscribe((res: any) => {
-            this.spinner.hide();
-            if (res.status) {
-              let dataRows = [];
-              gridApi.forEachNode(node => dataRows.push(node.data));
-              dataRows = dataRows.splice(rowIndex, 1);
-              //gridApi.applyTransaction({ remove: dataRows });
-              gridApi.updateRowData({ remove: dataRows });
-              this.toastr.success(
-                'Counterparty has been removed from negotiation succesfully.'
-              );
-              this.store.dispatch(
-                new RemoveCounterparty({ rowId: rowData.id })
-              );
-              if (res['requestLocationSellers'] && res['sellerOffers']) {
-                const futureLocationsRows = this.getLocationRowsWithPriceDetails(
-                  res['requestLocationSellers'],
-                  res['sellerOffers']
-                );
-                this.store.dispatch(new SetLocationsRows(futureLocationsRows));
-              }
-              if (res.isGroupDeleted) {
-                const baseOrigin = new URL(window.location.href).origin;
-                window.open(
-                  `${baseOrigin}/#/edit-request/${rowData.requestId}`,
-                  '_self'
-                );
-              }
-            } else {
-              if (res.isRequestStemmed) {
-                this.toastr.warning(
-                  'Counterparty has a stemmed order and cannot be removed from negotiation.'
-                );
-              } else if (res.message && res.message.length > 0) {
-                this.toastr.warning(res.message);
-              } else {
-                this.toastr.error(res);
-              }
-            }
-          });
-      }
-    });
+  if(rowData.requestOffers != undefined){
+    if(this.isStemmedproduct(rowData)){
+      this.toastr.warning(
+        'Counterparty has a stemmed order and cannot be removed from negotiation.'
+      );
+      return
+    }else{
+      const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
+        width: '600px',
+        data: {
+          sellerName: rowData.sellerCounterpartyName,
+          isRFQSent:
+            rowData.requestOffers?.filter(ro => !ro.isRfqskipped).length > 0
+              ? true
+              : false
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+         this.removeCounterpartyAPI(rowData, rowIndex, gridApi);
+        }
+      });
+    }
+  }else{
+   this.removeCounterpartyAPI(rowData, rowIndex, gridApi);
+  }
   }
 
-  onCostChanged(locationRows: any){
+  onCostChanged(locationRows: any) {
     // Get current id from url and make a request with that data.
     const groupId = this.route.snapshot.params.spotNegotiationId;
     let rows = _.cloneDeep(locationRows);
-    this.spotNegotiationService.getPriceDetails(groupId).subscribe((res:any) => {
-      if (res['sellerOffers']) {
-        const futureLocationsRows = this.getLocationRowsWithPriceDetails(
-          rows,
-          res['sellerOffers']
-        );
-        this.store.dispatch(new SetLocationsRows(futureLocationsRows));
-      }
-    });
+    this.spotNegotiationService
+      .getPriceDetails(groupId)
+      .subscribe((res: any) => {
+        if (res['sellerOffers']) {
+          const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+            rows,
+            res['sellerOffers']
+          );
+          this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        }
+      });
   }
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
@@ -1029,15 +1081,17 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         index < priceDetailsArray.length &&
         row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
-        row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
         row.isSelected = priceDetailsArray[index].isSelected;
-        row.physicalSupplierCounterpartyId =
-          priceDetailsArray[index].physicalSupplierCounterpartyId;
-        if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
-          row.physicalSupplierCounterpartyName = counterpartyList.find(
-            x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
-          ).displayName;
-        }
+        // row.physicalSupplierCounterpartyId =
+        //   priceDetailsArray[index].physicalSupplierCounterpartyId;
+        // if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
+        //   row.physicalSupplierCounterpartyName = counterpartyList.find(
+        //     x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
+        //   ).displayName;
+        // }
+        row.totalOffer = priceDetailsArray[index].totalOffer;
+        row.totalCost = priceDetailsArray[index].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
 
         return row;
@@ -1050,15 +1104,17 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       // We found something
       if (detailsForCurrentRow.length > 0) {
-        row.requestOffers = detailsForCurrentRow[0].requestOffers;
+        row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
         row.isSelected = detailsForCurrentRow[0].isSelected;
-        row.physicalSupplierCounterpartyId =
-          detailsForCurrentRow[0].physicalSupplierCounterpartyId;
-        if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
-          row.physicalSupplierCounterpartyName = counterpartyList.find(
-            x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
-          ).displayName;
-        }
+        // row.physicalSupplierCounterpartyId =
+        //   detailsForCurrentRow[0].physicalSupplierCounterpartyId;
+        // if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
+        //   row.physicalSupplierCounterpartyName = counterpartyList.find(
+        //     x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
+        //   ).displayName;
+        // }
+        row.totalOffer = detailsForCurrentRow[0].totalOffer;
+        row.totalCost = detailsForCurrentRow[0].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
       }
       return row;
