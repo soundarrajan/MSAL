@@ -962,7 +962,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http
       .put<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updateNegotiationComments}`,
-        { Payload: request }
+        request
       )
       .pipe(
         map((body: any) => body),

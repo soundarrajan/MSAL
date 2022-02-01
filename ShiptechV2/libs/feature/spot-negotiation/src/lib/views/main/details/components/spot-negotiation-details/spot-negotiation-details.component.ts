@@ -1041,7 +1041,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       case COST_TYPE_IDS.PERCENT:
         productComponent = this.isProductComponent(additionalCost);
         if (additionalCost.isAllProductsCost || !productComponent) {
-          totalAmount = this.sumProductAmounts(rowData.requestOffers);
+          totalAmount = this.sumProductAmounts(
+            rowData.requestOffers,
+            productList
+          );
         } else {
           let findProductIndex = _.findIndex(rowData.requestOffers, function(
             object: any
@@ -1104,14 +1107,20 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   /**
    * Sum the Amount field of all products.
    */
-  sumProductAmounts(products) {
+  sumProductAmounts(products, productList) {
     let result = 0;
-    for (let i = 0; i < products.length; i++) {
-      result = result + Number(products[i].amount);
+    let newProducts = _.cloneDeep(products);
+    for (let i = 0; i < newProducts.length; i++) {
+      let currentPrice = Number(newProducts[i].price);
+      let findProduct = _.find(productList, function(item) {
+        return item.id == newProducts[i].requestProductId;
+      });
+      if (findProduct) {
+        result += Number(currentPrice * findProduct.maxQuantity);
+      }
     }
     return result;
   }
-
   /**
    * Sum the amounts of all additional costs that are NOT tax component additional costs.
    */
