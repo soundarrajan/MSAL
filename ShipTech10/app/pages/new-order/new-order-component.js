@@ -210,6 +210,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     orderModel.getOrderDiffAfterMail(ctrl.orderId).then((list) => {
                         window.orderDetails.data.mailSent = angular.copy(list.payload.mailSent);
                         window.orderDetails.data.screenActions  = angular.copy(list.payload.screenActions);
+                        window.orderDetails.relatedOrders.find(e => e.id == window.orderDetails.orderId).status = window.orderDetails.data.status;
                         data.payload = angular.copy(window.orderDetails.data);
                         loadData(data);
                         $timeout(() => {
