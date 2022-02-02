@@ -51,7 +51,7 @@
                   }}</b></span
                 >
                 <span class="border_line"></span>
-                <span class="label_text" matTooltip="{{ formValues.createdAt }}"
+                <span class="label_text" matTooltip="{{ formValues.createdAt | date: this.dateFormat }}"
                   >On:
                   <b>{{
                     formValues.createdByUser

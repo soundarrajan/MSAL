@@ -1,11 +1,11 @@
-﻿commit 5ac7b5f3f2718bd12dc4f890bf7709e8566e32df
+﻿commit 9ad8bbe485ed1e9338dbf3552e29f605c2a895a8
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Feb 2 06:09:33 2022 +0000
+Date:   Wed Feb 2 10:58:04 2022 +0000
 
-    Merged PR 15722: Prevent timeline display before landing page redirect
+    Merged PR 15738: Fix tooltip for CreatedOn
     
-    Prevent timeline display before landing page redirect
+    Fix tooltip for CreatedOn
     
-    Related work items: #38324
+    Related work items: #38335
 
 branch: master
