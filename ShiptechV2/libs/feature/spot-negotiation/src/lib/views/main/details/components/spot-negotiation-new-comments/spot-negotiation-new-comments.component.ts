@@ -44,10 +44,6 @@ export class SpotNegotiationNewCommentsComponent
     this.store.subscribe(({ spotNegotiation }) => {
       if (spotNegotiation.currentRequestSmallInfo) {
         this.requestInfo = _.cloneDeep(spotNegotiation.currentRequestSmallInfo);
-        // this.requestInfo.negoGeneralComments = 'General comments';
-        // this.requestInfo.negoPerformanceComments = 'Performance comments';
-        // this.requestInfo.negoSupplierComments = 'Supply comments';
-        // this.requestInfo.negoVesselAgentComments = 'Vessel and Agent comments';
 
         this.requestInfo.negoGeneralComments = this.transform(
           this.requestInfo.negoGeneralComments
@@ -59,6 +55,19 @@ export class SpotNegotiationNewCommentsComponent
           this.requestInfo.negoSupplierComments
         );
         this.requestInfo.negoVesselAgentComments = this.transform(
+          this.requestInfo.negoVesselAgentComments
+        );
+
+        this.requestInfo.oldNegoGeneralComments = _.cloneDeep(
+          this.requestInfo.negoGeneralComments
+        );
+        this.requestInfo.oldNegoPerformanceComments = _.cloneDeep(
+          this.requestInfo.negoPerformanceComments
+        );
+        this.requestInfo.oldNegoSupplierComments = _.cloneDeep(
+          this.requestInfo.negoSupplierComments
+        );
+        this.requestInfo.oldNegoVesselAgentComments = _.cloneDeep(
           this.requestInfo.negoVesselAgentComments
         );
 
@@ -134,24 +143,48 @@ export class SpotNegotiationNewCommentsComponent
     console.log(type);
     let payload = {};
     if (type == 'general') {
+      if (
+        this.requestInfo.oldNegoGeneralComments.trim() ==
+        this.requestInfo.negoGeneralComments.trim()
+      ) {
+        return;
+      }
       payload = {
         RequestId: this.requestInfo.id,
-        NegoGeneralComments: this.requestInfo.negoGeneralComments
+        NegoGeneralComments: this.requestInfo.negoGeneralComments.trim()
       };
     } else if (type == 'performance') {
+      if (
+        this.requestInfo.oldNegoPerformanceComments.trim() ==
+        this.requestInfo.negoPerformanceComments.trim()
+      ) {
+        return;
+      }
       payload = {
         RequestId: this.requestInfo.id,
-        NegoPerformanceComments: this.requestInfo.negoPerformanceComments
+        NegoPerformanceComments: this.requestInfo.negoPerformanceComments.trim()
       };
     } else if (type == 'supplier') {
+      if (
+        this.requestInfo.oldNegoSupplierComments.trim() ==
+        this.requestInfo.negoSupplierComments.trim()
+      ) {
+        return;
+      }
       payload = {
         RequestId: this.requestInfo.id,
-        NegoSupplierComments: this.requestInfo.negoSupplierComments
+        NegoSupplierComments: this.requestInfo.negoSupplierComments.trim()
       };
     } else if (type == 'vesselAndAgent') {
+      if (
+        this.requestInfo.oldNegoVesselAgentComments.trim() ==
+        this.requestInfo.negoVesselAgentComments.trim()
+      ) {
+        return;
+      }
       payload = {
         RequestId: this.requestInfo.id,
-        NegoVesselAgentComments: this.requestInfo.negoVesselAgentComments
+        NegoVesselAgentComments: this.requestInfo.negoVesselAgentComments.trim()
       };
     }
 
@@ -160,9 +193,25 @@ export class SpotNegotiationNewCommentsComponent
       .subscribe((response: any) => {
         console.log(response);
         if (response.status) {
-          this.checkEditableFields();
+          if (type == 'general') {
+            this.requestInfo.oldNegoGeneralComments = _.cloneDeep(
+              this.requestInfo.negoGeneralComments
+            );
+          } else if (type == 'performance') {
+            this.requestInfo.oldNegoPerformanceComments = _.cloneDeep(
+              this.requestInfo.negoPerformanceComments
+            );
+          } else if (type == 'supplier') {
+            this.requestInfo.oldNegoSupplierComments = _.cloneDeep(
+              this.requestInfo.negoSupplierComments
+            );
+          } else if (type == 'vesselAndAgent') {
+            this.requestInfo.oldNegoVesselAgentComments = _.cloneDeep(
+              this.requestInfo.negoVesselAgentComments
+            );
+          }
+          this.toastr.success('Comments saved successfully!');
         } else {
-          console.log('Eroare');
           this.toastr.error('An error has occurred!');
         }
       });
