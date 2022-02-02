@@ -192,15 +192,15 @@ export class ApplicablecostpopupComponent implements OnInit {
     this.spotNegotiationService
       .saveOfferAdditionalCosts(payload)
       .subscribe((res: any) => {
+        this.enableSave = false;
         if (res.status) {
           this.locationBasedCosts = this.formatCostItemForDisplay(
             res?.costs?.locationAdditionalCosts
           );
           this.toastr.success('Additional cost saved successfully.');
-          this.enableSave = false;
+          this.closeDialog();
         } else this.toastr.error('Please try again later.');
       });
-      this.closeDialog();
   }
 
   formatCostItemForDisplay(locationAdditionalCosts: any) {
