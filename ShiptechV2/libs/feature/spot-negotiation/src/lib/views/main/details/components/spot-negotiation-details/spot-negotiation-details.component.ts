@@ -860,6 +860,16 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             console.log(applicableForItems);
             console.log(totalMaxQuantity);
             console.log(maxQuantityUomId);
+            let checkIfIsAllProductsCostExist = _.findIndex(
+              offerAdditionalCostList,
+              function(offerAdditional) {
+                return offerAdditional.isAllProductsCost;
+              }
+            );
+            if (checkIfIsAllProductsCostExist == -1) {
+              this.getSellerLine(updatedRow, colDef, newValue);
+              return;
+            }
             for (let i = 0; i < offerAdditionalCostList.length; i++) {
               console.log(offerAdditionalCostList[i]);
               if (offerAdditionalCostList[i].isAllProductsCost) {
@@ -902,9 +912,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     newValue,
     index
   ) {
+    let checkIfPercentExist = false;
     for (let i = 0; i < additionalCostList.length; i++) {
       if (!additionalCostList[i].isDeleted) {
         if (additionalCostList[i].costTypeId == COST_TYPE_IDS.PERCENT) {
+          checkIfPercentExist = true;
           additionalCostList[i].totalAmount = 0;
           this.calculateAdditionalCostAmounts(
             additionalCostList[i],
@@ -920,6 +932,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           );
         }
       }
+    }
+    if (!checkIfPercentExist && !offerAdditionalCostList.length) {
+      this.saveAdditionalCosts(
+        offerAdditionalCostList,
+        locationAdditionalCostsList,
+        updatedRow,
+        colDef,
+        newValue
+      );
     }
   }
 
