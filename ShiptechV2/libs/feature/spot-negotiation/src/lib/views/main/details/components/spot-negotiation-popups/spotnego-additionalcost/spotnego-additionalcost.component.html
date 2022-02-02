@@ -70,10 +70,11 @@
             <tr class="border-bottom" *ngIf="!offerAdditionalCost.isDeleted">
               <td
                 class="decrement-circle-button"
-                (click)="removeAdditionalCost(j)"
                 style="width: 30px;"
               >
-                <div class="decrement-circle">
+                <div class="decrement-circle"
+                *ngIf="!offerAdditionalCost.hasStemmedProduct"
+                    (click)="removeAdditionalCost(j)">
                   <div class="minus">-</div>
                 </div>
               </td>
