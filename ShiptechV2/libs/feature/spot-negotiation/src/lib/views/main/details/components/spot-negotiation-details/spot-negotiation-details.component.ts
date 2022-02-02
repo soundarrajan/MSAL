@@ -240,6 +240,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   additionalCostList: any = [];
   additionalCostTypes: any = [];
   endpointCount: number = 0;
+  notAllSelectedCostRows: any[];
+  notPercentageLocationCostRows: any[];
 
   constructor(
     @Inject(DOCUMENT) private _document: HTMLDocument,
@@ -724,9 +726,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     newValue
   ) {
     let payload = {
-      additionalCosts: offerAdditionalCostList.concat(
-        locationAdditionalCostsList
-      )
+      additionalCosts: offerAdditionalCostList
+        .concat(this.notAllSelectedCostRows)
+        .concat(
+          locationAdditionalCostsList.concat(this.notPercentageLocationCostRows)
+        )
     };
 
     console.log('Save additional cost');
@@ -816,6 +820,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         requestLocationId: sellerOffers.requestLocationId,
         isLocationBased: false
       };
+      this.notPercentageLocationCostRows = [];
+      this.notAllSelectedCostRows = [];
       this.spinner.show();
       this.spotNegotiationService
         .getAdditionalCosts(payload)
@@ -832,6 +838,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 return offerAdditionalCost.isAllProductsCost;
               })
             ) as AdditionalCostViewModel[];
+            this.notAllSelectedCostRows = _.cloneDeep(
+              _.filter(response.offerAdditionalCosts, function(
+                offerAdditionalCost
+              ) {
+                return !offerAdditionalCost.isAllProductsCost;
+              })
+            ) as AdditionalCostViewModel[];
 
             let locationAdditionalCostList = _.cloneDeep(
               _.filter(response.locationAdditionalCosts, function(
@@ -839,6 +852,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               ) {
                 return (
                   locationAdditionalCost.costTypeId == COST_TYPE_IDS.PERCENT
+                );
+              })
+            ) as AdditionalCostViewModel[];
+            this.notPercentageLocationCostRows = _.cloneDeep(
+              _.filter(response.locationAdditionalCosts, function(
+                locationAdditionalCost
+              ) {
+                return (
+                  locationAdditionalCost.costTypeId != COST_TYPE_IDS.PERCENT
                 );
               })
             ) as AdditionalCostViewModel[];
