@@ -6,10 +6,10 @@
           <div class="accordion-detail">
             <div class="open-close-arrow"></div>
             <span class="panel-title m-l-9">
-              <span>Notes:</span>
+              <span>Comments:</span>
               <span>
-                {{ currentRequestSmallInfo?.name }} -
-                {{ currentRequestSmallInfo?.vesselName }}
+                {{ requestInfo?.name }} -
+                {{ requestInfo?.vesselName }}
               </span>
             </span>
             <div class="comments-type" (click)="$event.stopPropagation()">
@@ -37,15 +37,25 @@
               <div style="padding: 15px;">
                 <span class="circle internal"></span
                 ><span class="label">General</span>
-                <span class="edit-icon" (click)="editComments1()"></span>
+                <span
+                  class="edit-icon"
+                  (click)="editNegotiationGeneralComment()"
+                ></span>
               </div>
               <div class="comments-div">
                 <textarea
-                  [readonly]="editableComments1"
-                  #comment1
+                  [readonly]="!editableGeneralComment"
+                  #generalComment
                   class="comments-text"
-                  [(ngModel)]="notYet"
+                  [(ngModel)]="requestInfo.negoGeneralComments"
+                  placeholder="Type notes here.."
+                  maxlength="1000"
+                  (blur)="saveComment('general')"
                 ></textarea>
+                <div class="char-left">
+                  {{ 1000 - requestInfo?.negoGeneralComments?.length }}
+                  characters left
+                </div>
               </div>
             </div>
           </div>
@@ -57,15 +67,25 @@
               <div style="padding: 15px;">
                 <span class="circle internal"></span
                 ><span class="label">Performance</span>
-                <span class="edit-icon" (click)="editComments2()"></span>
+                <span
+                  class="edit-icon"
+                  (click)="editPerformanceComment()"
+                ></span>
               </div>
               <div class="comments-div">
                 <textarea
-                  [readonly]="editableComments2"
-                  #comment2
+                  [readonly]="!editablePerformanceComment"
+                  #performanceComment
                   class="comments-text"
-                  [(ngModel)]="notYet"
+                  [(ngModel)]="requestInfo.negoPerformanceComments"
+                  placeholder="Type notes here.."
+                  maxlength="1000"
+                  (blur)="saveComment('performance')"
                 ></textarea>
+                <div class="char-left">
+                  {{ 1000 - requestInfo?.negoPerformanceComments?.length }}
+                  characters left
+                </div>
               </div>
             </div>
           </div>
@@ -77,20 +97,22 @@
               <div style="padding: 15px;">
                 <span class="circle external"></span
                 ><span class="label">Supply</span>
-                <span
-                  class="edit-icon"
-                  *ngIf="showEditIcon"
-                  (click)="editComments3()"
-                ></span>
+                <span class="edit-icon" (click)="editSupplyComments()"></span>
               </div>
               <div class="comments-div">
                 <textarea
-                  placeholder="Type notes here.."
-                  #comment3
-                  (focusout)="showEditIcon = !showEditIcon"
+                  [readonly]="!editableSupplyComment"
+                  #supplyComment
                   class="comments-text"
-                  [(ngModel)]="notYet"
+                  [(ngModel)]="requestInfo.negoSupplierComments"
+                  placeholder="Type notes here.."
+                  maxlength="1000"
+                  (blur)="saveComment('supplier')"
                 ></textarea>
+                <div class="char-left">
+                  {{ 1000 - requestInfo?.negoSupplierComments?.length }}
+                  characters left
+                </div>
               </div>
             </div>
           </div>
@@ -102,15 +124,25 @@
               <div style="padding: 15px;">
                 <span class="circle external"></span
                 ><span class="label">Vessel & Agents</span>
-                <span class="edit-icon" (click)="editComments4()"></span>
+                <span
+                  class="edit-icon"
+                  (click)="editvesselAndAgentCommentBox()"
+                ></span>
               </div>
               <div class="comments-div">
                 <textarea
-                  [readonly]="editableComments4"
-                  #comment4
+                  [readonly]="!editableVesselAndAgentComment"
+                  #vesselAndAgentComment
                   class="comments-text"
-                  [(ngModel)]="notYet"
+                  [(ngModel)]="requestInfo.negoVesselAgentComments"
+                  placeholder="Type notes here.."
+                  maxlength="1000"
+                  (blur)="saveComment('vesselAndAgent')"
                 ></textarea>
+                <div class="char-left">
+                  {{ 1000 - requestInfo?.negoVesselAgentComments?.length }}
+                  characters left
+                </div>
               </div>
             </div>
           </div>
@@ -140,31 +172,31 @@
                     </div>
                     <div style="padding: 0px 20px;">
                       <span class="comments-text">
-                        {{ currentRequestSmallInfo?.generalComment }}
+                        {{ requestInfo?.generalComments | htmlDecodeReadonly }}
                       </span>
                     </div>
                   </div>
                 </div>
                 <div
                   class="col-md-3 spot-comments-section2"
-                  style="padding: unset !important; border-right: 5px solid #364150;"
+                  style="padding: unset !important; border-right: 5px solid #BEBEBE; border-right: 5px solid #364150;"
+                ></div>
+                <div
+                  class="col-md-3 spot-comments-section2"
+                  style="padding: unset !important;  border-right: 5px solid #BEBEBE;"
                 >
                   <div class="new-comments" style="margin: 0px 14px;">
                     <div style="padding: 15px;">
-                      <span class="circle internal"></span
-                      ><span class="label">Performance</span>
+                      <span class="circle external"></span
+                      ><span class="label">Supply</span>
                     </div>
                     <div style="padding: 0px 20px;">
                       <span class="comments-text">
-                        {{ currentRequestSmallInfo?.performanceComment }}
+                        {{ requestInfo?.supplierComments | htmlDecodeReadonly }}
                       </span>
                     </div>
                   </div>
                 </div>
-                <div
-                  class="col-md-3 spot-comments-section2"
-                  style="padding: unset !important; border-right: 5px solid #BEBEBE;"
-                ></div>
                 <div
                   class="col-md-3 spot-comments-section2"
                   style="padding: unset !important;"
@@ -176,7 +208,9 @@
                     </div>
                     <div style="padding: 0px 20px;">
                       <span class="comments-text">
-                        {{ currentRequestSmallInfo?.vesselAndAgentsComment }}
+                        {{
+                          requestInfo?.vesselAgentComments | htmlDecodeReadonly
+                        }}
                       </span>
                     </div>
                   </div>
@@ -189,3 +223,11 @@
     </mat-expansion-panel>
   </div>
 </div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade"
+>
+</ngx-spinner>
