@@ -826,11 +826,26 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           } else {
             console.log(response);
             let offerAdditionalCostList = _.cloneDeep(
-              response.offerAdditionalCosts
+              _.filter(response.offerAdditionalCosts, function(
+                offerAdditionalCost
+              ) {
+                return offerAdditionalCost.isAllProductsCost;
+              })
             ) as AdditionalCostViewModel[];
+
+            let locationAdditionalCostList = _.cloneDeep(
+              _.filter(response.locationAdditionalCosts, function(
+                locationAdditionalCost
+              ) {
+                return (
+                  locationAdditionalCost.costTypeId == COST_TYPE_IDS.PERCENT
+                );
+              })
+            ) as AdditionalCostViewModel[];
+
             if (
               offerAdditionalCostList.length == 0 &&
-              response.locationAdditionalCosts.length == 0
+              locationAdditionalCostList.length == 0
             ) {
               this.getSellerLine(updatedRow, colDef, newValue);
               return;
@@ -843,49 +858,18 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               maxQuantityUomId
             } = this.buildApplicableForItems(requestLocation, sellerOffers);
 
-            this.recalculatePercentAdditionalCosts(
-              response.locationAdditionalCosts,
+            this.recalculateLocationAdditionalCosts(
+              locationAdditionalCostList,
               true,
               productList,
               offerAdditionalCostList,
               sellerOffers,
-              response.locationAdditionalCosts,
+              locationAdditionalCostList,
               updatedRow,
               colDef,
               newValue,
               -1
             );
-
-            let checkIfIsAllProductsCostExist = _.findIndex(
-              offerAdditionalCostList,
-              function(offerAdditional: any) {
-                return offerAdditional.isAllProductsCost;
-              }
-            );
-            let checkIfPercentExist = _.findIndex(
-              response.locationAdditionalCosts,
-              function(locationAdditional: any) {
-                return locationAdditional.costTypeId == COST_TYPE_IDS.PERCENT;
-              }
-            );
-
-            if (
-              (checkIfPercentExist == -1 && !offerAdditionalCostList.length) ||
-              checkIfIsAllProductsCostExist == -1
-            ) {
-              this.saveAdditionalCosts(
-                offerAdditionalCostList,
-                response.locationAdditionalCosts,
-                updatedRow,
-                colDef,
-                newValue
-              );
-            }
-
-            console.log(productList);
-            console.log(applicableForItems);
-            console.log(totalMaxQuantity);
-            console.log(maxQuantityUomId);
 
             for (let i = 0; i < offerAdditionalCostList.length; i++) {
               console.log(offerAdditionalCostList[i]);
@@ -897,14 +881,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                   totalMaxQuantity,
                   maxQuantityUomId
                 );
-                console.log(cost);
 
                 this.additionalCostNameChanged(
                   cost,
                   offerAdditionalCostList,
                   productList,
                   sellerOffers,
-                  response.locationAdditionalCosts,
+                  locationAdditionalCostList,
                   updatedRow,
                   colDef,
                   newValue,
@@ -917,7 +900,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
   }
 
-  recalculatePercentAdditionalCosts(
+  recalculateLocationAdditionalCosts(
     additionalCostList,
     locationAdditionalCostFlag,
     productList,
@@ -1098,17 +1081,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           newValue,
           index
         );
-        // this.recalculatePercentAdditionalCosts(offerAdditionalCostList, false);
       }
     } else {
       this.endpointCount += 1;
-      console.log('Endpoint Count', this.endpointCount);
       this.spotNegotiationService
         .getUomConversionFactor(payload)
         .pipe(finalize(() => {}))
         .subscribe((result: any) => {
           this.endpointCount -= 1;
-          console.log('After Endpoint Count', this.endpointCount);
           if (typeof result == 'string') {
             this.toastr.error(result);
           } else {
@@ -1277,10 +1257,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         );
       }
     );
-    console.log(checkAdditionalCostRowIndex);
-    console.log(offerAdditionalCostList);
-    console.log(checkLocationCostRowIndex);
-    console.log(locationAdditionalCostsList);
 
     if (
       this.endpointCount == 0 &&
