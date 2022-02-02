@@ -870,7 +870,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             );
 
             if (
-              (!checkIfPercentExist && !offerAdditionalCostList.length) ||
+              (checkIfPercentExist == -1 && !offerAdditionalCostList.length) ||
               checkIfIsAllProductsCostExist == -1
             ) {
               this.saveAdditionalCosts(
