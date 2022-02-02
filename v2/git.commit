@@ -1,11 +1,11 @@
-﻿commit 9ad8bbe485ed1e9338dbf3552e29f605c2a895a8
+﻿commit f8a7a3783adacc5576487961c1a3f69ca67273df
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Feb 2 10:58:04 2022 +0000
+Date:   Wed Feb 2 12:08:25 2022 +0000
 
-    Merged PR 15738: Fix tooltip for CreatedOn
+    Merged PR 15740: Fix Bank account number validation
     
-    Fix tooltip for CreatedOn
+    Fix Bank account number validation
     
-    Related work items: #38335
+    Related work items: #38338
 
 branch: master
