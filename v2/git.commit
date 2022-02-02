@@ -1,11 +1,11 @@
-﻿commit f8a7a3783adacc5576487961c1a3f69ca67273df
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Feb 2 12:08:25 2022 +0000
+﻿commit 0a02432183d4cf0cceb8ebc558e9cc0edc6ad760
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Wed Feb 2 14:44:39 2022 +0000
 
-    Merged PR 15740: Fix Bank account number validation
+    Merged PR 15745: 38048 contractFormulaPopup AmountRoundFix
     
-    Fix Bank account number validation
+    38048 contract Simple Formula Popup AmountRoundFix
     
-    Related work items: #38338
+    Related work items: #38048
 
 branch: master
