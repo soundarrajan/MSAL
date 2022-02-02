@@ -453,6 +453,13 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.applyExchangeRate(payload);
   }
 
+  /**
+   * @param payload
+   */
+  updateNegotiationComments(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.updateNegotiationComments(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }

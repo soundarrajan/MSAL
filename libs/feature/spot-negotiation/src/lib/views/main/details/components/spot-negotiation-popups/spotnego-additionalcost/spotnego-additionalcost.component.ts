@@ -126,7 +126,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           this.spinner.hide();
           this.toastr.error(response);
         } else {
-          this.additionalCostList = _.cloneDeep(response.payload.filter(e => e.isDeleted == false));
+          this.additionalCostList = _.cloneDeep(
+            response.payload.filter(e => e.isDeleted == false)
+          );
           this.createAdditionalCostTypes();
           if (this.rowData?.requestOffers?.length > 0) {
             const firstOffer = this.rowData.requestOffers[0];
@@ -633,8 +635,16 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
             }
           );
           if (findProductIndex != -1) {
-            let product = this.rowData.requestOffers[findProductIndex];
-            totalAmount = product.amount;
+            let product = _.cloneDeep(
+              this.rowData.requestOffers[findProductIndex]
+            );
+            let currentPrice = Number(product.price);
+            let findProduct = _.find(this.productList, function(item) {
+              return item.id == product.requestProductId;
+            });
+            if (findProduct) {
+              totalAmount = Number(currentPrice * findProduct.maxQuantity);
+            }
           }
         }
         console.log(productComponent);
@@ -698,8 +708,15 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
    */
   sumProductAmounts(products) {
     let result = 0;
-    for (let i = 0; i < products.length; i++) {
-      result = result + Number(products[i].amount);
+    let newProducts = _.cloneDeep(products);
+    for (let i = 0; i < newProducts.length; i++) {
+      let currentPrice = Number(newProducts[i].price);
+      let findProduct = _.find(this.productList, function(item) {
+        return item.id == newProducts[i].requestProductId;
+      });
+      if (findProduct) {
+        result += Number(currentPrice * findProduct.maxQuantity);
+      }
     }
     return result;
   }
@@ -833,8 +850,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           this.changeDetectorRef.detectChanges();
           this.toastr.success('Offer Additional Cost saved successfully.');
         } else this.toastr.error('Please try again later.');
-        
-      this.closeDialog();
+
+        this.closeDialog();
       });
   }
 
