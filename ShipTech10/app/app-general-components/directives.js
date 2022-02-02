@@ -996,6 +996,7 @@ Number(function() {
                         }
                         // On Load Complete
                         Elements.settings[table_id].source.loadComplete = function(params) {
+                            $rootScope.selectedInvoices = [];
                             if ($rootScope.getConfigurationForTableLoad && typeof $rootScope.getConfigurationForTableLoad == 'function') {
                                 $rootScope.getConfigurationForTableLoad().then((data) => {
                                     if (data) {

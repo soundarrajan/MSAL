@@ -4187,10 +4187,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                             break;
                         case "invoice_split_view":
 	                        console.log($rootScope.selectedInvoices);
-	                        var selectedInvoicesIds = [];
-	                        $.each($rootScope.selectedInvoices, (k,v) => {
-	                        	selectedInvoicesIds.push(v.invoice.id);
-	                        })
+                            if (!$rootScope.selectedInvoices) {
+                                toastr.error("Please select at least one invoice");
+                                return;
+                            }                            
+                            selectedInvoicesIds = [...new Set($rootScope.selectedInvoices.map( e  => e.invoice.id))];
 	                        if (selectedInvoicesIds.length == 0 ) {
 	                        	toastr.error("Please select at least one invoice");
 	                        	return;
