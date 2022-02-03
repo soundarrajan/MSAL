@@ -270,11 +270,15 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   onConfirmOfferALLCheckboxChange(ev, req, requestoffer) {
     if (ev.checked) {
       requestoffer.forEach((v, k) => {
-        v.isCheckBox = true;
+        if(v.RequestId==req.id){
+          v.isCheckBox =true;
+        }
       });
     } else {
       requestoffer.forEach((v, k) => {
-        v.isCheckBox = false;
+        if(v.RequestId==req.id){
+          v.isCheckBox =false;
+        }
       });
     }
     return requestoffer;
