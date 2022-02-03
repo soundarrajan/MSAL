@@ -1,6 +1,6 @@
 import { Observable, pipe } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, Inject, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild, ViewChildren } from '@angular/core';
 import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -27,7 +27,7 @@ import {
 import { count, filter, map } from 'rxjs/operators';
 import moment from 'moment';
 import { BestcontractpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/bestcontractpopup/bestcontractpopup.component';
-import _ from 'lodash';
+import _, { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -52,7 +52,7 @@ import _ from 'lodash';
                     matInput
                     placeholder="Search and select counterparty"
                     class="search-product-input"
-                    (input)="search($event.target.value)"
+                    (input) ="search($event.target.value)"
                   />
                 </div>
                 <div class="col-md-2">
@@ -297,7 +297,6 @@ export class ShiptechCustomHeaderGroup {
   requestProductId: any;
   requestLocationId: any;
   public priceFormat = '';
-
   counterpartyColumns: string[] = ['counterparty', 'blank'];
   counterpartyList = [];
   visibleCounterpartyList = [];
@@ -362,6 +361,15 @@ export class ShiptechCustomHeaderGroup {
         return false;
       })
       .slice(0, 7);
+      if(this.visibleCounterpartyList.length === 0){
+         const response = this._spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], userInput.toLowerCase(), { Skip: 0 , Take: 25 });
+         response.subscribe((res:any)=>{
+           if(res?.payload?.length >0){
+             this.visibleCounterpartyList =res.payload.slice(0,7) ;
+             this.changeDetector.detectChanges();
+           }
+         });
+      }
   }
 
   openCounterpartyPopup(reqLocationId: number) {

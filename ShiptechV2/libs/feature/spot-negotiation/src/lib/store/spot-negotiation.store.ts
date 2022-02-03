@@ -16,7 +16,11 @@ import {
   EditCounterpartyList,
   RemoveCounterparty,
   SetRequestList,
-  SetLocationsRowsOriData
+  SetLocationsRowsOriData,
+  AppendCounterpartyList,
+  SetPhysicalSupplierCounterpartyList,
+  AppendRequestList,
+  AppendPhysicalSupplierCounterpartyList
 } from './actions/ag-grid-row.action';
 
 import {
@@ -31,6 +35,7 @@ import {
 export class SpotNegotiationStoreModel {
   staticLists: any;
   counterpartyList: any;
+  physicalSupplierCounterpartyList: any;
   RequestList:any;
   // Until here
   groupOfRequestsId: number | null;
@@ -57,6 +62,7 @@ export class SpotNegotiationStoreModel {
     // Initialization inside the constructor
     this.staticLists = {};
     this.counterpartyList = {};
+    this.physicalSupplierCounterpartyList ={};
     this.RequestList = {};
     this.locations = [];
     this.selectedSellerList = [];
@@ -103,6 +109,7 @@ export class SpotNegotiationStoreModel {
     staticLists: [],
     LocationsOriData: [],
     counterpartyList: [],
+    physicalSupplierCounterpartyList:[],
     RequestList:[]
   }
 })
@@ -223,6 +230,20 @@ export class SpotNegotiationStore {
       RequestList: payload
     });
   }
+
+ //Append Request List
+ @Action(AppendRequestList)
+   AppendRequestList(
+   { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+   { payload }: AppendRequestList
+ ) {
+   const state = getState();
+   var rqust = [...state.RequestList , ...payload];
+   patchState({
+     RequestList: rqust
+   });
+ }
+
   @Action(EditCounterpartyList)
   EditCounterpartyList(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
@@ -235,6 +256,43 @@ export class SpotNegotiationStore {
         }
         return row;
       })
+    });
+  }
+
+  //Append CounterParty List
+  @Action(AppendCounterpartyList)
+  AppendCounterpartyList(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: AppendCounterpartyList
+  ) {
+    const state = getState();
+    var ctpys = [...state.counterpartyList, ...payload];
+    patchState({
+      counterpartyList: ctpys
+    });
+  }
+
+  //Add Physical Sypplier Counterparty List
+  @Action(SetPhysicalSupplierCounterpartyList)
+  SetPhysicalSupplierCounterparties(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetPhysicalSupplierCounterpartyList
+  ): void {
+    patchState({
+      physicalSupplierCounterpartyList: payload
+    });
+  }
+
+  //Append Physical Sypplier Counterparty List
+  @Action(AppendPhysicalSupplierCounterpartyList)
+  AppendPhysicalSupplierCounterpartyList(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: AppendPhysicalSupplierCounterpartyList
+  ) {
+    const state = getState();
+    var ctpys = [...state.physicalSupplierCounterpartyList, ...payload];
+    patchState({
+      physicalSupplierCounterpartyList: ctpys
     });
   }
 
@@ -343,7 +401,7 @@ export class SpotNegotiationStore {
     { payload }: AddCounterpartyToLocations
   ) {
     const state = getState();
-    payload.map(c=> 
+    payload.map(c=>
       {
         if(c.requestOffers == undefined){
           var payloadReq = state.requests.find(x=> x.id === c.requestId);
@@ -351,7 +409,7 @@ export class SpotNegotiationStore {
             var reqLocation = payloadReq.requestLocations.find(y=> y.locationId === c.locationId);
           }
           if(reqLocation && reqLocation.requestProducts){
-          for(let index = 0; index < reqLocation.requestProducts.length; index++) 
+          for(let index = 0; index < reqLocation.requestProducts.length; index++)
           {
             let indx = index +1;
             let val = "checkProd" + indx;

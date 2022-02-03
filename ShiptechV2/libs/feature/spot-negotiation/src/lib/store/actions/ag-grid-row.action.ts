@@ -30,6 +30,30 @@ export class EditCounterpartyList{
   constructor(public payload: any) {}
 }
 
+export class AppendCounterpartyList{
+  static readonly type = '[CounterpartyList] Append';
+
+  constructor(public payload: any) {}
+}
+
+export class AppendRequestList{
+  static readonly type = '[RequestList] Append';
+
+  constructor(public payload: any) {}
+}
+
+export class SetPhysicalSupplierCounterpartyList{
+  static readonly type = '[PhysicalSupplierCounterpartyList] Set';
+
+  constructor(public payload: any) {}
+}
+
+export class AppendPhysicalSupplierCounterpartyList{
+  static readonly type = '[PhysicalSupplierCounterpartyList] Append';
+
+  constructor(public payload: any) {}
+}
+
 export class SetLocations {
   static readonly type = '[Locations] Set';
 
