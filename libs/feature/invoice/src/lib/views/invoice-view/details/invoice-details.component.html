@@ -967,6 +967,7 @@
                         [compareWith]="compareObjects"
                         [disableOptionCentering]="true"
                         panelClass="general-information-select-container"
+                        [disabled]="formValues.status?.name === 'Approved'"
                         [ngModelOptions]="{ standalone: true }"
                         [(ngModel)]="
                           formValues.counterpartyDetails.counterpartyBankAccount
