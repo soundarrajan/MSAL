@@ -219,6 +219,10 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         {
           ColumnName: 'RequestId',
           Value: request
+        },
+        {
+          ColumnName: 'IsCallFromNego',
+          Value: true
         }
       ],
       SearchText: null,
