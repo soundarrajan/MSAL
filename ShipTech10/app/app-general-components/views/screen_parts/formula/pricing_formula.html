@@ -87,7 +87,7 @@
                 </span>
             </label>
             <div class="form_input form_input_formula_amount">
-                <input type="text" class="form-control " name="formula_amount" id="formula_amount"  ng-model="formValues.simpleFormula.amount" ng-trim="false"  ng-required="formValues.simpleFormula.plusMinus.id && formValues.simpleFormula.plusMinus.id != 3" format='number:{{ tenantSetting.defaultValues.amountPrecision }}' ng-disabled="formValues.simpleFormula.plusMinus.id == 3"/>
+                <input type="text" class="form-control " name="formula_amount" id="formula_amount"  ng-model="formValues.simpleFormula.amount" ng-trim="false"  ng-required="formValues.simpleFormula.plusMinus.id && formValues.simpleFormula.plusMinus.id != 3" format='number:{{ tenantSetting.defaultValues.amountPrecision }}:true' ng-disabled="formValues.simpleFormula.plusMinus.id == 3"/>
                 <!-- disabled if +/- is none -->
             </div>
         </div>

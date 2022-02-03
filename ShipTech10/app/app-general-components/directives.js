@@ -2419,9 +2419,11 @@ Number(function() {
                         elem.unbind();
                     });
                     ctrl.$parsers.unshift((viewValue) => {
+                        var filter, fraction, mustChangeModel;
                         if (attrs.format.split(':')[1]) {
                             filter = attrs.format.split(':')[0];
                             fraction = attrs.format.split(':')[1];
+                            mustChangeModel = attrs.format.split(':')[2];
                         } else {
                             filter = attrs.format;
                             fraction = 3;
@@ -2444,6 +2446,9 @@ Number(function() {
                                 }
                             } else {
                                 elem.val(plainNumber);
+                            }
+                            if(mustChangeModel == 'true') {
+                                ctrl.$setViewValue(elem.val());
                             }
                         });
                         return viewValue;
