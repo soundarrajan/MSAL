@@ -1,11 +1,12 @@
-﻿commit 0a02432183d4cf0cceb8ebc558e9cc0edc6ad760
+﻿commit cc95b48b4de47ef45b25e1813e0626aa968682eb
 Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Wed Feb 2 14:44:39 2022 +0000
+Date:   Thu Feb 3 11:17:29 2022 +0000
 
-    Merged PR 15745: 38048 contractFormulaPopup AmountRoundFix
+    Merged PR 15758: 38312-contractConfirm-checkRequired
     
-    38048 contract Simple Formula Popup AmountRoundFix
+    38312-contractConfirm-checkRequired.
+    FE changes for required field validation before confirming contract.
     
-    Related work items: #38048
+    Related work items: #38310, #38312
 
 branch: master

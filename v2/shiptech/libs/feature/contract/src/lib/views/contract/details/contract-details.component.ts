@@ -636,7 +636,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       return;
     }
   }
-  saveContract() {
+
+  validateContract(): boolean {
     let hasTotalContractualQuantity = false;
 
     let message = 'Please fill in required fields:';
@@ -678,7 +679,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         message = message.substring(0, message.length - 1);
       }
       this.toastr.error(message);
-      return;
+      return false;
     }
     let additionalCost = [];
     let additionalCostRequired = [];
@@ -742,7 +743,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.toastr.error(
         'Please fill in required fields: ' + additionalCostRequiredString
       );
-      return;
+      return false;
     }
     if (
       additionalCostRequiredString != '' &&
@@ -751,7 +752,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.toastr.error(
         'Please fill in required fields: ' + additionalCostRequiredString
       );
-      return;
+      return false;
     }
 
     additionalCost = _.uniq(additionalCost);
@@ -771,7 +772,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           additionalCostString +
           ' does not allow negative amounts!'
       );
-      return;
+      return false;
     }
     if (additionalCostString != '' && additionalCost.length == 1) {
       this.toastr.warning(
@@ -779,12 +780,12 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           additionalCostString +
           ' does not allow negative amounts!'
       );
-      return;
+      return false;
     }
 
-    if (!this.formValues.products) {
+    if (!this.formValues.products || this.formValues.products.length == 0) {
       this.toastr.error('You must add at least one product in the contract');
-      return;
+      return false;
     }
 
     let notValidConversionFactor = false;
@@ -820,7 +821,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     }
 
     if (notValidConversionFactor) {
-      return;
+      return false;
     }
     
     this.formValues.hasApprovedInvoice = false;
@@ -851,11 +852,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     });
 
     if (notValidLocation) {
-      return;
-    }
-    if (this.formValues.products.length == 0) {
-      this.toastr.error('You must add at least one product in the contract');
-      return;
+      return false;
     }
 
     let minQuyanityValidationError = false;
@@ -879,18 +876,26 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
     if (minQuyanityValidationError) {
       this.toastr.error('Min Quantity must be smaller that Max Quantity ');
-      return;
+      return false;
     }
     if (!hasTotalContractualQuantity) {
       this.toastr.error(
         'TotalContractualQuantity option is required in Contractual Quantity section'
       );
-      return;
+      return false;
     }
 
     // test dates
     const notValid = this.testForValidDates();
     if (notValid) {
+      return false;
+    }
+    return true;
+  }
+
+  saveContract() {
+    const isValid = this.validateContract();
+    if (!isValid) {
       return;
     }
 
@@ -996,6 +1001,11 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   }
 
   confirmContract() {
+    const isValid = this.validateContract();
+    if (!isValid) {
+      return;
+    }
+    
     this.buttonClicked = true;
     this.eventsSubject2.next(this.buttonClicked);
     this.spinner.show();
