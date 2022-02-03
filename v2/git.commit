@@ -1,11 +1,11 @@
-﻿commit a2bfe2bfaf01309abbcd08d8c16b2e5fdf95e0b2
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Feb 3 11:38:37 2022 +0000
+﻿commit e3ebb1003d07588921b4dbf26fe60cadd8e718ee
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Thu Feb 3 16:57:43 2022 +0000
 
-    Merged PR 15734: Disable bank account number if invoice is approved
+    Merged PR 15769: 38338-BankAcNoRelatedChangeReverted
     
-    Disable bank account number if invoice is approved
+    38338-BankAcNoRelatedChangeReverted
     
-    Related work items: #38333
+    Related work items: #38338
 
 branch: master
