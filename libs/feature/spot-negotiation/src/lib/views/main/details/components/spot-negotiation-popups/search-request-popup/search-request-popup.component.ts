@@ -1,14 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, IDatasource,  IGetRowsParams } from 'ag-grid-community';
 import { Store } from '@ngxs/store';
 import { AGGridCellRendererComponent } from '../../../../../../core/ag-grid/ag-grid-cell-renderer.component';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { AddRequest } from '../../../../../../store/actions/request-group-actions';
-import { AddCounterpartyToLocations } from '../../../../../../store/actions/ag-grid-row.action';
+import { AddCounterpartyToLocations, AppendRequestList } from '../../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 
 @Component({
@@ -18,7 +18,10 @@ import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib
 })
 export class SearchRequestPopupComponent implements OnInit {
   public dialog_gridOptions: GridOptions;
-  public rowCount: Number;
+  public requestRowCount: number;
+  public count;
+  public requestListLength;
+  public requestList;
   public hoverRowDetails = [
     { label: 'Day Opening Balance', value: '5000 MT' },
     { label: 'In', value: '3000 MT' },
@@ -34,6 +37,9 @@ export class SearchRequestPopupComponent implements OnInit {
   selectedRequestList: any[];
   RequestGroupId: any;
   rowData:any = [];
+  searchingRequest :string = null;
+  public overlayLoadingTemplate;
+  public overlayNoRowsTemplate;
   ngOnInit() {}
   constructor(
     private router: Router,
@@ -45,29 +51,39 @@ export class SearchRequestPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.RequestGroupId = data.RequestGroupId;
+    this.overlayLoadingTemplate =
+      `<span class="ag-overlay-loading-center">Loading Rows....</span>`;
+    this.overlayNoRowsTemplate =
+      `"<span">No rows to show</span>"`;
+
     this.dialog_gridOptions = <GridOptions>{
       defaultColDef: {
         filter: true,
         sortable: true,
         resizable: true
       },
+
       columnDefs: this.columnDefs,
       suppressRowClickSelection: true,
       headerHeight: 30,
       rowHeight: 30,
       rowSelection: 'multiple',
+      rowModelType: 'infinite',
+      cacheBlockSize: 25,
+
       // groupIncludeTotalFooter: true,
       onGridReady: params => {
         this.dialog_gridOptions.api = params.api;
         this.dialog_gridOptions.columnApi = params.columnApi;
         this.dialog_gridOptions.api.sizeColumnsToFit();
-        this.store.subscribe(({ spotNegotiation }) => {
-          if (spotNegotiation.RequestList && this.dialog_gridOptions.api) {
-            this.rowData = spotNegotiation.RequestList;
-            this.dialog_gridOptions.api.setRowData(this.rowData);
-            this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
-          }
-        });
+        // this.store.subscribe(({ spotNegotiation }) => {
+        //   if (spotNegotiation.RequestList && this.dialog_gridOptions.api) {
+        //     this.rowData = spotNegotiation.RequestList;
+        //     this.dialog_gridOptions.api.setRowData(this.rowData);
+        //     this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
+        //   }
+        // });
+        params.api.setDatasource(this.dataSource);
       },
       getRowStyle: function(params) {
         if (params.node.rowPinned) {
@@ -87,7 +103,64 @@ export class SearchRequestPopupComponent implements OnInit {
     };
   }
 
-  
+  onCounterpartyChange(value){
+    this.searchingRequest = value;
+    if(this.searchingRequest.length ===0 ){
+      let datasource: IDatasource = {
+         getRows: (params: IGetRowsParams) =>{
+             params.successCallback(this.requestList, this.requestRowCount);
+         }
+      };
+      this.dialog_gridOptions.api.setDatasource(datasource);
+   }
+  }
+
+  dataSource: IDatasource = {
+    getRows: (params: IGetRowsParams) => {
+      this.requestRowCount = this._spotNegotiationService.requestCount;
+      if(this.count !=0 && this.requestListLength < params.endRow ){
+        this.dialog_gridOptions.api.showLoadingOverlay();
+        const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip: params.endRow-25, Take: 25 })
+        response.subscribe((res: any) => {
+          this.dialog_gridOptions.api.hideOverlay();
+            if (res?.payload?.length > 0) {
+              params.successCallback(res.payload, this.requestRowCount);
+              this.store.dispatch(new AppendRequestList(res.payload));
+            }
+        });
+      }
+      else{
+        this.count =1 ;
+        this.dialog_gridOptions.api.hideOverlay();
+        this.store.subscribe(({ spotNegotiation }) => {
+          this.requestList = spotNegotiation.RequestList ;
+          params.successCallback(this.requestList.slice(params.startRow, params.endRow), this.requestRowCount);
+           this.requestListLength = this.requestList.length;
+        });
+      }
+      }
+  }
+
+  search(userInput: string){
+   let dataSource : IDatasource ={
+     getRows: (params: IGetRowsParams)=>{
+      this.dialog_gridOptions.api.showLoadingOverlay();
+      const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , userInput.toLowerCase() , { Skip:0, Take: 25 });
+      response.subscribe((res:any)=>{
+        this.dialog_gridOptions.api.hideOverlay();
+      if(res?.payload?.length >0){
+         params.successCallback(res.payload, res.matchedCount);
+        }
+      else{
+        this.dialog_gridOptions.api.showNoRowsOverlay();
+      }
+    });
+     }
+     };
+
+    this.dialog_gridOptions.api.setDatasource(dataSource);
+  }
+
   addToRequestList() {
     this.selectedRequestList = this.dialog_gridOptions.api.getSelectedRows();
     if(this.selectedRequestList.length > 0){
@@ -128,7 +201,7 @@ export class SearchRequestPopupComponent implements OnInit {
                   this.toastr.success(SuccessMessage);
                   });
             }
-            if (res['requestLocationSellers'] && res['requestLocationSellers'].length > 0) 
+            if (res['requestLocationSellers'] && res['requestLocationSellers'].length > 0)
             {
                 this.store.dispatch(new AddCounterpartyToLocations(res['requestLocationSellers']));
             }
@@ -141,15 +214,15 @@ export class SearchRequestPopupComponent implements OnInit {
       return;
     }
   }
-  search(userInput: string): void {
+  search1(userInput: string): void {
     this.store.subscribe(({ spotNegotiation }) => {
       if (spotNegotiation.RequestList) {
         this.rowData = spotNegotiation.RequestList
           .filter(e => {
-            if (e.requestName.toLowerCase().includes(userInput.toLowerCase()) || e.vesselName.toLowerCase().includes(userInput.toLowerCase()) 
+            if (e.requestName.toLowerCase().includes(userInput.toLowerCase()) || e.vesselName.toLowerCase().includes(userInput.toLowerCase())
             // || e.serviceName?.toLowerCase().includes(userInput.toLowerCase())
             // || e.buyerName.toLowerCase().includes(userInput.toLowerCase()) || e.locationName.toLowerCase().includes(userInput.toLowerCase())
-            // || e.productName.toLowerCase().includes(userInput.toLowerCase()) 
+            // || e.productName.toLowerCase().includes(userInput.toLowerCase())
             ) {
               return true;
             }

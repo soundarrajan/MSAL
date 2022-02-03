@@ -1,13 +1,14 @@
 <div class="search-request-popup">
     <div class="header">
         <div class="title">Search Counterparties</div>
-        <div style="display:flex">
-            <input type="text" placeholder="Search Counterparty here" class="search-product-input"
-            (input)="search($event.target.value)">
-            <!-- <button class="searchButton" type="submit">
-                <i class="fa fa-search"></i>
-            </button> -->
+        <div style="display:flex"  *ngIf="data.isPhysicalSupplier != undefined && data.isPhysicalSupplier" >
+            <input type="text" [(ngModel)]="searchingCounterparty"  placeholder="Search Counterparty here" class="search-product-input" (keydown.enter)="SearchPhysicalSupplier($event.target.value)" (ngModelChange)="onPhysicalSuppilierChange($event)"         >
         </div>
+        <div style="display:flex"  *ngIf="data.isPhysicalSupplier == undefined && !data.isPhysicalSupplier" >
+          <input type="text" [(ngModel)]="searchingPhysicalSuppilier" placeholder="Search Counterparty here" class="search-product-input" (keydown.enter)="SearchCounterparty($event.target.value)" (ngModelChange)="onCounterpartyChange($event)"
+          >
+      </div>
+
         <div class="header-btn">
             <button class="blue-button h-25" [mat-dialog-close]="true" (click)="AddCounterparties()">Proceed</button>
             <span class="seperator-line"></span>
@@ -17,7 +18,10 @@
     <mat-dialog-content style="overflow: hidden;">
         <ag-grid-angular id="tradelistgrid" style="height: calc(100vh - 156px);"
             [gridOptions]="dialog_gridOptions"
-            class="ag-theme-material angular-v9" [pagination]="true">
+            class="ag-theme-material angular-v9"
+            [pagination]="true"
+            [paginationPageSize]="25"
+            >
         </ag-grid-angular>
         <!-- <app-footer-v2 class="footer-popup" [id]="'inv-report-popup'"  [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>   -->
     </mat-dialog-content>

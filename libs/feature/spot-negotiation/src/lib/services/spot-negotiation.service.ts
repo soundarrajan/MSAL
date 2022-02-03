@@ -31,6 +31,9 @@ export class SpotNegotiationService extends BaseStoreService
   implements OnDestroy {
   private futureSetTabIndex = new Subject<any>();
   QuoteByDate: any;
+  counterpartyTotalCount :any;
+  physicalSupplierTotalCount :any;
+  requestCount : any;
 
   constructor(
     protected store: Store,
@@ -463,4 +466,29 @@ export class SpotNegotiationService extends BaseStoreService
   ngOnDestroy(): void {
     super.onDestroy();
   }
+
+  //for getting counterparty response
+  getResponse(Order: any, PageFilters: any, SortList:any, Filters:any, SearchText :any, Pagination: any){
+    let payload = {
+      Order: Order,
+      PageFilters: PageFilters,
+      SortList: SortList,
+      Filters: Filters,
+      SearchText: SearchText,
+      Pagination: Pagination
+    };
+    return this.getCounterpartyList(payload);
+}
+
+getRequestresponse(Order: any, PageFilters: any, SortList:any, Filters:any, SearchText :any, Pagination: any){
+  let payload = {
+    Order: Order,
+    PageFilters: PageFilters,
+    SortList: SortList,
+    Filters: Filters,
+    SearchText: SearchText,
+    Pagination: Pagination
+  };
+  return this.getRequestList(payload)
+}
 }
