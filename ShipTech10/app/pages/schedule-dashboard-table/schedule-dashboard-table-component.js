@@ -202,9 +202,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
                     ctrl.buttonsDisabled = false;
                     // TODO: change way we get groupID
                     var requestGroupId = data.payload[0].requestGroup.id;
-                    $state.go(STATE.GROUP_OF_REQUESTS, {
-                        groupId: requestGroupId
-                    });
+                    $window.open(`/#/group-of-requests/${requestGroupId}`, '_blank');
                 },
                 () => {
                     ctrl.buttonsDisabled = false;
@@ -281,7 +279,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
             console.log($rootScope.scheduleDashboardVesselVoyages);
             localStorage.setItem('scheduleDashboardVesselVoyages', JSON.stringify($rootScope.scheduleDashboardVesselVoyages));
             $rootScope.activeBreadcrumbFilters = [];
-            window.location.href = '/#/contract-planning/';
+            $window.open("/#/contract-planning/", '_blank');
         };
 
         $scope.$on('tableLoaded', (e, payload) => {
