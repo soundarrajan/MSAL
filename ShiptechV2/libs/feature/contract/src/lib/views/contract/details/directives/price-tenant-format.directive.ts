@@ -50,6 +50,10 @@ export class PriceTenantFormatDirective implements OnInit {
   
     let viewValue = `${value}`;
     let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
+    // More than 1 (.) character is not valid
+    if(plainNumber == "" || (plainNumber.match(/\./g) || []).length > 1) {
+      plainNumber = "0";
+    }
     if (plainNumber) {
         // plainNumber = this.roundDown(plainNumber, this.pricePrecision);
         // this.el.value = this.roundDown(plainNumber, this.pricePrecision);
