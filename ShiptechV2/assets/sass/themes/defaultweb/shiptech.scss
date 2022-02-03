@@ -22494,3 +22494,16 @@ mat-form-field {
   font-size: 10px;
   float: right;
 }
+
+.currencyselecttrigger.mat-select-panel {
+  min-width: calc(100% + 12px) !important;
+  transform: translateX(10px) !important;
+  position: relative;
+  top: 22px !important;
+  background: #37414f !important;
+}
+
+.currencyselecttrigger.mat-select-panel::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #c4c4c4 !important;
+}
