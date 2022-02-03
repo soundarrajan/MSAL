@@ -1,11 +1,11 @@
-﻿commit e3ebb1003d07588921b4dbf26fe60cadd8e718ee
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Thu Feb 3 16:57:43 2022 +0000
+﻿commit 566e2564feab55a7187780e48c9beb1d86cf840d
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu Feb 3 17:40:05 2022 +0000
 
-    Merged PR 15769: 38338-BankAcNoRelatedChangeReverted
+    Merged PR 15765: Change success message on create credit/debit note
     
-    38338-BankAcNoRelatedChangeReverted
+    Change success message on create credit/debit note
     
-    Related work items: #38338
+    Related work items: #38368
 
 branch: master
