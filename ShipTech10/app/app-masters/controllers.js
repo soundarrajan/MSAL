@@ -11019,13 +11019,7 @@ $('body').on('click', '.bootstrap-tagsinput .hideTagsChild', function(e) {
 
 $("body").on("click", (e)=>{
 	if (!$(e.target).hasClass("bootstrap-tagsinput") && $(e.target).parents(".bootstrap-tagsinput").length == 0) {
-	    $('.bootstrap-tagsinput')
-	        .children('span.tag[big-child=\'true\']')
-	        .hide();
-	    $('.bootstrap-tagsinput')
-	        .removeClass('expanded');
-	    $('.multi_lookup_tags')
-	        .removeClass('expanded');
+        $('.bootstrap-tagsinput.expanded .st-hide-tags').trigger("click");
 	}
 })
 

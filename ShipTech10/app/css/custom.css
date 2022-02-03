@@ -2501,6 +2501,7 @@
 
             .form-group.st-email-input .bootstrap-tagsinput.expanded .tag {
                 margin-bottom: 5px;
+                margin-top: 2px;
             }
 
             .form-group.st-email-input .bootstrap-tagsinput .tag.st-hide-tags {
