@@ -775,6 +775,11 @@ APP_CLAIMS.controller('Controller_Claims', [
                     $scope.formValues.claimDetails.withheldAmount = 0;
                 }
             }
+            if(name == 'SettlementType') {
+                $(".general-header a.create-credit-debit-note").text( () => {
+                    return $scope.formValues.claimDetails.settlementType.id == 1 ? "Create Debit Note" : "Create Credit Note";
+                })
+            }
         };
         $scope.cancel_claim = function() {
             vm.fields = angular.toJson($scope.formValues.id);
@@ -1180,8 +1185,10 @@ APP_CLAIMS.controller('Controller_Claims', [
                 if (response) {
                     if (response.status == true) {
                         $scope.loaded = true;
+                        message = $scope.formValues.claimDetails.settlementType.id == 1 ? "Debit Note Created" : "Credit Note Created";
                         toastr.success(response.message);
                         $rootScope.transportData = response.data;
+                        response.data.noteType = $scope.formValues.claimDetails.settlementType.id == 1 ? "Debit" : "Credit"
                         // $location.path('invoices/claims/edit/');
                         localStorage.setItem('createCreditNote', JSON.stringify(response.data));
                         window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/invoices/edit/0'), '_blank');
