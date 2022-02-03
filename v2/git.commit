@@ -1,12 +1,11 @@
-﻿commit cc95b48b4de47ef45b25e1813e0626aa968682eb
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Thu Feb 3 11:17:29 2022 +0000
+﻿commit a2bfe2bfaf01309abbcd08d8c16b2e5fdf95e0b2
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu Feb 3 11:38:37 2022 +0000
 
-    Merged PR 15758: 38312-contractConfirm-checkRequired
+    Merged PR 15734: Disable bank account number if invoice is approved
     
-    38312-contractConfirm-checkRequired.
-    FE changes for required field validation before confirming contract.
+    Disable bank account number if invoice is approved
     
-    Related work items: #38310, #38312
+    Related work items: #38333
 
 branch: master
