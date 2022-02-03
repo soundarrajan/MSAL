@@ -426,7 +426,9 @@ export class EmailPreviewPopupComponent implements OnInit {
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
     let counterpartyList: any;
+    let requestlist:any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
+      requestlist= spotNegotiation.requests;
       currentRequestData = spotNegotiation.locations;
       counterpartyList = spotNegotiation.counterpartyList;
     });
@@ -435,8 +437,9 @@ export class EmailPreviewPopupComponent implements OnInit {
       let currentLocProd = currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
-
-      let currentLocProdCount = currentRequestData[0].requestProducts.length;
+      let reqLocations = requestlist.filter(row1 => row1.id == row.requestId );
+      let reqProducts= reqLocations[0].requestLocations.filter(row1 => row1.id == row.requestLocationId );
+      let currentLocProdCount = reqProducts.length>0?reqProducts[0].requestProducts.length:0;
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
         let val = 'checkProd' + indx;

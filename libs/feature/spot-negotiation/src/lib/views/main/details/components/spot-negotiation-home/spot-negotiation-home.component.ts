@@ -238,7 +238,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           if (result && result instanceof Array) {
             var sellers = [];
             result.forEach(element => {
-              if (element.selected === true || element.sellerSelection) {
+              if (element.selected) {
                 const selectItems = this.selectedSellerList.filter(
                   item => item.RequestId === element.id
                 );
@@ -306,16 +306,18 @@ export class SpotNegotiationHomeComponent implements OnInit {
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
     let counterpartyList: any;
+    let requestlist: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       currentRequestData = spotNegotiation.locations;
+      requestlist= spotNegotiation.requests;
       counterpartyList = spotNegotiation.counterpartyList;
     });
 
     rowsArray.forEach((row, index) => {
-      let requestLocations = currentRequestData.filter(
-        row1 => row1.id == row.requestLocationId
-      );
-      let currentLocProdCount = currentRequestData[0].requestProducts.length;
+      let requestLocations = currentRequestData.filter(row1 => row1.id == row.requestLocationId);
+      let reqLocations = requestlist.filter(row1 => row1.id == row.requestId );
+      let reqProducts= reqLocations[0].requestLocations.filter(row1 => row1.id == row.requestLocationId );
+      let currentLocProdCount = reqProducts.length>0?reqProducts[0].requestProducts.length:0;
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
         let val = 'checkProd' + indx;
