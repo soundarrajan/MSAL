@@ -1184,7 +1184,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                         $rootScope.transportData = response.data;
                         // $location.path('invoices/claims/edit/');
                         localStorage.setItem('createCreditNote', JSON.stringify(response.data));
-                        window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/invoices/edit/0'), '_self');
+                        window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/invoices/edit/0'), '_blank');
                     } else {
                         $scope.loaded = true;
                         toastr.error(response.message);
