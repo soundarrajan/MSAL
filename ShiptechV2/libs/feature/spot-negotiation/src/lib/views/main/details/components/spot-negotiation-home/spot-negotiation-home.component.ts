@@ -52,6 +52,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   emailLogUrl: string;
   baseOrigin: string;
   public menuItems: MenuItem[];
+
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -69,6 +70,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.navBar = data.navBar;
     });
+
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.requestOptions = spotNegotiation.requests;
@@ -310,7 +312,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       currentRequestData = spotNegotiation.locations;
       requestlist= spotNegotiation.requests;
-      counterpartyList = spotNegotiation.counterpartyList;
+      counterpartyList = spotNegotiation.counterparties;
     });
 
     rowsArray.forEach((row, index) => {
@@ -331,12 +333,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
       ) {
         row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
         //row.isSelected = priceDetailsArray[index].isSelected;
-        row.physicalSupplierCounterpartyId =
-          priceDetailsArray[index].physicalSupplierCounterpartyId;
+        row.physicalSupplierCounterpartyId = priceDetailsArray[index].physicalSupplierCounterpartyId;
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
           row.physicalSupplierCounterpartyName = counterpartyList.find(
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
-          ).displayName;
+          )?.displayName;
         }
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
@@ -354,12 +355,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
       if (detailsForCurrentRow.length > 0) {
         row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
         //row.isSelected = detailsForCurrentRow[0].isSelected;
-        row.physicalSupplierCounterpartyId =
-          detailsForCurrentRow[0].physicalSupplierCounterpartyId;
+        row.physicalSupplierCounterpartyId = detailsForCurrentRow[0].physicalSupplierCounterpartyId;
         if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
           row.physicalSupplierCounterpartyName = counterpartyList.find(
             x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
-          ).displayName;
+          )?.displayName;
         }
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
@@ -578,15 +578,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
           }
         );
 
-        const requestGroupID = this.store.selectSnapshot<string>(
-          (state: any) => {
-            return state.spotNegotiation.groupOfRequestsId;
-          }
-        );
+        // const requestGroupID = this.store.selectSnapshot<string>(
+        //   (state: any) => {
+        //     return state.spotNegotiation.groupOfRequestsId;
+        //   }
+        // );
 
-        this.store.dispatch(
-          new SetLocationsRowsPriceDetails(res['sellerOffers'])
-        );
+        // this.store.dispatch(
+        //   new SetLocationsRowsPriceDetails(res['sellerOffers'])
+        // );
 
         const futureLocationsRows = this.getLocationRowsWithPriceDetails(
           JSON.parse(JSON.stringify(locationsRows)),

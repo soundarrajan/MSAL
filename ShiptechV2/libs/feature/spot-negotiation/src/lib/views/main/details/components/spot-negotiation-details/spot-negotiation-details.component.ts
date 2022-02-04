@@ -1864,10 +1864,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
-    let counterpartyList: any;
+    //let counterpartyList: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterpartyList;
+      //counterpartyList = spotNegotiation.counterparties;
     });
 
     rowsArray.forEach((row, index) => {
