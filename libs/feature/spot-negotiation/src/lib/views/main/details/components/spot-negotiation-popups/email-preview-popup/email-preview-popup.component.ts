@@ -486,7 +486,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
           row.physicalSupplierCounterpartyName = counterpartyList.find(
             x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
-          ).displayName;
+          )?.displayName;
         }
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
