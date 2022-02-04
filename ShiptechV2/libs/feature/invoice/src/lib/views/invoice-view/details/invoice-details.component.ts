@@ -535,7 +535,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         this.formValues.paymentDetails = <IInvoiceDetailsItemPaymentDetails>{};
       }
       if (!this.formValues.counterpartyDetails.counterpartyBankAccount) {
-                this.formValues.counterpartyDetails.counterpartyBankAccount = <IInvoiceDetailsItemBaseInfo>{};
+                this.formValues.counterpartyDetails.counterpartyBankAccount = <IInvoiceDetailsItemBaseInfo>null;
       }
       this.setOrderDetailsLables(this.formValues.orderDetails);
       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
