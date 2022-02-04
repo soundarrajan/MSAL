@@ -38,6 +38,7 @@ import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-r
 import { SpotnegoSearchCtpyComponent } from '../spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { ConfirmdialogComponent } from '../spot-negotiation-popups/confirmdialog/confirmdialog.component';
 import { cloneDeep } from 'lodash';
+import _ from 'lodash';
 @Component({
   selector: 'app-spot-negotiation-header',
   templateUrl: './spot-negotiation-header.component.html',
@@ -126,7 +127,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             spotNegotiation.counterpartyList
           ) {
             this.counterpartyList = spotNegotiation.counterpartyList;
-            this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
+            this.visibleCounterpartyList = _.cloneDeep(
+              this.counterpartyList.slice(0, 7)
+            );
           }
         }
         if (!this.initAvailableContracts && this.currentRequestInfo) {
@@ -209,11 +212,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
   onCounterpartyCheckboxChange(checkbox: any, element: any): void {
     if (checkbox.checked) {
+      element.selected = true;
       // Add to selected counterparty list
       this.selectedCounterparty.push(element);
     }
 
     if (!checkbox.checked) {
+      element.selected = false;
       // Remove from selected counterparty list
       this.selectedCounterparty = this.selectedCounterparty.filter(
         e => e.id !== element.id
@@ -303,6 +308,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
       if (res.status) {
+        for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
+          this.visibleCounterpartyList[i].selected = false;
+        }
+        this.selectedCounterparty = _.cloneDeep([]);
         this.toastr.success(res.message);
         // Add in Store
         // this.store.dispatch(
@@ -610,14 +619,16 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   search(userInput: string): void {
     this.expandedSearch = false;
 
-    this.visibleCounterpartyList = this.counterpartyList
-      .filter(e => {
-        if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
-          return true;
-        }
-        return false;
-      })
-      .slice(0, 7);
+    this.visibleCounterpartyList = _.cloneDeep(
+      this.counterpartyList
+        .filter(e => {
+          if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
+            return true;
+          }
+          return false;
+        })
+        .slice(0, 7)
+    );
   }
   searchRequest(userInput: string): void {
     this.expandedSearch = false;
