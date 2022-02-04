@@ -627,6 +627,7 @@ export class ShiptechCustomHeaderGroup {
     const number = parseFloat(plainNumber);
 
     if (isNaN(number)) {
+      this.toastr.warning('Live price should be a numeric value');
       return null;
     }
 
