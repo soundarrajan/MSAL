@@ -37,6 +37,7 @@ import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib
 import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-request-popup/search-request-popup.component';
 import { SpotnegoSearchCtpyComponent } from '../spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { ConfirmdialogComponent } from '../spot-negotiation-popups/confirmdialog/confirmdialog.component';
+import { cloneDeep } from 'lodash';
 @Component({
   selector: 'app-spot-negotiation-header',
   templateUrl: './spot-negotiation-header.component.html',
@@ -142,7 +143,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if(!product.isContract && product.status.toLowerCase().includes("stemmed")) {
           canDelinkStemmed = false;
         }
-      });  
+      });
     });
     if(!canDelinkStemmed) {
       this.toastr.error("Request cannot be delinked as an order has already been created.");
@@ -152,7 +153,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     if (this.requestOptions.length <= 1) {
       this.toastr.error("You cannot delink the last request in the group");
       return;
-    } 
+    }
     const dialogRef = this.dialog.open(ConfirmdialogComponent, {
       width: '400px',
       maxWidth: '500px',
@@ -160,7 +161,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       data: {
         message: "Are you sure you want de-link the request?",
       }
-    });   
+    });
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
@@ -168,14 +169,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           groupId: parseInt(RequestGroupId),
           requestId: item.id,
         };
-    
-        
+
+
         /* commented out until API is fixed */
         this.spinner.show();
-        const response = this._spotNegotiationService.delinkRequest(payload);  
+        const response = this._spotNegotiationService.delinkRequest(payload);
         response.subscribe((res: any) => {
           this.spinner.hide();
-          if(!isNaN(res)) {            
+          if(!isNaN(res)) {
             this.toastr.success(`Request ${item.id} was succesfully delinked`);
             /* select first request if selected reqeust is delinked */
             if(this.requestOptions[this.selReqIndex].id == item.id ) {
@@ -190,9 +191,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             /* update store requests */
             this.store.dispatch(new DelinkRequest(item.id));
           }
-        });           
+        });
       }
-    }); 
+    });
   }
 
   removeDuplicatesRequest(array, key) {
@@ -605,7 +606,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
   searchRequest(userInput: string): void {
     this.expandedSearch = false;
-
     this.visibleRequestList = this.requestsAndVessels
       .filter(e => {
         if (e.requestName.toLowerCase().includes(userInput.toLowerCase())) {
@@ -614,6 +614,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         return false;
       })
       .slice(0, 7);
+      if(this.visibleRequestList.length === 0){
+       const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , userInput.toLowerCase(), { Skip: 0, Take: 25 });
+       response.subscribe((res:any)=>{
+         if(res?.payload?.length > 0){
+           this.visibleRequestList = cloneDeep(res.payload);
+         }
+       });
+      }
   }
 
   limitStrLength = (text, max_length) => {

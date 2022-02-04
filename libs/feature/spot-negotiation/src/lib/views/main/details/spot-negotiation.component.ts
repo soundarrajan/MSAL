@@ -23,7 +23,8 @@ import {
   SetCounterpartyList,
   SetRequestList,
   SetLocationsRowsOriData,
-  SetLocationsRowsPriceDetails
+  SetLocationsRowsPriceDetails,
+  SetPhysicalSupplierCounterpartyList
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -53,6 +54,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   CurrentLocationprduct: any[];
   currentRequestData: any[];
   allRequest: any[];
+  totalCounterpartyCount: number;
 
   constructor(
     private http: HttpClient,
@@ -72,10 +74,12 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.getRequestGroup();
     this.getGroupOfSellers();
     this.getCounterpartyList();
+    this.getPhysicalSupplierList();
     this.getRequestList();
     this.getTenantConfugurations();
     this.getStaticLists();
   }
+
 
   getRequestGroup(): void {
     // Get current id from url and make a request with that data.
@@ -258,23 +262,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   }
 
   getRequestList(): void {
-    let payload = {
-      Order: null,
-      PageFilters: { Filters: [] },
-      SortList: {
-        SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]
-      },
-      Filters: [],
-      SearchText: null,
-      Pagination: { Skip: 0, Take: 2000 }
-    };
-    const response = this.spotNegotiationService.getRequestList(payload);
+    const response = this.spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip: 0, Take: 25 })
     response.subscribe((res: any) => {
       if (res.error) {
         alert('Handle Error');
         return;
       } else {
         if (res?.payload?.length > 0) {
+          this.spotNegotiationService.requestCount = res.matchedCount;
           res.payload.forEach(element => {
             element.isSelected = false;
           });
@@ -288,23 +283,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   }
 
   getCounterpartyList(): void {
-    let payload = {
-      Order: null,
-      PageFilters: { Filters: [] },
-      SortList: { SortList: [] },
-      Filters: [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
-      SearchText: null,
-      Pagination: { Skip: 0, Take: 2000 }
-    };
-
-    const response = this.spotNegotiationService.getCounterpartyList(payload);
-
+    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], null, { Skip:0, Take: 25 })
     response.subscribe((res: any) => {
       if (res.error) {
         alert('Handle Error');
         return;
       } else {
         if (res?.payload?.length > 0) {
+          this.spotNegotiationService.counterpartyTotalCount = res.matchedCount;
           res.payload.forEach(element => {
             element.isSelected = false;
             element.name = this.format.htmlDecode(element.name);
@@ -312,6 +298,26 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         }
         // Populate Store
         this.store.dispatch(new SetCounterpartyList(res.payload));
+      }
+    });
+  }
+
+  getPhysicalSupplierList(): void{
+    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], null, { Skip:0 , Take: 25 } );
+    response.subscribe((res: any) => {
+      if (res.error) {
+        alert('Handle Error');
+        return;
+      } else {
+        if (res?.payload?.length > 0) {
+          this.spotNegotiationService.physicalSupplierTotalCount = res.matchedCount;
+          res.payload.forEach(element => {
+            element.isSelected = false;
+            element.name = this.format.htmlDecode(element.name);
+          });
+        }
+        // Populate Store
+        this.store.dispatch(new SetPhysicalSupplierCounterpartyList(res.payload));
       }
     });
   }
