@@ -535,7 +535,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         this.formValues.paymentDetails = <IInvoiceDetailsItemPaymentDetails>{};
       }
       if (!this.formValues.counterpartyDetails.counterpartyBankAccount) {
-                this.formValues.counterpartyDetails.counterpartyBankAccount = <IInvoiceDetailsItemBaseInfo>null;
+          this.formValues.counterpartyDetails.counterpartyBankAccount = <IInvoiceDetailsItemBaseInfo>null;
       }
       this.setOrderDetailsLables(this.formValues.orderDetails);
       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
@@ -2481,11 +2481,17 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (this.formSubmitted) {
       return;
     }
+    if(!this.formValues.counterpartyDetails.counterpartyBankAccount && this.tenantConfiguration?.invoiceConfiguration
+      ?.fieldVisibility?.isBankAccountNumberMandatory) {
+      this.toastr.error("Bank Account Number is Mandatory");
+      return;
+    }
     this.spinner.show();
     this.formSubmitted = true;
     this.setAdditionalCostLine();
     const valuesForm = _.cloneDeep(this.formValues); //avoid error on ngModel of bankAccount
     if (
+      !this.formValues.counterpartyDetails.counterpartyBankAccount ||
       this.formValues.counterpartyDetails.counterpartyBankAccount.id ==
         undefined ||
       this.formValues.counterpartyDetails.counterpartyBankAccount.id == 0
