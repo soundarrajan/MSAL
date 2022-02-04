@@ -1,11 +1,11 @@
-﻿commit 566e2564feab55a7187780e48c9beb1d86cf840d
+﻿commit b344979525e09623fb52454c96506cd3945fef4b
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Feb 3 17:40:05 2022 +0000
+Date:   Fri Feb 4 11:23:04 2022 +0000
 
-    Merged PR 15765: Change success message on create credit/debit note
+    Merged PR 15783: Fix bank account number validation
     
-    Change success message on create credit/debit note
+    Fix bank account number validation
     
-    Related work items: #38368
+    Related work items: #38338
 
 branch: master
