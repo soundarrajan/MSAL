@@ -99,7 +99,7 @@
                       *ngFor="let locationCost of locationCosts"
                       [value]="locationCost.id"
                     >
-                      {{ locationCost.costDescription }}
+                      {{ locationCost.costDescription | htmlDecodeReadonly }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
