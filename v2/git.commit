@@ -1,11 +1,11 @@
-﻿commit b344979525e09623fb52454c96506cd3945fef4b
+﻿commit 13858cb033ccf4b6b1002c4eec24c556433fbe59
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Feb 4 11:23:04 2022 +0000
+Date:   Fri Feb 4 16:00:02 2022 +0000
 
-    Merged PR 15783: Fix bank account number validation
+    Merged PR 15788: Add validation for bank account number on Approve Invoice
     
-    Fix bank account number validation
+    Add validation for bank account number on Approve Invoice
     
-    Related work items: #38338
+    Related work items: #38330
 
 branch: master
