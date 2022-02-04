@@ -880,7 +880,7 @@ export class ShiptechCustomHeaderGroup {
     let counterpartyList: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterpartyList;
+      counterpartyList = spotNegotiation.counterparties;
     });
 
     rowsArray.forEach((row, index) => {

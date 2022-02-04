@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { SpotnegoAdditionalcostComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-additionalcost/spotnego-additionalcost.component';
 import { SellerratingpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/sellerratingpopup/sellerratingpopup.component';
 import { EmailPreviewPopupComponent } from '../../views/main/details/components/spot-negotiation-popups/email-preview-popup/email-preview-popup.component';
@@ -24,17 +24,11 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
 import _, { cloneDeep } from 'lodash';
 import {
   EditLocationRow,
-  SetLocations,
   SetLocationsRows,
-  SetCounterpartyList,
-  SetLocationsRowsPriceDetails,
   EditCounterpartyList
 } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
-import { RemoveCounterpartyComponent } from '../../views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 @Component({

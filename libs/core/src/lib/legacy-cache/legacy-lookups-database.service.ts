@@ -65,6 +65,7 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly controlTowerNotesViewType: Dexie.Table<IDisplayLookupDto, number>;
   readonly controlTowerLogStatus: Dexie.Table<IDisplayLookupDto, number>;
   readonly costType: Dexie.Table<IDisplayLookupDto, number>;
+  readonly counterparty: Dexie.Table<IDisplayLookupDto, number>;
 
   /**
    * For some entities we want to map from the BE dto more than the default IDisplayLookup props, for these cases we use a transformer.
@@ -175,7 +176,8 @@ export class LegacyLookupsDatabase extends Dexie {
         'controlTowerNotesViewType'
       )]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('controlTowerLogStatus')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('costType')]: lookupSchema
+      [nameof<LegacyLookupsDatabase>('costType')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('counterparty')]: lookupSchema
     };
   }
 
