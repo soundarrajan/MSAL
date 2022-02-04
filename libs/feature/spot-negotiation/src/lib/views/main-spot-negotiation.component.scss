@@ -1068,3 +1068,12 @@ ag-grid-angular {
   border-radius: 10px;
   background-color: #c4c4c4 !important;
 }
+
+.ag-theme-material .ag-layout-auto-height .ag-center-cols-clipper, .ag-theme-material .ag-layout-auto-height .ag-center-cols-container, .ag-theme-material .ag-layout-print .ag-center-cols-clipper, .ag-theme-material .ag-layout-print .ag-center-cols-container {
+  min-height: 50px !important;
+}
+
+.ag-theme-material .ag-overlay-no-rows-wrapper.ag-layout-auto-height {
+  padding-top: 110px !important;
+}
+
