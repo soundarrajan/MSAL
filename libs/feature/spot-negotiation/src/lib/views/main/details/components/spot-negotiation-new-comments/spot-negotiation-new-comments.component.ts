@@ -3,9 +3,11 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Input,
   OnInit,
   ViewChild
 } from '@angular/core';
+import { MatExpansionPanel } from '@angular/material/expansion';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
@@ -20,6 +22,17 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SpotNegotiationNewCommentsComponent
   implements OnInit, AfterViewInit {
+  expandCommentsSection: boolean = false;
+
+  @Input('expandCommentsSection') set _setExpandCommentsSection(
+    expandCommentsSection
+  ) {
+    this.expandCommentsSection = expandCommentsSection;
+    if (this.expandCommentsSection) {
+      this.expandCommentsPanel();
+    }
+  }
+
   @ViewChild('generalComment') generalCommentBox: ElementRef;
   @ViewChild('performanceComment') performanceCommentBox: ElementRef;
   @ViewChild('supplyComment') supplyCommentBox: ElementRef;
@@ -33,6 +46,8 @@ export class SpotNegotiationNewCommentsComponent
   showEditIcon: boolean = false;
 
   notYet: string = ' - ';
+  @ViewChild(MatExpansionPanel, { static: true })
+  matExpansionPanelElement: MatExpansionPanel;
 
   constructor(
     private store: Store,
@@ -215,5 +230,9 @@ export class SpotNegotiationNewCommentsComponent
           this.toastr.error('An error has occurred!');
         }
       });
+  }
+
+  expandCommentsPanel() {
+    this.matExpansionPanelElement.open();
   }
 }
