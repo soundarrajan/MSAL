@@ -316,7 +316,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     rowsArray.forEach((row, index) => {
       let requestLocations = currentRequestData.filter(row1 => row1.id == row.requestLocationId);
       let reqLocations = requestlist.filter(row1 => row1.id == row.requestId );
-      let reqProducts= reqLocations[0].requestLocations.filter(row1 => row1.id == row.requestLocationId );
+      let reqProducts= reqLocations.length>0?reqLocations[0].requestLocations.filter(row1 => row1.id == row.requestLocationId ):[];
       let currentLocProdCount = reqProducts.length>0?reqProducts[0].requestProducts.length:0;
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;

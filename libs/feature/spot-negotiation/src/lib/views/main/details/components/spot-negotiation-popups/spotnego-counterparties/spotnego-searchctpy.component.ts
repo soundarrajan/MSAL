@@ -370,7 +370,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         val =>
           <SpnegoAddCounterpartyModel>{
             requestGroupId: this.RequestGroupId,
-            requestId: val.requestId,
+            requestId: this.currentRequest.id,
             requestLocationId: this.RequestLocationId,
             locationId: this.LocationId,
             id: 0,
