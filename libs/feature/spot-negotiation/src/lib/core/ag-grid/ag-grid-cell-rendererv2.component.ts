@@ -290,6 +290,7 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
             pricePopupTrigger.openMenu()
           "
         >
+        <span class="duplicate-icon" *ngIf="params.data.requestOffers[params.index]?.isOfferPriceCopied"></span>
           <div
             id="custom-form-field"
             [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
