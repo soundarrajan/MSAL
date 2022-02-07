@@ -6,7 +6,6 @@ import {
   SetLocationsRows,
   AddCounterpartyToLocations,
   AddRequest,
-  UpdateRequest,
   DelinkRequest,
   EditLocationRow,
   SetLocationsRowsPriceDetails,
