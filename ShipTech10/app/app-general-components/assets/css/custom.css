@@ -1310,6 +1310,7 @@ div.asc_jqgrid__columns-list a.dt-button:not(.active):hover {
 }
 
 .st-content-action-icons span.icon.export-pdf {
+    display: none; /* #38411 - Temporarily disabled export pdf */
     background-image: url('/img/general-header-icon-export-pdf.png');
 }
 
