@@ -22532,6 +22532,9 @@ mat-form-field {
   }
   .checkboxOptions {
     margin: 10px 10px 0px 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     .mat-checkbox-checked.mat-accent .mat-checkbox-background,
     .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
       background-color: #ffffff;
