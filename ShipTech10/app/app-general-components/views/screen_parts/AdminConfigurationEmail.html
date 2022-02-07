@@ -20,10 +20,10 @@
 						<td class="padding">{{value.transactionType.name}}</td>
 						<td class="padding">{{value.process}}</td>
 						<td class="">
-							<select ng-if="value.process != 'Order No BDN To Vessel Email' && value.process != 'Bunker Quantity' && value.process != 'Sludge Quantity'"
+							<select ng-if="value.process != 'Order No BDN To Vessel Email' && value.process != 'Bunker Quantity' && value.process != 'Sludge Quantity' && value.process != 'Labs Template'"
 								class="form-control bs-select changeIT" name="emailType" id="emailType" ng-required="true" ng-options="item as item.name for item in CM.listsCache.EmailType track by item.id" ng-model="value.emailType">
 							</select>
-							<select ng-if="value.process == 'Order No BDN To Vessel Email' || value.process == 'Bunker Quantity' || value.process == 'Sludge Quantity'"
+							<select ng-if="value.process == 'Order No BDN To Vessel Email' || value.process == 'Bunker Quantity' || value.process == 'Sludge Quantity' || value.process == 'Labs Template'"
 								class="form-control bs-select changeIT" name="emailType" id="emailType" ng-required="true" ng-options="item as item.name for item in CM.EmailTypeNoAutomatic track by item.id"  ng-model="value.emailType">
 							</select>
 
