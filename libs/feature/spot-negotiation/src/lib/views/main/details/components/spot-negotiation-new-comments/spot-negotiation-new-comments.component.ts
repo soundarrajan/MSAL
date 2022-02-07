@@ -11,6 +11,8 @@ import { MatExpansionPanel } from '@angular/material/expansion';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { UpdateRequest } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import { SetRequests } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
 import _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -49,6 +51,10 @@ export class SpotNegotiationNewCommentsComponent
   @ViewChild(MatExpansionPanel, { static: true })
   matExpansionPanelElement: MatExpansionPanel;
 
+  currentRequestInfo: any;
+  requestList: any[] = [];
+  requestListToDuplicateComments: any[] = [];
+
   constructor(
     private store: Store,
     public changeDetector: ChangeDetectorRef,
@@ -57,6 +63,10 @@ export class SpotNegotiationNewCommentsComponent
     private toastr: ToastrService
   ) {
     this.store.subscribe(({ spotNegotiation }) => {
+      this.currentRequestInfo = _.cloneDeep(
+        spotNegotiation.currentRequestSmallInfo
+      );
+      this.requestList = _.cloneDeep(spotNegotiation.requests);
       if (spotNegotiation.currentRequestSmallInfo) {
         this.requestInfo = _.cloneDeep(spotNegotiation.currentRequestSmallInfo);
 
@@ -234,5 +244,31 @@ export class SpotNegotiationNewCommentsComponent
 
   expandCommentsPanel() {
     this.matExpansionPanelElement.open();
+  }
+
+  getRequestsList() {
+    if (this.requestList && this.currentRequestInfo) {
+      this.requestListToDuplicateComments = _.cloneDeep(
+        this.requestList
+          .filter(r => r.id != this.currentRequestInfo.id)
+          .map(req => ({ ...req, isSelected: true }))
+      );
+    }
+  }
+
+  onRequestListCheckboxChange(checkbox: any, element: any) {
+    element.isSelected = checkbox.checked ? true : false;
+  }
+
+  copyCommentsToSelectedRequests() {
+    let selectedRequests = _.cloneDeep(
+      _.filter(this.requestListToDuplicateComments, function(request) {
+        return request.isSelected;
+      })
+    );
+    console.log(selectedRequests);
+
+    selectedRequests[0].negoGeneralComments = 'NEGOTIATION GENERAL';
+    this.store.dispatch(new UpdateRequest(selectedRequests));
   }
 }
