@@ -4,7 +4,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
-  ViewChild
+  ViewChild,
+  Injectable,
+  HostListener
 } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
@@ -29,6 +31,8 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { AGGridCellV2RendererComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-renderer-v2.component';
 import { AGGridCellActionsDocumentsComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-actions-documents.component';
 import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
+import { Subject } from 'rxjs';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-negotiation-documents',
@@ -38,6 +42,7 @@ import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/maste
 })
 export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
   @ViewChild('uploadComponent', { static: false }) uploadedFiles: FileUpload;
+
   public rowData_grid = [];
   public gridOptions_data: GridOptions;
   documentTypeList: any[];
@@ -343,13 +348,19 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
       suppressMenu: true,
       width: 50,
       checkboxSelection: true,
+      disabled: true,
       resizable: false,
       suppressMovable: true,
       cellRendererFramework: AGGridCellActionsDocumentsComponent,
       cellRendererParams: { type: 'row-remove-icon-with-checkbox' },
       headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
       cellClass:
-        'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center'
+        'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
+      cellStyle: params => {
+        return params.data.status == 'Verified'
+          ? { 'pointer-events': 'none', opacity: '0.4' }
+          : '';
+      }
     },
     {
       headerName: 'Document Name',
