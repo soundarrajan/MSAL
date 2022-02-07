@@ -538,7 +538,7 @@ let reqIdwithSellerName : String;
           locationsRows.filter(lr => lr.requestLocationId == reqLoc.id).forEach(locRows => {
             if (
               tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
-              !locRows.physicalSupplierCounterpartyId
+              !locRows.physicalSupplierCounterpartyId && selectedSellerRows.filter(x => x.SellerId == locRows.sellerCounterpartyId).length > 0
             ) {
               if(reqIdwithSellerName)
               reqIdwithSellerName = reqIdwithSellerName+', REQ ' +locRows.requestId.toString()+ '-' +locRows.sellerCounterpartyName;
