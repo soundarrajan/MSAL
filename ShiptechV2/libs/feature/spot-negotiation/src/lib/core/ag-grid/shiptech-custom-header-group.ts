@@ -627,6 +627,7 @@ export class ShiptechCustomHeaderGroup {
     const number = parseFloat(plainNumber);
 
     if (isNaN(number)) {
+      type == 'livePrice'?this.toastr.warning('Live price should be a numeric value '):'';
       return null;
     }
 
@@ -880,7 +881,7 @@ export class ShiptechCustomHeaderGroup {
     let counterpartyList: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterpartyList;
+      counterpartyList = spotNegotiation.counterparties;
     });
 
     rowsArray.forEach((row, index) => {
