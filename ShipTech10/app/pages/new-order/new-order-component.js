@@ -2380,6 +2380,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             lookupModel.getConvertedUOM(prod.product.id, 1, prod.quantityUom.id, additionalCost.priceUom.id).then((server_data) => {
                 // set conversion factor on additional cost object
                 additionalCost.prodConv[i] = server_data.payload;
+                additionalCost = calculateAdditionalCostAmounts(additionalCost, prod);
                 // return server_data.payload;
             }).catch((e) => {
                 throw 'Unable to get the uom.';
@@ -4756,7 +4757,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          * @returns 
          */
         ctrl.setLocationBasedAdditionalCosts = function(additionalCost, product, initiatorName) {
-            if(initiatorName != 'additionalCostNameChanged' && initiatorName != 'quantityChange' &&
+            if(initiatorName != 'additionalCostNameChanged' && initiatorName != 'quantityChange' && initiatorName != 'quantityUomChange' &&
                 initiatorName != 'applicableForChange' && initiatorName != 'productChanged' || (!additionalCost.costType ||
                 !((additionalCost.additionalCost && additionalCost.additionalCost.locationid > 0) ||
                 additionalCost.locationAdditionalCostId > 0))) {
