@@ -29,14 +29,16 @@ import {
   SetCurrentRequestSmallInfo,
   SetAvailableContracts,
   SetRequests,
-  SetTenantConfigurations
+  SetTenantConfigurations,
+  SetCounterparties
 } from './actions/request-group-actions';
 
 export class SpotNegotiationStoreModel {
   staticLists: any;
   counterpartyList: any;
   physicalSupplierCounterpartyList: any;
-  RequestList:any;
+  requestList:any;
+  counterparties: any;
   // Until here
   groupOfRequestsId: number | null;
   locations: Array<any>;
@@ -63,7 +65,8 @@ export class SpotNegotiationStoreModel {
     this.staticLists = {};
     this.counterpartyList = {};
     this.physicalSupplierCounterpartyList ={};
-    this.RequestList = {};
+    this.counterparties = {};
+    this.requestList = {};
     this.locations = [];
     this.selectedSellerList = [];
     this.locationsRows = [];
@@ -110,7 +113,8 @@ export class SpotNegotiationStoreModel {
     LocationsOriData: [],
     counterpartyList: [],
     physicalSupplierCounterpartyList:[],
-    RequestList:[]
+    requestList:[],
+    counterparties: []
   }
 })
 export class SpotNegotiationStore {
@@ -211,6 +215,7 @@ export class SpotNegotiationStore {
     });
   }
 
+  //// action to set full list of look up counterparties from cache
   @Action(SetCounterpartyList)
   SetCounterparties(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
@@ -221,13 +226,23 @@ export class SpotNegotiationStore {
     });
   }
 
+  @Action(SetCounterparties)
+  SetLookupCounterparties(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetCounterparties
+  ): void {
+    patchState({
+      counterparties: payload
+    });
+  }
+
   @Action(SetRequestList)
   SetRequestList(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: SetRequestList
   ): void {
     patchState({
-      RequestList: payload
+      requestList: payload
     });
   }
 
@@ -238,9 +253,9 @@ export class SpotNegotiationStore {
    { payload }: AppendRequestList
  ) {
    const state = getState();
-   var rqust = [...state.RequestList , ...payload];
+   var rqust = [...state.requestList , ...payload];
    patchState({
-     RequestList: rqust
+     requestList: rqust
    });
  }
 

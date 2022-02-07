@@ -110,9 +110,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if (this.requestOptions.length > 6) {
           this.displayVessel = true;
         }
-        if (spotNegotiation.RequestList.length > 0) {
+        if (spotNegotiation.requestList.length > 0) {
           this.requestsAndVessels = this.removeDuplicatesRequest(
-            spotNegotiation.RequestList,
+            spotNegotiation.requestList,
             'requestName'
           );
         }
@@ -355,7 +355,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     let counterpartyList: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterpartyList;
+      counterpartyList = spotNegotiation.counterparties;
     });
 
     rowsArray.forEach((row, index) => {
@@ -403,7 +403,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
           row.physicalSupplierCounterpartyName = counterpartyList.find(
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
-          ).displayName;
+          )?.displayName;
         }
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
@@ -452,7 +452,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             row.physicalSupplierCounterpartyName = counterpartyList.find(
               x =>
                 x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
-            ).displayName;
+            )?.displayName;
           }
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;

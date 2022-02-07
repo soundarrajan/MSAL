@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
   SetLocationsRows,
-  SetLocationsRowsPriceDetails
+  // SetLocationsRowsPriceDetails
 } from '../../../../../../store/actions/ag-grid-row.action';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import _ from 'lodash';
@@ -430,7 +430,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       requestlist= spotNegotiation.requests;
       currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterpartyList;
+      counterpartyList = spotNegotiation.counterparties;
     });
 
     rowsArray.forEach((row, index) => {
@@ -457,12 +457,11 @@ export class EmailPreviewPopupComponent implements OnInit {
           a.requestProductId > b.requestProductId ? 1 : -1
         );
         //row.isSelected = priceDetailsArray[index].isSelected;
-        row.physicalSupplierCounterpartyId =
-          priceDetailsArray[index].physicalSupplierCounterpartyId;
+        row.physicalSupplierCounterpartyId = priceDetailsArray[index].physicalSupplierCounterpartyId;
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
           row.physicalSupplierCounterpartyName = counterpartyList.find(
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
-          ).displayName;
+          )?.displayName;
         }
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
@@ -487,7 +486,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
           row.physicalSupplierCounterpartyName = counterpartyList.find(
             x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
-          ).displayName;
+          )?.displayName;
         }
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
