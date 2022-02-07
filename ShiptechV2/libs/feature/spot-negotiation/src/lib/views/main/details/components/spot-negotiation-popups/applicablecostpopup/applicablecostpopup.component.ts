@@ -293,11 +293,10 @@ export class ApplicablecostpopupComponent implements OnInit {
     cost.requestLocationId = this.requestLocation.id;
     cost.isLocationBased = true;
     cost.additionalCostId = selectedCost.additionalCostId;
-    cost.requestProductId =
-      cost.selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
+    cost.requestProductId = cost.selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
     cost.isAllProductsCost = cost.requestProductId ? false : true;
 
-    cost.costName = selectedCost.costName;
+    cost.costName = selectedCost.costDescription;
     cost.costTypeId = selectedCost.costTypeId;
     cost.costType = selectedCost.costType;
 
