@@ -11763,7 +11763,7 @@ tr.title {
     border-radius: 3px;
     min-height: 62px !important;
     margin: 10px -125px !important;
-    width: 220px;
+    width: 230px;
     min-width: 220px;
     overflow: initial;
   }
@@ -22506,4 +22506,12 @@ mat-form-field {
 .currencyselecttrigger.mat-select-panel::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #c4c4c4 !important;
+}
+
+.search-icon-document-tab
+  > .mat-form-field-wrapper
+  > .mat-form-field-flex
+  > .mat-form-field-infix {
+  position: relative;
+  width: 0px !important;
 }

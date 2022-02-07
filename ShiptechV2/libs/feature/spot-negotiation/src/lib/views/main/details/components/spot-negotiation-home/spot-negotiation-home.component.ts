@@ -15,6 +15,7 @@ import { SpotnegoConfirmorderComponent } from '../spot-negotiation-popups/spotne
 import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from '../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
+  EditLocationRow,
   SetLocationsRows,
   SetLocationsRowsPriceDetails
 } from '../../../../../store/actions/ag-grid-row.action';
@@ -24,6 +25,7 @@ import { KnownSpotNegotiationRoutes } from 'libs/feature/spot-negotiation/src/li
 import { takeUntil } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
+import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -45,6 +47,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   spotEmailComp: SpotnegoemaillogComponent;
 
   selectedSellerList: any[];
+  selectedRequestList: any = [];
   currentRequestInfo: any;
   tenantConfiguration: any;
   RequestGroupID: number;
@@ -74,8 +77,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.requestOptions = spotNegotiation.requests;
-      if(this.requestOptionsToDuplicatePrice && this.currentRequestInfo){
-        this.requestOptionsToDuplicatePrice = spotNegotiation.requests.filter(r => r.id != this.currentRequestInfo.id);}
+      if (this.requestOptions && this.currentRequestInfo) {
+        this.requestOptionsToDuplicatePrice = this.requestOptions.filter(r => r.id != this.currentRequestInfo.id && (r.status.toLowerCase().includes("inquired") || r.status.toLowerCase().includes("quoted"))).map(req => ({ ...req, selected: true }));
+        this.selectedRequestList = this.requestOptionsToDuplicatePrice
+      }
       this.tenantConfiguration = spotNegotiation.tenantConfigurations;
       this.setTabItems();
     });
@@ -110,9 +115,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         routerLink: disabled
           ? null
           : [
-              ...routeLinkToNegotiationDetails,
-              KnownSpotNegotiationRoutes.reportPath
-            ],
+            ...routeLinkToNegotiationDetails,
+            KnownSpotNegotiationRoutes.reportPath
+          ],
         routerLinkActiveOptions: { exact: true },
         disabled
       },
@@ -142,7 +147,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         this.negotiationId,
         KnownSpotNegotiationRoutes.emailLog
       ])
-      .then(() => {});
+      .then(() => { });
     // if(this.isOpen == false){
     //   this.isOpen = true;
     // }
@@ -210,7 +215,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         panelClass: 'additional-cost-popup'
       });
 
-      dialogRef.afterClosed().subscribe(result => {});
+      dialogRef.afterClosed().subscribe(result => { });
     } else {
       this.toaster.warning('Cannot confirm offer as no offer price available');
       return;
@@ -311,15 +316,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
     let requestlist: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       currentRequestData = spotNegotiation.locations;
-      requestlist= spotNegotiation.requests;
+      requestlist = spotNegotiation.requests;
       counterpartyList = spotNegotiation.counterparties;
     });
 
     rowsArray.forEach((row, index) => {
       let requestLocations = currentRequestData.filter(row1 => row1.id == row.requestLocationId);
-      let reqLocations = requestlist.filter(row1 => row1.id == row.requestId );
-      let reqProducts= reqLocations.length>0?reqLocations[0].requestLocations.filter(row1 => row1.id == row.requestLocationId ):[];
-      let currentLocProdCount = reqProducts.length>0?reqProducts[0].requestProducts.length:0;
+      let reqLocations = requestlist.filter(row1 => row1.id == row.requestId);
+      let reqProducts = reqLocations.length > 0 ? reqLocations[0].requestLocations.filter(row1 => row1.id == row.requestLocationId) : [];
+      let currentLocProdCount = reqProducts.length > 0 ? reqProducts[0].requestProducts.length : 0;
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
         let val = 'checkProd' + indx;
@@ -331,7 +336,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         index < priceDetailsArray.length &&
         row.id === priceDetailsArray[index].requestLocationSellerId
       ) {
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
+        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a, b) => (a.requestProductId > b.requestProductId ? 1 : -1));
         //row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId = priceDetailsArray[index].physicalSupplierCounterpartyId;
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
@@ -353,7 +358,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
       // We found something
       if (detailsForCurrentRow.length > 0) {
-        row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
+        row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a, b) => (a.requestProductId > b.requestProductId ? 1 : -1));
         //row.isSelected = detailsForCurrentRow[0].isSelected;
         row.physicalSupplierCounterpartyId = detailsForCurrentRow[0].physicalSupplierCounterpartyId;
         if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
@@ -428,23 +433,29 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   ConstuctSellerPayload(Seller, requestProducts, Request) {
-    let selectedproducts = [];
+    let selectedproductIds = [];
+    let selectedproduct = [];
     let rfqId = 0;
 
     if (Seller['checkProd1']) {
-      selectedproducts.push(requestProducts[0].id);
+      selectedproductIds.push(requestProducts[0].id);
+      selectedproduct.push(requestProducts[0]);
     }
     if (Seller['checkProd2']) {
-      selectedproducts.push(requestProducts[1].id);
+      selectedproductIds.push(requestProducts[1].id);
+      selectedproduct.push(requestProducts[1]);
     }
     if (Seller['checkProd3']) {
-      selectedproducts.push(requestProducts[2].id);
+      selectedproductIds.push(requestProducts[2].id);
+      selectedproduct.push(requestProducts[2]);
     }
     if (Seller['checkProd4']) {
-      selectedproducts.push(requestProducts[3].id);
+      selectedproductIds.push(requestProducts[3].id);
+      selectedproduct.push(requestProducts[3]);
     }
     if (Seller['checkProd5']) {
-      selectedproducts.push(requestProducts[4].id);
+      selectedproductIds.push(requestProducts[4].id);
+      selectedproduct.push(requestProducts[4]);
     }
     if (Seller.requestOffers !== undefined && Seller.requestOffers.length > 0) {
       rfqId = Seller.requestOffers[0].rfqId;
@@ -457,10 +468,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
       LocationID: Seller.locationId,
       RequestId: Request.id,
       physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
-      RequestProductIds: selectedproducts,
+      RequestProductIds: selectedproductIds,
+      RequestProducts: selectedproduct,
       RfqId: rfqId,
       RequestOffers: Seller.requestOffers?.filter(row =>
-        selectedproducts.includes(row.requestProductId)
+        selectedproductIds.includes(row.requestProductId)
       ),
       QuoteByDate: new Date(this.child.getValue())
     };
@@ -472,22 +484,133 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.child.pickerOpen();
   }
 
-  displaySuccessMsg() {
-    this.selectedSellerList = [];
-    var Selectedfinaldata = this.FilterselectedRowForRFQ();
-    if (Selectedfinaldata.length == 0) {
-      this.toaster.error('Atleast 1 product should be selected');
+  onRequestListCheckboxChange(checkbox: any, element: any) {
+    if (checkbox.checked && this.selectedRequestList?.filter(e => e.id == element.id).length == 0) {
+      this.selectedRequestList.push(element);
+    }
+
+    if (!checkbox.checked) {
+      this.selectedRequestList = this.selectedRequestList.filter(
+        e => e.id !== element.id
+      );
+    }
+  }
+
+  copyPriceToSelectedRequests() {
+    if (this.selectedRequestList.length > 0) {
+      this.selectedSellerList = [];
+
+      var selectedRows = this.FilterselectedRowForCurrentRequest();
+      if (selectedRows.length == 0) {
+        this.toaster.error('Atleast 1 product should be selected');
+        return;
+      }
+      else if (selectedRows.filter(x => x.RequestOffers.find(r => r.price == null)).length != 0) {
+        this.toaster.error('Please select the product(s) that has offer price.');
+        return;
+      }
+      const locationsRows = this.store.selectSnapshot<any>(
+        (state: any) => {
+          return state.spotNegotiation.locationsRows;
+        }
+      );
+
+      let selectedSellerRows = selectedRows.map(e => {
+        let reqProdOffers = e.RequestProducts.map(reqProd => {
+          let reqProOffers = e.RequestOffers.find(reqOff => reqOff.requestProductId === reqProd.id)
+          return { ...reqProd, ...reqProOffers }
+        });
+        return { ...e, ReqProdOffers: reqProdOffers }
+      });
+
+      let isProductsExists: boolean = false;
+      let isPhySupMandatoryForQuoting: boolean = false;
+      let sellerDetails = [];
+      //avoid calculation based on physical supplier mandatory configurations.
+      const tenantConfig = this.store.selectSnapshot(
+        (state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].tenantConfigurations;
+        }
+      );
+let reqIdwithSellerName : String;
+      this.selectedRequestList.forEach(req => {
+        req.requestLocations.forEach(reqLoc => {
+          locationsRows.filter(lr => lr.requestLocationId == reqLoc.id).forEach(locRows => {
+            if (
+              tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
+              !locRows.physicalSupplierCounterpartyId && selectedSellerRows.filter(x => x.SellerId == locRows.sellerCounterpartyId).length > 0
+            ) {
+              if(reqIdwithSellerName)
+              reqIdwithSellerName = reqIdwithSellerName+', REQ ' +locRows.requestId.toString()+ '-' +locRows.sellerCounterpartyName;
+              else
+              reqIdwithSellerName = 'REQ ' +locRows.requestId.toString()+ '-' +locRows.sellerCounterpartyName;
+              isPhySupMandatoryForQuoting = true;
+              return false;
+            }
+            let filterRequestWithSameDtails = selectedSellerRows.filter(e => e.LocationID == reqLoc.locationId && e.SellerId == locRows.sellerCounterpartyId
+              && (tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && e.physicalSupplierCounterpartyId == locRows.physicalSupplierCounterpartyId) ||
+              locRows.physicalSupplierCounterpartyId == null).map(result => {
+                result.ReqProdOffers = result.ReqProdOffers.filter(p => reqLoc.requestProducts.some(rp => rp.productId === p.productId))
+                return result
+              });
+
+
+            if (filterRequestWithSameDtails.length > 0 && filterRequestWithSameDtails?.filter(x => x.ReqProdOffers.length > 0)) {
+              isProductsExists = true;
+              filterRequestWithSameDtails?.filter(x => x.ReqProdOffers.length > 0).forEach(async req => {
+                req.ReqProdOffers.forEach(proOff => {
+                  locRows = this.spotNegotiationService
+                    .formatRowData(
+                      locRows,
+                      reqLoc.requestProducts?.find(p => proOff.productId === p.productId),
+                      'offPrice',
+                      proOff.price,
+                      reqLoc,
+                      true
+                    );
+                });
+
+                // Update the store
+                this.store.dispatch(new EditLocationRow(locRows));
+
+                const reqLocSell = this.ConstructUpdatePricePayload(locRows, reqLoc.requestProducts, true);
+                sellerDetails.push(reqLocSell);
+              });
+
+            }
+          });
+        });
+      });
+      if (isPhySupMandatoryForQuoting) {
+        this.toaster.error(
+          'Physical Supplier should be provided to copy offer price to ' +reqIdwithSellerName
+        );
+        return;
+      }
+      else if (!isProductsExists) {
+        this.toaster.error('Can not copy the price as select prodct does not match with same seller in other request(s).');
+        return;
+      }
+      const copyPricePayload = { copyPriceDetailsRequest: sellerDetails }
+      this.spinner.show();
+      const response = this.spotNegotiationService.copyPriceDetails(copyPricePayload);
+      response.subscribe((res: any) => {
+        this.spinner.hide();
+        if (typeof res === 'boolean' && res == true) {
+          this.toaster.success('Offer price copied successfully.')
+          this.selectedRequestList = []
+          this.requestOptionsToDuplicatePrice = this.requestOptionsToDuplicatePrice.map(req => ({ ...req, selected: false }))
+
+        } else {
+          this.toaster.error(res.message);
+          return;
+        }
+      });
+    }
+    else {
+      this.toaster.error('Select atlease one Request to proceed.');
       return;
     }
-    this.toaster.show(
-      '<div class="message cust-msg">Successfully Duplicated to:</div><div class="requests"><span class="circle internal"></span><span class="label">Req 12322 - Afif</span><span class="circle external"></span><span class="label">Req 12323 - Al Mashrab</span></div>',
-      '',
-      {
-        enableHtml: true,
-        toastClass: 'toast-alert cust-alert toast-darkGrey',
-        timeOut: 2000
-      }
-    );
   }
 
   amendRFQ() {
@@ -734,4 +857,62 @@ export class SpotNegotiationHomeComponent implements OnInit {
       });
     }
   }
+
+  FilterselectedRowForCurrentRequest() {
+    this.store.subscribe(({ spotNegotiation }) => {
+      spotNegotiation.locations.forEach(element => {
+        spotNegotiation.locationsRows.forEach(element1 => {
+          if (element.id == element1.requestLocationId && spotNegotiation.currentRequestSmallInfo.id == element1.requestId) {
+            if (element1['checkProd1'] || element1['checkProd2'] || element1['checkProd3'] || element1['checkProd4'] || element1['checkProd5']) {
+              var Sellectedsellerdata = this.ConstuctSellerPayload(
+                element1,
+                element.requestProducts,
+                spotNegotiation.currentRequestSmallInfo
+              );
+              if (Sellectedsellerdata) {
+                this.selectedSellerList.push(Sellectedsellerdata);
+              }
+            }
+          }
+        });
+      });
+    });
+    return this.selectedSellerList;
+  }
+
+  ConstructUpdatePricePayload(updatedRow, products, isPriceCopied) {
+    let requestOffers = []
+    let offerId: number;
+
+    products.forEach(pro => {
+      const productDetails = this.spotNegotiationService.getRowProductDetails(updatedRow, pro.id);
+
+      if (productDetails.id == null || productDetails.price == null) {
+        return;
+      }
+      offerId = productDetails.offerId;
+      let requOffer = {
+        id: productDetails.id,
+        totalPrice: productDetails.totalPrice,
+        amount: productDetails.amount,
+        targetDifference: productDetails.targetDifference,
+        price: productDetails.price,
+        cost: productDetails.cost,
+        isOfferPriceCopied: productDetails.isOfferPriceCopied
+      }
+      requestOffers.push(requOffer);
+    });
+    return {
+      RequestLocationSellerId: updatedRow.id,
+      Offers: [
+        {
+          id: offerId,
+          totalOffer: updatedRow.totalOffer,
+          totalCost: updatedRow.totalCost,
+          requestOffers: requestOffers
+        }
+      ]
+    };
+  }
+
 }

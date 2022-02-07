@@ -417,6 +417,22 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   @ObservableException()
+  copyPriceDetails(payload: any): Observable<any> {
+    return this.http
+      .put<any>(`${this._negotiationApiUrl}/Price/copyPriceDetails`, payload)
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
   getRequestGroup(request: any): Observable<any> {
     return this.http
       .get<any>(`${this._negotiationApiUrl}/groups/${request}`, {})
@@ -895,10 +911,21 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   uploadFile(
     request: IDocumentsCreateUploadRequest
   ): Observable<IDocumentsCreateUploadResponse> {
-    return this.http.post<IDocumentsCreateUploadResponse>(
-      `${this._masterApiUrl}/${SpotNegotiationApiPaths.uploadDocument}`,
-      request
-    );
+    return this.http
+      .post<IDocumentsCreateUploadResponse>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.uploadDocument}`,
+        request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
   }
 
   @ObservableException()
