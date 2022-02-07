@@ -69,11 +69,9 @@ angular.module('shiptech').config([
             'api/admin/user/list',
             'api/masters/listconfigurations/get',
             'api/infrastructure/screenlayout/get',
-            'api/infrastructure/navbar/navbaridslist',
             'api/masters/agreementType/individualLists',
             'api/mail/templates/listByTransactionType',
             'api/admin/user/getVesselOperators',
-            'api/procurement/request/getDefaultBuyer',
             'api/procurement/request/getQuantityAverage',
             'api/procurement/request/getQuantityAndStrategy',
             'api/infrastructure/reports/getOperationalReportParameters',
@@ -85,6 +83,9 @@ angular.module('shiptech').config([
             'api/claims/getClaimsListForOrder',
             'api/claims/getProductDropdown',
             'api/procurement/rfq/isAuthorizedForReportsTab'
+            , 'api/masters/vesselSchedules/list'
+            , 'api/masters/filterconfigurations/list'
+            , 'api/masters/filterconfigurations/get'
         ];
         $httpProvider.interceptors.push([
             '$q'/* , 'applicationInsightsService'*/, '$log', 'appInsightsInstance', '$rootScope',
