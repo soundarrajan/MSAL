@@ -292,12 +292,20 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     selectedIndex: number
   ) {
     let cost = this.offerAdditionalCostList[selectedIndex];
-    cost.requestProductId =
-      selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
-    cost.isAllProductsCost = cost.requestProductId ? false : true;
-    cost.isLocationBased = false;
-
+    cost.requestProductId = selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
     cost.requestOfferIds = this.getRequestOfferIds(selectedApplicableForId);
+    cost.isLocationBased = false;
+    if(cost.requestProductId){
+      cost.isAllProductsCost = false;
+      cost.offerId = null;
+      cost.requestOfferId = parseInt(cost.requestOfferIds);
+    }
+    else{
+      cost.isAllProductsCost = true;
+      cost.offerId = this.offerId;
+      cost.requestOfferId = null;
+    }
+
     // cost.requestProductIds = this.getRequestProductIds(selectedApplicableForId);
     cost.currencyId = this.getCurrencyId(selectedApplicableForId);
 
