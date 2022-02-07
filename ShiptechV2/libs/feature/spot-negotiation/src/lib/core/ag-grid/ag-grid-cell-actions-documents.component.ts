@@ -47,6 +47,7 @@ import { IDocumentsUpdateNotesRequest } from '@shiptech/core/services/masters-ap
       <div class="dashed-border-notes">
         <input
           matInput
+          [disabled]="params.data?.status == 'Verified'"
           [(ngModel)]="docNotes"
           matTooltip="{{ docNotes }}"
           autocomplete="off"
@@ -87,12 +88,8 @@ export class AGGridCellActionsDocumentsComponent
   }
 
   deleteDocument(): void {
-    let rowData = [];
-    this.params.api.forEachNode(node => rowData.push(node.data));
-    const index = this.params.node.rowIndex;
+    let rowData = this.params.node.data;
     let id = this.params.node.data.id;
-    let newData = [];
-    newData = rowData.splice(index, 1);
     this.confirmationService.confirm({
       header: 'Confirm',
       message: 'Are you sure you want to delete the document ?',
@@ -101,8 +98,7 @@ export class AGGridCellActionsDocumentsComponent
         this.spotNegotiationService.deleteDocument(request).subscribe(
           () => {
             this.toastr.success('Delete done');
-            this.params.api.applyTransaction({ remove: newData });
-            // this.params.api.setRowData([]);
+            this.params.api.applyTransaction({ remove: [rowData] });
           },
           () => {
             this.appErrorHandler.handleError(ModuleError.DeleteDocumentFailed);
@@ -138,18 +134,13 @@ export class AGGridCellActionsDocumentsComponent
         id: id,
         notes: this.docNotes
       };
-      console.log(request);
-      let rowData = [];
-      this.params.api.forEachNode(node => rowData.push(node.data));
-      const index = this.params.node.rowIndex;
-      let newData = [];
-      newData = rowData.splice(index, 1);
-      newData[0].notes = this.docNotes;
+      let rowData = this.params.node.data;
+      rowData.notes = this.docNotes;
       this.spinner.show();
       this.spotNegotiationService.updateNotes(request).subscribe(
         response => {
           this.spinner.hide();
-          this.params.api.applyTransaction({ update: newData });
+          this.params.api.applyTransaction({ update: [rowData] });
           this.toastr.success('Successfully updated note');
         },
         () => {
@@ -160,9 +151,5 @@ export class AGGridCellActionsDocumentsComponent
         }
       );
     }
-  }
-
-  navigateTo(e) {
-    this.params.onClick(this.params);
   }
 }

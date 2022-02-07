@@ -22507,3 +22507,11 @@ mat-form-field {
   border-radius: 10px;
   background-color: #c4c4c4 !important;
 }
+
+.search-icon-document-tab
+  > .mat-form-field-wrapper
+  > .mat-form-field-flex
+  > .mat-form-field-infix {
+  position: relative;
+  width: 0px !important;
+}

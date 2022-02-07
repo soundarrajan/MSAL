@@ -97,3 +97,29 @@ input.search-input::placeholder {
 .file-name {
   margin-top: 10px;
 }
+
+.upload-negotiation-document {
+  flex: 0 0 565px;
+  max-width: 565px;
+  position: relative;
+  width: 100%;
+}
+
+.lookup-negotiation-container .with-search {
+  padding: 7px !important;
+  cursor: pointer !important;
+  border-radius: 0 4px 4px 0 !important;
+  width: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  background: #f1f1f2 !important;
+}
+
+.lookup-negotiation-container .search-icon .img {
+  position: relative;
+  left: -5px !important;
+}
+
+.lookup-negotiation-container .with-search .mat-form-field-infix {
+  display: none !important;
+}
