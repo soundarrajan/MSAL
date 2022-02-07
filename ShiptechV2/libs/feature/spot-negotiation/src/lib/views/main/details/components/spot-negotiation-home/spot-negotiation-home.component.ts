@@ -532,7 +532,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           return state['spotNegotiation'].tenantConfigurations;
         }
       );
-
+let reqIdwithSellerName : String;
       this.selectedRequestList.forEach(req => {
         req.requestLocations.forEach(reqLoc => {
           locationsRows.filter(lr => lr.requestLocationId == reqLoc.id).forEach(locRows => {
@@ -540,6 +540,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
               tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
               !locRows.physicalSupplierCounterpartyId
             ) {
+              if(reqIdwithSellerName)
+              reqIdwithSellerName = reqIdwithSellerName+', REQ ' +locRows.requestId.toString()+ '-' +locRows.sellerCounterpartyName;
+              else
+              reqIdwithSellerName = 'REQ ' +locRows.requestId.toString()+ '-' +locRows.sellerCounterpartyName;
               isPhySupMandatoryForQuoting = true;
               return false;
             }
@@ -579,7 +583,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       });
       if (isPhySupMandatoryForQuoting) {
         this.toaster.error(
-          'Physical Supplier should be provided to copy offer price.'
+          'Physical Supplier should be provided to copy offer price to ' +reqIdwithSellerName
         );
         return;
       }
