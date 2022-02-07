@@ -6,6 +6,7 @@ import {
   SetLocationsRows,
   AddCounterpartyToLocations,
   AddRequest,
+  UpdateRequest,
   DelinkRequest,
   EditLocationRow,
   SetLocationsRowsPriceDetails,
@@ -20,7 +21,8 @@ import {
   AppendCounterpartyList,
   SetPhysicalSupplierCounterpartyList,
   AppendRequestList,
-  AppendPhysicalSupplierCounterpartyList
+  AppendPhysicalSupplierCounterpartyList,
+  UpdateRequest
 } from './actions/ag-grid-row.action';
 
 import {
@@ -32,19 +34,20 @@ import {
   SetTenantConfigurations,
   SetCounterparties
 } from './actions/request-group-actions';
+import _ from 'lodash';
 
 export class SpotNegotiationStoreModel {
   staticLists: any;
   counterpartyList: any;
   physicalSupplierCounterpartyList: any;
-  requestList:any;
+  requestList: any;
   counterparties: any;
   // Until here
   groupOfRequestsId: number | null;
   locations: Array<any>;
   locationsRows: Array<any>;
   locationsRowsPriceDetails: Array<any>;
-  selectedSellerList:Array<any>;
+  selectedSellerList: Array<any>;
   additionalCost: Array<any>;
   availableTermContracts: Array<any>;
   LocationsOriData: Array<any>;
@@ -56,7 +59,7 @@ export class SpotNegotiationStoreModel {
   availableContracts: object | null;
   requests: Array<any>;
   formulaPricingDetails: object | null;
-  tenantConfigurations:object|null;
+  tenantConfigurations: object | null;
   marketPriceHistory: object | null;
   offerPriceHistory: object | null;
 
@@ -64,7 +67,7 @@ export class SpotNegotiationStoreModel {
     // Initialization inside the constructor
     this.staticLists = {};
     this.counterpartyList = {};
-    this.physicalSupplierCounterpartyList ={};
+    this.physicalSupplierCounterpartyList = {};
     this.counterparties = {};
     this.requestList = {};
     this.locations = [];
@@ -77,7 +80,7 @@ export class SpotNegotiationStoreModel {
     this.currentRequestSmallInfo = null;
     this.currentRequest = null;
     this.formulaPricingDetails = null;
-    this.tenantConfigurations=null;
+    this.tenantConfigurations = null;
     this.marketPriceHistory = null;
     this.commentsForCurrentRequest = [];
     this.sellerComments = [];
@@ -95,7 +98,7 @@ export class SpotNegotiationStoreModel {
     currentRequestSmallInfo: null,
     availableContracts: null,
     locations: [],
-    requests:[],
+    requests: [],
     commentsForCurrentRequest: [],
     selectedSellerList: [],
     currentRequest: null,
@@ -104,7 +107,7 @@ export class SpotNegotiationStoreModel {
     additionalCost: [],
     availableTermContracts: [],
     formulaPricingDetails: {},
-    tenantConfigurations:{},
+    tenantConfigurations: {},
     sellerRating: [],
     offerPriceHistory: {},
     sellerComments: [],
@@ -112,8 +115,8 @@ export class SpotNegotiationStoreModel {
     staticLists: [],
     LocationsOriData: [],
     counterpartyList: [],
-    physicalSupplierCounterpartyList:[],
-    requestList:[],
+    physicalSupplierCounterpartyList: [],
+    requestList: [],
     counterparties: []
   }
 })
@@ -246,18 +249,18 @@ export class SpotNegotiationStore {
     });
   }
 
- //Append Request List
- @Action(AppendRequestList)
-   AppendRequestList(
-   { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-   { payload }: AppendRequestList
- ) {
-   const state = getState();
-   var rqust = [...state.requestList , ...payload];
-   patchState({
-     requestList: rqust
-   });
- }
+  //Append Request List
+  @Action(AppendRequestList)
+  AppendRequestList(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: AppendRequestList
+  ) {
+    const state = getState();
+    var rqust = [...state.requestList, ...payload];
+    patchState({
+      requestList: rqust
+    });
+  }
 
   @Action(EditCounterpartyList)
   EditCounterpartyList(
@@ -324,7 +327,7 @@ export class SpotNegotiationStore {
   @Action(SetLocationsRowsOriData)
   SetLocationsRowsOriData(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-    { payload }:  SetLocationsRowsOriData
+    { payload }: SetLocationsRowsOriData
   ): void {
     patchState({
       LocationsOriData: payload
@@ -358,8 +361,10 @@ export class SpotNegotiationStore {
   }
 
   @Action(SelectSeller)
-  addUser({ getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-    { payload }: SelectSeller) {
+  addUser(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SelectSeller
+  ) {
     const state = getState();
     const selectedSellerList = [...state.selectedSellerList];
     patchState({
@@ -368,20 +373,29 @@ export class SpotNegotiationStore {
   }
 
   @Action(DeleteSeller)
-  deleteUser({ getState, setState }: StateContext<SpotNegotiationStoreModel>, { RequestLocationSellerId }: DeleteSeller) {
+  deleteUser(
+    { getState, setState }: StateContext<SpotNegotiationStoreModel>,
+    { RequestLocationSellerId }: DeleteSeller
+  ) {
     const state = getState();
-    const filteredArray = state.selectedSellerList.filter(item => item.RequestLocationSellerId !== RequestLocationSellerId);
+    const filteredArray = state.selectedSellerList.filter(
+      item => item.RequestLocationSellerId !== RequestLocationSellerId
+    );
     setState({
       ...state,
-      selectedSellerList: filteredArray,
+      selectedSellerList: filteredArray
     });
   }
 
   @Action(RemoveCounterparty)
-  removeCounterparty({ getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-    { payload }: RemoveCounterparty) {
+  removeCounterparty(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: RemoveCounterparty
+  ) {
     patchState({
-      locationsRows: getState().locationsRows.filter(row => row.id !== payload.rowId)
+      locationsRows: getState().locationsRows.filter(
+        row => row.id !== payload.rowId
+      )
     });
   }
 
@@ -397,6 +411,28 @@ export class SpotNegotiationStore {
       requests: ctpys
     });
   }
+
+  @Action(UpdateRequest)
+  UpdateRequest(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: UpdateRequest
+  ) {
+    const state = getState();
+    var requestList = [...state.requests];
+    for (let i = 0; i < payload.length; i++) {
+      let findRequestIndex = _.findIndex(requestList, function(request) {
+        return request.id == payload[i].id;
+      });
+      if (findRequestIndex != -1) {
+        requestList[findRequestIndex] = _.cloneDeep(payload[i]);
+      }
+    }
+
+    patchState({
+      requests: requestList
+    });
+  }
+
   /* delink Request */
   @Action(DelinkRequest)
   DelinkRequest(
@@ -404,7 +440,7 @@ export class SpotNegotiationStore {
     { payload }: DelinkRequest
   ) {
     const state = getState();
-    let remainingRequests = state.requests.filter( (e) => e.id != payload );
+    let remainingRequests = state.requests.filter(e => e.id != payload);
     patchState({
       requests: remainingRequests
     });
@@ -416,18 +452,22 @@ export class SpotNegotiationStore {
     { payload }: AddCounterpartyToLocations
   ) {
     const state = getState();
-    payload.map(c=>
-      {
-        if(c.requestOffers == undefined){
-          var payloadReq = state.requests.find(x=> x.id === c.requestId);
-          if(payloadReq && payloadReq.requestLocations ){
-            var reqLocation = payloadReq.requestLocations.find(y=> y.locationId === c.locationId);
-          }
-          if(reqLocation && reqLocation.requestProducts){
-          for(let index = 0; index < reqLocation.requestProducts.length; index++)
-          {
-            let indx = index +1;
-            let val = "checkProd" + indx;
+    payload.map(c => {
+      if (c.requestOffers == undefined) {
+        var payloadReq = state.requests.find(x => x.id === c.requestId);
+        if (payloadReq && payloadReq.requestLocations) {
+          var reqLocation = payloadReq.requestLocations.find(
+            y => y.locationId === c.locationId
+          );
+        }
+        if (reqLocation && reqLocation.requestProducts) {
+          for (
+            let index = 0;
+            index < reqLocation.requestProducts.length;
+            index++
+          ) {
+            let indx = index + 1;
+            let val = 'checkProd' + indx;
             c[val] = c.isSelected;
           }
         }
@@ -457,7 +497,10 @@ export class SpotNegotiationStore {
 
   @Selector()
   static selectedSellers(state: SpotNegotiationStoreModel) {
-    return state.locationsRows.filter(row=> row.requestId === state.currentRequestSmallInfo['id'] && row.isSelected);
+    return state.locationsRows.filter(
+      row =>
+        row.requestId === state.currentRequestSmallInfo['id'] && row.isSelected
+    );
     // return (reqLocationId: number) =>
     //     state.locationsRows.filter(row=> row.requestId === state.currentRequestSmallInfo['id'] &&
     //       row.isSelected && row.requestLocationId === reqLocationId);
