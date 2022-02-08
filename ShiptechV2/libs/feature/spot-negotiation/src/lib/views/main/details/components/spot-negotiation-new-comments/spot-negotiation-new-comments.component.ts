@@ -335,6 +335,22 @@ export class SpotNegotiationNewCommentsComponent
         return request.isSelected;
       })
     );
+    if (selectedRequests.length == 0) {
+      this.toastr.error('At least one request should be selected!');
+      return;
+    }
+    if (
+      !this.negoGeneralCommentsChecked &&
+      !this.negoPerformanceCommentsChecked &&
+      !this.negoSupplierCommentsChecked &&
+      !this.negoVesselAgentCommentsChecked &&
+      !this.requestGeneralCommentsChecked &&
+      !this.requestSupplierCommentsChecked &&
+      !this.requestVesselAgentCommentsChecked
+    ) {
+      this.toastr.error('At least one comment should be selected!');
+      return;
+    }
     let payload = {
       FromRequestId: this.requestInfo.id,
       ToRequestIds: this.getRequestsIdsForSelectedList(selectedRequests),
