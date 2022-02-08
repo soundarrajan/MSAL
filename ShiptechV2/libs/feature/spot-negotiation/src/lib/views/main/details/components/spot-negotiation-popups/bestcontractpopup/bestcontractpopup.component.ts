@@ -56,10 +56,6 @@ export class BestcontractpopupComponent implements OnInit {
       return null;
     }
 
-    if (value == 0) {
-      return '--';
-    }
-
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
 
     const number = parseFloat(plainNumber);
