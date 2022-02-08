@@ -57,6 +57,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                 $scope.formValues.claimDebunkerDetails.resaleAmount = calcDebunkerResaleAmount();
                 $scope.formValues.claimDebunkerDetails.resaleAmountCurrency = $scope.formValues.claimDebunkerDetails.salePriceCurrency;
             }
+            $scope.setCreateNoteLabel();
         });
         $rootScope.$on('editInstance', (value) => {
             vm.editInstance = value;
@@ -776,9 +777,7 @@ APP_CLAIMS.controller('Controller_Claims', [
                 }
             }
             if(name == 'SettlementType') {
-                $(".general-header a.create-credit-debit-note").text( () => {
-                    return $scope.formValues.claimDetails.settlementType.id == 1 ? "Create Debit Note" : "Create Credit Note";
-                })
+                $scope.setCreateNoteLabel();
             }
         };
         $scope.cancel_claim = function() {
@@ -1461,5 +1460,12 @@ APP_CLAIMS.controller('Controller_Claims', [
                 }
             }
         });
+        $scope.setCreateNoteLabel = () => {
+            if ($scope.formValues.claimDetails.settlementType) {
+                $(".general-header a.create-credit-debit-note").text( () => {
+                    return $scope.formValues.claimDetails.settlementType.id == 1 ? "Create Debit Note" : "Create Credit Note";
+                })
+            }
+        }
     }
 ]);
