@@ -284,6 +284,51 @@ export class SpotNegotiationNewCommentsComponent
     return requestIds;
   }
 
+  copyComments(selectedRequests) {
+    for (let i = 0; i < selectedRequests.length; i++) {
+      //Copy Negotiation Comments
+      if (this.negoGeneralCommentsChecked) {
+        selectedRequests[i].negoGeneralComments = _.cloneDeep(
+          this.requestInfo.negoGeneralComments
+        );
+      }
+      if (this.negoPerformanceCommentsChecked) {
+        selectedRequests[i].negoPerformanceComments = _.cloneDeep(
+          this.requestInfo.negoPerformanceComments
+        );
+      }
+      if (this.negoSupplierCommentsChecked) {
+        selectedRequests[i].negoSupplierComments = _.cloneDeep(
+          this.requestInfo.negoSupplierComments
+        );
+      }
+      if (this.negoVesselAgentCommentsChecked) {
+        selectedRequests[i].negoVesselAgentComments = _.cloneDeep(
+          this.requestInfo.negoVesselAgentComments
+        );
+      }
+
+      //Copy Request Comments
+      if (this.requestGeneralCommentsChecked) {
+        selectedRequests[i].generalComments = _.cloneDeep(
+          this.requestInfo.generalComments
+        );
+      }
+      if (this.requestSupplierCommentsChecked) {
+        selectedRequests[i].supplierComments = _.cloneDeep(
+          this.requestInfo.supplierComments
+        );
+      }
+      if (this.requestVesselAgentCommentsChecked) {
+        selectedRequests[i].vesselAgentComments = _.cloneDeep(
+          this.requestInfo.vesselAgentComments
+        );
+      }
+    }
+
+    return selectedRequests;
+  }
+
   copyCommentsToSelectedRequests() {
     let selectedRequests = _.cloneDeep(
       _.filter(this.requestListToDuplicateComments, function(request) {
@@ -304,8 +349,18 @@ export class SpotNegotiationNewCommentsComponent
       }
     };
 
-    // selectedRequests[0].negoGeneralComments = 'NEGOTIATION GENERAL';
-    this.store.dispatch(new UpdateRequest(selectedRequests));
+    this.spotNegotiationService
+      .copyNegotiationComments(payload)
+      .subscribe((response: any) => {
+        console.log(response);
+        if (response.status) {
+          let newSelectedRequests = this.copyComments(selectedRequests);
+          this.store.dispatch(new UpdateRequest(newSelectedRequests));
+          this.toastr.success('Comment copied successfully!');
+        } else {
+          this.toastr.error('An error has occurred!');
+        }
+      });
   }
 
   uncheckedComments() {
