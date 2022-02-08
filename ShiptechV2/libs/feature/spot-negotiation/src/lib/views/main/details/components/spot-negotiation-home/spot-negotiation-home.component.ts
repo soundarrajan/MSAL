@@ -977,6 +977,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         targetDifference: productDetails.targetDifference,
         price: productDetails.price,
         cost: productDetails.cost,
+        currencyId: productDetails.currencyId,
         isOfferPriceCopied: productDetails.isOfferPriceCopied
       }
       requestOffers.push(requOffer);
