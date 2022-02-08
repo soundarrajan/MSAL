@@ -5760,6 +5760,7 @@ APP_API.factory('$Api_Service', [
                                     callback(result);
                                 }
                             });
+                            return;
                         } else {
     							result.contract = $tenantConfiguration.contractConfiguration;
     							result.email = $tenantConfiguration.emailConfiguration;
