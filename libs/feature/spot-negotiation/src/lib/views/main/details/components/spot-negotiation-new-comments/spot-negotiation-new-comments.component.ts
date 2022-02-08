@@ -12,7 +12,10 @@ import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { UpdateRequest } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
-import { SetRequests } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
+import {
+  SetCurrentRequestSmallInfo,
+  SetRequests
+} from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
 import _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -245,6 +248,9 @@ export class SpotNegotiationNewCommentsComponent
               this.requestInfo.negoVesselAgentComments
             );
           }
+          this.store.dispatch(new SetCurrentRequestSmallInfo(this.requestInfo));
+          let currentRequest = _.cloneDeep([this.requestInfo]);
+          this.store.dispatch(new UpdateRequest(currentRequest));
           this.toastr.success('Comments saved successfully!');
         } else {
           this.toastr.error('An error has occurred!');
@@ -284,14 +290,22 @@ export class SpotNegotiationNewCommentsComponent
         return request.isSelected;
       })
     );
-    console.log(selectedRequests);
     let payload = {
       FromRequestId: this.requestInfo.id,
-      ToRequestIds: this.getRequestsIdsForSelectedList(selectedRequests)
+      ToRequestIds: this.getRequestsIdsForSelectedList(selectedRequests),
+      CommentsToBeCopied: {
+        NegoGeneralComments: this.negoGeneralCommentsChecked,
+        NegoPerformanceComments: this.negoPerformanceCommentsChecked,
+        NegoSupplierComments: this.negoSupplierCommentsChecked,
+        NegoVesselAgentComments: this.negoVesselAgentCommentsChecked,
+        RequestGeneralComments: this.requestGeneralCommentsChecked,
+        RequestSupplierComments: this.requestSupplierCommentsChecked,
+        RequestVesselAgentComments: this.requestVesselAgentCommentsChecked
+      }
     };
-    console.log(payload);
+
     // selectedRequests[0].negoGeneralComments = 'NEGOTIATION GENERAL';
-    // this.store.dispatch(new UpdateRequest(selectedRequests));
+    this.store.dispatch(new UpdateRequest(selectedRequests));
   }
 
   uncheckedComments() {
