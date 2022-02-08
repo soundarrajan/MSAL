@@ -5,7 +5,7 @@ import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
-  SetLocationsRows,
+  SetLocationsRows, UpdateRequest,
   // SetLocationsRowsPriceDetails
 } from '../../../../../../store/actions/ag-grid-row.action';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -43,6 +43,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   content: any;
   readonly: boolean = false;
   previewTemplate: any = [];
+  requestOptions: any;
   //rfqTemplate: any;
   items: Items[];
   public Editor = ClassicEditor;
@@ -96,6 +97,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.entityId = spotNegotiation.groupOfRequestsId;
+      this.requestOptions = spotNegotiation.requests;
     });
     if (this.selected) {
       this.getPreviewTemplate();
@@ -338,6 +340,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.previewTemplate.content = this.content;
     this.previewTemplate.From = this.from;
     this.previewTemplate.AttachmentsList = this.filesList;
+    let requestProductIds = selectedSellers.map(x => x.RequestProductIds);
 
     var saveAndSendRfqAPIPayload = {
       SelectedSellers: selectedSellers,
@@ -387,6 +390,23 @@ export class EmailPreviewPopupComponent implements OnInit {
           '_self'
         );
         //window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
+      }
+      else if(this.previewTemplate.comment.id == 10 || this.previewTemplate.comment.id == 17){
+        let status : string;
+        if(this.previewTemplate.comment.id == 10){
+          status = "inquired"
+        }
+        this.requestOptions = this.requestOptions.map(e => {
+          let requestLocations = e.requestLocations.map(reqLoc => {
+            let requestProducts = this.previewTemplate.comment.id == 10 ? (reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x == reqPro.id) &&
+            (reqPro.status.toLowerCase() == 'validated' || reqPro.status.toLowerCase() == 'reopen') ? { ...reqPro, status: 'Inquired' } : reqPro)):
+            (reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x == reqPro.id) ? { ...reqPro, status: 'ReOpen' } : reqPro))
+  
+            return { ...reqLoc, requestProducts }
+          });
+          return { ...e, requestLocations }
+        });
+        this.store.dispatch(new UpdateRequest(this.requestOptions));
       }
 
       if (res['sellerOffers']) {
