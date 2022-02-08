@@ -55,6 +55,15 @@ export class SpotNegotiationNewCommentsComponent
   requestList: any[] = [];
   requestListToDuplicateComments: any[] = [];
 
+  negoGeneralCommentsChecked: boolean = false;
+  negoPerformanceCommentsChecked: boolean = false;
+  negoSupplierCommentsChecked: boolean = false;
+  negoVesselAgentCommentsChecked: boolean = false;
+
+  requestGeneralCommentsChecked: boolean = false;
+  requestSupplierCommentsChecked: boolean = false;
+  requestVesselAgentCommentsChecked: boolean = false;
+
   constructor(
     private store: Store,
     public changeDetector: ChangeDetectorRef,
@@ -98,6 +107,7 @@ export class SpotNegotiationNewCommentsComponent
 
         this.checkEditableFields();
 
+        this.uncheckedComments();
         console.log(this.requestInfo);
       }
     });
@@ -260,6 +270,14 @@ export class SpotNegotiationNewCommentsComponent
     element.isSelected = checkbox.checked ? true : false;
   }
 
+  getRequestsIdsForSelectedList(selectedRequests) {
+    let requestIds = [];
+    for (let i = 0; i < selectedRequests.length; i++) {
+      requestIds.push(selectedRequests[i].id);
+    }
+    return requestIds;
+  }
+
   copyCommentsToSelectedRequests() {
     let selectedRequests = _.cloneDeep(
       _.filter(this.requestListToDuplicateComments, function(request) {
@@ -267,8 +285,22 @@ export class SpotNegotiationNewCommentsComponent
       })
     );
     console.log(selectedRequests);
+    let payload = {
+      FromRequestId: this.requestInfo.id,
+      ToRequestIds: this.getRequestsIdsForSelectedList(selectedRequests)
+    };
+    console.log(payload);
+    // selectedRequests[0].negoGeneralComments = 'NEGOTIATION GENERAL';
+    // this.store.dispatch(new UpdateRequest(selectedRequests));
+  }
 
-    selectedRequests[0].negoGeneralComments = 'NEGOTIATION GENERAL';
-    this.store.dispatch(new UpdateRequest(selectedRequests));
+  uncheckedComments() {
+    this.negoGeneralCommentsChecked = false;
+    this.negoPerformanceCommentsChecked = false;
+    this.negoSupplierCommentsChecked = false;
+    this.negoVesselAgentCommentsChecked = false;
+    this.requestGeneralCommentsChecked = false;
+    this.requestSupplierCommentsChecked = false;
+    this.requestVesselAgentCommentsChecked = false;
   }
 }

@@ -85,6 +85,15 @@
                 <span class="circle internal"></span
                 ><span class="label">General</span>
                 <span
+                  [ngClass]="{
+                    selected: negoGeneralCommentsChecked,
+                    'de-selected': !negoGeneralCommentsChecked
+                  }"
+                  (click)="
+                    negoGeneralCommentsChecked = !negoGeneralCommentsChecked
+                  "
+                ></span>
+                <span
                   class="edit-icon"
                   (click)="editNegotiationGeneralComment()"
                 ></span>
@@ -115,6 +124,15 @@
                 <span class="circle internal"></span
                 ><span class="label">Performance</span>
                 <span
+                  [ngClass]="{
+                    selected: negoPerformanceCommentsChecked,
+                    'de-selected': !negoPerformanceCommentsChecked
+                  }"
+                  (click)="
+                    negoPerformanceCommentsChecked = !negoPerformanceCommentsChecked
+                  "
+                ></span>
+                <span
                   class="edit-icon"
                   (click)="editPerformanceComment()"
                 ></span>
@@ -144,6 +162,15 @@
               <div style="padding: 15px;">
                 <span class="circle external"></span
                 ><span class="label">Supply</span>
+                <span
+                  [ngClass]="{
+                    selected: negoSupplierCommentsChecked,
+                    'de-selected': !negoSupplierCommentsChecked
+                  }"
+                  (click)="
+                    negoSupplierCommentsChecked = !negoSupplierCommentsChecked
+                  "
+                ></span>
                 <span class="edit-icon" (click)="editSupplyComments()"></span>
               </div>
               <div class="comments-div">
@@ -171,6 +198,15 @@
               <div style="padding: 15px;">
                 <span class="circle external"></span
                 ><span class="label">Vessel & Agents</span>
+                <span
+                  [ngClass]="{
+                    selected: negoVesselAgentCommentsChecked,
+                    'de-selected': !negoVesselAgentCommentsChecked
+                  }"
+                  (click)="
+                    negoVesselAgentCommentsChecked = !negoVesselAgentCommentsChecked
+                  "
+                ></span>
                 <span
                   class="edit-icon"
                   (click)="editvesselAndAgentCommentBox()"
@@ -216,6 +252,15 @@
                     <div style="padding: 15px;">
                       <span class="circle internal"></span
                       ><span class="label">General</span>
+                      <span
+                        [ngClass]="{
+                          selected: requestGeneralCommentsChecked,
+                          'de-selected': !requestGeneralCommentsChecked
+                        }"
+                        (click)="
+                          requestGeneralCommentsChecked = !requestGeneralCommentsChecked
+                        "
+                      ></span>
                     </div>
                     <div style="padding: 0px 20px;">
                       <span class="comments-text">
@@ -236,6 +281,15 @@
                     <div style="padding: 15px;">
                       <span class="circle external"></span
                       ><span class="label">Supply</span>
+                      <span
+                        [ngClass]="{
+                          selected: requestSupplierCommentsChecked,
+                          'de-selected': !requestSupplierCommentsChecked
+                        }"
+                        (click)="
+                          requestSupplierCommentsChecked = !requestSupplierCommentsChecked
+                        "
+                      ></span>
                     </div>
                     <div style="padding: 0px 20px;">
                       <span class="comments-text">
@@ -252,6 +306,15 @@
                     <div style="padding: 15px;">
                       <span class="circle external"></span
                       ><span class="label">Vessel & Agents</span>
+                      <span
+                        [ngClass]="{
+                          selected: requestVesselAgentCommentsChecked,
+                          'de-selected': !requestVesselAgentCommentsChecked
+                        }"
+                        (click)="
+                          requestVesselAgentCommentsChecked = !requestVesselAgentCommentsChecked
+                        "
+                      ></span>
                     </div>
                     <div style="padding: 0px 20px;">
                       <span class="comments-text">
