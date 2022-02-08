@@ -550,7 +550,7 @@ export class SpotNegotiationService extends BaseStoreService
     const emptyPriceDetails = {
       amount: null,
       contactCounterpartyId: null,
-      currencyId: null,
+      currencyId: 0,
       id: null,
       offerId: null,
       price: null,
