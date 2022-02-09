@@ -42,10 +42,11 @@
                   <div class="row" style="align-items: center;">
                     <div class="col-6 editable-header contact-editable-header">
                       <span *ngIf="!contact.id && !contact.isEditable">+ Add Contact</span>
-                      <span *ngIf="!contact.isEditable && contact.id">{{ contact.name }}</span>
+                      <span *ngIf="!contact.isEditable && contact.id" style="overflow-wrap: break-word;">{{ contact.name }}</span>
                       <mat-form-field
                         class="example-full-width"
                         *ngIf="contact.isEditable"
+
                       >
                         <input
                           #inputBox
@@ -82,7 +83,7 @@
                         *ngIf="!contact.isEditable"
                         (click)="contact.isEditable = !contact.isEditable;"
                       >
-                        <span class="edit-icon"></span>
+                      <span class="edit-icon"></span>
                       </div>
                       <div
                         *ngIf="contact.isEditable"
@@ -103,12 +104,12 @@
                 <tr>
                   <td class="p-r-10 w-75 tabledata-fieldname">Email: *</td>
                   <td class="text-left tabledata-value">
-                    <span *ngIf="!contact.isEditable" [matTooltip]="contact.email"> {{ contact.email }}</span>
+                    <span *ngIf="!contact.isEditable" [matTooltip]="contact.email" style="overflow-wrap: break-word;"> {{ contact.email }}</span>
                     <mat-form-field
                       class="example-full-width"
                       *ngIf="contact.isEditable"
                     >
-                      <input matInput [(ngModel)]="contact.email" required [email]="true"/>
+                    <input matInput [(ngModel)]="contact.email" required [email]="true"/>
                     </mat-form-field>
                   </td>
                 </tr>
