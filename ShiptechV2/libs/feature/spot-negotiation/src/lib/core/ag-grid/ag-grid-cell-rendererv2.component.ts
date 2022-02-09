@@ -701,9 +701,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       currency: new FormControl('')
     });
     this.paramsDataClone = _.cloneDeep(this.params.data);
-    if (this.params.colDef.headerName == 'Offer price') {
-      console.log(this.params);
-    }
     if (this.paramsDataClone.requestOffers) {
       this.paramsDataClone.currency = this.paramsDataClone.requestOffers[0].currencyId;
       this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
@@ -920,8 +917,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       let requestLocation = this.currentRequestSmallInfo?.requestLocations[
         findRequestLocationIndex
       ];
-      console.log('CurrentLocation');
-      console.log(requestLocation);
       const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
         width: '1170px',
         height: '450px',
@@ -937,8 +932,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           this.route.snapshot.params.spotNegotiationId
         );
         const requestLocationSellerId = this.params.data.id;
-        console.log(groupId);
-        console.log(requestLocationSellerId);
         this._spotNegotiationService
           .getPriceDetailsById(groupId, requestLocationSellerId)
           .subscribe((priceDetailsRes: any) => {
@@ -947,7 +940,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
             updatedRow.requestOffers =
               priceDetailsRes.sellerOffers[0].requestOffers;
-            console.log(updatedRow);
             // Update the store
             this.store.dispatch(new EditLocationRow(updatedRow));
             this.params.node.setData(updatedRow);
