@@ -302,7 +302,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
       reqs = reqs.map(e => {
         let requestLocations = e.requestLocations.map(reqLoc => {
-          let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x == reqPro.id) &&
+          let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) &&
             (reqPro.status.toLowerCase() == 'validated' || reqPro.status.toLowerCase() == 'reopen') ? { ...reqPro, status: 'Inquired' } : reqPro)
 
           return { ...reqLoc, requestProducts }
@@ -775,7 +775,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
         this.requestOptions = this.requestOptions.map(e => {
           let requestLocations = e.requestLocations.map(reqLoc => {
-            let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x == reqPro.id) &&
+            let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) &&
               (reqPro.status.toLowerCase() == 'validated'|| reqPro.status.toLowerCase() == 'reopen') ? { ...reqPro, status: 'Inquired' } : reqPro)
   
             return { ...reqLoc, requestProducts }
@@ -874,7 +874,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         else{
           this.requestOptions = this.requestOptions.map(e => {
             let requestLocations = e.requestLocations.map(reqLoc => {
-              let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x == reqPro.id) ? { ...reqPro, status: 'ReOpen' } : reqPro)
+              let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) ? { ...reqPro, status: 'ReOpen' } : reqPro)
     
               return { ...reqLoc, requestProducts }
             });

@@ -391,16 +391,12 @@ export class EmailPreviewPopupComponent implements OnInit {
         );
         //window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
       }
-      else if(this.previewTemplate.comment.id == 10 || this.previewTemplate.comment.id == 17){
-        let status : string;
-        if(this.previewTemplate.comment.id == 10){
-          status = "inquired"
-        }
+      else if(this.previewTemplate.comment.emailTemplate.id == 10 || this.previewTemplate.comment.emailTemplate.id == 17){
         this.requestOptions = this.requestOptions.map(e => {
           let requestLocations = e.requestLocations.map(reqLoc => {
-            let requestProducts = this.previewTemplate.comment.id == 10 ? (reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x == reqPro.id) &&
+            let requestProducts = this.previewTemplate.comment.emailTemplate.id == 10 ? (reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) &&
             (reqPro.status.toLowerCase() == 'validated' || reqPro.status.toLowerCase() == 'reopen') ? { ...reqPro, status: 'Inquired' } : reqPro)):
-            (reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x == reqPro.id) ? { ...reqPro, status: 'ReOpen' } : reqPro))
+            (reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) ? { ...reqPro, status: 'ReOpen' } : reqPro))
   
             return { ...reqLoc, requestProducts }
           });
