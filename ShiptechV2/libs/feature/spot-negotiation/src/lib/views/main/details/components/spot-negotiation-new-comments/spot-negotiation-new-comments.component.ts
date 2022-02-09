@@ -367,7 +367,7 @@ export class SpotNegotiationNewCommentsComponent
         console.log(response);
         if (response.status) {
           let newSelectedRequests = this.copyComments(selectedRequests);
-          // this.store.dispatch(new UpdateSpecificRequests(newSelectedRequests));
+          this.store.dispatch(new UpdateSpecificRequests(newSelectedRequests));
           this.toastr.success('Comment copied successfully!');
         } else {
           this.toastr.error('An error has occurred!');
