@@ -139,7 +139,6 @@ export class ContactinformationpopupComponent implements OnInit {
             return item.name? item.name.toLowerCase().includes(filterValue.trim().toLowerCase()) : item.name;
           })
           .splice(0, 10);
-        console.log(list);
         return list;
       } else {
         return [];

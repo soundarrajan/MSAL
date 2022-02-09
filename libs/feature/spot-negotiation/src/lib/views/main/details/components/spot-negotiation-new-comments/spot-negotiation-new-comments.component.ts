@@ -107,7 +107,6 @@ export class SpotNegotiationNewCommentsComponent
         this.checkEditableFields();
 
         this.uncheckedComments();
-        console.log(this.requestInfo);
       }
     });
   }
@@ -174,7 +173,6 @@ export class SpotNegotiationNewCommentsComponent
   }
 
   saveComment(type) {
-    console.log(type);
     let payload = {};
     if (type == 'general') {
       if (
@@ -225,7 +223,6 @@ export class SpotNegotiationNewCommentsComponent
     this.spotNegotiationService
       .updateNegotiationComments(payload)
       .subscribe((response: any) => {
-        console.log(response);
         if (response.status) {
           if (type == 'general') {
             this.requestInfo.oldNegoGeneralComments = _.cloneDeep(

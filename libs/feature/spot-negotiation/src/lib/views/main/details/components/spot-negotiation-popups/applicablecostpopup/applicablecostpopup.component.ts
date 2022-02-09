@@ -280,8 +280,6 @@ export class ApplicablecostpopupComponent implements OnInit {
     } else {
       this.applicableForItems = _.cloneDeep(applicableForItemsArray);
     }
-
-    console.log(this.applicableForItems);
   }
 
   onCostSelectionChange(selectedCostId: number, selectedIndex: number) {
@@ -402,7 +400,6 @@ export class ApplicablecostpopupComponent implements OnInit {
     cost.extraAmount = cost.extras ? cost.amount * (cost.extras / 100) : 0;
     cost.totalAmount = cost.amount + cost.extraAmount;
     cost.ratePerUom = cost.totalAmount / cost.maxQuantity;
-    console.log(cost);
   }
 
   getCostAmountByType(cost: any) {
@@ -451,12 +448,9 @@ export class ApplicablecostpopupComponent implements OnInit {
           let taxAmount = this.sumProductComponentAdditionalCostAmounts(
             this.locationBasedCosts
           );
-          console.log(productAmount);
-          console.log(taxAmount);
           let totalAmount = productAmount + taxAmount;
           costAmount = (totalAmount * cost.price) / 100;
         }
-        console.log(costAmount);
         break;
       case 'Range':
       case 'Total':
