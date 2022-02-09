@@ -3372,9 +3372,12 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   triggerChangeFieldsAppSpecific(name: string) {
-    const dueDate = this.formValues.dueDate;
     switch (name) {
       case 'DueDate':
+        const dueDate = this.formValues.dueDate;
+        if (!dueDate || parseFloat(dueDate.split('-')[0]) < 1753) {
+          return;
+        }
         if (this.initialDueDate) {
           if (this.initialDueDate.split('T')[0] != this.formValues.dueDate) {
             this.formValues.manualDueDate = this.formValues.dueDate;
@@ -3383,9 +3386,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           }
         } else {
           this.formValues.manualDueDate = this.formValues.dueDate;
-        }
-        if (parseFloat(dueDate.split('-')[0]) < 1753) {
-          return;
         }
         this.invoiceService
           .getWorkingDueDate(dueDate)
