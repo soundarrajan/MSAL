@@ -107,7 +107,6 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
         if (typeof response === 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
           this.documentTypeListForSearch = _.cloneDeep(response);
           this.documentTypeList = _.cloneDeep(response);
         }
@@ -148,7 +147,6 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
           this.toastr.error(response);
         } else {
           this.spinner.hide();
-          console.log(response);
           this.responseList = _.cloneDeep(response);
           for (let i = 0; i < this.responseList.length; i++) {
             this.responseList[i].uploadedOn = this.format.date(
@@ -176,7 +174,6 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
       this.selectedDocumentType = $event.value;
       this.documentType = null;
       this.changeDetector.detectChanges();
-      console.log(this.selectedDocumentType);
     }
   }
 
@@ -191,13 +188,11 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
     let filterDocumentType = this.documentTypeList.filter(documentType =>
       documentType.name.toLowerCase().includes(value.trim().toLowerCase())
     );
-    console.log(filterDocumentType);
     this.documentTypeListForSearch = [...filterDocumentType];
   }
 
   selectDocumentType(event: MatAutocompleteSelectedEvent) {
     this.selectedDocumentType = event.option.value;
-    console.log(this.selectedDocumentType);
   }
 
   public filterDocumentTypeList() {
@@ -226,13 +221,11 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.uploadedFiles.uploadHandler.subscribe((event: FileUpload) => {
-      console.log(this.selectedDocumentType);
       if (!this.selectedDocumentType) {
         this.appErrorHandler.handleError(ModuleError.DocumentTypeNotSelected);
         this.clearUploadedFiles();
       } else {
         this.file = event.files[0];
-        console.log(this.file);
         const requestPayload: IDocumentsCreateUploadDto = {
           Payload: <IDocumentsCreateUploadDetailsDto>{
             name: event.files[0].name,
@@ -278,7 +271,6 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
     let selectedNodes = this.gridOptions_data.api.getSelectedNodes();
     let selectedData = selectedNodes.map(node => node.data);
     let selectedRow = selectedData[0];
-    console.log(selectedData);
     if (!selectedRow) {
       this.toastr.error('Please select a row !');
       return;

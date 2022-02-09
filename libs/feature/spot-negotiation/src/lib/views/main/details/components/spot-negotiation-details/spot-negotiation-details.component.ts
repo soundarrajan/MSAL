@@ -66,6 +66,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   currentRequestSmallInfo: any;
   highlightedCells = {};
   uomsMap: any;
+  requestOptions: any;
 
   context: any;
 
@@ -391,7 +392,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           let requestLocations = e.requestLocations.map(reqLoc => {
             let requestProducts = reqLoc.requestProducts.map(reqPro => productDetails.requestProductId == reqPro.id &&
               (reqPro.status.toLowerCase() == 'inquired') ? { ...reqPro, status: 'Quoted' } : reqPro)
-  
+
             return { ...reqLoc, requestProducts }
           });
           return { ...e, requestLocations }
@@ -662,10 +663,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           locationAdditionalCostsList.concat(this.notPercentageLocationCostRows)
         )
     };
-
-    console.log('Save additional cost');
-
-    console.log(payload);
     this.spotNegotiationService
       .saveOfferAdditionalCosts(payload)
       .subscribe((res: any) => {
@@ -678,8 +675,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   getSellerLine(sellerOffers, colDef, newValue) {
     const groupId = parseFloat(this.route.snapshot.params.spotNegotiationId);
     const requestLocationSellerId = sellerOffers.id;
-    console.log(groupId);
-    console.log(requestLocationSellerId);
     this.spotNegotiationService
       .getPriceDetailsById(groupId, requestLocationSellerId)
       .subscribe((priceDetailsRes: any) => {
@@ -710,11 +705,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               offerLine.targetDifference;
           }
         }
-        console.log(updatedRow);
         const currentLocation = this.locations.find(
           e => e.locationId === updatedRow.locationId
         );
-        
+
         //Do the calculation here
         updatedRow = this.spotNegotiationService
           .formatRowData(
@@ -749,8 +743,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       let requestLocation = this.currentRequestSmallInfo?.requestLocations[
         findRequestLocationIndex
       ];
-      console.log('CurrentLocation');
-      console.log(requestLocation);
       const payload = {
         offerId: sellerOffers.requestOffers[0].offerId,
         requestLocationId: sellerOffers.requestLocationId,
@@ -766,7 +758,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             this.getSellerLine(updatedRow, colDef, newValue);
             return;
           } else {
-            console.log(response);
             let offerAdditionalCostList = _.cloneDeep(
               _.filter(response.offerAdditionalCosts, function (
                 offerAdditionalCost
@@ -830,7 +821,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             );
 
             for (let i = 0; i < offerAdditionalCostList.length; i++) {
-              console.log(offerAdditionalCostList[i]);
               if (offerAdditionalCostList[i].isAllProductsCost) {
                 let cost = offerAdditionalCostList[i];
                 this.onApplicableForChange(
@@ -1050,7 +1040,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           if (typeof result == 'string') {
             this.toastr.error(result);
           } else {
-            console.log(result);
             additionalCost.prodConv[i] = _.cloneDeep(result);
             if (
               additionalCost.priceUomId &&
@@ -1148,8 +1137,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             totalAmount = product.amount;
           }
         }
-        console.log(productComponent);
-        console.log(totalAmount);
         if (productComponent) {
           additionalCost.amount = (totalAmount * additionalCost.price) / 100;
         } else {
@@ -1305,7 +1292,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
     cost.maxQuantity = totalMaxQuantity;
     cost.maxQuantityUomId = maxQuantityUomId;
-    console.log(cost);
   }
 
   getRequestOfferIds(rowData) {
@@ -1367,7 +1353,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       applicableForItems = _.cloneDeep(
         [allElement].concat(applicableForItemsArray)
       );
-      console.log(applicableForItems);
     } else {
       this.applicableForItems = _.cloneDeep(applicableForItemsArray);
     }
@@ -1505,6 +1490,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       this.locationsRows = spotNegotiation.locationsRows;
       this.locations = spotNegotiation.locations;
+      this.requestOptions = spotNegotiation.requests;
+
       // setTimeout(() => {
       //   if(spotNegotiation.locationsRows.length > 0){
       //     this. locationsRows = this.EnabledPhysupplier(spotNegotiation.locationsRows);
@@ -1680,14 +1667,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return row;
   }
 
-  removeCounterpartyAPI(rowData: any, rowIndex: number, gridApi: any) {
+  removeCounterpartyAPI(rowData: any, rowIndex: number, gridApi: any, rfqId: any, requestProductIds : any) {
     this.spinner.show();
     this.spotNegotiationService
       .RemoveCounterparty(rowData.id)
       .subscribe((res: any) => {
         this.spinner.hide();
         if (res.status) {
-          let dataRows = [];
+          let dataRows = [];          
           gridApi.forEachNode(node => dataRows.push(node.data));
           dataRows = dataRows.splice(rowIndex, 1);
           //gridApi.applyTransaction({ remove: dataRows });
@@ -1700,7 +1687,22 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             const futureLocationsRows = this.getLocationRowsWithPriceDetails(
               res['requestLocationSellers'],
               res['sellerOffers']
-            );
+            );            
+            if (rfqId) {
+              this.requestOptions = this.requestOptions.map(e => {
+                let requestLocations = e.requestLocations.map(reqLoc => {
+                  let requestProducts = null;
+                  if (futureLocationsRows.filter(lr => lr.requestLocationId == reqLoc.id && lr.requestOffers).length == 0 || futureLocationsRows.filter(lr => lr.requestLocationId == reqLoc.id && lr.requestOffers?.find(x => !x.isRfqskipped)).length == 0) {
+                    requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) ? { ...reqPro, status: 'ReOpen' } : reqPro)
+                  }
+
+                  return requestProducts ? { ...reqLoc, requestProducts } : reqLoc;
+
+                });
+                return requestLocations ? { ...e, requestLocations } : e;
+              });
+              this.store.dispatch(new UpdateRequest(this.requestOptions));
+            }
             this.store.dispatch(new SetLocationsRows(futureLocationsRows));
           }
           if (res.isGroupDeleted) {
@@ -1761,6 +1763,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         );
         return;
       } else {
+        let rfqId= [...new Set(rowData.requestOffers?.map(ro => ro.rfqId))][0];
+        let requestProductIds = this.locationsRows.filter(r => r.requestOffers && r.requestOffers.find(ro => ro.rfqId == rfqId && !ro.isRfqskipped)).map(x => x.requestOffers.filter(r => !r.isRfqskipped).map(r => r.requestProductId));
         const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
           width: '600px',
           data: {
@@ -1773,12 +1777,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
-            this.removeCounterpartyAPI(rowData, rowIndex, gridApi);
+            this.removeCounterpartyAPI(rowData, rowIndex, gridApi, rfqId, requestProductIds);
           }
         });
       }
     } else {
-      this.removeCounterpartyAPI(rowData, rowIndex, gridApi);
+      this.removeCounterpartyAPI(rowData, rowIndex, gridApi, null, null);
     }
   }
 
