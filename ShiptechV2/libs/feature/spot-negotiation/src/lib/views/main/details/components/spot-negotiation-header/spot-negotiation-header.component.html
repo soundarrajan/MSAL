@@ -204,12 +204,19 @@
                 [ngClass]="selReqIndex == i ? 'selected-request' : ''"
                 (click)="selectRequest($event, i, item)"
               >
-                <span style="padding-right: 5px;" *ngIf="!displayVessel"
+                <!-- <span style="padding-right: 5px;" *ngIf="!displayVessel"
                   >{{ item.name }} - {{ item.vesselName }}
+                </span> -->
+                <!-- <span style="padding-right: 5px;" *ngIf="displayVessel">
+                  {{item.vesselName  }}
+                </span> -->
+
+                <span style="padding-right: 5px;" *ngIf="requestOptions.length>=5" >
+                     {{item.vesselName}}
                 </span>
-                <span style="padding-right: 5px;" *ngIf="displayVessel">{{
-                  item.name
-                }}</span>
+                <span style="padding-right: 5px;" *ngIf="requestOptions.length<5" >
+                  {{ item.name }} - {{ item.vesselName }}
+                </span>
                 <div
                   class="requestTooltip"
                   (click)="openRequestTab($event, item)"
