@@ -8,14 +8,10 @@ import {
   ViewChild
 } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
-import { UpdateRequest } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
-import {
-  SetCurrentRequestSmallInfo,
-  SetRequests
-} from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
+import { UpdateSpecificRequests } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import { SetCurrentRequestSmallInfo } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
 import _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -250,7 +246,7 @@ export class SpotNegotiationNewCommentsComponent
           }
           this.store.dispatch(new SetCurrentRequestSmallInfo(this.requestInfo));
           let currentRequest = _.cloneDeep([this.requestInfo]);
-          this.store.dispatch(new UpdateRequest(currentRequest));
+          this.store.dispatch(new UpdateSpecificRequests(currentRequest));
           this.toastr.success('Comments saved successfully!');
         } else {
           this.toastr.error('An error has occurred!');
@@ -371,7 +367,7 @@ export class SpotNegotiationNewCommentsComponent
         console.log(response);
         if (response.status) {
           let newSelectedRequests = this.copyComments(selectedRequests);
-          this.store.dispatch(new UpdateRequest(newSelectedRequests));
+          // this.store.dispatch(new UpdateSpecificRequests(newSelectedRequests));
           this.toastr.success('Comment copied successfully!');
         } else {
           this.toastr.error('An error has occurred!');

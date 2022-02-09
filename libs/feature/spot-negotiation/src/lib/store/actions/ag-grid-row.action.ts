@@ -19,6 +19,12 @@ export class UpdateRequest {
 
   constructor(public payload: any) {}
 }
+
+export class UpdateSpecificRequests {
+  static readonly type = '[UpdateSpecificRequests] Edit';
+
+  constructor(public payload: any) {}
+}
 export class DelinkRequest {
   static readonly type = '[DelinkRequest] Set';
 

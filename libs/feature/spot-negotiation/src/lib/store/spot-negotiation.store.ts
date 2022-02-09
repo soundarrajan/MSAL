@@ -21,7 +21,8 @@ import {
   SetPhysicalSupplierCounterpartyList,
   AppendRequestList,
   AppendPhysicalSupplierCounterpartyList,
-  UpdateRequest
+  UpdateRequest,
+  UpdateSpecificRequests
 } from './actions/ag-grid-row.action';
 
 import {
@@ -421,6 +422,29 @@ export class SpotNegotiationStore {
       requests: payload
     });
   }
+
+  // update specifci requests
+  @Action(UpdateSpecificRequests)
+  UpdateSpecificRequests(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: UpdateSpecificRequests
+  ) {
+    const state = getState();
+    var requestList = [...state.requests];
+    for (let i = 0; i < payload.length; i++) {
+      let findRequestIndex = _.findIndex(requestList, function(request) {
+        return request.id == payload[i].id;
+      });
+      if (findRequestIndex != -1) {
+        requestList[findRequestIndex] = _.cloneDeep(payload[i]);
+      }
+    }
+
+    patchState({
+      requests: requestList
+    });
+  }
+
   /* delink Request */
   @Action(DelinkRequest)
   DelinkRequest(
