@@ -14,9 +14,8 @@ export class AddRequest {
 
   constructor(public payload: any) {}
 }
-
 export class UpdateRequest {
-  static readonly type = '[Update Request] Update';
+  static readonly type = '[UpdateRequest] Edit';
 
   constructor(public payload: any) {}
 }

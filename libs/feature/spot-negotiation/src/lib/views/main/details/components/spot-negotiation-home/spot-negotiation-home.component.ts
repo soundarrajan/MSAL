@@ -17,7 +17,7 @@ import { SpotNegotiationService } from '../../../../../../../../spot-negotiation
 import {
   EditLocationRow,
   SetLocationsRows,
-  SetLocationsRowsPriceDetails
+  UpdateRequest
 } from '../../../../../store/actions/ag-grid-row.action';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { SpotnegoemaillogComponent } from '../spotnegoemaillog/spotnegoemaillog.component';
@@ -267,6 +267,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   sendRFQs() {
+    let requestProductIds = this.selectedSellerList.map(x => x.RequestProductIds);
     var FinalAPIdata = {
       RequestGroupId: this.currentRequestInfo.requestGroupId,
       quoteByDate: new Date(this.child.getValue()),
@@ -287,15 +288,28 @@ export class SpotNegotiationHomeComponent implements OnInit {
         this.toaster.error(res);
         return;
       }
+      let reqs = this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.requests;
+      });
 
       const locationsRows = this.store.selectSnapshot<string>((state: any) => {
         return state.spotNegotiation.locationsRows;
       });
 
-      const requestGroupID = this.store.selectSnapshot<string>((state: any) => {
-        return state.spotNegotiation.groupOfRequestsId;
-      });
+      // const requestGroupID = this.store.selectSnapshot<string>((state: any) => {
+      //   return state.spotNegotiation.groupOfRequestsId;
+      // });
 
+      reqs = reqs.map(e => {
+        let requestLocations = e.requestLocations.map(reqLoc => {
+          let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) &&
+            (reqPro.status.toLowerCase() == 'validated' || reqPro.status.toLowerCase() == 'reopen') ? { ...reqPro, status: 'Inquired' } : reqPro)
+
+          return { ...reqLoc, requestProducts }
+        });
+        return { ...e, requestLocations }
+      });
+      this.store.dispatch(new UpdateRequest(reqs));
       // this.store.dispatch(
       //   new SetLocationsRowsPriceDetails(res['sellerOffers'])
       // );
@@ -528,6 +542,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       let reqIdwithLocationForSeller: String;
       let isPhySupMandatoryForQuoting: boolean = false;
       let sellerDetails = [];
+      let requestProductIds= []
       //avoid calculation based on physical supplier mandatory configurations.
       const tenantConfig = this.store.selectSnapshot(
         (state: SpotNegotiationStoreModel) => {
@@ -577,6 +592,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
                       reqLoc,
                       true
                     );
+                    requestProductIds.push(reqLoc.requestProducts?.find(p => proOff.productId === p.productId).id);
                 });
 
                 // Update the store
@@ -616,7 +632,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       }
       else if (!isProductsExists) {
-        this.toaster.error('Selected product(s) does not exist for ' +reqIdwithSellerName);
+        this.toaster.error('Selected product(s) does not exist for ' + reqIdwithSellerName);
         return;
       }
       const copyPricePayload = { copyPriceDetailsRequest: sellerDetails }
@@ -625,12 +641,23 @@ export class SpotNegotiationHomeComponent implements OnInit {
       response.subscribe((res: any) => {
         this.spinner.hide();
         if (typeof res === 'boolean' && res == true) {
-          this.toaster.success('Offer price copied successfully.')
-          this.selectedRequestList = []
-          this.requestOptionsToDuplicatePrice = this.requestOptionsToDuplicatePrice.map(req => ({ ...req, selected: false }))
+          this.toaster.success('Offer price copied successfully.');
+          this.selectedRequestList = [];
+          this.requestOptionsToDuplicatePrice = this.requestOptionsToDuplicatePrice.map(req => ({ ...req, selected: false }));
+
+          this.requestOptions = this.requestOptions.map(e => {
+            let requestLocations = e.requestLocations.map(reqLoc => {
+              let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x == reqPro.id) &&
+                (reqPro.status.toLowerCase() == 'inquired') ? { ...reqPro, status: 'Quoted' } : reqPro)
+    
+              return { ...reqLoc, requestProducts }
+            });
+            return { ...e, requestLocations }
+          });
+          this.store.dispatch(new UpdateRequest(this.requestOptions));
 
         } else {
-          this.toaster.error(res.message);
+          this.toaster.error(res);
           return;
         }
       });
@@ -703,6 +730,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error('RFQ communicated to the counterparty already.');
       return;
     } else {
+      let requestProductIds = this.selectedSellerList.map(x => x.RequestProductIds);
       var FinalAPIPayload = {
         RequestGroupId: this.currentRequestInfo.requestGroupId,
         quoteByDate: new Date(this.child.getValue()),
@@ -745,6 +773,17 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
 
+        this.requestOptions = this.requestOptions.map(e => {
+          let requestLocations = e.requestLocations.map(reqLoc => {
+            let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) &&
+              (reqPro.status.toLowerCase() == 'validated'|| reqPro.status.toLowerCase() == 'reopen') ? { ...reqPro, status: 'Inquired' } : reqPro)
+  
+            return { ...reqLoc, requestProducts }
+          });
+          return { ...e, requestLocations }
+        });
+        this.store.dispatch(new UpdateRequest(this.requestOptions));
+
         this.changeDetector.detectChanges();
       });
     }
@@ -776,6 +815,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error('Revoke RFQ cannot be sent as RFQ was skipped.');
       return;
     } else {
+      let requestProductIds = this.selectedSellerList.map(x => x.RequestProductIds);
       var FinalAPIdata = {
         RequestGroupId: this.currentRequestInfo.requestGroupId,
         selectedSellers: this.selectedSellerList
@@ -830,6 +870,17 @@ export class SpotNegotiationHomeComponent implements OnInit {
             '_self'
           );
           //window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
+        }
+        else{
+          this.requestOptions = this.requestOptions.map(e => {
+            let requestLocations = e.requestLocations.map(reqLoc => {
+              let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) ? { ...reqPro, status: 'ReOpen' } : reqPro)
+    
+              return { ...reqLoc, requestProducts }
+            });
+            return { ...e, requestLocations }
+          });
+          this.store.dispatch(new UpdateRequest(this.requestOptions));
         }
       });
     }
@@ -926,6 +977,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         targetDifference: productDetails.targetDifference,
         price: productDetails.price,
         cost: productDetails.cost,
+        currencyId: productDetails.currencyId,
         isOfferPriceCopied: productDetails.isOfferPriceCopied
       }
       requestOffers.push(requOffer);
