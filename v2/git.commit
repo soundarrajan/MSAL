@@ -1,11 +1,11 @@
-﻿commit 1be9a14bbbc2c834c8f491459d4cd667eaed5eb0
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Tue Feb 8 14:43:54 2022 +0000
+﻿commit ae31f1e16fda4c5dea4c4f3c13538b5237676eb9
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Wed Feb 9 12:18:01 2022 +0000
 
-    Merged PR 15825: Fix invoice details chips
+    Merged PR 15834: 38362-InvoiceScreen-DueDateIssue-Fix
     
-    Fix invoice details chips
+    38362-InvoiceScreen-DueDateIssue-Fix
     
-    Related work items: #38259
+    Related work items: #38362
 
 branch: master
