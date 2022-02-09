@@ -290,7 +290,10 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
             pricePopupTrigger.openMenu()
           "
         >
-        <span class="duplicate-icon" *ngIf="params.data.requestOffers[params.index]?.isOfferPriceCopied"></span>
+          <span
+            class="duplicate-icon"
+            *ngIf="params.data.requestOffers[params.index]?.isOfferPriceCopied"
+          ></span>
           <div
             id="custom-form-field"
             [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
@@ -456,7 +459,6 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
                 placeholder="Search and select counterparty"
                 class="search-product-input"
                 (input)="search($event.target.value, params)"
-
               />
             </div>
             <div class="col-md-2">
@@ -672,7 +674,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   currentRequestSmallInfo: any;
   searchValue: string;
   paramsDataClone: any;
-  resetPopup :any
+  resetPopup: any;
   generalTenantSettings: any;
   baseUomId: any;
   constructor(
@@ -690,7 +692,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   ) {
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.baseUomId = this.generalTenantSettings.tenantFormats.currency.id;
-    console.log(this.generalTenantSettings);
   }
 
   ngOnInit() {
@@ -738,8 +739,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
   setValuefun(params) {
     this.searchValue = '';
-     this.physicalSupplierList = this.store.selectSnapshot<any>((state: any) => {
-        return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 7);
+    this.physicalSupplierList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 7);
     });
     let SelectedCounterpartyList = cloneDeep(this.physicalSupplierList);
 
@@ -798,7 +799,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.params = params;
   }
 
- search(userInput: string, params: any): void {
+  search(userInput: string, params: any): void {
     let selectedCounterpartyList = this.physicalSupplierList
       .filter(e => {
         if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
@@ -807,29 +808,33 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         return false;
       })
       .slice(0, 7);
-    if(selectedCounterpartyList.length === 0){
-      const response = this._spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], userInput.toLowerCase(), { Skip: 0 , Take: 25 } )
-      response.subscribe((res:any)=>{
-          if(res?.payload?.length >0){
-             let SelectedCounterpartyList1 = cloneDeep(res.payload);
-             SelectedCounterpartyList1.forEach(element => {
-              if (
-                params?.data?.physicalSupplierCounterpartyId != null &&
-                element.id == params?.data?.physicalSupplierCounterpartyId
-              ) {
-                element.isSelected = true;
-              } else {
-                element.isSelected = false;
-              }
-            });
-            this.visibleCounterpartyList = SelectedCounterpartyList1.slice(0,7);
-            this.changeDetector.detectChanges();
-          }
-
+    if (selectedCounterpartyList.length === 0) {
+      const response = this._spotNegotiationService.getResponse(
+        null,
+        { Filters: [] },
+        { SortList: [] },
+        [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
+        userInput.toLowerCase(),
+        { Skip: 0, Take: 25 }
+      );
+      response.subscribe((res: any) => {
+        if (res?.payload?.length > 0) {
+          let SelectedCounterpartyList1 = cloneDeep(res.payload);
+          SelectedCounterpartyList1.forEach(element => {
+            if (
+              params?.data?.physicalSupplierCounterpartyId != null &&
+              element.id == params?.data?.physicalSupplierCounterpartyId
+            ) {
+              element.isSelected = true;
+            } else {
+              element.isSelected = false;
+            }
+          });
+          this.visibleCounterpartyList = SelectedCounterpartyList1.slice(0, 7);
+          this.changeDetector.detectChanges();
+        }
       });
-    }
-    else{
-
+    } else {
       let SelectedCounterpartyList1 = cloneDeep(selectedCounterpartyList);
       if (SelectedCounterpartyList1?.length > 0) {
         SelectedCounterpartyList1.forEach(element => {
