@@ -411,27 +411,16 @@ export class SpotNegotiationStore {
     });
   }
 
+  // update requests
   @Action(UpdateRequest)
   UpdateRequest(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: UpdateRequest
   ) {
-    const state = getState();
-    var requestList = [...state.requests];
-    for (let i = 0; i < payload.length; i++) {
-      let findRequestIndex = _.findIndex(requestList, function(request) {
-        return request.id == payload[i].id;
-      });
-      if (findRequestIndex != -1) {
-        requestList[findRequestIndex] = _.cloneDeep(payload[i]);
-      }
-    }
-
     patchState({
-      requests: requestList
+      requests: payload
     });
   }
-
   /* delink Request */
   @Action(DelinkRequest)
   DelinkRequest(

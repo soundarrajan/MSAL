@@ -24,7 +24,8 @@ import {
   EditLocationRow,
   RemoveCounterparty,
   SetCounterpartyList,
-  SetLocationsRows
+  SetLocationsRows,
+  UpdateRequest
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.store';
 import { Observable } from 'rxjs';
@@ -355,6 +356,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     if (productDetails.id == null || productDetails.price == null) {
       return;
     }
+
+    let reqs = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
+
     const payload = {
       RequestLocationSellerId: updatedRow.id,
       Offers: [
@@ -381,6 +387,16 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     response.subscribe((res: any) => {
       if (res.status) {
         this.toastr.success('Price update successful.');
+        reqs = reqs.map(e => {
+          let requestLocations = e.requestLocations.map(reqLoc => {
+            let requestProducts = reqLoc.requestProducts.map(reqPro => productDetails.requestProductId == reqPro.id &&
+              (reqPro.status.toLowerCase() == 'inquired') ? { ...reqPro, status: 'Quoted' } : reqPro)
+  
+            return { ...reqLoc, requestProducts }
+          });
+          return { ...e, requestLocations }
+        });
+        this.store.dispatch(new UpdateRequest(reqs));
       } else {
         this.toastr.error(res.message);
         return;

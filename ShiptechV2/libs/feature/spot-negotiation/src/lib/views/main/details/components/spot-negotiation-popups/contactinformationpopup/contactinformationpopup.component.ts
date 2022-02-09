@@ -41,8 +41,12 @@ export class ContactinformationpopupComponent implements OnInit {
     .subscribe((res: any) => {
       this.spinner.hide();
       if (res) {
-        this.seller = res;
+       this.seller = res;
+       this.seller.counterpartyContacts = res.counterpartyContacts.filter(x=> x.isEmailContact == true);
+
+        console.log(this.seller);
         const newContact = <SellerContactModel>{contactTypeId: 1, contactType:'Trading'}
+
         this.seller.counterpartyContacts.push(newContact);
         this.changeDetector.detectChanges();
       }
