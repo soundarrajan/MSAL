@@ -156,8 +156,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                   this.formatAdditionalCostList(
                     this.locationAdditionalCostsList
                   );
-                  console.log(this.offerAdditionalCostList);
-                  console.log(this.locationAdditionalCostsList);
                   this.recalculatePercentAdditionalCosts(
                     this.locationAdditionalCostsList,
                     true
@@ -265,7 +263,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       this.applicableForItems = _.cloneDeep(
         [allElement].concat(applicableForItemsArray)
       );
-      console.log(this.applicableForItems);
     } else {
       this.applicableForItems = _.cloneDeep(applicableForItemsArray);
     }
@@ -409,7 +406,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
    */
   additionalCostNameChanged(additionalCost, skipDefault, skipDefaultPriceUom) {
     this.enableSave = true;
-    console.log(additionalCost);
     if (!skipDefault) {
       additionalCost.costTypeId = this.getAdditionalCostDefaultCostType(
         additionalCost
@@ -509,7 +505,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           if (typeof result == 'string') {
             this.toastr.error(result);
           } else {
-            console.log(result);
             additionalCost.prodConv[i] = _.cloneDeep(result);
             if (
               additionalCost.priceUomId &&
@@ -655,8 +650,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
             }
           }
         }
-        console.log(productComponent);
-        console.log(totalAmount);
         if (productComponent) {
           additionalCost.amount = (totalAmount * additionalCost.price) / 100;
         } else {
@@ -706,7 +699,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (isNaN(additionalCost.ratePerUom)) {
       additionalCost.ratePerUom = null;
     }
-    console.log(additionalCost);
 
     this.changeDetectorRef.detectChanges();
   }
@@ -840,7 +832,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       )
     };
 
-    console.log(payload);
     this.saveButtonClicked = false;
     this.spotNegotiationService
       .saveOfferAdditionalCosts(payload)

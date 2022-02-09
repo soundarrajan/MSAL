@@ -22,7 +22,7 @@ import {
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { SpotnegoemaillogComponent } from '../spotnegoemaillog/spotnegoemaillog.component';
 import { KnownSpotNegotiationRoutes } from 'libs/feature/spot-negotiation/src/lib/known-spot-negotiation.routes';
-import { takeUntil } from 'rxjs/operators';
+import { find, takeUntil } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
@@ -815,7 +815,13 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error('Revoke RFQ cannot be sent as RFQ was skipped.');
       return;
     } else {
-      let requestProductIds = this.selectedSellerList.map(x => x.RequestProductIds);
+      const locationsRows = this.store.selectSnapshot<any>(
+        (state: any) => {
+          return state.spotNegotiation.locationsRows;
+        }
+      );
+      let rfqIds = this.selectedSellerList.map(x => x.RfqId);
+      let requestProductIds = locationsRows.filter(r => r.requestOffers && r.requestOffers.find(ro => (rfqIds.includes(ro.rfqId) && !ro.isRfqskipped))).map(x => x.requestOffers.filter(r => !r.isRfqskipped).map(r =>r.requestProductId));
       var FinalAPIdata = {
         RequestGroupId: this.currentRequestInfo.requestGroupId,
         selectedSellers: this.selectedSellerList
@@ -839,11 +845,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           return;
         }
         // window.location.reload();
-        // const locationsRows = this.store.selectSnapshot<string>(
-        //   (state: any) => {
-        //     return state.spotNegotiation.locationsRows;
-        //   }
-        // );
+
 
         // const requestGroupID = this.store.selectSnapshot<string>(
         //   (state: any) => {
@@ -874,11 +876,16 @@ export class SpotNegotiationHomeComponent implements OnInit {
         else{
           this.requestOptions = this.requestOptions.map(e => {
             let requestLocations = e.requestLocations.map(reqLoc => {
-              let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) ? { ...reqPro, status: 'ReOpen' } : reqPro)
-    
-              return { ...reqLoc, requestProducts }
-            });
-            return { ...e, requestLocations }
+              let requestProducts = null;
+              if (futureLocationsRows.filter(lr => lr.requestLocationId == reqLoc.id && lr.requestOffers).length == 0 || futureLocationsRows.filter(lr => lr.requestLocationId == reqLoc.id && lr.requestOffers?.find(x => !x.isRfqskipped)).length == 0){
+              requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) ? { ...reqPro, status: 'ReOpen' } : reqPro)
+              }
+
+              return requestProducts ? { ...reqLoc, requestProducts} : reqLoc;
+            
+          });
+          return requestLocations?{ ...e,  requestLocations} : e;
+            
           });
           this.store.dispatch(new UpdateRequest(this.requestOptions));
         }

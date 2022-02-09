@@ -561,7 +561,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   getBestContractForCurrentRequest(selectedRequestId): void {
-    console.log(selectedRequestId);
     let payload = this.currentRequestInfo.id;
     if (!this.availableContracts[`request_${selectedRequestId}`]) {
       this.availableContracts[`request_${selectedRequestId}`] = [];
