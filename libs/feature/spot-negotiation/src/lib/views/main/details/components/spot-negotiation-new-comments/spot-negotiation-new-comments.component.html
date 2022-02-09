@@ -18,11 +18,58 @@
               <span class="circle external"></span>
               <span class="label external">External Comments</span>
               <span
+                [matMenuTriggerFor]="duplicateComments"
+                #menuTrigger="matMenuTrigger"
                 class="copy-btn"
                 matTooltip="Duplicate Comments"
                 matTooltipClass="blueTooltip"
+                (click)="getRequestsList()"
                 >copy</span
               >
+              <mat-menu
+                #duplicateComments="matMenu"
+                class="more-options-menu-panel menu-panel-requestOptionsDuplicateComments"
+              >
+                <div class="duplicate-comments-menu">
+                  <div class="text">
+                    <span>Duplicate To</span>
+                  </div>
+                  <div class="divider-line"></div>
+                  <div
+                    class="more-options-menu-inv no-border p-lr-0"
+                    (click)="$event.stopPropagation()"
+                    style="margin: 7px 5px;"
+                  >
+                    <div
+                      class="checkboxOptions"
+                      *ngFor="let request of requestListToDuplicateComments"
+                    >
+                      <mat-checkbox
+                        [value]="request"
+                        [checked]="request.isSelected"
+                        (change)="onRequestListCheckboxChange($event, request)"
+                        matTooltip="  {{ request.name }} -
+                        {{ request.vesselName }}"
+                        matTooltipClass="lightTooltip"
+                      >
+                        {{ request.name }} -
+                        {{ request.vesselName }}</mat-checkbox
+                      >
+                    </div>
+                  </div>
+                  <div class="divider-line"></div>
+                  <div class="proceed-div" style="margin: 0px;">
+                    <button
+                      mat-button
+                      (click)="copyCommentsToSelectedRequests()"
+                      class="mid-blue-button proceed-btn"
+                      style="left: 124px;"
+                    >
+                      Proceed
+                    </button>
+                  </div>
+                </div>
+              </mat-menu>
             </div>
           </div>
         </mat-panel-title>
@@ -37,6 +84,15 @@
               <div style="padding: 15px;">
                 <span class="circle internal"></span
                 ><span class="label">General</span>
+                <span
+                  [ngClass]="{
+                    selected: negoGeneralCommentsChecked,
+                    'de-selected': !negoGeneralCommentsChecked
+                  }"
+                  (click)="
+                    negoGeneralCommentsChecked = !negoGeneralCommentsChecked
+                  "
+                ></span>
                 <span
                   class="edit-icon"
                   (click)="editNegotiationGeneralComment()"
@@ -68,6 +124,15 @@
                 <span class="circle internal"></span
                 ><span class="label">Performance</span>
                 <span
+                  [ngClass]="{
+                    selected: negoPerformanceCommentsChecked,
+                    'de-selected': !negoPerformanceCommentsChecked
+                  }"
+                  (click)="
+                    negoPerformanceCommentsChecked = !negoPerformanceCommentsChecked
+                  "
+                ></span>
+                <span
                   class="edit-icon"
                   (click)="editPerformanceComment()"
                 ></span>
@@ -97,6 +162,15 @@
               <div style="padding: 15px;">
                 <span class="circle external"></span
                 ><span class="label">Supply</span>
+                <span
+                  [ngClass]="{
+                    selected: negoSupplierCommentsChecked,
+                    'de-selected': !negoSupplierCommentsChecked
+                  }"
+                  (click)="
+                    negoSupplierCommentsChecked = !negoSupplierCommentsChecked
+                  "
+                ></span>
                 <span class="edit-icon" (click)="editSupplyComments()"></span>
               </div>
               <div class="comments-div">
@@ -124,6 +198,15 @@
               <div style="padding: 15px;">
                 <span class="circle external"></span
                 ><span class="label">Vessel & Agents</span>
+                <span
+                  [ngClass]="{
+                    selected: negoVesselAgentCommentsChecked,
+                    'de-selected': !negoVesselAgentCommentsChecked
+                  }"
+                  (click)="
+                    negoVesselAgentCommentsChecked = !negoVesselAgentCommentsChecked
+                  "
+                ></span>
                 <span
                   class="edit-icon"
                   (click)="editvesselAndAgentCommentBox()"
@@ -169,6 +252,15 @@
                     <div style="padding: 15px;">
                       <span class="circle internal"></span
                       ><span class="label">General</span>
+                      <span
+                        [ngClass]="{
+                          selected: requestGeneralCommentsChecked,
+                          'de-selected': !requestGeneralCommentsChecked
+                        }"
+                        (click)="
+                          requestGeneralCommentsChecked = !requestGeneralCommentsChecked
+                        "
+                      ></span>
                     </div>
                     <div style="padding: 0px 20px;">
                       <span class="comments-text">
@@ -189,6 +281,15 @@
                     <div style="padding: 15px;">
                       <span class="circle external"></span
                       ><span class="label">Supply</span>
+                      <span
+                        [ngClass]="{
+                          selected: requestSupplierCommentsChecked,
+                          'de-selected': !requestSupplierCommentsChecked
+                        }"
+                        (click)="
+                          requestSupplierCommentsChecked = !requestSupplierCommentsChecked
+                        "
+                      ></span>
                     </div>
                     <div style="padding: 0px 20px;">
                       <span class="comments-text">
@@ -205,6 +306,15 @@
                     <div style="padding: 15px;">
                       <span class="circle external"></span
                       ><span class="label">Vessel & Agents</span>
+                      <span
+                        [ngClass]="{
+                          selected: requestVesselAgentCommentsChecked,
+                          'de-selected': !requestVesselAgentCommentsChecked
+                        }"
+                        (click)="
+                          requestVesselAgentCommentsChecked = !requestVesselAgentCommentsChecked
+                        "
+                      ></span>
                     </div>
                     <div style="padding: 0px 20px;">
                       <span class="comments-text">

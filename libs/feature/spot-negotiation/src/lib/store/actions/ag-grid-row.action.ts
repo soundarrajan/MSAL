@@ -9,17 +9,23 @@ export class SetCounterpartyList {
 
   constructor(public payload: any) {}
 }
-export class AddRequest{
+export class AddRequest {
   static readonly type = '[AddRequest] Add';
 
   constructor(public payload: any) {}
 }
-export class UpdateRequest{
+export class UpdateRequest {
   static readonly type = '[UpdateRequest] Edit';
 
   constructor(public payload: any) {}
 }
-export class DelinkRequest{
+
+export class UpdateSpecificRequests {
+  static readonly type = '[UpdateSpecificRequests] Edit';
+
+  constructor(public payload: any) {}
+}
+export class DelinkRequest {
   static readonly type = '[DelinkRequest] Set';
 
   constructor(public payload: any) {}
@@ -29,31 +35,31 @@ export class SetRequestList {
 
   constructor(public payload: any) {}
 }
-export class EditCounterpartyList{
+export class EditCounterpartyList {
   static readonly type = '[CounterpartyList] Edit';
 
   constructor(public payload: any) {}
 }
 
-export class AppendCounterpartyList{
+export class AppendCounterpartyList {
   static readonly type = '[CounterpartyList] Append';
 
   constructor(public payload: any) {}
 }
 
-export class AppendRequestList{
+export class AppendRequestList {
   static readonly type = '[RequestList] Append';
 
   constructor(public payload: any) {}
 }
 
-export class SetPhysicalSupplierCounterpartyList{
+export class SetPhysicalSupplierCounterpartyList {
   static readonly type = '[PhysicalSupplierCounterpartyList] Set';
 
   constructor(public payload: any) {}
 }
 
-export class AppendPhysicalSupplierCounterpartyList{
+export class AppendPhysicalSupplierCounterpartyList {
   static readonly type = '[PhysicalSupplierCounterpartyList] Append';
 
   constructor(public payload: any) {}
@@ -69,28 +75,28 @@ export class EditLocations {
 
   constructor(public payload: any) {}
 }
-export class SetLocationsRows{
+export class SetLocationsRows {
   static readonly type = '[LocationsRows] Set';
 
   constructor(public payload: any) {}
 }
-export class SetLocationsRowsOriData{
+export class SetLocationsRowsOriData {
   static readonly type = '[LocationsRowsOriData] Set';
 
   constructor(public payload: any) {}
 }
-export class SetLocationsRowsPriceDetails{
+export class SetLocationsRowsPriceDetails {
   static readonly type = '[LocationsRowsPriceDetails] Set';
 
   constructor(public payload: any) {}
 }
-export class EditLocationRow{
+export class EditLocationRow {
   static readonly type = '[Locations] Edit';
 
   constructor(public payload: any) {}
 }
 
-export class AddCounterpartyToLocations{
+export class AddCounterpartyToLocations {
   static readonly type = '[Counterparty] Add';
 
   constructor(public payload: any) {}
@@ -98,18 +104,15 @@ export class AddCounterpartyToLocations{
 export class RemoveCounterparty {
   static readonly type = '[Counterparty] Remove';
 
-  constructor(public payload: any) {
-  }
+  constructor(public payload: any) {}
 }
 export class SelectSeller {
   static readonly type = '[SelectedSellerList] Add';
 
-  constructor(public payload: any ) {
-  }
+  constructor(public payload: any) {}
 }
 export class DeleteSeller {
   static readonly type = '[SelectedSellerList] Delete';
 
-  constructor(public RequestLocationSellerId: number) {
-  }
+  constructor(public RequestLocationSellerId: number) {}
 }

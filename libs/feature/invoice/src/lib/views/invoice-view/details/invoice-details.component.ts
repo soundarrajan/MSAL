@@ -535,9 +535,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         this.formValues.paymentDetails = <IInvoiceDetailsItemPaymentDetails>{};
       }
       if (!this.formValues.counterpartyDetails.counterpartyBankAccount) {
-        this.formValues.counterpartyDetails.counterpartyBankAccount = <
-          IInvoiceDetailsItemBaseInfo
-        >{};
+          this.formValues.counterpartyDetails.counterpartyBankAccount = <IInvoiceDetailsItemBaseInfo>null;
       }
       this.setOrderDetailsLables(this.formValues.orderDetails);
       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
@@ -2222,7 +2220,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.chipData[1].statusColorCode = this.statusColorCode;
 
     if (ivs) {
-      this.chipData[2].Data = ivs.invoiceAmountGrandTotal
+      this.chipData[2].Data = ivs.invoiceAmountGrandTotal !== null
         ? `${this.amountFormatValue(
             ivs.invoiceAmountGrandTotal?.toString()
           )} ${currencyCode}`
@@ -2240,7 +2238,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.chipData[5].Data = ivs?.provisionalInvoiceNo
         ? ivs?.provisionalInvoiceNo?.toString()
         : '';
-      this.chipData[6].Data = ivs?.provisionalInvoiceAmount
+      this.chipData[6].Data = ivs?.provisionalInvoiceAmount !== null
         ? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()) +
           ' ' +
           currencyCode
@@ -2483,11 +2481,17 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (this.formSubmitted) {
       return;
     }
+    if(!this.formValues.counterpartyDetails.counterpartyBankAccount && this.tenantConfiguration?.invoiceConfiguration
+      ?.fieldVisibility?.isBankAccountNumberMandatory) {
+      this.toastr.error("Bank Account Number is Mandatory");
+      return;
+    }
     this.spinner.show();
     this.formSubmitted = true;
     this.setAdditionalCostLine();
     const valuesForm = _.cloneDeep(this.formValues); //avoid error on ngModel of bankAccount
     if (
+      !this.formValues.counterpartyDetails.counterpartyBankAccount ||
       this.formValues.counterpartyDetails.counterpartyBankAccount.id ==
         undefined ||
       this.formValues.counterpartyDetails.counterpartyBankAccount.id == 0
@@ -2774,7 +2778,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   amountFormatValue(value) {
-    if (typeof value == 'undefined' || !value) {
+    if (typeof value == 'undefined' || value == null) {
       return null;
     }
     let amountPrecision = this.tenantService.amountPrecision;

@@ -172,8 +172,8 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.updatePrices(payload);
   }
   /**
-     * @param payload = True
-     */
+   * @param payload = True
+   */
   @ObservableException()
   copyPriceDetails(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.copyPriceDetails(payload);
@@ -469,12 +469,26 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.updateNegotiationComments(payload);
   }
 
+  /**
+   * @param payload
+   */
+  copyNegotiationComments(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.copyNegotiationComments(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }
 
   //for getting counterparty response
-  getResponse(Order: any, PageFilters: any, SortList: any, Filters: any, SearchText: any, Pagination: any) {
+  getResponse(
+    Order: any,
+    PageFilters: any,
+    SortList: any,
+    Filters: any,
+    SearchText: any,
+    Pagination: any
+  ) {
     let payload = {
       Order: Order,
       PageFilters: PageFilters,
@@ -486,7 +500,14 @@ export class SpotNegotiationService extends BaseStoreService
     return this.getCounterpartyList(payload);
   }
 
-  getRequestresponse(Order: any, PageFilters: any, SortList: any, Filters: any, SearchText: any, Pagination: any) {
+  getRequestresponse(
+    Order: any,
+    PageFilters: any,
+    SortList: any,
+    Filters: any,
+    SearchText: any,
+    Pagination: any
+  ) {
     let payload = {
       Order: Order,
       PageFilters: PageFilters,
@@ -495,7 +516,7 @@ export class SpotNegotiationService extends BaseStoreService
       SearchText: SearchText,
       Pagination: Pagination
     };
-    return this.getRequestList(payload)
+    return this.getRequestList(payload);
   }
 
   formatRowData(row, product, field, newValue, currentLocation, isPriceCopied) {
@@ -592,6 +613,4 @@ export class SpotNegotiationService extends BaseStoreService
     }
     return futureRow;
   }
-
-
 }

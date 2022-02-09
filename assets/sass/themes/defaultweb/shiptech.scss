@@ -22515,3 +22515,95 @@ mat-form-field {
   position: relative;
   width: 0px !important;
 }
+
+.menu-panel-requestOptionsDuplicateComments {
+  .mat-menu-content {
+    margin: 0px !important;
+  }
+  &.mat-menu-panel {
+    cursor: pointer;
+    background: #364150;
+    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
+    min-height: 62px !important;
+    width: 230px;
+    min-width: 220px;
+    overflow: initial;
+  }
+  .checkboxOptions {
+    margin: 10px 10px 0px 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    .mat-checkbox-checked.mat-accent .mat-checkbox-background,
+    .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+      background-color: #ffffff;
+    }
+    mat-checkbox .mat-checkbox-checkmark-path {
+      stroke: #364150 !important;
+    }
+    .mat-checkbox-frame {
+      border-color: #ffffff !important;
+    }
+    .mat-checkbox-layout .mat-checkbox-label {
+      color: #ffffff;
+    }
+  }
+  .duplicate-comments-menu {
+    .text {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 16px;
+      color: #ffffff;
+      margin: 15px;
+    }
+    .divider-line {
+      border-bottom: 1px solid #ffffff;
+      margin: 0px 10px;
+    }
+    .proceed-div {
+      margin: 0px -95px;
+      height: 55px;
+      .proceed-btn {
+        left: 205px;
+        top: 10px;
+        cursor: pointer;
+        width: 90px;
+        border-radius: 3px;
+        background: #00aae2;
+        height: 30px;
+      }
+    }
+  }
+}
+
+.spot-nego-new-comments .spot-comments-section .new-comments .de-selected,
+.spot-nego-new-comments .spot-comments-section2 .new-comments .de-selected {
+  cursor: pointer;
+  float: right;
+  width: 18px;
+  height: 18px;
+  margin-left: 10px;
+  content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iOSIgY3k9IjkiIHI9IjkiIGZpbGw9IiNFRUUiLz48ZyBjbGlwLXBhdGg9InVybCgjY2xpcDBfMTY0N185MDgpIj48cGF0aCBkPSJNMTMuMDI3IDUuMTdjLS40MTUtLjIyMy0uODc4LjIwOC0xLjE1LjQ2My0uNjIzLjYwNy0xLjE1IDEuMzEtMS43NCAxLjk0OC0uNjU1LjcwMy0xLjI2MiAxLjQwNi0xLjkzMiAyLjA5Mi0uMzg0LjM4My0uNzk5Ljc5OS0xLjA1NCAxLjI3OC0uNTc1LS41Ni0xLjA3LTEuMTY2LTEuNzA5LTEuNjYxLS40NjMtLjM1MS0xLjIzLS42MDctMS4yMTMuMjQuMDMyIDEuMTAxIDEuMDA2IDIuMjgzIDEuNzI0IDMuMDMzLjMwNC4zMi43MDMuNjU1IDEuMTY2LjY3LjU1OS4wMzMgMS4xMzQtLjYzOCAxLjQ2OS0xLjAwNS41OS0uNjM5IDEuMDctMS4zNTcgMS42MTMtMi4wMTIuNzAyLS44NjIgMS40Mi0xLjcwOCAyLjEwNy0yLjU4Ny40MzEtLjU0MyAxLjc4OS0xLjg4NC43MTktMi40NTl6TTQuOTMgOS40NjZjLS4wMTYgMC0uMDMyIDAtLjA2NC4wMTZhLjc3Ny43NzcgMCAwMS0uMTc1LS4wNjRjLjA0OC0uMDMyLjEyOC0uMDE2LjI0LjA0OHoiIGZpbGw9IiNmZmYiLz48L2c+PGRlZnM+PGNsaXBQYXRoIGlkPSJjbGlwMF8xNjQ3XzkwOCI+PHBhdGggZmlsbD0iI2ZmZiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNC4yMjkgNC41NzIpIiBkPSJNMCAwaDkuMnY5LjJIMHoiLz48L2NsaXBQYXRoPjwvZGVmcz48L3N2Zz4=');
+}
+
+.spot-nego-new-comments .spot-comments-section .new-comments .selected,
+.spot-nego-new-comments .spot-comments-section2 .new-comments .selected {
+  cursor: pointer;
+  float: right;
+  width: 18px;
+  height: 18px;
+  margin-left: 10px;
+  content: url("data:image/svg+xml;charset=utf-8,%3Csvg width='23' height='23' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11.5' cy='11.5' r='11.5' fill='%231D9FFF'/%3E%3Cg clip-path='url(%23clip0)'%3E%3Cpath d='M16.027 7.17c-.415-.223-.878.208-1.15.463-.623.607-1.15 1.31-1.74 1.948-.655.703-1.262 1.406-1.932 2.092-.384.383-.799.799-1.054 1.278-.575-.56-1.07-1.166-1.709-1.661-.463-.351-1.23-.607-1.213.24.032 1.101 1.006 2.283 1.724 3.033.304.32.703.655 1.166.67.559.033 1.133-.638 1.469-1.005.59-.639 1.07-1.357 1.613-2.012.702-.862 1.42-1.708 2.107-2.587.431-.543 1.789-1.884.719-2.459zM7.93 11.466c-.016 0-.032 0-.064.016a.782.782 0 01-.175-.064c.048-.032.128-.016.24.048z' fill='%23fff'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0'%3E%3Cpath fill='%23fff' transform='translate(7.229 6.572)' d='M0 0h9.2v9.2H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
+}
+
+.spot-nego-new-comments .spot-comments-section .new-comments .edit-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.toast-alert-copy-comments {
+  height: 100px !important;
+}

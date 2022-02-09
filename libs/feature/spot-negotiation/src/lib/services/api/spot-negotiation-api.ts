@@ -70,7 +70,8 @@ export const SpotNegotiationApiPaths = {
   downloadDocument: `api/masters/documentupload/download`,
   updateIsVerifiedDocument: `api/masters/documentupload/update`,
   updateNotes: `api/masters/documentupload/notes`,
-  updateNegotiationComments: `groups/updateComments`
+  updateNegotiationComments: `groups/updateComments`,
+  copyComments: `groups/copyComments`
 };
 
 @Injectable({
@@ -1004,6 +1005,19 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
               : body.error.errorMessage + ' ' + body.error.reference
           )
         )
+      );
+  }
+
+  @ObservableException()
+  copyNegotiationComments(request: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.copyComments}`,
+        request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
