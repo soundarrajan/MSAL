@@ -71,6 +71,7 @@ export const SpotNegotiationApiPaths = {
   updateIsVerifiedDocument: `api/masters/documentupload/update`,
   updateNotes: `api/masters/documentupload/notes`,
   updateNegotiationComments: `groups/updateComments`,
+  switchReqOffBasedOnQuote: `RFQ/switchReqOffBasedOnQuote`,
   copyComments: `groups/copyComments`
 };
 
@@ -995,6 +996,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .put<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updateNegotiationComments}`,
         request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  switchReqOffBasedOnQuote(payload: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.switchReqOffBasedOnQuote}`,
+        payload
       )
       .pipe(
         map((body: any) => body),
