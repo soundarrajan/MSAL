@@ -177,32 +177,13 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
             matTooltip=""
             >n</span
           >
+          
           <span
-            class="info-comment"
+          [ngClass]="{ 'info-comment': this.params.data.isSellerPortalComments, 'info-comment-inactive': !this.params.data.isSellerPortalComments }"
             matTooltip="View supplier comments"
-            matTooltipClass="lightTooltip"
-            (click)="suppliercommentspopup()"
-            *ngIf="params.data.commentIcon == 'Yes'"
-          ></span>
-          <span
-            class="info-comment-inactive"
-            (click)="suppliercommentspopup()"
-            *ngIf="params.data.commentIcon == 'No'"
+            (click)="suppliercommentspopup(params.data)"
+            *ngIf="this.params.data.sellerComments.length>0"
             matTooltipClass=""
-            matTooltip=""
-          ></span>
-          <span
-            class=""
-            *ngIf="params.data.commentIcon == 'None'"
-            matTooltipClass=""
-            matTooltip=""
-          ></span>
-
-          <span
-            class=""
-            *ngIf="params.data.commentIcon == ''"
-            matTooltipClass=""
-            matTooltip=""
           ></span>
         </span>
       </div>
@@ -216,10 +197,13 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
         <span><div class="id-icon"></div></span>
         <span class="fs-12">Supplier Contact</span>
       </div>
-      <!-- <div class="p-tb-5" style="display:flex;align-items:center;">
+      <div class="p-tb-5" 
+      style="display:flex;align-items:center;"
+      (click)="suppliercommentspopup(params.data)">
       <span><div class="blue-comments-icon"></div></span>
       <span class="fs-12">Supplier Comments</span>
-    </div> -->
+
+    </div>
 
       <!-- <div class="p-tb-5" style="display:flex;align-items:center;">
       <span><div class="quote-icon"></div></span>
@@ -700,7 +684,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   ngOnInit() {
     let requestOffers = this.params.data.requestOffers;
-
     this.myFormGroup = new FormGroup({
       currency: new FormControl('')
     });
@@ -1047,11 +1030,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
   }
-  suppliercommentspopup() {
+  suppliercommentspopup(params) {
     const dialogRef = this.dialog.open(SupplierCommentsPopupComponent, {
       width: '672px',
-      minHeight: '540px',
-      panelClass: ['additional-cost-popup', 'supplier-contact-popup']
+      minHeight: '280px',
+      panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
+      data:params,
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {});
