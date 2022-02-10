@@ -717,7 +717,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             colDef.field,
             newValue,
             currentLocation,
-            false
+            false,
+            0
           );
 
         // Update the store
