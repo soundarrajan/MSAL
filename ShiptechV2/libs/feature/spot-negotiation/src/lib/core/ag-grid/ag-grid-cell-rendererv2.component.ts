@@ -240,7 +240,7 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
       </div>
       <div class="p-tb-5" style="display:flex;align-items:center;">
         <span><div class="no-quote-icon"></div></span>
-        <span class="fs-12">No Quote</span>
+        <span class="fs-12" (click)="noQuoteAction(params)">No Quote</span>
       </div>
       <hr class="menu-divider-line" />
       <div class="p-tb-5" style="display:flex;align-items:center;">
@@ -1351,7 +1351,17 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   refresh(): boolean {
     return false;
   }
-
+  noQuoteAction(params) {
+    let noQuotePayload = {
+      "requestOfferIds": params.data.requestOffers.map(e => e.id),
+      "noQuote": !params.data.requestOffers[0].hasNoQuote
+    };
+    let response = this._spotNegotiationService.switchReqOffBasedOnQuote(noQuotePayload);
+    response.subscribe((res: any) => {
+      console.log(res);
+    })
+    console.log(noQuotePayload);
+  }
   removeCounterparty() {
     // remove counterparty row clicked
     this.params.context.componentParent.removeCounterpartyRowClicked(
