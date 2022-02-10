@@ -51,11 +51,7 @@
                   }}</b></span
                 >
                 <span class="border_line"></span>
-                <span
-                  class="label_text"
-                  matTooltip="{{
-                    formValues.createdAt | date: this.dateFormat
-                  }}"
+                <span class="label_text" matTooltip="{{ formValues.createdAt }}"
                   >On:
                   <b>{{
                     formValues.createdByUser
@@ -498,7 +494,7 @@
         </div>
         <div
           class="col-md-6 col-sm-12"
-          style="line-height: 55px; margin: 3px -12px;     padding-top: 1rem!important;"
+          style="line-height: 55px; margin: 3px -12px;"
         >
           <div class="row" style="padding-left: 15px;">
             <div id="custom-btn-toggle-v2">
@@ -971,7 +967,6 @@
                         [compareWith]="compareObjects"
                         [disableOptionCentering]="true"
                         panelClass="general-information-select-container"
-                        [disabled]="formValues.status?.name === 'Approved'"
                         [ngModelOptions]="{ standalone: true }"
                         [(ngModel)]="
                           formValues.counterpartyDetails.counterpartyBankAccount
@@ -1126,8 +1121,7 @@
                         type="text"
                         matInput
                         [ngModel]="
-                          formValues.counterpartyDetails.payableTo
-                            | htmlDecodeReadonly: 'name'
+                          formValues.counterpartyDetails.payableTo | htmlDecodeReadonly: 'name'
                         "
                         (ngModelChange)="
                           formValues.counterpartyDetails.payableTo = $event

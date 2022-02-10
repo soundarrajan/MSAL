@@ -42,11 +42,10 @@
                   <div class="row" style="align-items: center;">
                     <div class="col-6 editable-header contact-editable-header">
                       <span *ngIf="!contact.id && !contact.isEditable">+ Add Contact</span>
-                      <span *ngIf="!contact.isEditable && contact.id" style="overflow-wrap: break-word;">{{ contact.name }}</span>
+                      <span *ngIf="!contact.isEditable && contact.id">{{ contact.name }}</span>
                       <mat-form-field
                         class="example-full-width"
                         *ngIf="contact.isEditable"
-
                       >
                         <input
                           #inputBox
@@ -83,7 +82,7 @@
                         *ngIf="!contact.isEditable"
                         (click)="contact.isEditable = !contact.isEditable;"
                       >
-                      <span class="edit-icon"></span>
+                        <span class="edit-icon"></span>
                       </div>
                       <div
                         *ngIf="contact.isEditable"
@@ -104,12 +103,12 @@
                 <tr>
                   <td class="p-r-10 w-75 tabledata-fieldname">Email: *</td>
                   <td class="text-left tabledata-value">
-                    <span *ngIf="!contact.isEditable" [matTooltip]="contact.email" style="overflow-wrap: break-word;"> {{ contact.email }}</span>
+                    <span *ngIf="!contact.isEditable" [matTooltip]="contact.email"> {{ contact.email }}</span>
                     <mat-form-field
                       class="example-full-width"
                       *ngIf="contact.isEditable"
                     >
-                    <input matInput [(ngModel)]="contact.email" required [email]="true"/>
+                      <input matInput [(ngModel)]="contact.email" required [email]="true"/>
                     </mat-form-field>
                   </td>
                 </tr>
@@ -152,29 +151,12 @@
                 <tr>
                   <td class="p-r-10 w-75 tabledata-fieldname">Country:</td>
                   <td class="text-left tabledata-value">
-                    <span *ngIf="!contact.isEditable"> {{ contact.country?.name }}</span>
+                    <span *ngIf="!contact.isEditable"> {{ contact.country }}</span>
                     <mat-form-field
-                      class="with-search"
-                      appearance="legacy"
+                      class="example-full-width"
                       *ngIf="contact.isEditable"
-                      [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }">
-                      <input matInput [(ngModel)]="contact.country"
-                        [matAutocomplete]="auto1"
-                        autocomplete="off"
-                        class="free-text-field"
-                        type="text" />
-                      <mat-autocomplete
-                        #auto1="matAutocomplete"
-                        class="darkPanelAuto"
-                        [displayWith]="displayFn"
-                        (optionSelected)="contact.country = $event.option.value">
-                        <mat-option
-                          *ngFor="let option of filterCountryList(contact.country)"
-                          [value]="option"
-                        >
-                          {{ option.name }}
-                        </mat-option>
-                    </mat-autocomplete>
+                    >
+                      <input matInput [(ngModel)]="contact.country" />
                     </mat-form-field>
                   </td>
                 </tr>
@@ -237,6 +219,190 @@
         </div>
       </div>
     </div>
+    <!-- <div class="col-3" *ngFor="let tabledata of tabledatas3">
+      <div class="product-terms p-b-5 add-new-contact">
+        <div
+          class="operations-details-block dashed-border-overlay"
+          style="height:294px"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th class=" text-left w-147 contact-editable-header">
+                  <div class="row" style=" align-items: center;">
+                    <div class="col-6 editable-header contact-editable-header">
+                      <span *ngIf="!isEditEnable3">+ Add Contact</span>
+                      <mat-form-field
+                        class="example-full-width"
+                        *ngIf="isEditEnable3"
+                      >
+                        <input
+                          matInput
+                          [(ngModel)]="tabledata.name"
+                          #inputBox
+                        />
+                      </mat-form-field>
+                    </div>
+                    <div
+                      class="col-4 editable-header contact-editable-header pl-0"
+                    >
+                      <span *ngIf="!isEditEnable3">{{
+                        tabledata.designation
+                      }}</span>
+                      <mat-form-field
+                        appearance="fill"
+                        *ngIf="isEditEnable3"
+                        style=" align-items: center;"
+                      >
+                        <mat-select [(ngModel)]="tabledata.designation">
+                          <mat-option value="1">Trader</mat-option>
+                          <mat-option value="option2">Buyer</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-2">
+                      <div
+                        color="primary"
+                        *ngIf="!isEditEnable3"
+                        (click)="onEdit2()"
+                      >
+                        <span class="edit-icon"></span>
+                      </div>
+                      <div
+                        *ngIf="isEditEnable3"
+                        color="primary"
+                        (click)="onEdit2(); addNew(tabledata)"
+                      >
+                        <span class="submit-icon"></span>
+                      </div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+          </table>
+          <div>
+            <table>
+              <tbody>
+                <tr>
+                  <td class="p-r-10 w-75 tabledata-fieldname">Email:</td>
+                  <td class="text-left tabledata-value">
+                    <span *ngIf="!isEditEnable3"> {{ tabledata.email }}</span>
+                    <mat-form-field
+                      class="example-full-width"
+                      *ngIf="isEditEnable3"
+                    >
+                      <input matInput [(ngModel)]="tabledata.email" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-r-10 w-75 tabledata-fieldname">Address:</td>
+                  <td class="text-left tabledata-value">
+                    <span *ngIf="!isEditEnable3"> {{ tabledata.address }}</span>
+                    <mat-form-field
+                      class="example-full-width"
+                      *ngIf="isEditEnable3"
+                    >
+                      <input matInput [(ngModel)]="tabledata.address" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-r-10 w-75 tabledata-fieldname">Zip Code:</td>
+                  <td class="text-left tabledata-value">
+                    <span *ngIf="!isEditEnable3"> {{ tabledata.zipcode }}</span>
+                    <mat-form-field
+                      class="example-full-width"
+                      *ngIf="isEditEnable3"
+                    >
+                      <input matInput [(ngModel)]="tabledata.zipcode" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-r-10 w-75 tabledata-fieldname">City:</td>
+                  <td class="text-left tabledata-value">
+                    <span *ngIf="!isEditEnable3"> {{ tabledata.city }}</span>
+                    <mat-form-field
+                      class="example-full-width"
+                      *ngIf="isEditEnable3"
+                    >
+                      <input matInput [(ngModel)]="tabledata.city" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-r-10 w-75 tabledata-fieldname">Country:</td>
+                  <td class="text-left tabledata-value">
+                    <span *ngIf="!isEditEnable3"> {{ tabledata.country }}</span>
+                    <mat-form-field
+                      class="example-full-width"
+                      *ngIf="isEditEnable3"
+                    >
+                      <input matInput [(ngModel)]="tabledata.country" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-r-10 w-75 tabledata-fieldname">Mobile:</td>
+                  <td class="text-left tabledata-value">
+                    <span *ngIf="!isEditEnable3"> {{ tabledata.mobile }}</span>
+                    <mat-form-field
+                      class="example-full-width"
+                      *ngIf="isEditEnable3"
+                    >
+                      <input matInput [(ngModel)]="tabledata.mobile" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-r-10 w-75 tabledata-fieldname">Phone:</td>
+                  <td class="text-left tabledata-value">
+                    <span *ngIf="!isEditEnable3"> {{ tabledata.phone }}</span>
+                    <mat-form-field
+                      class="example-full-width"
+                      *ngIf="isEditEnable3"
+                    >
+                      <input matInput [(ngModel)]="tabledata.phone" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-r-10 w-75 tabledata-fieldname">Fax No:</td>
+                  <td class="text-left tabledata-value">
+                    <span *ngIf="!isEditEnable3"> {{ tabledata.fax }}</span>
+                    <mat-form-field
+                      class="example-full-width"
+                      *ngIf="isEditEnable3"
+                    >
+                      <input matInput [(ngModel)]="tabledata.fax" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="p-r-10 w-75 tabledata-fieldname">IM:</td>
+                  <td class="text-left tabledata-value">
+                    <span *ngIf="!isEditEnable3"> {{ tabledata.im }}</span>
+                    <mat-form-field
+                      class="example-full-width"
+                      *ngIf="isEditEnable3"
+                    >
+                      <input matInput [(ngModel)]="tabledata.im" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="showoverlay" id="overlay1" (click)="removeoverlay()">
+          <div id="home_text" (click)="setFocus()">
+            <span class="circle-plus-icon"></span>
+          </div>
+        </div>
+      </div>
+    </div> -->
   </div>
 </div>
 

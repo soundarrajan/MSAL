@@ -1488,6 +1488,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   defaultUomByProduct(productId, index) {
     let payload = { Payload: productId };
+    this.spinner.show();
     this.contractService
       .getProductById(payload)
       .pipe(finalize(() => {}))
@@ -1729,10 +1730,12 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     }
     if (!isAlreadyAdded && indexDeleted == -1 && selectedProduct) {
       payload = { Payload: { ProductId: selectedProduct.product.id } };
+      this.spinner.show();
       this.contractService
         .getProdDefaultConversionFactors(payload)
         .pipe(
           finalize(() => {
+            this.spinner.hide();
           })
         )
         .subscribe((response: any) => {

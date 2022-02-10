@@ -52,6 +52,7 @@ export class NegotiationReportComponent implements OnInit {
         this.toastr.error(res.error);
         return;
       } else {
+        console.log(res);
         // Populate Store
 
         this.store.dispatch(

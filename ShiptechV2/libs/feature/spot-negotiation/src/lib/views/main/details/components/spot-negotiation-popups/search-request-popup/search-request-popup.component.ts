@@ -77,8 +77,8 @@ export class SearchRequestPopupComponent implements OnInit {
         this.dialog_gridOptions.columnApi = params.columnApi;
         this.dialog_gridOptions.api.sizeColumnsToFit();
         // this.store.subscribe(({ spotNegotiation }) => {
-        //   if (spotNegotiation.requestList && this.dialog_gridOptions.api) {
-        //     this.rowData = spotNegotiation.requestList;
+        //   if (spotNegotiation.RequestList && this.dialog_gridOptions.api) {
+        //     this.rowData = spotNegotiation.RequestList;
         //     this.dialog_gridOptions.api.setRowData(this.rowData);
         //     this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
         //   }
@@ -133,7 +133,7 @@ export class SearchRequestPopupComponent implements OnInit {
         this.count =1 ;
         this.dialog_gridOptions.api.hideOverlay();
         this.store.subscribe(({ spotNegotiation }) => {
-          this.requestList = spotNegotiation.requestList ;
+          this.requestList = spotNegotiation.RequestList ;
           params.successCallback(this.requestList.slice(params.startRow, params.endRow), this.requestRowCount);
            this.requestListLength = this.requestList.length;
         });
@@ -216,8 +216,8 @@ export class SearchRequestPopupComponent implements OnInit {
   }
   search1(userInput: string): void {
     this.store.subscribe(({ spotNegotiation }) => {
-      if (spotNegotiation.requestList) {
-        this.rowData = spotNegotiation.requestList
+      if (spotNegotiation.RequestList) {
+        this.rowData = spotNegotiation.RequestList
           .filter(e => {
             if (e.requestName.toLowerCase().includes(userInput.toLowerCase()) || e.vesselName.toLowerCase().includes(userInput.toLowerCase())
             // || e.serviceName?.toLowerCase().includes(userInput.toLowerCase())

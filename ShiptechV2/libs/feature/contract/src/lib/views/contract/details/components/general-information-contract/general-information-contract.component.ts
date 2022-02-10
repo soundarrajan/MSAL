@@ -735,10 +735,12 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   }
 
   getCounterpartyById(counterpartyId: number) {
+    this.spinner.show();
     this.contractService
       .getCounterparty(this.formValues.seller.id)
       .pipe(
         finalize(() => {
+          this.spinner.hide();
         })
       )
       .subscribe((response: any) => {
@@ -921,10 +923,12 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   }
 
   changeAgreementType() {
+    this.spinner.show();
     this.contractService
       .getAgreementTypeById(this.formValues.agreementType.id)
       .pipe(
         finalize(() => {
+          this.spinner.hide();
         })
       )
       .subscribe((response: any) => {

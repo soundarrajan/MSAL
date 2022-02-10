@@ -99,7 +99,7 @@
                       *ngFor="let locationCost of locationCosts"
                       [value]="locationCost.id"
                     >
-                      {{ locationCost.costDescription | htmlDecodeReadonly }}
+                      {{ locationCost.costDescription }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -194,7 +194,7 @@
                 <div class="non-editable-container">
                   <div class="non-editable-container-text-left">
                     {{
-                      locationCost.extraAmount && locationCost.costType !== 'Percent'
+                      locationCost.extraAmount
                         ? amountFormatValue(locationCost.extraAmount)
                         : ' '
                     }}
@@ -212,7 +212,7 @@
                 <div class="non-editable-container">
                   <div class="non-editable-container-text-left">
                     {{
-                      locationCost.totalAmount && locationCost.costType !== 'Percent'
+                      locationCost.totalAmount
                         ? amountFormatValue(locationCost.totalAmount)
                         : ' '
                     }}
@@ -228,7 +228,7 @@
               </td>
               <td class="text-left">
                 {{
-                  locationCost.ratePerUom && locationCost.costType !== 'Percent'
+                  locationCost.ratePerUom
                     ? priceFormatValue(locationCost.ratePerUom)
                     : ''
                 }}

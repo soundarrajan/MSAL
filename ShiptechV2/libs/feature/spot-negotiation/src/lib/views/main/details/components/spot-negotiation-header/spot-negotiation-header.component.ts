@@ -278,6 +278,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 portRating: '',
                 prefferedProductIds: '',
                 sellerComments: '',
+                isSellerPortalComments:false,
                 sellerCounterpartyId: val.id,
                 sellerCounterpartyName: val.name,
                 senRating: ''

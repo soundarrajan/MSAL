@@ -4,9 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
-  ViewChild,
-  Injectable,
-  HostListener
+  ViewChild
 } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
@@ -31,8 +29,6 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { AGGridCellV2RendererComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-renderer-v2.component';
 import { AGGridCellActionsDocumentsComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-actions-documents.component';
 import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
-import { Subject } from 'rxjs';
-import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-negotiation-documents',
@@ -42,7 +38,6 @@ import { MatMenuTrigger } from '@angular/material/menu';
 })
 export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
   @ViewChild('uploadComponent', { static: false }) uploadedFiles: FileUpload;
-
   public rowData_grid = [];
   public gridOptions_data: GridOptions;
   documentTypeList: any[];
@@ -107,6 +102,7 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
         if (typeof response === 'string') {
           this.toastr.error(response);
         } else {
+          console.log(response);
           this.documentTypeListForSearch = _.cloneDeep(response);
           this.documentTypeList = _.cloneDeep(response);
         }
@@ -147,6 +143,7 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
           this.toastr.error(response);
         } else {
           this.spinner.hide();
+          console.log(response);
           this.responseList = _.cloneDeep(response);
           for (let i = 0; i < this.responseList.length; i++) {
             this.responseList[i].uploadedOn = this.format.date(
@@ -174,6 +171,7 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
       this.selectedDocumentType = $event.value;
       this.documentType = null;
       this.changeDetector.detectChanges();
+      console.log(this.selectedDocumentType);
     }
   }
 
@@ -188,11 +186,13 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
     let filterDocumentType = this.documentTypeList.filter(documentType =>
       documentType.name.toLowerCase().includes(value.trim().toLowerCase())
     );
+    console.log(filterDocumentType);
     this.documentTypeListForSearch = [...filterDocumentType];
   }
 
   selectDocumentType(event: MatAutocompleteSelectedEvent) {
     this.selectedDocumentType = event.option.value;
+    console.log(this.selectedDocumentType);
   }
 
   public filterDocumentTypeList() {
@@ -221,11 +221,13 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.uploadedFiles.uploadHandler.subscribe((event: FileUpload) => {
+      console.log(this.selectedDocumentType);
       if (!this.selectedDocumentType) {
         this.appErrorHandler.handleError(ModuleError.DocumentTypeNotSelected);
         this.clearUploadedFiles();
       } else {
         this.file = event.files[0];
+        console.log(this.file);
         const requestPayload: IDocumentsCreateUploadDto = {
           Payload: <IDocumentsCreateUploadDetailsDto>{
             name: event.files[0].name,
@@ -247,18 +249,17 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
         formRequest.append('request', JSON.stringify(requestPayload));
         this.spinner.show();
 
-        this.spotNegotiationService
-          .uploadFile(formRequest)
-          .subscribe(response => {
-            if (typeof response == 'string') {
-              this.spinner.hide();
-              this.toastr.error(response);
-            } else {
-              this.spinner.hide();
-              this.toastr.success('Document saved !');
-              this.getDocumentsList();
-            }
-          });
+        this.spotNegotiationService.uploadFile(formRequest).subscribe(
+          () => {
+            this.spinner.hide();
+            this.toastr.success('Document saved !');
+            this.getDocumentsList();
+          },
+          () => {
+            this.spinner.hide();
+            this.appErrorHandler.handleError(ModuleError.UploadDocumentFailed);
+          }
+        );
 
         this.clearUploadedFiles();
         this.selectedDocumentType = null;
@@ -271,6 +272,7 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
     let selectedNodes = this.gridOptions_data.api.getSelectedNodes();
     let selectedData = selectedNodes.map(node => node.data);
     let selectedRow = selectedData[0];
+    console.log(selectedData);
     if (!selectedRow) {
       this.toastr.error('Please select a row !');
       return;
@@ -340,19 +342,13 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
       suppressMenu: true,
       width: 50,
       checkboxSelection: true,
-      disabled: true,
       resizable: false,
       suppressMovable: true,
       cellRendererFramework: AGGridCellActionsDocumentsComponent,
       cellRendererParams: { type: 'row-remove-icon-with-checkbox' },
       headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
       cellClass:
-        'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
-      cellStyle: params => {
-        return params.data.status == 'Verified'
-          ? { 'pointer-events': 'none', opacity: '0.4' }
-          : '';
-      }
+        'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center'
     },
     {
       headerName: 'Document Name',

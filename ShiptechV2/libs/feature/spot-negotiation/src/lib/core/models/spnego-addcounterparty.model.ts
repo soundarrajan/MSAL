@@ -12,6 +12,7 @@ export interface SpnegoAddCounterpartyModel {
     isDeleted: boolean;
     isSelected: boolean;
     sellerComments: string;
+    isSellerPortalComments:false;
     mail: string;
     senRating: string;
     genPrice: string;

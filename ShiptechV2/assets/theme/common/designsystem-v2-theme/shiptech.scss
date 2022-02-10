@@ -171,8 +171,8 @@
         //border: 1px solid #a5a5a5;
       }
       &.with-search {
-        width: calc(100% - 30px);
-        border-radius: 4px 0 0 4px;
+        width: 152px;
+        border-radius: 4px 0px 0px 4px;
         border: 1px solid #a5a5a5;
         border-right: none;
       }
@@ -267,7 +267,7 @@
 #more-btn-toggle-component {
   #custom-btn-toggle-v2 {
     background: #ffffff;
-    // margin: 0px 20px;
+    margin: 0px 20px;
     .mat-button-toggle-group-appearance-standard {
       border: none;
     }

@@ -535,7 +535,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         this.formValues.paymentDetails = <IInvoiceDetailsItemPaymentDetails>{};
       }
       if (!this.formValues.counterpartyDetails.counterpartyBankAccount) {
-          this.formValues.counterpartyDetails.counterpartyBankAccount = <IInvoiceDetailsItemBaseInfo>null;
+        this.formValues.counterpartyDetails.counterpartyBankAccount = <
+          IInvoiceDetailsItemBaseInfo
+        >{};
       }
       this.setOrderDetailsLables(this.formValues.orderDetails);
       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
@@ -2220,35 +2222,35 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.chipData[1].statusColorCode = this.statusColorCode;
 
     if (ivs) {
-      this.chipData[2].Data = (ivs.invoiceAmountGrandTotal && ivs.invoiceAmountGrandTotal !== null)
+      this.chipData[2].Data = ivs.invoiceAmountGrandTotal
         ? `${this.amountFormatValue(
             ivs.invoiceAmountGrandTotal?.toString()
           )} ${currencyCode}`
         : emptyValue;
-      this.chipData[3].Data = (ivs?.estimatedAmountGrandTotal && ivs?.estimatedAmountGrandTotal !== null)
+      this.chipData[3].Data = ivs?.estimatedAmountGrandTotal
         ? `${this.amountFormatValue(
             ivs?.estimatedAmountGrandTotal.toString()
           )} ${currencyCode}`
         : emptyValue;
-      this.chipData[4].Data = (ivs?.totalDifference && ivs?.totalDifference !== null)
+      this.chipData[4].Data = ivs?.totalDifference
         ? this.amountFormatValue(ivs?.totalDifference?.toString()) +
           ' ' +
           currencyCode
         : emptyValue;
-      this.chipData[5].Data = (ivs?.provisionalInvoiceNo && ivs?.provisionalInvoiceNo !== null)
+      this.chipData[5].Data = ivs?.provisionalInvoiceNo
         ? ivs?.provisionalInvoiceNo?.toString()
         : '';
-      this.chipData[6].Data = (ivs?.provisionalInvoiceAmount  && ivs?.provisionalInvoiceAmount  !== null)
+      this.chipData[6].Data = ivs?.provisionalInvoiceAmount
         ? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()) +
           ' ' +
           currencyCode
         : emptyValue;
-      this.chipData[7].Data = (ivs?.deductions && ivs?.deductions !== null)
+      this.chipData[7].Data = ivs?.deductions
         ? this.amountFormatValue(ivs?.deductions?.toString()) +
           ' ' +
           currencyCode
         : emptyValue;
-      this.chipData[8].Data = (ivs?.netPayable && ivs?.netPayable !== null)
+      this.chipData[8].Data = ivs?.netPayable
         ? this.amountFormatValue(ivs?.netPayable?.toString()) +
           ' ' +
           currencyCode
@@ -2481,17 +2483,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (this.formSubmitted) {
       return;
     }
-    if(!this.formValues.counterpartyDetails.counterpartyBankAccount && this.tenantConfiguration?.invoiceConfiguration
-      ?.fieldVisibility?.isBankAccountNumberMandatory) {
-      this.toastr.error("Bank Account Number is Mandatory");
-      return;
-    }
     this.spinner.show();
     this.formSubmitted = true;
     this.setAdditionalCostLine();
     const valuesForm = _.cloneDeep(this.formValues); //avoid error on ngModel of bankAccount
     if (
-      !this.formValues.counterpartyDetails.counterpartyBankAccount ||
       this.formValues.counterpartyDetails.counterpartyBankAccount.id ==
         undefined ||
       this.formValues.counterpartyDetails.counterpartyBankAccount.id == 0
@@ -2778,7 +2774,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   amountFormatValue(value) {
-    if (typeof value == 'undefined' || value == null) {
+    if (typeof value == 'undefined' || !value) {
       return null;
     }
     let amountPrecision = this.tenantService.amountPrecision;

@@ -630,20 +630,12 @@ export class VesselInfoComponent implements OnInit {
     this.localService.setBunkerPlanState(false);
     event.stopPropagation();
     this.currentBplan.toggleSave();
-  }
-  
-  // A method that will be triggered via event emitter of bunkering-plan.component
-  bunkerPlanSaved() {
     if(this.currentBplan.sodCommentsUpdated) {
       this.currentBplan.sodCommentsUpdated = false;
       this.loadComments();
     }
-    let storeVesselData = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
-    if(storeVesselData.userRole == "Vessel") {
-      this.loadROBArbitrage();
-    }
   }
-
+  
   loadComments() {
     this.child.loadComments();
   }

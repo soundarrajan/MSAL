@@ -112,8 +112,7 @@ export class AuthService {
   }
 
   logout() {
-    window.history.pushState({}, '', window.origin);
-    this.authService.logout();
+    this.authService.logoutRedirect();
   }
 
   destroy() {

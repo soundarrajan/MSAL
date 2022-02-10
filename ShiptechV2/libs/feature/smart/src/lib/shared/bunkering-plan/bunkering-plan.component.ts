@@ -42,7 +42,6 @@ export class BunkeringPlanComponent implements OnInit {
   @Output() voyage_detail = new EventEmitter();
   @Output() loadBplan = new EventEmitter();
   @Output() isCellClicked?:EventEmitter<any> = new EventEmitter();
-  @Output() bunkerPlanSaved = new EventEmitter();
   @Input("isExpanded") isExpanded: boolean;
   @Input('planId') 
   public set planId(v : string) {
@@ -606,7 +605,6 @@ export class BunkeringPlanComponent implements OnInit {
           this.store.dispatch(new GeneratePlanProgressAction(data.payload.gen_in_progress))
           this.latestPlanId = storeVesselData.planId;
           this.loadBunkeringPlanDetails();
-          this.bunkerPlanSaved.emit();
         }
       })
     }

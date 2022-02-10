@@ -181,6 +181,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
             } else {
               this.countDone = true;
               this.qualityCounts = response;
+              this.changeDetectorRef.detectChanges();
             }
           });
         break;
@@ -201,6 +202,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
             } else {
               this.countDone = true;
               this.quantityCounts = response;
+              this.changeDetectorRef.detectChanges();
             }
           });
 
@@ -220,6 +222,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
             } else {
               this.countDone = true;
               this.residueCounts = response;
+              this.changeDetectorRef.detectChanges();
             }
           });
 

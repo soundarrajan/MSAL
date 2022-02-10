@@ -148,9 +148,7 @@
       >
         <mat-label>Price</mat-label>
         <input
-          #productAmount
           [(ngModel)]="formValues.products[selectedTabIndex].price"
-          (blur)="formValues.products[selectedTabIndex].price == '' ? formValues.products[selectedTabIndex].price = productAmount.value : '';"
           [disabled]="formValues.hasInvoicedOrder"
           (keypress)="keyPressNumber($event)"
           matInput

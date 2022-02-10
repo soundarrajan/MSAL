@@ -78,7 +78,8 @@ export class AgGridEmptyFilterOptionDirective implements OnDestroy {
               if (filterApi.ePanelFrom2) filterApi.ePanelFrom2.innerHTML = '';
               if (filterApi.ePanelTo1) filterApi.ePanelTo1.innerHTML = '';
               if (filterApi.ePanelTo2) filterApi.ePanelTo2.innerHTML = '';
-              // filterApi.setParams(filterApi.providedFilterParams);
+
+              filterApi.setParams(filterApi.providedFilterParams);
             });
         }),
         takeUntil(this._destroy$)

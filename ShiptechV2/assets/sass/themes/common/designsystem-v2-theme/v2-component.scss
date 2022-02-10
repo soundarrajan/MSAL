@@ -212,23 +212,18 @@ div.component-viewer-nav-content
 /************************************************* COMPONENTS *************************************************/
 // <!-- Form Field start-->
 #custom-form-field {
-  // margin: 0px 20px;
+  margin: 0px 20px;
   border-radius: 4px;
   &.darkTheme {
     .mat-form-field {
-      height: 45px;
       background: #434f60;
-
-  }
       &.without-search {
-        // width: 181px;
-        width: 100%;
+        width: 181px;
         border-radius: 4px;
         border: 1px solid #f1f1f2;
       }
       &.with-search {
-        // width: 152px;
-        width: 100%;
+        width: 152px;
         border-radius: 4px 0px 0px 4px;
         border: 1px solid #f1f1f2;
         border-right: none;
@@ -310,15 +305,7 @@ div.component-viewer-nav-content
   }
   &.lightTheme {
     .mat-form-field {
-      background: #fff;
-      box-sizing: border-box;
-      height: 45px;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 16px;
-      color: #37414f;
-
+      background: #ffffff;
       &.without-search {
         // width: 181px;
         border-radius: 4px;
@@ -420,7 +407,7 @@ div.component-viewer-nav-content
 // <!-- Button Toggle Start-->
 #custom-btn-toggle-v2 {
   background: #ffffff;
-  // margin: 0px 20px;
+  margin: 0px 20px;
   &.autoWidth {
     .mat-button-toggle {
       width: auto !important;

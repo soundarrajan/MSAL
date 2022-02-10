@@ -1,4 +1,3 @@
-import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { SpotNegotiationService } from '../../../services/spot-negotiation.service';
 import {
   ChangeDetectionStrategy,
@@ -16,8 +15,7 @@ import {
   SetRequestGroupId,
   SetRequests,
   SetTenantConfigurations,
-  SetStaticLists,
-  SetCounterparties
+  SetStaticLists
 } from '../../../store/actions/request-group-actions';
 import {
   SetLocations,
@@ -25,7 +23,7 @@ import {
   SetCounterpartyList,
   SetRequestList,
   SetLocationsRowsOriData,
-  // SetLocationsRowsPriceDetails,
+  SetLocationsRowsPriceDetails,
   SetPhysicalSupplierCounterpartyList
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
@@ -66,8 +64,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     private spotNegotiationService: SpotNegotiationService,
     public format: TenantFormattingService,
     public dialog: MatDialog,
-    private spinner: NgxSpinnerService,
-    private legacyLookupsDatabase: LegacyLookupsDatabase
+    private spinner: NgxSpinnerService
   ) {
     this.entityName = 'Spot negotiation';
   }
@@ -81,9 +78,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.getRequestList();
     this.getTenantConfugurations();
     this.getStaticLists();
-    this.legacyLookupsDatabase.getTableByName('counterparty').then(response => {
-      this.store.dispatch(new SetCounterparties(response));
-    });
   }
 
 

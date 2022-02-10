@@ -529,6 +529,7 @@
       font-weight: normal;
     }
   }
+
   .ag-group-expanded .ag-icon-contracted:empty,
   .ag-icon-expanded {
     // color: white;
@@ -2820,6 +2821,7 @@ ag-grid-angular {
     }
   }
 }
+
 .ag-tooltip,
 .mat-tooltip {
   color: #fff !important;
@@ -3119,6 +3121,7 @@ ag-grid-angular {
     }
   }
 }
+
 .dark-theme {
   .ag-theme-material {
     &.angular-v9 {
@@ -3130,6 +3133,15 @@ ag-grid-angular {
     }
   }
 }
+
+/* Angular-V9 & AG-Grid V23 - END */
+
+.ag-theme-material {
+  .ag-menu {
+    z-index: 1000;
+  }
+}
+
 .flexi-grid {
   .ag-body-viewport {
     max-height: 155px;
@@ -3141,6 +3153,7 @@ ag-grid-angular {
     }
   }
 }
+
 .ag-cell {
   &.small-checkbox {
     .ag-checkbox-input-wrapper {
