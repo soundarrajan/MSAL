@@ -40,7 +40,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
   styleUrls: ['./negotiation-documents.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
+export class NegotiationDocumentsComponent implements OnInit {
   @ViewChild('uploadComponent', { static: false }) uploadedFiles: FileUpload;
 
   public rowData_grid = [];
@@ -215,56 +215,66 @@ export class NegotiationDocumentsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  clearUploadedFiles(): void {
-    this.uploadedFiles.clear();
+  clearUploadedFiles(): void {}
+
+  /**
+   * on file drop handler
+   */
+  onFileDropped(files) {
+    this.upload(files[0]);
   }
 
-  ngAfterViewInit(): void {
-    this.uploadedFiles.uploadHandler.subscribe((event: FileUpload) => {
-      if (!this.selectedDocumentType) {
-        this.appErrorHandler.handleError(ModuleError.DocumentTypeNotSelected);
-        this.clearUploadedFiles();
-      } else {
-        this.file = event.files[0];
-        const requestPayload: IDocumentsCreateUploadDto = {
-          Payload: <IDocumentsCreateUploadDetailsDto>{
-            name: event.files[0].name,
-            documentType: {
-              id: this.selectedDocumentType.id,
-              name: this.selectedDocumentType.name
-            },
-            size: event.files[0].size,
-            fileType: event.files[0].type,
-            referenceNo: parseFloat(this.entityId),
-            transactionType: {
-              id: 2,
-              name: 'Offer'
-            }
+  /**
+   * handle file from browsing
+   */
+  fileBrowseHandler(files) {
+    this.upload(files[0]);
+  }
+
+  upload(event) {
+    if (!this.selectedDocumentType) {
+      this.appErrorHandler.handleError(ModuleError.DocumentTypeNotSelected);
+      this.clearUploadedFiles();
+    } else {
+      this.file = event;
+      const requestPayload: IDocumentsCreateUploadDto = {
+        Payload: <IDocumentsCreateUploadDetailsDto>{
+          name: event.name,
+          documentType: {
+            id: this.selectedDocumentType.id,
+            name: this.selectedDocumentType.name
+          },
+          size: event.size,
+          fileType: event.type,
+          referenceNo: parseFloat(this.entityId),
+          transactionType: {
+            id: 2,
+            name: 'Offer'
           }
-        };
-        const formRequest: FormData = new FormData();
-        formRequest.append('file', event.files[0]);
-        formRequest.append('request', JSON.stringify(requestPayload));
-        this.spinner.show();
+        }
+      };
+      const formRequest: FormData = new FormData();
+      formRequest.append('file', event);
+      formRequest.append('request', JSON.stringify(requestPayload));
+      this.spinner.show();
 
-        this.spotNegotiationService
-          .uploadFile(formRequest)
-          .subscribe(response => {
-            if (typeof response == 'string') {
-              this.spinner.hide();
-              this.toastr.error(response);
-            } else {
-              this.spinner.hide();
-              this.toastr.success('Document saved !');
-              this.getDocumentsList();
-            }
-          });
+      this.spotNegotiationService
+        .uploadFile(formRequest)
+        .subscribe(response => {
+          if (typeof response == 'string') {
+            this.spinner.hide();
+            this.toastr.error(response);
+          } else {
+            this.spinner.hide();
+            this.toastr.success('Document saved !');
+            this.getDocumentsList();
+          }
+        });
 
-        this.clearUploadedFiles();
-        this.selectedDocumentType = null;
-        this.file = null;
-      }
-    });
+      this.clearUploadedFiles();
+      this.selectedDocumentType = null;
+      this.file = null;
+    }
   }
 
   updateIsVerifiedDocument(): void {
