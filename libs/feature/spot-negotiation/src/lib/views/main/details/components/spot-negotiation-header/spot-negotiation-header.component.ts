@@ -38,6 +38,7 @@ import { SearchRequestPopupComponent } from '../spot-negotiation-popups/search-r
 import { SpotnegoSearchCtpyComponent } from '../spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { ConfirmdialogComponent } from '../spot-negotiation-popups/confirmdialog/confirmdialog.component';
 import { cloneDeep } from 'lodash';
+import _ from 'lodash';
 @Component({
   selector: 'app-spot-negotiation-header',
   templateUrl: './spot-negotiation-header.component.html',
@@ -45,6 +46,7 @@ import { cloneDeep } from 'lodash';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
+  expandCommentsSection: boolean = false;
   @ViewChild('headerContainer') container: ElementRef;
   @ViewChild('requestContainer') requestcontainer: ElementRef;
   @ViewChild('inputSearch') inputSearch: ElementRef;
@@ -85,7 +87,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   currentRequestData: any[];
   locationsRowsOriData: any[];
   availableContracts = {};
-  initAvailableContracts : any;
+  initAvailableContracts: any;
   constructor(
     private store: Store,
     private route: ActivatedRoute,
@@ -108,9 +110,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if (this.requestOptions.length > 6) {
           this.displayVessel = true;
         }
-        if (spotNegotiation.RequestList.length > 0) {
+        if (spotNegotiation.requestList.length > 0) {
           this.requestsAndVessels = this.removeDuplicatesRequest(
-            spotNegotiation.RequestList,
+            spotNegotiation.requestList,
             'requestName'
           );
         }
@@ -120,19 +122,21 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if (spotNegotiation.currentRequestSmallInfo) {
           this.locations =
             spotNegotiation.currentRequestSmallInfo.requestLocations;
-            if (
+          if (
             this.counterpartyList.length === 0 &&
             spotNegotiation.counterpartyList
-            ) {
-              this.counterpartyList = spotNegotiation.counterpartyList;
-              this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
-            }
+          ) {
+            this.counterpartyList = spotNegotiation.counterpartyList;
+            this.visibleCounterpartyList = _.cloneDeep(
+              this.counterpartyList.slice(0, 7)
+            );
           }
-          if(!this.initAvailableContracts && this.currentRequestInfo) {
-            this.initAvailableContracts = true;
-            this.getBestContractForCurrentRequest(this.currentRequestInfo.id)
-          }
-        });
+        }
+        if (!this.initAvailableContracts && this.currentRequestInfo) {
+          this.initAvailableContracts = true;
+          this.getBestContractForCurrentRequest(this.currentRequestInfo.id);
+        }
+      });
     }, 100);
   }
 
@@ -140,18 +144,23 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     var canDelinkStemmed = true;
     item.requestLocations.forEach(location => {
       location.requestProducts.forEach(product => {
-        if(!product.isContract && product.status.toLowerCase().includes("stemmed")) {
+        if (
+          !product.isContract &&
+          product.status.toLowerCase().includes('stemmed')
+        ) {
           canDelinkStemmed = false;
         }
       });
     });
-    if(!canDelinkStemmed) {
-      this.toastr.error("Request cannot be delinked as an order has already been created.");
+    if (!canDelinkStemmed) {
+      this.toastr.error(
+        'Request cannot be delinked as an order has already been created.'
+      );
       return;
     }
 
     if (this.requestOptions.length <= 1) {
-      this.toastr.error("You cannot delink the last request in the group");
+      this.toastr.error('You cannot delink the last request in the group');
       return;
     }
     const dialogRef = this.dialog.open(ConfirmdialogComponent, {
@@ -159,28 +168,27 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       maxWidth: '500px',
       panelClass: 'confirm-dialog',
       data: {
-        message: "Are you sure you want de-link the request?",
+        message: 'Are you sure you want de-link the request?'
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if (result) {
         const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
         let payload = {
           groupId: parseInt(RequestGroupId),
-          requestId: item.id,
+          requestId: item.id
         };
-
 
         /* commented out until API is fixed */
         this.spinner.show();
         const response = this._spotNegotiationService.delinkRequest(payload);
         response.subscribe((res: any) => {
           this.spinner.hide();
-          if(!isNaN(res)) {
+          if (!isNaN(res)) {
             this.toastr.success(`Request ${item.id} was succesfully delinked`);
             /* select first request if selected reqeust is delinked */
-            if(this.requestOptions[this.selReqIndex].id == item.id ) {
-              if(this.selReqIndex == 0) {
+            if (this.requestOptions[this.selReqIndex].id == item.id) {
+              if (this.selReqIndex == 0) {
                 this.selectRequest(null, 1, this.requestOptions[1]);
                 this.selReqIndex = 0;
               } else {
@@ -204,11 +212,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
   onCounterpartyCheckboxChange(checkbox: any, element: any): void {
     if (checkbox.checked) {
+      element.selected = true;
       // Add to selected counterparty list
       this.selectedCounterparty.push(element);
     }
 
     if (!checkbox.checked) {
+      element.selected = false;
       // Remove from selected counterparty list
       this.selectedCounterparty = this.selectedCounterparty.filter(
         e => e.id !== element.id
@@ -240,43 +250,43 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       //Looping through all the Request Locations
       this.requestOptions.forEach(request => {
         request.requestLocations.forEach(reqLoc => {
-      // this.requestOptions[0].requestLocations.forEach(reqLoc => {
-        let perLocationCtpys = this.selectedCounterparty.map(
-          val =>
-            <SpnegoAddCounterpartyModel>{
-              requestGroupId: RequestGroupId,
-              requestLocationId: reqLoc.id,
-              locationId: reqLoc.locationId,
-              id: 0,
-              name: '',
-              counterpartytypeId: 0,
-              counterpartyTypeName: val.seller
-                ? 'Seller'
-                : val.supplier
-                ? 'Supplier'
-                : val.broker
-                ? 'Broker'
-                : val.sludge
-                ? 'Sludge'
-                : '',
-              genPrice: '',
-              genRating: '',
-              isDeleted: false,
-              isSelected: true,
-              mail: '',
-              portPrice: '',
-              portRating: '',
-              prefferedProductIds: '',
-              sellerComments: '',
-              isSellerPortalComments:false,
-              sellerCounterpartyId: val.id,
-              sellerCounterpartyName: val.name,
-              senRating: ''
-            }
-        );
-        selectedCounterparties.push(...perLocationCtpys);
+          // this.requestOptions[0].requestLocations.forEach(reqLoc => {
+          let perLocationCtpys = this.selectedCounterparty.map(
+            val =>
+              <SpnegoAddCounterpartyModel>{
+                requestGroupId: RequestGroupId,
+                requestLocationId: reqLoc.id,
+                locationId: reqLoc.locationId,
+                id: 0,
+                name: '',
+                counterpartytypeId: 0,
+                counterpartyTypeName: val.seller
+                  ? 'Seller'
+                  : val.supplier
+                  ? 'Supplier'
+                  : val.broker
+                  ? 'Broker'
+                  : val.sludge
+                  ? 'Sludge'
+                  : '',
+                genPrice: '',
+                genRating: '',
+                isDeleted: false,
+                isSelected: true,
+                mail: '',
+                portPrice: '',
+                portRating: '',
+                prefferedProductIds: '',
+                sellerComments: '',
+                isSellerPortalComments:false,
+                sellerCounterpartyId: val.id,
+                sellerCounterpartyName: val.name,
+                senRating: ''
+              }
+          );
+          selectedCounterparties.push(...perLocationCtpys);
+        });
       });
-    });
 
       return selectedCounterparties;
     } else {
@@ -299,6 +309,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
       if (res.status) {
+        for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
+          this.visibleCounterpartyList[i].selected = false;
+        }
+        this.selectedCounterparty = _.cloneDeep([]);
         this.toastr.success(res.message);
         // Add in Store
         // this.store.dispatch(
@@ -342,7 +356,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     let counterpartyList: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterpartyList;
+      counterpartyList = spotNegotiation.counterparties;
     });
 
     rowsArray.forEach((row, index) => {
@@ -356,7 +370,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         index < priceDetailsArray?.length &&
         row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
+        row.requestOffers = priceDetailsArray[
+          index
+        ].requestOffers?.sort((a, b) =>
+          a.requestProductId > b.requestProductId ? 1 : -1
+        );
         row.requestOffers.forEach(element1 => {
           if (
             element1.requestProductId != undefined &&
@@ -386,7 +404,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
           row.physicalSupplierCounterpartyName = counterpartyList.find(
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
-          ).displayName;
+          )?.displayName;
         }
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
@@ -402,7 +420,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
         // We found something
         if (detailsForCurrentRow.length > 0) {
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
+            (a, b) => (a.requestProductId > b.requestProductId ? 1 : -1)
+          );
           row.requestOffers.forEach(element1 => {
             if (
               element1.requestProductId != undefined &&
@@ -433,7 +453,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             row.physicalSupplierCounterpartyName = counterpartyList.find(
               x =>
                 x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
-            ).displayName;
+            )?.displayName;
           }
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
@@ -522,7 +542,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   selectRequest(event, i, selected) {
-    if(event) {
+    if (event) {
       event.preventDefault();
     }
     this.selReqIndex = i;
@@ -541,10 +561,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     this.getBestContractForCurrentRequest(selected.id);
   }
 
-  getBestContractForCurrentRequest(selectedRequestId) : void {
-    console.log(selectedRequestId);
+  getBestContractForCurrentRequest(selectedRequestId): void {
     let payload = this.currentRequestInfo.id;
-    if(!this.availableContracts[`request_${selectedRequestId}`] ) {
+    if (!this.availableContracts[`request_${selectedRequestId}`]) {
       this.availableContracts[`request_${selectedRequestId}`] = [];
       const response = this._spotNegotiationService.getBestContract(payload);
       response.subscribe((res: any) => {
@@ -557,7 +576,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         }
       });
     } else {
-      this.store.dispatch(new SetAvailableContracts(this.availableContracts[`request_${this.currentRequestInfo.id}`]));
+      this.store.dispatch(
+        new SetAvailableContracts(
+          this.availableContracts[`request_${this.currentRequestInfo.id}`]
+        )
+      );
     }
   }
 
@@ -596,14 +619,16 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   search(userInput: string): void {
     this.expandedSearch = false;
 
-    this.visibleCounterpartyList = this.counterpartyList
-      .filter(e => {
-        if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
-          return true;
-        }
-        return false;
-      })
-      .slice(0, 7);
+    this.visibleCounterpartyList = _.cloneDeep(
+      this.counterpartyList
+        .filter(e => {
+          if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
+            return true;
+          }
+          return false;
+        })
+        .slice(0, 7)
+    );
   }
   searchRequest(userInput: string): void {
     this.expandedSearch = false;
@@ -615,14 +640,21 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         return false;
       })
       .slice(0, 7);
-      if(this.visibleRequestList.length === 0){
-       const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , userInput.toLowerCase(), { Skip: 0, Take: 25 });
-       response.subscribe((res:any)=>{
-         if(res?.payload?.length > 0){
-           this.visibleRequestList = cloneDeep(res.payload);
-         }
-       });
-      }
+    if (this.visibleRequestList.length === 0) {
+      const response = this._spotNegotiationService.getRequestresponse(
+        null,
+        { Filters: [] },
+        { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }] },
+        [],
+        userInput.toLowerCase(),
+        { Skip: 0, Take: 25 }
+      );
+      response.subscribe((res: any) => {
+        if (res?.payload?.length > 0) {
+          this.visibleRequestList = cloneDeep(res.payload);
+        }
+      });
+    }
   }
 
   limitStrLength = (text, max_length) => {
@@ -643,7 +675,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   searchCounterparty(userInput: string): void {
-    if (userInput !== '') {
+    if (userInput.length === 0) {
+      const locationsRowsOriData = this.store.selectSnapshot(
+        (state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].LocationsOriData;
+        }
+      );
+      this.store.dispatch(new SetLocationsRows(locationsRowsOriData));
+    } else {
       let result = this.store
         .selectSnapshot((state: SpotNegotiationStoreModel) => {
           return state['spotNegotiation'].LocationsOriData;
@@ -659,13 +698,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           return false;
         });
       this.store.dispatch(new SetLocationsRows(result));
-    } else {
-      const locationsRowsOriData = this.store.selectSnapshot(
-        (state: SpotNegotiationStoreModel) => {
-          return state['spotNegotiation'].LocationsOriData;
-        }
-      );
-      this.store.dispatch(new SetLocationsRows(locationsRowsOriData));
     }
   }
 
@@ -674,8 +706,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   scrollComments(el: HTMLElement) {
+    this.expandCommentsSection = true;
     el.scrollIntoView();
   }
+
   ngAfterViewInit() {
     setTimeout(() => {
       //this.inputSearch.nativeElement.focus();

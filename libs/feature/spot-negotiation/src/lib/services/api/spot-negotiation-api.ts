@@ -71,7 +71,8 @@ export const SpotNegotiationApiPaths = {
   updateIsVerifiedDocument: `api/masters/documentupload/update`,
   updateNotes: `api/masters/documentupload/notes`,
   updateNegotiationComments: `groups/updateComments`,
-  updateSellerComment:`RFQ/UpdateSellerComments`
+  updateSellerComment:`RFQ/UpdateSellerComments`,
+  copyComments: `groups/copyComments`
 };
 
 @Injectable({
@@ -405,6 +406,22 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   updatePrices(payload: any): Observable<any> {
     return this.http
       .put<any>(`${this._negotiationApiUrl}/Price/updatePrices`, payload)
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  copyPriceDetails(payload: any): Observable<any> {
+    return this.http
+      .put<any>(`${this._negotiationApiUrl}/Price/copyPriceDetails`, payload)
       .pipe(
         map((body: any) => body),
         catchError((body: any) =>
@@ -896,10 +913,21 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   uploadFile(
     request: IDocumentsCreateUploadRequest
   ): Observable<IDocumentsCreateUploadResponse> {
-    return this.http.post<IDocumentsCreateUploadResponse>(
-      `${this._masterApiUrl}/${SpotNegotiationApiPaths.uploadDocument}`,
-      request
-    );
+    return this.http
+      .post<IDocumentsCreateUploadResponse>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.uploadDocument}`,
+        request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
   }
 
   @ObservableException()
@@ -997,6 +1025,19 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
               : body.error.errorMessage
           )
         )
+      );
+  }
+
+  @ObservableException()
+  copyNegotiationComments(request: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.copyComments}`,
+        request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
