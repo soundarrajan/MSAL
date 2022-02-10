@@ -519,7 +519,7 @@ export class SpotNegotiationService extends BaseStoreService
     return this.getRequestList(payload);
   }
 
-  formatRowData(row, product, field, newValue, currentLocation, isPriceCopied) {
+  formatRowData(row, product, field, newValue, currentLocation, isPriceCopied, currencyId) {
     const productDetails = this.getRowProductDetails(row, product.id);
 
     //Change with new value
@@ -548,6 +548,7 @@ export class SpotNegotiationService extends BaseStoreService
         ? 0
         : productDetails.targetDifference;
     productDetails.isOfferPriceCopied = isPriceCopied;
+    productDetails.currencyId = isPriceCopied ? currencyId : productDetails.currencyId;
     // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
 
     const currentLocationAllProductsIds = currentLocation.requestProducts.map(
