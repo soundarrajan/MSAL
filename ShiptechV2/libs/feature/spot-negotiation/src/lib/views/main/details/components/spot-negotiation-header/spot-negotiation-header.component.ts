@@ -674,7 +674,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   searchCounterparty(userInput: string): void {
-    if (userInput !== '') {
+    if (userInput.length === 0) {
+      const locationsRowsOriData = this.store.selectSnapshot(
+        (state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].LocationsOriData;
+        }
+      );
+      this.store.dispatch(new SetLocationsRows(locationsRowsOriData));
+    } else {
       let result = this.store
         .selectSnapshot((state: SpotNegotiationStoreModel) => {
           return state['spotNegotiation'].LocationsOriData;
@@ -690,13 +697,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           return false;
         });
       this.store.dispatch(new SetLocationsRows(result));
-    } else {
-      const locationsRowsOriData = this.store.selectSnapshot(
-        (state: SpotNegotiationStoreModel) => {
-          return state['spotNegotiation'].LocationsOriData;
-        }
-      );
-      this.store.dispatch(new SetLocationsRows(locationsRowsOriData));
     }
   }
 
