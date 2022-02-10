@@ -107,6 +107,7 @@
                   placeholder="Type notes here.."
                   maxlength="1000"
                   (blur)="saveComment('general')"
+                  (keypress)="checkCommentsLimit('general')"
                 ></textarea>
                 <div class="char-left">
                   {{ 1000 - requestInfo?.negoGeneralComments?.length }}
@@ -146,6 +147,7 @@
                   placeholder="Type notes here.."
                   maxlength="1000"
                   (blur)="saveComment('performance')"
+                  (keypress)="checkCommentsLimit('performance')"
                 ></textarea>
                 <div class="char-left">
                   {{ 1000 - requestInfo?.negoPerformanceComments?.length }}
@@ -182,6 +184,7 @@
                   placeholder="Type notes here.."
                   maxlength="1000"
                   (blur)="saveComment('supplier')"
+                  (keypress)="checkCommentsLimit('supplier')"
                 ></textarea>
                 <div class="char-left">
                   {{ 1000 - requestInfo?.negoSupplierComments?.length }}
@@ -221,6 +224,7 @@
                   placeholder="Type notes here.."
                   maxlength="1000"
                   (blur)="saveComment('vesselAndAgent')"
+                  (keypress)="checkCommentsLimit('vesselAndAgent')"
                 ></textarea>
                 <div class="char-left">
                   {{ 1000 - requestInfo?.negoVesselAgentComments?.length }}
@@ -251,7 +255,7 @@
                   <div class="new-comments" style="margin: 0px 14px;">
                     <div style="padding: 15px;">
                       <span class="circle internal"></span
-                      ><span class="label">General</span>
+                      ><span class="label">Internal</span>
                       <span
                         [ngClass]="{
                           selected: requestGeneralCommentsChecked,
@@ -271,8 +275,29 @@
                 </div>
                 <div
                   class="col-md-3 spot-comments-section2"
-                  style="padding: unset !important; border-right: 5px solid #BEBEBE; border-right: 5px solid #364150;"
-                ></div>
+                  style="padding: unset !important;  border-right: 5px solid #BEBEBE;"
+                >
+                  <div class="new-comments" style="margin: 0px 14px;">
+                    <div style="padding: 15px;">
+                      <span class="circle external"></span
+                      ><span class="label">Strategy</span>
+                      <span
+                        [ngClass]="{
+                          selected: requestSupplierCommentsChecked,
+                          'de-selected': !requestSupplierCommentsChecked
+                        }"
+                        (click)="
+                          requestSupplierCommentsChecked = !requestSupplierCommentsChecked
+                        "
+                      ></span>
+                    </div>
+                    <div style="padding: 0px 20px;">
+                      <span class="comments-text">
+                        {{ requestInfo?.strategyComments | htmlDecodeReadonly }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
                 <div
                   class="col-md-3 spot-comments-section2"
                   style="padding: unset !important;  border-right: 5px solid #BEBEBE;"
@@ -280,7 +305,7 @@
                   <div class="new-comments" style="margin: 0px 14px;">
                     <div style="padding: 15px;">
                       <span class="circle external"></span
-                      ><span class="label">Supply</span>
+                      ><span class="label">Supplier</span>
                       <span
                         [ngClass]="{
                           selected: requestSupplierCommentsChecked,
