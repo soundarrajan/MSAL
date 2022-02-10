@@ -31,9 +31,9 @@ export class SpotNegotiationService extends BaseStoreService
   implements OnDestroy {
   private futureSetTabIndex = new Subject<any>();
   QuoteByDate: any;
-  counterpartyTotalCount :any;
-  physicalSupplierTotalCount :any;
-  requestCount : any;
+  counterpartyTotalCount: any;
+  physicalSupplierTotalCount: any;
+  requestCount: any;
 
   constructor(
     protected store: Store,
@@ -171,7 +171,13 @@ export class SpotNegotiationService extends BaseStoreService
   updatePrices(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.updatePrices(payload);
   }
-
+  /**
+   * @param payload = True
+   */
+  @ObservableException()
+  copyPriceDetails(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.copyPriceDetails(payload);
+  }
   /**
    * @param payload = False
    */
@@ -469,12 +475,27 @@ export class SpotNegotiationService extends BaseStoreService
    UpdateSellerComments(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.UpdateSellerComments(payload);
   }
+
+  /**
+   * @param payload
+   */
+  copyNegotiationComments(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.copyNegotiationComments(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }
 
   //for getting counterparty response
-  getResponse(Order: any, PageFilters: any, SortList:any, Filters:any, SearchText :any, Pagination: any){
+  getResponse(
+    Order: any,
+    PageFilters: any,
+    SortList: any,
+    Filters: any,
+    SearchText: any,
+    Pagination: any
+  ) {
     let payload = {
       Order: Order,
       PageFilters: PageFilters,
@@ -484,17 +505,120 @@ export class SpotNegotiationService extends BaseStoreService
       Pagination: Pagination
     };
     return this.getCounterpartyList(payload);
-}
+  }
 
-getRequestresponse(Order: any, PageFilters: any, SortList:any, Filters:any, SearchText :any, Pagination: any){
-  let payload = {
-    Order: Order,
-    PageFilters: PageFilters,
-    SortList: SortList,
-    Filters: Filters,
-    SearchText: SearchText,
-    Pagination: Pagination
-  };
-  return this.getRequestList(payload)
-}
+  getRequestresponse(
+    Order: any,
+    PageFilters: any,
+    SortList: any,
+    Filters: any,
+    SearchText: any,
+    Pagination: any
+  ) {
+    let payload = {
+      Order: Order,
+      PageFilters: PageFilters,
+      SortList: SortList,
+      Filters: Filters,
+      SearchText: SearchText,
+      Pagination: Pagination
+    };
+    return this.getRequestList(payload);
+  }
+
+  formatRowData(row, product, field, newValue, currentLocation, isPriceCopied, currencyId) {
+    const productDetails = this.getRowProductDetails(row, product.id);
+
+    //Change with new value
+    switch (field) {
+      case 'offPrice':
+        productDetails.price = Number(newValue.toString().replace(/,/g, ''));
+        break;
+
+      default:
+        break;
+    }
+
+    // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
+    productDetails.totalPrice =
+      Number(productDetails.price) + productDetails.cost; // Amount = Total Price * Max. Quantity
+    productDetails.amount = productDetails.totalPrice * product.maxQuantity;
+
+    // Target Difference = Total Price - Target Price
+    productDetails.targetDifference =
+      productDetails.totalPrice -
+      (product.requestGroupProducts
+        ? product.requestGroupProducts.targetPrice
+        : 0);
+    productDetails.targetDifference =
+      product.requestGroupProducts.targetPrice == 0
+        ? 0
+        : productDetails.targetDifference;
+    productDetails.isOfferPriceCopied = isPriceCopied;
+    productDetails.currencyId = isPriceCopied ? currencyId : productDetails.currencyId;
+    // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
+
+    const currentLocationAllProductsIds = currentLocation.requestProducts.map(
+      e => e.id
+    );
+
+    let futureRow = this.setRowProductDetails(row, productDetails, product.id);
+
+    let calcTotalOffer = 0;
+    currentLocationAllProductsIds.map(id => {
+      calcTotalOffer += Number(this.getRowProductDetails(futureRow, id).amount);
+    });
+    futureRow.totalOffer = calcTotalOffer;
+
+    return futureRow;
+  }
+
+  getRowProductDetails(row, productId) {
+    let futureRow = JSON.parse(JSON.stringify(row));
+
+    const emptyPriceDetails = {
+      amount: null,
+      contactCounterpartyId: null,
+      currencyId: 0,
+      id: null,
+      offerId: null,
+      price: null,
+      priceQuantityUomId: null,
+      quotedProductId: null,
+      requestProductId: productId,
+      targetDifference: null,
+      totalPrice: null
+    };
+
+    if (!futureRow.requestOffers) {
+      return emptyPriceDetails;
+    }
+
+    const priceDetails = futureRow.requestOffers.find(
+      item => item.requestProductId === productId
+    );
+
+    if (priceDetails) {
+      return priceDetails;
+    }
+
+    return emptyPriceDetails;
+  }
+
+  setRowProductDetails(row, details, productId) {
+    // returns a row;
+    let futureRow = JSON.parse(JSON.stringify(row));
+
+    if (!futureRow.requestOffers) {
+      return futureRow;
+    }
+
+    for (let i = 0; i < futureRow.requestOffers.length; i++) {
+      if (futureRow.requestOffers[i].requestProductId == productId) {
+        futureRow.requestOffers[i] = details;
+        break;
+      }
+    }
+    return futureRow;
+  }
 }
