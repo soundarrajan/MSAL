@@ -70,7 +70,8 @@ export const SpotNegotiationApiPaths = {
   downloadDocument: `api/masters/documentupload/download`,
   updateIsVerifiedDocument: `api/masters/documentupload/update`,
   updateNotes: `api/masters/documentupload/notes`,
-  updateNegotiationComments: `groups/updateComments`
+  updateNegotiationComments: `groups/updateComments`,
+  updateSellerComment:`RFQ/UpdateSellerComments`
 };
 
 @Injectable({
@@ -975,6 +976,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
             body.error.ErrorMessage && body.error.Reference
               ? body.error.ErrorMessage + ' ' + body.error.Reference
               : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+  
+  @ObservableException()
+  UpdateSellerComments(payload: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updateSellerComment}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
           )
         )
       );
