@@ -41,8 +41,6 @@ import { MatMenuTrigger } from '@angular/material/menu';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NegotiationDocumentsComponent implements OnInit {
-  @ViewChild('uploadComponent', { static: false }) uploadedFiles: FileUpload;
-
   public rowData_grid = [];
   public gridOptions_data: GridOptions;
   documentTypeList: any[];
