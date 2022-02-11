@@ -283,6 +283,7 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
           [matMenuTriggerFor]="priceMenupopup"
           #pricePopupTrigger="matMenuTrigger"
           (click)="pricePopupTrigger.closeMenu()"
+          [ngClass] = "{'hasNoQuote' : params.data.requestOffers[params.index].hasNoQuote}"
           (contextmenu)="
             $event.preventDefault();
             $event.stopPropagation();
@@ -351,7 +352,8 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
             [matTooltip]="priceFormatValue(params.value)"
             [disabled]="
               params.product.status === 'Stemmed' ||
-              params.product.status === 'Confirmed'
+              params.product.status === 'Confirmed' ||
+              params.data.requestOffers[params.index].hasNoQuote
             "
           />
 
@@ -1352,6 +1354,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return false;
   }
   noQuoteAction(params) {
+    if(!params.data.requestOffers) {
+      this.toastr.error("Offer Price cannot be marked as 'No Quote' as RFQ has neither been skipped or sent.");
+      return;
+    }
     let noQuotePayload = {
       "requestOfferIds": params.data.requestOffers.map(e => e.id),
       "noQuote": !params.data.requestOffers[0].hasNoQuote
@@ -1359,6 +1365,19 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let response = this._spotNegotiationService.switchReqOffBasedOnQuote(noQuotePayload);
     response.subscribe((res: any) => {
       console.log(res);
+      if(res) {
+        
+        let updatedRow = _.cloneDeep(params.data);
+        updatedRow.requestOffers.forEach(element => {
+          element.hasNoQuote = !params.data.requestOffers[0].hasNoQuote;
+        });
+        this.store.dispatch(new EditLocationRow(updatedRow));
+        params.node.setData(updatedRow);     
+
+        let successMessage = params.data.requestOffers[0].hasNoQuote ? "Selected Offer Price has been enabled." : "Selected Offers have been marked as 'No Quote' successfully.";
+        this.toastr.success(successMessage);
+
+      }
     })
     console.log(noQuotePayload);
   }

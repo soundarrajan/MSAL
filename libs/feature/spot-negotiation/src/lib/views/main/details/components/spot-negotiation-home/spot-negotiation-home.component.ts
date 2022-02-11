@@ -26,6 +26,7 @@ import { find, takeUntil } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -46,7 +47,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   @ViewChild(SpotnegoemaillogComponent)
   spotEmailComp: SpotnegoemaillogComponent;
 
-  selectedSellerList: any[];
+  selectedSellerList = [];
   selectedRequestList: any = [];
   currentRequestInfo: any;
   tenantConfiguration: any;
@@ -418,6 +419,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   FilterselectedRowForRFQ() {
     this.store.subscribe(({ spotNegotiation }) => {
+      this.selectedSellerList = [];
       spotNegotiation.requests.forEach(req => {
         req.requestLocations.forEach(element => {
           spotNegotiation.locationsRows.forEach(element1 => {
@@ -942,6 +944,53 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       });
     }
+  }
+
+  noQuoteAction() {
+    var Selectedfinaldata = this.FilterselectedRowForRFQ();
+    console.log(Selectedfinaldata);
+    console.log(this.selectedSellerList);
+    var requestOfferIds = [];
+    this.selectedSellerList.forEach((e) => {
+      requestOfferIds.push([...e.RequestOffers.map(e => e)]);
+    })
+    requestOfferIds = requestOfferIds.reduce((acc, val) => acc.concat(val), []); // flatten array
+    console.log(requestOfferIds);  
+    if(requestOfferIds.length == 0) {
+      this.toaster.error("Offer Price cannot be marked as 'No Quote' as RFQ has neither been skipped or sent.");
+      return;
+    }
+    let noQuotePayload = {
+      "requestOfferIds": requestOfferIds.map(e => e.id),
+      "noQuote": !requestOfferIds[0].hasNoQuote
+    };
+    let response = this.spotNegotiationService.switchReqOffBasedOnQuote(noQuotePayload);
+    response.subscribe((res: any) => {
+      console.log(res);
+      if(res) {
+        
+        let locationsRows = this.store.selectSnapshot<any>((state: any) => {
+          return state.spotNegotiation.locationsRows;
+        });
+        let changedRowsOffers = requestOfferIds.map(e => e.id)
+        console.log(locationsRows);
+        let updatedRows = _.cloneDeep(locationsRows);
+        updatedRows.forEach(e => {
+          e.requestOffers.forEach(requestOffer => {
+            if(changedRowsOffers.includes(requestOffer.id)) {
+              requestOffer.hasNoQuote = !requestOfferIds[0].hasNoQuote;
+            }
+          });
+        })
+        this.store.dispatch(new SetLocationsRows(updatedRows));
+        // params.node.setData(updatedRows);     
+
+        let successMessage = requestOfferIds[0].hasNoQuote ? "Selected Offer Price has been enabled." : "Selected Offers have been marked as 'No Quote' successfully.";
+        this.toaster.success(successMessage);
+
+      }
+    })
+    console.log(noQuotePayload);    
   }
 
   FilterselectedRowForCurrentRequest() {
