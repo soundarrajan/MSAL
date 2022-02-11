@@ -1403,8 +1403,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             ) as AdditionalCostViewModel[];
             for (let i = 0; i < offerAdditionalCostList.length; i++) {
               if (offerAdditionalCostList[i].currencyId != currencyId) {
-                console.log(exchangeRateValue);
-                console.log(offerAdditionalCostList[i]);
                 offerAdditionalCostList[i].currencyId = currencyId;
                 offerAdditionalCostList[i].extraAmount =
                   offerAdditionalCostList[i].extraAmount / exchangeRateValue;
@@ -1416,14 +1414,19 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             }
             this.saveAdditionalCosts(
               offerAdditionalCostList,
-              response.locationAdditionalCosts
+              response.locationAdditionalCosts,
+              sellerOffers
             );
           }
         });
     }
   }
 
-  saveAdditionalCosts(offerAdditionalCostList, locationAdditionalCostsList) {
+  saveAdditionalCosts(
+    offerAdditionalCostList,
+    locationAdditionalCostsList,
+    sellerOffers
+  ) {
     let payload = {
       additionalCosts: offerAdditionalCostList.concat(
         locationAdditionalCostsList
@@ -1433,11 +1436,29 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       .saveOfferAdditionalCosts(payload)
       .subscribe((res: any) => {
         if (res.status) {
-          this.spinner.hide();
+          this.getSellerLine(sellerOffers);
         } else {
           this.spinner.hide();
           this.toastr.error('Please try again later.');
         }
+      });
+  }
+
+  getSellerLine(sellerOffers) {
+    const groupId = parseFloat(this.route.snapshot.params.spotNegotiationId);
+    const requestLocationSellerId = sellerOffers.id;
+    this._spotNegotiationService
+      .getPriceDetailsById(groupId, requestLocationSellerId)
+      .subscribe((priceDetailsRes: any) => {
+        this.spinner.hide();
+        let updatedRow = { ...this.params.data };
+        updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
+        updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
+        updatedRow.requestOffers =
+          priceDetailsRes.sellerOffers[0].requestOffers;
+        // Update the store
+        this.store.dispatch(new EditLocationRow(updatedRow));
+        this.params.node.setData(updatedRow);
       });
   }
 
