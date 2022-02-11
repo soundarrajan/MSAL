@@ -59,3 +59,9 @@ export class SetTenantConfigurations {
 
   constructor(public payload: any) {}
 }
+
+export class SetCounterparties {
+  static readonly type = '[Counterparty Lookup Data List] Set';
+
+  constructor(public payload: any) {}
+}

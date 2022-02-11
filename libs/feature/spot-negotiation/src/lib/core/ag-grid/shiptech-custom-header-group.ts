@@ -549,8 +549,8 @@ export class ShiptechCustomHeaderGroup {
       let min = Math.min.apply(null, prices);
       console.log(currentCellContracts);
       console.log(min);
-      if (min && min != 'Infinity') {
-        return `$ ${this.priceFormatValue(min)}`;
+      if (min !== null && min != 'Infinity') {
+        return `$ ${this.priceFormatValue(min, "benchmark")}`;
       }
     }
     return '--';
@@ -594,7 +594,6 @@ export class ShiptechCustomHeaderGroup {
             portRating: '',
             prefferedProductIds: '',
             sellerComments: '',
-            isSellerPortalComments:false,
             sellerCounterpartyId: val.id,
             sellerCounterpartyName: val.name,
             senRating: ''
@@ -882,7 +881,7 @@ export class ShiptechCustomHeaderGroup {
     let counterpartyList: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterpartyList;
+      counterpartyList = spotNegotiation.counterparties;
     });
 
     rowsArray.forEach((row, index) => {

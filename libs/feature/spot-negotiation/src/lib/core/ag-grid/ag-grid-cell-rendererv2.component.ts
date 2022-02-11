@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { SpotnegoAdditionalcostComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-additionalcost/spotnego-additionalcost.component';
 import { SellerratingpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/sellerratingpopup/sellerratingpopup.component';
 import { EmailPreviewPopupComponent } from '../../views/main/details/components/spot-negotiation-popups/email-preview-popup/email-preview-popup.component';
@@ -24,17 +24,11 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
 import _, { cloneDeep } from 'lodash';
 import {
   EditLocationRow,
-  SetLocations,
   SetLocationsRows,
-  SetCounterpartyList,
-  SetLocationsRowsPriceDetails,
   EditCounterpartyList
 } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
-import { RemoveCounterpartyComponent } from '../../views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 @Component({
@@ -177,13 +171,32 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
             matTooltip=""
             >n</span
           >
-          
           <span
-          [ngClass]="{ 'info-comment': this.params.data.isSellerPortalComments, 'info-comment-inactive': !this.params.data.isSellerPortalComments }"
+            class="info-comment"
             matTooltip="View supplier comments"
-            (click)="suppliercommentspopup(params.data)"
-            *ngIf="this.params.data.sellerComments.length>0"
+            matTooltipClass="lightTooltip"
+            (click)="suppliercommentspopup()"
+            *ngIf="params.data.commentIcon == 'Yes'"
+          ></span>
+          <span
+            class="info-comment-inactive"
+            (click)="suppliercommentspopup()"
+            *ngIf="params.data.commentIcon == 'No'"
             matTooltipClass=""
+            matTooltip=""
+          ></span>
+          <span
+            class=""
+            *ngIf="params.data.commentIcon == 'None'"
+            matTooltipClass=""
+            matTooltip=""
+          ></span>
+
+          <span
+            class=""
+            *ngIf="params.data.commentIcon == ''"
+            matTooltipClass=""
+            matTooltip=""
           ></span>
         </span>
       </div>
@@ -197,13 +210,10 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
         <span><div class="id-icon"></div></span>
         <span class="fs-12">Supplier Contact</span>
       </div>
-      <div class="p-tb-5" 
-      style="display:flex;align-items:center;"
-      (click)="suppliercommentspopup(params.data)">
+      <!-- <div class="p-tb-5" style="display:flex;align-items:center;">
       <span><div class="blue-comments-icon"></div></span>
       <span class="fs-12">Supplier Comments</span>
-
-    </div>
+    </div> -->
 
       <!-- <div class="p-tb-5" style="display:flex;align-items:center;">
       <span><div class="quote-icon"></div></span>
@@ -280,6 +290,10 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
             pricePopupTrigger.openMenu()
           "
         >
+          <span
+            class="duplicate-icon"
+            *ngIf="params.data.requestOffers[params.index]?.isOfferPriceCopied"
+          ></span>
           <div
             id="custom-form-field"
             [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
@@ -445,7 +459,6 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
                 placeholder="Search and select counterparty"
                 class="search-product-input"
                 (input)="search($event.target.value, params)"
-
               />
             </div>
             <div class="col-md-2">
@@ -661,7 +674,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   currentRequestSmallInfo: any;
   searchValue: string;
   paramsDataClone: any;
-  resetPopup :any
+  resetPopup: any;
   generalTenantSettings: any;
   baseUomId: any;
   constructor(
@@ -679,18 +692,15 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   ) {
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.baseUomId = this.generalTenantSettings.tenantFormats.currency.id;
-    console.log(this.generalTenantSettings);
   }
 
   ngOnInit() {
     let requestOffers = this.params.data.requestOffers;
+
     this.myFormGroup = new FormGroup({
       currency: new FormControl('')
     });
     this.paramsDataClone = _.cloneDeep(this.params.data);
-    if (this.params.colDef.headerName == 'Offer price') {
-      console.log(this.params);
-    }
     if (this.paramsDataClone.requestOffers) {
       this.paramsDataClone.currency = this.paramsDataClone.requestOffers[0].currencyId;
       this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
@@ -726,8 +736,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
   setValuefun(params) {
     this.searchValue = '';
-     this.physicalSupplierList = this.store.selectSnapshot<any>((state: any) => {
-        return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 7);
+    this.physicalSupplierList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 7);
     });
     let SelectedCounterpartyList = cloneDeep(this.physicalSupplierList);
 
@@ -786,7 +796,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.params = params;
   }
 
- search(userInput: string, params: any): void {
+  search(userInput: string, params: any): void {
     let selectedCounterpartyList = this.physicalSupplierList
       .filter(e => {
         if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
@@ -795,29 +805,33 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         return false;
       })
       .slice(0, 7);
-    if(selectedCounterpartyList.length === 0){
-      const response = this._spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], userInput.toLowerCase(), { Skip: 0 , Take: 25 } )
-      response.subscribe((res:any)=>{
-          if(res?.payload?.length >0){
-             let SelectedCounterpartyList1 = cloneDeep(res.payload);
-             SelectedCounterpartyList1.forEach(element => {
-              if (
-                params?.data?.physicalSupplierCounterpartyId != null &&
-                element.id == params?.data?.physicalSupplierCounterpartyId
-              ) {
-                element.isSelected = true;
-              } else {
-                element.isSelected = false;
-              }
-            });
-            this.visibleCounterpartyList = SelectedCounterpartyList1.slice(0,7);
-            this.changeDetector.detectChanges();
-          }
-
+    if (selectedCounterpartyList.length === 0) {
+      const response = this._spotNegotiationService.getResponse(
+        null,
+        { Filters: [] },
+        { SortList: [] },
+        [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
+        userInput.toLowerCase(),
+        { Skip: 0, Take: 25 }
+      );
+      response.subscribe((res: any) => {
+        if (res?.payload?.length > 0) {
+          let SelectedCounterpartyList1 = cloneDeep(res.payload);
+          SelectedCounterpartyList1.forEach(element => {
+            if (
+              params?.data?.physicalSupplierCounterpartyId != null &&
+              element.id == params?.data?.physicalSupplierCounterpartyId
+            ) {
+              element.isSelected = true;
+            } else {
+              element.isSelected = false;
+            }
+          });
+          this.visibleCounterpartyList = SelectedCounterpartyList1.slice(0, 7);
+          this.changeDetector.detectChanges();
+        }
       });
-    }
-    else{
-
+    } else {
       let SelectedCounterpartyList1 = cloneDeep(selectedCounterpartyList);
       if (SelectedCounterpartyList1?.length > 0) {
         SelectedCounterpartyList1.forEach(element => {
@@ -903,8 +917,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       let requestLocation = this.currentRequestSmallInfo?.requestLocations[
         findRequestLocationIndex
       ];
-      console.log('CurrentLocation');
-      console.log(requestLocation);
       const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
         width: '1170px',
         height: '450px',
@@ -920,8 +932,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           this.route.snapshot.params.spotNegotiationId
         );
         const requestLocationSellerId = this.params.data.id;
-        console.log(groupId);
-        console.log(requestLocationSellerId);
         this._spotNegotiationService
           .getPriceDetailsById(groupId, requestLocationSellerId)
           .subscribe((priceDetailsRes: any) => {
@@ -930,7 +940,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
             updatedRow.requestOffers =
               priceDetailsRes.sellerOffers[0].requestOffers;
-            console.log(updatedRow);
             // Update the store
             this.store.dispatch(new EditLocationRow(updatedRow));
             this.params.node.setData(updatedRow);
@@ -1030,13 +1039,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
   }
-  suppliercommentspopup(params) {
+  suppliercommentspopup() {
     const dialogRef = this.dialog.open(SupplierCommentsPopupComponent, {
       width: '672px',
-      minHeight: '280px',
-      panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
-      data:params,
-      disableClose: true
+      minHeight: '540px',
+      panelClass: ['additional-cost-popup', 'supplier-contact-popup']
     });
 
     dialogRef.afterClosed().subscribe(result => {});
