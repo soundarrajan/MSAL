@@ -105,7 +105,6 @@ export class SpotNegotiationNewCommentsComponent
         );
 
         this.checkEditableFields();
-
         this.uncheckedComments();
       }
     });
@@ -244,6 +243,7 @@ export class SpotNegotiationNewCommentsComponent
           this.store.dispatch(new SetCurrentRequestSmallInfo(this.requestInfo));
           let currentRequest = _.cloneDeep([this.requestInfo]);
           this.store.dispatch(new UpdateSpecificRequests(currentRequest));
+          this.checkEditableFields();
           this.toastr.success('Comments saved successfully!');
         } else {
           this.toastr.error('An error has occurred!');
@@ -364,7 +364,7 @@ export class SpotNegotiationNewCommentsComponent
         console.log(response);
         if (response.status) {
           let newSelectedRequests = this.copyComments(selectedRequests);
-          // this.store.dispatch(new UpdateSpecificRequests(newSelectedRequests));
+          this.store.dispatch(new UpdateSpecificRequests(newSelectedRequests));
           this.toastr.success('Comment copied successfully!');
         } else {
           this.toastr.error('An error has occurred!');
@@ -380,5 +380,30 @@ export class SpotNegotiationNewCommentsComponent
     this.requestGeneralCommentsChecked = false;
     this.requestSupplierCommentsChecked = false;
     this.requestVesselAgentCommentsChecked = false;
+  }
+
+  checkCommentsLimit(type) {
+    console.log(type);
+    if (type === 'general') {
+      if (this.requestInfo.negoGeneralComments.length === 1000) {
+        this.toastr.warning('The character limit is 1000!');
+        return;
+      }
+    } else if (type == 'performance') {
+      if (this.requestInfo.negoPerformanceComments.length === 1000) {
+        this.toastr.warning('The character limit is 1000!');
+        return;
+      }
+    } else if (type == 'supplier') {
+      if (this.requestInfo.negoSupplierComments.length === 1000) {
+        this.toastr.warning('The character limit is 1000!');
+        return;
+      }
+    } else if (type == 'vesselAndAgent') {
+      if (this.requestInfo.negoVesselAgentComments.length === 1000) {
+        this.toastr.warning('The character limit is 1000!');
+        return;
+      }
+    }
   }
 }
