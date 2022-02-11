@@ -56,25 +56,14 @@
                       </mat-option>
                     </mat-autocomplete>
                   </mat-form-field>
-                  <div
-                    class="custom-form-field lookup-negotiation-container d-flex"
-                    [ngClass]="{ darkTheme: false, lightTheme: true }"
+                  <button
+                    [disabled]="false"
+                    [ngClass]="{ 'search-icon-disabled': false }"
+                    class="search-icon search-icon-bg"
                     [matMenuTriggerFor]="documentTypeMenu"
-                    (click)="resetDocumentData()"
                   >
-                    <mat-form-field
-                      class="with-search search-icon search-icon-bg search-icon-document-tab"
-                    >
-                      <input
-                        class="free-text-field"
-                        type="text"
-                        matInput
-                        [disabled]="true"
-                        aria-label="lookup"
-                      />
-                      <div class="img img-document-tab"></div>
-                    </mat-form-field>
-                  </div>
+                    <div class="img"></div>
+                  </button>
                   <mat-menu
                     #documentTypeMenu="matMenu"
                     class="document-type-modal"
