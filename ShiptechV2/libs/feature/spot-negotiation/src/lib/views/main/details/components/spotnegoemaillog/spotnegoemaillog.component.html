@@ -10,6 +10,7 @@
       class="ag-theme-material ag-grid-v2 angular-v9 spot-nego-emaillog "
       [rowData]="rowData_grid"
       (rowClicked)="onrowClicked($event)"
+      [enableBrowserTooltips]="true"
       [pagination]="true"
       [paginationPageSize]="25"
       (gridReady)="getEmailLogs()"

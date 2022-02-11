@@ -5,8 +5,8 @@ import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
-  SetLocationsRows,
-  SetLocationsRowsPriceDetails
+  SetLocationsRows, UpdateRequest,
+  // SetLocationsRowsPriceDetails
 } from '../../../../../../store/actions/ag-grid-row.action';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import _ from 'lodash';
@@ -43,6 +43,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   content: any;
   readonly: boolean = false;
   previewTemplate: any = [];
+  requestOptions: any;
   //rfqTemplate: any;
   items: Items[];
   public Editor = ClassicEditor;
@@ -96,6 +97,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.entityId = spotNegotiation.groupOfRequestsId;
+      this.requestOptions = spotNegotiation.requests;
     });
     if (this.selected) {
       this.getPreviewTemplate();
@@ -338,6 +340,8 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.previewTemplate.content = this.content;
     this.previewTemplate.From = this.from;
     this.previewTemplate.AttachmentsList = this.filesList;
+    let rfqIds = selectedSellers.map(x => x.RfqId);
+    let requestProductIds = selectedSellers.map(x => x.RequestProductIds);
 
     var saveAndSendRfqAPIPayload = {
       SelectedSellers: selectedSellers,
@@ -388,6 +392,12 @@ export class EmailPreviewPopupComponent implements OnInit {
         );
         //window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
       }
+      var futureLocationsRows;
+      const stelocationsRows = this.store.selectSnapshot<any>(
+        (state: any) => {
+          return state.spotNegotiation.locationsRows;
+        }
+      );
 
       if (res['sellerOffers']) {
         let locationsRows;
@@ -412,13 +422,43 @@ export class EmailPreviewPopupComponent implements OnInit {
         //   new SetLocationsRowsPriceDetails(res['sellerOffers'])
         // );
 
-        const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+        futureLocationsRows = this.getLocationRowsWithPriceDetails(
           locationsRows,
           res['sellerOffers']
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
 
         this.changeDetector.detectChanges();
+      }
+
+      if(this.previewTemplate.comment.emailTemplate.id == 10){
+        this.requestOptions = this.requestOptions.map(e => {
+          let requestLocations = e.requestLocations.map(reqLoc => {
+            let requestProducts = this.previewTemplate.comment.emailTemplate.id == 10 ? (reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) &&
+            (reqPro.status.toLowerCase() == 'validated' || reqPro.status.toLowerCase() == 'reopen') ? { ...reqPro, status: 'Inquired' } : reqPro)):
+            (reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) ? { ...reqPro, status: 'ReOpen' } : reqPro))
+  
+            return { ...reqLoc, requestProducts }
+          });
+          return { ...e, requestLocations }
+        });
+        this.store.dispatch(new UpdateRequest(this.requestOptions));
+      }
+      else if(this.previewTemplate.comment.emailTemplate.id == 12){
+        requestProductIds = stelocationsRows.filter(r => r.requestOffers && r.requestOffers.find(ro => (rfqIds.includes(ro.rfqId) && !ro.isRfqskipped))).map(x => x.requestOffers.filter(r => !r.isRfqskipped).map(r =>r.requestProductId));
+        this.requestOptions = this.requestOptions.map(e => {
+          let requestLocations = e.requestLocations.map(reqLoc => {
+            let requestProducts = null;
+            if (futureLocationsRows.filter(lr => lr.requestLocationId == reqLoc.id && lr.requestOffers).length == 0 || futureLocationsRows.filter(lr => lr.requestLocationId == reqLoc.id && lr.requestOffers?.find(x => !x.isRfqskipped)).length == 0){
+            requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) ? { ...reqPro, status: 'ReOpen' } : reqPro)
+            }
+
+            return requestProducts ? { ...reqLoc, requestProducts} : reqLoc;
+          
+        });
+        return requestLocations?{ ...e,  requestLocations} : e;          
+        });
+        this.store.dispatch(new UpdateRequest(this.requestOptions));
       }
     });
     //}
@@ -430,7 +470,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       requestlist= spotNegotiation.requests;
       currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterpartyList;
+      counterpartyList = spotNegotiation.counterparties;
     });
 
     rowsArray.forEach((row, index) => {
@@ -457,12 +497,11 @@ export class EmailPreviewPopupComponent implements OnInit {
           a.requestProductId > b.requestProductId ? 1 : -1
         );
         //row.isSelected = priceDetailsArray[index].isSelected;
-        row.physicalSupplierCounterpartyId =
-          priceDetailsArray[index].physicalSupplierCounterpartyId;
+        row.physicalSupplierCounterpartyId = priceDetailsArray[index].physicalSupplierCounterpartyId;
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
           row.physicalSupplierCounterpartyName = counterpartyList.find(
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
-          ).displayName;
+          )?.displayName;
         }
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
@@ -487,7 +526,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
           row.physicalSupplierCounterpartyName = counterpartyList.find(
             x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
-          ).displayName;
+          )?.displayName;
         }
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
@@ -581,7 +620,6 @@ export class EmailPreviewPopupComponent implements OnInit {
           this.spinner.hide();
           this.toaster.error(response);
         } else {
-          console.log(response);
           for (let i = 0; i < response.length; i++) {
             response[i].isIncludedInMail = true;
           }
@@ -595,13 +633,11 @@ export class EmailPreviewPopupComponent implements OnInit {
     let filterDocumentType = this.documentsList.filter(documentType =>
       documentType.name.toLowerCase().includes(value.trim().toLowerCase())
     );
-    console.log(filterDocumentType);
     this.documentListForSearch = [...filterDocumentType];
   }
 
   addFilesList($event: MatRadioChange) {
     if ($event.value) {
-      console.log($event.value);
       let selectedDocument = $event.value;
       let isInList = _.find(this.filesList, v => {
         return v.id == selectedDocument.id;
@@ -622,7 +658,6 @@ export class EmailPreviewPopupComponent implements OnInit {
             i++;
           }
         this.filesList.push(selectedDocument);
-        console.log(this.filesList);
       }
     }
   }

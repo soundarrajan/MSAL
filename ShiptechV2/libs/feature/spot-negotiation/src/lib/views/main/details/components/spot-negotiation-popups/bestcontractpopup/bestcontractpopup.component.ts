@@ -23,7 +23,6 @@ export class BestcontractpopupComponent implements OnInit {
      this.tenantService.quantityPrecision +
      '-' +
      this.tenantService.quantityPrecision;
-  
   constructor(public dialogRef: MatDialogRef<BestcontractpopupComponent>
     , private spinner: NgxSpinnerService
     , private toastr: ToastrService
@@ -35,13 +34,13 @@ export class BestcontractpopupComponent implements OnInit {
     , @Inject(DecimalPipe) private _decimalPipe
     , private spotNegotiationService: SpotNegotiationService
     , private legacyLookupsDatabase: LegacyLookupsDatabase,) {
-      
+
     }
-    
+
     ngOnInit() {
       this.getBestContract();
     }
-    
+
   roundDown(value, pricePrecision) {
     const intvalue = parseFloat(value);
     const reg = new RegExp('^-?\\d+(?:\\.\\d{0,' + pricePrecision + '})?', 'g');
@@ -54,10 +53,6 @@ export class BestcontractpopupComponent implements OnInit {
   priceFormatValue(value, type?: any) {
     if (typeof value == 'undefined' || value == null) {
       return null;
-    }
-
-    if (value == 0) {
-      return '--';
     }
 
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -84,7 +79,7 @@ export class BestcontractpopupComponent implements OnInit {
       return plainNumber;
     }
   }
-  
+
   quantityFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
       return null;
@@ -104,17 +99,14 @@ export class BestcontractpopupComponent implements OnInit {
   }
 
     getBestContract() {
-      console.log(this.data);
       this.bestContracts = this.data.data;
-      this.data.info.locationName = this.data.data[0].location.name;
-      // console.log(this.data);
+      this.data.info.locationName = this.data.data[0].requestProductLocationName;
       // let payload = this.currentRequestInfo.id;
     }
-    
+
     closeDialog() {
       this.dialogRef.close();
     }
-    
+
   }
-  
-  
+

@@ -156,8 +156,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                   this.formatAdditionalCostList(
                     this.locationAdditionalCostsList
                   );
-                  console.log(this.offerAdditionalCostList);
-                  console.log(this.locationAdditionalCostsList);
                   this.recalculatePercentAdditionalCosts(
                     this.locationAdditionalCostsList,
                     true
@@ -265,7 +263,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       this.applicableForItems = _.cloneDeep(
         [allElement].concat(applicableForItemsArray)
       );
-      console.log(this.applicableForItems);
     } else {
       this.applicableForItems = _.cloneDeep(applicableForItemsArray);
     }
@@ -292,12 +289,20 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     selectedIndex: number
   ) {
     let cost = this.offerAdditionalCostList[selectedIndex];
-    cost.requestProductId =
-      selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
-    cost.isAllProductsCost = cost.requestProductId ? false : true;
-    cost.isLocationBased = false;
-
+    cost.requestProductId = selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
     cost.requestOfferIds = this.getRequestOfferIds(selectedApplicableForId);
+    cost.isLocationBased = false;
+    if(cost.requestProductId){
+      cost.isAllProductsCost = false;
+      cost.offerId = null;
+      cost.requestOfferId = parseInt(cost.requestOfferIds);
+    }
+    else{
+      cost.isAllProductsCost = true;
+      cost.offerId = this.offerId;
+      cost.requestOfferId = null;
+    }
+
     // cost.requestProductIds = this.getRequestProductIds(selectedApplicableForId);
     cost.currencyId = this.getCurrencyId(selectedApplicableForId);
 
@@ -401,7 +406,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
    */
   additionalCostNameChanged(additionalCost, skipDefault, skipDefaultPriceUom) {
     this.enableSave = true;
-    console.log(additionalCost);
     if (!skipDefault) {
       additionalCost.costTypeId = this.getAdditionalCostDefaultCostType(
         additionalCost
@@ -501,7 +505,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           if (typeof result == 'string') {
             this.toastr.error(result);
           } else {
-            console.log(result);
             additionalCost.prodConv[i] = _.cloneDeep(result);
             if (
               additionalCost.priceUomId &&
@@ -647,8 +650,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
             }
           }
         }
-        console.log(productComponent);
-        console.log(totalAmount);
         if (productComponent) {
           additionalCost.amount = (totalAmount * additionalCost.price) / 100;
         } else {
@@ -698,7 +699,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (isNaN(additionalCost.ratePerUom)) {
       additionalCost.ratePerUom = null;
     }
-    console.log(additionalCost);
 
     this.changeDetectorRef.detectChanges();
   }
@@ -832,7 +832,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       )
     };
 
-    console.log(payload);
     this.saveButtonClicked = false;
     this.spotNegotiationService
       .saveOfferAdditionalCosts(payload)
