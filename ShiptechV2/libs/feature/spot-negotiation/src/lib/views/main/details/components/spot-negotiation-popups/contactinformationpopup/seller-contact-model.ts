@@ -14,7 +14,7 @@ export interface SellerContactModel{
   address: string;
   zipcode: string;
   city: string;
-  country: string;
+  country: any;
   mobile: string;
   phone: string;
   fax: string;

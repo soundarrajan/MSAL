@@ -3,12 +3,15 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Input,
   OnInit,
   ViewChild
 } from '@angular/core';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { MatExpansionPanel } from '@angular/material/expansion';
 import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { UpdateSpecificRequests } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import { SetCurrentRequestSmallInfo } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
 import _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -20,6 +23,17 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SpotNegotiationNewCommentsComponent
   implements OnInit, AfterViewInit {
+  expandCommentsSection: boolean = false;
+
+  @Input('expandCommentsSection') set _setExpandCommentsSection(
+    expandCommentsSection
+  ) {
+    this.expandCommentsSection = expandCommentsSection;
+    if (this.expandCommentsSection) {
+      this.expandCommentsPanel();
+    }
+  }
+
   @ViewChild('generalComment') generalCommentBox: ElementRef;
   @ViewChild('performanceComment') performanceCommentBox: ElementRef;
   @ViewChild('supplyComment') supplyCommentBox: ElementRef;
@@ -33,6 +47,21 @@ export class SpotNegotiationNewCommentsComponent
   showEditIcon: boolean = false;
 
   notYet: string = ' - ';
+  @ViewChild(MatExpansionPanel, { static: true })
+  matExpansionPanelElement: MatExpansionPanel;
+
+  currentRequestInfo: any;
+  requestList: any[] = [];
+  requestListToDuplicateComments: any[] = [];
+
+  negoGeneralCommentsChecked: boolean = false;
+  negoPerformanceCommentsChecked: boolean = false;
+  negoSupplierCommentsChecked: boolean = false;
+  negoVesselAgentCommentsChecked: boolean = false;
+
+  requestGeneralCommentsChecked: boolean = false;
+  requestSupplierCommentsChecked: boolean = false;
+  requestVesselAgentCommentsChecked: boolean = false;
 
   constructor(
     private store: Store,
@@ -42,6 +71,10 @@ export class SpotNegotiationNewCommentsComponent
     private toastr: ToastrService
   ) {
     this.store.subscribe(({ spotNegotiation }) => {
+      this.currentRequestInfo = _.cloneDeep(
+        spotNegotiation.currentRequestSmallInfo
+      );
+      this.requestList = _.cloneDeep(spotNegotiation.requests);
       if (spotNegotiation.currentRequestSmallInfo) {
         this.requestInfo = _.cloneDeep(spotNegotiation.currentRequestSmallInfo);
 
@@ -72,8 +105,7 @@ export class SpotNegotiationNewCommentsComponent
         );
 
         this.checkEditableFields();
-
-        console.log(this.requestInfo);
+        this.uncheckedComments();
       }
     });
   }
@@ -140,7 +172,6 @@ export class SpotNegotiationNewCommentsComponent
   }
 
   saveComment(type) {
-    console.log(type);
     let payload = {};
     if (type == 'general') {
       if (
@@ -191,7 +222,6 @@ export class SpotNegotiationNewCommentsComponent
     this.spotNegotiationService
       .updateNegotiationComments(payload)
       .subscribe((response: any) => {
-        console.log(response);
         if (response.status) {
           if (type == 'general') {
             this.requestInfo.oldNegoGeneralComments = _.cloneDeep(
@@ -210,10 +240,170 @@ export class SpotNegotiationNewCommentsComponent
               this.requestInfo.negoVesselAgentComments
             );
           }
+          this.store.dispatch(new SetCurrentRequestSmallInfo(this.requestInfo));
+          let currentRequest = _.cloneDeep([this.requestInfo]);
+          this.store.dispatch(new UpdateSpecificRequests(currentRequest));
+          this.checkEditableFields();
           this.toastr.success('Comments saved successfully!');
         } else {
           this.toastr.error('An error has occurred!');
         }
       });
+  }
+
+  expandCommentsPanel() {
+    this.matExpansionPanelElement.open();
+  }
+
+  getRequestsList() {
+    if (this.requestList && this.currentRequestInfo) {
+      this.requestListToDuplicateComments = _.cloneDeep(
+        this.requestList
+          .filter(r => r.id != this.currentRequestInfo.id)
+          .map(req => ({ ...req, isSelected: true }))
+      );
+    }
+  }
+
+  onRequestListCheckboxChange(checkbox: any, element: any) {
+    element.isSelected = checkbox.checked ? true : false;
+  }
+
+  getRequestsIdsForSelectedList(selectedRequests) {
+    let requestIds = [];
+    for (let i = 0; i < selectedRequests.length; i++) {
+      requestIds.push(selectedRequests[i].id);
+    }
+    return requestIds;
+  }
+
+  copyComments(selectedRequests) {
+    for (let i = 0; i < selectedRequests.length; i++) {
+      //Copy Negotiation Comments
+      if (this.negoGeneralCommentsChecked) {
+        selectedRequests[i].negoGeneralComments = _.cloneDeep(
+          this.requestInfo.negoGeneralComments
+        );
+      }
+      if (this.negoPerformanceCommentsChecked) {
+        selectedRequests[i].negoPerformanceComments = _.cloneDeep(
+          this.requestInfo.negoPerformanceComments
+        );
+      }
+      if (this.negoSupplierCommentsChecked) {
+        selectedRequests[i].negoSupplierComments = _.cloneDeep(
+          this.requestInfo.negoSupplierComments
+        );
+      }
+      if (this.negoVesselAgentCommentsChecked) {
+        selectedRequests[i].negoVesselAgentComments = _.cloneDeep(
+          this.requestInfo.negoVesselAgentComments
+        );
+      }
+
+      //Copy Request Comments
+      if (this.requestGeneralCommentsChecked) {
+        selectedRequests[i].generalComments = _.cloneDeep(
+          this.requestInfo.generalComments
+        );
+      }
+      if (this.requestSupplierCommentsChecked) {
+        selectedRequests[i].supplierComments = _.cloneDeep(
+          this.requestInfo.supplierComments
+        );
+      }
+      if (this.requestVesselAgentCommentsChecked) {
+        selectedRequests[i].vesselAgentComments = _.cloneDeep(
+          this.requestInfo.vesselAgentComments
+        );
+      }
+    }
+
+    return selectedRequests;
+  }
+
+  copyCommentsToSelectedRequests() {
+    let selectedRequests = _.cloneDeep(
+      _.filter(this.requestListToDuplicateComments, function(request) {
+        return request.isSelected;
+      })
+    );
+    if (selectedRequests.length == 0) {
+      this.toastr.error('At least one request should be selected!');
+      return;
+    }
+    if (
+      !this.negoGeneralCommentsChecked &&
+      !this.negoPerformanceCommentsChecked &&
+      !this.negoSupplierCommentsChecked &&
+      !this.negoVesselAgentCommentsChecked &&
+      !this.requestGeneralCommentsChecked &&
+      !this.requestSupplierCommentsChecked &&
+      !this.requestVesselAgentCommentsChecked
+    ) {
+      this.toastr.error('At least one comment should be selected!');
+      return;
+    }
+    let payload = {
+      FromRequestId: this.requestInfo.id,
+      ToRequestIds: this.getRequestsIdsForSelectedList(selectedRequests),
+      CommentsToBeCopied: {
+        NegoGeneralComments: this.negoGeneralCommentsChecked,
+        NegoPerformanceComments: this.negoPerformanceCommentsChecked,
+        NegoSupplierComments: this.negoSupplierCommentsChecked,
+        NegoVesselAgentComments: this.negoVesselAgentCommentsChecked,
+        RequestGeneralComments: this.requestGeneralCommentsChecked,
+        RequestSupplierComments: this.requestSupplierCommentsChecked,
+        RequestVesselAgentComments: this.requestVesselAgentCommentsChecked
+      }
+    };
+
+    this.spotNegotiationService
+      .copyNegotiationComments(payload)
+      .subscribe((response: any) => {
+        console.log(response);
+        if (response.status) {
+          let newSelectedRequests = this.copyComments(selectedRequests);
+          this.store.dispatch(new UpdateSpecificRequests(newSelectedRequests));
+          this.toastr.success('Comment copied successfully!');
+        } else {
+          this.toastr.error('An error has occurred!');
+        }
+      });
+  }
+
+  uncheckedComments() {
+    this.negoGeneralCommentsChecked = false;
+    this.negoPerformanceCommentsChecked = false;
+    this.negoSupplierCommentsChecked = false;
+    this.negoVesselAgentCommentsChecked = false;
+    this.requestGeneralCommentsChecked = false;
+    this.requestSupplierCommentsChecked = false;
+    this.requestVesselAgentCommentsChecked = false;
+  }
+
+  checkCommentsLimit(type) {
+    console.log(type);
+    if (type === 'general') {
+      if (this.requestInfo.negoGeneralComments.length === 1000) {
+        this.toastr.warning('The character limit is 1000!');
+        return;
+      }
+    } else if (type == 'performance') {
+      if (this.requestInfo.negoPerformanceComments.length === 1000) {
+        this.toastr.warning('The character limit is 1000!');
+        return;
+      }
+    } else if (type == 'supplier') {
+      if (this.requestInfo.negoSupplierComments.length === 1000) {
+        this.toastr.warning('The character limit is 1000!');
+        return;
+      }
+    } else if (type == 'vesselAndAgent') {
+      if (this.requestInfo.negoVesselAgentComments.length === 1000) {
+        this.toastr.warning('The character limit is 1000!');
+        return;
+      }
+    }
   }
 }

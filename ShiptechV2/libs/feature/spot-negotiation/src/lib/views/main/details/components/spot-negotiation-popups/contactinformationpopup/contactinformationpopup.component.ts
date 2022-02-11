@@ -5,6 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SellerContactModel, SellerViewModel } from './seller-contact-model';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 @Component({
   selector: 'app-contactinformationpopup',
   templateUrl: './contactinformationpopup.component.html',
@@ -15,6 +16,8 @@ export class ContactinformationpopupComponent implements OnInit {
 
   seller: SellerViewModel;
   isEditEnable3: boolean= true;
+  countryList: any;
+  switchTheme; //false-Light Theme, true- Dark Theme
 
   constructor(public dialogRef: MatDialogRef<ContactinformationpopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -22,10 +25,14 @@ export class ContactinformationpopupComponent implements OnInit {
     , private toastr: ToastrService
     , private changeDetector: ChangeDetectorRef
     , public format: TenantFormattingService
-    , private spotNegotiationService: SpotNegotiationService) { }
+    , private spotNegotiationService: SpotNegotiationService
+    , private legacyLookupsDatabase: LegacyLookupsDatabase) { }
 
   ngOnInit(): void {
     this.getCounterpartyContacts();
+    this.legacyLookupsDatabase.getTableByName('country').then(response => {
+      this.countryList = response;
+    });
   }
 
   getCounterpartyContacts(){
@@ -34,8 +41,12 @@ export class ContactinformationpopupComponent implements OnInit {
     .subscribe((res: any) => {
       this.spinner.hide();
       if (res) {
-        this.seller = res;
+       this.seller = res;
+       this.seller.counterpartyContacts = res.counterpartyContacts.filter(x=> x.isEmailContact == true);
+
+        console.log(this.seller);
         const newContact = <SellerContactModel>{contactTypeId: 1, contactType:'Trading'}
+
         this.seller.counterpartyContacts.push(newContact);
         this.changeDetector.detectChanges();
       }
@@ -56,6 +67,10 @@ export class ContactinformationpopupComponent implements OnInit {
 
       if(!newContact.name || !newContact.email){
         this.toastr.error('Please enter a valid contact name or email to save.')
+        return;
+      }
+      if(newContact.country && (!(newContact.country.name) || !(newContact.country.id))){
+        this.toastr.error('Country is invalid, select a valid country to save.')
         return;
       }
 
@@ -94,19 +109,44 @@ export class ContactinformationpopupComponent implements OnInit {
 
         // this.tabledata2.push(this.newtabledata)
         // this.newtabledata = {};
- }
+  }
 
-//Overlay Show and Hide
-showoverlay: boolean= true;
-removeoverlay(){
-  this.showoverlay = false;
-  this.isEditEnable3=true;
+  //Overlay Show and Hide
+  showoverlay: boolean= true;
+  removeoverlay(){
+    this.showoverlay = false;
+    this.isEditEnable3=true;
 
-}
+  }
 
-setFocus() {
-  this._el.nativeElement.focus();
-}
+  setFocus() {
+    this._el.nativeElement.focus();
+  }
+
+  displayFn(value): string {
+    return value && value.name ? value.name : '';
+  }
+
+  public filterCountryList(country) {
+    if (country) {
+      let filterValue = '';
+      filterValue = country.name
+        ? country.name.toLowerCase()
+        : country.toLowerCase();
+      if (this.countryList) {
+        const list = this.countryList
+          .filter((item: any) => {
+            return item.name? item.name.toLowerCase().includes(filterValue.trim().toLowerCase()) : item.name;
+          })
+          .splice(0, 10);
+        return list;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
 
 }
 
