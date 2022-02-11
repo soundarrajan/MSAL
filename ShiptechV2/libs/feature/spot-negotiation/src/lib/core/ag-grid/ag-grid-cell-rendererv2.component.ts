@@ -31,6 +31,8 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
 import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { AdditionalCostViewModel } from '../models/additional-costs-model';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -304,14 +306,13 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
             >
               <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
               <!-- ** {{params.currency}} --  -->
-              <!-- ** {{paramsDataClone.currency}} --  -->
+              <!-- ** {{ paramsDataClone.currency  --  -->
               <mat-label>Select Field</mat-label>
               <mat-select
                 disableOptionCentering
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="params.index != 0"
               >
                 <mat-select-trigger overlayPanelClass="123class">
                   {{ getCurrencyCode(paramsDataClone.currency) }}
@@ -677,6 +678,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   resetPopup: any;
   generalTenantSettings: any;
   baseUomId: any;
+  additionalCostList: any[] = [];
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -688,7 +690,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     public format: TenantFormattingService,
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private tenantSettingsService: TenantSettingsService
+    private tenantSettingsService: TenantSettingsService,
+    private spinner: NgxSpinnerService
   ) {
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.baseUomId = this.generalTenantSettings.tenantFormats.currency.id;
@@ -715,6 +718,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       if (spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
         this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
+      }
+      if (spotNegotiation.additionalCostList) {
+        this.additionalCostList = _.cloneDeep(
+          spotNegotiation.additionalCostList
+        );
       }
     });
   }
@@ -1296,10 +1304,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       toCurrencyId: toCurrency,
       toCurrencyCode: this.getCurrencyCode(toCurrency)
     };
-
+    this.spinner.show();
+    let exchangeRateValue = 1;
     const response = this._spotNegotiationService.getExchangeRate(payload);
     response.subscribe((res: any) => {
       if (res.status) {
+        exchangeRateValue = res.exchangeRateValue;
         this.store.dispatch(new EditLocationRow(newData));
         this.params.node.setData(newData);
         let requestOffers = this.params.data.requestOffers.map(e => {
@@ -1330,8 +1340,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           if (res.status) {
             this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
             this.store.dispatch(new EditLocationRow(futureRowData));
+            this.changeCurrencyForAdditionalCost(
+              this.paramsDataClone.currency,
+              exchangeRateValue
+            );
           } else {
             this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
+            this.spinner.hide();
           }
         });
 
@@ -1339,9 +1354,91 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       } else {
         this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
         this.toastr.warning(res.message);
+        this.spinner.hide();
         this.changeDetector.detectChanges();
       }
     });
+  }
+
+  changeCurrencyForAdditionalCost(currencyId, exchangeRateValue) {
+    console.log(currencyId);
+    this.checkAdditionalCost(
+      _.cloneDeep(this.params.data),
+      currencyId,
+      exchangeRateValue
+    );
+  }
+
+  checkAdditionalCost(sellerOffers, currencyId, exchangeRateValue) {
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
+    });
+    let requestLocationId = sellerOffers.requestLocationId;
+    let findRequestLocationIndex = _.findIndex(
+      this.currentRequestSmallInfo?.requestLocations,
+      function(object: any) {
+        return object.id == requestLocationId;
+      }
+    );
+    if (findRequestLocationIndex != -1) {
+      let requestLocation = this.currentRequestSmallInfo?.requestLocations[
+        findRequestLocationIndex
+      ];
+      const payload = {
+        offerId: sellerOffers.requestOffers[0].offerId,
+        requestLocationId: sellerOffers.requestLocationId,
+        isLocationBased: false
+      };
+
+      this.spinner.show();
+      this._spotNegotiationService
+        .getAdditionalCosts(payload)
+        .subscribe((response: any) => {
+          if (typeof response === 'string') {
+            this.spinner.hide();
+            return;
+          } else {
+            let offerAdditionalCostList = _.cloneDeep(
+              response.offerAdditionalCosts
+            ) as AdditionalCostViewModel[];
+            for (let i = 0; i < offerAdditionalCostList.length; i++) {
+              if (offerAdditionalCostList[i].currencyId != currencyId) {
+                console.log(exchangeRateValue);
+                console.log(offerAdditionalCostList[i]);
+                offerAdditionalCostList[i].currencyId = currencyId;
+                offerAdditionalCostList[i].extraAmount =
+                  offerAdditionalCostList[i].extraAmount / exchangeRateValue;
+                offerAdditionalCostList[i].amount =
+                  offerAdditionalCostList[i].amount / exchangeRateValue;
+                offerAdditionalCostList[i].ratePerUom =
+                  offerAdditionalCostList[i].ratePerUom / exchangeRateValue;
+              }
+            }
+            this.saveAdditionalCosts(
+              offerAdditionalCostList,
+              response.locationAdditionalCosts
+            );
+          }
+        });
+    }
+  }
+
+  saveAdditionalCosts(offerAdditionalCostList, locationAdditionalCostsList) {
+    let payload = {
+      additionalCosts: offerAdditionalCostList.concat(
+        locationAdditionalCostsList
+      )
+    };
+    this._spotNegotiationService
+      .saveOfferAdditionalCosts(payload)
+      .subscribe((res: any) => {
+        if (res.status) {
+          this.spinner.hide();
+        } else {
+          this.spinner.hide();
+          this.toastr.error('Please try again later.');
+        }
+      });
   }
 
   getCurrencyCode(currencyId) {
