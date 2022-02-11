@@ -607,6 +607,7 @@ export class ShiptechCustomHeaderGroup {
             portRating: '',
             prefferedProductIds: '',
             sellerComments: '',
+            isSellerPortalComments:false,
             sellerCounterpartyId: val.id,
             sellerCounterpartyName: val.name,
             senRating: ''

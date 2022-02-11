@@ -356,6 +356,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
               portRating: '',
               prefferedProductIds: '',
               sellerComments: '',
+              isSellerPortalComments:false,
               sellerCounterpartyId: val.id,
               sellerCounterpartyName: val.name,
               senRating: ''
@@ -386,6 +387,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
             portRating: '',
             prefferedProductIds: '',
             sellerComments: '',
+            isSellerPortalComments:false,
             sellerCounterpartyId: val.id,
             sellerCounterpartyName: val.name,
             senRating: ''
