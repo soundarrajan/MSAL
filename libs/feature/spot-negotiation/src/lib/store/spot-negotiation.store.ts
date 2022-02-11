@@ -22,7 +22,8 @@ import {
   AppendRequestList,
   AppendPhysicalSupplierCounterpartyList,
   UpdateRequest,
-  UpdateSpecificRequests
+  UpdateSpecificRequests,
+  UpdateAdditionalCostList
 } from './actions/ag-grid-row.action';
 
 import {
@@ -62,6 +63,7 @@ export class SpotNegotiationStoreModel {
   tenantConfigurations: object | null;
   marketPriceHistory: object | null;
   offerPriceHistory: object | null;
+  additionalCostList: Array<any>;
 
   constructor() {
     // Initialization inside the constructor
@@ -88,6 +90,7 @@ export class SpotNegotiationStoreModel {
     this.requests = [];
     this.groupOfRequestsId = null;
     this.offerPriceHistory = null;
+    this.additionalCostList = [];
   }
 }
 
@@ -117,7 +120,8 @@ export class SpotNegotiationStoreModel {
     counterpartyList: [],
     physicalSupplierCounterpartyList: [],
     requestList: [],
-    counterparties: []
+    counterparties: [],
+    additionalCostList: []
   }
 })
 export class SpotNegotiationStore {
@@ -423,7 +427,18 @@ export class SpotNegotiationStore {
     });
   }
 
-  // update specifci requests
+  // update additional cost list
+  @Action(UpdateAdditionalCostList)
+  UpdateAdditionalCostList(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: UpdateAdditionalCostList
+  ) {
+    patchState({
+      additionalCostList: payload
+    });
+  }
+
+  // update specific requests
   @Action(UpdateSpecificRequests)
   UpdateSpecificRequests(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
