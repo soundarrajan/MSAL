@@ -60,6 +60,7 @@ export class SpotNegotiationNewCommentsComponent
   negoVesselAgentCommentsChecked: boolean = false;
 
   requestGeneralCommentsChecked: boolean = false;
+  requestStrategyCommentsChecked: boolean = false;
   requestSupplierCommentsChecked: boolean = false;
   requestVesselAgentCommentsChecked: boolean = false;
 
@@ -307,6 +308,11 @@ export class SpotNegotiationNewCommentsComponent
           this.requestInfo.generalComments
         );
       }
+      if (this.requestStrategyCommentsChecked) {
+        selectedRequests[i].strategyComments = _.cloneDeep(
+          this.requestInfo.strategyComments
+        );
+      }
       if (this.requestSupplierCommentsChecked) {
         selectedRequests[i].supplierComments = _.cloneDeep(
           this.requestInfo.supplierComments
@@ -338,6 +344,7 @@ export class SpotNegotiationNewCommentsComponent
       !this.negoSupplierCommentsChecked &&
       !this.negoVesselAgentCommentsChecked &&
       !this.requestGeneralCommentsChecked &&
+      !this.requestStrategyCommentsChecked &&
       !this.requestSupplierCommentsChecked &&
       !this.requestVesselAgentCommentsChecked
     ) {
@@ -353,6 +360,7 @@ export class SpotNegotiationNewCommentsComponent
         NegoSupplierComments: this.negoSupplierCommentsChecked,
         NegoVesselAgentComments: this.negoVesselAgentCommentsChecked,
         RequestGeneralComments: this.requestGeneralCommentsChecked,
+        RequestStrategyComments: this.requestStrategyCommentsChecked,
         RequestSupplierComments: this.requestSupplierCommentsChecked,
         RequestVesselAgentComments: this.requestVesselAgentCommentsChecked
       }
@@ -377,13 +385,14 @@ export class SpotNegotiationNewCommentsComponent
     this.negoPerformanceCommentsChecked = false;
     this.negoSupplierCommentsChecked = false;
     this.negoVesselAgentCommentsChecked = false;
+
     this.requestGeneralCommentsChecked = false;
+    this.requestStrategyCommentsChecked = false;
     this.requestSupplierCommentsChecked = false;
     this.requestVesselAgentCommentsChecked = false;
   }
 
   checkCommentsLimit(type) {
-    console.log(type);
     if (type === 'general') {
       if (this.requestInfo.negoGeneralComments.length === 1000) {
         this.toastr.warning('The character limit is 1000!');
