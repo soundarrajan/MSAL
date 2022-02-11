@@ -125,7 +125,7 @@ export class SpotnegoemaillogComponent implements OnInit {
       headerName: 'Mail Date',
       headerTooltip: 'Mail Date',
       field: 'sentAt',
-      tooltip: (params)=>params.value,
+      tooltip: (params)=> moment(params.value).format(this.date),
       cellRenderer: params => {
         return moment(params.value).format(this.date);
       },
