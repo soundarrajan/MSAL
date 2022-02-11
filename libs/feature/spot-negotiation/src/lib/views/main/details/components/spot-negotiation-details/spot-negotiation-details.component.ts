@@ -630,7 +630,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               params.data,
               product.id
             );
-            return product.requestGroupProducts.targetPrice == null || 0
+            return !product.requestGroupProducts.targetPrice
               ? 0
               : details.targetDifference;
           },
