@@ -648,7 +648,6 @@ export class LocalService {
       )
       .pipe(map(items => {
           (items.payload).map(item => {
-            console.log(item);
                 if(ColorCode) {
                     item.requestStatus['colorCode'] = ColorCode.find(code=> 
                         (code.id == item.requestStatus?.id) && (code.transactionTypeId == item.requestStatus?.transactionTypeId))

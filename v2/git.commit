@@ -1,11 +1,11 @@
-﻿commit 8e08e5569759c15e87cc40db8363a08a92808fcc
+﻿commit 4636890d52ce856802f701a461c82ef46cbf8665
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Feb 14 12:47:35 2022 +0000
+Date:   Mon Feb 14 14:15:53 2022 +0000
 
-    Merged PR 15909: Disable fileds in cancelled status
+    Merged PR 15914: Remove space below grid footer
     
-    Disable fileds in cancelled status
+    Remove space below grid footer
     
-    Related work items: #38533
+    Related work items: #38623
 
 branch: master
