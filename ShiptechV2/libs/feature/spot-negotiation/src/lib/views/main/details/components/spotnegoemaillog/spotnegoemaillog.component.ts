@@ -93,7 +93,7 @@ export class SpotnegoemaillogComponent implements OnInit {
       field: 'to',
       width: 345,
       suppressSizeToFit: false,
-      tooltip: (params)=>params.value
+      tooltipValueGetter: (params)=>params.value
     },
     {
       headerName: 'Status',
@@ -111,7 +111,7 @@ export class SpotnegoemaillogComponent implements OnInit {
       field: 'from',
       width: 345,
       suppressSizeToFit: false,
-      tooltip: (params)=>params.value
+      tooltipValueGetter: (params)=>params.value
     },
     {
       headerName: 'Subject',
@@ -119,13 +119,13 @@ export class SpotnegoemaillogComponent implements OnInit {
       field: 'subject',
       width: 345,
       suppressSizeToFit: false,
-      tooltip: (params)=>params.value
+      tooltipValueGetter: (params)=>params.value
     },
     {
       headerName: 'Mail Date',
       headerTooltip: 'Mail Date',
       field: 'sentAt',
-      tooltip: (params)=> moment(params.value).format(this.date),
+      tooltipValueGetter: (params)=> moment(params.value).format(this.date),
       cellRenderer: params => {
         return moment(params.value).format(this.date);
       },
