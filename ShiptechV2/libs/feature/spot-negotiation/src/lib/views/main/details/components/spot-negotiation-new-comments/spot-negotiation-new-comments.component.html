@@ -83,7 +83,7 @@
             <div class="new-comments">
               <div style="padding: 15px;">
                 <span class="circle internal"></span
-                ><span class="label">General</span>
+                ><span class="label">Internal</span>
                 <span
                   [ngClass]="{
                     selected: negoGeneralCommentsChecked,
@@ -163,7 +163,7 @@
             <div class="new-comments">
               <div style="padding: 15px;">
                 <span class="circle external"></span
-                ><span class="label">Supply</span>
+                ><span class="label">Supplier</span>
                 <span
                   [ngClass]="{
                     selected: negoSupplierCommentsChecked,
@@ -255,7 +255,7 @@
                   <div class="new-comments" style="margin: 0px 14px;">
                     <div style="padding: 15px;">
                       <span class="circle internal"></span
-                      ><span class="label">Internal</span>
+                      ><span class="label">General</span>
                       <span
                         [ngClass]="{
                           selected: requestGeneralCommentsChecked,
@@ -279,15 +279,15 @@
                 >
                   <div class="new-comments" style="margin: 0px 14px;">
                     <div style="padding: 15px;">
-                      <span class="circle external"></span
+                      <span class="circle internal"></span
                       ><span class="label">Strategy</span>
                       <span
                         [ngClass]="{
-                          selected: requestSupplierCommentsChecked,
-                          'de-selected': !requestSupplierCommentsChecked
+                          selected: requestStrategyCommentsChecked,
+                          'de-selected': !requestStrategyCommentsChecked
                         }"
                         (click)="
-                          requestSupplierCommentsChecked = !requestSupplierCommentsChecked
+                          requestStrategyCommentsChecked = !requestStrategyCommentsChecked
                         "
                       ></span>
                     </div>
