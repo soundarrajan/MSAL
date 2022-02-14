@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 import {
   AddCounterpartyToLocations,
+  AppendLocationsRowsOriData,
   EditLocationRow,
   EditLocations
 } from '../../store/actions/ag-grid-row.action';
@@ -607,6 +608,7 @@ export class ShiptechCustomHeaderGroup {
             portRating: '',
             prefferedProductIds: '',
             sellerComments: '',
+            isSellerPortalComments:false,
             sellerCounterpartyId: val.id,
             sellerCounterpartyName: val.name,
             senRating: ''
@@ -859,6 +861,9 @@ export class ShiptechCustomHeaderGroup {
         // else
         this.store.dispatch(
           new AddCounterpartyToLocations(futureLocationsRows)
+        );
+        this.store.dispatch(
+          new AppendLocationsRowsOriData(futureLocationsRows)
         );
         this.changeDetector.markForCheck();
       } else {

@@ -1,58 +1,87 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Store } from '@ngxs/store';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import _ from 'lodash';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-supplier-comments-popup',
   templateUrl: './supplier-comments-popup.component.html',
-  styleUrls: ['./supplier-comments-popup.component.css']
+  styleUrls: ['./supplier-comments-popup.component.scss']
 })
 export class SupplierCommentsPopupComponent implements OnInit {
-
-  receiver_comments = [
-    {
-      placeholder: 'PB',
-      name: 'Pooja Bhattiprolu',
-      date: '15 June 2021',
-      time: '09:49',
-      comment: 'LPB not sent- Quantity to order directly  calculated and instructed by Ops. BO calculated around 400MT below quantity validated.'
-    },
-    {
-      placeholder: 'SP',
-      name: 'Supplier Portal',
-      date: '15 June 2021',
-      time: '09:49',
-      comment: 'LPB not sent- Quantity to order directly  calculated and instructed by Ops. BO calculated around 400MT below quantity validated.'
-    }
-  ];
-  sender_comments = [
-    {
-      placeholder: 'YH',
-      name: 'Yusuf Hassan',
-      date: '15 June 2021',
-      time: '09:49',
-      comment: 'LPB not sent- Quantity to order directly  calculated and instructed by Ops. BO calculated around 400MT below quantity validated.'
-    }
-  ];
-  newInternalComment = '';
-  constructor() { }
+  public supplierCommentDetails: any;
+  requestInfo: any = null;
+  constructor(
+    public dialogRef: MatDialogRef<SupplierCommentsPopupComponent>,
+    private store: Store,
+    private toaster: ToastrService,
+    private _spotNegotiationService: SpotNegotiationService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
+    this.supplierCommentDetails = data;
+    this.requestInfo = _.cloneDeep(this.supplierCommentDetails);
+    this.requestInfo.sellerComments = this.transform(
+      this.requestInfo.sellerComments
+    );
+  }
 
   ngOnInit(): void {
   }
 
-  selectItem(e,i) {
-
-  }
-
-  addInternalComment(senderComment){
-    if(senderComment){
-      this.sender_comments.push({
-        placeholder: 'YH',
-        name: 'Yusuf Hassan',
-        date: '15 June 2021',
-        time: '09:49',
-        comment: senderComment
+  transform(str: any, property?: string): any {
+    var decode = function (str) {
+      return str.replace(/&#(\d+);/g, function (match, dec) {
+        return String.fromCharCode(dec);
       });
-      this.newInternalComment = '';
+    };
+    if (str && str[property]) {
+      str[property] = decode(_.unescape(str[property]));
+      return str;
     }
+    return decode(_.unescape(str));
+  }
+  //save seller Comments
+  saveSellerComment(str) {
+    const locationsRows = this.store.selectSnapshot<string>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    let payload = {
+      requestGroupId: this.supplierCommentDetails.requestGroupId,
+      requestLocationId: this.supplierCommentDetails.requestLocationId,
+      sellerCounterpartyId: this.supplierCommentDetails.sellerCounterpartyId,
+      sellerComment: this.requestInfo.sellerComments,
+      requestLocationSellerId: this.supplierCommentDetails.id,
+      sellerCounterpartyName: this.supplierCommentDetails.sellerCounterpartyName,
+      sellerPortalRead: str
+    };
+    const response = this._spotNegotiationService.UpdateSellerComments(payload);
+    response.subscribe((res: any) => {
+      if (res.status) {
+        const futureLocationsRows = this.getLocationRowsAddSellerComment(
+          JSON.parse(JSON.stringify(locationsRows)), str);
+        this.dialogRef.close();
+        this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        //this.toaster.success('Seller comment added successfully');
+      }
+    });
+  }
+  //Close sellerCommentPopup
+  closeSellerComment(str) {
+    this.saveSellerComment(str);//Update read the seller portal comments
+    this.dialogRef.close();
+  }
+  //Update the store
+  getLocationRowsAddSellerComment(locationrow, str) {
+    locationrow.forEach((element, key) => {
+      if (element.id == this.supplierCommentDetails.id && str == 'S') {
+        element.sellerComments = str == 'S' ? this.requestInfo.sellerComments : this.supplierCommentDetails;
+        element.isSellerPortalComments = false;
+      }
+    });
+    return locationrow;
   }
 
 }

@@ -23,6 +23,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {
   AddCounterpartyToLocations,
+  AppendLocationsRowsOriData,
   SetLocations,
   SetLocationsRows
 } from '../../../../../store/actions/ag-grid-row.action';
@@ -278,6 +279,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 portRating: '',
                 prefferedProductIds: '',
                 sellerComments: '',
+                isSellerPortalComments:false,
                 sellerCounterpartyId: val.id,
                 sellerCounterpartyName: val.name,
                 senRating: ''
@@ -328,6 +330,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         this.store.dispatch(
           new AddCounterpartyToLocations(futureLocationsRows)
         );
+        this.store.dispatch(new AppendLocationsRowsOriData(futureLocationsRows));
       } else {
         this.toastr.error(res.message);
         return;
