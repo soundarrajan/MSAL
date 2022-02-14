@@ -469,7 +469,7 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.updateNegotiationComments(payload);
   }
 
-  
+
   /**
   * @param payload
   */
@@ -542,7 +542,7 @@ export class SpotNegotiationService extends BaseStoreService
 
     // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
     productDetails.totalPrice =
-      Number(productDetails.price) + productDetails.cost; // Amount = Total Price * Max. Quantity
+      (Number(productDetails.price) + productDetails.cost) / (productDetails.exchangeRateToBaseCurrency?? 1); // Amount = Total Price * Max. Quantity
     productDetails.amount = productDetails.totalPrice * product.maxQuantity;
 
     // Target Difference = Total Price - Target Price
@@ -588,7 +588,8 @@ export class SpotNegotiationService extends BaseStoreService
       quotedProductId: null,
       requestProductId: productId,
       targetDifference: null,
-      totalPrice: null
+      totalPrice: null,
+      exchangeRateToBaseCurrency: 1
     };
 
     if (!futureRow.requestOffers) {

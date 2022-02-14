@@ -177,7 +177,7 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
           [ngClass]="{ 'info-comment': this.params.data.isSellerPortalComments, 'info-comment-inactive': !this.params.data.isSellerPortalComments }"
             matTooltip="View supplier comments"
             (click)="suppliercommentspopup(params.data)"
-            *ngIf="this.params.data.sellerComments.length>0"
+            *ngIf="this.params.data.sellerComments?.length>0"
             matTooltipClass=""
           ></span>
         </span>
@@ -192,7 +192,7 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
         <span><div class="id-icon"></div></span>
         <span class="fs-12">Supplier Contact</span>
       </div>
-      <div class="p-tb-5" 
+      <div class="p-tb-5"
       style="display:flex;align-items:center;"
       (click)="suppliercommentspopup(params.data)">
       <span><div class="blue-comments-icon"></div></span>
@@ -1303,7 +1303,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             totalPrice: e.totalPrice / res.exchangeRateValue,
             amount: e.amount / res.exchangeRateValue,
             targetDifference: e.targetDifference / res.exchangeRateValue,
-            currencyId: toCurrency
+            currencyId: toCurrency,
+            exchangeRateToBaseCurrency: res.exchangeRateValue
           };
         });
         let payload = {
