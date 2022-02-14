@@ -1,11 +1,11 @@
-﻿commit b48f441bc3201b1dc7491347f38dd498ba3c05f3
+﻿commit 8e08e5569759c15e87cc40db8363a08a92808fcc
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Feb 14 11:01:28 2022 +0000
+Date:   Mon Feb 14 12:47:35 2022 +0000
 
-    Merged PR 15905: css fixes
+    Merged PR 15909: Disable fileds in cancelled status
     
-    css fixes
+    Disable fileds in cancelled status
     
-    Related work items: #38581
+    Related work items: #38533
 
 branch: master
