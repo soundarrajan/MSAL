@@ -1,6 +1,12 @@
 import { Observable, pipe } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, Inject, ViewChild, ViewChildren } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -52,7 +58,7 @@ import _, { cloneDeep } from 'lodash';
                     matInput
                     placeholder="Search and select counterparty"
                     class="search-product-input"
-                    (input) ="search($event.target.value)"
+                    (input)="search($event.target.value)"
                   />
                 </div>
                 <div class="col-md-2">
@@ -361,15 +367,22 @@ export class ShiptechCustomHeaderGroup {
         return false;
       })
       .slice(0, 7);
-      if(this.visibleCounterpartyList.length === 0){
-         const response = this._spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], userInput.toLowerCase(), { Skip: 0 , Take: 25 });
-         response.subscribe((res:any)=>{
-           if(res?.payload?.length >0){
-             this.visibleCounterpartyList =res.payload.slice(0,7) ;
-             this.changeDetector.detectChanges();
-           }
-         });
-      }
+    if (this.visibleCounterpartyList.length === 0) {
+      const response = this._spotNegotiationService.getResponse(
+        null,
+        { Filters: [] },
+        { SortList: [] },
+        [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
+        userInput.toLowerCase(),
+        { Skip: 0, Take: 25 }
+      );
+      response.subscribe((res: any) => {
+        if (res?.payload?.length > 0) {
+          this.visibleCounterpartyList = res.payload.slice(0, 7);
+          this.changeDetector.detectChanges();
+        }
+      });
+    }
   }
 
   openCounterpartyPopup(reqLocationId: number) {
@@ -550,7 +563,7 @@ export class ShiptechCustomHeaderGroup {
       console.log(currentCellContracts);
       console.log(min);
       if (min !== null && min != 'Infinity') {
-        return `$ ${this.priceFormatValue(min, "benchmark")}`;
+        return `$ ${this.priceFormatValue(min, 'benchmark')}`;
       }
     }
     return '--';
@@ -627,7 +640,9 @@ export class ShiptechCustomHeaderGroup {
     const number = parseFloat(plainNumber);
 
     if (isNaN(number)) {
-      type == 'livePrice'?this.toastr.warning('Live price should be a numeric value '):'';
+      type == 'livePrice'
+        ? this.toastr.warning('Live price should be a numeric value ')
+        : '';
       return null;
     }
 
@@ -660,7 +675,7 @@ export class ShiptechCustomHeaderGroup {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     this.livePrice = this.priceFormatValue(this.livePrice, 'livePrice');
     this.livePrice =
-      this.livePrice == null || this.livePrice == '--' ? '--' : this.livePrice;
+      this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice;
     this.benchmark =
       this.benchmark == null || this.benchmark == '--' ? 0 : this.benchmark;
     const targetval =
@@ -676,81 +691,73 @@ export class ShiptechCustomHeaderGroup {
         targetPrice: this.targetValue
       }
     };
-    if (this.livePrice != '--') {
-      const response = this._spotNegotiationService.saveTargetPrice(payload);
-      response.subscribe((res: any) => {
-        if (res.status) {
-          let locations = [];
-          let locationsRows = [];
-          this.store.subscribe(({ spotNegotiation, ...props }) => {
-            locations = spotNegotiation.locations;
-            locationsRows = spotNegotiation.locationsRows;
-            JSON.parse(JSON.stringify(locations));
-          });
-          if (locations.length > 0) {
-            locations.forEach(element => {
-              if (
-                element.id == this.requestLocationId &&
-                element.requestProducts
-              ) {
-                let filterLocationsRows = _.filter(locationsRows, function(
-                  elem
+    const response = this._spotNegotiationService.saveTargetPrice(payload);
+    response.subscribe((res: any) => {
+      if (res.status) {
+        let locations = [];
+        let locationsRows = [];
+        this.store.subscribe(({ spotNegotiation, ...props }) => {
+          locations = spotNegotiation.locations;
+          locationsRows = spotNegotiation.locationsRows;
+          JSON.parse(JSON.stringify(locations));
+        });
+        if (locations.length > 0) {
+          locations.forEach(element => {
+            if (
+              element.id == this.requestLocationId &&
+              element.requestProducts
+            ) {
+              let filterLocationsRows = _.filter(locationsRows, function(elem) {
+                return elem.requestLocationId == element.id;
+              });
+              console.log(filterLocationsRows);
+              element.requestProducts.forEach((element1, index) => {
+                if (
+                  element1.id == this.requestProductId &&
+                  element1.requestGroupProducts
                 ) {
-                  return elem.requestLocationId == element.id;
-                });
-                console.log(filterLocationsRows);
-                element.requestProducts.forEach((element1, index) => {
-                  if (
-                    element1.id == this.requestProductId &&
-                    element1.requestGroupProducts
-                  ) {
-                    if (this.livePrice && this.livePrice != null) {
-                      let updatedRow1 = Object.assign({}, element);
-                      updatedRow1 = this.updateprice(
-                        JSON.parse(JSON.stringify(updatedRow1)),
-                        index
-                      );
-                      this.store.dispatch(new EditLocations(updatedRow1));
-                      for (let i = 0; i < filterLocationsRows.length; i++) {
-                        const productDetails = this.getRowProductDetails(
-                          filterLocationsRows[i],
-                          updatedRow1.requestProducts[index].id
-                        );
-                        this.updateTargetDifference(
-                          productDetails,
-                          updatedRow1.requestProducts[index]
-                        );
+                  let updatedRow1 = Object.assign({}, element);
+                  updatedRow1 = this.updateprice(
+                    JSON.parse(JSON.stringify(updatedRow1)),
+                    index
+                  );
+                  this.store.dispatch(new EditLocations(updatedRow1));
+                  for (let i = 0; i < filterLocationsRows.length; i++) {
+                    const productDetails = this.getRowProductDetails(
+                      filterLocationsRows[i],
+                      updatedRow1.requestProducts[index].id
+                    );
+                    this.updateTargetDifference(
+                      productDetails,
+                      updatedRow1.requestProducts[index]
+                    );
 
-                        let futureRow = this.setRowProductDetails(
-                          filterLocationsRows[i],
-                          productDetails,
-                          updatedRow1.requestProducts[index].id
-                        );
-                        this.store.dispatch(new EditLocationRow(futureRow));
-                      }
-                    }
+                    let futureRow = this.setRowProductDetails(
+                      filterLocationsRows[i],
+                      productDetails,
+                      updatedRow1.requestProducts[index].id
+                    );
+                    this.store.dispatch(new EditLocationRow(futureRow));
                   }
-                });
-              }
-            });
-          }
-        } else {
-          this.toastr.error(res.message);
-          return;
+                }
+              });
+            }
+          });
         }
-      });
-    }
+      } else {
+        this.toastr.error(res.message);
+        return;
+      }
+    });
   }
 
   updateprice(updaterow, index) {
     updaterow.requestProducts[
       index
     ].requestGroupProducts.livePrice = this.livePrice;
-    if (this.targetValue && this.targetValue != null) {
-      updaterow.requestProducts[
-        index
-      ].requestGroupProducts.targetPrice = this.targetValue;
-    }
+    updaterow.requestProducts[
+      index
+    ].requestGroupProducts.targetPrice = this.targetValue;
     return updaterow;
   }
 
@@ -895,7 +902,11 @@ export class ShiptechCustomHeaderGroup {
         index < priceDetailsArray?.length &&
         row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
+        row.requestOffers = priceDetailsArray[
+          index
+        ].requestOffers?.sort((a, b) =>
+          a.requestProductId > b.requestProductId ? 1 : -1
+        );
         row.requestOffers.forEach(element1 => {
           if (
             element1.requestProductId != undefined &&
@@ -941,7 +952,9 @@ export class ShiptechCustomHeaderGroup {
 
         // We found something
         if (detailsForCurrentRow.length > 0) {
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> (a.requestProductId > b.requestProductId ? 1 : -1));
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
+            (a, b) => (a.requestProductId > b.requestProductId ? 1 : -1)
+          );
           row.requestOffers.forEach(element1 => {
             if (
               element1.requestProductId != undefined &&
