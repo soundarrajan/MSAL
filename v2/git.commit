@@ -1,11 +1,11 @@
-﻿commit b84dcf237e488d1adcd542530cf1fee40e9047eb
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Fri Feb 11 06:30:57 2022 +0000
+﻿commit ef7196736cb5d6b092623aedee8fbcee9ebed7b5
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Mon Feb 14 06:56:16 2022 +0000
 
-    Merged PR 15852: Fix provisional total display when undefined
+    Merged PR 15897: 38522-SO-PortRemarks-UIFix
     
-    Fix provisional total display when undefined
+    38522-SO-PortRemarks-UIFix
     
-    Related work items: #38549
+    Related work items: #38522
 
 branch: master
