@@ -1,11 +1,11 @@
-﻿commit 7a645362305f1c24a758544842e1e4e5a5923a4b
+﻿commit b48f441bc3201b1dc7491347f38dd498ba3c05f3
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Feb 14 10:52:29 2022 +0000
+Date:   Mon Feb 14 11:01:28 2022 +0000
 
-    Merged PR 15903: Fixes in edit filter popup
+    Merged PR 15905: css fixes
     
-    Fixes in edit filter popup
+    css fixes
     
-    Related work items: #38603
+    Related work items: #38581
 
 branch: master

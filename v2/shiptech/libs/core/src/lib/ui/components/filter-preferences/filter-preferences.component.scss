@@ -122,7 +122,9 @@ $red: red;
       top: 6px !important;
       color: #364150;
       position: absolute;
-      margin-left: 1px;
+      margin-left: 3px;
+      font-size: 7px;
+      text-align: center;
     }
     &.active-chip {
       width: auto;
