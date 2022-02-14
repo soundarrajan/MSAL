@@ -6,7 +6,7 @@ import { GridOptions, IDatasource, IGetRowsParams } from 'ag-grid-community';
 import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/lib/core/models/spnego-addcounterparty.model';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import { AddCounterpartyToLocations, AppendCounterpartyList, AppendPhysicalSupplierCounterpartyList, SetCounterpartyList, SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import { AddCounterpartyToLocations, AppendCounterpartyList, AppendLocationsRowsOriData, AppendPhysicalSupplierCounterpartyList, SetCounterpartyList, SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 import { ToastrService } from 'ngx-toastr';
 import _, { cloneDeep } from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -356,6 +356,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
               portRating: '',
               prefferedProductIds: '',
               sellerComments: '',
+              isSellerPortalComments:false,
               sellerCounterpartyId: val.id,
               sellerCounterpartyName: val.name,
               senRating: ''
@@ -386,6 +387,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
             portRating: '',
             prefferedProductIds: '',
             sellerComments: '',
+            isSellerPortalComments:false,
             sellerCounterpartyId: val.id,
             sellerCounterpartyName: val.name,
             senRating: ''
@@ -452,7 +454,6 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
        //Update the locationRows in the store whenever physical supplier changes/added
         const futureLocationsRows = this.getLocationRowsAddPhySupplier(JSON.parse(JSON.stringify(locationsRows)));
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
-
         this.toastr.success('Phy. Supplier added successfully');
       } else {
         this.toastr.error(res.message);
@@ -480,6 +481,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         this.store.dispatch(
           new AddCounterpartyToLocations(res.counterparties)
         );
+        this.store.dispatch(new AppendLocationsRowsOriData(res.counterparties));
       } else {
         this.toastr.error(res.message);
         return;

@@ -91,6 +91,16 @@ export class SetLocationsRowsOriData {
 
   constructor(public payload: any) {}
 }
+export class AppendLocationsRowsOriData {
+  static readonly type = '[LocationsRowsOriData] Append';
+
+  constructor(public payload: any) {}
+}
+export class RemoveLocationsRowsOriData {
+  static readonly type = '[LocationsRowsOriData] Remove';
+
+  constructor(public payload: any) {}
+}
 export class SetLocationsRowsPriceDetails {
   static readonly type = '[LocationsRowsPriceDetails] Set';
 
