@@ -1,11 +1,11 @@
-﻿commit ef7196736cb5d6b092623aedee8fbcee9ebed7b5
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Mon Feb 14 06:56:16 2022 +0000
+﻿commit 7a645362305f1c24a758544842e1e4e5a5923a4b
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Mon Feb 14 10:52:29 2022 +0000
 
-    Merged PR 15897: 38522-SO-PortRemarks-UIFix
+    Merged PR 15903: Fixes in edit filter popup
     
-    38522-SO-PortRemarks-UIFix
+    Fixes in edit filter popup
     
-    Related work items: #38522
+    Related work items: #38603
 
 branch: master

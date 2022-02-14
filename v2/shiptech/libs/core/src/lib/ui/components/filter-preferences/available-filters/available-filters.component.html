@@ -1,13 +1,13 @@
 <div class="header">
   <div class="title">Filters and Preferences</div>
   <div class="header-btn">
-    <button class="blue-button" (click)="enableEditing()">Edit</button
+    <button class="blue-button" (click)="toggleEditing()">{{ isEditing ? "Done" : "Edit" }}</button
     ><button
       class="blue-button"
       [disabled]="!isEditing"
       (click)="updateAllFilters()"
     >
-      Save
+      Apply
     </button>
     <div class="mat-divider"></div>
 
