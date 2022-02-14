@@ -94,6 +94,10 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
     this.isEditing = true;
   }
 
+  toggleEditing(): void {
+    this.isEditing = !this.isEditing;
+  }
+
   cancelEditing(): void {
     this.isEditing = false;
     this.dialogRef.close();
