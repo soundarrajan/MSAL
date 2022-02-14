@@ -23,6 +23,8 @@ import {
   AppendPhysicalSupplierCounterpartyList,
   UpdateRequest,
   UpdateSpecificRequests,
+  AppendLocationsRowsOriData,
+  RemoveLocationsRowsOriData,
   UpdateAdditionalCostList
 } from './actions/ag-grid-row.action';
 
@@ -318,6 +320,19 @@ export class SpotNegotiationStore {
     });
   }
 
+  @Action(AppendLocationsRowsOriData)
+  AppendLocationsRowsOriData (
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: AppendLocationsRowsOriData
+  ) {
+    const state = getState();
+    var ctpys = [...state.LocationsOriData, ...payload];
+    patchState({
+      LocationsOriData: ctpys
+    });
+  }
+
+
   // Rows lists
   @Action(SetLocationsRows)
   SetLocationsRows(
@@ -335,6 +350,18 @@ export class SpotNegotiationStore {
   ): void {
     patchState({
       LocationsOriData: payload
+    });
+  }
+
+  @Action(RemoveLocationsRowsOriData)
+  RemoveLocationsRowsOriData(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: RemoveLocationsRowsOriData
+  ) {
+    patchState({
+      LocationsOriData: getState().LocationsOriData.filter(
+        row => row.id !== payload.rowId
+      )
     });
   }
   // Rows lists
