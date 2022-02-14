@@ -23,6 +23,7 @@ import {
   DeleteSeller,
   EditLocationRow,
   RemoveCounterparty,
+  RemoveLocationsRowsOriData,
   SetCounterpartyList,
   SetLocationsRows,
   UpdateAdditionalCostList,
@@ -1714,6 +1715,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             'Counterparty has been removed from negotiation succesfully.'
           );
           this.store.dispatch(new RemoveCounterparty({ rowId: rowData.id }));
+          this.store.dispatch(new RemoveLocationsRowsOriData({ rowId: rowData.id }));
           if (res['requestLocationSellers'] && res['sellerOffers']) {
             const futureLocationsRows = this.getLocationRowsWithPriceDetails(
               res['requestLocationSellers'],
