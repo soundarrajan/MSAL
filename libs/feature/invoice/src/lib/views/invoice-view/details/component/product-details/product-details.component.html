@@ -370,9 +370,11 @@
                     style="width: 64%;border: none;"
                     appearance="legacy"
                   >
-                    <input
+                  <input
                       matInput
                       [(ngModel)]="productDetail.value.invoiceQuantity"
+                      [disabled]="formValues.status &&
+                          formValues.status?.name === 'Cancelled'"
                       autocomplete="off"
                       (blur)="
                         productDetail.value.invoiceQuantity = roundDownValue(
@@ -389,6 +391,8 @@
                     <mat-select
                       disableRipple
                       [(ngModel)]="productDetail.value.invoiceQuantityUom"
+                      [disabled]="formValues.status &&
+                          formValues.status?.name === 'Cancelled'"
                       (ngModelChange)="
                         invoiceConvertUom('product', productDetail.key)
                       "
@@ -445,6 +449,8 @@
                       autocomplete="off"
                       [(ngModel)]="productDetail.value.invoiceRate"
                       priceFormat
+                      [disabled]="formValues.status &&
+                          formValues.status?.name === 'Cancelled'"
                       [attr.precision]="productDetail.value.pricePrecision"
                       (blur)="
                         productDetail.value.invoiceRate = roundDownValue(
@@ -463,6 +469,8 @@
                       (ngModelChange)="
                         invoiceConvertUom('product', productDetail.key)
                       "
+                      [disabled]="formValues.status &&
+                          formValues.status?.name === 'Cancelled'"
                       [compareWith]="compareUomObjects"
                       [disableOptionCentering]="true"
                       panelClass="general-information-select-container"
