@@ -56,7 +56,7 @@ body {
       // display: none;
     }
     ag-grid-angular {
-      height: calc(100vh - 235px) !important;
+      height: calc(100vh - 245px) !important;
     }
   }
 }
@@ -7004,6 +7004,8 @@ tr.title {
             input,
             textarea {
               color: #ffffff;
+              font-size: 16px;
+              font-family: 'Roboto';              
               &::placeholder {
                 color: #527292;
               }
@@ -7776,6 +7778,8 @@ tr.title {
             input,
             textarea {
               color: #364150;
+              font-size: 16px;
+              font-family: 'Roboto';               
               &::placeholder {
                 color: #527292;
               }
