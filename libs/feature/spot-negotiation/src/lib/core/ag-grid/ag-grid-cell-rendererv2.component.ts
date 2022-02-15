@@ -660,7 +660,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   paramsDataClone: any;
   resetPopup: any;
   generalTenantSettings: any;
-  baseUomId: any;
+  baseCurrencyId: any;
   additionalCostList: any[] = [];
   constructor(
     @Inject(DecimalPipe)
@@ -677,7 +677,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     private spinner: NgxSpinnerService
   ) {
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
-    this.baseUomId = this.generalTenantSettings.tenantFormats.currency.id;
+    this.baseCurrencyId = this.generalTenantSettings.tenantFormats.currency.id;
   }
 
   ngOnInit() {
@@ -1304,7 +1304,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             amount: e.amount / res.exchangeRateValue,
             targetDifference: e.targetDifference / res.exchangeRateValue,
             currencyId: toCurrency,
-            exchangeRateToBaseCurrency: res.exchangeRateValue
+            exchangeRateToBaseCurrency: this.baseCurrencyId === toCurrency? 1 : res.exchangeRateValue
           };
         });
         let payload = {
