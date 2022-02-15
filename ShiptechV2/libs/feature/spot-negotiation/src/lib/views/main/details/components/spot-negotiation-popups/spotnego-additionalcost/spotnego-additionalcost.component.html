@@ -366,7 +366,6 @@
     <table>
       <thead>
         <tr>
-          <th class="increment-circle-button" style="width: 30px;"></th>
           <th class="text-left">Cost Name</th>
           <th class="text-left">Cost Type</th>
           <th class="text-left ">Max Qty</th>
@@ -382,8 +381,8 @@
         </tr>
       </thead>
     </table>
-    <div style="height: 107px; overflow-y: scroll;">
-      <table>
+    <div style="max-height: 120px; overflow-y: scroll;">
+      <table class="table table-striped w-auto">
         <tbody>
           <ng-container
             *ngFor="
@@ -392,9 +391,9 @@
             "
           >
             <tr class="border-bottom" *ngIf="!locationAdditionalCost.isDeleted">
-              <td style="width: 30px;"></td>
-              <td class="text-left">
-                <div class="d-inline-block text-truncate" style="max-width: 150px;">
+              <!-- <td style="width: 30px;"></td> -->
+              <td class="text-left" [matTooltip]="locationAdditionalCost.costName">
+                <div class="d-inline-block text-truncate" style="max-width: 100px;text-overflow: ellipsis;overflow-x: hidden;">
                   {{
                     locationAdditionalCost.costName
                   }}
