@@ -383,7 +383,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
       this.portCol,
       this.etaCol,
       this.productCol,
-      this.specGroupName,
+       this.specGroupName,
       this.labStatusCol,
       this.claimRaisedCol,
       this.createdByCol,
