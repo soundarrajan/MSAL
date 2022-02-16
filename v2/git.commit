@@ -1,11 +1,11 @@
-﻿commit d4527f8f65a104a949cf701605218b85c8e4c14f
+﻿commit ded345803b4d186c2bd9c583d945683576e9cfaf
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Feb 16 10:00:04 2022 +0000
+Date:   Wed Feb 16 13:20:28 2022 +0000
 
-    Merged PR 15944: Remove spinner loader
+    Merged PR 15961: Add Spec Group column in labs list
     
-    Remove spinner loader
+    Add Spec Group column in labs list
     
-    Related work items: #38611
+    Related work items: #38520
 
 branch: master
