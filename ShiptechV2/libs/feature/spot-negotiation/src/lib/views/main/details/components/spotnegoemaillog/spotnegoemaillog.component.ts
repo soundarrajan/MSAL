@@ -11,6 +11,7 @@ import { Select, Store } from '@ngxs/store';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { GridOptions } from 'ag-grid-community';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { SetRequestGroupId } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -144,7 +145,8 @@ export class SpotnegoemaillogComponent implements OnInit {
 
   getEmailLogs() {
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
-
+    this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
+    
     this.spotNegotiationService
       .getRequestGroup(groupRequestIdFromUrl)
       .subscribe((res: any) => {
