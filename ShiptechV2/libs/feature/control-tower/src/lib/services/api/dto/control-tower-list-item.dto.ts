@@ -132,6 +132,7 @@ export interface IControlTowerQualityLabsItemDto {
   port: string;
   recentEta: string;
   product: IDisplayLookupDto;
+  specGroupName: string;
   status: IDisplayLookupDto;
   claimsRaised: boolean;
   createdBy: IDisplayLookupDto;
