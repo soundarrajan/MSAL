@@ -1,11 +1,11 @@
-﻿commit c15cdd9614c87b522fdabff6966b5330ad779946
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Tue Feb 15 05:19:45 2022 +0000
+﻿commit d4527f8f65a104a949cf701605218b85c8e4c14f
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Feb 16 10:00:04 2022 +0000
 
-    Merged PR 15922: 36696-SO-futureRequestETAFilterFix
+    Merged PR 15944: Remove spinner loader
     
-    36696-SO-futureRequestETAFilterFix
+    Remove spinner loader
     
-    Related work items: #36696
+    Related work items: #38611
 
 branch: master
