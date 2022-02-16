@@ -1,11 +1,9 @@
-﻿commit ded345803b4d186c2bd9c583d945683576e9cfaf
+﻿commit c647c8f5aef3b710a55644b9babfab18ae774c6a
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Feb 16 13:20:28 2022 +0000
+Date:   Wed Feb 16 13:32:35 2022 +0000
 
-    Merged PR 15961: Add Spec Group column in labs list
+    Merged PR 15962: Changed useAdal to false
     
-    Add Spec Group column in labs list
-    
-    Related work items: #38520
+    Changed useAdal to false
 
 branch: master
