@@ -222,6 +222,17 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     width: 200
   };
 
+  specGroupName: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
+    headerName: ControlTowerQualityLabsListColumnsLabels.specGroupName,
+    headerTooltip: ControlTowerQualityLabsListColumnsLabels.specGroupName,
+    colId: ControlTowerQualityLabsListColumns.specGroupName,
+    field: model('specGroupName'),
+    dtoForExport: ControlTowerQualityLabsListExportColumns.specGroupName,
+    tooltip: params =>
+      params.value ? this.format.htmlDecode(params.value) : '',
+    width: 200
+  };
+
   labStatusCol: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.labStatus,
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.labStatus,
@@ -372,6 +383,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
       this.portCol,
       this.etaCol,
       this.productCol,
+      this.specGroupName,
       this.labStatusCol,
       this.claimRaisedCol,
       this.createdByCol,
