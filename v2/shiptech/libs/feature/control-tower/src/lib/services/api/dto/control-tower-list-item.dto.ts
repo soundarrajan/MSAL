@@ -139,6 +139,7 @@ export interface IControlTowerQualityLabsItemDto {
   product: IDisplayLookupDto;
   specGroupName: string;
   status: IDisplayLookupDto;
+  densityDifference: boolean;
   claimsRaised: boolean;
   createdBy: IDisplayLookupDto;
   createdDate: string;

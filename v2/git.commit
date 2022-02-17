@@ -1,11 +1,11 @@
-﻿commit e16bddeed4426ab5b5f1c0d7f458a3b1de9bb655
-Author: Prabaharan <prabaharan.p@Inatech.com>
-Date:   Thu Feb 17 11:44:08 2022 +0000
+﻿commit 00288a41bb6ce5ea45c0659da2bafbc2bd3a4ec3
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Thu Feb 17 15:25:25 2022 +0000
 
-    Merged PR 15986: #38524: Control Tower : To capture additional details in Residue View -FE
+    Merged PR 15989: CT Lab list - Density difference related changes
     
-    #38524: Control Tower : To capture additional details in Residue View - Sludge Difference.FE Changes Updated
+    CT Lab list - Density difference related changes
     
-    Related work items: #38524
+    Related work items: #38518
 
 branch: master
