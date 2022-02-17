@@ -246,6 +246,17 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     width: 200
   };
 
+  densityDifference: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
+    headerName: ControlTowerQualityLabsListColumnsLabels.densityDifference,
+    headerTooltip: ControlTowerQualityLabsListColumnsLabels.densityDifference,
+    colId: ControlTowerQualityLabsListColumns.densityDifference,
+    field: model('densityDifference'),
+    valueFormatter: params => (params.value ? 'Yes' : 'No'),
+    dtoForExport: ControlTowerQualityLabsListExportColumns.densityDifference,
+    tooltip: params => (params.value ? 'Yes' : 'No'),
+    width: 150
+  };
+
   claimRaisedCol: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.claimRaised,
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.claimRaised,
@@ -385,6 +396,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
       this.productCol,
       this.specGroupName,
       this.labStatusCol,
+      this.densityDifference,
       this.claimRaisedCol,
       this.createdByCol,
       this.createdDateCol,
