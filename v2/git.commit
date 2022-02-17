@@ -1,9 +1,11 @@
-﻿commit c647c8f5aef3b710a55644b9babfab18ae774c6a
+﻿commit 56c4e0b027dd46a8b45dd30bcf16c1d4c8fc16be
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Feb 16 13:32:35 2022 +0000
+Date:   Thu Feb 17 05:19:39 2022 +0000
 
-    Merged PR 15962: Changed useAdal to false
+    Merged PR 15972: Fix spec group column
     
-    Changed useAdal to false
+    Fix spec group column
+    
+    Related work items: #38520
 
 branch: master

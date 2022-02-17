@@ -259,7 +259,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       mappedKey: ControlTowerResidueSludgeDifferenceListColumns.surveyorDate,
       systemDefaultFilters: this.SystemDefaultFilters
     },
-    'control-tower-quality-labs-list-grid-8': {
+    'control-tower-quality-labs-list-grid-9': {
       timeDeltaValue: 6,
       timeDeltaUnit: 'days',
       mappedKey: ControlTowerQualityLabsListColumns.createdDate,
