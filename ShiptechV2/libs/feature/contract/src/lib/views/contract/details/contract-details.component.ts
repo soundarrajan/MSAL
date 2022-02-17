@@ -413,6 +413,15 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.formValues.hasBeenExtended = null;
           this.formValues.lastModifiedByUser = null;
           this.formValues.lastModifiedOn = null;
+          this.formValues.customNonMandatoryAttribute1 = null;
+          this.formValues.customNonMandatoryAttribute2 = null;
+          this.formValues.customNonMandatoryAttribute3 = null;
+          this.formValues.customNonMandatoryAttribute4 = null;
+          this.formValues.customNonMandatoryAttribute5 = null;
+          this.formValues.customNonMandatoryAttribute6 = null;
+          this.formValues.customNonMandatoryAttribute7 = null;
+          this.formValues.customNonMandatoryAttribute8 = null;
+          this.formValues.customNonMandatoryAttribute9 = null;
           this.formValues.id = 0;
           if (typeof this.formValues.name != 'undefined') {
             this.formValues.name = null;
