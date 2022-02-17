@@ -1,11 +1,11 @@
-﻿commit 00288a41bb6ce5ea45c0659da2bafbc2bd3a4ec3
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Thu Feb 17 15:25:25 2022 +0000
+﻿commit 8ad57a5c2b41f826146c75e1efe9435f0cd8efe1
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Thu Feb 17 15:56:33 2022 +0000
 
-    Merged PR 15989: CT Lab list - Density difference related changes
+    Merged PR 15990: Add formatter to vessel to watch
     
-    CT Lab list - Density difference related changes
+    Add formatter to vessel to watch
     
-    Related work items: #38518
+    Related work items: #38470
 
 branch: master

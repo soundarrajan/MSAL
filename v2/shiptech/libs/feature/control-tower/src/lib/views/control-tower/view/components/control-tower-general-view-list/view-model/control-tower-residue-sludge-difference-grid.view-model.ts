@@ -265,6 +265,8 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     cellRenderer: params => {
       if (params.data) {
         const a = document.createElement('span');
+        a.classList.add("vessel-to-watch");
+        params.value ? a.classList.add("yes") : a.classList.add("no");
         a.innerHTML = params.value ? 'Yes' : 'No';
         return a;
       }
