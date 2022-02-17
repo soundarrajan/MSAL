@@ -1,11 +1,11 @@
-﻿commit 16eb3df29a06c9c85ae6551be9d960239dee004f
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Feb 17 11:19:41 2022 +0000
+﻿commit e16bddeed4426ab5b5f1c0d7f458a3b1de9bb655
+Author: Prabaharan <prabaharan.p@Inatech.com>
+Date:   Thu Feb 17 11:44:08 2022 +0000
 
-    Merged PR 15979: set customMandatoryFields as null on copy contract
+    Merged PR 15986: #38524: Control Tower : To capture additional details in Residue View -FE
     
-    set customMandatoryFields as null on copy contract
+    #38524: Control Tower : To capture additional details in Residue View - Sludge Difference.FE Changes Updated
     
-    Related work items: #37855
+    Related work items: #38524
 
 branch: master
