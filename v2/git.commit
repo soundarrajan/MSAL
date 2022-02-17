@@ -1,11 +1,11 @@
-﻿commit 56c4e0b027dd46a8b45dd30bcf16c1d4c8fc16be
+﻿commit 16eb3df29a06c9c85ae6551be9d960239dee004f
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Feb 17 05:19:39 2022 +0000
+Date:   Thu Feb 17 11:19:41 2022 +0000
 
-    Merged PR 15972: Fix spec group column
+    Merged PR 15979: set customMandatoryFields as null on copy contract
     
-    Fix spec group column
+    set customMandatoryFields as null on copy contract
     
-    Related work items: #38520
+    Related work items: #37855
 
 branch: master
