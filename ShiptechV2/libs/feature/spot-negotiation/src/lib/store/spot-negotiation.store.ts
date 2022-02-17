@@ -494,9 +494,9 @@ export class SpotNegotiationStore {
     { payload }: DelinkRequest
   ) {
     const state = getState();
-    let remainingRequests = state.requests.filter(e => e.id != payload);
     patchState({
-      requests: remainingRequests
+      requests: state.requests.filter(e => e.id != payload),
+      locationsRows: state.locationsRows.filter(e => e.requestId != payload)
     });
   }
   // Rows lists

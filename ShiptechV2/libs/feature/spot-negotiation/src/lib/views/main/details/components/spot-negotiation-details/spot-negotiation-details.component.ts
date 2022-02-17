@@ -325,6 +325,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
     };
   }
+
   isselectedrowfun(row, isSelected) {
     if (isSelected) {
       row.isSelected = true;
@@ -719,12 +720,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           if (findElementIndex != -1) {
             updatedRow.requestOffers[findElementIndex].cost = offerLine.cost;
             updatedRow.requestOffers[findElementIndex].price = offerLine.price;
-            updatedRow.requestOffers[findElementIndex].totalPrice =
-              offerLine.totalPrice;
-            updatedRow.requestOffers[findElementIndex].amount =
-              offerLine.amount;
-            updatedRow.requestOffers[findElementIndex].targetDifference =
-              offerLine.targetDifference;
+            updatedRow.requestOffers[findElementIndex].totalPrice = offerLine.totalPrice;
+            updatedRow.requestOffers[findElementIndex].amount = offerLine.amount;
+            updatedRow.requestOffers[findElementIndex].targetDifference = offerLine.targetDifference;
           }
         }
         const currentLocation = this.locations.find(
@@ -1774,6 +1772,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         }
       });
   }
+
   isStemmedproduct(rowData) {
     const locations = this.store.selectSnapshot(
       (state: SpotNegotiationStoreModel) => {

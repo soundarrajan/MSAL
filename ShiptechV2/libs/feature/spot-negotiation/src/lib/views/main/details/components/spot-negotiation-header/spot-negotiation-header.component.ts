@@ -653,8 +653,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       );
       response.subscribe((res: any) => {
         if (res?.payload?.length > 0) {
-          this.visibleRequestList = cloneDeep(res.payload);
-        }
+          this.visibleRequestList = this.removeDuplicatesRequest(
+              res.payload,
+              'requestName'
+            );
+          }
+          this.changeDetector.detectChanges();
       });
     }
   }

@@ -124,6 +124,7 @@
                     <span class="search-product-lookup"> </span>
                     <input
                       matInput
+                      (paste)="searchRequest($event.target.value)"
                       (input)="searchRequest($event.target.value)"
                       placeholder="Search and select Request"
                       class="search-product-input"
