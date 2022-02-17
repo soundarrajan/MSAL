@@ -72,7 +72,8 @@ export const SpotNegotiationApiPaths = {
   updateNotes: `api/masters/documentupload/notes`,
   updateNegotiationComments: `groups/updateComments`,
   updateSellerComment:`RFQ/UpdateSellerComments`,
-  copyComments: `groups/copyComments`
+  copyComments: `groups/copyComments`,
+  getOfferPriceHistory: `Price/getOfferPriceHistory`,
 };
 
 @Injectable({
@@ -1008,7 +1009,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         )
       );
   }
-  
+
   @ObservableException()
   UpdateSellerComments(payload: any): Observable<any> {
     return this.http
@@ -1047,6 +1048,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         ? body.error.ErrorMessage
         : body.error.errorMessage
     );
+  }
+
+  @ObservableException()
+  getOfferPriceHistory(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getOfferPriceHistory}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+          )
+        )
+      );
   }
 }
 
