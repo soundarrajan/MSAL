@@ -247,9 +247,14 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     dtoForExport:
       ControlTowerQuantitySupplyDifferenceListExportColumns.vesselToWatch,
     cellRenderer: params => {
-      const a = document.createElement('span');
-      a.innerHTML = params.value ? 'Yes' : 'No';
-      return a;
+      if (params.data) {
+        const a = document.createElement('span');
+        a.classList.add("vessel-to-watch");
+        params.value ? a.classList.add("yes") : a.classList.add("no");
+        a.innerHTML = params.value ? 'Yes' : 'No';
+        return a;
+      }
+      return null;
     },
     cellClass: 'cell-background',
     tooltip: params => {
