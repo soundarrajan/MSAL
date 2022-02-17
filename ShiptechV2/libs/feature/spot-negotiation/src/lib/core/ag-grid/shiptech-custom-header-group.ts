@@ -190,7 +190,7 @@ import _, { cloneDeep } from 'lodash';
             }}</span>
             <span class="image"></span>
           </div>
-          <div class="offer" (click)="offerpricehistorypopup()">
+          <div class="offer" (click)="offerpricehistorypopup(params)">
             <span class="title">Offer</span>
             <span class="image"></span>
           </div>
@@ -475,11 +475,17 @@ export class ShiptechCustomHeaderGroup {
     }
   }
 
-  offerpricehistorypopup(): void {
+  offerpricehistorypopup(params: any) {
     const dialogRef = this.dialog.open(SpotnegoOfferpricehistoryComponent, {
       width: '500vw',
       height: '90vh',
-      panelClass: 'additional-cost-popup'
+      panelClass: 'additional-cost-popup' ,
+      data :{
+        LocationName: this.currentRequestInfo.requestLocations[0].locationName,
+        ProductName: params.product.productName,
+        LocationId: this.currentRequestInfo.requestLocations[0].locationId,
+        ProductId:  params.product.productId,
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -623,4 +623,10 @@ export class SpotNegotiationService extends BaseStoreService
     }
     return futureRow;
   }
+
+  @ObservableException()
+  getOfferPrice(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getOfferPriceHistory(payload);
+  }
+
 }

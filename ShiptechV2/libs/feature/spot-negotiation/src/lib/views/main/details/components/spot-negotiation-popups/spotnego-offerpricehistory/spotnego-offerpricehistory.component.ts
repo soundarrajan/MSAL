@@ -1,7 +1,9 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef,  } from '@angular/core';
+import { Component, OnInit, Inject} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import * as Highcharts from "highcharts";
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-spotnego-offerpricehistory',
@@ -9,9 +11,9 @@ import * as Highcharts from "highcharts";
   styleUrls: ['./spotnego-offerpricehistory.component.css']
 })
 export class SpotnegoOfferpricehistoryComponent implements OnInit {
- 
+
     highcharts = Highcharts;
-    chartOptions = {   
+    chartOptions = {
        chart: {
           height: 600,
           type: "spline"
@@ -21,17 +23,17 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
        },
        xAxis:{
           lineWidth: 1,
-          lineColor: '#364150',  
+          lineColor: '#364150',
           categories:["Offer 1","Offer 2","Offer 3","Offer 4","Offer 5"]
        },
-       yAxis: {  
-          tickPixelInterval: 1,       
+       yAxis: {
+          tickPixelInterval: 1,
           title:{
              text:""
           },
-          gridLineWidth: 0,  
+          gridLineWidth: 0,
           lineWidth: 1,
-          lineColor: '#364150',    
+          lineColor: '#364150',
           plotLines: [{
             color: '#ED6161',
             width: 1,
@@ -98,7 +100,7 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
             },
             data: [519.1,518.7,517.0,516.8,'']
         }
-       
+
     ],
     legend: {
       symbolWidth: 1,
@@ -124,26 +126,48 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
   isBtnActive: boolean = false;
   isButtonVisible=true;
   iscontentEditable=false;
+  locationId: number;
+  productId: number;
+  locationName: string;
+  productName: string ;
+  locationData: any;
 
-  ngOnInit() { 
-    // this.scrollToBottom();
+  constructor(public dialogRef: MatDialogRef<SpotnegoOfferpricehistoryComponent>,
+     @Inject(MAT_DIALOG_DATA) public data: any,
+     private spotNegotiationService : SpotNegotiationService,
+     private spinner: NgxSpinnerService,
+     ) {
+        this.productId = data.ProductId;
+        this.locationId = data.LocationId;
+        this.locationName = data.LocationName;
+        this.productName = data.ProductName;
+
+   }
+
+   ngOnInit() {
+     let payload = {
+       locationId : this.locationId,
+       productId : this.productId
+     };
+    this.spinner.show();
+    const response =  this.spotNegotiationService.getOfferPrice(payload);
+    response.subscribe((res:any)=>{
+      this.spinner.hide();
+         this.locationData = res.marketPriceHistory;
+    });
 }
-  
-  constructor(public dialogRef: MatDialogRef<SpotnegoOfferpricehistoryComponent>,    @Inject(MAT_DIALOG_DATA) public data: any) { }
-   
+
   closeDialog() {
       this.dialogRef.close();
-    
-    } 
-      
 
- 
+    }
+
   tabledatas2=[ ];
   newtabledata:any={}
   addNew(){
         this.tabledatas2.push(this.newtabledata)
         this.newtabledata = {};
-        // this.scrollToBottom();    
+        // this.scrollToBottom();
   }
   delete(i){
     this.tabledatas2.splice(i,1);
@@ -151,8 +175,8 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
   toggleShow() {
 
     this.isShown = ! this.isShown;
-    
+
     }
-  
+
 
 }
