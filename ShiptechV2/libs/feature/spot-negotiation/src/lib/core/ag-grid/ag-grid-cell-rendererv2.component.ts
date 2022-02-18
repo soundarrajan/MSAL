@@ -1491,6 +1491,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             item.locationId === this.params.data.locationId &&
             item.sellerCounterpartyId ===
               this.params.data.sellerCounterpartyId &&
+              item.requestId ===
+              this.params.data.requestId  &&
             item.physicalSupplierCounterpartyId === this.phySupplierId &&
             item.id !== this.params.data.id
         );

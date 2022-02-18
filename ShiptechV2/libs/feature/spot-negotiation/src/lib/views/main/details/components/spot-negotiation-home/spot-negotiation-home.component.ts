@@ -556,14 +556,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
           reqIdForLocation = reqIdForLocation ? reqIdForLocation + ', ' + req.name : req.name;
         }
         reqLocation.forEach(reqLoc => {
-          var reqOffers = locationsRows.filter(lr => lr.requestLocationId == reqLoc.id && lr.requestOffers && selectedSellerRows.some(s => s.SellerId == lr.sellerCounterpartyId));
+          var reqOffers = locationsRows.filter(lr => lr.requestLocationId == reqLoc.id && lr.requestOffers && selectedSellerRows.some(s => s.SellerId == lr.sellerCounterpartyId && lr.physicalSupplierCounterpartyId == s.physicalSupplierCounterpartyId));
           if (reqOffers.length == 0) {
-            reqIdwithLocationForSeller = reqIdwithLocationForSeller ? reqIdwithLocationForSeller + ', ' + req.name + ' - ' + reqLoc.name : req.name + ' - ' + reqLoc.locationName;
+            reqIdwithLocationForSeller = reqIdwithLocationForSeller ? reqIdwithLocationForSeller + ', ' + req.name + ' - ' + reqLoc.locationName : req.name + ' - ' + reqLoc.locationName;
           }
           reqOffers.forEach(locRows => {
             if (
               tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
-              !locRows.physicalSupplierCounterpartyId && selectedSellerRows.filter(x => x.LocationID == reqLoc.locationId && x.SellerId == locRows.sellerCounterpartyId).length > 0
+              !locRows.physicalSupplierCounterpartyId && selectedSellerRows.filter(x => x.LocationID == reqLoc.locationId && x.SellerId == locRows.sellerCounterpartyId && (locRows.physicalSupplierCounterpartyId == null || locRows.physicalSupplierCounterpartyId == '') ).length > 0
             ) {
               if (reqIdwithSellerName)
                 reqIdwithSellerName = reqIdwithSellerName + ', REQ ' + locRows.requestId.toString() + '-' + locRows.sellerCounterpartyName;
@@ -622,7 +622,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
       if (reqIdwithLocationForSeller) {
         this.toaster.error(
-          'Selected seller(s) does not exists in  ' + reqIdwithLocationForSeller
+          'Selected seller(s) does not exists in  ' + reqIdwithLocationForSeller + ' with same supplier(s).'
         );
         return;
       }
