@@ -2059,6 +2059,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 	ctrl.data.products[index].contractId = null;
                 	ctrl.data.products[index].formula = null;
                 	ctrl.data.products[index].price = null;
+                    ctrl.data.products[index].originalPrice = null;
 					ctrl.data.products[index].agreementType = null;
 					ctrl.data.products[index].physicalSupplier = null;
 					ctrl.data.products[index].pricingType = null;
@@ -3598,6 +3599,11 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 				product.referencePrice = parseInt(product.originalPrice);
 			}
             product.price = $filter("number")(convertDecimalSeparatorStringToNumber(product.originalPrice), product.pricePrecision);
+            if(product.originalPrice) {
+                product.price = $filter("number")(convertDecimalSeparatorStringToNumber(product.originalPrice), product.pricePrecision);
+            } else {
+                product.price = null;
+            }            
             product.amount = calculateProductAmount(product);
             updateOrderSummary();
             ctrl.evaluateAdditionalCostList();
