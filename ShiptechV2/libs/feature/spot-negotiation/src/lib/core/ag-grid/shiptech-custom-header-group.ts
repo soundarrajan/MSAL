@@ -636,15 +636,19 @@ export class ShiptechCustomHeaderGroup {
     if (value == 0) {
       return type == 'benchmark' ? value : '--';
     }
-
-    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let format = /[^\d|\-+|\.+]/g;
+    let plainNumber;
+    
+    if(format.test(value.toString()) && type == 'livePrice'){
+      this.toastr.warning('Live price should be a numeric value ')
+      plainNumber='';
+    }else{
+      plainNumber= value.toString().replace(format, '');
+    }
 
     const number = parseFloat(plainNumber);
 
     if (isNaN(number)) {
-      type == 'livePrice'
-        ? this.toastr.warning('Live price should be a numeric value ')
-        : '';
       return null;
     }
 
