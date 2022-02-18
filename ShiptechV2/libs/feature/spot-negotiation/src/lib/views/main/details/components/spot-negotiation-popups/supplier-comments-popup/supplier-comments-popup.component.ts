@@ -23,6 +23,8 @@ export class SupplierCommentsPopupComponent implements OnInit {
   ) {
     this.supplierCommentDetails = data;
     this.requestInfo = _.cloneDeep(this.supplierCommentDetails);
+    this.requestInfo.sellerCounterpartyName = this.transform(
+      this.requestInfo.sellerCounterpartyName);
     this.requestInfo.sellerComments = this.transform(
       this.requestInfo.sellerComments
     );
@@ -76,8 +78,8 @@ export class SupplierCommentsPopupComponent implements OnInit {
   //Update the store
   getLocationRowsAddSellerComment(locationrow, str) {
     locationrow.forEach((element, key) => {
-      if (element.id == this.supplierCommentDetails.id && str == 'S') {
-        element.sellerComments = str == 'S' ? this.requestInfo.sellerComments : this.supplierCommentDetails;
+      if (element.id == this.supplierCommentDetails.id) {
+        element.sellerComments = str == 'S' ? this.requestInfo.sellerComments : this.supplierCommentDetails.sellerComments;
         element.isSellerPortalComments = false;
       }
     });
