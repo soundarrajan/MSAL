@@ -11388,7 +11388,7 @@ width: 25px;
                       overflow: hidden;
                       text-overflow: ellipsis;
                       white-space: nowrap;
-                      &.edit{
+                       &.edit{
                         span{
                           // width: 80%;
                           overflow: hidden;
@@ -11396,7 +11396,7 @@ width: 25px;
                           outline: none;
                         }
                         height: 20px;
-                        border: 1px dashed #000000;
+                        //  border: 1px dashed #000000;
                         position: relative;
                         top: 8px;
                         display: flex;
@@ -11441,7 +11441,7 @@ width: 25px;
                         display: none;
                         content:url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTk5OTkgMEMyLjIzNzUxIDAgMCAyLjIzNzUxIDAgNUMwIDcuNzYyNDkgMi4yMzc1MSAxMCA0Ljk5OTk5IDEwQzcuNzYyNDcgMTAgMTAgNy43NjI1MSAxMCA1QzEwIDIuMjM3NDkgNy43NjI0OSAwIDQuOTk5OTkgMFpNNy40OTk5OSA1LjUwMDAySDUuNVY3LjUwMDAxSDQuNVY1LjUwMDAySDIuNTAwMDFWNC41MDAwMUg0LjVWMi41MDAwMUg1LjVWNC41MDAwMUg3LjQ5OTk5VjUuNTAwMDJaIiBmaWxsPSIjMzMzMzMzIi8+Cjwvc3ZnPgo=');
                       }
-                      &:hover{
+                      &:hover{                                                 
                         .addButton{
                           display: block;
                         }
@@ -11667,8 +11667,6 @@ width: 25px;
       justify-content: space-between;
       &.active{
         visibility: visible !important;
-        //border: none;
-        border: 1px dashed #000000 !important;
         border-radius: 2px;
         height: 25px;
         width: 100%;
@@ -13229,9 +13227,9 @@ width: 25px;
 .add-new-request-menu{
   &.mat-menu-panel{
     overflow: hidden;
-    height: 412px;
+      height: 412px;
     margin-top: 10px;
-  }
+    }
   .expansion-popup{
     .proceed-div{
       border-top: 1px solid;
