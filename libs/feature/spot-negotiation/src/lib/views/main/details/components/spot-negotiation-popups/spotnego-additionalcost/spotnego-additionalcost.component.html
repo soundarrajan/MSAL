@@ -348,7 +348,7 @@
               </td>
               <td class="text-left cell-dashed-border">
                 <div class="non-editable-container-text-left">
-                  {{ priceFormatValue(offerAdditionalCost.ratePerUom) }}
+                  {{ priceFormatValue(offerAdditionalCost.totalAmount / offerAdditionalCost.maxQuantity) }}
                 </div>
               </td>
             </tr>
