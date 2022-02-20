@@ -662,6 +662,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   generalTenantSettings: any;
   baseCurrencyId: any;
   additionalCostList: any[] = [];
+  locationRowsAcrossRequest: any;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -694,6 +695,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.tenantService = spotNegotiation.tenantConfigurations;
+      this.locationRowsAcrossRequest = spotNegotiation.locationsRows;
       this.currencyList = spotNegotiation.staticLists.filter(
         el => el.name == 'Currency'
       )[0].items;
@@ -948,10 +950,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   openEmailPreview(params) {
-    // if (this.currentRequestInfo.requestLocations.filter(loc => loc.id === params.data.requestLocationId
-    // ).map(prod =>
+    let sellerData = this.locationRowsAcrossRequest.filter(s => s.sellerCounterpartyId == params.data.sellerCounterpartyId && s.requestId == params.data.requestId);
+    // let products = this.currentRequestInfo.requestLocations.filter(loc => this.locationRowsAcrossRequest.some(s => s.sellerCounterpartyId == params.data.sellerCounterpartyId && s.requestId == params.data.requestId && s.requestLocationId ==  loc.id)).map(prod =>
     //   prod.requestProducts.map((e, i) => params.data['checkProd' + (i + 1)] ? e.id : undefined).filter(x => x)
-    // )[0].length == 0) {
+    // ) 
+    
+    // if (products.length == 0) {
     //   this.toastr.error('Please select a product against the seller in order to preview email.');
     //   return;
     // }
@@ -959,7 +963,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       width: '80vw',
       height: '90vh',
       panelClass: 'additional-cost-popup',
-      data: params.data
+      data: sellerData
     });
 
     dialogRef.afterClosed().subscribe(result => {});
