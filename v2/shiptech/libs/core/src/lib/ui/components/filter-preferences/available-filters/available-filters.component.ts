@@ -149,9 +149,8 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
       if (!this.systemFilters) {
         this.systemFilters = [];
       }
-      this.systemFilters.unshift({
-        label: 'Default'
-      });
+      this.filterItems[0].label = this.filterItems[0].name;
+      this.systemFilters.unshift(this.filterItems[0]);
       this.hasAvailableFilterItems =
         !this.filterItems.some(item => !item.isDefault && !item.isClear) &&
         !this.systemFilters;
