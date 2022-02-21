@@ -80,7 +80,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
-      if(this.currentRequestInfo && this.navBar != this.currentRequestInfo.id){
+      if(this.currentRequestInfo && this.negoNavBarChild && this.navBar != this.currentRequestInfo.id){
         this.navBar = this.currentRequestInfo.id;
         this.negoNavBarChild.createNavBarIds(this.currentRequestInfo.id);
       }      
