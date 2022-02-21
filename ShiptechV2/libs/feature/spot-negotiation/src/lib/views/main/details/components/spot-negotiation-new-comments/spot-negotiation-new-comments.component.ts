@@ -436,7 +436,5 @@ export class SpotNegotiationNewCommentsComponent
         }, 1);
       }
     }
-    console.log(this.requestInfo);
-    this.changeDetector.detectChanges();
   }
 }
