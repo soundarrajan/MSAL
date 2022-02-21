@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -19,7 +20,8 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-spot-negotiation-new-comments',
   templateUrl: './spot-negotiation-new-comments.component.html',
-  styleUrls: ['./spot-negotiation-new-comments.component.css']
+  styleUrls: ['./spot-negotiation-new-comments.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpotNegotiationNewCommentsComponent
   implements OnInit, AfterViewInit {
@@ -392,35 +394,47 @@ export class SpotNegotiationNewCommentsComponent
     this.requestVesselAgentCommentsChecked = false;
   }
 
-  checkCommentsLimit(type) {
+  checkCommentsLimit(comments, type) {
     if (type === 'general') {
-      if (this.requestInfo.negoGeneralComments.length === 1000) {
+      if (comments.length > 1000) {
         this.toastr.warning('Is exists the character limit of 1000');
-        return;
+        setTimeout(() => {
+          this.requestInfo.negoGeneralComments = _.cloneDeep(
+            comments.substr(0, 1000)
+          );
+          this.changeDetector.detectChanges();
+        }, 1);
       }
     } else if (type == 'performance') {
-      if (this.requestInfo.negoPerformanceComments.length === 1000) {
+      if (comments.length > 1000) {
         this.toastr.warning('Is exists the character limit of 1000');
-        return;
+        setTimeout(() => {
+          this.requestInfo.negoPerformanceComments = _.cloneDeep(
+            comments.substr(0, 1000)
+          );
+          this.changeDetector.detectChanges();
+        }, 1);
       }
     } else if (type == 'supplier') {
-      if (this.requestInfo.negoSupplierComments.length === 1000) {
+      if (comments.length > 1000) {
         this.toastr.warning('Is exists the character limit of 1000');
-        return;
+        setTimeout(() => {
+          this.requestInfo.negoSupplierComments = _.cloneDeep(
+            comments.substr(0, 1000)
+          );
+          this.changeDetector.detectChanges();
+        }, 1);
       }
     } else if (type == 'vesselAndAgent') {
-      if (this.requestInfo.negoVesselAgentComments.length === 1000) {
+      if (comments.length > 1000) {
         this.toastr.warning('Is exists the character limit of 1000');
-        return;
+        setTimeout(() => {
+          this.requestInfo.negoVesselAgentComments = _.cloneDeep(
+            comments.substr(0, 1000)
+          );
+          this.changeDetector.detectChanges();
+        }, 1);
       }
-    }
-  }
-
-  onPaste(event: ClipboardEvent) {
-    let clipboardData = event.clipboardData || (<any>window).clipboardData;
-    let pastedText = clipboardData.getData('text');
-    if (pastedText.length > 1000) {
-      this.toastr.warning('Is exists the character limit of 1000');
     }
   }
 }
