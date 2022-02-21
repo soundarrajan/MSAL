@@ -395,24 +395,32 @@ export class SpotNegotiationNewCommentsComponent
   checkCommentsLimit(type) {
     if (type === 'general') {
       if (this.requestInfo.negoGeneralComments.length === 1000) {
-        this.toastr.warning('The character limit is 1000!');
+        this.toastr.warning('Is exists the character limit of 1000');
         return;
       }
     } else if (type == 'performance') {
       if (this.requestInfo.negoPerformanceComments.length === 1000) {
-        this.toastr.warning('The character limit is 1000!');
+        this.toastr.warning('Is exists the character limit of 1000');
         return;
       }
     } else if (type == 'supplier') {
       if (this.requestInfo.negoSupplierComments.length === 1000) {
-        this.toastr.warning('The character limit is 1000!');
+        this.toastr.warning('Is exists the character limit of 1000');
         return;
       }
     } else if (type == 'vesselAndAgent') {
       if (this.requestInfo.negoVesselAgentComments.length === 1000) {
-        this.toastr.warning('The character limit is 1000!');
+        this.toastr.warning('Is exists the character limit of 1000');
         return;
       }
+    }
+  }
+
+  onPaste(event: ClipboardEvent) {
+    let clipboardData = event.clipboardData || (<any>window).clipboardData;
+    let pastedText = clipboardData.getData('text');
+    if (pastedText.length > 1000) {
+      this.toastr.warning('Is exists the character limit of 1000');
     }
   }
 }

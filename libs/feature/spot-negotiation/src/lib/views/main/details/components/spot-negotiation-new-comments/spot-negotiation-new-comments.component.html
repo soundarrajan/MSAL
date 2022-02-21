@@ -108,6 +108,7 @@
                   maxlength="1000"
                   (blur)="saveComment('general')"
                   (keypress)="checkCommentsLimit('general')"
+                  (paste)="onPaste($event)"
                 ></textarea>
                 <div class="char-left">
                   {{ 1000 - requestInfo?.negoGeneralComments?.length }}
@@ -148,6 +149,7 @@
                   maxlength="1000"
                   (blur)="saveComment('performance')"
                   (keypress)="checkCommentsLimit('performance')"
+                  (paste)="onPaste($event)"
                 ></textarea>
                 <div class="char-left">
                   {{ 1000 - requestInfo?.negoPerformanceComments?.length }}
@@ -185,6 +187,7 @@
                   maxlength="1000"
                   (blur)="saveComment('supplier')"
                   (keypress)="checkCommentsLimit('supplier')"
+                  (paste)="onPaste($event)"
                 ></textarea>
                 <div class="char-left">
                   {{ 1000 - requestInfo?.negoSupplierComments?.length }}
@@ -225,6 +228,7 @@
                   maxlength="1000"
                   (blur)="saveComment('vesselAndAgent')"
                   (keypress)="checkCommentsLimit('vesselAndAgent')"
+                  (paste)="onPaste($event)"
                 ></textarea>
                 <div class="char-left">
                   {{ 1000 - requestInfo?.negoVesselAgentComments?.length }}
