@@ -469,6 +469,14 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.updateNegotiationComments(payload);
   }
 
+
+  /**
+  * @param payload
+  */
+   UpdateSellerComments(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.UpdateSellerComments(payload);
+  }
+
   /**
    * @param payload
    */
@@ -526,7 +534,7 @@ export class SpotNegotiationService extends BaseStoreService
     return this.getRequestList(payload);
   }
 
-  formatRowData(row, product, field, newValue, currentLocation, isPriceCopied) {
+  formatRowData(row, product, field, newValue, currentLocation, isPriceCopied, currencyId, exchangeRateToBaseCurrency) {
     const productDetails = this.getRowProductDetails(row, product.id);
 
     //Change with new value
@@ -538,10 +546,10 @@ export class SpotNegotiationService extends BaseStoreService
       default:
         break;
     }
-
+    productDetails.exchangeRateToBaseCurrency = isPriceCopied? (exchangeRateToBaseCurrency??1) : (productDetails.exchangeRateToBaseCurrency?? 1); 
     // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
     productDetails.totalPrice =
-      Number(productDetails.price) + productDetails.cost; // Amount = Total Price * Max. Quantity
+      (Number(productDetails.price) + productDetails.cost) / (productDetails.exchangeRateToBaseCurrency?? 1); // Amount = Total Price * Max. Quantity
     productDetails.amount = productDetails.totalPrice * product.maxQuantity;
 
     // Target Difference = Total Price - Target Price
@@ -555,6 +563,7 @@ export class SpotNegotiationService extends BaseStoreService
         ? 0
         : productDetails.targetDifference;
     productDetails.isOfferPriceCopied = isPriceCopied;
+    productDetails.currencyId = isPriceCopied ? currencyId : productDetails.currencyId;
     // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
 
     const currentLocationAllProductsIds = currentLocation.requestProducts.map(
@@ -586,7 +595,8 @@ export class SpotNegotiationService extends BaseStoreService
       quotedProductId: null,
       requestProductId: productId,
       targetDifference: null,
-      totalPrice: null
+      totalPrice: null,
+      exchangeRateToBaseCurrency: 1
     };
 
     if (!futureRow.requestOffers) {
@@ -620,4 +630,10 @@ export class SpotNegotiationService extends BaseStoreService
     }
     return futureRow;
   }
+
+  @ObservableException()
+  getOfferPrice(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getOfferPriceHistory(payload);
+  }
+
 }

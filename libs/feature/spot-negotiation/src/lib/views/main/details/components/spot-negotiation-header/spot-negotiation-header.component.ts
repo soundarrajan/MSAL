@@ -23,6 +23,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {
   AddCounterpartyToLocations,
+  AppendLocationsRowsOriData,
   SetLocations,
   SetLocationsRows
 } from '../../../../../store/actions/ag-grid-row.action';
@@ -278,6 +279,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 portRating: '',
                 prefferedProductIds: '',
                 sellerComments: '',
+                isSellerPortalComments:false,
                 sellerCounterpartyId: val.id,
                 sellerCounterpartyName: val.name,
                 senRating: ''
@@ -328,6 +330,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         this.store.dispatch(
           new AddCounterpartyToLocations(futureLocationsRows)
         );
+        this.store.dispatch(new AppendLocationsRowsOriData(futureLocationsRows));
       } else {
         this.toastr.error(res.message);
         return;
@@ -650,8 +653,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       );
       response.subscribe((res: any) => {
         if (res?.payload?.length > 0) {
-          this.visibleRequestList = cloneDeep(res.payload);
-        }
+          this.visibleRequestList = this.removeDuplicatesRequest(
+              res.payload,
+              'requestName'
+            );
+          }
+          this.changeDetector.detectChanges();
       });
     }
   }
@@ -674,7 +681,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   searchCounterparty(userInput: string): void {
-    if (userInput !== '') {
+    if (userInput.length === 0) {
+      const locationsRowsOriData = this.store.selectSnapshot(
+        (state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].LocationsOriData;
+        }
+      );
+      this.store.dispatch(new SetLocationsRows(locationsRowsOriData));
+    } else {
       let result = this.store
         .selectSnapshot((state: SpotNegotiationStoreModel) => {
           return state['spotNegotiation'].LocationsOriData;
@@ -690,13 +704,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           return false;
         });
       this.store.dispatch(new SetLocationsRows(result));
-    } else {
-      const locationsRowsOriData = this.store.selectSnapshot(
-        (state: SpotNegotiationStoreModel) => {
-          return state['spotNegotiation'].LocationsOriData;
-        }
-      );
-      this.store.dispatch(new SetLocationsRows(locationsRowsOriData));
     }
   }
 

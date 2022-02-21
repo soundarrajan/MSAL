@@ -123,3 +123,7 @@ input.search-input::placeholder {
 .lookup-negotiation-container .with-search .mat-form-field-infix {
   display: none !important;
 }
+
+.file-drop-container {
+  background: #f1f1f2 !important;
+}

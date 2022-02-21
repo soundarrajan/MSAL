@@ -403,8 +403,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   getCostAmountByType(cost: any) {
-    let costAmount = 0,
-      productComponent = false;
+    let costAmount = 0;
     switch (cost.costType) {
       case 'Flat':
         costAmount = cost.price;
@@ -426,31 +425,7 @@ export class ApplicablecostpopupComponent implements OnInit {
         }
         break;
       case 'Percent':
-        productComponent = this.isProductComponent(cost);
-        let productAmount = 0;
-        if (cost.isAllProductsCost || !productComponent) {
-          let requestOffers = this.getRequestOffers(this.sellers);
-          productAmount = this.sumProductAmounts(requestOffers);
-        } else {
-          let requestOffers = this.getRequestOffers(this.sellers);
-          let filterRequestOffersByProductId = _.filter(requestOffers, function(
-            offer
-          ) {
-            return offer.requestProductId == cost.requestProductId;
-          });
-          productAmount = this.sumProductAmounts(
-            filterRequestOffersByProductId
-          );
-        }
-        if (productComponent) {
-          costAmount = (productAmount * cost.price) / 100;
-        } else {
-          let taxAmount = this.sumProductComponentAdditionalCostAmounts(
-            this.locationBasedCosts
-          );
-          let totalAmount = productAmount + taxAmount;
-          costAmount = (totalAmount * cost.price) / 100;
-        }
+        cost.extraAmount = cost.costAmount = cost.ratePerUom = 0;
         break;
       case 'Range':
       case 'Total':
@@ -590,80 +565,6 @@ export class ApplicablecostpopupComponent implements OnInit {
           locationBasedCost = cost;
         }
       });
-  }
-
-  /**
-   * Checks if the given additional cost belongs
-   * to the ProductComponent category.
-   */
-  isProductComponent(additionalCost) {
-    if (!additionalCost.additionalCostId) {
-      return false;
-    }
-    additionalCost.isTaxComponent = false;
-    if (
-      this.additionalCostTypes[additionalCost.additionalCostId].componentType
-    ) {
-      additionalCost.isTaxComponent = !(
-        this.additionalCostTypes[additionalCost.additionalCostId].componentType
-          .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
-      );
-      if (additionalCost.isTaxComponent) {
-        // console.log("Tax:" + additionalCost.additionalCost.name)
-      } else {
-        additionalCost.isTaxComponent = false;
-      }
-      return (
-        this.additionalCostTypes[additionalCost.additionalCostId].componentType
-          .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
-      );
-    }
-
-    return null;
-  }
-
-  /**
-   * Sum the Amount field of all products.
-   */
-  sumProductAmounts(products) {
-    let result = 0;
-    for (let i = 0; i < products.length; i++) {
-      result = result + Number(products[i].amount);
-    }
-    return result;
-  }
-
-  /**
-   * Sum the amounts of all additional costs that are NOT tax component additional costs.
-   */
-  sumProductComponentAdditionalCostAmounts(additionalCostList) {
-    let result = 0;
-    if (!additionalCostList.length) {
-      return;
-    }
-    for (let i = 0; i < additionalCostList.length; i++) {
-      if (!additionalCostList[i].isDeleted) {
-        if (
-          this.isProductComponent(additionalCostList[i]) ||
-          additionalCostList[i].costTypeId !== COST_TYPE_IDS.PERCENT
-        ) {
-          result = result + additionalCostList[i].totalAmount;
-        }
-      }
-    }
-    return result;
-  }
-
-  getRequestOffers(sellers) {
-    let requestOffers = [];
-    for (let i = 0; i < sellers.length; i++) {
-      if (sellers[i]?.requestOffers) {
-        for (let j = 0; j < sellers[i]?.requestOffers.length; j++) {
-          requestOffers.push(sellers[i]?.requestOffers[j]);
-        }
-      }
-    }
-    return requestOffers;
   }
 
   checkRequiredFields(): string {

@@ -20,6 +20,12 @@ export class UpdateRequest {
   constructor(public payload: any) {}
 }
 
+export class UpdateAdditionalCostList {
+  static readonly type = '[UpdateAdditionalCostList] Edit';
+
+  constructor(public payload: any) {}
+}
+
 export class UpdateSpecificRequests {
   static readonly type = '[UpdateSpecificRequests] Edit';
 
@@ -82,6 +88,16 @@ export class SetLocationsRows {
 }
 export class SetLocationsRowsOriData {
   static readonly type = '[LocationsRowsOriData] Set';
+
+  constructor(public payload: any) {}
+}
+export class AppendLocationsRowsOriData {
+  static readonly type = '[LocationsRowsOriData] Append';
+
+  constructor(public payload: any) {}
+}
+export class RemoveLocationsRowsOriData {
+  static readonly type = '[LocationsRowsOriData] Remove';
 
   constructor(public payload: any) {}
 }
