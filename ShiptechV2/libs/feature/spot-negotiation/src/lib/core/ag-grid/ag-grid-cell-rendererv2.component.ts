@@ -174,10 +174,13 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
             >n</span
           >
           <span
-          [ngClass]="{ 'info-comment': this.params.data.isSellerPortalComments, 'info-comment-inactive': !this.params.data.isSellerPortalComments }"
+            [ngClass]="{
+              'info-comment': this.params.data.isSellerPortalComments,
+              'info-comment-inactive': !this.params.data.isSellerPortalComments
+            }"
             matTooltip="View supplier comments"
             (click)="suppliercommentspopup(params.data)"
-            *ngIf="this.params.data.sellerComments?.length>0"
+            *ngIf="this.params.data.sellerComments?.length > 0"
             matTooltipClass=""
           ></span>
         </span>
@@ -192,13 +195,14 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
         <span><div class="id-icon"></div></span>
         <span class="fs-12">Supplier Contact</span>
       </div>
-      <div class="p-tb-5"
-      style="display:flex;align-items:center;"
-      (click)="suppliercommentspopup(params.data)">
-      <span><div class="blue-comments-icon"></div></span>
-      <span class="fs-12">Supplier Comments</span>
-
-    </div>
+      <div
+        class="p-tb-5"
+        style="display:flex;align-items:center;"
+        (click)="suppliercommentspopup(params.data)"
+      >
+        <span><div class="blue-comments-icon"></div></span>
+        <span class="fs-12">Supplier Comments</span>
+      </div>
 
       <!-- <div class="p-tb-5" style="display:flex;align-items:center;">
       <span><div class="quote-icon"></div></span>
@@ -401,7 +405,6 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
 
         <span
           *ngIf="!params.data.isEditable"
-          contentEditable="true"
           [matMenuTriggerFor]="clickmenu"
           #menuTrigger="matMenuTrigger"
           (click)="setValuefun(params.data)"
@@ -950,11 +953,15 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   openEmailPreview(params) {
-    let sellerData = this.locationRowsAcrossRequest.filter(s => s.sellerCounterpartyId == params.data.sellerCounterpartyId && s.requestId == params.data.requestId);
+    let sellerData = this.locationRowsAcrossRequest.filter(
+      s =>
+        s.sellerCounterpartyId == params.data.sellerCounterpartyId &&
+        s.requestId == params.data.requestId
+    );
     // let products = this.currentRequestInfo.requestLocations.filter(loc => this.locationRowsAcrossRequest.some(s => s.sellerCounterpartyId == params.data.sellerCounterpartyId && s.requestId == params.data.requestId && s.requestLocationId ==  loc.id)).map(prod =>
     //   prod.requestProducts.map((e, i) => params.data['checkProd' + (i + 1)] ? e.id : undefined).filter(x => x)
-    // ) 
-    
+    // )
+
     // if (products.length == 0) {
     //   this.toastr.error('Please select a product against the seller in order to preview email.');
     //   return;
@@ -1039,7 +1046,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       width: '672px',
       minHeight: '280px',
       panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
-      data:params,
+      data: params,
       disableClose: true
     });
 
@@ -1308,7 +1315,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             amount: e.amount / res.exchangeRateValue,
             targetDifference: e.targetDifference / res.exchangeRateValue,
             currencyId: toCurrency,
-            exchangeRateToBaseCurrency: this.baseCurrencyId === toCurrency? 1 : res.exchangeRateValue
+            exchangeRateToBaseCurrency:
+              this.baseCurrencyId === toCurrency ? 1 : res.exchangeRateValue
           };
         });
         let payload = {
@@ -1495,8 +1503,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             item.locationId === this.params.data.locationId &&
             item.sellerCounterpartyId ===
               this.params.data.sellerCounterpartyId &&
-              item.requestId ===
-              this.params.data.requestId  &&
+            item.requestId === this.params.data.requestId &&
             item.physicalSupplierCounterpartyId === this.phySupplierId &&
             item.id !== this.params.data.id
         );
