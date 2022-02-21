@@ -53,10 +53,10 @@ body {
     overflow: hidden;
     layout-main .layout-footer,
     .mainFooterWhiteSpace {
-      // display: none;
+      display: none;
     }
     ag-grid-angular {
-      height: calc(100vh - 245px) !important;
+      height: calc(100vh - 240px) !important;
     }
   }
 }
