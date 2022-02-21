@@ -589,11 +589,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           cellClass: 'grey-opacity-cell pad-lr-0',
           cellStyle: params => {
             if (
-              this.highlightedCells[product.productId] &&
+              this.highlightedCells[product.id] &&
               params.data.id ===
-                this.highlightedCells[product.productId].rowId &&
+                this.highlightedCells[product.id].rowId &&
               product.id ===
-                this.highlightedCells[product.productId].requestProductId
+                this.highlightedCells[product.id].requestProductId
             ) {
               return { background: '#C5DCCF' };
             }
@@ -1391,14 +1391,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     var smallestOffer = Infinity;
 
     if (this.locationsRows && this.locationsRows.length > 0) {
-      if (this.highlightedCells[product.productId]) {
+      if (this.highlightedCells[product.id]) {
         const smallestRow = this.locationsRows.find(
-          x => x.id === this.highlightedCells[product.productId].rowId
+          x => x.id === this.highlightedCells[product.id].rowId
         );
         const offerDetails = smallestRow?.requestOffers?.find(
           x =>
             x.requestProductId ===
-            this.highlightedCells[product.productId].requestProductId
+            this.highlightedCells[product.id].requestProductId
         );
         if (offerDetails) smallestTotalPrice = offerDetails.totalPrice;
       }
@@ -1413,8 +1413,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       this.locationsRows.map(row => {
         // Create key with id if dosen't exists;
-        if (!this.highlightedCells[product.productId]) {
-          this.highlightedCells[product.productId] = {};
+        if (!this.highlightedCells[product.id]) {
+          this.highlightedCells[product.id] = {};
         }
 
         // Set smallest total price
@@ -1429,8 +1429,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           Number(smallestTotalPrice) > Number(productDetails.totalPrice)
         ) {
           smallestTotalPrice = productDetails.totalPrice;
-          this.highlightedCells[product.productId].rowId = row.id;
-          this.highlightedCells[product.productId].requestProductId =
+          this.highlightedCells[product.id].rowId = row.id;
+          this.highlightedCells[product.id].requestProductId =
             product.id;
         }
 
