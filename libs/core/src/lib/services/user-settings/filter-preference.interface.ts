@@ -17,6 +17,7 @@ export class FilterPreferenceViewModel {
   isPinned: boolean;
   filterModels: Record<string, unknown>;
   name: string;
+  label: string;
 
   constructor(preference: Partial<IFilterPreferenceDto> = {}) {
     Object.assign(this, preference);
