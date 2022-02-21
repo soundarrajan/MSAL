@@ -1,11 +1,11 @@
-﻿commit b1846247fbac35b48580a2586c33d85e6bea0cc7
+﻿commit 3ef8ec61ae6a9780cf7885f74c89ef9a61734f95
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Feb 21 08:36:40 2022 +0000
+Date:   Mon Feb 21 12:49:27 2022 +0000
 
-    Merged PR 16012: Filters popup css fixes
+    Merged PR 16034: Fix white space in control tower
     
-    Filters popup css fixes
+    Fix white space in control tower
     
-    Related work items: #38602
+    Related work items: #38623
 
 branch: master
