@@ -1,11 +1,11 @@
-﻿commit 8ad57a5c2b41f826146c75e1efe9435f0cd8efe1
+﻿commit b1846247fbac35b48580a2586c33d85e6bea0cc7
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Feb 17 15:56:33 2022 +0000
+Date:   Mon Feb 21 08:36:40 2022 +0000
 
-    Merged PR 15990: Add formatter to vessel to watch
+    Merged PR 16012: Filters popup css fixes
     
-    Add formatter to vessel to watch
+    Filters popup css fixes
     
-    Related work items: #38470
+    Related work items: #38602
 
 branch: master
