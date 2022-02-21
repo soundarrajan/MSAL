@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
+import { NavBarApiService } from '@shiptech/core/services/navbar/navbar-api.service';
 import { Subject } from 'rxjs';
 
 
@@ -16,22 +17,32 @@ export class NegotiationDetailsToolbarComponent implements OnInit {
   private _destroy$ = new Subject();
   private readonly baseOrigin: string;
 
-  @Input('navBar') set _setNavBar(navBar: any) {
-    if (!navBar) {
-      return;
-    }
-    this.navBar = navBar;
-  }
+  // @Input('navBar') set _setNavBar(navBar: any) {
+  //   if (!navBar) {
+  //     return;
+  //   }
+  //   this.navBar = navBar;
+  // }
 
-  constructor(private chRef: ChangeDetectorRef) {
+  constructor(private chRef: ChangeDetectorRef,
+    private navBarService: NavBarApiService) {
     this.baseOrigin = new URL(window.location.href).origin;
   }
 
   ngOnInit(): void {
-    this.activeItemId = 'rfq';
+    // this.activeItemId = 'rfq';
+    // this.createNavigationItems(this.navBar);
+    // this.markNavigationItems();
+  }
 
-    this.createNavigationItems(this.navBar);
-    this.markNavigationItems();
+  createNavBarIds(reqId){
+    let navBar = {
+      'requestId': reqId
+    };
+    var response =   this.navBarService.getNavBarIdsList(navBar);
+    response.subscribe((res: any) => {
+      this.createNavigationItems(res);
+    });
   }
 
   createNavigationItems(payload: any) {
@@ -43,7 +54,7 @@ export class NegotiationDetailsToolbarComponent implements OnInit {
           displayName: 'Request',
           url: payload.requestId ? `${this.baseOrigin}/#/edit-request/${payload.requestId}` : '',
           entityId: payload.requestId ? payload.requestId : '',
-          indexStatus: null,
+          indexStatus: 'navigationBar-previous',
           hidden: false
         },
         {
@@ -51,7 +62,7 @@ export class NegotiationDetailsToolbarComponent implements OnInit {
           displayName: payload.hasQuote ? 'Offer' : 'RFQ',
           url: payload.requestGroupId ? `${this.baseOrigin}/v2/group-of-requests/${payload.requestGroupId}/details` : '',
           entityId: payload.requestGroupId ? payload.requestGroupId : '',
-          indexStatus: null,
+          indexStatus: 'navigationBar-active',
           hidden: false
         },
         {
@@ -59,7 +70,7 @@ export class NegotiationDetailsToolbarComponent implements OnInit {
           displayName: 'Order',
           url: payload.orderId ? `${this.baseOrigin}/#/edit-order/${payload.orderId}` : '',
           entityId: payload.orderId ? payload.orderId : '',
-          indexStatus: null,
+          indexStatus: 'navigationBar-next',
           hidden: false
         },
         {
@@ -67,14 +78,14 @@ export class NegotiationDetailsToolbarComponent implements OnInit {
           displayName: 'Contract',
           url: payload.contractId ? `${this.baseOrigin}/v2/contracts/contract/${payload.contractId}/details` : '',
           entityId: payload.contractId ? payload.contractId: '',
-          indexStatus: null
+          indexStatus: 'navigationBar-next'
         },
         {
           id: 'delivery',
           displayName: 'Delivery',
           url: payload.deliveryId ? `${this.baseOrigin}/v2/delivery/delivery/${payload.deliveryId}/details`: '',
           entityId: payload.deliveryId ? payload.deliveryId: '',
-          indexStatus: null,
+          indexStatus: 'navigationBar-next',
           hidden: false
         },
         {
@@ -82,7 +93,7 @@ export class NegotiationDetailsToolbarComponent implements OnInit {
           displayName: 'Labs',
           url: payload.labId ? `${this.baseOrigin}/#/labs/labresult/edit/${payload.labId}` : '',
           entityId: payload.labId ? payload.labId : '',
-          indexStatus: null,
+          indexStatus: 'navigationBar-next',
           hidden: false
         },
         {
@@ -90,7 +101,7 @@ export class NegotiationDetailsToolbarComponent implements OnInit {
           displayName: 'Claims',
           url: payload.claimId ? `${this.baseOrigin}/#/claims/claim/edit/${payload.claimId}` : '',
           entityId: payload.claimId ? payload.claimId : '',
-          indexStatus: null,
+          indexStatus: 'navigationBar-next',
           hidden: false
         },
         {
@@ -98,7 +109,7 @@ export class NegotiationDetailsToolbarComponent implements OnInit {
           displayName: 'Invoices',
           url: payload.invoiceId ? `${this.baseOrigin}/v2/invoices/edit/${payload.invoiceId}` : '',
           entityId: payload.invoiceId ? payload.invoiceId : '',
-          indexStatus: null,
+          indexStatus: 'navigationBar-next',
           hidden: false
         },
         {
@@ -106,7 +117,7 @@ export class NegotiationDetailsToolbarComponent implements OnInit {
           displayName: 'Recon',
           url: payload.orderId ? `${this.baseOrigin}/#/recon/reconlist/edit/${payload.orderId}` : '',
           entityId: payload.orderId ? payload.orderId : '',
-          indexStatus: null,
+          indexStatus: 'navigationBar-next',
           hidden: false
         }
       ];
@@ -117,6 +128,7 @@ export class NegotiationDetailsToolbarComponent implements OnInit {
   }
 
   markNavigationItems() {
+    this.activeItemId = 'rfq';
     let activeItemIndex = -1;
     this.navigationItems.forEach((itemVal, itemKey) => {
       if (itemVal.id == this.activeItemId) {
