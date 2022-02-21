@@ -5,7 +5,8 @@ import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
-  SetLocationsRows, UpdateRequest,
+  SetLocationsRows,
+  UpdateRequest
   // SetLocationsRowsPriceDetails
 } from '../../../../../../store/actions/ag-grid-row.action';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -56,6 +57,8 @@ export class EmailPreviewPopupComponent implements OnInit {
   documentListForSearch: any = [];
   selectedDocument: any;
   documentPopUp: any;
+  displayedColumns: string[] = ['name', 'documentType'];
+
   constructor(
     public dialogRef: MatDialogRef<EmailPreviewPopupComponent>,
     private store: Store,
@@ -393,11 +396,9 @@ export class EmailPreviewPopupComponent implements OnInit {
         //window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
       }
       var futureLocationsRows;
-      const stelocationsRows = this.store.selectSnapshot<any>(
-        (state: any) => {
-          return state.spotNegotiation.locationsRows;
-        }
-      );
+      const stelocationsRows = this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.locationsRows;
+      });
 
       if (res['sellerOffers']) {
         let locationsRows;
@@ -431,32 +432,66 @@ export class EmailPreviewPopupComponent implements OnInit {
         this.changeDetector.detectChanges();
       }
 
-      if(this.previewTemplate.comment.emailTemplate.id == 10){
+      if (this.previewTemplate.comment.emailTemplate.id == 10) {
         this.requestOptions = this.requestOptions.map(e => {
           let requestLocations = e.requestLocations.map(reqLoc => {
-            let requestProducts = this.previewTemplate.comment.emailTemplate.id == 10 ? (reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) &&
-            (reqPro.status.toLowerCase() == 'validated' || reqPro.status.toLowerCase() == 'reopen') ? { ...reqPro, status: 'Inquired' } : reqPro)):
-            (reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) ? { ...reqPro, status: 'ReOpen' } : reqPro))
-  
-            return { ...reqLoc, requestProducts }
+            let requestProducts =
+              this.previewTemplate.comment.emailTemplate.id == 10
+                ? reqLoc.requestProducts.map(reqPro =>
+                    requestProductIds.some(x => x.includes(reqPro.id)) &&
+                    (reqPro.status.toLowerCase() == 'validated' ||
+                      reqPro.status.toLowerCase() == 'reopen')
+                      ? { ...reqPro, status: 'Inquired' }
+                      : reqPro
+                  )
+                : reqLoc.requestProducts.map(reqPro =>
+                    requestProductIds.some(x => x.includes(reqPro.id))
+                      ? { ...reqPro, status: 'ReOpen' }
+                      : reqPro
+                  );
+
+            return { ...reqLoc, requestProducts };
           });
-          return { ...e, requestLocations }
+          return { ...e, requestLocations };
         });
         this.store.dispatch(new UpdateRequest(this.requestOptions));
-      }
-      else if(this.previewTemplate.comment.emailTemplate.id == 12){
-        requestProductIds = stelocationsRows.filter(r => r.requestOffers && r.requestOffers.find(ro => (rfqIds.includes(ro.rfqId) && !ro.isRfqskipped))).map(x => x.requestOffers.filter(r => !r.isRfqskipped).map(r =>r.requestProductId));
+      } else if (this.previewTemplate.comment.emailTemplate.id == 12) {
+        requestProductIds = stelocationsRows
+          .filter(
+            r =>
+              r.requestOffers &&
+              r.requestOffers.find(
+                ro => rfqIds.includes(ro.rfqId) && !ro.isRfqskipped
+              )
+          )
+          .map(x =>
+            x.requestOffers
+              .filter(r => !r.isRfqskipped)
+              .map(r => r.requestProductId)
+          );
         this.requestOptions = this.requestOptions.map(e => {
           let requestLocations = e.requestLocations.map(reqLoc => {
             let requestProducts = null;
-            if (futureLocationsRows.filter(lr => lr.requestLocationId == reqLoc.id && lr.requestOffers).length == 0 || futureLocationsRows.filter(lr => lr.requestLocationId == reqLoc.id && lr.requestOffers?.find(x => !x.isRfqskipped)).length == 0){
-            requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) ? { ...reqPro, status: 'ReOpen' } : reqPro)
+            if (
+              futureLocationsRows.filter(
+                lr => lr.requestLocationId == reqLoc.id && lr.requestOffers
+              ).length == 0 ||
+              futureLocationsRows.filter(
+                lr =>
+                  lr.requestLocationId == reqLoc.id &&
+                  lr.requestOffers?.find(x => !x.isRfqskipped)
+              ).length == 0
+            ) {
+              requestProducts = reqLoc.requestProducts.map(reqPro =>
+                requestProductIds.some(x => x.includes(reqPro.id))
+                  ? { ...reqPro, status: 'ReOpen' }
+                  : reqPro
+              );
             }
 
-            return requestProducts ? { ...reqLoc, requestProducts} : reqLoc;
-          
-        });
-        return requestLocations?{ ...e,  requestLocations} : e;          
+            return requestProducts ? { ...reqLoc, requestProducts } : reqLoc;
+          });
+          return requestLocations ? { ...e, requestLocations } : e;
         });
         this.store.dispatch(new UpdateRequest(this.requestOptions));
       }
@@ -466,9 +501,9 @@ export class EmailPreviewPopupComponent implements OnInit {
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
     let counterpartyList: any;
-    let requestlist:any;
+    let requestlist: any;
     this.store.subscribe(({ spotNegotiation, ...props }) => {
-      requestlist= spotNegotiation.requests;
+      requestlist = spotNegotiation.requests;
       currentRequestData = spotNegotiation.locations;
       counterpartyList = spotNegotiation.counterparties;
     });
@@ -477,9 +512,12 @@ export class EmailPreviewPopupComponent implements OnInit {
       let currentLocProd = currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
-      let reqLocations = requestlist.filter(row1 => row1.id == row.requestId );
-      let reqProducts= reqLocations[0].requestLocations.filter(row1 => row1.id == row.requestLocationId );
-      let currentLocProdCount = reqProducts.length>0?reqProducts[0].requestProducts.length:0;
+      let reqLocations = requestlist.filter(row1 => row1.id == row.requestId);
+      let reqProducts = reqLocations[0].requestLocations.filter(
+        row1 => row1.id == row.requestLocationId
+      );
+      let currentLocProdCount =
+        reqProducts.length > 0 ? reqProducts[0].requestProducts.length : 0;
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
         let val = 'checkProd' + indx;
@@ -497,7 +535,8 @@ export class EmailPreviewPopupComponent implements OnInit {
           a.requestProductId > b.requestProductId ? 1 : -1
         );
         //row.isSelected = priceDetailsArray[index].isSelected;
-        row.physicalSupplierCounterpartyId = priceDetailsArray[index].physicalSupplierCounterpartyId;
+        row.physicalSupplierCounterpartyId =
+          priceDetailsArray[index].physicalSupplierCounterpartyId;
         if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
           row.physicalSupplierCounterpartyName = counterpartyList.find(
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId

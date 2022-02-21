@@ -96,11 +96,13 @@ import { AGGridCellActionsDocumentsComponent } from './core/ag-grid/ag-grid-cell
 import { TabMenuModule } from 'primeng/tabmenu';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
 import { DragDropFileUploadDirective } from './views/main/details/directives/drag-drop-file-upload.directive';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   imports: [
     CommonModule,
     TabMenuModule,
+    MatTableModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
