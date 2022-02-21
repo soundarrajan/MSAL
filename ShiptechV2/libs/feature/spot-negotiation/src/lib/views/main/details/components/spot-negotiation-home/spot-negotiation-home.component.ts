@@ -26,6 +26,7 @@ import { find, takeUntil } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
+import { NegotiationDetailsToolbarComponent } from '../../../toolbar/spot-negotiation-details-toolbar.component';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -39,6 +40,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
   requestOptions: any;
   requestOptionsToDuplicatePrice: any;
   isOpen: boolean = false;
+
+  @ViewChild(NegotiationDetailsToolbarComponent)
+  negoNavBarChild: NegotiationDetailsToolbarComponent;
 
   @ViewChild(AgGridDatetimePickerToggleComponent)
   child: AgGridDatetimePickerToggleComponent;
@@ -70,12 +74,16 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => {
-      this.navBar = data.navBar;
-    });
+    // this.route.data.subscribe(data => {
+    //   this.navBar = data.navBar;
+    // });
 
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
+      if(this.currentRequestInfo && this.navBar != this.currentRequestInfo.id){
+        this.navBar = this.currentRequestInfo.id;
+        this.negoNavBarChild.createNavBarIds(this.currentRequestInfo.id);
+      }      
       this.requestOptions = spotNegotiation.requests;
       if (this.requestOptions && this.currentRequestInfo) {
         this.requestOptionsToDuplicatePrice = this.requestOptions.filter(r => r.id != this.currentRequestInfo.id && r.requestLocations.some(l => l.requestProducts.some(pr => pr.status.toLowerCase().includes("inquired") || pr.status.toLowerCase().includes("quoted")))).map(req => ({ ...req, selected: true }));
