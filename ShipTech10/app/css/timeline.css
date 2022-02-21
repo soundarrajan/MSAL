@@ -554,6 +554,7 @@ timeline-right-click-popover .contextmenu {
     border: 1px solid #E0E1E4;
     box-sizing: border-box;
     border-radius: 4px;
+    width: auto;
 }
 
 .right-popup-table  thead tr td {
