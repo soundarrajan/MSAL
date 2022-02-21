@@ -1402,12 +1402,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             for (let i = 0; i < offerAdditionalCostList.length; i++) {
               if (offerAdditionalCostList[i].currencyId != currencyId) {
                 offerAdditionalCostList[i].currencyId = currencyId;
-                offerAdditionalCostList[i].extraAmount =
-                  offerAdditionalCostList[i].extraAmount / exchangeRateValue;
-                offerAdditionalCostList[i].amount =
-                  offerAdditionalCostList[i].amount / exchangeRateValue;
-                offerAdditionalCostList[i].ratePerUom =
-                  offerAdditionalCostList[i].ratePerUom / exchangeRateValue;
+                offerAdditionalCostList[i].extraAmount = offerAdditionalCostList[i].extraAmount; // / exchangeRateValue;
+                offerAdditionalCostList[i].amount = offerAdditionalCostList[i].amount; // / exchangeRateValue;
+                offerAdditionalCostList[i].ratePerUom = offerAdditionalCostList[i].ratePerUom; // / exchangeRateValue;
               }
             }
             this.saveAdditionalCosts(
