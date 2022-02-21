@@ -1,11 +1,11 @@
-﻿commit 2b7ef4906efda1c76d576fbcf250fa79fb103c21
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Mon Feb 21 15:15:39 2022 +0000
+﻿commit 0e6a00c3e3dc25d6ea9b2de2f42898ba2fc2dcc0
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Mon Feb 21 17:28:52 2022 +0000
 
-    Merged PR 16040: Fix build error
+    Merged PR 16041: 38648-SO-BunkerPlan-OperatorAckUncheckIssueFix
     
-    Fix build error
+    38648-SO-BunkerPlan-OperatorAckUncheckIssueFix
     
-    Related work items: #38603
+    Related work items: #38648
 
 branch: master
