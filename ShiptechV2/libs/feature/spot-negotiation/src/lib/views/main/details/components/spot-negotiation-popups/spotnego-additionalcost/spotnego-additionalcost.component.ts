@@ -127,7 +127,12 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           this.toastr.error(response);
         } else {
           this.additionalCostList = _.cloneDeep(
-            response.payload.filter(e => e.isDeleted == false)
+            response.payload.filter(
+              e =>
+                e.isDeleted == false &&
+                e.costType.name !== 'Total' &&
+                e.costType.name !== 'Range'
+            )
           );
           this.createAdditionalCostTypes();
           if (this.rowData?.requestOffers?.length > 0) {
@@ -289,15 +294,15 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     selectedIndex: number
   ) {
     let cost = this.offerAdditionalCostList[selectedIndex];
-    cost.requestProductId = selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
+    cost.requestProductId =
+      selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
     cost.requestOfferIds = this.getRequestOfferIds(selectedApplicableForId);
     cost.isLocationBased = false;
-    if(cost.requestProductId){
+    if (cost.requestProductId) {
       cost.isAllProductsCost = false;
       cost.offerId = null;
       cost.requestOfferId = parseInt(cost.requestOfferIds);
-    }
-    else{
+    } else {
       cost.isAllProductsCost = true;
       cost.offerId = this.offerId;
       cost.requestOfferId = null;

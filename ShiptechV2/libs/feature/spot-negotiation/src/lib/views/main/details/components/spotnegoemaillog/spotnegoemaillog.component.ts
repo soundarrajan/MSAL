@@ -11,6 +11,7 @@ import { Select, Store } from '@ngxs/store';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { GridOptions } from 'ag-grid-community';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { SetRequestGroupId } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -93,7 +94,7 @@ export class SpotnegoemaillogComponent implements OnInit {
       field: 'to',
       width: 345,
       suppressSizeToFit: false,
-      tooltip: (params)=>params.value
+      tooltipValueGetter: (params)=>params.value
     },
     {
       headerName: 'Status',
@@ -111,7 +112,7 @@ export class SpotnegoemaillogComponent implements OnInit {
       field: 'from',
       width: 345,
       suppressSizeToFit: false,
-      tooltip: (params)=>params.value
+      tooltipValueGetter: (params)=>params.value
     },
     {
       headerName: 'Subject',
@@ -119,13 +120,13 @@ export class SpotnegoemaillogComponent implements OnInit {
       field: 'subject',
       width: 345,
       suppressSizeToFit: false,
-      tooltip: (params)=>params.value
+      tooltipValueGetter: (params)=>params.value
     },
     {
       headerName: 'Mail Date',
       headerTooltip: 'Mail Date',
       field: 'sentAt',
-      tooltip: (params)=>params.value,
+      tooltipValueGetter: (params)=> moment(params.value).format(this.date),
       cellRenderer: params => {
         return moment(params.value).format(this.date);
       },
@@ -144,7 +145,8 @@ export class SpotnegoemaillogComponent implements OnInit {
 
   getEmailLogs() {
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
-
+    this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
+    
     this.spotNegotiationService
       .getRequestGroup(groupRequestIdFromUrl)
       .subscribe((res: any) => {

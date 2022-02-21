@@ -41,7 +41,7 @@ const routes: Routes = [
                 component: SpotNegotiationComponent,
                 resolve: {
                   staticLists: StaticListsRouteResolver,
-                  navBar: NavBarResolver,
+                  //navBar: NavBarResolver,
                   uoms: UomsRouteResolver
                 },
                 data: {

@@ -95,11 +95,14 @@ import { AGGridCellV2RendererComponent } from './core/ag-grid/ag-grid-cell-rende
 import { AGGridCellActionsDocumentsComponent } from './core/ag-grid/ag-grid-cell-actions-documents.component';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
+import { DragDropFileUploadDirective } from './views/main/details/directives/drag-drop-file-upload.directive';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   imports: [
     CommonModule,
     TabMenuModule,
+    MatTableModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -192,7 +195,8 @@ import { SharedModule } from '@shiptech/core/shared/shared.module';
     RemoveCounterpartyComponent,
     NegotiationDocumentsComponent,
     NegotiationReportComponent,
-    PriceTenantFormatDirective
+    PriceTenantFormatDirective,
+    DragDropFileUploadDirective
     // QuantityTenantFormatDirective,
     // AmountTenantFormatDirective,
     // NumberOnlyDirective,

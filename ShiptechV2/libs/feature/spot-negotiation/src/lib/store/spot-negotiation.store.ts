@@ -22,7 +22,10 @@ import {
   AppendRequestList,
   AppendPhysicalSupplierCounterpartyList,
   UpdateRequest,
-  UpdateSpecificRequests
+  UpdateSpecificRequests,
+  AppendLocationsRowsOriData,
+  RemoveLocationsRowsOriData,
+  UpdateAdditionalCostList
 } from './actions/ag-grid-row.action';
 
 import {
@@ -62,6 +65,7 @@ export class SpotNegotiationStoreModel {
   tenantConfigurations: object | null;
   marketPriceHistory: object | null;
   offerPriceHistory: object | null;
+  additionalCostList: Array<any>;
 
   constructor() {
     // Initialization inside the constructor
@@ -88,6 +92,7 @@ export class SpotNegotiationStoreModel {
     this.requests = [];
     this.groupOfRequestsId = null;
     this.offerPriceHistory = null;
+    this.additionalCostList = [];
   }
 }
 
@@ -117,7 +122,8 @@ export class SpotNegotiationStoreModel {
     counterpartyList: [],
     physicalSupplierCounterpartyList: [],
     requestList: [],
-    counterparties: []
+    counterparties: [],
+    additionalCostList: []
   }
 })
 export class SpotNegotiationStore {
@@ -314,6 +320,19 @@ export class SpotNegotiationStore {
     });
   }
 
+  @Action(AppendLocationsRowsOriData)
+  AppendLocationsRowsOriData (
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: AppendLocationsRowsOriData
+  ) {
+    const state = getState();
+    var ctpys = [...state.LocationsOriData, ...payload];
+    patchState({
+      LocationsOriData: ctpys
+    });
+  }
+
+
   // Rows lists
   @Action(SetLocationsRows)
   SetLocationsRows(
@@ -331,6 +350,18 @@ export class SpotNegotiationStore {
   ): void {
     patchState({
       LocationsOriData: payload
+    });
+  }
+
+  @Action(RemoveLocationsRowsOriData)
+  RemoveLocationsRowsOriData(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: RemoveLocationsRowsOriData
+  ) {
+    patchState({
+      LocationsOriData: getState().LocationsOriData.filter(
+        row => row.id !== payload.rowId
+      )
     });
   }
   // Rows lists
@@ -423,7 +454,18 @@ export class SpotNegotiationStore {
     });
   }
 
-  // update specifci requests
+  // update additional cost list
+  @Action(UpdateAdditionalCostList)
+  UpdateAdditionalCostList(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: UpdateAdditionalCostList
+  ) {
+    patchState({
+      additionalCostList: payload
+    });
+  }
+
+  // update specific requests
   @Action(UpdateSpecificRequests)
   UpdateSpecificRequests(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
@@ -452,9 +494,9 @@ export class SpotNegotiationStore {
     { payload }: DelinkRequest
   ) {
     const state = getState();
-    let remainingRequests = state.requests.filter(e => e.id != payload);
     patchState({
-      requests: remainingRequests
+      requests: state.requests.filter(e => e.id != payload),
+      locationsRows: state.locationsRows.filter(e => e.requestId != payload)
     });
   }
   // Rows lists

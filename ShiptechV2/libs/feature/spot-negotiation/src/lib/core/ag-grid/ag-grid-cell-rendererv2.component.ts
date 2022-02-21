@@ -31,6 +31,8 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
 import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { AdditionalCostViewModel } from '../models/additional-costs-model';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -172,31 +174,14 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
             >n</span
           >
           <span
-            class="info-comment"
+            [ngClass]="{
+              'info-comment': this.params.data.isSellerPortalComments,
+              'info-comment-inactive': !this.params.data.isSellerPortalComments
+            }"
             matTooltip="View supplier comments"
-            matTooltipClass="lightTooltip"
-            (click)="suppliercommentspopup()"
-            *ngIf="params.data.commentIcon == 'Yes'"
-          ></span>
-          <span
-            class="info-comment-inactive"
-            (click)="suppliercommentspopup()"
-            *ngIf="params.data.commentIcon == 'No'"
+            (click)="suppliercommentspopup(params.data)"
+            *ngIf="this.params.data.sellerComments?.length > 0"
             matTooltipClass=""
-            matTooltip=""
-          ></span>
-          <span
-            class=""
-            *ngIf="params.data.commentIcon == 'None'"
-            matTooltipClass=""
-            matTooltip=""
-          ></span>
-
-          <span
-            class=""
-            *ngIf="params.data.commentIcon == ''"
-            matTooltipClass=""
-            matTooltip=""
           ></span>
         </span>
       </div>
@@ -210,10 +195,14 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
         <span><div class="id-icon"></div></span>
         <span class="fs-12">Supplier Contact</span>
       </div>
-      <!-- <div class="p-tb-5" style="display:flex;align-items:center;">
-      <span><div class="blue-comments-icon"></div></span>
-      <span class="fs-12">Supplier Comments</span>
-    </div> -->
+      <div
+        class="p-tb-5"
+        style="display:flex;align-items:center;"
+        (click)="suppliercommentspopup(params.data)"
+      >
+        <span><div class="blue-comments-icon"></div></span>
+        <span class="fs-12">Supplier Comments</span>
+      </div>
 
       <!-- <div class="p-tb-5" style="display:flex;align-items:center;">
       <span><div class="quote-icon"></div></span>
@@ -283,7 +272,9 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
           [matMenuTriggerFor]="priceMenupopup"
           #pricePopupTrigger="matMenuTrigger"
           (click)="pricePopupTrigger.closeMenu()"
-          [ngClass] = "{'hasNoQuote' : params.data.requestOffers[params.index].hasNoQuote}"
+          [ngClass]="{
+            hasNoQuote: params.data.requestOffers[params.index].hasNoQuote
+          }"
           (contextmenu)="
             $event.preventDefault();
             $event.stopPropagation();
@@ -291,7 +282,10 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
             pricePopupTrigger.openMenu()
           "
         >
-        <span class="duplicate-icon" *ngIf="params.data.requestOffers[params.index]?.isOfferPriceCopied"></span>
+          <span
+            class="duplicate-icon"
+            *ngIf="params.data.requestOffers[params.index]?.isOfferPriceCopied"
+          ></span>
           <div
             id="custom-form-field"
             [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
@@ -302,14 +296,13 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
             >
               <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
               <!-- ** {{params.currency}} --  -->
-              <!-- ** {{paramsDataClone.currency}} --  -->
+              <!-- ** {{ paramsDataClone.currency  --  -->
               <mat-label>Select Field</mat-label>
               <mat-select
                 disableOptionCentering
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="params.index != 0"
               >
                 <mat-select-trigger overlayPanelClass="123class">
                   {{ getCurrencyCode(paramsDataClone.currency) }}
@@ -416,7 +409,6 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 
         <span
           *ngIf="!params.data.isEditable"
-          contentEditable="true"
           [matMenuTriggerFor]="clickmenu"
           #menuTrigger="matMenuTrigger"
           (click)="setValuefun(params.data)"
@@ -458,7 +450,6 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
                 placeholder="Search and select counterparty"
                 class="search-product-input"
                 (input)="search($event.target.value, params)"
-
               />
             </div>
             <div class="col-md-2">
@@ -674,9 +665,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   currentRequestSmallInfo: any;
   searchValue: string;
   paramsDataClone: any;
-  resetPopup :any
+  resetPopup: any;
   generalTenantSettings: any;
-  baseUomId: any;
+  baseCurrencyId: any;
+  additionalCostList: any[] = [];
+  locationRowsAcrossRequest: any;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -688,10 +681,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     public format: TenantFormattingService,
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private tenantSettingsService: TenantSettingsService
+    private tenantSettingsService: TenantSettingsService,
+    private spinner: NgxSpinnerService
   ) {
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
-    this.baseUomId = this.generalTenantSettings.tenantFormats.currency.id;
+    this.baseCurrencyId = this.generalTenantSettings.tenantFormats.currency.id;
   }
 
   ngOnInit() {
@@ -708,6 +702,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.tenantService = spotNegotiation.tenantConfigurations;
+      this.locationRowsAcrossRequest = spotNegotiation.locationsRows;
       this.currencyList = spotNegotiation.staticLists.filter(
         el => el.name == 'Currency'
       )[0].items;
@@ -715,6 +710,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       if (spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
         this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
+      }
+      if (spotNegotiation.additionalCostList) {
+        this.additionalCostList = _.cloneDeep(
+          spotNegotiation.additionalCostList
+        );
       }
     });
   }
@@ -736,8 +736,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
   setValuefun(params) {
     this.searchValue = '';
-     this.physicalSupplierList = this.store.selectSnapshot<any>((state: any) => {
-        return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 7);
+    this.physicalSupplierList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 7);
     });
     let SelectedCounterpartyList = cloneDeep(this.physicalSupplierList);
 
@@ -796,7 +796,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.params = params;
   }
 
- search(userInput: string, params: any): void {
+  search(userInput: string, params: any): void {
     let selectedCounterpartyList = this.physicalSupplierList
       .filter(e => {
         if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
@@ -805,29 +805,33 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         return false;
       })
       .slice(0, 7);
-    if(selectedCounterpartyList.length === 0){
-      const response = this._spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], userInput.toLowerCase(), { Skip: 0 , Take: 25 } )
-      response.subscribe((res:any)=>{
-          if(res?.payload?.length >0){
-             let SelectedCounterpartyList1 = cloneDeep(res.payload);
-             SelectedCounterpartyList1.forEach(element => {
-              if (
-                params?.data?.physicalSupplierCounterpartyId != null &&
-                element.id == params?.data?.physicalSupplierCounterpartyId
-              ) {
-                element.isSelected = true;
-              } else {
-                element.isSelected = false;
-              }
-            });
-            this.visibleCounterpartyList = SelectedCounterpartyList1.slice(0,7);
-            this.changeDetector.detectChanges();
-          }
-
+    if (selectedCounterpartyList.length === 0) {
+      const response = this._spotNegotiationService.getResponse(
+        null,
+        { Filters: [] },
+        { SortList: [] },
+        [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
+        userInput.toLowerCase(),
+        { Skip: 0, Take: 25 }
+      );
+      response.subscribe((res: any) => {
+        if (res?.payload?.length > 0) {
+          let SelectedCounterpartyList1 = cloneDeep(res.payload);
+          SelectedCounterpartyList1.forEach(element => {
+            if (
+              params?.data?.physicalSupplierCounterpartyId != null &&
+              element.id == params?.data?.physicalSupplierCounterpartyId
+            ) {
+              element.isSelected = true;
+            } else {
+              element.isSelected = false;
+            }
+          });
+          this.visibleCounterpartyList = SelectedCounterpartyList1.slice(0, 7);
+          this.changeDetector.detectChanges();
+        }
       });
-    }
-    else{
-
+    } else {
       let SelectedCounterpartyList1 = cloneDeep(selectedCounterpartyList);
       if (SelectedCounterpartyList1?.length > 0) {
         SelectedCounterpartyList1.forEach(element => {
@@ -953,10 +957,16 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   openEmailPreview(params) {
-    // if (this.currentRequestInfo.requestLocations.filter(loc => loc.id === params.data.requestLocationId
-    // ).map(prod =>
+    let sellerData = this.locationRowsAcrossRequest.filter(
+      s =>
+        s.sellerCounterpartyId == params.data.sellerCounterpartyId &&
+        s.requestId == params.data.requestId
+    );
+    // let products = this.currentRequestInfo.requestLocations.filter(loc => this.locationRowsAcrossRequest.some(s => s.sellerCounterpartyId == params.data.sellerCounterpartyId && s.requestId == params.data.requestId && s.requestLocationId ==  loc.id)).map(prod =>
     //   prod.requestProducts.map((e, i) => params.data['checkProd' + (i + 1)] ? e.id : undefined).filter(x => x)
-    // )[0].length == 0) {
+    // )
+
+    // if (products.length == 0) {
     //   this.toastr.error('Please select a product against the seller in order to preview email.');
     //   return;
     // }
@@ -964,7 +974,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       width: '80vw',
       height: '90vh',
       panelClass: 'additional-cost-popup',
-      data: params.data
+      data: sellerData
     });
 
     dialogRef.afterClosed().subscribe(result => {});
@@ -1035,11 +1045,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
   }
-  suppliercommentspopup() {
+  suppliercommentspopup(params) {
     const dialogRef = this.dialog.open(SupplierCommentsPopupComponent, {
       width: '672px',
-      minHeight: '540px',
-      panelClass: ['additional-cost-popup', 'supplier-contact-popup']
+      minHeight: '280px',
+      panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
+      data: params,
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {});
@@ -1292,10 +1304,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       toCurrencyId: toCurrency,
       toCurrencyCode: this.getCurrencyCode(toCurrency)
     };
-
+    this.spinner.show();
+    let exchangeRateValue = 1;
     const response = this._spotNegotiationService.getExchangeRate(payload);
     response.subscribe((res: any) => {
       if (res.status) {
+        exchangeRateValue = res.exchangeRateValue;
         this.store.dispatch(new EditLocationRow(newData));
         this.params.node.setData(newData);
         let requestOffers = this.params.data.requestOffers.map(e => {
@@ -1304,7 +1318,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             totalPrice: e.totalPrice / res.exchangeRateValue,
             amount: e.amount / res.exchangeRateValue,
             targetDifference: e.targetDifference / res.exchangeRateValue,
-            currencyId: toCurrency
+            currencyId: toCurrency,
+            exchangeRateToBaseCurrency:
+              this.baseCurrencyId === toCurrency ? 1 : res.exchangeRateValue
           };
         });
         let payload = {
@@ -1326,8 +1342,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           if (res.status) {
             this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
             this.store.dispatch(new EditLocationRow(futureRowData));
+            this.changeCurrencyForAdditionalCost(
+              this.paramsDataClone.currency,
+              exchangeRateValue
+            );
           } else {
             this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
+            this.spinner.hide();
           }
         });
 
@@ -1335,9 +1356,112 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       } else {
         this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
         this.toastr.warning(res.message);
+        this.spinner.hide();
         this.changeDetector.detectChanges();
       }
     });
+  }
+
+  changeCurrencyForAdditionalCost(currencyId, exchangeRateValue) {
+    console.log(currencyId);
+    this.checkAdditionalCost(
+      _.cloneDeep(this.params.data),
+      currencyId,
+      exchangeRateValue
+    );
+  }
+
+  checkAdditionalCost(sellerOffers, currencyId, exchangeRateValue) {
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
+    });
+    let requestLocationId = sellerOffers.requestLocationId;
+    let findRequestLocationIndex = _.findIndex(
+      this.currentRequestSmallInfo?.requestLocations,
+      function(object: any) {
+        return object.id == requestLocationId;
+      }
+    );
+    if (findRequestLocationIndex != -1) {
+      let requestLocation = this.currentRequestSmallInfo?.requestLocations[
+        findRequestLocationIndex
+      ];
+      const payload = {
+        offerId: sellerOffers.requestOffers[0].offerId,
+        requestLocationId: sellerOffers.requestLocationId,
+        isLocationBased: false
+      };
+
+      this.spinner.show();
+      this._spotNegotiationService
+        .getAdditionalCosts(payload)
+        .subscribe((response: any) => {
+          if (typeof response === 'string') {
+            this.spinner.hide();
+            return;
+          } else {
+            let offerAdditionalCostList = _.cloneDeep(
+              response.offerAdditionalCosts
+            ) as AdditionalCostViewModel[];
+            for (let i = 0; i < offerAdditionalCostList.length; i++) {
+              if (offerAdditionalCostList[i].currencyId != currencyId) {
+                offerAdditionalCostList[i].currencyId = currencyId;
+                offerAdditionalCostList[i].extraAmount =
+                  offerAdditionalCostList[i].extraAmount; // / exchangeRateValue;
+                offerAdditionalCostList[i].amount =
+                  offerAdditionalCostList[i].amount; // / exchangeRateValue;
+                offerAdditionalCostList[i].ratePerUom =
+                  offerAdditionalCostList[i].ratePerUom; // / exchangeRateValue;
+              }
+            }
+            this.saveAdditionalCosts(
+              offerAdditionalCostList,
+              response.locationAdditionalCosts,
+              sellerOffers
+            );
+          }
+        });
+    }
+  }
+
+  saveAdditionalCosts(
+    offerAdditionalCostList,
+    locationAdditionalCostsList,
+    sellerOffers
+  ) {
+    let payload = {
+      additionalCosts: offerAdditionalCostList.concat(
+        locationAdditionalCostsList
+      )
+    };
+    this._spotNegotiationService
+      .saveOfferAdditionalCosts(payload)
+      .subscribe((res: any) => {
+        if (res.status) {
+          this.getSellerLine(sellerOffers);
+        } else {
+          this.spinner.hide();
+          this.toastr.error('Please try again later.');
+        }
+      });
+  }
+
+  getSellerLine(sellerOffers) {
+    const groupId = parseFloat(this.route.snapshot.params.spotNegotiationId);
+    const requestLocationSellerId = sellerOffers.id;
+    this._spotNegotiationService
+      .getPriceDetailsById(groupId, requestLocationSellerId)
+      .subscribe((priceDetailsRes: any) => {
+        this.spinner.hide();
+        let updatedRow = { ...this.params.data };
+        updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
+        updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
+        updatedRow.requestOffers =
+          priceDetailsRes.sellerOffers[0].requestOffers;
+        // Update the store
+        this.store.dispatch(new EditLocationRow(updatedRow));
+        this.params.node.setData(updatedRow);
+      });
   }
 
   getCurrencyCode(currencyId) {
@@ -1353,32 +1477,37 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   refresh(): boolean {
     return false;
   }
+
   noQuoteAction(params) {
-    if(!params.data.requestOffers) {
-      this.toastr.error("Offer Price cannot be marked as 'No Quote' as RFQ has neither been skipped or sent.");
+    if (!params.data.requestOffers) {
+      this.toastr.error(
+        "Offer Price cannot be marked as 'No Quote' as RFQ has neither been skipped or sent."
+      );
       return;
     }
     let noQuotePayload = {
-      "requestOfferIds": params.data.requestOffers.map(e => e.id),
-      "noQuote": !params.data.requestOffers[0].hasNoQuote
+      requestOfferIds: params.data.requestOffers.map(e => e.id),
+      noQuote: !params.data.requestOffers[0].hasNoQuote
     };
-    let response = this._spotNegotiationService.switchReqOffBasedOnQuote(noQuotePayload);
+    let response = this._spotNegotiationService.switchReqOffBasedOnQuote(
+      noQuotePayload
+    );
     response.subscribe((res: any) => {
       console.log(res);
-      if(res) {
-        
+      if (res) {
         let updatedRow = _.cloneDeep(params.data);
         updatedRow.requestOffers.forEach(element => {
           element.hasNoQuote = !params.data.requestOffers[0].hasNoQuote;
         });
         this.store.dispatch(new EditLocationRow(updatedRow));
-        params.node.setData(updatedRow);     
+        params.node.setData(updatedRow);
 
-        let successMessage = params.data.requestOffers[0].hasNoQuote ? "Selected Offer Price has been enabled." : "Selected Offers have been marked as 'No Quote' successfully.";
+        let successMessage = params.data.requestOffers[0].hasNoQuote
+          ? 'Selected Offer Price has been enabled.'
+          : "Selected Offers have been marked as 'No Quote' successfully.";
         this.toastr.success(successMessage);
-
       }
-    })
+    });
     console.log(noQuotePayload);
   }
   removeCounterparty() {
@@ -1410,6 +1539,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             item.locationId === this.params.data.locationId &&
             item.sellerCounterpartyId ===
               this.params.data.sellerCounterpartyId &&
+            item.requestId === this.params.data.requestId &&
             item.physicalSupplierCounterpartyId === this.phySupplierId &&
             item.id !== this.params.data.id
         );

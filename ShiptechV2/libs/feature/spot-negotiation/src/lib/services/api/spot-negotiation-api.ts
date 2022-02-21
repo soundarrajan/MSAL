@@ -72,7 +72,9 @@ export const SpotNegotiationApiPaths = {
   updateNotes: `api/masters/documentupload/notes`,
   updateNegotiationComments: `groups/updateComments`,
   switchReqOffBasedOnQuote: `RFQ/switchReqOffBasedOnQuote`,
-  copyComments: `groups/copyComments`
+  copyComments: `groups/copyComments`,
+  updateSellerComment: `RFQ/UpdateSellerComments`,
+  getOfferPriceHistory: `Price/getOfferPriceHistory`
 };
 
 @Injectable({
@@ -1029,6 +1031,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   @ObservableException()
+  UpdateSellerComments(payload: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updateSellerComment}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
   copyNegotiationComments(request: any): Observable<any> {
     return this.http
       .put<any>(
@@ -1047,6 +1068,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         ? body.error.ErrorMessage
         : body.error.errorMessage
     );
+  }
+
+  @ObservableException()
+  getOfferPriceHistory(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getOfferPriceHistory}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+          )
+        )
+      );
   }
 }
 
