@@ -4,7 +4,6 @@
     <button class="blue-button" (click)="toggleEditing()">{{ isEditing ? "Done" : "Edit" }}</button
     ><button
       class="blue-button"
-      [disabled]="!isEditing"
       (click)="updateAllFilters()"
     >
       Apply
@@ -21,13 +20,14 @@
       <div *ngFor="let filter of systemFilters" class="system-filter">
         <!-- NOTE: Add track by -->
         <div
-          *ngIf="!filter.isDefault && !filter.isClear"
-          [matTooltip]="filter.label"
+          [matTooltip]="filter.label"      
           [ngClass]="[
-            filter.isActive && !isEditing
+            (filter.isActive && !isEditing
               ? 'chip-look-alike text-center'
-              : ' chip-look-alike inactive-chip text-center'
+              : ' chip-look-alike inactive-chip text-center'),
+            filter.isActive ? 'active-selected' : ''              
           ]"
+
         >
           <div class="truncate-f85 text-center chip-label">
             {{ filter.label }}
@@ -54,9 +54,10 @@
           *ngIf="!filter.isDefault && !filter.isClear"
           [matTooltip]="filter.name"
           [ngClass]="[
-            filter.isActive && !isEditing
+            (filter.isActive && !isEditing
               ? 'chip-look-alike text-center'
-              : ' chip-look-alike inactive-chip text-center'
+              : ' chip-look-alike inactive-chip text-center'),
+              filter.isActive ? 'active-selected' : ''
           ]"
         >
           <div class="truncate-f85 text-center">
