@@ -270,7 +270,7 @@ export class FilterPreferencesComponent implements OnDestroy {
   public openAvailablePresetsDialog(): void {
     const dialog = this.matDialog.open(AvailableFiltersComponent, {
       maxHeight: '400px',
-      width: '700px',
+      width: '610px',
       data: {
         filterPresets: this.filterPresets,
         systemFilters: this.currentSystemFilters,
