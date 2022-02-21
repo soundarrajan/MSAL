@@ -92,7 +92,9 @@ $red: red;
 
 .mat-chip.mat-standard-chip {
   color: rgba(0, 0, 0, 0.87);
-  min-height: 28px;
+  min-height: 30px;
+  line-height: initial;
+  font-size: 14px;
 }
 
 .mat-chip:focus {
