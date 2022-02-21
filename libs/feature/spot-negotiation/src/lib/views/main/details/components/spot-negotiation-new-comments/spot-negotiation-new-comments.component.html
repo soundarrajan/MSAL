@@ -105,10 +105,13 @@
                   class="comments-text"
                   [(ngModel)]="requestInfo.negoGeneralComments"
                   placeholder="Type notes here.."
-                  maxlength="1000"
                   (blur)="saveComment('general')"
-                  (keypress)="checkCommentsLimit('general')"
-                  (paste)="onPaste($event)"
+                  (ngModelChange)="
+                    checkCommentsLimit(
+                      requestInfo.negoGeneralComments,
+                      'general'
+                    )
+                  "
                 ></textarea>
                 <div class="char-left">
                   {{ 1000 - requestInfo?.negoGeneralComments?.length }}
@@ -146,10 +149,13 @@
                   class="comments-text"
                   [(ngModel)]="requestInfo.negoPerformanceComments"
                   placeholder="Type notes here.."
-                  maxlength="1000"
                   (blur)="saveComment('performance')"
-                  (keypress)="checkCommentsLimit('performance')"
-                  (paste)="onPaste($event)"
+                  (ngModelChange)="
+                    checkCommentsLimit(
+                      requestInfo.negoPerformanceComments,
+                      'performance'
+                    )
+                  "
                 ></textarea>
                 <div class="char-left">
                   {{ 1000 - requestInfo?.negoPerformanceComments?.length }}
@@ -184,10 +190,13 @@
                   class="comments-text"
                   [(ngModel)]="requestInfo.negoSupplierComments"
                   placeholder="Type notes here.."
-                  maxlength="1000"
                   (blur)="saveComment('supplier')"
-                  (keypress)="checkCommentsLimit('supplier')"
-                  (paste)="onPaste($event)"
+                  (ngModelChange)="
+                    checkCommentsLimit(
+                      requestInfo.negoSupplierComments,
+                      'supplier'
+                    )
+                  "
                 ></textarea>
                 <div class="char-left">
                   {{ 1000 - requestInfo?.negoSupplierComments?.length }}
@@ -225,10 +234,13 @@
                   class="comments-text"
                   [(ngModel)]="requestInfo.negoVesselAgentComments"
                   placeholder="Type notes here.."
-                  maxlength="1000"
                   (blur)="saveComment('vesselAndAgent')"
-                  (keypress)="checkCommentsLimit('vesselAndAgent')"
-                  (paste)="onPaste($event)"
+                  (ngModelChange)="
+                    checkCommentsLimit(
+                      requestInfo.negoVesselAgentComments,
+                      'vesselAndAgent'
+                    )
+                  "
                 ></textarea>
                 <div class="char-left">
                   {{ 1000 - requestInfo?.negoVesselAgentComments?.length }}
