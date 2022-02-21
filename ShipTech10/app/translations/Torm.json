@@ -1320,7 +1320,13 @@
             "PRICING_EVENT_DATE_MANUAL_OVERRIDE": "Pricing event manual override",
             "AUTO_FINAL_QUANTITY": "Auto-populate Final Qty based on",
             "AUTO_VERIFY_LAB_RESULTS": "Auto Verify Lab Results",
-            "TRADE_BOOK": "Name"
+            "DISPLAY_VESSEL_BOPS_DETAILS": "Display BOPS Details",
+            "DISPLAY_PORT_SEQUENCE": "Display Port Sequence",
+            "DISPLAY_TERMINAL": "Display Terminal",
+            "DISPLAY_LOCATION_BOPS_DETAILS": "Display BOPS Details",
+            "ADD_COUNTERPARTY_BANK_ACCOUNT": "Add Bank Account Number",
+            "TRADE_BOOK": "Name",
+            "PRE_CLAIM_CN_AVAILABLE": "Display Withheld Amount and Pre Claim CN"
       },
       "recon": {
             "VESSEL_NAME": "Vessel Name",
