@@ -333,7 +333,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.SelectedSellerWithProds.forEach((singleSeller, index) => {
       var selectedSeller = {
         RequestLocationSellerId: singleSeller.id,
-        RequestLocationID: singleSeller.requestLocationId,
+        RequestLocationId: singleSeller.requestLocationId,
         LocationID: singleSeller.locationId,
         SellerId: singleSeller.sellerCounterpartyId,
         RfqId:
