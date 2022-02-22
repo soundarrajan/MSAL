@@ -361,7 +361,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     private toastr: ToastrService
   ) {
     super(
-      'control-tower-quality-labs-list-grid-9',
+      'control-tower-quality-labs-list-grid-10',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(ControlTowerQualityLabsListGridViewModel.name)
