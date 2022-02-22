@@ -671,8 +671,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
                   (e.LocationID == reqLoc.locationId &&
                     e.SellerId == locRows.sellerCounterpartyId &&
                     tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
-                      e.physicalSupplierCounterpartyId ==
-                        locRows.physicalSupplierCounterpartyId) ||
+                    e.physicalSupplierCounterpartyId ==
+                      locRows.physicalSupplierCounterpartyId) ||
                   locRows.physicalSupplierCounterpartyId == null
               )
               .map(result => {
@@ -1113,55 +1113,118 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
   }
 
-  noQuoteAction() {
-    var Selectedfinaldata = this.FilterselectedRowForRFQ();
-    console.log(Selectedfinaldata);
-    console.log(this.selectedSellerList);
-    var requestOfferIds = [];
+  noQuoteAction(type) {
+    let locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    let selectedFinalData = this.FilterselectedRowForRFQ();
+    let requestLocationSellerIds = selectedFinalData.map(
+      e => e.RequestLocationSellerId
+    );
+    let requestOfferIds = [];
+    let requestOffers = [];
     this.selectedSellerList.forEach(e => {
       requestOfferIds.push([...e.RequestOffers.map(e => e)]);
     });
     requestOfferIds = requestOfferIds.reduce((acc, val) => acc.concat(val), []); // flatten array
-    console.log(requestOfferIds);
     if (requestOfferIds.length == 0) {
       this.toaster.error(
         "Offer Price cannot be marked as 'No Quote' as RFQ has neither been skipped or sent."
       );
       return;
     }
+    requestOffers = _.cloneDeep(requestOfferIds);
+    if (type == 'enable-quote') {
+      let quotedElements = _.filter(requestOffers, e => {
+        return !e.hasNoQuote;
+      });
+      if (quotedElements && quotedElements.length) {
+        this.toaster.error(
+          'Enable Quote can be applied only on Offer Price marked as No Quote'
+        );
+        return;
+      }
+    } else if (type == 'no-quote') {
+      let quotedElements = _.filter(requestOffers, e => {
+        return e.hasNoQuote;
+      });
+      if (quotedElements && quotedElements.length) {
+        this.toaster.error(
+          'Cannot perform the action. Please check the selections made!'
+        );
+        return;
+      }
+    }
     let noQuotePayload = {
       requestOfferIds: requestOfferIds.map(e => e.id),
-      noQuote: !requestOfferIds[0].hasNoQuote
+      noQuote: type === 'no-quote' ? true : false
     };
+    console.log(noQuotePayload);
     let response = this.spotNegotiationService.switchReqOffBasedOnQuote(
       noQuotePayload
     );
+    this.spinner.show();
     response.subscribe((res: any) => {
       console.log(res);
       if (res) {
-        let locationsRows = this.store.selectSnapshot<any>((state: any) => {
-          return state.spotNegotiation.locationsRows;
-        });
-        let changedRowsOffers = requestOfferIds.map(e => e.id);
-        console.log(locationsRows);
         let updatedRows = _.cloneDeep(locationsRows);
-        updatedRows.forEach(e => {
-          e.requestOffers.forEach(requestOffer => {
-            if (changedRowsOffers.includes(requestOffer.id)) {
-              requestOffer.hasNoQuote = !requestOfferIds[0].hasNoQuote;
-            }
-          });
-        });
-        this.store.dispatch(new SetLocationsRows(updatedRows));
-        // params.node.setData(updatedRows);
-
-        let successMessage = requestOfferIds[0].hasNoQuote
-          ? 'Selected Offer Price has been enabled.'
-          : "Selected Offers have been marked as 'No Quote' successfully.";
+        this.getPriceDetailsInformation(updatedRows, requestLocationSellerIds);
+        let successMessage =
+          type === 'enable-quote'
+            ? 'Selected Offer Price has been enabled.'
+            : "Selected Offers have been marked as 'No Quote' successfully.";
         this.toaster.success(successMessage);
+      } else {
+        this.toaster.error('An error has occurred!');
+        this.spinner.hide();
       }
     });
-    console.log(noQuotePayload);
+  }
+
+  getPriceDetailsInformation(updatedRows, requestLocationSellerIds) {
+    const groupId = parseFloat(this.route.snapshot.params.spotNegotiationId);
+    this.spotNegotiationService
+      .getPriceDetails(groupId)
+      .subscribe((priceDetailsRes: any) => {
+        this.spinner.hide();
+        let priceDetails = _.cloneDeep(priceDetailsRes.sellerOffers);
+        priceDetails.forEach(e => {
+          if (requestLocationSellerIds.includes(e.requestLocationSellerId)) {
+            let findElementIndex = _.findIndex(updatedRows, function(
+              object: any
+            ) {
+              return object.id == e.requestLocationSellerId;
+            });
+            if (findElementIndex != -1) {
+              updatedRows[findElementIndex].requestOffers = _.cloneDeep(
+                e.requestOffers
+              );
+              updatedRows[findElementIndex].totalOffer = e.totalOffer;
+              updatedRows[findElementIndex].totalCost = e.totalCost;
+
+              //Deselect rows
+              updatedRows[findElementIndex].isSelected = false;
+              if (updatedRows[findElementIndex].checkProd1) {
+                updatedRows[findElementIndex].checkProd1 = false;
+              }
+              if (updatedRows[findElementIndex].checkProd2) {
+                updatedRows[findElementIndex].checkProd2 = false;
+              }
+              if (updatedRows[findElementIndex].checkProd3) {
+                updatedRows[findElementIndex].checkProd3 = false;
+              }
+              if (updatedRows[findElementIndex].checkProd4) {
+                updatedRows[findElementIndex].checkProd4 = false;
+              }
+              if (updatedRows[findElementIndex].checkProd5) {
+                updatedRows[findElementIndex].checkProd5 = false;
+              }
+            }
+          }
+        });
+        console.log(updatedRows);
+        this.store.dispatch(new SetLocationsRows(updatedRows));
+      });
   }
 
   FilterselectedRowForCurrentRequest() {

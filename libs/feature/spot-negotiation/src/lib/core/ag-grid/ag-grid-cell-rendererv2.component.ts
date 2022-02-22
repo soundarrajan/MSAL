@@ -229,7 +229,17 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
       </div>
       <div class="p-tb-5" style="display:flex;align-items:center;">
         <span><div class="no-quote-icon"></div></span>
-        <span class="fs-12" (click)="noQuoteAction(params)">No Quote</span>
+        <span class="fs-12" (click)="noQuoteAction(params, 'no-quote')"
+          >No Quote</span
+        >
+      </div>
+      <div class="p-tb-5" style="display:flex;align-items:center;">
+        <span>
+          <div class="enable-quote-icon"></div>
+        </span>
+        <span class="fs-12" (click)="noQuoteAction(params, 'enable-quote')"
+          >Enable Quote</span
+        >
       </div>
       <hr class="menu-divider-line" />
       <div class="p-tb-5" style="display:flex;align-items:center;">
@@ -242,10 +252,8 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
     <div
       class="no-quote-text aggrid-text-align-c"
       *ngIf="
-        params.data &&
-        params.data.requestOffers &&
-        params.data.requestOffers[params.index] &&
-        params.data.requestOffers[params.index].hasNoQuote
+        params.type == 'price-calc' &&
+        checkIfRequestOffersHasNoQuote(params.index)
       "
     >
       <span>No quote</span>
@@ -255,136 +263,128 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
     <!-- [ngClass]="!isOfferRequestAvailable() ? 'input-disabled' : '' " -->
 
     <div
-      *ngIf="params.type == 'price-calc'"
+      *ngIf="
+        params.type == 'price-calc' &&
+        !checkIfRequestOffersHasNoQuote(params.index)
+      "
       [ngClass]="!isOfferRequestAvailable() ? 'no-price-data' : ''"
     >
-      <ng-container
-        *ngIf="
-          params.data &&
-          params.data.requestOffers &&
-          params.data.requestOffers[params.index] &&
-          !params.data.requestOffers[params.index].hasNoQuote
+      <!-- TODO check this code... -->
+      <span *ngIf="!isOfferRequestAvailable()">-</span>
+      <div
+        *ngIf="isOfferRequestAvailable()"
+        [ngClass]="
+          params.product.status === 'Stemmed' ||
+          params.product.status === 'Confirmed'
+            ? 'input-disabled-new'
+            : ''
         "
       >
-        <!-- TODO check this code... -->
-        <span *ngIf="!isOfferRequestAvailable()">-</span>
+        <div class="price-calc static-data" *ngIf="params.value === '100.00'">
+          <span class="duplicate-icon"></span>
+          $ {{ params.value }}
+        </div>
         <div
-          *ngIf="isOfferRequestAvailable()"
-          [ngClass]="
-            params.product.status === 'Stemmed' ||
-            params.product.status === 'Confirmed'
-              ? 'input-disabled-new'
-              : ''
+          class="price-calc active"
+          [matMenuTriggerFor]="priceMenupopup"
+          #pricePopupTrigger="matMenuTrigger"
+          (click)="pricePopupTrigger.closeMenu()"
+          (contextmenu)="
+            $event.preventDefault();
+            $event.stopPropagation();
+            onRightClickMenuOpened($event);
+            pricePopupTrigger.openMenu()
           "
         >
-          <div class="price-calc static-data" *ngIf="params.value === '100.00'">
-            <span class="duplicate-icon"></span>
-            $ {{ params.value }}
-          </div>
+          <span
+            class="duplicate-icon"
+            *ngIf="params.data.requestOffers[params.index]?.isOfferPriceCopied"
+          ></span>
           <div
-            class="price-calc active"
-            [matMenuTriggerFor]="priceMenupopup"
-            #pricePopupTrigger="matMenuTrigger"
-            (click)="pricePopupTrigger.closeMenu()"
-            (contextmenu)="
-              $event.preventDefault();
-              $event.stopPropagation();
-              onRightClickMenuOpened($event);
-              pricePopupTrigger.openMenu()
-            "
+            id="custom-form-field"
+            [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
           >
-            <span
-              class="duplicate-icon"
-              *ngIf="
-                params.data.requestOffers[params.index]?.isOfferPriceCopied
-              "
-            ></span>
-            <div
-              id="custom-form-field"
-              [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
+            <mat-form-field
+              class="without-search currency-select-trigger"
+              appearance="none"
             >
-              <mat-form-field
-                class="without-search currency-select-trigger"
-                appearance="none"
+              <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
+              <!-- ** {{params.currency}} --  -->
+              <!-- ** {{ paramsDataClone.currency  --  -->
+              <mat-label>Select Field</mat-label>
+              <mat-select
+                disableOptionCentering
+                [(ngModel)]="paramsDataClone.currency"
+                panelClass="currencyselecttrigger"
+                (selectionChange)="onCurrencyChange($event, params)"
               >
-                <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
-                <!-- ** {{params.currency}} --  -->
-                <!-- ** {{ paramsDataClone.currency  --  -->
-                <mat-label>Select Field</mat-label>
-                <mat-select
-                  disableOptionCentering
-                  [(ngModel)]="paramsDataClone.currency"
-                  panelClass="currencyselecttrigger"
-                  (selectionChange)="onCurrencyChange($event, params)"
+                <mat-select-trigger overlayPanelClass="123class">
+                  {{ getCurrencyCode(paramsDataClone.currency) }}
+                </mat-select-trigger>
+                <mat-option [disabled]>Change Currency </mat-option>
+                <mat-option
+                  class="currency-mat-select"
+                  *ngFor="let currency of currencyList"
+                  [value]="currency.id"
                 >
-                  <mat-select-trigger overlayPanelClass="123class">
-                    {{ getCurrencyCode(paramsDataClone.currency) }}
-                  </mat-select-trigger>
-                  <mat-option [disabled]>Change Currency </mat-option>
-                  <mat-option
-                    class="currency-mat-select"
-                    *ngFor="let currency of currencyList"
-                    [value]="currency.id"
-                  >
-                    <span>
-                      <mat-radio-group>
-                        <mat-radio-button
-                          [value]="currency.id"
-                          [checked]="paramsDataClone.currency == currency.id"
-                        >
-                          {{ currency.code }}
-                        </mat-radio-button>
-                      </mat-radio-group>
-                    </span>
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <input
-              class="inputField"
-              id="{{ params.data.locationId }}/{{ params.index }}/{{
-                params.rowIndex
-              }}"
-              (keyup.enter)="ongetfocus($event, params)"
-              (change)="onPriceChange($event, params)"
-              autofocus
-              #inputSection
-              value="{{ priceFormatValue(params.value) }}"
-              autocomplete="off"
-              name="inputField"
-              spellcheck="false"
-              type="text"
-              style="display:inline"
-              [matTooltip]="priceFormatValue(params.value)"
-              [disabled]="
-                params.product.status === 'Stemmed' ||
-                params.product.status === 'Confirmed' ||
-                params.data.requestOffers[params.index].hasNoQuote
-              "
-            />
-
-            <div
-              class="addButton"
-              (click)="otherdetailspopup($event, params)"
-              *ngIf="
-                params.value > 0 &&
-                params.data.requestOffers[params.index]?.supplyQuantity == null
-              "
-            ></div>
-            <div
-              class="formulaButton"
-              style="display:inline; position:absolute; left:78px;"
-              (mouseenter)="hoverMenu($event)"
-              [matMenuTriggerFor]="formulamenu"
-              #menuTriggerHover="matMenuTrigger"
-              *ngIf="
-                params.value > 0 &&
-                params.data.requestOffers[params.index]?.supplyQuantity != null
-              "
-            ></div>
+                  <span>
+                    <mat-radio-group>
+                      <mat-radio-button
+                        [value]="currency.id"
+                        [checked]="paramsDataClone.currency == currency.id"
+                      >
+                        {{ currency.code }}
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </span>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
+          <input
+            class="inputField"
+            id="{{ params.data.locationId }}/{{ params.index }}/{{
+              params.rowIndex
+            }}"
+            (keyup.enter)="ongetfocus($event, params)"
+            (change)="onPriceChange($event, params)"
+            autofocus
+            #inputSection
+            value="{{ priceFormatValue(params.value) }}"
+            autocomplete="off"
+            name="inputField"
+            spellcheck="false"
+            type="text"
+            style="display:inline"
+            [matTooltip]="priceFormatValue(params.value)"
+            [disabled]="
+              params.product.status === 'Stemmed' ||
+              params.product.status === 'Confirmed' ||
+              params.data.requestOffers[params.index].hasNoQuote
+            "
+          />
+
+          <div
+            class="addButton"
+            (click)="otherdetailspopup($event, params)"
+            *ngIf="
+              params.value > 0 &&
+              params.data.requestOffers[params.index]?.supplyQuantity == null
+            "
+          ></div>
+          <div
+            class="formulaButton"
+            style="display:inline; position:absolute; left:78px;"
+            (mouseenter)="hoverMenu($event)"
+            [matMenuTriggerFor]="formulamenu"
+            #menuTriggerHover="matMenuTrigger"
+            *ngIf="
+              params.value > 0 &&
+              params.data.requestOffers[params.index]?.supplyQuantity != null
+            "
+          ></div>
         </div>
-      </ng-container>
+      </div>
     </div>
     <!-- End offer price cell -->
 
@@ -541,54 +541,42 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
       ></mat-checkbox>
     </div>
 
-    <div *ngIf="params.type == 'addTpr'" class="addTpr">
-      <ng-container
-        *ngIf="
-          params.data &&
-          params.data.requestOffers &&
-          params.data.requestOffers[params.index] &&
-          !params.data.requestOffers[params.index].hasNoQuote
-        "
-      >
-        <span *ngIf="!params.value && params.value != 0">-</span>
-        <span [matTooltip]="params.value">{{
-          priceCalFormatValue(params.value)
-        }}</span>
-        <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
-      </ng-container>
+    <div
+      *ngIf="
+        params.type == 'addTpr' && !checkIfRequestOffersHasNoQuote(params.index)
+      "
+      class="addTpr"
+    >
+      <span *ngIf="!params.value && params.value != 0">-</span>
+      <span [matTooltip]="params.value">{{
+        priceCalFormatValue(params.value)
+      }}</span>
+      <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
-    <div *ngIf="params.type == 'amt'" class="addTpr">
-      <ng-container
-        *ngIf="
-          params.data &&
-          params.data.requestOffers &&
-          params.data.requestOffers[params.index] &&
-          !params.data.requestOffers[params.index].hasNoQuote
-        "
-      >
-        <span *ngIf="!params.value && params.value != 0">-</span>
-        <span [matTooltip]="params.value">{{
-          priceCalFormatValue(params.value)
-        }}</span>
-      </ng-container>
+    <div
+      *ngIf="
+        params.type == 'amt' && !checkIfRequestOffersHasNoQuote(params.index)
+      "
+      class="addTpr"
+    >
+      <span *ngIf="!params.value && params.value != 0">-</span>
+      <span [matTooltip]="params.value">{{
+        priceCalFormatValue(params.value)
+      }}</span>
     </div>
 
-    <div *ngIf="params.type == 'diff'" class="addTpr">
-      <ng-container
-        *ngIf="
-          params.data &&
-          params.data.requestOffers &&
-          params.data.requestOffers[params.index] &&
-          !params.data.requestOffers[params.index].hasNoQuote
-        "
-      >
-        <span *ngIf="!params.value && params.value != 0">-</span>
-        <span [matTooltip]="params.value">{{
-          priceCalFormatValue(params.value)
-        }}</span>
-        <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
-      </ng-container>
+    <div
+      *ngIf="
+        params.type == 'diff' && !checkIfRequestOffersHasNoQuote(params.index)
+      "
+      class="addTpr"
+    >
+      <span *ngIf="!params.value && params.value != 0">-</span>
+      <span [matTooltip]="params.value">{{
+        priceCalFormatValue(params.value)
+      }}</span>
+      <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
     <div
@@ -1519,31 +1507,68 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return false;
   }
 
-  noQuoteAction(params) {
+  noQuoteAction(params, type) {
     if (!params.data.requestOffers) {
       this.toastr.error(
         "Offer Price cannot be marked as 'No Quote' as RFQ has neither been skipped or sent."
       );
       return;
     }
+    if (type == 'enable-quote') {
+      let quotedElements = _.filter(params.data.requestOffers, e => {
+        return !e.hasNoQuote;
+      });
+      if (quotedElements && quotedElements.length) {
+        this.toastr.error(
+          'Enable Quote can be applied only on Offer Price marked as No Quote'
+        );
+        return;
+      }
+    } else if (type == 'no-quote') {
+      let quotedElements = _.filter(params.data.requestOffers, e => {
+        return e.hasNoQuote;
+      });
+      if (quotedElements && quotedElements.length) {
+        this.toastr.error(
+          'Cannot perform the action. Please check the selections made!'
+        );
+        return;
+      }
+    }
     let noQuotePayload = {
       requestOfferIds: params.data.requestOffers.map(e => e.id),
-      noQuote: !params.data.requestOffers[0].hasNoQuote
+      noQuote: type === 'no-quote' ? true : false
     };
     let response = this._spotNegotiationService.switchReqOffBasedOnQuote(
       noQuotePayload
     );
+    this.spinner.show();
     response.subscribe((res: any) => {
-      console.log(res);
       if (res) {
-        let successMessage = params.data.requestOffers[0].hasNoQuote
-          ? 'Selected Offer Price has been enabled.'
-          : "Selected Offers have been marked as 'No Quote' successfully.";
+        let successMessage =
+          type === 'enable-quote'
+            ? 'Selected Offer Price has been enabled.'
+            : "Selected Offers have been marked as 'No Quote' successfully.";
         this.toastr.success(successMessage);
         this.getSellerLineDetails();
+      } else {
+        this.spinner.hide();
+        this.toastr.error('An error has occurred!');
       }
     });
     console.log(noQuotePayload);
+  }
+
+  checkIfRequestOffersHasNoQuote(index) {
+    if (
+      this.params.data &&
+      this.params.data.requestOffers &&
+      this.params.data.requestOffers[index] &&
+      this.params.data.requestOffers[index].hasNoQuote
+    ) {
+      return true;
+    }
+    return false;
   }
 
   getSellerLineDetails() {
@@ -1552,6 +1577,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this._spotNegotiationService
       .getPriceDetailsById(groupId, requestLocationSellerId)
       .subscribe((priceDetailsRes: any) => {
+        this.spinner.hide();
         let updatedRow = { ...this.params.data };
         updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
         updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
