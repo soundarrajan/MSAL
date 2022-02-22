@@ -71,6 +71,8 @@ export interface IControlTowerQuantityClaimsItemDto {
 
 export interface IControlTowerResidueSludgeDifferenceItemDto {
   portCall: IDisplayLookupDto;
+  order: IDisplayLookupDto;
+  buyer:IDisplayLookupDto;
   port: IDisplayLookupDto;
   vessel: IDisplayLookupDto;
   eta: string;
@@ -78,6 +80,9 @@ export interface IControlTowerResidueSludgeDifferenceItemDto {
   emailToVessel: boolean;
   vesselToWatch: boolean;
   sludgePercentage: number;
+  sumOfOrderQuantity: number;
+  measuredDeliveredQuantity: number;
+  differenceInSludgeQuantity: number;
   progress: IDisplayLookupDto;
   id: number;
   logBookRobQtyBeforeDelivery: number;
@@ -132,7 +137,9 @@ export interface IControlTowerQualityLabsItemDto {
   port: string;
   recentEta: string;
   product: IDisplayLookupDto;
+  specGroupName: string;
   status: IDisplayLookupDto;
+  densityDifference: boolean;
   claimsRaised: boolean;
   createdBy: IDisplayLookupDto;
   createdDate: string;
