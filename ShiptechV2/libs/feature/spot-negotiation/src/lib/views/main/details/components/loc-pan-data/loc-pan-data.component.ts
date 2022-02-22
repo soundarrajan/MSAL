@@ -81,7 +81,7 @@ export class LocPanDataComponent implements OnInit {
     console.log(filterLocationRows);
     const dialogRef = this.dialog.open(ApplicablecostpopupComponent, {
       width: '1170px',
-      height: '235px',
+      height: 'auto',
       panelClass: 'additional-cost-popup',
       data: {
         reqLocation: this.reqLocation,
