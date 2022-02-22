@@ -240,9 +240,10 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
       </div>
     </mat-menu>
     <div
-      class="no-quote-text"
+      class="no-quote-text aggrid-text-align-c"
       *ngIf="
         params.data &&
+        params.data.requestOffers &&
         params.data.requestOffers[params.index] &&
         params.data.requestOffers[params.index].hasNoQuote
       "
@@ -260,6 +261,7 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
       <ng-container
         *ngIf="
           params.data &&
+          params.data.requestOffers &&
           params.data.requestOffers[params.index] &&
           !params.data.requestOffers[params.index].hasNoQuote
         "
@@ -543,6 +545,7 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
       <ng-container
         *ngIf="
           params.data &&
+          params.data.requestOffers &&
           params.data.requestOffers[params.index] &&
           !params.data.requestOffers[params.index].hasNoQuote
         "
@@ -559,6 +562,7 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
       <ng-container
         *ngIf="
           params.data &&
+          params.data.requestOffers &&
           params.data.requestOffers[params.index] &&
           !params.data.requestOffers[params.index].hasNoQuote
         "
@@ -574,6 +578,7 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
       <ng-container
         *ngIf="
           params.data &&
+          params.data.requestOffers &&
           params.data.requestOffers[params.index] &&
           !params.data.requestOffers[params.index].hasNoQuote
         "
@@ -1531,13 +1536,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     response.subscribe((res: any) => {
       console.log(res);
       if (res) {
-        let updatedRow = _.cloneDeep(params.data);
-        updatedRow.requestOffers.forEach(element => {
-          element.hasNoQuote = !params.data.requestOffers[0].hasNoQuote;
-        });
-        this.store.dispatch(new EditLocationRow(updatedRow));
-        params.node.setData(updatedRow);
-
         let successMessage = params.data.requestOffers[0].hasNoQuote
           ? 'Selected Offer Price has been enabled.'
           : "Selected Offers have been marked as 'No Quote' successfully.";
