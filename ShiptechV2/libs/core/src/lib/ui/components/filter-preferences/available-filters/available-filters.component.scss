@@ -12,6 +12,19 @@ $red: red;
   background-color: white;
   color: #364150 !important;
   border: 1px solid #364150;
+  &.active-selected {
+    color: white !important;
+    background-color : #364150 !important;
+    .chip-circle {
+      border-left: 1px solid #fff;
+      i.fa-circle {
+        color: white !important;
+      }
+      i:not(.fa-circle) {
+        filter: invert(1) brightness(2);
+      }
+    }
+  }  
 }
 
 .chip-icon {
@@ -82,6 +95,7 @@ $red: red;
   border-left: 1px solid;
   border-radius: 0;
   padding: 0 15px;
+  font-size: 7px;
 }
 
 .delete-chip {
@@ -106,6 +120,7 @@ mat-dialog-content.isEditing {
 mat-dialog-content .system-filter {
   .chip-label {
     font-size: 14px !important;
+    padding: 0 5px;
   }
 }
 mat-dialog-content.isEditing .system-filter {

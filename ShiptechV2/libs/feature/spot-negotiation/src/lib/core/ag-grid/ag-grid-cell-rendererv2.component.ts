@@ -1509,7 +1509,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   noQuoteAction(params, type) {
     if (!params.data.requestOffers) {
-      this.toastr.error(
+      this.toastr.warning(
         "Offer Price cannot be marked as 'No Quote' as RFQ has neither been skipped or sent."
       );
       return;
@@ -1519,7 +1519,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         return !e.hasNoQuote;
       });
       if (quotedElements && quotedElements.length) {
-        this.toastr.error(
+        this.toastr.warning(
           'Enable Quote can be applied only on Offer Price marked as No Quote'
         );
         return;
@@ -1529,7 +1529,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         return e.hasNoQuote;
       });
       if (quotedElements && quotedElements.length) {
-        this.toastr.error(
+        this.toastr.warning(
           'Cannot perform the action. Please check the selections made!'
         );
         return;

@@ -28,6 +28,7 @@ import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.en
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 import _ from 'lodash';
 import { NegotiationDetailsToolbarComponent } from '../../../toolbar/spot-negotiation-details-toolbar.component';
+import { LoadReportSurveyHistoryAction } from 'libs/feature/quantity-control/src/lib/store/report/qc-report-survey-history.actions';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -182,6 +183,27 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   confirmorderpopup() {
+    let selectedFinalData = this.FilterselectedRowForRFQ();
+    let requestOffers = [];
+    selectedFinalData.forEach(e => {
+      requestOffers.push([...e.RequestOffers.map(e => e)]);
+    });
+    requestOffers = requestOffers.reduce((acc, val) => acc.concat(val), []); // flatten array
+    let checkIfExistRequestOffersWithNoQuote = _.filter(requestOffers, function(
+      element
+    ) {
+      return element.hasNoQuote;
+    });
+    if (
+      checkIfExistRequestOffersWithNoQuote &&
+      checkIfExistRequestOffersWithNoQuote.length
+    ) {
+      this.toaster.warning(
+        'Offer Price set as No Quote cannot be used for order creation'
+      );
+      return;
+    }
+
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
@@ -1128,7 +1150,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     requestOfferIds = requestOfferIds.reduce((acc, val) => acc.concat(val), []); // flatten array
     if (requestOfferIds.length == 0) {
-      this.toaster.error(
+      this.toaster.warning(
         "Offer Price cannot be marked as 'No Quote' as RFQ has neither been skipped or sent."
       );
       return;
@@ -1139,7 +1161,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return !e.hasNoQuote;
       });
       if (quotedElements && quotedElements.length) {
-        this.toaster.error(
+        this.toaster.warning(
           'Enable Quote can be applied only on Offer Price marked as No Quote'
         );
         return;
@@ -1149,7 +1171,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return e.hasNoQuote;
       });
       if (quotedElements && quotedElements.length) {
-        this.toaster.error(
+        this.toaster.warning(
           'Cannot perform the action. Please check the selections made!'
         );
         return;
@@ -1159,13 +1181,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
       requestOfferIds: requestOfferIds.map(e => e.id),
       noQuote: type === 'no-quote' ? true : false
     };
-    console.log(noQuotePayload);
     let response = this.spotNegotiationService.switchReqOffBasedOnQuote(
       noQuotePayload
     );
     this.spinner.show();
     response.subscribe((res: any) => {
-      console.log(res);
       if (res) {
         let updatedRows = _.cloneDeep(locationsRows);
         this.getPriceDetailsInformation(updatedRows, requestLocationSellerIds);
@@ -1222,7 +1242,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
             }
           }
         });
-        console.log(updatedRows);
         this.store.dispatch(new SetLocationsRows(updatedRows));
       });
   }
