@@ -1,11 +1,11 @@
-﻿commit 7d1aecac42b47caa32fa05435c3cc74a27d6f48a
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Tue Feb 22 05:28:40 2022 +0000
+﻿commit f5de4f182009ecce5d8869ec7f88f4be340de937
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Tue Feb 22 11:14:25 2022 +0000
 
-    Merged PR 16043: 38797-Control tower(Lab list)-Density difference Filtering issue fix
+    Merged PR 16058: Fix console error
     
-    38797-Control tower(Lab list)-Density difference Filtering issue fix
+    Fix console error
     
-    Related work items: #38797
+    Related work items: #38822
 
 branch: master
