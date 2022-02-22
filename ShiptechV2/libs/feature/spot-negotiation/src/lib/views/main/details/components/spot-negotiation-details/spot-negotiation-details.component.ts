@@ -627,7 +627,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             return null;
           },
           cellRendererFramework: AGGridCellRendererV2Component,
-          cellRendererParams: { type: 'addTpr', cellClass: '' },
+          cellRendererParams: { type: 'addTpr', cellClass: '', index: index },
           lockPosition: true
         },
         {
@@ -654,7 +654,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             return 'grey-opacity-cell pad-lr-0';
           },
           cellRendererFramework: AGGridCellRendererV2Component,
-          cellRendererParams: { type: 'amt', cellClass: '' },
+          cellRendererParams: { type: 'amt', cellClass: '', index: index },
           lockPosition: true
         },
         {
@@ -684,7 +684,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             return 'line-seperator grey-opacity-cell pad-lr-0';
           },
           cellRendererFramework: AGGridCellRendererV2Component,
-          cellRendererParams: { type: 'diff', cellClass: '' },
+          cellRendererParams: { type: 'diff', cellClass: '', index: index },
           lockPosition: true
         },
         {
