@@ -23,7 +23,9 @@
               <span class="panel-title m-l-9" (click)="$event.stopPropagation();">
                 <mat-checkbox
                 [value]="request.id"
-                (change)="onConfirmOfferALLCheckboxChange($event,request,requestOfferItems)"
+                checked="true"
+                (change)="onConfirmOfferALLCheckboxChange($event, request, requestOfferItems)"
+                class="mat-checkbox header-checkbox mat-accent"
               ></mat-checkbox> <span>Request {{ request.id }} - {{request.vesselName}}</span>
               </span>
               <div class="comments-type"> </div>
@@ -52,7 +54,7 @@
                     <th class="text-left">Confirmed Qty</th>
                     <th class="text-left">UOM</th>
                     <th class="text-left">Offer Price</th>
-                    <th class="text-left">Total Price</th>
+                    <th class="text-left">Amount</th>
                     <th class="text-left w-125">Phy.Supplier</th>
                   </tr>
                 </thead>
@@ -86,11 +88,10 @@
                           matInput
                           [(ngModel)]="requestOfferItem.value.ConfirmedQuantity"
                           autocomplete="off"
-                          (blur)="totalprice(requestOfferItem.key)"
                         /></td>
                         <td class=""> {{requestOfferItem.value.UomName}}</td>
                         <td class="">{{requestOfferItem.value.currencyName}} {{format.price(requestOfferItem.value.OfferPrice)||0}}</td>
-                        <td class="">{{requestOfferItem.value.currencyName}} {{format.price(requestOfferItem.value.TotalPrice)}}</td>
+                        <td class="">{{requestOfferItem.value.currencyName}} {{format.price(requestOfferItem.value.Amount)}}</td>
                         <td class="w-125">{{requestOfferItem.value.PhysicalSupplierName}}</td>
                       </tr>
                     </tbody>
