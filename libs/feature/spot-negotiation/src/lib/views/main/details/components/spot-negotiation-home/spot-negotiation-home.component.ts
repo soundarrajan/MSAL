@@ -527,7 +527,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     return {
       RequestLocationSellerId: Seller.id,
       SellerId: Seller.sellerCounterpartyId,
-      RequestLocationID: Seller.requestLocationId,
+      RequestLocationId: Seller.requestLocationId,
       LocationID: Seller.locationId,
       RequestId: Request.id,
       physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
