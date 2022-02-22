@@ -83,7 +83,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       if(this.currentRequestInfo && this.negoNavBarChild && this.navBar != this.currentRequestInfo.id){
         this.navBar = this.currentRequestInfo.id;
         this.negoNavBarChild.createNavBarIds(this.currentRequestInfo.id);
-      }      
+      }
       this.requestOptions = spotNegotiation.requests;
       if (this.requestOptions && this.currentRequestInfo) {
         this.requestOptionsToDuplicatePrice = this.requestOptions.filter(r => r.id != this.currentRequestInfo.id && r.requestLocations.some(l => l.requestProducts.some(pr => pr.status.toLowerCase().includes("inquired") || pr.status.toLowerCase().includes("quoted")))).map(req => ({ ...req, selected: true }));
@@ -486,7 +486,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     return {
       RequestLocationSellerId: Seller.id,
       SellerId: Seller.sellerCounterpartyId,
-      RequestLocationID: Seller.requestLocationId,
+      RequestLocationId: Seller.requestLocationId,
       LocationID: Seller.locationId,
       RequestId: Request.id,
       physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
@@ -659,7 +659,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
             let requestLocations = e.requestLocations.map(reqLoc => {
               let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x == reqPro.id) &&
                 (reqPro.status.toLowerCase() == 'inquired') ? { ...reqPro, status: 'Quoted' } : reqPro)
-    
+
               return { ...reqLoc, requestProducts }
             });
             return { ...e, requestLocations }
@@ -787,7 +787,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           let requestLocations = e.requestLocations.map(reqLoc => {
             let requestProducts = reqLoc.requestProducts.map(reqPro => requestProductIds.some(x => x.includes(reqPro.id)) &&
               (reqPro.status.toLowerCase() == 'validated'|| reqPro.status.toLowerCase() == 'reopen') ? { ...reqPro, status: 'Inquired' } : reqPro)
-  
+
             return { ...reqLoc, requestProducts }
           });
           return { ...e, requestLocations }
@@ -892,10 +892,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
               }
 
               return requestProducts ? { ...reqLoc, requestProducts} : reqLoc;
-            
+
           });
           return requestLocations?{ ...e,  requestLocations} : e;
-            
+
           });
           this.store.dispatch(new UpdateRequest(this.requestOptions));
         }
