@@ -44,7 +44,7 @@ export enum ControlTowerResidueSludgeDifferenceListExportColumns {
 export enum ControlTowerResidueSludgeDifferenceListColumnsLabels {
   actions = 'Actions',
   portCall = 'Port Call',
-  order='Po Number',
+  order='PO Number',
   buyer='Buyer',
   port = 'Port',
   vessel = 'Vessel',
