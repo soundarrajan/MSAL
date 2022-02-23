@@ -948,7 +948,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       ];
       const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
         width: '1170px',
-        height: '450px',
+        height: 'auto',
         panelClass: 'additional-cost-popup',
         data: {
           requestLocation: requestLocation,
