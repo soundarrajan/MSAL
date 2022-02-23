@@ -1,11 +1,11 @@
-﻿commit 3e6197399b5015f91e285e8430ca4932a91ac21e
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Feb 23 09:08:09 2022 +0000
+﻿commit 3dd94f63e46bfea7bff55432ea09fca521d1e74e
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Wed Feb 23 11:59:50 2022 +0000
 
-    Merged PR 16082: Css fixes
+    Merged PR 16087: 38797-BooleanFilterModification
     
-    Css fixes
+    38797-BooleanFilterModification
     
-    Related work items: #38580
+    Related work items: #38797
 
 branch: master
