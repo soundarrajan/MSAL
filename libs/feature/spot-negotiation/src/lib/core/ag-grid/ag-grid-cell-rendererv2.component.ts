@@ -724,8 +724,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       currency: new FormControl('')
     });
     this.paramsDataClone = _.cloneDeep(this.params.data);
-    if (this.paramsDataClone.requestOffers) {
-      this.paramsDataClone.currency = this.paramsDataClone.requestOffers[0].currencyId;
+    if (
+      this.paramsDataClone.requestOffers &&
+      this.params.type === 'price-calc' &&
+      this.paramsDataClone.requestOffers[this.params.index]
+    ) {
+      this.paramsDataClone.currency = this.paramsDataClone.requestOffers[
+        this.params.index
+      ].currencyId;
       this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
     }
     return this.store.selectSnapshot(({ spotNegotiation }) => {
@@ -1305,29 +1311,83 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   setNewRowData(newData, exchangeRateValue) {
     for (let i = 0; i < newData.requestOffers.length; i++) {
-      newData.requestOffers[i].totalPrice =
-        newData.requestOffers[i].totalPrice / exchangeRateValue;
-      newData.requestOffers[i].amount =
-        newData.requestOffers[i].amount / exchangeRateValue;
-      newData.requestOffers[i].targetDifference =
-        newData.requestOffers[i].targetDifference / exchangeRateValue;
+      if (!newData.requestOffers[i].hasProductStemmedOrConfirmed) {
+        newData.requestOffers[i].totalPrice =
+          newData.requestOffers[i].totalPrice / exchangeRateValue;
+        newData.requestOffers[i].amount =
+          newData.requestOffers[i].amount / exchangeRateValue;
+        newData.requestOffers[i].targetDifference =
+          newData.requestOffers[i].targetDifference / exchangeRateValue;
+      }
     }
-    newData.totalOffer = newData.totalOffer / exchangeRateValue;
+    newData.totalOffer = this.getSumOfAmount(newData.requestOffers);
     return newData;
+  }
+
+  getSumOfAmount(requestOffers) {
+    let totalOffer = 0;
+    for (let i = 0; i < requestOffers.length; i++) {
+      totalOffer += requestOffers[i].amount;
+    }
+    return totalOffer;
+  }
+
+  getCurrentRequestLocation() {
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
+    });
+    let requestLocationId = this.params.data.requestLocationId;
+    let findRequestLocationIndex = _.findIndex(
+      this.currentRequestSmallInfo?.requestLocations,
+      function(object: any) {
+        return object.id == requestLocationId;
+      }
+    );
+    if (findRequestLocationIndex != -1) {
+      let requestLocation = this.currentRequestSmallInfo?.requestLocations[
+        findRequestLocationIndex
+      ];
+      return requestLocation;
+    }
+    return null;
+  }
+
+  checkIfProductIsStemmedOrConfirmed(requestLocation, requestOffer) {
+    let findProductIndex = _.findIndex(
+      requestLocation.requestProducts,
+      function(object: any) {
+        return object.id == requestOffer.requestProductId;
+      }
+    );
+    if (findProductIndex != -1) {
+      let product = requestLocation.requestProducts[findProductIndex];
+      if (product.status === 'Stemmed' || product.status === 'Confirmed') {
+        return true;
+      }
+      return false;
+    }
   }
 
   onCurrencyChange(e, params) {
     var fromCurrency = this.paramsDataClone.oldCurrency;
     // var fromCurrency = this.tenantService.currencyId;
     let toCurrency = this.paramsDataClone.currency;
-
-    var rowNode = params.api.getRowNode(params.node.id);
     var newData = _.cloneDeep(params.data);
     newData.currency = toCurrency;
-    newData.requestOffers.map(el => {
-      return (el.currencyId = toCurrency);
-    });
-
+    let requestLocation = this.getCurrentRequestLocation();
+    for (let i = 0; i < newData.requestOffers.length; i++) {
+      if (
+        this.checkIfProductIsStemmedOrConfirmed(
+          requestLocation,
+          newData.requestOffers[i]
+        )
+      ) {
+        newData.requestOffers[i].hasProductStemmedOrConfirmed = true;
+      } else {
+        newData.requestOffers[i].hasProductStemmedOrConfirmed = false;
+        newData.requestOffers[i].currencyId = toCurrency;
+      }
+    }
     let payload = {
       fromCurrencyId: fromCurrency,
       toCurrencyId: toCurrency,
@@ -1341,25 +1401,36 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         exchangeRateValue = res.exchangeRateValue;
         this.store.dispatch(new EditLocationRow(newData));
         this.params.node.setData(newData);
-        let requestOffers = this.params.data.requestOffers.map(e => {
+
+        let requestOffers = newData.requestOffers.map(e => {
           return {
             id: e.id,
-            totalPrice: e.totalPrice / res.exchangeRateValue,
-            amount: e.amount / res.exchangeRateValue,
-            targetDifference: e.targetDifference / res.exchangeRateValue,
-            currencyId: toCurrency,
-            exchangeRateToBaseCurrency:
-              this.baseCurrencyId === toCurrency ? 1 : res.exchangeRateValue
+            totalPrice: !e.hasProductStemmedOrConfirmed
+              ? e.totalPrice / res.exchangeRateValue
+              : e.totalPrice,
+            amount: !e.hasProductStemmedOrConfirmed
+              ? e.amount / res.exchangeRateValue
+              : e.amount,
+            targetDifference: !e.hasProductStemmedOrConfirmed
+              ? e.targetDifference / res.exchangeRateValue
+              : e.targetDifference,
+            currencyId: !e.hasProductStemmedOrConfirmed
+              ? toCurrency
+              : e.currencyId,
+            exchangeRateToBaseCurrency: !e.hasProductStemmedOrConfirmed
+              ? this.baseCurrencyId === toCurrency
+                ? 1
+                : res.exchangeRateValue
+              : e.exchangeRateToBaseCurrency
           };
         });
         let payload = {
           Offers: {
             id: this.params.data.requestOffers[0].offerId,
-            totalOffer: this.params.data.totalOffer / res.exchangeRateValue,
+            totalOffer: this.getSumOfAmount(requestOffers),
             requestOffers: requestOffers
           }
         };
-
         const applyExchangeRate = this._spotNegotiationService.applyExchangeRate(
           payload
         );
