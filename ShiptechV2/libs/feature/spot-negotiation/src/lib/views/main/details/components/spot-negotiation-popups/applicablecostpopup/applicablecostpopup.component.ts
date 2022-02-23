@@ -19,6 +19,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { DecimalPipe } from '@angular/common';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { finalize } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
 
 export const COMPONENT_TYPE_IDS = {
   TAX_COMPONENT: 1,
@@ -70,6 +71,9 @@ export class ApplicablecostpopupComponent implements OnInit {
   sellers: any;
   saveButtonClicked: boolean = false;
   invalidCostId: number;
+  requestList: any[] = [];
+  currentRequestInfo: any;
+  requestListToDuplicateLocationBasedCost: any[];
 
   constructor(
     public dialogRef: MatDialogRef<ApplicablecostpopupComponent>,
@@ -80,9 +84,9 @@ export class ApplicablecostpopupComponent implements OnInit {
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private tenantSettingsService: TenantSettingsService,
     private changeDetectorRef: ChangeDetectorRef,
-
     private tenantService: TenantFormattingService,
-    @Inject(DecimalPipe) private _decimalPipe
+    @Inject(DecimalPipe) private _decimalPipe,
+    private store: Store
   ) {
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.quantityPrecision = this.generalTenantSettings.defaultValues.quantityPrecision;
@@ -107,6 +111,13 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.subscribe(({ spotNegotiation }) => {
+      this.currentRequestInfo = _.cloneDeep(
+        spotNegotiation.currentRequestSmallInfo
+      );
+      this.requestList = _.cloneDeep(spotNegotiation.requests);
+      this.getRequestsList();
+    });
     this.legacyLookupsDatabase.getTableByName('costType').then(response => {
       this.costTypeList = response;
     });
@@ -118,6 +129,16 @@ export class ApplicablecostpopupComponent implements OnInit {
     });
     this.buildApplicableForItems();
     this.getLocationCosts();
+  }
+
+  getRequestsList() {
+    if (this.requestList && this.currentRequestInfo) {
+      this.requestListToDuplicateLocationBasedCost = _.cloneDeep(
+        this.requestList
+          .filter(r => r.id != this.currentRequestInfo.id)
+          .map(req => ({ ...req, isSelected: true }))
+      );
+    }
   }
 
   getLocationCosts() {
@@ -174,8 +195,10 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.toastr.warning('No changes are made to perform save.');
       return;
     }
-    if(this.invalidCostId){
-      this.toastr.error('Range/Total cost cannot be saved due to request quantity is greater than the defined cost quantity.')
+    if (this.invalidCostId) {
+      this.toastr.error(
+        'Range/Total cost cannot be saved due to request quantity is greater than the defined cost quantity.'
+      );
       return;
     }
 
@@ -291,7 +314,8 @@ export class ApplicablecostpopupComponent implements OnInit {
     cost.requestLocationId = this.requestLocation.id;
     cost.isLocationBased = true;
     cost.additionalCostId = selectedCost.additionalCostId;
-    cost.requestProductId = cost.selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
+    cost.requestProductId =
+      cost.selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
     cost.isAllProductsCost = cost.requestProductId ? false : true;
 
     cost.costName = selectedCost.costDescription;
@@ -546,7 +570,7 @@ export class ApplicablecostpopupComponent implements OnInit {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          if(response.price === 0){
+          if (response.price === 0) {
             this.invalidCostId = cost.locationAdditionalCostId;
           }
           cost.price = response.price;
@@ -611,7 +635,10 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   removeLocationCost(key: number) {
-    if(this.locationBasedCosts[key].locationAdditionalCostId === this.invalidCostId){
+    if (
+      this.locationBasedCosts[key].locationAdditionalCostId ===
+      this.invalidCostId
+    ) {
       this.invalidCostId = 0;
     }
     if (this.locationBasedCosts[key].id) {

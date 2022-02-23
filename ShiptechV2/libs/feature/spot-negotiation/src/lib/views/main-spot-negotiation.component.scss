@@ -1088,3 +1088,16 @@ ag-grid-angular {
 .spot-nego-new-comments .spot-comments-section .new-comments .comments-text {
   cursor: initial;
 }
+
+.menu-panel-requestOptionsPanel {
+  &.mat-menu-panel {
+    cursor: pointer;
+    background: #364150;
+    border-radius: 3px;
+    margin: 10px -125px !important;
+    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 205px;
+    min-width: 205px;
+    overflow: initial;
+  }
+}
