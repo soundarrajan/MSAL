@@ -247,7 +247,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     width: 200
   };
 
-  densityDifference: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
+  densityDifference: ITypedColDef<IControlTowerQualityLabsItemDto, boolean> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.densityDifference,
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.densityDifference,
     colId: ControlTowerQualityLabsListColumns.densityDifference,
@@ -274,7 +274,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     }
   };
 
-  claimRaisedCol: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
+  claimRaisedCol: ITypedColDef<IControlTowerQualityLabsItemDto, boolean> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.claimRaised,
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.claimRaised,
     colId: ControlTowerQualityLabsListColumns.claimRaised,
