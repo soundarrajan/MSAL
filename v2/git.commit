@@ -1,11 +1,11 @@
-﻿commit 3a277898e66963d84ce7e772df9575035e7f6445
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Wed Feb 23 02:51:04 2022 +0000
+﻿commit a4e464e49756f95826898e0e227125a251bc3de2
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Feb 23 08:57:24 2022 +0000
 
-    Merged PR 16046: 38524-PO Number display name fix
+    Merged PR 16080: Css fixes
     
-    38524-PO Number display name fix
+    Css fixes
     
-    Related work items: #38524
+    Related work items: #38623
 
 branch: master
