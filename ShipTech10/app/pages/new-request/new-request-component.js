@@ -467,6 +467,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     } else if (typeof requestId != 'undefined' && requestId !== null) {
                         newRequestModel.getRequest(requestId).then((newRequestData) => {
                             ctrl.request = newRequestData.payload;
+                            if(ctrl.request.vesselDetails.service.id) {
+                                ctrl.selectService(ctrl.request.vesselDetails.service.id);
+                            }
                             ctrl.getRequestinitialSnapshot = angular.copy(newRequestData.payload);
                             $.each(ctrl.request.locations, (i, j) => {
                                 if(j.terminal != null && j.terminal.length != 0){
