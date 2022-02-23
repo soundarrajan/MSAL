@@ -117,7 +117,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             'requestName'
           );
         }
-        this.visibleRequestList = this.requestsAndVessels.slice(0, 7);
+        this.visibleRequestList = _.cloneDeep(
+          this.requestsAndVessels.slice(0, 7)
+        );
         this.locationsRows = spotNegotiation.locationsRows;
         this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
@@ -279,7 +281,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 portRating: '',
                 prefferedProductIds: '',
                 sellerComments: '',
-                isSellerPortalComments:false,
+                isSellerPortalComments: false,
                 sellerCounterpartyId: val.id,
                 sellerCounterpartyName: val.name,
                 senRating: ''
@@ -330,7 +332,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         this.store.dispatch(
           new AddCounterpartyToLocations(futureLocationsRows)
         );
-        this.store.dispatch(new AppendLocationsRowsOriData(futureLocationsRows));
+        this.store.dispatch(
+          new AppendLocationsRowsOriData(futureLocationsRows)
+        );
       } else {
         this.toastr.error(res.message);
         return;
@@ -500,6 +504,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         const response = this._spotNegotiationService.addRequesttoGroup(
           payload
         );
+        this.selectedRequestList = [];
         response.subscribe((res: any) => {
           if (res.error) {
             alert('Handle Error');
@@ -634,14 +639,16 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
   searchRequest(userInput: string): void {
     this.expandedSearch = false;
-    this.visibleRequestList = this.requestsAndVessels
-      .filter(e => {
-        if (e.requestName.toLowerCase().includes(userInput.toLowerCase())) {
-          return true;
-        }
-        return false;
-      })
-      .slice(0, 7);
+    this.visibleRequestList = _.cloneDeep(
+      this.requestsAndVessels
+        .filter(e => {
+          if (e.requestName.toLowerCase().includes(userInput.toLowerCase())) {
+            return true;
+          }
+          return false;
+        })
+        .slice(0, 7)
+    );
     if (this.visibleRequestList.length === 0) {
       const response = this._spotNegotiationService.getRequestresponse(
         null,
@@ -653,12 +660,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       );
       response.subscribe((res: any) => {
         if (res?.payload?.length > 0) {
-          this.visibleRequestList = this.removeDuplicatesRequest(
-              res.payload,
-              'requestName'
-            );
-          }
-          this.changeDetector.detectChanges();
+          this.visibleRequestList = _.cloneDeep(
+            this.removeDuplicatesRequest(res.payload, 'requestName')
+          );
+        }
+        this.changeDetector.detectChanges();
       });
     }
   }

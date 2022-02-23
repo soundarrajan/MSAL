@@ -2,6 +2,10 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { SaveBunkeringPlanState } from "./../../store/bunker-plan/bunkering-plan.state";
 import { GridOptions } from '@ag-grid-community/core';
+import {
+  RowModelType,
+  RowSelection
+} from '@shiptech/core/ui/components/ag-grid/type.definition';
 import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
 import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
 import { FormControl } from '@angular/forms';
@@ -58,7 +62,7 @@ export class FutureRequestGridComponent implements OnInit {
       paginationPageSize: 25, //pagesize
       enableServerSideFilter: true,
       enableServerSideSorting: true,
-      rowModelType: 'serverSide',
+      rowModelType: RowModelType.ServerSide,
       // serverSideDatasource: this.dataSource,
       //enableColResize: true,
       //enableSorting: true,
@@ -71,7 +75,8 @@ export class FutureRequestGridComponent implements OnInit {
         sortable: true,
         resizable: true
       },
-      rowSelection: 'single',
+      rowSelection: RowSelection.Single,
+      blockLoadDebounceMillis: 100, // #38555 - Fix for multiple server request onLoad
       onGridReady: (params) => {
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
@@ -84,8 +89,8 @@ export class FutureRequestGridComponent implements OnInit {
         if(!this.ETAFromTo) {
           let currentDate = new Date();
           let todayDate = new Date();
-          let pastDate = new Date(todayDate.setMonth(todayDate.getMonth() - 3));
-          this.ETAFromTo = { fromDate: pastDate, toDate: currentDate }
+          let futureDate = new Date(todayDate.setMonth(todayDate.getMonth() + 3));
+          this.ETAFromTo = { fromDate: currentDate, toDate: futureDate }
         }
         var hardcodedFilter = {
           // country: {
@@ -393,7 +398,7 @@ export class FutureRequestGridComponent implements OnInit {
     getRows: async (params: any) => {
       let requestPayload = await this.generateFilterModel(params);
           requestPayload = await this.generateSortModel(params, requestPayload);
-
+          
       this.localService.getOutstandRequestData(requestPayload, this.scheduleDashboardLabelConfiguration).subscribe(response => {
           params.successCallback(
             response.payload, response.matchedCount
@@ -403,7 +408,6 @@ export class FutureRequestGridComponent implements OnInit {
   }
 
   onDateChange(event) {
-    console.log('selected date', event);
     this.ETAFromTo = event;
     this.gridOptions.api.setServerSideDatasource(this.dataSource);
     this.gridOptions.api.sizeColumnsToFit();

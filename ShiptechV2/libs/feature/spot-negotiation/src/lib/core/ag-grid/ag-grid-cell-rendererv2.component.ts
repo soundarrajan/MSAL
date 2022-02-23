@@ -229,7 +229,17 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
       </div>
       <div class="p-tb-5" style="display:flex;align-items:center;">
         <span><div class="no-quote-icon"></div></span>
-        <span class="fs-12">No Quote</span>
+        <span class="fs-12" (click)="noQuoteAction(params, 'no-quote')"
+          >No Quote</span
+        >
+      </div>
+      <div class="p-tb-5" style="display:flex;align-items:center;">
+        <span>
+          <div class="enable-quote-icon"></div>
+        </span>
+        <span class="fs-12" (click)="noQuoteAction(params, 'enable-quote')"
+          >Enable Quote</span
+        >
       </div>
       <hr class="menu-divider-line" />
       <div class="p-tb-5" style="display:flex;align-items:center;">
@@ -240,16 +250,23 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
       </div>
     </mat-menu>
     <div
-      class="no-quote-text"
-      *ngIf="params.data.isQuote === 'No quote' && params.value === '0'"
+      class="no-quote-text aggrid-text-align-c"
+      *ngIf="
+        params.type == 'price-calc' &&
+        checkIfRequestOffersHasNoQuote(params.index)
+      "
     >
       <span>No quote</span>
     </div>
 
     <!-- Offer price cell -->
     <!-- [ngClass]="!isOfferRequestAvailable() ? 'input-disabled' : '' " -->
+
     <div
-      *ngIf="params.type == 'price-calc'"
+      *ngIf="
+        params.type == 'price-calc' &&
+        !checkIfRequestOffersHasNoQuote(params.index)
+      "
       [ngClass]="!isOfferRequestAvailable() ? 'no-price-data' : ''"
     >
       <!-- TODO check this code... -->
@@ -342,7 +359,8 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
             [matTooltip]="priceFormatValue(params.value)"
             [disabled]="
               params.product.status === 'Stemmed' ||
-              params.product.status === 'Confirmed'
+              params.product.status === 'Confirmed' ||
+              params.data.requestOffers[params.index].hasNoQuote
             "
           />
 
@@ -523,7 +541,12 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
       ></mat-checkbox>
     </div>
 
-    <div *ngIf="params.type == 'addTpr'" class="addTpr">
+    <div
+      *ngIf="
+        params.type == 'addTpr' && !checkIfRequestOffersHasNoQuote(params.index)
+      "
+      class="addTpr"
+    >
       <span *ngIf="!params.value && params.value != 0">-</span>
       <span [matTooltip]="params.value">{{
         priceCalFormatValue(params.value)
@@ -531,14 +554,24 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
 
-    <div *ngIf="params.type == 'amt'" class="addTpr">
+    <div
+      *ngIf="
+        params.type == 'amt' && !checkIfRequestOffersHasNoQuote(params.index)
+      "
+      class="addTpr"
+    >
       <span *ngIf="!params.value && params.value != 0">-</span>
       <span [matTooltip]="params.value">{{
         priceCalFormatValue(params.value)
       }}</span>
     </div>
 
-    <div *ngIf="params.type == 'diff'" class="addTpr">
+    <div
+      *ngIf="
+        params.type == 'diff' && !checkIfRequestOffersHasNoQuote(params.index)
+      "
+      class="addTpr"
+    >
       <span *ngIf="!params.value && params.value != 0">-</span>
       <span [matTooltip]="params.value">{{
         priceCalFormatValue(params.value)
@@ -915,7 +948,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       ];
       const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
         width: '1170px',
-        height: '450px',
+        height: 'auto',
         panelClass: 'additional-cost-popup',
         data: {
           requestLocation: requestLocation,
@@ -1402,9 +1435,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             for (let i = 0; i < offerAdditionalCostList.length; i++) {
               if (offerAdditionalCostList[i].currencyId != currencyId) {
                 offerAdditionalCostList[i].currencyId = currencyId;
-                offerAdditionalCostList[i].extraAmount = offerAdditionalCostList[i].extraAmount; // / exchangeRateValue;
-                offerAdditionalCostList[i].amount = offerAdditionalCostList[i].amount; // / exchangeRateValue;
-                offerAdditionalCostList[i].ratePerUom = offerAdditionalCostList[i].ratePerUom; // / exchangeRateValue;
+                offerAdditionalCostList[i].extraAmount =
+                  offerAdditionalCostList[i].extraAmount; // / exchangeRateValue;
+                offerAdditionalCostList[i].amount =
+                  offerAdditionalCostList[i].amount; // / exchangeRateValue;
+                offerAdditionalCostList[i].ratePerUom =
+                  offerAdditionalCostList[i].ratePerUom; // / exchangeRateValue;
               }
             }
             this.saveAdditionalCosts(
@@ -1469,6 +1505,88 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
   refresh(): boolean {
     return false;
+  }
+
+  noQuoteAction(params, type) {
+    if (!params.data.requestOffers) {
+      this.toastr.warning(
+        "Offer Price cannot be marked as 'No Quote' as RFQ has neither been skipped or sent."
+      );
+      return;
+    }
+    if (type == 'enable-quote') {
+      let quotedElements = _.filter(params.data.requestOffers, e => {
+        return !e.hasNoQuote;
+      });
+      if (quotedElements && quotedElements.length) {
+        this.toastr.warning(
+          'Enable Quote can be applied only on Offer Price marked as No Quote'
+        );
+        return;
+      }
+    } else if (type == 'no-quote') {
+      let quotedElements = _.filter(params.data.requestOffers, e => {
+        return e.hasNoQuote;
+      });
+      if (quotedElements && quotedElements.length) {
+        this.toastr.warning(
+          'Cannot perform the action. Please check the selections made!'
+        );
+        return;
+      }
+    }
+    let noQuotePayload = {
+      requestOfferIds: params.data.requestOffers.map(e => e.id),
+      noQuote: type === 'no-quote' ? true : false
+    };
+    let response = this._spotNegotiationService.switchReqOffBasedOnQuote(
+      noQuotePayload
+    );
+    this.spinner.show();
+    response.subscribe((res: any) => {
+      if (res) {
+        let successMessage =
+          type === 'enable-quote'
+            ? 'Selected Offer Price has been enabled.'
+            : "Selected Offers have been marked as 'No Quote' successfully.";
+        this.toastr.success(successMessage);
+        this.getSellerLineDetails();
+      } else {
+        this.spinner.hide();
+        this.toastr.error('An error has occurred!');
+      }
+    });
+    console.log(noQuotePayload);
+  }
+
+  checkIfRequestOffersHasNoQuote(index) {
+    if (
+      this.params.data &&
+      this.params.data.requestOffers &&
+      this.params.data.requestOffers[index] &&
+      this.params.data.requestOffers[index].hasNoQuote
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  getSellerLineDetails() {
+    const groupId = parseFloat(this.route.snapshot.params.spotNegotiationId);
+    const requestLocationSellerId = this.params.data.id;
+    this._spotNegotiationService
+      .getPriceDetailsById(groupId, requestLocationSellerId)
+      .subscribe((priceDetailsRes: any) => {
+        this.spinner.hide();
+        let updatedRow = { ...this.params.data };
+        updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
+        updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
+        updatedRow.requestOffers =
+          priceDetailsRes.sellerOffers[0].requestOffers;
+        // Update the store
+        this.store.dispatch(new EditLocationRow(updatedRow));
+        this.params.node.setData(updatedRow);
+      });
   }
 
   removeCounterparty() {

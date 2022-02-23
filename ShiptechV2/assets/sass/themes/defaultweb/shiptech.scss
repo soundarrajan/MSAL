@@ -53,10 +53,10 @@ body {
     overflow: hidden;
     layout-main .layout-footer,
     .mainFooterWhiteSpace {
-      // display: none;
+      display: none;
     }
     ag-grid-angular {
-      height: calc(100vh - 245px) !important;
+      height: calc(100vh - 240px) !important;
     }
   }
 }
@@ -1930,7 +1930,7 @@ button:focus {
   }
 }
 
-.comments {
+.shiptech-comments {
   position: absolute;
   right: 15px;
   bottom: 2px;
@@ -5281,6 +5281,11 @@ tr.title {
     }
   }
 }
+
+.ag-cell .vessel-to-watch.yes {
+  color:red;
+}
+
 .more-dots {
   width: 20px;
   height: 5px;
@@ -7004,6 +7009,8 @@ tr.title {
             input,
             textarea {
               color: #ffffff;
+              font-size: 16px;
+              font-family: 'Roboto';              
               &::placeholder {
                 color: #527292;
               }
@@ -7776,6 +7783,8 @@ tr.title {
             input,
             textarea {
               color: #364150;
+              font-size: 16px;
+              font-family: 'Roboto';               
               &::placeholder {
                 color: #527292;
               }
@@ -9757,7 +9766,7 @@ tr.title {
                         align-items: center;
                         justify-content: space-between;
                         padding: 0 10px;
-                        &:hover{
+                        &:hover {
                           border: 1px dashed #000000;
                         }
                         .addButton {
@@ -9999,7 +10008,7 @@ tr.title {
       }
       .price-calc {
         visibility: visible;
-         border: 1px dashed #000000;
+        border: 1px dashed #000000;
         border-radius: 2px;
         height: 20px;
         width: 100%;
@@ -10020,9 +10029,9 @@ tr.title {
         visibility: visible !important;
         //border: none;
         //  border: 1px dashed #000000 !important;
-        &:hover{
+        &:hover {
           border: 1px dashed #000000 !important;
-        }        
+        }
         border-radius: 2px;
         height: 25px;
         width: 100%;
@@ -22620,4 +22629,12 @@ mat-form-field {
 .spot-nego-new-comments .spot-comments-section2 {
   overflow-y: scroll !important;
   overflow: hidden;
+}
+
+.display-no-quote {
+  &.ag-cell {
+    background: #e9e9e9 !important;
+    height: 35px;
+    line-height: 26px !important;
+  }
 }
