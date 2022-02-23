@@ -143,7 +143,7 @@ export class AgColumnPreferencesService implements OnDestroy {
           if (
             gridName == 'control-tower-quantity-claims-list-grid-10' ||
             gridName == 'control-tower-quality-claims-list-grid-8' ||
-            gridName == 'control-tower-quality-labs-list-grid-8'
+            gridName == 'control-tower-quality-labs-list-grid-10'
           ) {
             options.api.setSortModel([
               {
@@ -209,7 +209,7 @@ export class AgColumnPreferencesService implements OnDestroy {
           if (
             (gridName == 'control-tower-quantity-claims-list-grid-10' ||
               gridName == 'control-tower-quality-claims-list-grid-8' ||
-              gridName == 'control-tower-quality-labs-list-grid-8') &&
+              gridName == 'control-tower-quality-labs-list-grid-10') &&
             !sortModels.length
           ) {
             options.api.setSortModel([
