@@ -58,7 +58,10 @@ export class EmailPreviewPopupComponent implements OnInit {
   selectedDocument: any;
   documentPopUp: any;
   displayedColumns: string[] = ['name', 'documentType'];
-
+  toList: any;
+  ccList: any;
+  ccList2: any;
+  toList2: any;
   locationRowsAcrossRequest: any;
   constructor(
     public dialogRef: MatDialogRef<EmailPreviewPopupComponent>,
@@ -223,6 +226,8 @@ export class EmailPreviewPopupComponent implements OnInit {
           this.subject = this.previewTemplate.subject;
           this.content = this.previewTemplate.content;
           this.from = this.previewTemplate.From;
+          this.toList = this.previewTemplate.toList;
+          this.ccList = this.previewTemplate.ccList;
           this.filesList = this.previewTemplate.attachmentsList;
           for (let i = 0; i < this.filesList.length; i++) {
             this.filesList[i].isIncludedInMail = true;
@@ -273,6 +278,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.previewTemplate.to.push({ IdEmailAddress: item });
     }
     this.toEmail = '';
+    this.toList2 = this.toList;
   }
 
   RemoveEmailId(item, val) {
@@ -291,6 +297,34 @@ export class EmailPreviewPopupComponent implements OnInit {
     }
   }
 
+  searchCC(item){
+    this.ccList2 = this.ccList;
+    if(item != null){
+      this.ccList2 = this.ccList.filter(e => {
+        if (e.name.toLowerCase().includes(item.toLowerCase())) {
+          return true;
+        }
+        else{
+          return false;
+        }
+      });
+    }
+  }
+
+  searchTO(item){
+    this.toList2 = this.toList;
+    if(item != null){
+      this.toList2 = this.toList.filter(e => {
+        if (e.name.toLowerCase().includes(item.toLowerCase())) {
+          return true;
+        }
+        else{
+          return false;
+        }
+      });
+    }
+  }
+
   addCc(item) {
     this.cc.push(item);
     if (this.previewTemplate == null) {
@@ -306,6 +340,11 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.previewTemplate.cc.push({ IdEmailAddress: item });
     }
     this.ccEmail = '';
+    this.ccList2 = this.ccList;
+  }
+
+  displayNull(value) {
+    return null;
   }
 
   fileBrowseHandler(files) {

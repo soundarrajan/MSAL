@@ -105,7 +105,8 @@
                 placeholder="+Add New"
                 [hidden]="readonly"
                 [(ngModel)]="toEmail"
-                (change)="addTo(toemail.value)"
+                (keyup)="searchTO(toemail.value)"
+                [matAutocomplete]="autoCompleteTO"
               />
             </div>
           </div>
@@ -145,7 +146,8 @@
                 matInput
                 placeholder="+Add New"
                 [(ngModel)]="ccEmail"
-                (change)="addCc(ccemail.value)"
+                (keyup)="searchCC(ccemail.value)"
+                [matAutocomplete]="autoCompleteCC"
               />
             </div>
           </div>
@@ -301,6 +303,20 @@
     </div>
   </mat-dialog-content>
 </div>
+
+
+<mat-autocomplete  #autoCompleteCC="matAutocomplete" (optionSelected)="addCc($event.option.value)" [displayWith]="displayNull">
+  <mat-option *ngFor="let option of ccList2" [value]="option.idEmailAddress">
+    {{option.name}}
+  </mat-option>
+</mat-autocomplete>
+
+<mat-autocomplete  #autoCompleteTO="matAutocomplete" (optionSelected)="addTo($event.option.value)" [displayWith]="displayNull">
+  <mat-option *ngFor="let option of toList2" [value]="option.idEmailAddress">
+    {{option.name}}
+  </mat-option>
+</mat-autocomplete>
+
 <ngx-spinner
   bdColor="rgba(51,51,51,0.8)"
   size="medium"

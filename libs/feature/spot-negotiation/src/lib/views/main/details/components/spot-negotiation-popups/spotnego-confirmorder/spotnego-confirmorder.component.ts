@@ -39,7 +39,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   currencyList: any;
   productList: any;
   uomList: any;
-  totalPriceValue: number;
   errorMessages: string;
   staticLists: any;
   constructor(
@@ -178,7 +177,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     return this.requestOfferItems;
   }
   //Construct UI Value's to bind the popup grid
-  ConstructRequestOfferItemPayload(seller, requestOffers, requestProducts, etaDate, requestInfo) {
+  ConstructRequestOfferItemPayload(seller, requestOffer, requestProducts, etaDate, requestInfo) {
     return [
       {
         RequestId: requestInfo.id,//Single request pass
@@ -191,11 +190,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         PhysicalSupplierCounterpartyId: seller.physicalSupplierCounterpartyId,
         PhysicalSupplierName: seller.physicalSupplierCounterpartyName,
         RequestProductId: requestProducts.id,
-        ProductId: requestOffers.quotedProductId ?? requestProducts.productId,
-        ProductName: this.productList.find(x => x.id == requestOffers.quotedProductId ?? requestProducts.productId).name,
+        ProductId: requestOffer.quotedProductId ?? requestProducts.productId,
+        ProductName: this.productList.find(x => x.id == requestOffer.quotedProductId ?? requestProducts.productId).name,
         minQuantity: requestProducts.minQuantity,
-        MaxQuantity: this.format.quantity(requestProducts.maxQuantity), //this.format.quantity(requestOffers.supplyQuantity)?? 
-        ConfirmedQuantity: this.format.quantity(requestOffers.supplyQuantity) ?? this.format.quantity(requestProducts.maxQuantity),
+        MaxQuantity: this.format.quantity(requestProducts.maxQuantity), //this.format.quantity(requestOffers.supplyQuantity)??
+        ConfirmedQuantity: this.format.quantity(requestOffer.supplyQuantity) ?? this.format.quantity(requestProducts.maxQuantity),
         UomId: requestProducts.uomId,
         WorkflowId: requestProducts.workflowId,
         productStatus: {
@@ -207,15 +206,15 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         VesselId: requestInfo.vesselId,
         VesselVoyageDetailId: null,
         UomName: this.uomList.find(x => x.id == requestProducts.uomId).name,
-        OfferPrice: requestOffers.price,
-        ContactCounterpartyId: requestOffers.contactCounterpartyId,
-        BrokerCounterpartyId: requestOffers.brokerCounterpartyId,
-        currencyId: requestOffers.currencyId ?? this.tenantConfiguration.currencyId,
-        currencyName: this.currencyList.find(x => x.id == requestOffers.currencyId ?? this.tenantConfiguration.currencyId).code,
+        OfferPrice: requestOffer.price,
+        ContactCounterpartyId: requestOffer.contactCounterpartyId,
+        BrokerCounterpartyId: requestOffer.brokerCounterpartyId,
+        currencyId: requestOffer.currencyId ?? this.tenantConfiguration.currencyId,
+        currencyName: this.currencyList.find(x => x.id == requestOffer.currencyId ?? this.tenantConfiguration.currencyId).code,
         PricingTypeId: requestProducts.uomId,
-        QuoteByDate: requestOffers.quoteByDate,
-        QuoteByTimeZoneId: requestOffers.quoteByTimeZoneId,
-        QuoteByCurrencyId: requestOffers.currencyId,
+        QuoteByDate: requestOffer.quoteByDate,
+        QuoteByTimeZoneId: requestOffer.quoteByTimeZoneId,
+        QuoteByCurrencyId: requestOffer.currencyId,
         ProductTypeId: 1,
         //need to check this value
         productHasOffer: true,
@@ -228,13 +227,13 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         productAllowZeroPricing: false,
         ProductTypeGroupId: 1,
         QuotedProductGroupId: 1,
-        isCheckBox: false,
+        isCheckBox: true,
         //End
-        TotalPrice: requestOffers.totalPrice * (requestOffers.supplyQuantity ?? requestProducts.maxQuantity),
-        RequestOfferId: requestOffers.id,
-        RfqId: requestOffers.rfqId,
+        Amount: requestOffer.amount * requestOffer.exchangeRateToBaseCurrency,
+        RequestOfferId: requestOffer.id,
+        RfqId: requestOffer.rfqId,
         OrderFields: {
-          ConfirmedQuantity: requestOffers.supplyQuantity ?? requestProducts.maxQuantity
+          ConfirmedQuantity: requestOffer.supplyQuantity ?? requestProducts.maxQuantity
         }
       }
     ];
@@ -253,7 +252,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       return findList?.items;
     }
   }
-  //Calculate TatalPrice
+  //Calculate TatalPrice - Not used onblur method confirm qty
   totalprice(rowIndex) {
     const currentRowIndex = rowIndex;
     const offers = this.requestOfferItems[currentRowIndex];
