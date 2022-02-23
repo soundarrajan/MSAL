@@ -1,11 +1,11 @@
-﻿commit 3dd94f63e46bfea7bff55432ea09fca521d1e74e
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Wed Feb 23 11:59:50 2022 +0000
+﻿commit c47c3d9dfeca1efd5b0b75ee67e6def0985d5be3
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Wed Feb 23 16:37:35 2022 +0000
 
-    Merged PR 16087: 38797-BooleanFilterModification
+    Merged PR 16094: Add filter selection in filters popup
     
-    38797-BooleanFilterModification
+    Add filter selection in filters popup
     
-    Related work items: #38797
+    Related work items: #38603
 
 branch: master

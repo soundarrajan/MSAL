@@ -119,7 +119,7 @@ export class AgGridFilterPresetsService implements OnDestroy {
     const updatedFilter: FilterPreferenceViewModel = this.filterPresets[
       presetGroupKey
     ].items.find(filter => filter.isActive);
-
+    if(!updatedFilter) return;
     // NOTE: We are updating the corresponding presets with their updated filter models
     _.keys(this.gridApis[presetGroupKey]).forEach(key => {
       updatedFilter.filterModels[key] = this.gridApis[presetGroupKey][

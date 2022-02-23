@@ -17,7 +17,7 @@
   <div id="available-filter-content">
     <mat-chip-list>
       <!-- start system filters -->
-      <div *ngFor="let filter of systemFilters" class="system-filter">
+      <div *ngFor="let filter of systemFilters" class="system-filter" >
         <!-- NOTE: Add track by -->
         <div
           [matTooltip]="filter.label"      
@@ -29,16 +29,9 @@
           ]"
 
         >
-          <div class="truncate-f85 text-center chip-label">
+          <div class="truncate-f85 text-center chip-label"
+          (click)="setActive(filter)">
             {{ filter.label }}
-            <!-- <input
-              matInput
-              required
-              type="text"
-              [(ngModel)]="filter.label"
-              [readonly]="true"
-              placeholder="{{ filter.label }}"
-            /> -->
           </div>
 
           <div matSuffix class="chip-circle chip-icon">
@@ -60,7 +53,7 @@
               filter.isActive ? 'active-selected' : ''
           ]"
         >
-          <div class="truncate-f85 text-center">
+          <div class="truncate-f85 text-center" (click)="setActive(filter)">
             <input
               matInput
               required

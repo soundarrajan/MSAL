@@ -60,6 +60,7 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
     }
 
     this.isEditing = false;
+    this.filterItems = [...this.filterItems, ...this.systemFilters];
     this.dialogRef.close(this.filterItems);
   }
 
@@ -140,6 +141,18 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
       !this.systemFilters;
 
     this.changeDetector.markForCheck();
+  }
+
+  setActive(filter) : void {
+    if(!this.isEditing) {
+      this.systemFilters.forEach(element => {
+        element.isActive = false; 
+      });
+      this.filterItems.forEach(element => {
+        element.isActive = false; 
+      });
+      filter.isActive = true;
+    }
   }
 
   ngOnInit(): void {
