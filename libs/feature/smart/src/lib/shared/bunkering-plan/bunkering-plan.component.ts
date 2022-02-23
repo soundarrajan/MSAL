@@ -428,7 +428,8 @@ export class BunkeringPlanComponent implements OnInit {
   ];
 
   public loadBunkeringPlanDetails(){
-    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
+    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
+    let oldRowData = this.rowData;
     this.rowData = [];
     
     if(this.latestPlanId){
@@ -436,6 +437,14 @@ export class BunkeringPlanComponent implements OnInit {
       this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('bunker plan details',data);
         this.rowData = this.latestPlanId == null ?[]:(data.payload && data.payload.length)? data.payload: [];
+        if (this.rowData?.length > 0 && oldRowData?.length > 0) {
+          this.rowData.forEach(row => {
+            let ordRow = oldRowData.find(ord => ord.detail_no == row.detail_no);
+            if (ordRow && row.operator_ack != ordRow.operator_ack) {
+              row.operator_ack = ordRow.operator_ack;
+            }
+          });
+        }
         if(this.gridOptions?.api) {
           this.gridOptions.api.setRowData(this.rowData);
         }

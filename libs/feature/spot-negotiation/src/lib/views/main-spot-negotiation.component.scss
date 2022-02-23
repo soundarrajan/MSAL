@@ -1081,6 +1081,10 @@ ag-grid-angular {
   padding-top: 110px !important;
 }
 
+.price-calc.hasNoQuote {
+  background: #ddd;
+  opacity: 0.3;
+}
 .spot-nego-new-comments .spot-comments-section .new-comments .comments-text {
   cursor: initial;
 }

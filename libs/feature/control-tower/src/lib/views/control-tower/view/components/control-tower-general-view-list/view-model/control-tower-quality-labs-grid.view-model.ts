@@ -218,6 +218,17 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     width: 200
   };
 
+  specGroupName: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
+    headerName: ControlTowerQualityLabsListColumnsLabels.specGroupName,
+    headerTooltip: ControlTowerQualityLabsListColumnsLabels.specGroupName,
+    colId: ControlTowerQualityLabsListColumns.specGroupName,
+    field: model('specGroupName'),
+    dtoForExport: ControlTowerQualityLabsListExportColumns.specGroupName,
+    tooltip: params =>
+      params.value ? this.format.htmlDecode(params.value) : '',
+    width: 200
+  };
+
   labStatusCol: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.labStatus,
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.labStatus,
@@ -228,6 +239,17 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     dtoForExport: ControlTowerQualityLabsListExportColumns.labStatus,
     tooltipValueGetter: params => ((params.value?.name) ? this.format.htmlDecode(params.value.name) : ''),
     width: 200
+  };
+
+  densityDifference: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
+    headerName: ControlTowerQualityLabsListColumnsLabels.densityDifference,
+    headerTooltip: ControlTowerQualityLabsListColumnsLabels.densityDifference,
+    colId: ControlTowerQualityLabsListColumns.densityDifference,
+    field: model('densityDifference'),
+    valueFormatter: params => (params.value ? 'Yes' : 'No'),
+    dtoForExport: ControlTowerQualityLabsListExportColumns.densityDifference,
+    tooltip: params => (params.value ? 'Yes' : 'No'),
+    width: 150
   };
 
   claimRaisedCol: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
@@ -334,7 +356,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     private toastr: ToastrService
   ) {
     super(
-      'control-tower-quality-labs-list-grid-8',
+      'control-tower-quality-labs-list-grid-9',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(ControlTowerQualityLabsListGridViewModel.name)
@@ -367,7 +389,9 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
       this.portCol,
       this.etaCol,
       this.productCol,
+      this.specGroupName,
       this.labStatusCol,
+      this.densityDifference,
       this.claimRaisedCol,
       this.createdByCol,
       this.createdDateCol,
@@ -468,53 +492,74 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     // claimsRaised column filter value format
     if (Object.keys(filterModel).indexOf('claimsRaised') !== -1) {
       let claimRaisedFilterVal = filterModel.claimsRaised?.filter;
-      if (!claimRaisedFilterVal || !claimRaisedFilterVal.trim()) {
-        return;
-      }
-      claimRaisedFilterVal = claimRaisedFilterVal.trim().toLowerCase();
-      let filterClaimCondition = '';
-      if (
-        filterModel.claimsRaised?.type == 'equals' ||
-        filterModel.claimsRaised?.type == 'notEqual'
-      ) {
-        filterClaimCondition =
-          claimRaisedFilterVal == 'no'
-            ? '0'
-            : claimRaisedFilterVal == 'yes'
-            ? '1'
-            : '2';
-      } else if (filterModel.claimsRaised?.type == 'startsWith') {
-        filterClaimCondition = 'no'.startsWith(claimRaisedFilterVal)
-          ? '0'
-          : 'yes'.startsWith(claimRaisedFilterVal)
-          ? '1'
-          : '2';
-      } else if (filterModel.claimsRaised?.type == 'endsWith') {
-        filterClaimCondition = 'no'.endsWith(claimRaisedFilterVal)
-          ? '0'
-          : 'yes'.endsWith(claimRaisedFilterVal)
-          ? '1'
-          : '2';
-      } else {
-        filterClaimCondition =
-          claimRaisedFilterVal == 'no' ||
-          ['n', 'o'].indexOf(claimRaisedFilterVal) != -1
-            ? '0'
-            : claimRaisedFilterVal == 'yes' ||
-              ['y', 'e', 's', 'ye', 'es'].indexOf(claimRaisedFilterVal) != -1
-            ? '1'
-            : '2';
-      }
-      var updatedFilter = {
+      let filterCondition = this.evaluateYesNoToBoolFilter(params, filterModel, claimRaisedFilterVal);
+      
+      let updatedFilter = {
         ...filterModel,
         claimsRaised: {
           ...filterModel.claimsRaised,
-          filter: filterClaimCondition
+          filter: filterCondition
+        }
+      };
+      params['request']['filterModel'] = updatedFilter;
+    }
+    filterModel = params?.request?.filterModel;
+    // densityDifference column filter value format
+    if (Object.keys(filterModel).indexOf('densityDifference') !== -1) {
+      let densityDifferenceFilterVal = filterModel.densityDifference?.filter;
+      let filterCondition = this.evaluateYesNoToBoolFilter(params, filterModel, densityDifferenceFilterVal);
+      
+      let updatedFilter = {
+        ...filterModel,
+        densityDifference: {
+          ...filterModel.densityDifference,
+          filter: filterCondition
         }
       };
       params['request']['filterModel'] = updatedFilter;
     }
     console.log(params);
+  }
+
+  public evaluateYesNoToBoolFilter(params, filterModel, filterVal) {
+      if (!filterVal || !filterVal.trim()) {
+        return;
+      }
+      filterVal = filterVal.trim().toLowerCase();
+      let filterCondition = '';
+      if (
+        filterModel.claimsRaised?.type == 'equals' ||
+        filterModel.claimsRaised?.type == 'notEqual'
+      ) {
+        filterCondition =
+          filterVal == 'no'
+            ? '0'
+            : filterVal == 'yes'
+            ? '1'
+            : '2';
+      } else if (filterModel.claimsRaised?.type == 'startsWith') {
+        filterCondition = 'no'.startsWith(filterVal)
+          ? '0'
+          : 'yes'.startsWith(filterVal)
+          ? '1'
+          : '2';
+      } else if (filterModel.claimsRaised?.type == 'endsWith') {
+        filterCondition = 'no'.endsWith(filterVal)
+          ? '0'
+          : 'yes'.endsWith(filterVal)
+          ? '1'
+          : '2';
+      } else {
+        filterCondition =
+          filterVal == 'no' ||
+          ['n', 'o'].indexOf(filterVal) != -1
+            ? '0'
+            : filterVal == 'yes' ||
+              ['y', 'e', 's', 'ye', 'es'].indexOf(filterVal) != -1
+            ? '1'
+            : '2';
+      }
+      return filterCondition;
   }
 
   public getFiltersCount() {

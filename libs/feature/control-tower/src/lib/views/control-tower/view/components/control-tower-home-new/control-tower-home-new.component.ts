@@ -66,7 +66,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.spinner.show();
+    // this.spinner.show();
     /* this.localService.themeChange.subscribe(data => {
       this.theme  = data;
     }) */
@@ -166,11 +166,9 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
     console.log('************', view);
     switch (view) {
       case 'quality':
-        this.spinner.show();
         this.controlTowerService
           .getQualityViewCounts({})
           .subscribe((response: any) => {
-            this.spinner.hide();
             if (typeof response == 'string') {
               this.toastr.error(response);
             } else if (response?.message === 'Unauthorized') {
@@ -185,12 +183,10 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
           });
         break;
       case 'quantity':
-        this.spinner.show();
         this.controlTowerService
           .getQuantityViewCounts({})
           .pipe()
           .subscribe((response: any) => {
-            this.spinner.hide();
             if (typeof response == 'string') {
               this.toastr.error(response);
             } else if (response?.message === 'Unauthorized') {
@@ -206,11 +202,9 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
 
         break;
       case 'residue':
-        this.spinner.show();
         this.controlTowerService
           .getResidueViewCounts({})
           .subscribe((response: any) => {
-            this.spinner.hide();
             if (typeof response == 'string') {
               this.toastr.error(response);
             } else if (response?.message === 'Unauthorized') {

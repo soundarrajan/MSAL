@@ -484,6 +484,13 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.copyNegotiationComments(payload);
   }
 
+  /**
+   * @param payload
+   */
+  switchReqOffBasedOnQuote(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.switchReqOffBasedOnQuote(payload);
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }

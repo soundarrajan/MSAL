@@ -2220,17 +2220,17 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.chipData[1].statusColorCode = this.statusColorCode;
 
     if (ivs) {
-      this.chipData[2].Data = (ivs.invoiceAmountGrandTotal && ivs.invoiceAmountGrandTotal !== null)
+      this.chipData[2].Data = !!ivs.invoiceAmountGrandTotal
         ? `${this.amountFormatValue(
             ivs.invoiceAmountGrandTotal?.toString()
           )} ${currencyCode}`
         : emptyValue;
-      this.chipData[3].Data = (ivs?.estimatedAmountGrandTotal && ivs?.estimatedAmountGrandTotal !== null)
+      this.chipData[3].Data = !!ivs?.estimatedAmountGrandTotal
         ? `${this.amountFormatValue(
             ivs?.estimatedAmountGrandTotal.toString()
           )} ${currencyCode}`
         : emptyValue;
-      this.chipData[4].Data = (ivs?.totalDifference && ivs?.totalDifference !== null)
+      this.chipData[4].Data = !!ivs?.totalDifference
         ? this.amountFormatValue(ivs?.totalDifference?.toString()) +
           ' ' +
           currencyCode
@@ -2238,17 +2238,17 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.chipData[5].Data = (ivs?.provisionalInvoiceNo && ivs?.provisionalInvoiceNo !== null)
         ? ivs?.provisionalInvoiceNo?.toString()
         : '';
-      this.chipData[6].Data = (ivs?.provisionalInvoiceAmount  && ivs?.provisionalInvoiceAmount  !== null)
+      this.chipData[6].Data = !!ivs?.provisionalInvoiceAmount
         ? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()) +
           ' ' +
           currencyCode
         : emptyValue;
-      this.chipData[7].Data = (ivs?.deductions && ivs?.deductions !== null)
+      this.chipData[7].Data = !!ivs?.deductions
         ? this.amountFormatValue(ivs?.deductions?.toString()) +
           ' ' +
           currencyCode
         : emptyValue;
-      this.chipData[8].Data = (ivs?.netPayable && ivs?.netPayable !== null)
+      this.chipData[8].Data = !!ivs?.netPayable
         ? this.amountFormatValue(ivs?.netPayable?.toString()) +
           ' ' +
           currencyCode
@@ -3372,9 +3372,12 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   triggerChangeFieldsAppSpecific(name: string) {
-    const dueDate = this.formValues.dueDate;
     switch (name) {
       case 'DueDate':
+        const dueDate = this.formValues.dueDate;
+        if (!dueDate || parseFloat(dueDate.split('-')[0]) < 1753) {
+          return;
+        }
         if (this.initialDueDate) {
           if (this.initialDueDate.split('T')[0] != this.formValues.dueDate) {
             this.formValues.manualDueDate = this.formValues.dueDate;
@@ -3383,9 +3386,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           }
         } else {
           this.formValues.manualDueDate = this.formValues.dueDate;
-        }
-        if (parseFloat(dueDate.split('-')[0]) < 1753) {
-          return;
         }
         this.invoiceService
           .getWorkingDueDate(dueDate)
