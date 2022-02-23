@@ -37,6 +37,7 @@ import {
 import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 import { ToastrService } from 'ngx-toastr';
 import _ from 'lodash';
+import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 
 function model(
   prop: keyof IControlTowerQualityLabsItemDto
@@ -251,10 +252,26 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.densityDifference,
     colId: ControlTowerQualityLabsListColumns.densityDifference,
     field: model('densityDifference'),
-    valueFormatter: params => (params.value ? 'Yes' : 'No'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.densityDifference,
-    tooltip: params => (params.value ? 'Yes' : 'No'),
-    width: 150
+    cellRenderer: params => {
+      if (params.data) {
+        const a = document.createElement('span');
+        a.innerHTML = params.value ? 'Yes' : 'No';
+        return a;
+      }
+      return null;
+    },
+    tooltip: params => {
+      if (params.data) {
+        return params.value ? 'Yes' : 'No';
+      }
+    },
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }
   };
 
   claimRaisedCol: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
@@ -262,10 +279,26 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.claimRaised,
     colId: ControlTowerQualityLabsListColumns.claimRaised,
     field: model('claimsRaised'),
-    valueFormatter: params => (params.value ? 'Yes' : 'No'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.claimRaised,
-    tooltip: params => (params.value ? 'Yes' : 'No'),
-    width: 150
+    cellRenderer: params => {
+      if (params.data) {
+        const a = document.createElement('span');
+        a.innerHTML = params.value ? 'Yes' : 'No';
+        return a;
+      }
+      return null;
+    },
+    tooltip: params => {
+      if (params.data) {
+        return params.value ? 'Yes' : 'No';
+      }
+    },
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }
   };
 
   createdDateCol: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
@@ -527,45 +560,45 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   }
 
   public evaluateYesNoToBoolFilter(params, filterModel, filterVal) {
-      if (!filterVal || !filterVal.trim()) {
-        return;
-      }
-      filterVal = filterVal.trim().toLowerCase();
-      let filterCondition = '';
-      if (
-        filterModel.claimsRaised?.type == 'equals' ||
-        filterModel.claimsRaised?.type == 'notEqual'
-      ) {
-        filterCondition =
-          filterVal == 'no'
-            ? '0'
-            : filterVal == 'yes'
-            ? '1'
-            : '2';
-      } else if (filterModel.claimsRaised?.type == 'startsWith') {
-        filterCondition = 'no'.startsWith(filterVal)
+    if (!filterVal || !filterVal.trim()) {
+      return;
+    }
+    filterVal = filterVal.trim().toLowerCase();
+    let filterCondition = '';
+    if (
+      filterModel.claimsRaised?.type == 'equals' ||
+      filterModel.claimsRaised?.type == 'notEqual'
+    ) {
+      filterCondition =
+        filterVal == 'no'
           ? '0'
-          : 'yes'.startsWith(filterVal)
+          : filterVal == 'yes'
           ? '1'
           : '2';
-      } else if (filterModel.claimsRaised?.type == 'endsWith') {
-        filterCondition = 'no'.endsWith(filterVal)
+    } else if (filterModel.claimsRaised?.type == 'startsWith') {
+      filterCondition = 'no'.startsWith(filterVal)
+        ? '0'
+        : 'yes'.startsWith(filterVal)
+        ? '1'
+        : '2';
+    } else if (filterModel.claimsRaised?.type == 'endsWith') {
+      filterCondition = 'no'.endsWith(filterVal)
+        ? '0'
+        : 'yes'.endsWith(filterVal)
+        ? '1'
+        : '2';
+    } else {
+      filterCondition =
+        filterVal == 'no' ||
+        ['n', 'o'].indexOf(filterVal) != -1
           ? '0'
-          : 'yes'.endsWith(filterVal)
+          : filterVal == 'yes' ||
+            ['y', 'e', 's', 'ye', 'es'].indexOf(filterVal) != -1
           ? '1'
           : '2';
-      } else {
-        filterCondition =
-          filterVal == 'no' ||
-          ['n', 'o'].indexOf(filterVal) != -1
-            ? '0'
-            : filterVal == 'yes' ||
-              ['y', 'e', 's', 'ye', 'es'].indexOf(filterVal) != -1
-            ? '1'
-            : '2';
-      }
-      return filterCondition;
-  }
+    }
+    return filterCondition;
+}
 
   public getFiltersCount() {
     if (this.groupedCounts) {
