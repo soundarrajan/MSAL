@@ -18,6 +18,7 @@ export class FilterPreferenceViewModel {
   filterModels: Record<string, unknown>;
   name: string;
   label?: string;
+  countId?: string;
 
   constructor(preference: Partial<IFilterPreferenceDto> = {}) {
     Object.assign(this, preference);
