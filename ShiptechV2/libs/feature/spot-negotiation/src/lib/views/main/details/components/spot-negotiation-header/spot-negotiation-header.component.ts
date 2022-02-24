@@ -376,12 +376,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         index < priceDetailsArray?.length &&
         row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
-        row.requestOffers = priceDetailsArray[
-          index
-        ].requestOffers?.sort((a, b) =>
-          a.requestProductId > b.requestProductId ? 1 : -1
-        );
-        row.requestOffers.forEach(element1 => {
+        priceDetailsArray[index].requestOffers.forEach(element1 => {
           if (
             element1.requestProductId != undefined &&
             element1.requestProductId != null &&
@@ -394,6 +389,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
               let FilterProdut = currentLocProd[0].requestProducts.filter(
                 col => col.id == element1.requestProductId
               );
+              element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
               if (
                 FilterProdut.length > 0 &&
                 FilterProdut[0].status != undefined &&
@@ -412,6 +408,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           )?.displayName;
         }
+        row.requestOffers = priceDetailsArray[index].requestOffers?.sort(
+          (a, b) => (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
+        );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
 
@@ -426,10 +425,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
         // We found something
         if (detailsForCurrentRow.length > 0) {
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
-            (a, b) => (a.requestProductId > b.requestProductId ? 1 : -1)
-          );
-          row.requestOffers.forEach(element1 => {
+          detailsForCurrentRow[0].requestOffers.forEach(element1 => {
             if (
               element1.requestProductId != undefined &&
               element1.requestProductId != null &&
@@ -442,6 +438,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 let FilterProdut = currentLocProd[0].requestProducts.filter(
                   col => col.id == element1.requestProductId
                 );
+                element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
                 if (
                   FilterProdut.length > 0 &&
                   FilterProdut[0].status != undefined &&
@@ -461,6 +458,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
             )?.displayName;
           }
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
+            (a, b) => (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
+          );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
         }

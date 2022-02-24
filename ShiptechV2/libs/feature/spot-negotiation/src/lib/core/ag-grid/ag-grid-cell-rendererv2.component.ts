@@ -360,7 +360,7 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
             [disabled]="
               params.product.status === 'Stemmed' ||
               params.product.status === 'Confirmed' ||
-              params.data.requestOffers[params.index].hasNoQuote
+              params.data.requestOffers[params.index]?.hasNoQuote
             "
           />
 
