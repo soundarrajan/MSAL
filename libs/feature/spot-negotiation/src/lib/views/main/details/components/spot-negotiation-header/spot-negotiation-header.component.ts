@@ -408,9 +408,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           )?.displayName;
         }
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort(
-          (a, b) => (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
-        );
+        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> 
+        a.requestProductTypeId  === b.requestProductTypeId ? 
+        (a.requestProductId > b.requestProductId ? 1 : -1) : 
+       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
+       );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
 
@@ -458,8 +460,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
             )?.displayName;
           }
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
-            (a, b) => (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> 
+            a.requestProductTypeId  === b.requestProductTypeId ? 
+            (a.requestProductId > b.requestProductId ? 1 : -1) : 
+          (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
           );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
