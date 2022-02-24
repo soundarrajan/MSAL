@@ -1,11 +1,11 @@
-﻿commit 06e12d6a6cc967d77dfb7df27294cee15b3b7289
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Thu Feb 24 07:57:09 2022 +0000
+﻿commit 5d2e01a5db7e41717b495f794754d0c8108e3b0f
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Thu Feb 24 17:24:14 2022 +0000
 
-    Merged PR 16105: Change vessel to watch color
+    Merged PR 16122: 38774-splitDelivery-Quantity to be Invoiced issue fix for multi prod
     
-    Change vessel to watch color
+    38774-splitDelivery-Quantity to be Invoiced issue fix for multi prod
     
-    Related work items: #38470
+    Related work items: #38774
 
 branch: master

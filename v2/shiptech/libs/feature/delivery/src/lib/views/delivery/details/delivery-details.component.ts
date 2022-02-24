@@ -701,11 +701,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     this.setVarianceColor(productIdx);
 
     // Update buyer & seller amount and uom
-    this.setBuyerSellerQuantityAndUom('buyer');
-    this.setBuyerSellerQuantityAndUom('seller');
+    this.setBuyerSellerQuantityAndUom('buyer', productIdx);
+    this.setBuyerSellerQuantityAndUom('seller', productIdx);
   }
 
-  setBuyerSellerQuantityAndUom(qtyToChange) {
+  setBuyerSellerQuantityAndUom(qtyToChange, productIdx) {
     if (qtyToChange == 'seller') {
       const sellerQty = this.formValues.temp.sellerPrecedenceRule.name;
       if (sellerQty == 'Surveyor') {
@@ -854,8 +854,12 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       }
     }
 
-    // function called for all quantities, call here calculate final quantity
-    this.calculateFinalQuantity(this.selectedProductIndex);
+    // #38774 - if splitted delivery, then calculate final quantity for unselected product as well
+    if (this.formValues.splittedDeliveryId && this.formValues.splittedDeliveryId > 0 && productIdx > -1) {
+      this.calculateFinalQuantity(productIdx);
+    } else {
+      this.calculateFinalQuantity(this.selectedProductIndex);
+    }
   }
 
   calculateFinalQuantity(productIdx) {
