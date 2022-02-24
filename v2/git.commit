@@ -1,11 +1,11 @@
-﻿commit c47c3d9dfeca1efd5b0b75ee67e6def0985d5be3
+﻿commit 06e12d6a6cc967d77dfb7df27294cee15b3b7289
 Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Wed Feb 23 16:37:35 2022 +0000
+Date:   Thu Feb 24 07:57:09 2022 +0000
 
-    Merged PR 16094: Add filter selection in filters popup
+    Merged PR 16105: Change vessel to watch color
     
-    Add filter selection in filters popup
+    Change vessel to watch color
     
-    Related work items: #38603
+    Related work items: #38470
 
 branch: master
