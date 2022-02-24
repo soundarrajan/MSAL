@@ -1971,9 +1971,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       ) {
         row.requestOffers = priceDetailsArray[
           index
-        ].requestOffers?.sort((a, b) =>
-          a.requestProductId > b.requestProductId ? 1 : -1
-        );
+        ].requestOffers;
         row.isSelected = priceDetailsArray[index].isSelected;
         // row.physicalSupplierCounterpartyId =
         //   priceDetailsArray[index].physicalSupplierCounterpartyId;
@@ -1982,10 +1980,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         //     x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
         //   ).displayName;
         // }
+        // row.requestOffers = priceDetailsArray[
+        //   index
+        // ].requestOffers?.sort((a, b) =>
+        //   a.requestProductId > b.requestProductId ? 1 : -1
+        // );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
-
+        row.requestOffers = row.requestOffers?.sort((a,b)=> (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1));
         return row;
       }
 
@@ -1996,9 +1999,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       // We found something
       if (detailsForCurrentRow.length > 0) {
-        row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
-          (a, b) => (a.requestProductId > b.requestProductId ? 1 : -1)
-        );
+        row.requestOffers = detailsForCurrentRow[0].requestOffers;
         row.isSelected = detailsForCurrentRow[0].isSelected;
         // row.physicalSupplierCounterpartyId =
         //   detailsForCurrentRow[0].physicalSupplierCounterpartyId;
@@ -2010,6 +2011,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
+        row.requestOffers = row.requestOffers?.sort((a,b)=> (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1));
       }
       return row;
     });
@@ -2020,6 +2022,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   UpdateProductsSelection(currentLocProd, row) {
     if (currentLocProd.length != 0) {
       let currentLocProdCount = currentLocProd[0].requestProducts.length;
+      row.requestOffers.forEach(element1 => {
+        let FilterProdut = currentLocProd[0].requestProducts.filter(
+          col => col.id == element1.requestProductId
+        );
+        element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
+      });
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
         let val = 'checkProd' + indx;
@@ -2029,7 +2037,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             ? false
             : row.isSelected;
         //row[val] = row.isSelected;
-      }
+      }      
     }
   }
 }
