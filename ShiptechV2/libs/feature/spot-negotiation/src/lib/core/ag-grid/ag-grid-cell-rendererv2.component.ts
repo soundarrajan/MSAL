@@ -734,13 +734,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       ].currencyId;
       this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
     }
-    return this.store.selectSnapshot(({ spotNegotiation }) => {
+    return this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.tenantService = spotNegotiation.tenantConfigurations;
       this.locationRowsAcrossRequest = spotNegotiation.locationsRows;
+      if(spotNegotiation.staticLists)
       this.currencyList = spotNegotiation.staticLists.filter(
         el => el.name == 'Currency'
-      )[0].items;
+      )[0]?.items;
       // Fetching counterparty list
       if (spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
