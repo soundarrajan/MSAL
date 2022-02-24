@@ -46,8 +46,7 @@
                     >
                       <mat-checkbox
                         [value]="request"
-                        [checked]="request.isSelected"
-                        (change)="onRequestListCheckboxChange($event, request)"
+                         (change)="onRequestListCheckboxChange($event, request)"
                         matTooltip="  {{ request.name }} -
                         {{ request.vesselName }}"
                         matTooltipClass="lightTooltip"
