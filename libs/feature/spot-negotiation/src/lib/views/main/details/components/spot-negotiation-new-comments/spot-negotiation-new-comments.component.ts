@@ -104,7 +104,14 @@ export class SpotNegotiationNewCommentsComponent
     private spotNegotiationService: SpotNegotiationService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.store.subscribe(({ spotNegotiation }) => {
+      this.currentRequestInfo = _.cloneDeep(
+        spotNegotiation.currentRequestSmallInfo
+      );
+      this.requestList = _.cloneDeep(spotNegotiation.requests);
+    });
+  }
 
   ngOnInit(): void {}
   ngAfterViewInit() {}
