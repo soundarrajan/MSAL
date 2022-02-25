@@ -109,14 +109,33 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetRequests(res['requests']));
       }
 
-      if (res['requests'][0]) {
+      if ((<any>window).activeRequest && res['requests'][(<any>window).activeRequest.i]) {
         // Set first request default;
-        this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests'][0]));
         this.store.dispatch(
-          new SetLocations(res['requests'][0].requestLocations)
+          new SetCurrentRequestSmallInfo(
+            res['requests'][(<any>window).activeRequest.i]
+          )
         );
+        this.store.dispatch(
+          new SetLocations(
+            res['requests'][(<any>window).activeRequest.i].requestLocations
+          )
+        );
+        if ((<any>window).location.href.includes('v2/group-of-requests')) {
+          (<any>window).activeRequest = false;
+        }
         this.changeDetector.detectChanges();
+      } else {
+        if (res['requests'][0]) {
+          // Set first request default;
+          this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests'][0]));
+          this.store.dispatch(
+            new SetLocations(res['requests'][0].requestLocations)
+          );
+          this.changeDetector.detectChanges();
+        }
       }
+        
     });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
