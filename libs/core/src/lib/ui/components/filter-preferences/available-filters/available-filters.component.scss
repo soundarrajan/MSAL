@@ -12,19 +12,31 @@ $red: red;
   background-color: white;
   color: #364150 !important;
   border: 1px solid #364150;
-  &.active-selected {
-    color: white !important;
-    background-color : #364150 !important;
-    .chip-circle {
-      border-left: 1px solid #fff;
-      i.fa-circle {
-        color: white !important;
-      }
-      i:not(.fa-circle) {
-        filter: invert(1) brightness(2);
+}
+
+.mat-dialog-content:not(.isEditing) {
+  .chip-look-alike {
+    cursor: move;
+    input {
+      cursor: move;
+    }
+    &.active-selected {
+      color: white !important;
+      background-color: #364150 !important;
+
+      .chip-circle {
+        border-left: 1px solid #fff;
+
+        i.fa-circle {
+          color: white !important;
+        }
+
+        i:not(.fa-circle) {
+          filter: invert(1) brightness(2);
+        }
       }
     }
-  }  
+  }
 }
 
 .chip-icon {
