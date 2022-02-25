@@ -186,7 +186,7 @@ import _, { cloneDeep } from 'lodash';
           </div>
           <div class="arrow" [ngClass]="
               params.product.status === 'Stemmed'
-                ? 'disabled-new'
+                ? 'disabled-new-events'
                 : ''
               " (click)="pricinghistorypopup()">
             <span class="title" title="{{ params.product.indexName }}">{{
@@ -208,12 +208,12 @@ import _, { cloneDeep } from 'lodash';
               class="value"
               [ngClass]="
               params.product.status === 'Stemmed'
-                ? 'input-disabled-new'
+                ? 'disabled-gray'
                 : ''
               "
               [matTooltip]="
                 'Pricing published on: ' +
-                (this.quoteDate == 'Invalid date' ? '--' : this.quoteDate)
+                (this.closureDate == 'Invalid date' ? '--' : this.closureDate)
               "
               contenteditable="false"
               (keydown)="editQty($event)"
@@ -224,9 +224,9 @@ import _, { cloneDeep } from 'lodash';
           <div
             class="label-element"
             [ngClass]="{
-              red: params.product?.requestGroupProducts?.benchmark > 0,
-              green: params.product?.requestGroupProducts?.benchmark < 0,
-              black: params.product?.requestGroupProducts?.benchmark == 0
+              red: params.product?.requestGroupProducts?.benchMark > 0,
+              green: params.product?.requestGroupProducts?.benchMark < 0,
+              black: params.product?.requestGroupProducts?.benchMark == 0
             }"
           >
             <div class="title">Perf/BM</div>
@@ -239,8 +239,8 @@ import _, { cloneDeep } from 'lodash';
               $
               {{
                 priceFormatValue(
-                  params.product.requestGroupProducts.benchmark,
-                  'benchmark'
+                  params.product.requestGroupProducts.benchMark,
+                  'benchMark'
                 )
               }}
             </div>
@@ -270,23 +270,16 @@ import _, { cloneDeep } from 'lodash';
           </div>
           <div
             class="label-element bestcontract"
-            [ngClass]="
-              params.product.status === 'Stemmed'
-                ? 'input-disabled-new'
-                : ''
-              "
             (click)="bestcontractpopup(params)"
           >
-            <div class="title">
+            <div class="title" >
               Best Contract
-              <span class="eye-icon"></span>
+              <span  [style.visibility]="params.product.status === 'Stemmed' ? 'hidden' : 'visible'"  class="eye-icon"></span>
             </div>
             <div class="value" (keydown)="editQty($event)"
-            [ngClass]="
-              params.product.status === 'Stemmed'
-                ? 'input-disabled-new'
-                : ''
-              ">
+            [matTooltip]="'Contract Id: ' +(this.bestContractId ? this.bestContractId:'--')"
+            [ngClass]="params.product.status === 'Stemmed'?'disabled-gray': ''"
+           >
               {{ getBestContractPrice(params) }}
             </div>
           </div>
@@ -322,9 +315,11 @@ export class ShiptechCustomHeaderGroup {
   public expandState: string;
   closureValue: any;
   quoteDate: any;
+  closureDate:any;
+  bestContractId: any;
   targetValue: any;
   livePrice: any;
-  benchmark: any;
+  benchMark: any;
   requestProductId: any;
   requestLocationId: any;
   public priceFormat = '';
@@ -336,12 +331,12 @@ export class ShiptechCustomHeaderGroup {
   currentRequestInfo: any;
   sellersCount$: Observable<number>;
   availableContracts = [];
-
+  requests: any;
   ngOnInit(): any {
     this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.availableContracts = spotNegotiation.availableContracts;
-
+      this.requests = spotNegotiation.requests;
       // Fetching counterparty list
       if (
         this.counterpartyList.length === 0 &&
@@ -459,9 +454,10 @@ export class ShiptechCustomHeaderGroup {
       );
       this.livePrice = formattedLivePrice;
       this.targetValue = this.params.product.requestGroupProducts.targetPrice;
-      this.closureValue = this.params.product.requestGroupProducts.closure;
-      this.quoteDate = this.params.product.requestGroupProducts.quoteDate;
-      this.benchmark = this.params.product.requestGroupProducts.benchmark;
+      this.closureValue = this.params.product.requestGroupProducts.closurePrice;
+      this.closureDate = moment(this.params.product.requestGroupProducts.closureDate).format('DD-MMM-YYYY');;
+      this.benchMark = this.params.product.requestGroupProducts.benchMark;
+      this.bestContractId = this.params.product.requestGroupProducts.bestContractId;
       this.requestProductId = this.params.product.id;
       this.requestLocationId = this.params.requestLocationId;
       this.quoteDate = moment(this.quoteDate).format('DD-MMM-YYYY');
@@ -547,55 +543,73 @@ export class ShiptechCustomHeaderGroup {
   }
 
   bestcontractpopup(params): void {
-    console.log(params.requestLocationId);
-    console.log(params.product.id);
-    console.log(this.availableContracts);
     if (!this.availableContracts) {
       return;
     }
-    let currentCellContracts = this.availableContracts.filter(el => {
-      return (
-        el.requestProductId == params.product.id &&
-        el.requestLocationId == params.requestLocationId
-      );
-    });
-    if (currentCellContracts.length == 0) {
-      this.toastr.info('No Contracts available');
-      return;
-    }
-    const dialogRef = this.dialog.open(BestcontractpopupComponent, {
-      width: '1164px',
-      panelClass: 'best-contract-popup',
-      data: {
-        data: currentCellContracts,
-        info: {
-          locationName: params.product.productName,
-          productName: params.product.productName
-        }
-      }
-    });
-  }
-
-  getBestContractPrice(params): any {
-    ///if(params.product.status === 'Stemmed')  TODO Something
-    console.log(params.requestLocationId);
-    console.log(params.product.id);
-    console.log(this.availableContracts);
-    if (this.availableContracts) {
+    if (params.product.status !== 'Stemmed') {
       let currentCellContracts = this.availableContracts.filter(el => {
         return (
           el.requestProductId == params.product.id &&
           el.requestLocationId == params.requestLocationId
         );
       });
-      let prices = Object.keys(currentCellContracts).map(function(key) {
+      if (currentCellContracts.length == 0) {
+        this.toastr.info('No Contracts available');
+        return;
+      }
+      const dialogRef = this.dialog.open(BestcontractpopupComponent, {
+        width: '1164px',
+        panelClass: 'best-contract-popup',
+        data: {
+          data: currentCellContracts,
+          info: {
+            locationName: params.product.productName,
+            productName: params.product.productName
+          }
+        }
+      });
+    }
+  }
+
+  getBestContractPrice(params): any {
+    if (this.availableContracts && params.product.status !== 'Stemmed') {
+      let currentCellContracts = this.availableContracts.filter(el => {
+        return (
+          el.requestProductId == params.product.id &&
+          el.requestLocationId == params.requestLocationId
+        );
+      });
+      let prices = Object.keys(currentCellContracts).map(function (key) {
         return currentCellContracts[key].fixedPrice;
+      }); 
+      
+      let min = Math.min.apply(null, prices);
+      let contractIds=currentCellContracts.length>0.?currentCellContracts.filter(a=>a.fixedPrice==min):[];
+      this.bestContractId =contractIds[0]?.contract.id;
+      if (min !== null && min != 'Infinity') {
+        return `$ ${this.priceFormatValue(min, 'benchMark')}`;
+      }
+    } else if (params.product.status === 'Stemmed') {
+      let requestGroup, prices;
+      this.requests.forEach(req => {
+        req.requestLocations.forEach(reqLoc => {
+          if (reqLoc.requestProducts.length > 0 && reqLoc.id == params.requestLocationId) {
+            requestGroup = reqLoc.requestProducts.filter(reqProd => {
+              return (reqProd.id == params.product.id)
+            });
+          }
+        });
+      });
+      this.closureValue = requestGroup[0].requestGroupProducts.closurePrice;
+      this.closureDate = moment(requestGroup[0].requestGroupProducts.closureDate).format('DD-MMM-YYYY');
+      this.benchMark = requestGroup[0].requestGroupProducts.benchMark;
+      this.bestContractId = requestGroup[0].requestGroupProducts.bestContractId;
+      prices = Object.keys(requestGroup).map(function (key) {
+        return requestGroup[key].requestGroupProducts.bestContract;
       });
       let min = Math.min.apply(null, prices);
-      console.log(currentCellContracts);
-      console.log(min);
       if (min !== null && min != 'Infinity') {
-        return `$ ${this.priceFormatValue(min, 'benchmark')}`;
+        return `$ ${this.priceFormatValue(min, 'benchMark')}`;
       }
     }
     return '--';
@@ -661,11 +675,11 @@ export class ShiptechCustomHeaderGroup {
 
   priceFormatValue(value, type?: any) {
     if (typeof value == 'undefined' || value == null) {
-      return type == 'benchmark' ? '--' : null;
+      return type == 'benchMark' ? '--' : null;
     }
 
     if (value == 0) {
-      return type == 'benchmark' ? value : '--';
+      return type == 'benchMark' ? value : '--';
     }
     let format = /[^\d|\-+|\.+]/g;
     let plainNumber;
@@ -702,7 +716,7 @@ export class ShiptechCustomHeaderGroup {
       }
 
       //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font
-      if (type && type == 'benchmark') {
+      if (type && type == 'benchMark') {
         plainNumber = Math.abs(plainNumber);
       }
       return plainNumber;
@@ -713,10 +727,10 @@ export class ShiptechCustomHeaderGroup {
     this.livePrice = this.priceFormatValue(this.livePrice, 'livePrice');
     this.livePrice =
       this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice;
-    this.benchmark =
-      this.benchmark == null || this.benchmark == '--' ? 0 : this.benchmark;
+    this.benchMark =
+      this.benchMark == null || this.benchMark == '--' ? 0 : this.benchMark;
     const targetval =
-      this.livePrice.toString().replace(',', '') - this.benchmark;
+      this.livePrice.toString().replace(',', '') - this.benchMark;
     this.targetValue = parseFloat(targetval.toString());
     //this.closureValue=parseInt(this.livePrice);
     let payload = {

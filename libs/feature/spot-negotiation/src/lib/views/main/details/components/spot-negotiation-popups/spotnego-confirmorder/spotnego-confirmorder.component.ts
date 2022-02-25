@@ -235,10 +235,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         OrderFields: {
           ConfirmedQuantity: requestOffer.supplyQuantity ?? requestProducts.maxQuantity
         },
-        Closure: requestProducts.requestGroupProducts.closure,
+        ClosurePrice: requestProducts.requestGroupProducts.closurePrice,
         BestContract: requestProducts.requestGroupProducts.bestContract,
         BestContractId: requestProducts.requestGroupProducts.bestContractId,
-        BenchMark: requestProducts.requestGroupProducts.benchmark
+        BenchMark: requestProducts.requestGroupProducts.benchMark,
+        ClosureDate: requestProducts.requestGroupProducts.closureDate
       }
     ];
   }
@@ -537,11 +538,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         RequestGroupId: confirmOff.RequestGroupId,
         RequestLocationId: confirmOff.RequestLocationId,
         RequestProductId: confirmOff.RequestProductId,
-        Closure: confirmOff.Closure ? confirmOff.Closure : 0,
+        ClosurePrice: confirmOff.ClosurePrice ? confirmOff.ClosurePrice : 0,
         BestContract: confirmOff.BestContract ? confirmOff.BestContract : 0,
         BestContractId: confirmOff.BestContractId,
         BenchMark: confirmOff.BenchMark ? confirmOff.BenchMark : 0,
-        ClosureDate: this.selectedOffers[0].QuoteByDate ? this.selectedOffers[0].QuoteByDate : null,
+        ClosureDate: confirmOff.ClosureDate ? confirmOff.ClosureDate : null,
       }
       selectedOffs.push(selectOff);
     });
