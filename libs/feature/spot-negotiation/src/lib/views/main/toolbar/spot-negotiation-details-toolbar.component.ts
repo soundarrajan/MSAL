@@ -124,7 +124,9 @@ export class NegotiationDetailsToolbarComponent implements OnInit {
     }
 
     this.navigationItems = [...navigationItems];
-    this.chRef.detectChanges();
+    if (!this.chRef['destroyed']) {
+      this.chRef.detectChanges();
+    }
   }
 
   markNavigationItems() {

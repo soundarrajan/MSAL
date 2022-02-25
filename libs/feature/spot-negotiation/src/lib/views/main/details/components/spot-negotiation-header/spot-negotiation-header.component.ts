@@ -105,7 +105,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
   @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();
   ngOnInit(): void {
+
+    if((<any>window).activeRequest) {
+      this.selReqIndex = (<any>window).activeRequest.i;
+    }
+
     // Get data from store;
+
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
         this.requestOptions = spotNegotiation.requests;
@@ -116,7 +122,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           this.requestsAndVessels = this.removeDuplicatesRequest(
             spotNegotiation.requestList,
             'requestName'
-          );
+            );
         }
         this.visibleRequestList = _.cloneDeep(
           this.requestsAndVessels.slice(0, 7)
@@ -126,24 +132,25 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if (spotNegotiation.currentRequestSmallInfo) {
           this.locations =
             spotNegotiation.currentRequestSmallInfo.requestLocations;
-          if (
+            if (
             this.counterpartyList.length === 0 &&
             spotNegotiation.counterpartyList
-          ) {
-            this.counterpartyList = spotNegotiation.counterpartyList;
+            ) {
+              this.counterpartyList = spotNegotiation.counterpartyList;
             this.visibleCounterpartyList = _.cloneDeep(
               this.counterpartyList.slice(0, 7)
-            );
+              );
+            }
           }
-        }
         if (!this.initAvailableContracts && this.currentRequestInfo) {
           this.initAvailableContracts = true;
           this.getBestContractForCurrentRequest(this.currentRequestInfo.id);
         }
+
       });
     }, 100);
   }
-
+  
   delinkRequest(item) {
     var canDelinkStemmed = true;
     item.requestLocations.forEach(location => {
@@ -570,6 +577,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       selReqIndex: i
     };
     this.selectionChange.emit(obj);
+    (<any>window).activeRequest = {i,selected};
     this.getBestContractForCurrentRequest(selected.id);
   }
 
