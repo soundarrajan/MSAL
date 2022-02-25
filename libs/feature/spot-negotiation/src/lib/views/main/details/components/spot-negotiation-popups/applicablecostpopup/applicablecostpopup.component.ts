@@ -210,6 +210,14 @@ export class ApplicablecostpopupComponent implements OnInit {
       );
       return;
     }
+
+    this.saveButtonClicked = true;
+    let locationBasedCostsRequiredString = this.checkRequiredFields();
+    if (locationBasedCostsRequiredString != '') {
+      this.toastr.error(locationBasedCostsRequiredString);
+      return;
+    }
+
     let selectedRequestList = _.filter(
       this.requestListToDuplicateLocationBasedCost,
       function(request) {
@@ -232,17 +240,10 @@ export class ApplicablecostpopupComponent implements OnInit {
     }
     if (reqIdForLocation) {
       this.toastr.warning(
-        'The particular cost cannot be applied to a request ' +
+        'The particular cost cannot be applied to request(s) ' +
           reqIdForLocation +
           ' as the location is not available! '
       );
-      return;
-    }
-
-    this.saveButtonClicked = true;
-    let locationBasedCostsRequiredString = this.checkRequiredFields();
-    if (locationBasedCostsRequiredString != '') {
-      this.toastr.error(locationBasedCostsRequiredString);
       return;
     }
 
@@ -836,7 +837,11 @@ export class ApplicablecostpopupComponent implements OnInit {
     let requestLocationId = this.requestLocation.locationId;
     selectedRequestList.forEach(request => {
       request.requestLocations.forEach(requestLocation => {
-        if (requestLocation.locationId == requestLocationId) {
+        //statusId = 12 => Stemmed status
+        if (
+          requestLocation.locationId == requestLocationId &&
+          requestLocation.statusId != 12
+        ) {
           let reqProductIdForLocation = [];
           this.locationBasedCosts.forEach(locationCost => {
             if (!locationCost.isDeleted) {
@@ -860,8 +865,6 @@ export class ApplicablecostpopupComponent implements OnInit {
                     newCost.selectedApplicableForId,
                     requestLocation
                   );
-                  console.log('Location:', requestLocation);
-                  console.log('Product Detals: ', productDetails);
                   newCost.productList = productDetails.productList;
                   newCost.maxQuantity = productDetails.maxQty;
                   newCost.maxQuantityUomId = productDetails.maxQtyUomId;
@@ -875,6 +878,8 @@ export class ApplicablecostpopupComponent implements OnInit {
                     notStemmedProducts[0],
                     requestLocation
                   );
+                } else if (!notStemmedProducts.length) {
+                  newCost.excludeCost = true;
                 }
               } else {
                 //One product is selected in the applicabe for dropdown
@@ -910,7 +915,7 @@ export class ApplicablecostpopupComponent implements OnInit {
                   );
                 }
               }
-              if (!newCost.hasStemmedProduct) {
+              if (!newCost.hasStemmedProduct || !newCost.excludeCost) {
                 this.copiedLocationCost.push(newCost);
               }
             }
@@ -937,7 +942,6 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.toastr.error('Selected products(s) : ' + reqIdForLocation);
       return;
     }
-    console.log(this.copiedLocationCost);
     this.copiedLocationCost.forEach(cost => {
       // Check if selected cost type is equal with Unit
       if (cost?.costTypeId == 2) {
@@ -1238,7 +1242,6 @@ export class ApplicablecostpopupComponent implements OnInit {
               return locationCost.requestLocationId == requestLocationId;
             })
           );
-          this.toastr.success('Additional cost saved successfully.');
           this.toastr.success('Additional cost copied successfully.');
 
           this.closeDialog();
