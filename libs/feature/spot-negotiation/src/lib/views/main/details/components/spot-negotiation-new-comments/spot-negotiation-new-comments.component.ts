@@ -262,7 +262,7 @@ export class SpotNegotiationNewCommentsComponent
       this.requestListToDuplicateComments = _.cloneDeep(
         this.requestList
           .filter(r => r.id != this.currentRequestInfo.id)
-          .map(req => ({ ...req, isSelected: true }))
+          .map(req => ({ ...req, isSelected: false }))
       );
     }
   }
