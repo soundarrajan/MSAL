@@ -30,6 +30,7 @@ import {
 import {
   SetCurrentRequestSmallInfo,
   SetAvailableContracts,
+  SetRequests,
   AddRequest,
   DelinkRequest
 } from '../../../../../store/actions/request-group-actions';
@@ -408,9 +409,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           )?.displayName;
         }
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort(
-          (a, b) => (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
-        );
+        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> 
+        a.requestProductTypeId  === b.requestProductTypeId ? 
+        (a.requestProductId > b.requestProductId ? 1 : -1) : 
+       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
+       );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
 
@@ -458,8 +461,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
             )?.displayName;
           }
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
-            (a, b) => (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> 
+            a.requestProductTypeId  === b.requestProductTypeId ? 
+            (a.requestProductId > b.requestProductId ? 1 : -1) : 
+          (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
           );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
@@ -577,6 +582,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if (res.payload) {
           this.availableContracts[`request_${selectedRequestId}`] = res.payload;
           this.store.dispatch(new SetAvailableContracts(res.payload));
+
+          if (res.payload.length > 0) {
+            const futurerequestContract = this.getRequestAddContract(
+              JSON.parse(JSON.stringify(this.requestOptions)), res.payload);
+
+            this.store.dispatch(new SetRequests(futurerequestContract));
+          }
         } else {
           this.toastr.error(res.message);
           return;
@@ -591,6 +603,23 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  getRequestAddContract(requests, contracts) {
+    contracts.forEach((row, index) => {
+      requests.forEach(req => {
+        req.requestLocations.forEach(reqLoc => {
+          if (reqLoc.requestProducts.length>0 && reqLoc.id == row.requestLocationId) {
+            reqLoc.requestProducts.forEach(reqProd => {
+              if (reqProd.id == row.requestProductId) {
+                reqProd.requestGroupProducts.bestContract = row.fixedPrice;
+                reqProd.requestGroupProducts.bestContractId = row.contract.id;
+              }
+            });
+          }
+        });
+      });
+    });
+    return requests;
+  }
   openRequestPopup() {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     const dialogRef = this.dialog.open(SearchRequestPopupComponent, {

@@ -184,7 +184,11 @@ import _, { cloneDeep } from 'lodash';
               {{ params.product.uomName }}</span
             >
           </div>
-          <div class="arrow" (click)="pricinghistorypopup()">
+          <div class="arrow" [ngClass]="
+              params.product.status === 'Stemmed'
+                ? 'disabled-new'
+                : ''
+              " (click)="pricinghistorypopup()">
             <span class="title" title="{{ params.product.indexName }}">{{
               params.product.indexCode == null ? '--' : params.product.indexCode
             }}</span>
@@ -202,6 +206,11 @@ import _, { cloneDeep } from 'lodash';
             <div class="title">Closure</div>
             <div
               class="value"
+              [ngClass]="
+              params.product.status === 'Stemmed'
+                ? 'input-disabled-new'
+                : ''
+              "
               [matTooltip]="
                 'Pricing published on: ' +
                 (this.quoteDate == 'Invalid date' ? '--' : this.quoteDate)
@@ -221,7 +230,12 @@ import _, { cloneDeep } from 'lodash';
             }"
           >
             <div class="title">Perf/BM</div>
-            <div class="value" contenteditable="false">
+            <div class="value" contenteditable="false"
+             [ngClass]="
+              params.product.status === 'Stemmed'
+                ? 'input-disabled-new'
+                : ''
+              ">
               $
               {{
                 priceFormatValue(
@@ -256,13 +270,23 @@ import _, { cloneDeep } from 'lodash';
           </div>
           <div
             class="label-element bestcontract"
+            [ngClass]="
+              params.product.status === 'Stemmed'
+                ? 'input-disabled-new'
+                : ''
+              "
             (click)="bestcontractpopup(params)"
           >
             <div class="title">
               Best Contract
               <span class="eye-icon"></span>
             </div>
-            <div class="value" (keydown)="editQty($event)">
+            <div class="value" (keydown)="editQty($event)"
+            [ngClass]="
+              params.product.status === 'Stemmed'
+                ? 'input-disabled-new'
+                : ''
+              ">
               {{ getBestContractPrice(params) }}
             </div>
           </div>
@@ -553,6 +577,7 @@ export class ShiptechCustomHeaderGroup {
   }
 
   getBestContractPrice(params): any {
+    ///if(params.product.status === 'Stemmed')  TODO Something
     console.log(params.requestLocationId);
     console.log(params.product.id);
     console.log(this.availableContracts);
@@ -950,7 +975,11 @@ export class ShiptechCustomHeaderGroup {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           ).displayName;
         }
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1));
+        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> 
+        a.requestProductTypeId  === b.requestProductTypeId ? 
+        (a.requestProductId > b.requestProductId ? 1 : -1) : 
+        (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
+        );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
 
@@ -998,9 +1027,11 @@ export class ShiptechCustomHeaderGroup {
                 x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
             ).displayName;
           }
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
-            (a, b) => (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
-          );
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> 
+          a.requestProductTypeId  === b.requestProductTypeId ? 
+          (a.requestProductId > b.requestProductId ? 1 : -1) : 
+         (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
+         );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
         }

@@ -74,7 +74,8 @@ export const SpotNegotiationApiPaths = {
   switchReqOffBasedOnQuote: `RFQ/switchReqOffBasedOnQuote`,
   copyComments: `groups/copyComments`,
   updateSellerComment: `RFQ/UpdateSellerComments`,
-  getOfferPriceHistory: `Price/getOfferPriceHistory`
+  getOfferPriceHistory: `Price/getOfferPriceHistory`,
+  updateProductPrice: `RFQ/FreezeMarketPrices`
 };
 
 @Injectable({
@@ -1075,6 +1076,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http
       .post<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getOfferPriceHistory}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  UpdateProductPrices(payload: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updateProductPrice}`,
         payload
       )
       .pipe(
