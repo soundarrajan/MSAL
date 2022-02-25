@@ -36,6 +36,38 @@ export class SpotNegotiationNewCommentsComponent
     }
   }
 
+  @Input('currentRequestInfo') set _setCurrentRequestInfo(currentRequestInfo) {
+    if (currentRequestInfo) {
+      this.requestInfo = _.cloneDeep(currentRequestInfo);
+      this.requestInfo.negoGeneralComments = this.transform(
+        this.requestInfo.negoGeneralComments
+      );
+      this.requestInfo.negoPerformanceComments = this.transform(
+        this.requestInfo.negoPerformanceComments
+      );
+      this.requestInfo.negoSupplierComments = this.transform(
+        this.requestInfo.negoSupplierComments
+      );
+      this.requestInfo.negoVesselAgentComments = this.transform(
+        this.requestInfo.negoVesselAgentComments
+      );
+      this.requestInfo.oldNegoGeneralComments = _.cloneDeep(
+        this.requestInfo.negoGeneralComments
+      );
+      this.requestInfo.oldNegoPerformanceComments = _.cloneDeep(
+        this.requestInfo.negoPerformanceComments
+      );
+      this.requestInfo.oldNegoSupplierComments = _.cloneDeep(
+        this.requestInfo.negoSupplierComments
+      );
+      this.requestInfo.oldNegoVesselAgentComments = _.cloneDeep(
+        this.requestInfo.negoVesselAgentComments
+      );
+      this.checkEditableFields();
+      this.uncheckedComments();
+    }
+  }
+
   @ViewChild('generalComment') generalCommentBox: ElementRef;
   @ViewChild('performanceComment') performanceCommentBox: ElementRef;
   @ViewChild('supplyComment') supplyCommentBox: ElementRef;
@@ -72,46 +104,7 @@ export class SpotNegotiationNewCommentsComponent
     private spotNegotiationService: SpotNegotiationService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService
-  ) {
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.currentRequestInfo = _.cloneDeep(
-        spotNegotiation.currentRequestSmallInfo
-      );
-      this.requestList = _.cloneDeep(spotNegotiation.requests);
-      if (spotNegotiation.currentRequestSmallInfo) {
-        this.requestInfo = _.cloneDeep(spotNegotiation.currentRequestSmallInfo);
-
-        this.requestInfo.negoGeneralComments = this.transform(
-          this.requestInfo.negoGeneralComments
-        );
-        this.requestInfo.negoPerformanceComments = this.transform(
-          this.requestInfo.negoPerformanceComments
-        );
-        this.requestInfo.negoSupplierComments = this.transform(
-          this.requestInfo.negoSupplierComments
-        );
-        this.requestInfo.negoVesselAgentComments = this.transform(
-          this.requestInfo.negoVesselAgentComments
-        );
-
-        this.requestInfo.oldNegoGeneralComments = _.cloneDeep(
-          this.requestInfo.negoGeneralComments
-        );
-        this.requestInfo.oldNegoPerformanceComments = _.cloneDeep(
-          this.requestInfo.negoPerformanceComments
-        );
-        this.requestInfo.oldNegoSupplierComments = _.cloneDeep(
-          this.requestInfo.negoSupplierComments
-        );
-        this.requestInfo.oldNegoVesselAgentComments = _.cloneDeep(
-          this.requestInfo.negoVesselAgentComments
-        );
-
-        this.checkEditableFields();
-        this.uncheckedComments();
-      }
-    });
-  }
+  ) {}
 
   ngOnInit(): void {}
   ngAfterViewInit() {}
@@ -243,7 +236,6 @@ export class SpotNegotiationNewCommentsComponent
               this.requestInfo.negoVesselAgentComments
             );
           }
-          this.store.dispatch(new SetCurrentRequestSmallInfo(this.requestInfo));
           let currentRequest = _.cloneDeep([this.requestInfo]);
           this.store.dispatch(new UpdateSpecificRequests(currentRequest));
           this.checkEditableFields();

@@ -212,10 +212,16 @@
                   {{item.vesselName  }}
                 </span> -->
 
-                <span style="padding-right: 5px;" *ngIf="requestOptions.length>=5" >
-                     {{item.vesselName}}
+                <span
+                  style="padding-right: 5px;"
+                  *ngIf="requestOptions.length >= 5"
+                >
+                  {{ item.vesselName }}
                 </span>
-                <span style="padding-right: 5px;" *ngIf="requestOptions.length<5" >
+                <span
+                  style="padding-right: 5px;"
+                  *ngIf="requestOptions.length < 5"
+                >
                   {{ item.name }} - {{ item.vesselName }}
                 </span>
                 <div
@@ -271,6 +277,7 @@
   >
     <app-spot-negotiation-new-comments
       [expandCommentsSection]="expandCommentsSection"
+      [currentRequestInfo]="currentRequestInfo"
     ></app-spot-negotiation-new-comments>
   </div>
 </div>
