@@ -10714,9 +10714,11 @@ width: 25px;
     pointer-events: none;
     background-color: #eee;
   }
-  .disabled-new {
+  .disabled-new-events {
     pointer-events: none;
-    background-color: #605f5f;
+  }
+  .disabled-gray {
+    background-color: #eee;
   }
   .no-price-data{
     text-align: center;
