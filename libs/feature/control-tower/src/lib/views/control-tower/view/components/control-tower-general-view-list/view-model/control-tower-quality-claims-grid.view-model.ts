@@ -383,27 +383,15 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   }
 
   public filterGridNew(statusName: string): void {
-    if (this.toggleNewFilter) {
-      this.filterByStatus(statusName);
-    } else {
-      this.filterByStatus('');
-    }
+    this.filterByStatus(statusName);
   }
 
   public filterGrid714Days(statusName: string): void {
-    if (this.toggle714DaysFilter) {
-      this.filterByStatus(statusName);
-    } else {
-      this.filterByStatus('');
-    }
+    this.filterByStatus(statusName);
   }
 
   public filterGridGreaterThan15Days(statusName: string): void {
-    if (this.toggleGreaterThan15DaysFilter) {
-      this.filterByStatus(statusName);
-    } else {
-      this.filterByStatus('');
-    }
+    this.filterByStatus(statusName);
   }
 
   public filterByStatus(statusName: string): void {

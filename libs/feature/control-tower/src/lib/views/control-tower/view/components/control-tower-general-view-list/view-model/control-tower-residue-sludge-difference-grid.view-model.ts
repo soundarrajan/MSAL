@@ -677,27 +677,15 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   }
 
   public filterGridNew(statusName: string): void {
-    if (this.toggleNewFilter) {
-      this.filterByStatus(statusName);
-    } else {
-      this.filterByStatus('');
-    }
+    this.filterByStatus(statusName);
   }
 
   public filterGridMAS(statusName: string): void {
-    if (this.toggleMASFilter) {
-      this.filterByStatus(statusName);
-    } else {
-      this.filterByStatus('');
-    }
+    this.filterByStatus(statusName);
   }
 
   public filterGridResolved(statusName: string): void {
-    if (this.toggleResolvedFilter) {
-      this.filterByStatus(statusName);
-    } else {
-      this.filterByStatus('');
-    }
+    this.filterByStatus(statusName);
   }
 
   public filterByStatus(statusName: string): void {
