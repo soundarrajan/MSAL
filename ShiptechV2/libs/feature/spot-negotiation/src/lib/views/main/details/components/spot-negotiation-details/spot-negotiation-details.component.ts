@@ -1936,6 +1936,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
   onCostChanged(locationRows: any) {
     // Get current id from url and make a request with that data.
+
     const groupId = this.route.snapshot.params.spotNegotiationId;
     let rows = _.cloneDeep(locationRows);
     this.spotNegotiationService
@@ -1969,9 +1970,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         index < priceDetailsArray.length &&
         row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
-        row.requestOffers = priceDetailsArray[
-          index
-        ].requestOffers;
+        row.requestOffers = priceDetailsArray[index].requestOffers;
         row.isSelected = priceDetailsArray[index].isSelected;
         // row.physicalSupplierCounterpartyId =
         //   priceDetailsArray[index].physicalSupplierCounterpartyId;
@@ -1988,11 +1987,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
-        row.requestOffers = row.requestOffers?.sort((a,b)=> 
-        a.requestProductTypeId  === b.requestProductTypeId ? 
-        (a.requestProductId > b.requestProductId ? 1 : -1) : 
-       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
-       );
+        row.requestOffers = row.requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
+        );
         return row;
       }
 
@@ -2015,11 +2018,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
-        row.requestOffers = row.requestOffers?.sort((a,b)=> 
-        a.requestProductTypeId  === b.requestProductTypeId ? 
-        (a.requestProductId > b.requestProductId ? 1 : -1) : 
-       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
-       );
+        row.requestOffers = row.requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
+        );
       }
       return row;
     });
@@ -2045,7 +2052,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             ? false
             : row.isSelected;
         //row[val] = row.isSelected;
-      }      
+      }
     }
   }
 }

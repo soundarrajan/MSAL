@@ -10,7 +10,8 @@ import {
   Inject,
   ElementRef,
   ViewChild,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import _ from 'lodash';
@@ -19,6 +20,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { DecimalPipe } from '@angular/common';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { finalize } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
 
 export const COMPONENT_TYPE_IDS = {
   TAX_COMPONENT: 1,
@@ -36,7 +38,8 @@ export const COST_TYPE_IDS = {
 @Component({
   selector: 'app-applicablecostpopup',
   templateUrl: './applicablecostpopup.component.html',
-  styleUrls: ['./applicablecostpopup.component.css']
+  styleUrls: ['./applicablecostpopup.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ApplicablecostpopupComponent implements OnInit {
   disableScrollDown = false;
@@ -70,6 +73,12 @@ export class ApplicablecostpopupComponent implements OnInit {
   sellers: any;
   saveButtonClicked: boolean = false;
   invalidCostId: number;
+  requestList: any[] = [];
+  currentRequestInfo: any;
+  requestListToDuplicateLocationBasedCost: any[];
+  duplicateCost: boolean = false;
+  copiedLocationCost: any[];
+  endpointCount: number = 0;
 
   constructor(
     public dialogRef: MatDialogRef<ApplicablecostpopupComponent>,
@@ -80,9 +89,9 @@ export class ApplicablecostpopupComponent implements OnInit {
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private tenantSettingsService: TenantSettingsService,
     private changeDetectorRef: ChangeDetectorRef,
-
     private tenantService: TenantFormattingService,
-    @Inject(DecimalPipe) private _decimalPipe
+    @Inject(DecimalPipe) private _decimalPipe,
+    private store: Store
   ) {
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.quantityPrecision = this.generalTenantSettings.defaultValues.quantityPrecision;
@@ -107,6 +116,13 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.subscribe(({ spotNegotiation }) => {
+      this.currentRequestInfo = _.cloneDeep(
+        spotNegotiation.currentRequestSmallInfo
+      );
+      this.requestList = _.cloneDeep(spotNegotiation.requests);
+      this.getRequestsList();
+    });
     this.legacyLookupsDatabase.getTableByName('costType').then(response => {
       this.costTypeList = response;
     });
@@ -140,6 +156,7 @@ export class ApplicablecostpopupComponent implements OnInit {
             this.locationBasedCosts = this.formatCostItemForDisplay(
               response.locationAdditionalCosts
             );
+            this.changeDetectorRef.detectChanges();
           });
       });
 
@@ -170,12 +187,27 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   saveLocationAdditionalCosts() {
+    let findIfLocationCostExists = _.filter(this.locationBasedCosts, function(
+      object
+    ) {
+      return !object.isDeleted;
+    });
+    if (
+      findIfLocationCostExists &&
+      !findIfLocationCostExists.length &&
+      this.duplicateCost
+    ) {
+      this.toastr.warning('Please add location cost');
+      return;
+    }
     if (!this.enableSave) {
       this.toastr.warning('No changes are made to perform save.');
       return;
     }
-    if(this.invalidCostId){
-      this.toastr.error('Range/Total cost cannot be saved due to request quantity is greater than the defined cost quantity.')
+    if (this.invalidCostId) {
+      this.toastr.error(
+        'Range/Total cost cannot be saved due to request quantity is greater than the defined cost quantity.'
+      );
       return;
     }
 
@@ -186,21 +218,57 @@ export class ApplicablecostpopupComponent implements OnInit {
       return;
     }
 
-    const payload = {
-      additionalCosts: this.locationBasedCosts.concat(this.deletedCosts)
-    };
-    this.spotNegotiationService
-      .saveOfferAdditionalCosts(payload)
-      .subscribe((res: any) => {
-        this.enableSave = false;
-        if (res.status) {
-          this.locationBasedCosts = this.formatCostItemForDisplay(
-            res?.costs?.locationAdditionalCosts
-          );
-          this.toastr.success('Additional cost saved successfully.');
-          this.closeDialog();
-        } else this.toastr.error('Please try again later.');
+    let selectedRequestList = _.filter(
+      this.requestListToDuplicateLocationBasedCost,
+      function(request) {
+        return request.isSelected;
+      }
+    );
+    let reqIdForLocation: String;
+    let requestLocationId = this.requestLocation.locationId;
+    for (let i = 0; i < selectedRequestList.length; i++) {
+      let reqLocation = selectedRequestList[i].requestLocations.filter(function(
+        location
+      ) {
+        return requestLocationId == location.locationId;
       });
+      if (reqLocation.length == 0) {
+        reqIdForLocation = reqIdForLocation
+          ? reqIdForLocation + ', ' + selectedRequestList[i].name
+          : selectedRequestList[i].name;
+      }
+    }
+    if (reqIdForLocation) {
+      this.toastr.warning(
+        'The particular cost cannot be applied to request(s) ' +
+          reqIdForLocation +
+          ' as the location is not available! '
+      );
+      return;
+    }
+
+    if (selectedRequestList.length) {
+      this.copyLocationBasedCostToSelectedRequest(selectedRequestList);
+    }
+
+    if (!selectedRequestList.length) {
+      const payload = {
+        additionalCosts: this.locationBasedCosts.concat(this.deletedCosts)
+      };
+
+      this.spotNegotiationService
+        .saveOfferAdditionalCosts(payload)
+        .subscribe((res: any) => {
+          this.enableSave = false;
+          if (res.status) {
+            this.locationBasedCosts = this.formatCostItemForDisplay(
+              res?.costs?.locationAdditionalCosts
+            );
+            this.toastr.success('Additional cost saved successfully.');
+            this.closeDialog();
+          } else this.toastr.error('Please try again later.');
+        });
+    }
   }
 
   formatCostItemForDisplay(locationAdditionalCosts: any) {
@@ -291,7 +359,8 @@ export class ApplicablecostpopupComponent implements OnInit {
     cost.requestLocationId = this.requestLocation.id;
     cost.isLocationBased = true;
     cost.additionalCostId = selectedCost.additionalCostId;
-    cost.requestProductId = cost.selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
+    cost.requestProductId =
+      cost.selectedApplicableForId === 0 ? null : cost.selectedApplicableForId;
     cost.isAllProductsCost = cost.requestProductId ? false : true;
 
     cost.costName = selectedCost.costDescription;
@@ -546,7 +615,7 @@ export class ApplicablecostpopupComponent implements OnInit {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          if(response.price === 0){
+          if (response.price === 0) {
             this.invalidCostId = cost.locationAdditionalCostId;
           }
           cost.price = response.price;
@@ -611,7 +680,10 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   removeLocationCost(key: number) {
-    if(this.locationBasedCosts[key].locationAdditionalCostId === this.invalidCostId){
+    if (
+      this.locationBasedCosts[key].locationAdditionalCostId ===
+      this.invalidCostId
+    ) {
       this.invalidCostId = 0;
     }
     if (this.locationBasedCosts[key].id) {
@@ -697,5 +769,543 @@ export class ApplicablecostpopupComponent implements OnInit {
 
   closeDialog() {
     this.dialogRef.close(this.saveButtonClicked);
+  }
+
+  checkIfAllProductAreStemmedOrConfirmed(request) {
+    for (let i = 0; i < request.requestLocations.length; i++) {
+      let productList = _.filter(
+        request.requestLocations[i].requestProducts,
+        function(object) {
+          return !(object.status == 'Stemmed' || object.status == 'Confirmed');
+        }
+      );
+      if (productList && productList.length) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getRequestsList() {
+    if (this.requestList && this.currentRequestInfo) {
+      this.requestListToDuplicateLocationBasedCost = _.cloneDeep(
+        this.requestList
+          .filter(
+            r => r.id != this.currentRequestInfo.id && r.status !== 'Stemmed'
+          )
+          .map(req => ({ ...req }))
+      );
+    }
+  }
+
+  onRequestListCheckboxChange(checkbox: any) {
+    if (checkbox.checked) {
+      this.enableSave = true;
+    }
+    this.requestListToDuplicateLocationBasedCost.map(
+      req => (req.isSelected = checkbox.checked ? true : false)
+    );
+  }
+
+  onRequestListSelectionChange(checkbox: any, element: any) {
+    element.isSelected = checkbox.checked ? true : false;
+  }
+
+  checkIfLineIsApplicableToStemmedProductForCopiedLocationCost(
+    locationAdditionalCost,
+    selectedRequestLocation: any
+  ) {
+    let findProductIndex = _.findIndex(
+      selectedRequestLocation.requestProducts,
+      function(product: any) {
+        return (
+          product.id == locationAdditionalCost.requestProductId &&
+          product.status == 'Stemmed'
+        );
+      }
+    );
+    if (findProductIndex != -1) {
+      locationAdditionalCost.hasStemmedProduct = true;
+    }
+  }
+
+  copyLocationBasedCostToSelectedRequest(selectedRequestList) {
+    this.invalidCostId = 0;
+    this.copiedLocationCost = [];
+    this.endpointCount = 0;
+    let reqIdForLocation: String;
+    let requestLocationId = this.requestLocation.locationId;
+    selectedRequestList.forEach(request => {
+      request.requestLocations.forEach(requestLocation => {
+        //statusId = 12 => Stemmed status
+        if (
+          requestLocation.locationId == requestLocationId &&
+          requestLocation.statusId != 12
+        ) {
+          let reqProductIdForLocation = [];
+          this.locationBasedCosts.forEach(locationCost => {
+            if (!locationCost.isDeleted) {
+              let newCost = _.cloneDeep(locationCost);
+              newCost.id = 0;
+              newCost.hasStemmedProduct = false;
+              newCost.requestLocationId = requestLocation.id;
+              newCost.extraAmount = 0;
+              newCost.totalAmount = 0;
+              newCost.ratePerUom = 0;
+              newCost.selectedRequestLocation = requestLocation;
+
+              //If All is selected in the applicable for dropdown
+              if (newCost.isAllProductsCost) {
+                let notStemmedProducts = this.checkNumberOfNotStemmedProduct(
+                  requestLocation
+                );
+                if (notStemmedProducts.length > 1) {
+                  newCost.isAllProductsCost = true;
+                  const productDetails = this.getProductDetails(
+                    newCost.selectedApplicableForId,
+                    requestLocation
+                  );
+                  newCost.productList = productDetails.productList;
+                  newCost.maxQuantity = productDetails.maxQty;
+                  newCost.maxQuantityUomId = productDetails.maxQtyUomId;
+                  newCost.requestProductIds = this.getRequestProductIdsForCopyLocationCost(
+                    0,
+                    requestLocation
+                  );
+                } else if (notStemmedProducts.length == 1) {
+                  this.formatCopiedAdditionalCostForSpecificProduct(
+                    newCost,
+                    notStemmedProducts[0],
+                    requestLocation
+                  );
+                } else if (!notStemmedProducts.length) {
+                  newCost.excludeCost = true;
+                }
+              } else {
+                //One product is selected in the applicabe for dropdown
+                let applicableForProduct = _.find(
+                  this.requestLocation.requestProducts,
+                  function(product) {
+                    return product.id == newCost.requestProductId;
+                  }
+                );
+                let productId = applicableForProduct.productId;
+                let productList = _.filter(
+                  requestLocation.requestProducts,
+                  function(product) {
+                    return product.productId === productId;
+                  }
+                );
+                if (!productList.length) {
+                  reqProductIdForLocation.push(
+                    applicableForProduct.productName
+                  );
+                } else {
+                  //If selected product exist
+                  let product = _.find(
+                    requestLocation.requestProducts,
+                    function(product) {
+                      return product.productId === productId;
+                    }
+                  );
+                  this.formatCopiedAdditionalCostForSpecificProduct(
+                    newCost,
+                    product,
+                    requestLocation
+                  );
+                }
+              }
+              if (!newCost.hasStemmedProduct || !newCost.excludeCost) {
+                this.copiedLocationCost.push(newCost);
+              }
+            }
+          });
+          reqProductIdForLocation = _.uniq(reqProductIdForLocation);
+          let reqProductIdForLocationString = reqProductIdForLocation.join(',');
+          if (reqProductIdForLocationString != '') {
+            reqIdForLocation = reqIdForLocation
+              ? reqIdForLocation +
+                ', ' +
+                reqProductIdForLocationString +
+                ' does not exists in ' +
+                request.name +
+                ' '
+              : reqProductIdForLocationString +
+                ' does not exists in ' +
+                request.name +
+                ' ';
+          }
+        }
+      });
+    });
+    if (reqIdForLocation) {
+      this.toastr.error('Selected products(s) : ' + reqIdForLocation);
+      return;
+    }
+    this.copiedLocationCost.forEach(cost => {
+      // Check if selected cost type is equal with Unit
+      if (cost?.costTypeId == 2) {
+        this.addPriceUomChangedForCopiedLocationCost(
+          cost,
+          cost.productList,
+          cost.selectedRequestLocation
+        );
+      } else {
+        this.calculateCostAmountForCopiedLocationCost(
+          cost,
+          cost.productList,
+          cost.selectedRequestLocation
+        );
+      }
+    });
+  }
+
+  formatCopiedAdditionalCostForSpecificProduct(
+    newCost,
+    product,
+    requestLocation
+  ) {
+    newCost.requestProductId = product.id;
+    newCost.isAllProductsCost = false;
+    const productDetails = this.getProductDetails(
+      newCost.requestProductId,
+      requestLocation
+    );
+    newCost.productList = productDetails.productList;
+    newCost.maxQuantity = productDetails.maxQty;
+    newCost.maxQuantityUomId = productDetails.maxQtyUomId;
+    newCost.requestProductIds = this.getRequestProductIdsForCopyLocationCost(
+      newCost.requestProductId,
+      requestLocation
+    );
+    this.checkIfLineIsApplicableToStemmedProductForCopiedLocationCost(
+      newCost,
+      requestLocation
+    );
+  }
+
+  addPriceUomChangedForCopiedLocationCost(
+    additionalCost,
+    productList,
+    selectedRequestLocation
+  ) {
+    if (!additionalCost.priceUomId) {
+      return;
+    }
+    additionalCost.prodConv = _.cloneDeep([]);
+
+    for (let i = 0; i < productList.length; i++) {
+      let prod = productList[i];
+      this.setConvertedAddCostForCopiedLocationCost(
+        prod,
+        additionalCost,
+        i,
+        productList,
+        selectedRequestLocation
+      );
+    }
+  }
+
+  setConvertedAddCostForCopiedLocationCost(
+    prod,
+    additionalCost,
+    i,
+    productList,
+    selectedRequestLocation
+  ) {
+    this.getConvertedUOMForCopiedLocationCost(
+      prod.productId,
+      1,
+      prod.uomId,
+      additionalCost.priceUomId,
+      additionalCost,
+      i,
+      productList,
+      selectedRequestLocation
+    );
+  }
+
+  getConvertedUOMForCopiedLocationCost(
+    productId,
+    quantity,
+    fromUomId,
+    toUomId,
+    additionalCost,
+    i,
+    productList,
+    selectedRequestLocation
+  ) {
+    let payload = {
+      Payload: {
+        ProductId: productId,
+        Quantity: quantity,
+        FromUomId: fromUomId,
+        ToUomId: toUomId
+      }
+    };
+
+    if (toUomId == fromUomId) {
+      additionalCost.prodConv[i] = 1;
+      if (
+        additionalCost.priceUomId &&
+        additionalCost.prodConv &&
+        additionalCost.prodConv.length == productList.length
+      ) {
+        this.calculateCostAmountForCopiedLocationCost(
+          additionalCost,
+          productList,
+          selectedRequestLocation
+        );
+      }
+    } else {
+      this.endpointCount += 1;
+      this.spotNegotiationService
+        .getUomConversionFactor(payload)
+        .pipe(finalize(() => {}))
+        .subscribe((result: any) => {
+          this.endpointCount -= 1;
+          if (typeof result == 'string') {
+            this.toastr.error(result);
+          } else {
+            additionalCost.prodConv[i] = _.cloneDeep(result);
+            if (
+              additionalCost.priceUomId &&
+              additionalCost.prodConv &&
+              additionalCost.prodConv.length == productList.length
+            ) {
+              this.calculateCostAmountForCopiedLocationCost(
+                additionalCost,
+                productList,
+                selectedRequestLocation
+              );
+            }
+          }
+        });
+    }
+  }
+
+  getRangeTotalAdditionalCostsForCopiedLocationCost(
+    cost: any,
+    selectedRequestLocation: any,
+    productList: any[]
+  ) {
+    let productId = cost.requestProductId
+      ? productList.find((item: any) => item.id == cost.requestProductId)
+          ?.productId
+      : 1;
+    console.log(cost);
+    console.log(productId);
+    const payload = {
+      Payload: {
+        Filters: [
+          {
+            ColumnName: 'ProductId',
+            Value: productId ?? 1
+          },
+          {
+            ColumnName: 'LocationId',
+            Value: selectedRequestLocation.locationId
+          },
+          {
+            ColumnName: 'AdditionalCostId',
+            Value: cost.locationAdditionalCostId
+          },
+          {
+            ColumnName: 'Qty',
+            Value: cost.maxQuantity
+          },
+          {
+            ColumnName: 'QtyUomId',
+            Value: cost.maxQuantityUomId
+          }
+        ],
+        Pagination: {
+          Skip: 0,
+          Take: 25
+        },
+        SearchText: null
+      }
+    };
+    this.endpointCount += 1;
+    this.spotNegotiationService
+      .getRangeTotalAdditionalCosts(payload)
+      .subscribe((response: any) => {
+        this.endpointCount -= 1;
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          if (response.price === 0) {
+            this.invalidCostId = cost.locationAdditionalCostId;
+          }
+          cost.amountIsCalculated = true;
+
+          cost.price = response.price;
+          cost.currencyId = response.currencyId;
+          cost.amount = response.price;
+
+          cost.extraAmount = cost.extras
+            ? cost.amount * (cost.extras / 100)
+            : 0;
+          cost.totalAmount = cost.amount + cost.extraAmount;
+          cost.ratePerUom = cost.totalAmount / cost.maxQuantity;
+          this.checkIfForAllCopiedLocationCostAmountIsCalculated();
+        }
+      });
+  }
+
+  calculateCostAmountForCopiedLocationCost(
+    cost: any,
+    productList: any[],
+    selectedRequestLocation: any
+  ) {
+    switch (cost.costType) {
+      case 'Flat':
+        cost.amount = cost.price;
+        cost.amountIsCalculated = true;
+        break;
+      case 'Unit':
+        cost.amount = 0;
+        if (
+          cost.priceUomId &&
+          cost.prodConv &&
+          cost.prodConv.length == productList.length
+        ) {
+          for (let i = 0; i < productList.length; i++) {
+            let product = productList[i];
+            if (cost.isAllProductsCost || product.id == cost.requestProductId) {
+              cost.amount =
+                cost.amount +
+                product.maxQuantity * cost.prodConv[i] * parseFloat(cost.price);
+            }
+          }
+          cost.amountIsCalculated = true;
+        }
+        break;
+      case 'Percent':
+        cost.extraAmount = cost.costAmount = cost.ratePerUom = 0;
+        cost.amountIsCalculated = true;
+
+        break;
+      case 'Range':
+      case 'Total':
+        this.getRangeTotalAdditionalCostsForCopiedLocationCost(
+          cost,
+          selectedRequestLocation,
+          productList
+        );
+        break;
+    }
+
+    cost.extraAmount = cost.extras ? cost.amount * (cost.extras / 100) : 0;
+    cost.totalAmount = cost.amount + cost.extraAmount;
+    cost.ratePerUom = cost.totalAmount / cost.maxQuantity;
+
+    this.checkIfForAllCopiedLocationCostAmountIsCalculated();
+  }
+
+  checkIfForAllCopiedLocationCostAmountIsCalculated() {
+    let checkCopiedAdditionalCostRowIndex = _.findIndex(
+      this.copiedLocationCost,
+      function(obj: any) {
+        return !obj.amountIsCalculated;
+      }
+    );
+
+    if (this.endpointCount == 0 && checkCopiedAdditionalCostRowIndex == -1) {
+      console.log('CALL SAVE ACTION');
+      console.log(this.copiedLocationCost);
+      this.saveCopiedLocationCost();
+    }
+  }
+
+  saveCopiedLocationCost() {
+    if (this.invalidCostId) {
+      this.toastr.error(
+        'Range/Total for duplicate cost cannot be saved due to request quantity is greater than the defined cost quantity.'
+      );
+      return;
+    }
+    const payload = {
+      additionalCosts: this.locationBasedCosts.concat(this.copiedLocationCost)
+    };
+
+    let requestLocationId = this.requestLocation.id;
+    this.spotNegotiationService
+      .saveOfferAdditionalCosts(payload)
+      .subscribe((res: any) => {
+        this.enableSave = false;
+        if (res.status) {
+          this.locationBasedCosts = this.formatCostItemForDisplay(
+            _.filter(res?.costs?.locationAdditionalCosts, function(
+              locationCost
+            ) {
+              return locationCost.requestLocationId == requestLocationId;
+            })
+          );
+          this.toastr.success('Additional cost copied successfully.');
+
+          this.closeDialog();
+        } else this.toastr.error(res.message);
+      });
+  }
+
+  checkNumberOfNotStemmedProduct(selectedRequestLocation: any) {
+    let products = _.filter(selectedRequestLocation.requestProducts, function(
+      product
+    ) {
+      return product.status !== 'Stemmed';
+    });
+    return products;
+  }
+
+  getRequestProductIdsForCopyLocationCost(
+    selectedApplicableForId: any,
+    selectedRequestLocation: any
+  ) {
+    let requestProductsIds = [];
+    if (selectedApplicableForId > 0) {
+      requestProductsIds.push(selectedApplicableForId);
+    } else {
+      selectedRequestLocation.requestProducts.forEach((product: any) => {
+        if (product.status !== 'Stemmed') {
+          requestProductsIds.push(product.id);
+        }
+      });
+    }
+
+    return requestProductsIds.join(',');
+  }
+
+  getProductDetails(requestProductId: any, selectedRequestLocation: any) {
+    let productList = [];
+    if (requestProductId > 0) {
+      const product = selectedRequestLocation.requestProducts.find(
+        (item: any) => item.id === requestProductId
+      );
+      return {
+        productList: [product],
+        maxQty: product.maxQuantity,
+        maxQtyUomId: product.uomId,
+        maxQtyUom: product.uomName
+      };
+    } else {
+      let totalMaxQuantity = 0,
+        maxQuantityUomId,
+        maxQuantityUom;
+      selectedRequestLocation.requestProducts.forEach((product: any) => {
+        if (product.status !== 'Stemmed') {
+          totalMaxQuantity = totalMaxQuantity + product.maxQuantity;
+          maxQuantityUomId = product.uomId;
+          maxQuantityUom = product.uomName;
+          productList.push(product);
+        }
+      });
+      return {
+        productList: productList,
+        maxQty: totalMaxQuantity,
+        maxQtyUomId: maxQuantityUomId,
+        maxQtyUom: maxQuantityUom
+      };
+    }
   }
 }

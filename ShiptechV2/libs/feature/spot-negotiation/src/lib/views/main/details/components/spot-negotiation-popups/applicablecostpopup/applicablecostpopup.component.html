@@ -3,6 +3,58 @@
     Applicable Location Costs - {{ requestLocation.locationName }}
   </div>
   <div class="spot-dialog-title-right popup-header-form">
+    <mat-checkbox
+      class="checkbox-alignment"
+      [(ngModel)]="duplicateCost"
+      (change)="onRequestListCheckboxChange($event)"
+    ></mat-checkbox>
+
+    <div class="check-text">Duplicate Costs to:</div>
+    <ng-container *ngIf="!duplicateCost">
+      <div class="vessels_req">
+        All Vessels <span class="down-arrow"></span>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="duplicateCost">
+      <div
+        [matMenuTriggerFor]="clickmenu"
+        #menuTrigger="matMenuTrigger"
+        class="vessels_req"
+      >
+        All Vessels <span class="down-arrow"></span>
+      </div>
+      <mat-menu
+        #clickmenu="matMenu"
+        class="more-options-menu-panel menu-panel-requestOptionsDuplicateComments menu-panel-requestOptionsPanel"
+        xPosition="after"
+        style="position: relative;bottom: 15px;left: 66px;min-height: unset !important;"
+      >
+        <div class="duplicate-comments-menu">
+          <div
+            class="more-options-menu-inv no-border p-lr-0"
+            (click)="$event.stopPropagation()"
+            style="margin: 7px 5px;"
+          >
+            <div
+              class="checkboxOptions"
+              *ngFor="let request of requestListToDuplicateLocationBasedCost"
+            >
+              <mat-checkbox
+                [value]="request"
+                [checked]="request.isSelected"
+                (change)="onRequestListSelectionChange($event, request)"
+                matTooltip="  {{ request.name }} -
+            {{ request.vesselName }}"
+                matTooltipClass="lightTooltip"
+              >
+                {{ request.name }} - {{ request.vesselName }}</mat-checkbox
+              >
+            </div>
+          </div>
+        </div>
+      </mat-menu></ng-container
+    >
+
     <button
       mat-button
       [ngClass]="{ 'save-btn': !enableSave, 'mid-blue-button': enableSave }"
@@ -17,7 +69,7 @@
         matSuffix
         class=""
         (click)="closeDialog()"
-        style="font-size: 14px; display: inline;"
+        style="font-size: 14px; display: inline; "
         >close</mat-icon
       >
     </div>
@@ -51,20 +103,21 @@
         </tr>
       </thead>
     </table>
-    <div style="min-height: 107px; max-height: 355px; overflow-y: scroll; background: #ffffff;">
+    <div
+      style="min-height: 107px; max-height: 355px; overflow-y: scroll; background: #ffffff;"
+    >
       <table>
         <tbody>
           <ng-container
             *ngFor="let locationCost of locationBasedCosts; let j = index"
           >
             <tr class="border-bottom" *ngIf="!locationCost.isDeleted">
-              <td
-                class="decrement-circle-button"
-                style="width: 30px;"
-              >
-                <div class="decrement-circle"
-                *ngIf="!locationCost.hasStemmedProduct"
-                (click)="removeLocationCost(j)">
+              <td class="decrement-circle-button" style="width: 30px;">
+                <div
+                  class="decrement-circle"
+                  *ngIf="!locationCost.hasStemmedProduct"
+                  (click)="removeLocationCost(j)"
+                >
                   <div class="minus">-</div>
                 </div>
               </td>
@@ -194,7 +247,8 @@
                 <div class="non-editable-container">
                   <div class="non-editable-container-text-left">
                     {{
-                      locationCost.extraAmount && locationCost.costType !== 'Percent'
+                      locationCost.extraAmount &&
+                      locationCost.costType !== 'Percent'
                         ? amountFormatValue(locationCost.extraAmount)
                         : ' '
                     }}
@@ -212,7 +266,8 @@
                 <div class="non-editable-container">
                   <div class="non-editable-container-text-left">
                     {{
-                      locationCost.totalAmount && locationCost.costType !== 'Percent'
+                      locationCost.totalAmount &&
+                      locationCost.costType !== 'Percent'
                         ? amountFormatValue(locationCost.totalAmount)
                         : ' '
                     }}

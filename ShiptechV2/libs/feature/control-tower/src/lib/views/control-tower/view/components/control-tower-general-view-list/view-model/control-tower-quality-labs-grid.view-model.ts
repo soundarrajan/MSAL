@@ -37,6 +37,7 @@ import {
 import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 import { ToastrService } from 'ngx-toastr';
 import _ from 'lodash';
+import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 
 function model(
   prop: keyof IControlTowerQualityLabsItemDto
@@ -150,7 +151,8 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('counterparty'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.labcounterparty,
     valueFormatter: params => this.format.htmlDecode(params.value?.name),
-    tooltipValueGetter: params => ((params.value?.name) ? this.format.htmlDecode(params.value?.name) : ''),
+    tooltipValueGetter: params =>
+      params.value?.name ? this.format.htmlDecode(params.value?.name) : '',
     width: 150
   };
 
@@ -181,7 +183,8 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('vessel'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.vessel,
     valueFormatter: params => this.format.htmlDecode(params.value?.name),
-    tooltipValueGetter: params => ((params.value?.name) ? this.format.htmlDecode(params.value?.name) : ''),
+    tooltipValueGetter: params =>
+      params.value?.name ? this.format.htmlDecode(params.value?.name) : '',
     width: 200
   };
 
@@ -203,7 +206,8 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQualityLabsListExportColumns.eta,
-    tooltipValueGetter: params => (params.value ? this.format.date(params.value) : ''),
+    tooltipValueGetter: params =>
+      params.value ? this.format.date(params.value) : '',
     width: 200
   };
 
@@ -213,8 +217,10 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     colId: ControlTowerQualityLabsListColumns.product,
     field: model('product'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.product,
-    valueFormatter: params => ((params.value?.name) ? this.format.htmlDecode(params.value.name) : ''),
-    tooltipValueGetter: params => ((params.value?.name) ? this.format.htmlDecode(params.value.name) : ''),
+    valueFormatter: params =>
+      params.value?.name ? this.format.htmlDecode(params.value.name) : '',
+    tooltipValueGetter: params =>
+      params.value?.name ? this.format.htmlDecode(params.value.name) : '',
     width: 200
   };
 
@@ -237,30 +243,63 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     valueFormatter: params =>
       params.value?.name ? this.format.htmlDecode(params.value.name) : '',
     dtoForExport: ControlTowerQualityLabsListExportColumns.labStatus,
-    tooltipValueGetter: params => ((params.value?.name) ? this.format.htmlDecode(params.value.name) : ''),
+    tooltipValueGetter: params =>
+      params.value?.name ? this.format.htmlDecode(params.value.name) : '',
     width: 200
   };
 
-  densityDifference: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
+  densityDifference: ITypedColDef<IControlTowerQualityLabsItemDto, boolean> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.densityDifference,
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.densityDifference,
     colId: ControlTowerQualityLabsListColumns.densityDifference,
     field: model('densityDifference'),
-    valueFormatter: params => (params.value ? 'Yes' : 'No'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.densityDifference,
-    tooltip: params => (params.value ? 'Yes' : 'No'),
-    width: 150
+    cellRenderer: params => {
+      if (params.data) {
+        const a = document.createElement('span');
+        a.innerHTML = params.value ? 'Yes' : 'No';
+        return a;
+      }
+      return null;
+    },
+    tooltip: params => {
+      if (params.data) {
+        return params.value ? 'Yes' : 'No';
+      }
+    },
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }
   };
 
-  claimRaisedCol: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
+  claimRaisedCol: ITypedColDef<IControlTowerQualityLabsItemDto, boolean> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.claimRaised,
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.claimRaised,
     colId: ControlTowerQualityLabsListColumns.claimRaised,
     field: model('claimsRaised'),
-    valueFormatter: params => (params.value ? 'Yes' : 'No'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.claimRaised,
-    tooltipValueGetter: params => (params.value)? 'Yes': 'No',
-    width: 150
+    cellRenderer: params => {
+      if (params.data) {
+        const a = document.createElement('span');
+        a.innerHTML = params.value ? 'Yes' : 'No';
+        return a;
+      }
+      return null;
+    },
+    tooltip: params => {
+      if (params.data) {
+        return params.value ? 'Yes' : 'No';
+      }
+    },
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }
   };
 
   createdDateCol: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
@@ -271,7 +310,8 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.dateUtc(params.value),
     dtoForExport: ControlTowerQualityLabsListExportColumns.createdDate,
-    tooltipValueGetter: params => (params.value ? this.format.dateUtc(params.value) : ''),
+    tooltipValueGetter: params =>
+      params.value ? this.format.dateUtc(params.value) : '',
     width: 200
   };
 
@@ -282,7 +322,8 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     field: model('createdBy'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.createdBy,
     valueFormatter: params => this.format.htmlDecode(params.value?.name),
-    tooltipValueGetter: params => ((params.value?.name) ? this.format.htmlDecode(params.value?.name) : ''),
+    tooltipValueGetter: params =>
+      params.value?.name ? this.format.htmlDecode(params.value?.name) : '',
     width: 200
   };
 
@@ -318,7 +359,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
     tooltipValueGetter: params => {
-        return params.value?.name;
+      return params.value?.name;
     },
     width: 150
   };
@@ -356,7 +397,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     private toastr: ToastrService
   ) {
     super(
-      'control-tower-quality-labs-list-grid-9',
+      'control-tower-quality-labs-list-grid-10',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(ControlTowerQualityLabsListGridViewModel.name)
@@ -492,8 +533,12 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     // claimsRaised column filter value format
     if (Object.keys(filterModel).indexOf('claimsRaised') !== -1) {
       let claimRaisedFilterVal = filterModel.claimsRaised?.filter;
-      let filterCondition = this.evaluateYesNoToBoolFilter(params, filterModel, claimRaisedFilterVal);
-      
+      let filterCondition = this.evaluateYesNoToBoolFilter(
+        params,
+        filterModel,
+        claimRaisedFilterVal
+      );
+
       let updatedFilter = {
         ...filterModel,
         claimsRaised: {
@@ -507,8 +552,12 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     // densityDifference column filter value format
     if (Object.keys(filterModel).indexOf('densityDifference') !== -1) {
       let densityDifferenceFilterVal = filterModel.densityDifference?.filter;
-      let filterCondition = this.evaluateYesNoToBoolFilter(params, filterModel, densityDifferenceFilterVal);
-      
+      let filterCondition = this.evaluateYesNoToBoolFilter(
+        params,
+        filterModel,
+        densityDifferenceFilterVal
+      );
+
       let updatedFilter = {
         ...filterModel,
         densityDifference: {
@@ -522,44 +571,39 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   }
 
   public evaluateYesNoToBoolFilter(params, filterModel, filterVal) {
-      if (!filterVal || !filterVal.trim()) {
-        return;
-      }
-      filterVal = filterVal.trim().toLowerCase();
-      let filterCondition = '';
-      if (
-        filterModel.claimsRaised?.type == 'equals' ||
-        filterModel.claimsRaised?.type == 'notEqual'
-      ) {
-        filterCondition =
-          filterVal == 'no'
-            ? '0'
-            : filterVal == 'yes'
-            ? '1'
-            : '2';
-      } else if (filterModel.claimsRaised?.type == 'startsWith') {
-        filterCondition = 'no'.startsWith(filterVal)
+    if (!filterVal || !filterVal.trim()) {
+      return;
+    }
+    filterVal = filterVal.trim().toLowerCase();
+    let filterCondition = '';
+    if (
+      filterModel.claimsRaised?.type == 'equals' ||
+      filterModel.claimsRaised?.type == 'notEqual'
+    ) {
+      filterCondition =
+        filterVal == 'no' ? '0' : filterVal == 'yes' ? '1' : '2';
+    } else if (filterModel.claimsRaised?.type == 'startsWith') {
+      filterCondition = 'no'.startsWith(filterVal)
+        ? '0'
+        : 'yes'.startsWith(filterVal)
+        ? '1'
+        : '2';
+    } else if (filterModel.claimsRaised?.type == 'endsWith') {
+      filterCondition = 'no'.endsWith(filterVal)
+        ? '0'
+        : 'yes'.endsWith(filterVal)
+        ? '1'
+        : '2';
+    } else {
+      filterCondition =
+        filterVal == 'no' || ['n', 'o'].indexOf(filterVal) != -1
           ? '0'
-          : 'yes'.startsWith(filterVal)
+          : filterVal == 'yes' ||
+            ['y', 'e', 's', 'ye', 'es'].indexOf(filterVal) != -1
           ? '1'
           : '2';
-      } else if (filterModel.claimsRaised?.type == 'endsWith') {
-        filterCondition = 'no'.endsWith(filterVal)
-          ? '0'
-          : 'yes'.endsWith(filterVal)
-          ? '1'
-          : '2';
-      } else {
-        filterCondition =
-          filterVal == 'no' ||
-          ['n', 'o'].indexOf(filterVal) != -1
-            ? '0'
-            : filterVal == 'yes' ||
-              ['y', 'e', 's', 'ye', 'es'].indexOf(filterVal) != -1
-            ? '1'
-            : '2';
-      }
-      return filterCondition;
+    }
+    return filterCondition;
   }
 
   public getFiltersCount() {
