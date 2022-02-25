@@ -89,17 +89,14 @@
                     'de-selected': !negoGeneralCommentsChecked
                   }"
                   (click)="
-                    negoGeneralCommentsChecked = !negoGeneralCommentsChecked
-                  "
+                    negoGeneralCommentsChecked = !negoGeneralCommentsChecked"
                 ></span>
                 <span
-                  class="edit-icon"
-                  (click)="editNegotiationGeneralComment()"
+                (click)="editNegotiationGeneralComment()"
                 ></span>
               </div>
               <div class="comments-div">
                 <textarea
-                  [readonly]="!editableGeneralComment"
                   #generalComment
                   class="comments-text"
                   [(ngModel)]="requestInfo.negoGeneralComments"
@@ -137,13 +134,11 @@
                   "
                 ></span>
                 <span
-                  class="edit-icon"
                   (click)="editPerformanceComment()"
                 ></span>
               </div>
               <div class="comments-div">
                 <textarea
-                  [readonly]="!editablePerformanceComment"
                   #performanceComment
                   class="comments-text"
                   [(ngModel)]="requestInfo.negoPerformanceComments"
@@ -180,11 +175,10 @@
                     negoSupplierCommentsChecked = !negoSupplierCommentsChecked
                   "
                 ></span>
-                <span class="edit-icon" (click)="editSupplyComments()"></span>
+                <span (click)="editSupplyComments()"></span>
               </div>
               <div class="comments-div">
                 <textarea
-                  [readonly]="!editableSupplyComment"
                   #supplyComment
                   class="comments-text"
                   [(ngModel)]="requestInfo.negoSupplierComments"
@@ -222,13 +216,11 @@
                   "
                 ></span>
                 <span
-                  class="edit-icon"
                   (click)="editvesselAndAgentCommentBox()"
                 ></span>
               </div>
               <div class="comments-div">
                 <textarea
-                  [readonly]="!editableVesselAndAgentComment"
                   #vesselAndAgentComment
                   class="comments-text"
                   [(ngModel)]="requestInfo.negoVesselAgentComments"
