@@ -30,6 +30,7 @@ import {
 import {
   SetCurrentRequestSmallInfo,
   SetAvailableContracts,
+  SetRequests,
   AddRequest,
   DelinkRequest
 } from '../../../../../store/actions/request-group-actions';
@@ -581,6 +582,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if (res.payload) {
           this.availableContracts[`request_${selectedRequestId}`] = res.payload;
           this.store.dispatch(new SetAvailableContracts(res.payload));
+
+          if (res.payload.length > 0) {
+            const futurerequestContract = this.getRequestAddContract(
+              JSON.parse(JSON.stringify(this.requestOptions)), res.payload);
+
+            this.store.dispatch(new SetRequests(futurerequestContract));
+          }
         } else {
           this.toastr.error(res.message);
           return;
@@ -595,6 +603,23 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  getRequestAddContract(requests, contracts) {
+    contracts.forEach((row, index) => {
+      requests.forEach(req => {
+        req.requestLocations.forEach(reqLoc => {
+          if (reqLoc.requestProducts.length>0 && reqLoc.id == row.requestLocationId) {
+            reqLoc.requestProducts.forEach(reqProd => {
+              if (reqProd.id == row.requestProductId) {
+                reqProd.requestGroupProducts.bestContract = row.fixedPrice;
+                reqProd.requestGroupProducts.bestContractId = row.contract.id;
+              }
+            });
+          }
+        });
+      });
+    });
+    return requests;
+  }
   openRequestPopup() {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     const dialogRef = this.dialog.open(SearchRequestPopupComponent, {
