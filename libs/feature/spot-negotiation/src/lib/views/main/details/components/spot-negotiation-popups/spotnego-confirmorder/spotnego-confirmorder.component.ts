@@ -234,7 +234,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         RfqId: requestOffer.rfqId,
         OrderFields: {
           ConfirmedQuantity: requestOffer.supplyQuantity ?? requestProducts.maxQuantity
-        }
+        },
+        Closure: requestProducts.requestGroupProducts.closure,
+        BestContract: requestProducts.requestGroupProducts.bestContract,
+        BestContractId: requestProducts.requestGroupProducts.bestContractId,
+        BenchMark: requestProducts.requestGroupProducts.benchmark
       }
     ];
   }
@@ -424,6 +428,15 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           var receivedOffers = res;
           this.spinner.hide();
           if (res instanceof Object && res.payload.length > 0) {
+            //add/modifiy market prices
+            var FreezeMarketPricesPayload = {
+              FreezePriceRequests: this.productPricePayload(this.selectedOffers)
+            };
+            let response = this.spotNegotiationService.UpdateProductPrices(FreezeMarketPricesPayload);
+            response.subscribe((res: any) => {
+              if (res.status) {
+              }
+            });
             //this.openEditOrder(receivedOffers.payload);
             const baseOrigin = new URL(window.location.href).origin;
             window.open(`${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`, '_self');
@@ -517,5 +530,22 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     }
     return isCorrect;
   };
+  productPricePayload(selectedOffers) {
+    let selectedOffs = [];
+    selectedOffers.forEach((confirmOff, key) => {
+      let selectOff = {
+        RequestGroupId: confirmOff.RequestGroupId,
+        RequestLocationId: confirmOff.RequestLocationId,
+        RequestProductId: confirmOff.RequestProductId,
+        Closure: confirmOff.Closure ? confirmOff.Closure : 0,
+        BestContract: confirmOff.BestContract ? confirmOff.BestContract : 0,
+        BestContractId: confirmOff.BestContractId,
+        BenchMark: confirmOff.BenchMark ? confirmOff.BenchMark : 0,
+        ClosureDate: this.selectedOffers[0].QuoteByDate ? this.selectedOffers[0].QuoteByDate : null,
+      }
+      selectedOffs.push(selectOff);
+    });
+    return selectedOffs;
+  }
 
 }

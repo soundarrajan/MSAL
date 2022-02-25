@@ -1988,7 +1988,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         row.totalCost = priceDetailsArray[index].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId > b.requestProductTypeId ? 1 : -1
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
         );
         return row;
       }
@@ -2013,7 +2019,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         row.totalCost = detailsForCurrentRow[0].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId > b.requestProductTypeId ? 1 : -1
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
         );
       }
       return row;
