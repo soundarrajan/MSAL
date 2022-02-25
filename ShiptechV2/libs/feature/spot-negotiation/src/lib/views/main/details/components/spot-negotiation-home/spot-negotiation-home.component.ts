@@ -786,9 +786,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
       if (reqIdwithLocationForSeller) {
         this.toaster.error(
-          'Selected seller(s) does not exists in  ' +
-            reqIdwithLocationForSeller +
-            ' with same supplier(s).'
+          'Selected seller(s) does not have same physical supplier in ' + reqIdwithLocationForSeller
         );
         return;
       }
