@@ -355,12 +355,7 @@ export class NegotiationDocumentsComponent implements OnInit {
       cellRendererParams: { type: 'row-remove-icon-with-checkbox' },
       headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
       cellClass:
-        'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
-      cellStyle: params => {
-        return params.data.status == 'Verified'
-          ? { 'pointer-events': 'none', opacity: '0.4' }
-          : '';
-      }
+        'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center'
     },
     {
       headerName: 'Document Name',

@@ -47,7 +47,6 @@ import { IDocumentsUpdateNotesRequest } from '@shiptech/core/services/masters-ap
       <div class="dashed-border-notes">
         <input
           matInput
-          [disabled]="params.data?.status == 'Verified'"
           [(ngModel)]="docNotes"
           matTooltip="{{ docNotes }}"
           autocomplete="off"
