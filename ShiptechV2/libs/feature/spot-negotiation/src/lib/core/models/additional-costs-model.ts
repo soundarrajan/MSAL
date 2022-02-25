@@ -33,6 +33,9 @@ export interface AdditionalCostViewModel {
   locationAdditionalCostId: number | null;
   requestOfferIds?: any;
   requestProductIds?: any;
+  productList?: any;
+  selectedRequestLocation?: any;
+  hasStemmedProduct?: boolean;
 }
 
 export interface MasterAdditionalCostViewModel {
