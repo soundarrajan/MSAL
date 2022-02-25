@@ -609,7 +609,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         req.requestLocations.forEach(reqLoc => {
           if (reqLoc.requestProducts.length>0 && reqLoc.id == row.requestLocationId) {
             reqLoc.requestProducts.forEach(reqProd => {
-              if (reqProd.id == row.requestProductId) {
+              if (reqProd.id == row.requestProductId && reqProd.status !='Stemmed') {
                 reqProd.requestGroupProducts.bestContract = row.fixedPrice;
                 reqProd.requestGroupProducts.bestContractId = row.contract.id;
               }
