@@ -1,11 +1,11 @@
-﻿commit 5d2e01a5db7e41717b495f794754d0c8108e3b0f
-Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Thu Feb 24 17:24:14 2022 +0000
+﻿commit 3ca54828104eae5d42f9748ba73a04a70b9d78b3
+Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
+Date:   Sat Feb 26 05:21:18 2022 +0000
 
-    Merged PR 16122: 38774-splitDelivery-Quantity to be Invoiced issue fix for multi prod
+    Merged PR 16136: Apply default configuration when no preference is used
     
-    38774-splitDelivery-Quantity to be Invoiced issue fix for multi prod
+    Apply default configuration when no preference is used
     
-    Related work items: #38774
+    Related work items: #39010
 
 branch: master

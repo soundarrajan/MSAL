@@ -454,28 +454,15 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   }
 
   public filterGridNew(statusName: string): void {
-    if (this.toggleNewFilter) {
-      this.filterByStatus(statusName);
-    } else {
-      this.filterByStatus('');
-    }
+    this.filterByStatus(statusName);
   }
 
   public filterGridMAS(statusName: string): void {
-    if (this.toggleMASFilter) {
-      //MarkedAsSeen hard coded to avoid other screen MAS filter impact
-      this.filterByStatus('MarkedAsSeen');
-    } else {
-      this.filterByStatus('');
-    }
+    this.filterByStatus('MarkedAsSeen');
   }
 
   public filterGridResolved(statusName: string): void {
-    if (this.toggleResolvedFilter) {
-      this.filterByStatus(statusName);
-    } else {
-      this.filterByStatus('');
-    }
+    this.filterByStatus(statusName);
   }
 
   public filterByStatus(statusName: string): void {
