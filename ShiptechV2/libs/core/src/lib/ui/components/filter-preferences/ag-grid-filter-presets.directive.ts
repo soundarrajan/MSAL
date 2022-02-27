@@ -192,7 +192,6 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
           if (activeFilterPreset.length) {
             let defaultFilterPresetName = "Default";
             this.addedFilterByFromAndToByDefault(defaultFilterPresetName);
-            
           } else {
             this.filterComponent.filterPresets[0].isActive = true;
             this.presetsLoaded.next();
