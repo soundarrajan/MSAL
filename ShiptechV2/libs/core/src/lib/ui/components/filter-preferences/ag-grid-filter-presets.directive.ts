@@ -83,7 +83,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     }
   }
 
-  addedFilterByFromAndToByDefault() {
+  addedFilterByFromAndToByDefault(filterPresetName) {
     // let loadNewStatusOfDataGridIds = [
     //   // 'control-tower-quality-claims-list-grid-7'
     // ];
@@ -92,6 +92,7 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
         this.gridIds[this.id].timeDeltaValue,
         this.gridIds[this.id].timeDeltaUnit,
         this.gridIds[this.id].mappedKey
+        , filterPresetName
       );
     }
 
@@ -100,9 +101,9 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     // }
   }
 
-  setRangeUntilNow(timeDeltaValue: number, timeDeltaUnit, mappingKey: string) {
+  setRangeUntilNow(timeDeltaValue: number, timeDeltaUnit, mappingKey: string, filterPresetName) {
     for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
-      if (this.filterComponent.filterPresets[i].filterModels) {
+      if (this.filterComponent.filterPresets[i].filterModels && this.filterComponent.filterPresets[i].name == filterPresetName) {
         let filters = this.filterComponent.filterPresets[i].filterModels[
           this.id
         ];
@@ -189,9 +190,8 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
           );
           let activeFilterPreset = this.filterComponent.filterPresets.filter( item => item.isActive);
           if (activeFilterPreset.length) {
-            if(!this.filterComponent.hasActiveFilterPresets || activeFilterPreset[0].name == "Default") {
-              this.addedFilterByFromAndToByDefault();
-            }
+            let defaultFilterPresetName = "Default";
+            this.addedFilterByFromAndToByDefault(defaultFilterPresetName);
           } else {
             this.filterComponent.filterPresets[0].isActive = true;
             this.presetsLoaded.next();
