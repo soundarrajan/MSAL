@@ -1,10 +1,10 @@
-﻿commit 3ca54828104eae5d42f9748ba73a04a70b9d78b3
-Author: Florin Alexandru Marin <Florin-Alexandru.Marin@24software.ro>
-Date:   Sat Feb 26 05:21:18 2022 +0000
+﻿commit e3dce705af51128c9579770c7b47914f188f3e8d
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Sun Feb 27 07:13:54 2022 +0000
 
-    Merged PR 16136: Apply default configuration when no preference is used
+    Merged PR 16138: 39010-FilterPreset issue fix
     
-    Apply default configuration when no preference is used
+    39010-FilterPreset issue fix
     
     Related work items: #39010
 
