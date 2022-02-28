@@ -811,7 +811,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           newValue,
           currentLocation,
           false,
-          0,
           null
         );
 
