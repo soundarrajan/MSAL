@@ -730,7 +730,7 @@ export class ShiptechCustomHeaderGroup {
     this.benchMark =
       this.benchMark == null || this.benchMark == '--' ? 0 : this.benchMark;
     const targetval =
-      this.livePrice.toString().replace(',', '') - this.benchMark;
+    parseFloat(this.livePrice.toString().replace(',', '')) + this.benchMark;
     this.targetValue = parseFloat(targetval.toString());
     //this.closureValue=parseInt(this.livePrice);
     let payload = {
