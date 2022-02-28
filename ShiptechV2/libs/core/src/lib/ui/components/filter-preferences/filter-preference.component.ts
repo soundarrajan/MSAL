@@ -163,7 +163,7 @@ export class FilterPreferencesComponent implements OnDestroy {
     // NOTE: We are telling the presets directive the active preset was changed
     // NOTE: The presets directive will tell the service to update the presets store and set the selected preset to the grid
     this.activePresetChange$.next(this.filterPresets);
-
+    
     // reset SystemFilters
     if (this.currentSystemFilters) {
       this.currentSystemFilters.map(o => (o.isActive = false));
