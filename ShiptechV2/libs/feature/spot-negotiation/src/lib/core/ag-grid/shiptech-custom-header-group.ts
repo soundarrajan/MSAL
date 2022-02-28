@@ -503,8 +503,8 @@ export class ShiptechCustomHeaderGroup {
       data :{
         LocationName: this.currentRequestInfo.requestLocations[0].locationName,
         ProductName: params.product.productName,
-        LocationId: this.currentRequestInfo.requestLocations[0].locationId,
-        ProductId:  params.product.productId,
+        RequestLocationId: this.currentRequestInfo.requestLocations[0].id,
+        RequestProductId:  params.product.id,
       }
     });
 

@@ -126,8 +126,8 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
   isBtnActive: boolean = false;
   isButtonVisible=true;
   iscontentEditable=false;
-  locationId: number;
-  productId: number;
+  requestProductId: number;
+  requestLocationId: number;
   locationName: string;
   productName: string ;
   locationData: any;
@@ -137,8 +137,8 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
      private spotNegotiationService : SpotNegotiationService,
      private spinner: NgxSpinnerService,
      ) {
-        this.productId = data.ProductId;
-        this.locationId = data.LocationId;
+        this.requestProductId = data.RequestProductId;
+        this.requestLocationId = data.RequestLocationId;
         this.locationName = data.LocationName;
         this.productName = data.ProductName;
 
@@ -146,8 +146,8 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
 
    ngOnInit() {
      let payload = {
-       locationId : this.locationId,
-       productId : this.productId
+      requestLocationId : this.requestLocationId,
+       requestProductId : this.requestProductId
      };
     this.spinner.show();
     const response =  this.spotNegotiationService.getOfferPrice(payload);
