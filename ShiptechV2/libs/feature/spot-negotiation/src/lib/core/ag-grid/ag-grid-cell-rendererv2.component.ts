@@ -359,8 +359,7 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
             [matTooltip]="priceFormatValue(params.value)"
             [disabled]="
               params.product.status === 'Stemmed' ||
-              params.product.status === 'Confirmed' ||
-              params.data.requestOffers[params.index]?.hasNoQuote
+              params.product.status === 'Confirmed'
             "
           />
 
@@ -723,30 +722,62 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.myFormGroup = new FormGroup({
       currency: new FormControl('')
     });
-    this.paramsDataClone = _.cloneDeep(this.params.data);
-    if (
-      this.paramsDataClone.requestOffers &&
-      this.params.type === 'price-calc' &&
-      this.paramsDataClone.requestOffers[this.params.index]
-    ) {
-      this.paramsDataClone.currency = this.paramsDataClone.requestOffers[
-        this.params.index
-      ].currencyId;
-      this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
-    }
+
     return this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.tenantService = spotNegotiation.tenantConfigurations;
       this.locationRowsAcrossRequest = spotNegotiation.locationsRows;
-      if(spotNegotiation.staticLists)
-      this.currencyList = spotNegotiation.staticLists.filter(
-        el => el.name == 'Currency'
-      )[0]?.items;
+      if (spotNegotiation.staticLists)
+        this.currencyList = spotNegotiation.staticLists.filter(
+          el => el.name == 'Currency'
+        )[0]?.items;
       // Fetching counterparty list
       if (spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
         this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
       }
+
+      if (
+        this.params.data.requestOffers &&
+        (this.params.type === 'price-calc' ||
+          this.params.type == 'addTpr' ||
+          this.params.type == 'amt' ||
+          this.params.type == 'diff')
+      ) {
+        let requestLocationId = this.params.data.requestLocationId;
+        let currentLocation = _.find(
+          this.currentRequestInfo.requestLocations,
+          function(location) {
+            return location.id == requestLocationId;
+          }
+        );
+        if (currentLocation) {
+          let products = currentLocation.requestProducts;
+
+          this.paramsDataClone = _.cloneDeep(this.params.data);
+          this.paramsDataClone.requestOffers = [];
+          for (let i = 0; i < products.length; i++) {
+            let findRequestOfferIndex = _.findIndex(
+              this.params.data.requestOffers,
+              function(object: any) {
+                return object.requestProductId == products[i].id;
+              }
+            );
+            if (findRequestOfferIndex === -1) {
+              this.paramsDataClone.requestOffers.push({});
+            } else {
+              this.paramsDataClone.requestOffers.push(
+                this.params.data.requestOffers[findRequestOfferIndex]
+              );
+            }
+          }
+          this.paramsDataClone.currency = this.paramsDataClone.requestOffers[
+            this.params.index
+          ].currencyId;
+          this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
+        }
+      }
+
       if (spotNegotiation.additionalCostList) {
         this.additionalCostList = _.cloneDeep(
           spotNegotiation.additionalCostList
@@ -1633,10 +1664,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   checkIfRequestOffersHasNoQuote(index) {
     if (
-      this.params.data &&
-      this.params.data.requestOffers &&
-      this.params.data.requestOffers[index] &&
-      this.params.data.requestOffers[index].hasNoQuote
+      this.paramsDataClone &&
+      this.paramsDataClone.requestOffers &&
+      this.paramsDataClone.requestOffers[index] &&
+      this.paramsDataClone.requestOffers[index].hasNoQuote
     ) {
       return true;
     }
