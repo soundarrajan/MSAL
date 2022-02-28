@@ -672,6 +672,16 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         })
         .slice(0, 7)
     );
+    if(this.visibleCounterpartyList.length === 0){
+      const response = this._spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], userInput.toLowerCase() , { Skip:0  , Take: 25 } );
+      response.subscribe((res:any)=>{
+        if(res?.payload?.length >0){
+          let SelectedCounterpartyList = cloneDeep(res.payload);
+          this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
+          this.changeDetector.detectChanges();
+        }
+      });
+    }
   }
   searchRequest(userInput: string): void {
     this.expandedSearch = false;
