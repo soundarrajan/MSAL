@@ -73,7 +73,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   currentRequestInfo: any;
   requestsAndVessels: any = [];
   visibleRequestList: any = [];
-
+  couterpartyValue: any;
   // requestsAndVessels = [
   //   { request: 'Demo Req 100001', vessel: 'MerinLion', selected: false },
   //   { request: 'Demo Req 100002', vessel: 'Afif', selected: false },
@@ -150,7 +150,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       });
     }, 100);
   }
-  
+
   delinkRequest(item) {
     var canDelinkStemmed = true;
     item.requestLocations.forEach(location => {
@@ -308,7 +308,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   addCounterpartyAcrossLocations() {
     const selectedCounterparties = this.toBeAddedCounterparties();
     if (selectedCounterparties.length == 0) return;
-
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     let payload = {
       requestGroupId: parseInt(RequestGroupId),
@@ -316,7 +315,8 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       isAllLocation: true,
       counterparties: selectedCounterparties
     };
-
+    this.couterpartyValue = null;
+    this.visibleCounterpartyList =  _.cloneDeep(this.counterpartyList.slice(0, 7));
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
       if (res.status) {
@@ -337,6 +337,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         // this.store.dispatch(new AddCounterpartyToLocationsWithOffers(futureLocationsRows));
         // }
         // else
+
         this.store.dispatch(
           new AddCounterpartyToLocations(futureLocationsRows)
         );
@@ -416,10 +417,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           )?.displayName;
         }
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> 
-        a.requestProductTypeId  === b.requestProductTypeId ? 
-        (a.requestProductId > b.requestProductId ? 1 : -1) : 
-       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
+        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=>
+        a.requestProductTypeId  === b.requestProductTypeId ?
+        (a.requestProductId > b.requestProductId ? 1 : -1) :
+       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
        );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
@@ -468,10 +469,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
             )?.displayName;
           }
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> 
-            a.requestProductTypeId  === b.requestProductTypeId ? 
-            (a.requestProductId > b.requestProductId ? 1 : -1) : 
-          (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=>
+            a.requestProductTypeId  === b.requestProductTypeId ?
+            (a.requestProductId > b.requestProductId ? 1 : -1) :
+          (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
           );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
@@ -645,7 +646,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
   openCounterpartyPopup() {
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
-
     const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
       width: '100vw',
       height: '95vh',
@@ -662,7 +662,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
   search(userInput: string): void {
     this.expandedSearch = false;
-
     this.visibleCounterpartyList = _.cloneDeep(
       this.counterpartyList
         .filter(e => {
