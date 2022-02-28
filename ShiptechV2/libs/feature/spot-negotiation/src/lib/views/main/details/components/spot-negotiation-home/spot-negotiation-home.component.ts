@@ -739,8 +739,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
                       proOff.price,
                       reqLoc,
                       true,
-                      proOff.currencyId,
-                      proOff.exchangeRateToBaseCurrency
+                      proOff
                     );
                     requestProductIds.push(
                       reqLoc.requestProducts?.find(

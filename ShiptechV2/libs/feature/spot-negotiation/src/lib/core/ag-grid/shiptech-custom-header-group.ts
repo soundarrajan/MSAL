@@ -501,9 +501,9 @@ export class ShiptechCustomHeaderGroup {
       height: '90vh',
       panelClass: 'additional-cost-popup' ,
       data :{
-        LocationName: this.currentRequestInfo.requestLocations[0].locationName,
+        LocationName: this.currentRequestInfo.requestLocations.find(x => x.id == params.requestLocationId)?.locationName,
         ProductName: params.product.productName,
-        RequestLocationId: this.currentRequestInfo.requestLocations[0].id,
+        RequestLocationId: params.requestLocationId,
         RequestProductId:  params.product.id,
       }
     });
