@@ -10,6 +10,7 @@ import { AddCounterpartyToLocations, AppendCounterpartyList, AppendLocationsRows
 import { ToastrService } from 'ngx-toastr';
 import _, { cloneDeep } from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 
 @Component({
   selector: 'app-spotnego-searchctpy',
@@ -42,6 +43,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   public physicalSupplierListLength = 0;
   public overlayLoadingTemplate;
   public overlayNoRowsTemplate;
+  requestOptions: any;
   constructor(
     public format: TenantFormattingService,
     private router: Router,
@@ -332,38 +334,46 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   toBeAddedCounterparties(): SpnegoAddCounterpartyModel[] {
     this.selectedRows = this.dialog_gridOptions.api.getSelectedRows();
 
+    
     if (this.AddCounterpartiesAcrossLocations) {
+      this.requestOptions = this.store.selectSnapshot(
+        (state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].requests;
+        }
+      );
       let selectedCounterparties = [];
       //Looping through all the Request Locations
-      this.currentRequest.requestLocations.forEach(reqLoc => {
-        let perLocationCtpys = this.selectedRows.map(
-          val =>
-            <SpnegoAddCounterpartyModel>{
-              requestGroupId: this.RequestGroupId,
-              requestId: reqLoc.requestId,
-              requestLocationId: reqLoc.id,
-              locationId: reqLoc.locationId,
-              id: 0,
-              name: '',
-              counterpartytypeId: 0,
-              counterpartyTypeName: '',
-              genPrice: '',
-              genRating: '',
-              isDeleted: false,
-              isSelected: true,
-              mail: '',
-              portPrice: '',
-              portRating: '',
-              prefferedProductIds: '',
-              sellerComments: '',
-              isSellerPortalComments:false,
-              sellerCounterpartyId: val.id,
-              sellerCounterpartyName: val.name,
-              senRating: ''
-            }
-        );
-        selectedCounterparties.push(...perLocationCtpys);
-      });
+      this.requestOptions.forEach( reqOption => {
+        reqOption.requestLocations.forEach(reqLoc => {
+          let perLocationCtpys = this.selectedRows.map(
+            val =>
+              <SpnegoAddCounterpartyModel>{
+                requestGroupId: this.RequestGroupId,
+                requestId: reqLoc.requestId,
+                requestLocationId: reqLoc.id,
+                locationId: reqLoc.locationId,
+                id: 0,
+                name: '',
+                counterpartytypeId: 0,
+                counterpartyTypeName: '',
+                genPrice: '',
+                genRating: '',
+                isDeleted: false,
+                isSelected: true,
+                mail: '',
+                portPrice: '',
+                portRating: '',
+                prefferedProductIds: '',
+                sellerComments: '',
+                isSellerPortalComments:false,
+                sellerCounterpartyId: val.id,
+                sellerCounterpartyName: val.name,
+                senRating: ''
+              }
+          );
+          selectedCounterparties.push(...perLocationCtpys);
+        });
+      })
 
       return selectedCounterparties;
     } else {
