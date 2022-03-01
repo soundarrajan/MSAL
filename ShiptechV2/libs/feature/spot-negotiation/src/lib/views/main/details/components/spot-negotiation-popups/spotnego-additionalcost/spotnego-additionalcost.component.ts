@@ -1068,6 +1068,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     this.copiedAdditionalCost = [];
     this.endpointCount = 0;
     let reqIdForLocation: String;
+    let noRequestOffer: String;
     let requestLocationId = this.requestLocation.locationId;
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
@@ -1092,16 +1093,25 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
               newCost.totalAmount = 0;
               newCost.ratePerUom = 0;
               newCost.selectedRequestLocation = requestLocation;
-              let reqOffers = locationsRows.filter(
+              let row = locationsRows.filter(
                 lr =>
                   lr.requestLocationId == requestLocation.id &&
-                  lr.requestOffers &&
                   this.rowData.sellerCounterpartyId == lr.sellerCounterpartyId
               );
 
+              if (!row[0].requestOffers) {
+                noRequestOffer = noRequestOffer
+                  ? noRequestOffer +
+                    ', ' +
+                    request.name +
+                    ' - ' +
+                    requestLocation.locationName
+                  : request.name + ' - ' + requestLocation.locationName;
+              }
+
               //If All is selected in the applicable for dropdown
               if (newCost.isAllProductsCost) {
-                let rowData = reqOffers[0];
+                let rowData = row[0];
                 newCost.rowData = rowData;
                 newCost.requestOfferIds = null;
 
@@ -1117,21 +1127,19 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                   newCost.productList = productDetails.productList;
                   newCost.maxQuantity = productDetails.maxQty;
                   newCost.maxQuantityUomId = productDetails.maxQtyUomId;
-                  newCost.requestOfferIds = this.getRequestOfferIdsForCopyAdditionalCost(
-                    0,
-                    rowData
-                  );
-                  newCost.offerId = rowData.requestOffers[0].offerId;
+                  // newCost.requestOfferIds = this.getRequestOfferIdsForCopyAdditionalCost(
+                  //   0,
+                  //   rowData
+                  // );
+                  // newCost.offerId = rowData.requestOffers[0].offerId;
                 } else if (!notStemmedProducts.length) {
                   newCost.excludeCost = true;
                 }
               } else {
                 //One product is selected in the applicable for dropdown
-                let rowData = reqOffers[0];
+                let rowData = row[0];
                 newCost.rowData = rowData;
                 newCost.requestOfferId = null;
-                console.log(newCost);
-                let requestProductId = newCost.requestProductId;
                 let applicableForProduct = _.find(
                   this.requestLocation.requestProducts,
                   function(product) {
@@ -1159,12 +1167,13 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                   );
 
                   console.log(product);
-                  this.formatCopiedAdditionalCostForSpecificProduct(
-                    newCost,
-                    product,
-                    requestLocation,
-                    rowData
-                  );
+                  console.log(rowData);
+                  // this.formatCopiedAdditionalCostForSpecificProduct(
+                  //   newCost,
+                  //   product,
+                  //   requestLocation,
+                  //   rowData
+                  // );
                 }
               }
               if (!newCost.hasStemmedProduct || !newCost.excludeCost) {
@@ -1194,6 +1203,16 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
 
     if (reqIdForLocation) {
       this.toastr.error('Cost cannot be copied as the ' + reqIdForLocation);
+      return;
+    }
+
+    if (noRequestOffer) {
+      this.toastr.warning(
+        'Cost cannot be copied as the request offer(s) for' +
+          this.rowData.sellerCounterpartyName +
+          ' is not available in ' +
+          noRequestOffer
+      );
       return;
     }
 
