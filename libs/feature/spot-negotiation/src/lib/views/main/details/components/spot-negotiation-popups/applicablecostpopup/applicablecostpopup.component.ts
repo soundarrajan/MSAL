@@ -1213,8 +1213,6 @@ export class ApplicablecostpopupComponent implements OnInit {
     );
 
     if (this.endpointCount == 0 && checkCopiedAdditionalCostRowIndex == -1) {
-      console.log('CALL SAVE ACTION');
-      console.log(this.copiedLocationCost);
       this.saveCopiedLocationCost();
     }
   }
