@@ -38,6 +38,7 @@ export interface AdditionalCostViewModel {
   hasStemmedProduct?: boolean;
   excludeCost?: boolean;
   rowData?: [];
+  isCostCopy?: boolean;
 }
 
 export interface MasterAdditionalCostViewModel {
