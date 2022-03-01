@@ -1,6 +1,59 @@
 <div class="spot-popup-header-container applicable-cost-popup-header">
   <div class="spot-nego-title">Additional Costs</div>
+
   <div class="spot-dialog-title-right popup-header-form">
+    <mat-checkbox
+      class="checkbox-alignment"
+      [(ngModel)]="duplicateCost"
+      (change)="onRequestListCheckboxChange($event)"
+    ></mat-checkbox>
+
+    <div class="check-text">Duplicate Costs to:</div>
+    <ng-container *ngIf="!duplicateCost">
+      <div class="vessels_req">
+        All Vessels <span class="down-arrow"></span>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="duplicateCost">
+      <div
+        [matMenuTriggerFor]="clickmenu"
+        #menuTrigger="matMenuTrigger"
+        class="vessels_req"
+      >
+        All Vessels <span class="down-arrow"></span>
+      </div>
+      <mat-menu
+        #clickmenu="matMenu"
+        class="more-options-menu-panel menu-panel-requestOptionsDuplicateComments menu-panel-requestOptionsPanel"
+        xPosition="after"
+        style="position: relative;bottom: 15px;left: 66px;min-height: unset !important;"
+      >
+        <div class="duplicate-comments-menu">
+          <div
+            class="more-options-menu-inv no-border p-lr-0"
+            (click)="$event.stopPropagation()"
+            style="margin: 7px 5px;"
+          >
+            <div
+              class="checkboxOptions"
+              *ngFor="let request of requestListToDuplicate"
+            >
+              <mat-checkbox
+                [value]="request"
+                [checked]="request.isSelected"
+                (change)="onRequestListSelectionChange($event, request)"
+                matTooltip="  {{ request.name }} -
+            {{ request.vesselName }}"
+                matTooltipClass="lightTooltip"
+              >
+                {{ request.name }} - {{ request.vesselName }}</mat-checkbox
+              >
+            </div>
+          </div>
+        </div>
+      </mat-menu></ng-container
+    >
+
     <button
       [ngClass]="{
         'save-btn': !enableSave,
@@ -18,7 +71,7 @@
         id="dialogCloseButton"
         matSuffix
         class=""
-        (click)="closeDialog()"
+        (click)="closeDialog(false)"
         style="font-size: 14px; display: inline; "
         >close</mat-icon
       >

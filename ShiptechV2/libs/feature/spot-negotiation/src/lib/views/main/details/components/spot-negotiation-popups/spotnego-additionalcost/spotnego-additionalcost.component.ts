@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Store } from '@ngxs/store';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
@@ -65,6 +66,12 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   saveButtonClicked: boolean = false;
   totalMaxQuantity: number = 0;
   maxQuantityUomId: number = 0;
+  currentRequestInfo: any;
+  requestList: any[] = [];
+  requestListToDuplicate: any[] = [];
+  duplicateCost: boolean = false;
+  copiedAdditionalCost: any[] = [];
+  endpointCount: number = 0;
 
   constructor(
     public dialogRef: MatDialogRef<SpotnegoAdditionalcostComponent>,
@@ -75,9 +82,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private tenantSettingsService: TenantSettingsService,
     private changeDetectorRef: ChangeDetectorRef,
-
     private tenantService: TenantFormattingService,
-    @Inject(DecimalPipe) private _decimalPipe
+    @Inject(DecimalPipe) private _decimalPipe,
+    private store: Store
   ) {
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.quantityPrecision = this.generalTenantSettings.defaultValues.quantityPrecision;
@@ -102,6 +109,13 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.subscribe(({ spotNegotiation }) => {
+      this.currentRequestInfo = _.cloneDeep(
+        spotNegotiation.currentRequestSmallInfo
+      );
+      this.requestList = _.cloneDeep(spotNegotiation.requests);
+      this.getRequestsList();
+    });
     this.buildApplicableForItems(this.rowData);
     this.getAdditionalCosts();
   }
@@ -398,8 +412,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     this.enableSave = true;
   }
 
-  closeDialog() {
-    this.dialogRef.close();
+  closeDialog(duplicateCost: boolean) {
+    this.dialogRef.close(duplicateCost);
   }
 
   compareObjects(object1: any, object2: any) {
@@ -811,6 +825,21 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   }
 
   saveAdditionalCosts() {
+    let findIfAdditionalCostExists = _.filter(
+      this.offerAdditionalCostList,
+      function(object) {
+        return !object.isDeleted;
+      }
+    );
+    if (
+      findIfAdditionalCostExists &&
+      !findIfAdditionalCostExists.length &&
+      this.duplicateCost
+    ) {
+      this.toastr.warning('No offer specific cost available to be copied.');
+      return;
+    }
+
     this.saveButtonClicked = true;
     let additionalCostRequiredString = this.checkRequiredFields();
     if (additionalCostRequiredString != '') {
@@ -818,45 +847,98 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       return;
     }
 
-    // for (let i = 0; i < this.locationAdditionalCostsList.length; i++) {
-    //   this.locationAdditionalCostsList[
-    //     i
-    //   ].requestOfferIds = this.getRequestOfferIds(
-    //     this.locationAdditionalCostsList[i].selectedApplicableForId
-    //   );
-    //   this.locationAdditionalCostsList[
-    //     i
-    //   ].requestProductIds = this.getRequestProductIds(
-    //     this.locationAdditionalCostsList[i].selectedApplicableForId
-    //   );
-    // }
+    const locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
 
-    let payload = {
-      additionalCosts: this.offerAdditionalCostList.concat(
-        this.locationAdditionalCostsList
-      )
-    };
-
-    this.saveButtonClicked = false;
-    this.spotNegotiationService
-      .saveOfferAdditionalCosts(payload)
-      .subscribe((res: any) => {
-        this.enableSave = false;
-        if (res.status) {
-          this.saveButtonClicked = false;
-
-          this.offerAdditionalCostList = _.cloneDeep(
-            res.costs.offerAdditionalCosts
-          );
-
-          this.formatAdditionalCostList(this.offerAdditionalCostList);
-
-          this.changeDetectorRef.detectChanges();
-          this.toastr.success('Offer Additional Cost saved successfully.');
-        } else this.toastr.error('Please try again later.');
-
-        this.closeDialog();
+    let selectedRequestList = _.filter(this.requestListToDuplicate, function(
+      request
+    ) {
+      return request.isSelected;
+    });
+    let reqIdForLocation: String;
+    let reqIdwithLocationForSeller: String;
+    let requestLocationId = this.requestLocation.locationId;
+    for (let i = 0; i < selectedRequestList.length; i++) {
+      let reqLocation = selectedRequestList[i].requestLocations.filter(function(
+        location
+      ) {
+        return requestLocationId == location.locationId;
       });
+      if (reqLocation.length == 0) {
+        reqIdForLocation = reqIdForLocation
+          ? reqIdForLocation + ', ' + selectedRequestList[i].name
+          : selectedRequestList[i].name;
+      }
+      reqLocation.forEach(reqLoc => {
+        let reqOffers = locationsRows.filter(
+          lr =>
+            lr.requestLocationId == reqLoc.id &&
+            this.rowData.sellerCounterpartyId == lr.sellerCounterpartyId
+        );
+        if (reqOffers.length == 0) {
+          reqIdwithLocationForSeller = reqIdwithLocationForSeller
+            ? reqIdwithLocationForSeller +
+              ', ' +
+              selectedRequestList[i].name +
+              ' - ' +
+              reqLoc.locationName
+            : selectedRequestList[i].name + ' - ' + reqLoc.locationName;
+        }
+      });
+    }
+    if (reqIdForLocation) {
+      this.toastr.warning(
+        'Cost cannot be copied as the ' +
+          this.requestLocation.locationName +
+          ' is not available in ' +
+          reqIdForLocation
+      );
+      return;
+    }
+
+    if (reqIdwithLocationForSeller) {
+      this.toastr.warning(
+        'Cost cannot be copied as the ' +
+          this.rowData.sellerCounterpartyName +
+          ' is not available in ' +
+          reqIdwithLocationForSeller
+      );
+      return;
+    }
+
+    if (selectedRequestList.length) {
+      this.copyAdditionalCostToSelectedRequest(selectedRequestList);
+    }
+
+    if (!selectedRequestList.length) {
+      let payload = {
+        additionalCosts: this.offerAdditionalCostList.concat(
+          this.locationAdditionalCostsList
+        )
+      };
+
+      this.saveButtonClicked = false;
+      this.spotNegotiationService
+        .saveOfferAdditionalCosts(payload)
+        .subscribe((res: any) => {
+          this.enableSave = false;
+          if (res.status) {
+            this.saveButtonClicked = false;
+
+            this.offerAdditionalCostList = _.cloneDeep(
+              res.costs.offerAdditionalCosts
+            );
+
+            this.formatAdditionalCostList(this.offerAdditionalCostList);
+
+            this.changeDetectorRef.detectChanges();
+            this.toastr.success('Offer Additional Cost saved successfully.');
+          } else this.toastr.error('Please try again later.');
+
+          this.closeDialog(this.duplicateCost);
+        });
+    }
   }
 
   getCurrencyCode(currencyId) {
@@ -955,5 +1037,648 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         this.offerAdditionalCostList[index].price = null;
       }
     }
+  }
+
+  getRequestsList() {
+    if (this.requestList && this.currentRequestInfo) {
+      this.requestListToDuplicate = _.cloneDeep(
+        this.requestList
+          .filter(
+            r => r.id != this.currentRequestInfo.id && r.status !== 'Stemmed'
+          )
+          .map(req => ({ ...req }))
+      );
+    }
+  }
+
+  onRequestListCheckboxChange(checkbox: any) {
+    if (checkbox.checked) {
+      this.enableSave = true;
+    }
+    this.requestListToDuplicate.map(
+      req => (req.isSelected = checkbox.checked ? true : false)
+    );
+  }
+
+  onRequestListSelectionChange(checkbox: any, element: any) {
+    element.isSelected = checkbox.checked ? true : false;
+  }
+
+  copyAdditionalCostToSelectedRequest(selectedRequestList) {
+    this.copiedAdditionalCost = [];
+    this.endpointCount = 0;
+    let reqIdForLocation: String;
+    let requestLocationId = this.requestLocation.locationId;
+    const locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+
+    selectedRequestList.forEach(request => {
+      request.requestLocations.forEach(requestLocation => {
+        //statusId = 12 => Stemmed status
+        if (
+          requestLocation.locationId == requestLocationId &&
+          requestLocation.statusId != 12
+        ) {
+          let reqProductIdForLocation = [];
+          this.offerAdditionalCostList.forEach(additionalCost => {
+            if (!additionalCost.isDeleted) {
+              let newCost = _.cloneDeep(additionalCost);
+              newCost.id = 0;
+              newCost.hasStemmedProduct = false;
+              newCost.requestLocationId = requestLocation.id;
+              newCost.amount = 0;
+              newCost.extraAmount = 0;
+              newCost.totalAmount = 0;
+              newCost.ratePerUom = 0;
+              newCost.selectedRequestLocation = requestLocation;
+              let reqOffers = locationsRows.filter(
+                lr =>
+                  lr.requestLocationId == requestLocation.id &&
+                  lr.requestOffers &&
+                  this.rowData.sellerCounterpartyId == lr.sellerCounterpartyId
+              );
+
+              //If All is selected in the applicable for dropdown
+              if (newCost.isAllProductsCost) {
+                let rowData = reqOffers[0];
+                newCost.rowData = rowData;
+                newCost.requestOfferIds = null;
+
+                let notStemmedProducts = this.checkNumberOfNotStemmedProduct(
+                  requestLocation
+                );
+                if (notStemmedProducts.length > 1) {
+                  newCost.isAllProductsCost = true;
+                  const productDetails = this.getProductDetails(
+                    newCost.selectedApplicableForId,
+                    requestLocation
+                  );
+                  newCost.productList = productDetails.productList;
+                  newCost.maxQuantity = productDetails.maxQty;
+                  newCost.maxQuantityUomId = productDetails.maxQtyUomId;
+                  newCost.requestOfferIds = this.getRequestOfferIdsForCopyAdditionalCost(
+                    0,
+                    rowData
+                  );
+                  newCost.offerId = rowData.requestOffers[0].offerId;
+                } else if (!notStemmedProducts.length) {
+                  newCost.excludeCost = true;
+                }
+              } else {
+                //One product is selected in the applicable for dropdown
+                let rowData = reqOffers[0];
+                newCost.rowData = rowData;
+                newCost.requestOfferId = null;
+                console.log(newCost);
+                let requestProductId = newCost.requestProductId;
+                let applicableForProduct = _.find(
+                  this.requestLocation.requestProducts,
+                  function(product) {
+                    return product.id == newCost.requestProductId;
+                  }
+                );
+                let productId = applicableForProduct.productId;
+                let productList = _.filter(
+                  requestLocation.requestProducts,
+                  function(product) {
+                    return product.productId === productId;
+                  }
+                );
+                if (!productList.length) {
+                  reqProductIdForLocation.push(
+                    applicableForProduct.productName
+                  );
+                } else {
+                  //If selected product exist
+                  let product = _.find(
+                    requestLocation.requestProducts,
+                    function(product) {
+                      return product.productId === productId;
+                    }
+                  );
+
+                  console.log(product);
+                  this.formatCopiedAdditionalCostForSpecificProduct(
+                    newCost,
+                    product,
+                    requestLocation,
+                    rowData
+                  );
+                }
+              }
+              if (!newCost.hasStemmedProduct || !newCost.excludeCost) {
+                this.copiedAdditionalCost.push(newCost);
+              }
+              console.log(newCost);
+            }
+          });
+          reqProductIdForLocation = _.uniq(reqProductIdForLocation);
+          let reqProductIdForLocationString = reqProductIdForLocation.join(',');
+          if (reqProductIdForLocationString != '') {
+            reqIdForLocation = reqIdForLocation
+              ? reqIdForLocation +
+                ', ' +
+                reqProductIdForLocationString +
+                ' is not available in ' +
+                request.name +
+                ' '
+              : reqProductIdForLocationString +
+                ' is not available in ' +
+                request.name +
+                ' ';
+          }
+        }
+      });
+    });
+
+    if (reqIdForLocation) {
+      this.toastr.error('Cost cannot be copied as the ' + reqIdForLocation);
+      return;
+    }
+
+    this.copiedAdditionalCost.forEach(cost => {
+      // Check if selected cost type is equal with Unit
+      if (cost?.costTypeId == 2) {
+        this.addPriceUomChangedForCopiedAdditionalCost(cost, cost.productList);
+      } else {
+        this.calculateAdditionalCostAmountsForCopiedAdditionalCost(
+          cost,
+          cost.productList,
+          cost.rowData
+        );
+      }
+    });
+  }
+
+  formatCopiedAdditionalCostForSpecificProduct(
+    newCost,
+    product,
+    requestLocation,
+    rowData
+  ) {
+    newCost.requestProductId = product.id;
+    newCost.requestOfferIds = this.getRequestOfferIdsForCopyAdditionalCost(
+      newCost.requestProductId,
+      rowData
+    );
+    newCost.requestOfferId = parseInt(newCost.requestOfferIds);
+    newCost.isAllProductsCost = false;
+    const productDetails = this.getProductDetails(
+      newCost.requestProductId,
+      requestLocation
+    );
+    newCost.productList = productDetails.productList;
+    newCost.maxQuantity = productDetails.maxQty;
+    newCost.maxQuantityUomId = productDetails.maxQtyUomId;
+    this.checkIfLineIsApplicableToStemmedProductForCopiedAdditionalCost(
+      newCost,
+      requestLocation
+    );
+  }
+
+  checkIfLineIsApplicableToStemmedProductForCopiedAdditionalCost(
+    additionalCost,
+    selectedRequestLocation: any
+  ) {
+    let findProductIndex = _.findIndex(
+      selectedRequestLocation.requestProducts,
+      function(product: any) {
+        return (
+          product.id == additionalCost.requestProductId &&
+          product.status == 'Stemmed'
+        );
+      }
+    );
+    if (findProductIndex != -1) {
+      additionalCost.hasStemmedProduct = true;
+    }
+  }
+
+  addPriceUomChangedForCopiedAdditionalCost(additionalCost, productList) {
+    if (!additionalCost.priceUomId) {
+      return;
+    }
+    additionalCost.prodConv = _.cloneDeep([]);
+
+    for (let i = 0; i < productList.length; i++) {
+      let prod = productList[i];
+      this.setConvertedAddCostForCopiedAdditionalCost(
+        prod,
+        additionalCost,
+        i,
+        productList
+      );
+    }
+  }
+
+  setConvertedAddCostForCopiedAdditionalCost(
+    prod,
+    additionalCost,
+    i,
+    productList
+  ) {
+    this.getConvertedUOMForCopiedAdditionalCost(
+      prod.productId,
+      1,
+      prod.uomId,
+      additionalCost.priceUomId,
+      additionalCost,
+      i,
+      productList
+    );
+  }
+
+  getConvertedUOMForCopiedAdditionalCost(
+    productId,
+    quantity,
+    fromUomId,
+    toUomId,
+    additionalCost,
+    i,
+    productList
+  ) {
+    let payload = {
+      Payload: {
+        ProductId: productId,
+        Quantity: quantity,
+        FromUomId: fromUomId,
+        ToUomId: toUomId
+      }
+    };
+
+    if (toUomId == fromUomId) {
+      additionalCost.prodConv[i] = 1;
+      if (
+        additionalCost.priceUomId &&
+        additionalCost.prodConv &&
+        additionalCost.prodConv.length == productList.length
+      ) {
+        this.calculateAdditionalCostAmountsForCopiedAdditionalCost(
+          additionalCost,
+          productList
+        );
+      }
+    } else {
+      this.endpointCount += 1;
+      this.spotNegotiationService
+        .getUomConversionFactor(payload)
+        .pipe(finalize(() => {}))
+        .subscribe((result: any) => {
+          this.endpointCount -= 1;
+          if (typeof result == 'string') {
+            this.toastr.error(result);
+          } else {
+            additionalCost.prodConv[i] = _.cloneDeep(result);
+            if (
+              additionalCost.priceUomId &&
+              additionalCost.prodConv &&
+              additionalCost.prodConv.length == productList.length
+            ) {
+              this.calculateAdditionalCostAmountsForCopiedAdditionalCost(
+                additionalCost,
+                productList
+              );
+            }
+          }
+        });
+    }
+  }
+
+  /**
+   * Calculates the amount-related fields of an additional cost, as per FSD p. 139: Amount, Extras Amount, Total Amount.
+   */
+  calculateAdditionalCostAmountsForCopiedAdditionalCost(
+    additionalCost,
+    productList: any[],
+    rowData?: any
+  ) {
+    let totalAmount, productComponent;
+    if (!additionalCost.costTypeId) {
+      return additionalCost;
+    }
+    switch (additionalCost.costTypeId) {
+      case COST_TYPE_IDS.FLAT:
+        additionalCost.amount = parseFloat(additionalCost.price);
+        additionalCost.amountIsCalculated = true;
+        break;
+
+      case COST_TYPE_IDS.UNIT:
+        additionalCost.amount = 0;
+        if (
+          additionalCost.priceUomId &&
+          additionalCost.prodConv &&
+          additionalCost.prodConv.length == productList.length
+        ) {
+          for (let i = 0; i < productList.length; i++) {
+            let product = productList[i];
+            if (
+              additionalCost.isAllProductsCost ||
+              product.id == additionalCost.requestProductId
+            ) {
+              additionalCost.amount =
+                additionalCost.amount +
+                product.maxQuantity *
+                  additionalCost.prodConv[i] *
+                  parseFloat(additionalCost.price);
+            }
+          }
+          additionalCost.amountIsCalculated = true;
+        }
+        break;
+
+      case COST_TYPE_IDS.PERCENT:
+        productComponent = this.isProductComponent(additionalCost);
+        if (additionalCost.isAllProductsCost || !productComponent) {
+          totalAmount = this.sumProductAmountsForCopiedAdditionalCost(
+            rowData.requestOffers,
+            productList
+          );
+        } else {
+          let findProductIndex = _.findIndex(rowData.requestOffers, function(
+            object: any
+          ) {
+            return object.requestProductId == additionalCost.requestProductId;
+          });
+          if (findProductIndex != -1) {
+            let product = _.cloneDeep(rowData.requestOffers[findProductIndex]);
+            let currentPrice = Number(product.price);
+            let findProduct = _.find(productList, function(item) {
+              return item.id == product.requestProductId;
+            });
+            if (findProduct) {
+              totalAmount = Number(currentPrice * findProduct.maxQuantity);
+            }
+          }
+        }
+        if (productComponent) {
+          additionalCost.amount = (totalAmount * additionalCost.price) / 100;
+        } else {
+          additionalCost.amount =
+            (totalAmount * parseFloat(additionalCost.price)) / 100;
+        }
+        additionalCost.amountIsCalculated = true;
+        break;
+      case COST_TYPE_IDS.RANGE:
+      case COST_TYPE_IDS.TOTAL:
+        additionalCost.amount = parseFloat(additionalCost.price) || 0;
+        additionalCost.amountIsCalculated = true;
+        break;
+    }
+
+    if (isNaN(additionalCost.amount)) {
+      additionalCost.amount = null;
+    }
+
+    additionalCost.extraAmount =
+      (additionalCost.extras / 100) * additionalCost.amount;
+
+    if (isNaN(additionalCost.extraAmount)) {
+      additionalCost.extraAmount = null;
+    }
+
+    additionalCost.totalAmount =
+      additionalCost.amount + additionalCost.extraAmount || 0;
+    if (isNaN(additionalCost.totalAmount)) {
+      additionalCost.totalAmount = null;
+    }
+
+    additionalCost.ratePerUom =
+      additionalCost.totalAmount / additionalCost.maxQuantity;
+    if (isNaN(additionalCost.ratePerUom)) {
+      additionalCost.ratePerUom = null;
+    }
+    this.changeDetectorRef.detectChanges();
+
+    this.checkIfForAllCopiedAdditionalCostAmountIsCalculated();
+  }
+
+  recalculatePercentAdditionalCostForCopiedAdditionalCost(
+    copiedAdditionalCost
+  ) {
+    for (let i = 0; i < copiedAdditionalCost.length; i++) {
+      if (!copiedAdditionalCost[i].isDeleted) {
+        if (copiedAdditionalCost[i].costTypeId == COST_TYPE_IDS.PERCENT) {
+          copiedAdditionalCost[i].totalAmount = 0;
+          this.calculateAdditionalCostAmountsForCopiedAdditionalCostPercentType(
+            copiedAdditionalCost[i],
+            copiedAdditionalCost[i].productList,
+            copiedAdditionalCost[i].rowData
+          );
+        }
+      }
+    }
+  }
+
+  calculateAdditionalCostAmountsForCopiedAdditionalCostPercentType(
+    additionalCost,
+    productList: any[],
+    rowData?: any
+  ) {
+    let totalAmount, productComponent;
+    if (!additionalCost.costTypeId) {
+      return additionalCost;
+    }
+    switch (additionalCost.costTypeId) {
+      case COST_TYPE_IDS.PERCENT:
+        productComponent = this.isProductComponent(additionalCost);
+        if (additionalCost.isAllProductsCost || !productComponent) {
+          totalAmount = this.sumProductAmountsForCopiedAdditionalCost(
+            rowData.requestOffers,
+            productList
+          );
+        } else {
+          let findProductIndex = _.findIndex(rowData.requestOffers, function(
+            object: any
+          ) {
+            return object.requestProductId == additionalCost.requestProductId;
+          });
+          if (findProductIndex != -1) {
+            let product = _.cloneDeep(rowData.requestOffers[findProductIndex]);
+            let currentPrice = Number(product.price);
+            let findProduct = _.find(productList, function(item) {
+              return item.id == product.requestProductId;
+            });
+            if (findProduct) {
+              totalAmount = Number(currentPrice * findProduct.maxQuantity);
+            }
+          }
+        }
+        if (productComponent) {
+          additionalCost.amount = (totalAmount * additionalCost.price) / 100;
+        } else {
+          totalAmount =
+            totalAmount +
+            this.sumProductComponentAdditionalCostAmountsForCopiedAdditionalCost(
+              this.copiedAdditionalCost
+            );
+          additionalCost.amount =
+            (totalAmount * parseFloat(additionalCost.price)) / 100;
+        }
+        break;
+    }
+
+    if (isNaN(additionalCost.amount)) {
+      additionalCost.amount = null;
+    }
+
+    additionalCost.extraAmount =
+      (additionalCost.extras / 100) * additionalCost.amount;
+
+    if (isNaN(additionalCost.extraAmount)) {
+      additionalCost.extraAmount = null;
+    }
+
+    additionalCost.totalAmount =
+      additionalCost.amount + additionalCost.extraAmount || 0;
+    if (isNaN(additionalCost.totalAmount)) {
+      additionalCost.totalAmount = null;
+    }
+
+    additionalCost.ratePerUom =
+      additionalCost.totalAmount / additionalCost.maxQuantity;
+    if (isNaN(additionalCost.ratePerUom)) {
+      additionalCost.ratePerUom = null;
+    }
+  }
+
+  /**
+   * Sum the Amount field of all products.
+   */
+  sumProductAmountsForCopiedAdditionalCost(requestOffers, productList) {
+    let result = 0;
+    let newRequestOffers = _.cloneDeep(requestOffers);
+    for (let i = 0; i < newRequestOffers.length; i++) {
+      let currentPrice = Number(newRequestOffers[i].price);
+      let findProduct = _.find(productList, function(item) {
+        return item.id == newRequestOffers[i].requestProductId;
+      });
+      if (findProduct) {
+        result += Number(currentPrice * findProduct.maxQuantity);
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Sum the amounts of all additional costs that are NOT tax component additional costs.
+   */
+  sumProductComponentAdditionalCostAmountsForCopiedAdditionalCost(
+    copiedAdditionalCostList
+  ) {
+    let result = 0;
+    if (!copiedAdditionalCostList.length) {
+      return;
+    }
+    for (let i = 0; i < copiedAdditionalCostList.length; i++) {
+      if (!copiedAdditionalCostList[i].isDeleted) {
+        if (
+          this.isProductComponent(copiedAdditionalCostList[i]) ||
+          copiedAdditionalCostList[i].costTypeId !== COST_TYPE_IDS.PERCENT
+        ) {
+          result = result + copiedAdditionalCostList[i].totalAmount;
+        }
+      }
+    }
+    return result;
+  }
+
+  checkIfForAllCopiedAdditionalCostAmountIsCalculated() {
+    let checkCopiedAdditionalCostRowIndex = _.findIndex(
+      this.copiedAdditionalCost,
+      function(obj: any) {
+        return !obj.amountIsCalculated;
+      }
+    );
+
+    if (this.endpointCount == 0 && checkCopiedAdditionalCostRowIndex == -1) {
+      console.log('Before calulating amount for percent type(tax component)');
+      console.log(this.copiedAdditionalCost);
+      this.recalculatePercentAdditionalCostForCopiedAdditionalCost(
+        this.copiedAdditionalCost
+      );
+      this.saveCopiedAdditionalCost();
+    }
+  }
+
+  saveCopiedAdditionalCost() {
+    console.log('CALL SAVE ACTION');
+    console.log(this.copiedAdditionalCost);
+    let payload = {
+      additionalCosts: this.offerAdditionalCostList
+        .concat(this.locationAdditionalCostsList)
+        .concat(this.copiedAdditionalCost)
+    };
+
+    this.saveButtonClicked = false;
+    this.spotNegotiationService
+      .saveOfferAdditionalCosts(payload)
+      .subscribe((res: any) => {
+        this.enableSave = false;
+        if (res.status) {
+          this.toastr.success('Additional cost copied successfully!');
+        } else this.toastr.error('Please try again later.');
+        this.closeDialog(this.duplicateCost);
+      });
+  }
+
+  checkNumberOfNotStemmedProduct(selectedRequestLocation: any) {
+    let products = _.filter(selectedRequestLocation.requestProducts, function(
+      product
+    ) {
+      return product.status !== 'Stemmed';
+    });
+    return products;
+  }
+
+  getProductDetails(requestProductId: any, selectedRequestLocation: any) {
+    let productList = [];
+    if (requestProductId > 0) {
+      const product = selectedRequestLocation.requestProducts.find(
+        (item: any) => item.id === requestProductId
+      );
+      return {
+        productList: [product],
+        maxQty: product.maxQuantity,
+        maxQtyUomId: product.uomId,
+        maxQtyUom: product.uomName
+      };
+    } else {
+      let totalMaxQuantity = 0,
+        maxQuantityUomId,
+        maxQuantityUom;
+      selectedRequestLocation.requestProducts.forEach((product: any) => {
+        if (product.status !== 'Stemmed') {
+          totalMaxQuantity = totalMaxQuantity + product.maxQuantity;
+          maxQuantityUomId = product.uomId;
+          maxQuantityUom = product.uomName;
+          productList.push(product);
+        }
+      });
+      return {
+        productList: productList,
+        maxQty: totalMaxQuantity,
+        maxQtyUomId: maxQuantityUomId,
+        maxQtyUom: maxQuantityUom
+      };
+    }
+  }
+
+  getRequestOfferIdsForCopyAdditionalCost(selectedApplicableForId, rowData) {
+    let requestOfferIds = [];
+
+    if (selectedApplicableForId > 0) {
+      let findIndex = _.findIndex(rowData.requestOffers, function(object: any) {
+        return object.requestProductId == selectedApplicableForId;
+      });
+      if (findIndex !== -1) {
+        requestOfferIds.push(rowData.requestOffers[findIndex].id);
+      }
+    } else {
+      for (let i = 0; i < rowData.requestOffers.length; i++) {
+        requestOfferIds.push(rowData.requestOffers[i].id);
+      }
+    }
+    return requestOfferIds.join(',');
   }
 }

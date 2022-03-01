@@ -37,6 +37,7 @@ export interface AdditionalCostViewModel {
   selectedRequestLocation?: any;
   hasStemmedProduct?: boolean;
   excludeCost?: boolean;
+  rowData?: [];
 }
 
 export interface MasterAdditionalCostViewModel {
