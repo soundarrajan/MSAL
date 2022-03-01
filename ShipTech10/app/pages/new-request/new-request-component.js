@@ -822,50 +822,49 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
         };
         $scope.$watch('productTypesLoadedPerLocation.loadedProducts', (obj) => {
-            if (obj) {
-                if (obj == $scope.productTypesLoadedPerLocation.totalProducts) {
-                    var allProductsIds = [];
-                    for (var j = 0; j < ctrl.request.locations.length; j++) {
-                        if (!ctrl.request.id) {
-                            ctrl.request.locations[j].products = _.orderBy(ctrl.request.locations[j].products, [ 'productTypeId', 'product.name' ], [ 'asc', 'asc' ]);
-                        }
-                        for (let i = 0; i < ctrl.request.locations[j].products.length; i++) {
-                            ctrl.request.locations[j].products[i].name = `${String(i + 1) } - ${ ctrl.request.locations[j].products[i].name}`;
-                            allProductsIds.push(ctrl.request.locations[j].products[i].product.id);
-                        }
+            if (obj && obj > 0 && obj == $scope.productTypesLoadedPerLocation.totalProducts) {
+                var allProductsIds = [];
+                for (var j = 0; j < ctrl.request.locations.length; j++) {
+                    if (!ctrl.request.id) {
+                        ctrl.request.locations[j].products = _.orderBy(ctrl.request.locations[j].products, [ 'productTypeId', 'product.name' ], [ 'asc', 'asc' ]);
                     }
-                    allProductsIds = [...new Set(allProductsIds)] // make array unique
-                    listsModel.getSpecGroupByProductAndVessel(allProductsIds.join(","), ctrl.request.vesselDetails.vessel.id, j, i).then((server_data) => {
-
-                        $.each(ctrl.request.locations, (lk, lv) => {
-                            $.each(lv.products, (pk, pv) => {
-                                var isInList = false;
-                                $.each(server_data.data.payload, (k,v) => {
-                                    if (v.reference == pv.product.id) {
-                                        if (!ctrl.request.locations[lk].products[pk].specGroups) {
-                                            ctrl.request.locations[lk].products[pk].specGroups = [];
-                                        }
-                                        ctrl.request.locations[lk].products[pk].specGroups.push(v);
-
-                                            if (v.isDefault && !ctrl.request.locations[lk].products[pk].specGroup && !ctrl.request.locations[lk].products[pk].id) {
-                                                ctrl.request.locations[lk].products[pk].specGroup = v;
-                                            }
-                                            if (ctrl.request.locations[lk].products[pk].specGroup) {
-                                                if (v.id == ctrl.request.locations[lk].products[pk].specGroup.id) {
-                                                    isInList = true;
-                                                }
-                                            }
-                                    }
-                                })
-                                if (!isInList) {
-                                    ctrl.request.locations[lk].products[pk].specGroup.isDeleted = true;
-                                    ctrl.request.locations[lk].products[pk].specGroups.push(ctrl.request.locations[lk].products[pk].specGroup);
-                                }
-                                ctrl.request.locations[lk].products[pk].specGroups = _.uniqBy(ctrl.request.locations[lk].products[pk].specGroups, 'id');
-                            })
-                        })
-                    });
+                    for (let i = 0; i < ctrl.request.locations[j].products.length; i++) {
+                        ctrl.request.locations[j].products[i].name = `${String(i + 1) } - ${ ctrl.request.locations[j].products[i].name}`;
+                        allProductsIds.push(ctrl.request.locations[j].products[i].product.id);
+                    }
                 }
+                allProductsIds = [...new Set(allProductsIds)] // make array unique
+                listsModel.getSpecGroupByProductAndVessel(allProductsIds.join(","), ctrl.request.vesselDetails.vessel.id, j, i).then((server_data) => {
+
+                    $.each(ctrl.request.locations, (lk, lv) => {
+                        $.each(lv.products, (pk, pv) => {
+                            var isInList = false;
+                            $.each(server_data.data.payload, (k,v) => {
+                                if (v.reference == pv.product.id) {
+                                    if (!ctrl.request.locations[lk].products[pk].specGroups) {
+                                        ctrl.request.locations[lk].products[pk].specGroups = [];
+                                    }
+                                    ctrl.request.locations[lk].products[pk].specGroups.push(v);
+
+                                        if (v.isDefault && !ctrl.request.locations[lk].products[pk].specGroup && !ctrl.request.locations[lk].products[pk].id) {
+                                            ctrl.request.locations[lk].products[pk].specGroup = v;
+                                        }
+                                        if (ctrl.request.locations[lk].products[pk].specGroup) {
+                                            if (v.id == ctrl.request.locations[lk].products[pk].specGroup.id) {
+                                                isInList = true;
+                                            }
+                                        }
+                                }
+                            })
+                            if (!isInList) {
+                                ctrl.request.locations[lk].products[pk].specGroup.isDeleted = true;
+                                ctrl.request.locations[lk].products[pk].specGroups.push(ctrl.request.locations[lk].products[pk].specGroup);
+                            }
+                            ctrl.request.locations[lk].products[pk].specGroups = _.uniqBy(ctrl.request.locations[lk].products[pk].specGroups, 'id');
+                        })
+                    })
+                });
+                $scope.productTypesLoadedPerLocation.loadedProducts = 0;
             }
         });
 
