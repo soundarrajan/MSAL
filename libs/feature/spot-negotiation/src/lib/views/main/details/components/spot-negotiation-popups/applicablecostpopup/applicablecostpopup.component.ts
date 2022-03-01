@@ -882,7 +882,7 @@ export class ApplicablecostpopupComponent implements OnInit {
                   newCost.excludeCost = true;
                 }
               } else {
-                //One product is selected in the applicabe for dropdown
+                //One product is selected in the applicable for dropdown
                 let applicableForProduct = _.find(
                   this.requestLocation.requestProducts,
                   function(product) {

@@ -995,25 +995,155 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        const groupId = parseFloat(
-          this.route.snapshot.params.spotNegotiationId
-        );
-        const requestLocationSellerId = this.params.data.id;
-        this._spotNegotiationService
-          .getPriceDetailsById(groupId, requestLocationSellerId)
-          .subscribe((priceDetailsRes: any) => {
-            let updatedRow = { ...this.params.data };
-            updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
-            updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
-            updatedRow.requestOffers =
-              priceDetailsRes.sellerOffers[0].requestOffers;
-            // Update the store
-            this.store.dispatch(new EditLocationRow(updatedRow));
-            this.params.node.setData(updatedRow);
-          });
+        if (!result) {
+          const groupId = parseFloat(
+            this.route.snapshot.params.spotNegotiationId
+          );
+          const requestLocationSellerId = this.params.data.id;
+          this._spotNegotiationService
+            .getPriceDetailsById(groupId, requestLocationSellerId)
+            .subscribe((priceDetailsRes: any) => {
+              let updatedRow = { ...this.params.data };
+              updatedRow.totalOffer =
+                priceDetailsRes.sellerOffers[0].totalOffer;
+              updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
+              updatedRow.requestOffers =
+                priceDetailsRes.sellerOffers[0].requestOffers;
+              // Update the store
+              this.store.dispatch(new EditLocationRow(updatedRow));
+              this.params.node.setData(updatedRow);
+            });
+        } else {
+          this.getPriceDetails();
+        }
       });
     }
   }
+
+  getPriceDetails() {
+    // Get current id from url and make a request with that data.
+    const locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    const groupId = this.route.snapshot.params.spotNegotiationId;
+    let rows = _.cloneDeep(locationsRows);
+    this._spotNegotiationService
+      .getPriceDetails(groupId)
+      .subscribe((res: any) => {
+        if (res['sellerOffers']) {
+          const futureLocationsRows = this.getLocationRowsWithPriceDetails(
+            rows,
+            res['sellerOffers']
+          );
+          this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        }
+      });
+  }
+
+  getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
+    let currentRequestData: any;
+    //let counterpartyList: any;
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      currentRequestData = spotNegotiation.locations;
+      //counterpartyList = spotNegotiation.counterparties;
+    });
+
+    rowsArray.forEach((row, index) => {
+      let currentLocProd = currentRequestData.filter(
+        row1 => row1.locationId == row.locationId
+      );
+
+      // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
+      if (
+        index < priceDetailsArray.length &&
+        row.id === priceDetailsArray[index]?.requestLocationSellerId
+      ) {
+        row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.isSelected = priceDetailsArray[index].isSelected;
+        // row.physicalSupplierCounterpartyId =
+        //   priceDetailsArray[index].physicalSupplierCounterpartyId;
+        // if (priceDetailsArray[index].physicalSupplierCounterpartyId) {
+        //   row.physicalSupplierCounterpartyName = counterpartyList.find(
+        //     x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
+        //   ).displayName;
+        // }
+        // row.requestOffers = priceDetailsArray[
+        //   index
+        // ].requestOffers?.sort((a, b) =>
+        //   a.requestProductId > b.requestProductId ? 1 : -1
+        // );
+        row.totalOffer = priceDetailsArray[index].totalOffer;
+        row.totalCost = priceDetailsArray[index].totalCost;
+        this.UpdateProductsSelection(currentLocProd, row);
+        row.requestOffers = row.requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
+        );
+        return row;
+      }
+
+      // Else if not in the same index
+      const detailsForCurrentRow = priceDetailsArray.filter(
+        e => e.requestLocationSellerId === row.id
+      );
+
+      // We found something
+      if (detailsForCurrentRow.length > 0) {
+        row.requestOffers = detailsForCurrentRow[0].requestOffers;
+        row.isSelected = detailsForCurrentRow[0].isSelected;
+        // row.physicalSupplierCounterpartyId =
+        //   detailsForCurrentRow[0].physicalSupplierCounterpartyId;
+        // if (detailsForCurrentRow[0].physicalSupplierCounterpartyId) {
+        //   row.physicalSupplierCounterpartyName = counterpartyList.find(
+        //     x => x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
+        //   ).displayName;
+        // }
+        row.totalOffer = detailsForCurrentRow[0].totalOffer;
+        row.totalCost = detailsForCurrentRow[0].totalCost;
+        this.UpdateProductsSelection(currentLocProd, row);
+        row.requestOffers = row.requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
+        );
+      }
+      return row;
+    });
+
+    return rowsArray;
+  }
+
+  UpdateProductsSelection(currentLocProd, row) {
+    if (currentLocProd.length != 0) {
+      let currentLocProdCount = currentLocProd[0].requestProducts.length;
+      row.requestOffers.forEach(element1 => {
+        let FilterProdut = currentLocProd[0].requestProducts.filter(
+          col => col.id == element1.requestProductId
+        );
+        element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
+      });
+      for (let index = 0; index < currentLocProdCount; index++) {
+        let indx = index + 1;
+        let val = 'checkProd' + indx;
+        const status = currentLocProd[0].requestProducts[index].status;
+        row[val] =
+          status === 'Stemmed' || status === 'Confirmed'
+            ? false
+            : row.isSelected;
+        //row[val] = row.isSelected;
+      }
+    }
+  }
+
   sellerratingpopup() {
     const dialogRef = this.dialog.open(SellerratingpopupComponent, {
       width: '1164px',
