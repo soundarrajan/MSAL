@@ -853,6 +853,7 @@ export class ApplicablecostpopupComponent implements OnInit {
               newCost.totalAmount = 0;
               newCost.ratePerUom = 0;
               newCost.selectedRequestLocation = requestLocation;
+              newCost.isCostCopy = true;
 
               //If All is selected in the applicable for dropdown
               if (newCost.isAllProductsCost) {
@@ -1212,8 +1213,6 @@ export class ApplicablecostpopupComponent implements OnInit {
     );
 
     if (this.endpointCount == 0 && checkCopiedAdditionalCostRowIndex == -1) {
-      console.log('CALL SAVE ACTION');
-      console.log(this.copiedLocationCost);
       this.saveCopiedLocationCost();
     }
   }
