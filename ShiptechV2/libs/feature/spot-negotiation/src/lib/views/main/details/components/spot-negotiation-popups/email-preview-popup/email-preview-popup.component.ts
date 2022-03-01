@@ -221,8 +221,8 @@ export class EmailPreviewPopupComponent implements OnInit {
         if (res['previewResponse']) {
           this.previewTemplate = res['previewResponse'];
           //this.rfqTemplate = this.previewTemplate
-          this.to = this.previewTemplate.to.map(to => to.idEmailAddress);
-          this.cc = this.previewTemplate.cc.map(cc => cc.idEmailAddress);
+          this.to = this.previewTemplate.to.map(to => to.name);
+          this.cc = this.previewTemplate.cc.map(cc => cc.name);
           this.subject = this.previewTemplate.subject;
           this.content = this.previewTemplate.content;
           this.from = this.previewTemplate.From;
@@ -591,10 +591,10 @@ export class EmailPreviewPopupComponent implements OnInit {
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
-        row.requestOffers = row.requestOffers?.sort((a,b)=> 
-        a.requestProductTypeId  === b.requestProductTypeId ? 
-        (a.requestProductId > b.requestProductId ? 1 : -1) : 
-       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
+        row.requestOffers = row.requestOffers?.sort((a,b)=>
+        a.requestProductTypeId  === b.requestProductTypeId ?
+        (a.requestProductId > b.requestProductId ? 1 : -1) :
+       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
        );
         return row;
       }
@@ -618,10 +618,10 @@ export class EmailPreviewPopupComponent implements OnInit {
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
-        row.requestOffers = row.requestOffers?.sort((a,b)=> 
-        a.requestProductTypeId  === b.requestProductTypeId ? 
-        (a.requestProductId > b.requestProductId ? 1 : -1) : 
-       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
+        row.requestOffers = row.requestOffers?.sort((a,b)=>
+        a.requestProductTypeId  === b.requestProductTypeId ?
+        (a.requestProductId > b.requestProductId ? 1 : -1) :
+       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
        );
       }
       return row;
@@ -682,6 +682,23 @@ export class EmailPreviewPopupComponent implements OnInit {
           this.toaster.success('Changes reverted successfully.');
         }
       });
+    }
+  }
+
+  validateEmail(inputData:string, type: string){
+    const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const validateemail =  regularExpression.test(String(inputData).toLowerCase());
+    if(validateemail && type == 'ccMail'){
+        this.addCc(inputData);
+    }
+    if(validateemail && type == 'toMail'){
+      this.addTo(inputData);
+    }
+    if(!validateemail && type == 'ccMail'){
+      this.ccEmail ='';
+    }
+    if(!validateemail && type == 'toMail' ){
+      this.toEmail ='';
     }
   }
 

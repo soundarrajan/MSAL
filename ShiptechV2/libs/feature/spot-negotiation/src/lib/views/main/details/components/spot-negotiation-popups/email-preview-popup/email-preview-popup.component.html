@@ -107,6 +107,7 @@
                 [(ngModel)]="toEmail"
                 (keyup)="searchTO(toemail.value)"
                 [matAutocomplete]="autoCompleteTO"
+                (focusout)="validateEmail(toemail.value, 'toMail')"
               />
             </div>
           </div>
@@ -148,6 +149,7 @@
                 [(ngModel)]="ccEmail"
                 (keyup)="searchCC(ccemail.value)"
                 [matAutocomplete]="autoCompleteCC"
+                (focusout)="validateEmail(ccemail.value, 'ccMail')"
               />
             </div>
           </div>
@@ -306,13 +308,13 @@
 
 
 <mat-autocomplete  #autoCompleteCC="matAutocomplete" (optionSelected)="addCc($event.option.value)" [displayWith]="displayNull">
-  <mat-option *ngFor="let option of ccList2" [value]="option.idEmailAddress">
+  <mat-option *ngFor="let option of ccList2" [value]="option.name">
     {{option.name}}
   </mat-option>
 </mat-autocomplete>
 
 <mat-autocomplete  #autoCompleteTO="matAutocomplete" (optionSelected)="addTo($event.option.value)" [displayWith]="displayNull">
-  <mat-option *ngFor="let option of toList2" [value]="option.idEmailAddress">
+  <mat-option *ngFor="let option of toList2" [value]="option.name">
     {{option.name}}
   </mat-option>
 </mat-autocomplete>
