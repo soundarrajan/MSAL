@@ -21,22 +21,18 @@
       <div class="operations-details-block offerprice-history" style="height: 75vh;">
         <table >
           <thead>
-            <tr>
+            <tr *ngFor="let items of locationData" >
               <th class="text-left w-147">CounterParty</th>
               <th class="text-left w-95">Diff</th>
               <th class="text-left w-95">Curr. offer</th>
-              <th class="text-left w-95">Past off</th>
-              <th class=""></th>
+              <th class="text-left " [attr.colspan]="items.oldPrices.length" >Past off</th>
             </tr>
           </thead>
-          </table>
-          <div >
-          <table>
           <tbody style="height: 580px;  overflow: scroll;">
             <tr id = "commentList" *ngFor="let items of locationData">
-              <td class="w-147" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
-              <td class="w-95" >$ {{items.priceDiff | number}}</td>
-              <td class="w-95" >$ {{items.price}}</td>
+              <td class="text-left w-147" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
+              <td class="text-left w-95">$ {{items.priceDiff | number}}</td>
+              <td class="text-left w-95" >$ {{items.price}}</td>
               <td class="text-left" *ngIf="items.oldPrices.length==0" >
                 ---
               </td>
@@ -46,8 +42,12 @@
 
             </tr>
           </tbody>
+          </table>
+          <!-- <div >
+          <table>
+
         </table>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
