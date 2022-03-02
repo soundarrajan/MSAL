@@ -1074,7 +1074,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   @ObservableException()
   getOfferPriceHistory(payload: any): Observable<any> {
     return this.http
-      .get<any>(
+      .post<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getOfferPriceHistory}`,
         payload
       )
