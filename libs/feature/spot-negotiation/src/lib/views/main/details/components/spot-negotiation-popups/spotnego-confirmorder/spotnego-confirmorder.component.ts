@@ -99,10 +99,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       req.requestLocations.forEach(element => {
         locationsRows.forEach(element1 => {
           if (element.id == element1.requestLocationId && element1.requestOffers != undefined) { //&& element1.locationId==locationId
+            debugger;
             if (element1.checkProd1) {
+              var reqProdId = element.requestProducts[0].id;
               requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
                 element1,
-                element1.requestOffers[0],
+                element1.requestOffers?.find(ro => ro.requestProductId == reqProdId),
                 element.requestProducts[0],
                 element.eta,
                 req
@@ -112,9 +114,10 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               }
             }
             if (element1.checkProd2) {
+              var reqProdId = element.requestProducts[1].id;
               requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
                 element1,
-                element1.requestOffers[1],
+                element1.requestOffers?.find(ro => ro.requestProductId == reqProdId),
                 element.requestProducts[1],
                 element.eta,
                 req
@@ -124,9 +127,10 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               }
             }
             if (element1.checkProd3) {
+              var reqProdId = element.requestProducts[2].id;
               requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
                 element1,
-                element1.requestOffers[2],
+                element1.requestOffers?.find(ro => ro.requestProductId == reqProdId),
                 element.requestProducts[2],
                 element.eta,
                 req
@@ -136,9 +140,10 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               }
             }
             if (element1.checkProd4) {
+              var reqProdId = element.requestProducts[3].id;
               requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
                 element1,
-                element1.requestOffers[3],
+                element1.requestOffers?.find(ro => ro.requestProductId == reqProdId),
                 element.requestProducts[3],
                 element.eta,
                 req
@@ -148,9 +153,10 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               }
             }
             if (element1.checkProd5) {
+              var reqProdId = element.requestProducts[4].id;
               requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
                 element1,
-                element1.requestOffers[4],
+                element1.requestOffers?.find(ro => ro.requestProductId == reqProdId),
                 element.requestProducts[4],
                 element.eta,
                 req
