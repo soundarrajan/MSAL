@@ -40,12 +40,12 @@
                     	{{row.offerSpecParameter | number:tenantSetting.defaultValues.quantityPrecision}}
                     </td>
                     <td style="max-width: 50px;width:50px" class="">
-                    	<input style="{{row.specParameter.id == 13 && row.bdnValue != '' && row.bdnValue != undefined && row.value != '' && row.value != undefined && row.bdnValue > 0 && row.value > 0 && row.bdnValue != row.value ? 'background:red !important;color:white' : ''}}"
+                    	<input style="{{canHighlightLabDensitySpec(row) ? 'background:red !important;color:white' : ''}}"
                         type="text" class="form-control" ng-model="row.value" ng-change="calculatePassedFailedInLab(row)"  ng-blur="formattedData(row)" format="number:{{tenantSetting.defaultValues.quantityPrecision}}" ng-disabled="formValues.status.name == 'Verified'">
                     </td>
                     <td class="hidden">{{row.quantityShortage ? row.quantityShortage = (row.quantityShortage | number:tenantSetting.defaultValues.quantityPrecision) : ''}}</td>
                     <td style="max-width: 50px;width:50px" class="" tooltip data-original-title="{{row.displayShortageTooltip ? 'Short By ' + row.quantityShortage + ' - ' + row.quantityShortageUomName : '' }}">
-                    	<input style="{{row.displayShortageTooltip ? 'color:red' : '' ;row.specParameter.id == 13 && row.bdnValue != '' && row.bdnValue != undefined && row.value != '' && row.value != undefined && row.bdnValue > 0 && row.value > 0 && row.bdnValue != row.value ? 'background:red !important;color:white' : ''}}"
+                    	<input style="{{row.displayShortageTooltip ? 'color:red' : '' ; canHighlightLabDensitySpec(row) ? 'background:red !important;color:white' : ''}}"
                         type="text" class="form-control" ng-model="row.bdnValue" ng-change="calculatePassedFailedInLab(row);" ng-blur="formattedData(row)" format="number:{{tenantSetting.defaultValues.quantityPrecision}}" ng-disabled="formValues.status.name == 'Verified'" >
                     </td>
                     <td style="max-width: 50px;width:50px" class="">

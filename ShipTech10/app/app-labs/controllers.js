@@ -937,6 +937,22 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
         }
     };
 
+    $scope.canHighlightLabDensitySpec = function (row) {
+        if (row.specParameter.id == 13 && !isNaN(toNumber(row.value))) {
+            if (isNaN(toNumber(row.bdnValue))
+                || (toNumber(row.bdnValue) - 1.5 - toNumber(row.value)) > 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    function toNumber (str) {
+        str = String(str).trim();
+        return !str ? NaN : Number(str);
+    };
+
     $scope.calculateQualityClaimType = function (rowData) {
         $scope.labResults_claimId = [];
         $scope.labResults_specParamIds = [];
