@@ -804,7 +804,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
         return;
       }
-      const copyPricePayload = { copyPriceDetailsRequest: sellerDetails };
+      let requestLocationIds = [];
+      selectedSellerRows.forEach(sellerRow => {
+        requestLocationIds.push(sellerRow.RequestLocationId);
+      });
+      const copyPricePayload = { copyPriceDetailsRequest: sellerDetails, RequestLocationIds: requestLocationIds, RequestGroupId: this.currentRequestInfo.requestGroupId };
       this.spinner.show();
       const response = this.spotNegotiationService.copyPriceDetails(
         copyPricePayload
@@ -832,6 +836,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
             return { ...e, requestLocations };
           });
           this.store.dispatch(new UpdateRequest(this.requestOptions));
+          let futureLocationsRows = this.getLocationRowsWithSelectedSeller(
+            JSON.parse(JSON.stringify(locationsRows)),
+            selectedSellerRows
+          );
+          this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         } else {
           this.toaster.error(res);
           return;
@@ -843,6 +852,28 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
   }
 
+  getLocationRowsWithSelectedSeller(rowsArray, selectedSellerRows) {
+    rowsArray.forEach(row => {
+      selectedSellerRows.forEach(sellerRow => {
+        let reqLocations = this.requestOptions.filter(row1 => row1.id == sellerRow.RequestId);
+        let reqProducts =
+          reqLocations.length > 0
+            ? reqLocations[0].requestLocations.filter(
+              row1 => row1.id == sellerRow.RequestLocationId
+            )
+            : [];
+        let currentLocProdCount =
+          reqProducts.length > 0 ? reqProducts[0].requestProducts.length : 0;
+        for (let index = 0; index < currentLocProdCount; index++) {
+          let indx = index + 1;
+          let val = 'checkProd' + indx;
+          row[val] = false;
+          row.isSelected = false;
+        }
+      });
+    });
+    return rowsArray;
+  }
   amendRFQ() {
     this.selectedSellerList = [];
     var Selectedfinaldata = this.FilterselectedRowForRFQ();
