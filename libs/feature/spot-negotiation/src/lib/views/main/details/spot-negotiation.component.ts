@@ -126,7 +126,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         }
         this.changeDetector.detectChanges();
       } else {
-        if (res['requests'][0]) {
+        if (res['requests'] && res['requests'].length > 0) {
           // Set first request default;
           this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests'][0]));
           this.store.dispatch(
