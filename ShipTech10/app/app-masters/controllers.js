@@ -1365,7 +1365,7 @@
                         vm.editInstance.$error.required.push(vm.editInstance['OperationalDepartment']);
                     }
                 }
-                if ($scope.formValues.vesselProducts && $scope.formValues.vesselProducts.length > 0) {
+                if (!$scope.isHideVesselBopsDetails && $scope.formValues.isVesselManagable && $scope.formValues.vesselProducts && $scope.formValues.vesselProducts.length > 0) {
                     for(i = 0; i < $scope.formValues.vesselProducts.length; i++) {
                         if (!$scope.formValues.vesselProducts[i].isDeleted && ($scope.formValues.vesselProducts[i].vesselProductTanks.length == 0 ||
                             ($scope.formValues.vesselProducts[i].vesselProductTanks.length > 0 &&
