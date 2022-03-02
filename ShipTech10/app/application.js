@@ -636,6 +636,10 @@ angular
                         if(!window.tabBecameInactive) {
                             window.angularJsApplicationStart = false
                             console.log("******", appInsightsInstance);
+                            if ($rootScope.user) {
+                                appInsightsInstance.context.user.id = '{id: ' + $rootScope.user.id  + '; name: ' + $rootScope.user.name + ' }';
+                                appInsightsInstance.setAuthenticatedUserContext($rootScope.user.name);
+                            }
                             appInsightsInstance.trackMetric(
                                 {   
                                     name: `Page Load : ${window.location.href}`, 
