@@ -1597,7 +1597,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   getCurrencyCode(currencyId) {
-    let currency = this.currencyList.filter(el => el.id == currencyId)[0];
+    let currency = this.currencyList?.filter(el => el.id == currencyId)[0];
     return currency ? currency.code : false;
   }
 
