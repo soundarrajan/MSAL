@@ -99,7 +99,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       req.requestLocations.forEach(element => {
         locationsRows.forEach(element1 => {
           if (element.id == element1.requestLocationId && element1.requestOffers != undefined) { //&& element1.locationId==locationId
-            debugger;
             if (element1.checkProd1) {
               var reqProdId = element.requestProducts[0].id;
               requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
@@ -351,6 +350,9 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     const response = this.spotNegotiationService.GetExistingOrders(payload);
     response.subscribe((res: any) => {
       this.spinner.hide();
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       let productsWithErrors = []
       let errorMessages = [];
       this.selectedOffers.forEach((rqV, rqK) => {
@@ -434,6 +436,9 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           this.buttonsDisabled = false;
           var receivedOffers = res;
           this.spinner.hide();
+          if(res?.message == 'Unauthorized'){
+            return;
+          }
           if (res instanceof Object && res.payload.length > 0) {
             //add/modifiy market prices
             var FreezeMarketPricesPayload = {
@@ -441,6 +446,9 @@ export class SpotnegoConfirmorderComponent implements OnInit {
             };
             let response = this.spotNegotiationService.UpdateProductPrices(FreezeMarketPricesPayload);
             response.subscribe((res: any) => {
+              if(res?.message == 'Unauthorized'){
+                return;
+              }
               if (res.status) {
               }
             });

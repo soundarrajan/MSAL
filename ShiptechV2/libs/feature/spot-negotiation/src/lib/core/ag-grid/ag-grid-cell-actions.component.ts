@@ -181,6 +181,9 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     const response = this.spotNegotiationService.UpdateSelectSeller(FinalAPIdata);
     response.subscribe((res: any) => {
       this.spinner.hide();
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if(res['isUpdated']){
         // this.toaster.success('Updated successfully.');
         // Update the store
