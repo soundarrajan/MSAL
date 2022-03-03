@@ -99,6 +99,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
     responseGetRequestGroup.subscribe((res: any) => {
       this.spinner.hide();
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res.error) {
         alert('Handle Error');
         return;
@@ -265,6 +268,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     );
 
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res.error) {
         alert('Handle Error');
         return;
@@ -283,7 +289,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           // this.store.dispatch(
           //   new SetLocationsRowsPriceDetails(priceDetailsRes['sellerOffers'])
           // );
-
+          if(priceDetailsRes?.message == 'Unauthorized'){
+            return;
+          }
           const futureLocationsRows = this.getLocationRowsWithPriceDetails(
             res['requestLocationSellers'],
             priceDetailsRes['sellerOffers']
@@ -301,6 +309,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   getRequestList(): void {
     const response = this.spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip: 0, Take: 25 })
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res.error) {
         alert('Handle Error');
         return;
@@ -322,6 +333,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   getCounterpartyList(): void {
     const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], null, { Skip:0, Take: 25 })
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res.error) {
         alert('Handle Error');
         return;
@@ -362,6 +376,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   getTenantConfugurations(): void {
     const response = this.spotNegotiationService.getTenantConfiguration();
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res.error) {
         alert('Handle Error');
         return;
@@ -377,6 +394,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     let request = ['currency', 'product', 'uom']; //only currency add ,if required add here
     const response = this.spotNegotiationService.getStaticLists(request);
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res.error) {
         alert('Handle Error');
         return;

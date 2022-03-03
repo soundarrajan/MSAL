@@ -142,6 +142,10 @@ export class ApplicablecostpopupComponent implements OnInit {
       .getLocationCosts(this.requestLocation.locationId)
       .subscribe((res: any) => {
         // this.spinner.hide();
+        if(res?.message == 'Unauthorized'){
+          this.spinner.hide();
+          return;
+        }
         if (res) {
           this.locationCosts = res;
         }
@@ -153,6 +157,9 @@ export class ApplicablecostpopupComponent implements OnInit {
           .getAdditionalCosts(payload)
           .subscribe((response: any) => {
             this.spinner.hide();
+            if(response?.message == 'Unauthorized'){
+              return;
+            }
             this.locationBasedCosts = this.formatCostItemForDisplay(
               response.locationAdditionalCosts
             );
@@ -163,6 +170,9 @@ export class ApplicablecostpopupComponent implements OnInit {
     this.spotNegotiationService
       .getMasterAdditionalCosts({})
       .subscribe((response: any) => {
+        if(response?.message == 'Unauthorized'){
+          return;
+        }
         if (typeof response === 'string') {
           this.toastr.error(response);
         } else {
@@ -260,6 +270,9 @@ export class ApplicablecostpopupComponent implements OnInit {
         .saveOfferAdditionalCosts(payload)
         .subscribe((res: any) => {
           this.enableSave = false;
+          if(res?.message == 'Unauthorized'){
+            return;
+          }
           if (res.status) {
             this.locationBasedCosts = this.formatCostItemForDisplay(
               res?.costs?.locationAdditionalCosts
@@ -552,6 +565,9 @@ export class ApplicablecostpopupComponent implements OnInit {
         .getUomConversionFactor(payload)
         .pipe(finalize(() => {}))
         .subscribe((result: any) => {
+          if(result?.message == 'Unauthorized'){
+            return;
+          }
           if (typeof result == 'string') {
             this.toastr.error(result);
           } else {
@@ -612,6 +628,9 @@ export class ApplicablecostpopupComponent implements OnInit {
       .getRangeTotalAdditionalCosts(payload)
       .subscribe((response: any) => {
         this.spinner.hide();
+        if(response?.message == 'Unauthorized'){
+          return;
+        }
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
@@ -1065,6 +1084,9 @@ export class ApplicablecostpopupComponent implements OnInit {
         .pipe(finalize(() => {}))
         .subscribe((result: any) => {
           this.endpointCount -= 1;
+          if(result?.message == 'Unauthorized'){
+            return;
+          }
           if (typeof result == 'string') {
             this.toastr.error(result);
           } else {
@@ -1132,6 +1154,9 @@ export class ApplicablecostpopupComponent implements OnInit {
       .getRangeTotalAdditionalCosts(payload)
       .subscribe((response: any) => {
         this.endpointCount -= 1;
+        if(response?.message == 'Unauthorized'){
+          return;
+        }
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
@@ -1233,6 +1258,9 @@ export class ApplicablecostpopupComponent implements OnInit {
       .saveOfferAdditionalCosts(payload)
       .subscribe((res: any) => {
         this.enableSave = false;
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res.status) {
           this.locationBasedCosts = this.formatCostItemForDisplay(
             _.filter(res?.costs?.locationAdditionalCosts, function(

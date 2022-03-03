@@ -123,6 +123,9 @@ export class SearchRequestPopupComponent implements OnInit {
         const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip: params.endRow-25, Take: 25 })
         response.subscribe((res: any) => {
           this.dialog_gridOptions.api.hideOverlay();
+          if(res?.message == 'Unauthorized'){
+            return;
+          }
             if (res?.payload?.length > 0) {
               params.successCallback(res.payload, this.requestRowCount);
               this.store.dispatch(new AppendRequestList(res.payload));
@@ -148,12 +151,15 @@ export class SearchRequestPopupComponent implements OnInit {
       const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , userInput.toLowerCase() , { Skip:0, Take: 25 });
       response.subscribe((res:any)=>{
         this.dialog_gridOptions.api.hideOverlay();
+        if(res?.message != 'Unauthorized'){          
+        
       if(res?.payload?.length >0){
          params.successCallback(res.payload, res.matchedCount);
         }
       else{
         this.dialog_gridOptions.api.showNoRowsOverlay();
       }
+    }
     });
      }
      };
@@ -187,6 +193,9 @@ export class SearchRequestPopupComponent implements OnInit {
       };
       const response = this._spotNegotiationService.addRequesttoGroup(payload);
       response.subscribe((res: any) => {
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res.error) {
           alert('Handle Error');
           return;
