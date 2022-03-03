@@ -394,6 +394,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     // console.log (updatedRow);
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res.status) {
         this.toastr.success('Price update successful.');
         reqs = reqs.map(e => {
@@ -760,6 +763,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.spotNegotiationService
       .saveOfferAdditionalCosts(payload)
       .subscribe((res: any) => {
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res.status) {
           this.getSellerLine(updatedRow, colDef, newValue);
         } else this.toastr.error('Please try again later.');
@@ -773,6 +779,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       .getPriceDetailsById(groupId, requestLocationSellerId)
       .subscribe((priceDetailsRes: any) => {
         this.spinner.hide();
+        if(priceDetailsRes?.message == 'Unauthorized'){
+          return;
+        }
         let updatedRow = { ...sellerOffers };
         updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
         updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
@@ -848,6 +857,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       this.spotNegotiationService
         .getAdditionalCosts(payload)
         .subscribe((response: any) => {
+          if(response?.message == 'Unauthorized'){
+            return;
+          }
           if (typeof response === 'string') {
             this.getSellerLine(updatedRow, colDef, newValue);
             return;
@@ -1131,6 +1143,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         .pipe(finalize(() => {}))
         .subscribe((result: any) => {
           this.endpointCount -= 1;
+          if(result?.message == 'Unauthorized'){
+            return;
+          }
           if (typeof result == 'string') {
             this.toastr.error(result);
           } else {
@@ -1667,6 +1682,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.spotNegotiationService
       .getMasterAdditionalCosts({})
       .subscribe((response: any) => {
+        if(response?.message == 'Unauthorized'){
+          return;
+        }
         if (typeof response === 'string') {
           this.spinner.hide();
           this.toastr.error(response);
@@ -1785,6 +1803,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       .RemoveCounterparty(rowData.id)
       .subscribe((res: any) => {
         this.spinner.hide();
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res.status) {
           let dataRows = [];
           gridApi.forEachNode(node => dataRows.push(node.data));
@@ -1941,6 +1962,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.spotNegotiationService
       .getPriceDetails(groupId)
       .subscribe((res: any) => {
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res['sellerOffers']) {
           const futureLocationsRows = this.getLocationRowsWithPriceDetails(
             rows,

@@ -328,6 +328,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
     const response = this.spotNegotiationService.SendRFQ(FinalAPIdata);
     response.subscribe((res: any) => {
       this.spinner.hide();
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res instanceof Object && res['sellerOffers'].length > 0) {
         this.toaster.success('RFQ(s) sent successfully.');
         if (res['message'].length > 5) this.toaster.warning(res['message']);
@@ -812,6 +815,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       );
       response.subscribe((res: any) => {
         this.spinner.hide();
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (typeof res === 'boolean' && res == true) {
           this.toaster.success('Offer price copied successfully.');
           this.selectedRequestList = [];
@@ -901,6 +907,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       );
       response.subscribe((res: any) => {
         this.spinner.hide();
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res instanceof Object && res['rfqIds'].length > 0) {
           this.toaster.success('Amend RFQ(s) sent successfully.');
           if (res['message'].length > 5) this.toaster.warning(res['message']);
@@ -946,6 +955,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       const response = this.spotNegotiationService.SkipRFQ(FinalAPIPayload);
       response.subscribe((res: any) => {
         this.spinner.hide();
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res instanceof Object && res['sellerOffers'].length > 0) {
           this.toaster.success('RFQ(s) skipped successfully.');
           if (res['message'].length > 5) this.toaster.warning(res['message']);
@@ -1051,6 +1063,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       const response = this.spotNegotiationService.RevokeFQ(FinalAPIdata);
       response.subscribe((res: any) => {
         this.spinner.hide();
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res instanceof Object) {
           this.toaster.success('RFQ(s) revoked successfully.');
           if (res['message'].length > 3) this.toaster.warning(res['message']);
@@ -1161,6 +1176,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       );
       response.subscribe((res: any) => {
         this.spinner.hide();
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res instanceof Object && res['rfqIds'].length > 0) {
           this.toaster.success('Requote RFQ(s) sent successfully.');
           if (res['message'].length > 5) this.toaster.warning(res['message']);
@@ -1224,6 +1242,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
     );
     this.spinner.show();
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res) {
         let updatedRows = _.cloneDeep(locationsRows);
         this.getPriceDetailsInformation(updatedRows, requestLocationSellerIds);
@@ -1245,6 +1266,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       .getPriceDetails(groupId)
       .subscribe((priceDetailsRes: any) => {
         this.spinner.hide();
+        if(priceDetailsRes?.message == 'Unauthorized'){
+          return;
+        }
         let priceDetails = _.cloneDeep(priceDetailsRes.sellerOffers);
         priceDetails.forEach(e => {
           if (requestLocationSellerIds.includes(e.requestLocationSellerId)) {

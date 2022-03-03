@@ -61,6 +61,9 @@ export class SupplierCommentsPopupComponent implements OnInit {
     };
     const response = this._spotNegotiationService.UpdateSellerComments(payload);
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res.status) {
         const futureLocationsRows = this.getLocationRowsAddSellerComment(
           JSON.parse(JSON.stringify(locationsRows)), str);
