@@ -543,44 +543,32 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (!additionalCost.additionalCostId) {
       return false;
     }
-
-    if (this.additionalCostTypes[additionalCost.additionalCostId].costType) {
-      if (
-        this.additionalCostTypes[additionalCost.additionalCostId].costType.id ==
-          1 ||
-        this.additionalCostTypes[additionalCost.additionalCostId].costType.id ==
-          2
-      ) {
+    const costType = this.additionalCostTypes[additionalCost.additionalCostId]?
+          this.additionalCostTypes[additionalCost.additionalCostId].costType :
+          this.costTypeList.find(c => c.id === additionalCost.costTypeId);
+    if (costType) {
+      if (costType.id == 1 || costType.id == 2) {
         additionalCost.allowedCostTypes = [];
         this.costTypeList.forEach(v => {
           if (v.id == 1 || v.id == 2) {
             additionalCost.allowedCostTypes.push(v);
           }
         });
-      } else if (
-        this.additionalCostTypes[additionalCost.additionalCostId].costType.id ==
-        3
-      ) {
+      } else if (costType.id == 3) {
         additionalCost.allowedCostTypes = [];
         this.costTypeList.forEach(v => {
           if (v.id == 3) {
             additionalCost.allowedCostTypes.push(v);
           }
         });
-      } else if (
-        this.additionalCostTypes[additionalCost.additionalCostId].costType.id ==
-        4
-      ) {
+      } else if (costType.id == 4) {
         additionalCost.allowedCostTypes = [];
         this.costTypeList.forEach(v => {
           if (v.id == 4) {
             additionalCost.allowedCostTypes.push(v);
           }
         });
-      } else if (
-        this.additionalCostTypes[additionalCost.additionalCostId].costType.id ==
-        5
-      ) {
+      } else if (costType.id == 5) {
         additionalCost.allowedCostTypes = [];
         this.costTypeList.forEach(v => {
           if (v.id == 5) {
@@ -588,7 +576,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           }
         });
       }
-      return this.additionalCostTypes[additionalCost.additionalCostId].costType;
+      return costType;
     }
 
     return false;
