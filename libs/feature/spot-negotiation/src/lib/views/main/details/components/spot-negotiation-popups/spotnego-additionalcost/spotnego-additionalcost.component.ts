@@ -1098,7 +1098,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
               newCost.ratePerUom = 0;
               newCost.offerId = null;
               newCost.selectedRequestLocation = requestLocation;
-              newCost.isCostCopy = true;
 
               let row = locationsRows.filter(
                 lr =>
