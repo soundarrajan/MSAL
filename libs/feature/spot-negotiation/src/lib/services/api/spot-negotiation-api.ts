@@ -1,6 +1,6 @@
 import { Injectable, InjectionToken } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
@@ -95,7 +95,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   @ApiCallUrl()
   private _masterApiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
 
-  constructor(private http: HttpClient, private appConfig: AppConfig) {}
+  constructor(private http: HttpClient, private appConfig: AppConfig) { }
 
   @ObservableException()
   getTenantConfiguration(): Observable<any> {
@@ -105,13 +105,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -124,13 +118,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -143,13 +131,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -162,13 +144,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -181,13 +157,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -200,13 +170,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -243,13 +207,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
   @ObservableException()
@@ -261,13 +219,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -280,13 +232,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -303,13 +249,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -322,13 +262,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -341,13 +275,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -359,17 +287,12 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       })
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
   @ObservableException()
   SendRFQ(payload: any): Observable<any> {
+    debugger;
     return this.http
       .post<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.sendRFQ}`,
@@ -377,13 +300,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -396,13 +313,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
   @ObservableException()
@@ -411,13 +322,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .put<any>(`${this._negotiationApiUrl}/Price/updatePrices`, payload)
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -427,13 +332,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .put<any>(`${this._negotiationApiUrl}/Price/copyPriceDetails`, payload)
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -443,13 +342,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .get<any>(`${this._negotiationApiUrl}/groups/${request}`, {})
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -462,13 +355,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -481,13 +368,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -500,13 +381,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -519,13 +394,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -538,13 +407,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -557,13 +420,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -576,13 +433,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -593,13 +444,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .post<any>(requestUrl, { payload: request })
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -612,13 +457,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -631,13 +470,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -649,13 +482,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -668,13 +495,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -687,13 +508,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -704,13 +519,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .post<any>(requestUrl, { payload: request })
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -723,13 +532,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -741,13 +544,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -760,13 +557,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -779,13 +570,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -883,13 +668,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -1002,13 +781,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage && body.error.Reference
-              ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -1021,13 +794,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage && body.error.Reference
-              ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -1040,13 +807,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -1065,9 +826,11 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
 
   handleErrorMessage(body: any) {
     return of(
-      body.error.ErrorMessage
-        ? body.error.ErrorMessage
-        : body.error.errorMessage
+      body instanceof HttpErrorResponse && body.status != 401?
+      (body.error.ErrorMessage
+      ? body.error.ErrorMessage
+      : body.error.errorMessage
+      ) : null
     );
   }
 
@@ -1080,13 +843,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -1099,13 +856,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage
-              ? body.error.ErrorMessage
-              : body.error.errorMessage
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 }
