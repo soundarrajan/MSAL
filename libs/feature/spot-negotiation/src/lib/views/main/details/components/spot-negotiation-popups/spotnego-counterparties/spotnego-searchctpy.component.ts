@@ -171,6 +171,9 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         let response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], null, { Skip:params.endRow-25 , Take: 25 } );
         response.subscribe((res: any) => {
             this.dialog_gridOptions.api.hideOverlay();
+            if(res?.message == 'Unauthorized'){
+              return;
+            }
               if (res?.payload?.length > 0) {
                 this.store.dispatch(new AppendCounterpartyList(res.payload));
                 params.successCallback(res.payload, this.counterpartyListRowCount);
@@ -197,6 +200,9 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
           let response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], null, { Skip:params.endRow-25 , Take: 25 } );
           response.subscribe((res:any)=>{
             this.dialog_gridOptions.api.hideOverlay();
+            if(res?.message == 'Unauthorized'){
+              return;
+            }
             if(res?.payload?.length > 0){
               this.physicalSupplierRowCount = res.matchedCount;
               this.store.dispatch(new AppendPhysicalSupplierCounterpartyList(res.payload));
@@ -223,12 +229,16 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], userInput.toLowerCase() , { Skip:params.endRow-25 , Take: 25 } );
       response.subscribe((res: any) => {
         this.dialog_gridOptions.api.hideOverlay();
+        if(res?.message != 'Unauthorized'){
+          
+        
           if (res?.payload?.length > 0) {
             params.successCallback(res?.payload, res.matchedCount);
           }
           else{
               this.dialog_gridOptions.api.showNoRowsOverlay();
           }
+        }
       });
 
     }
@@ -245,12 +255,16 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], userInput.toLowerCase(), { Skip:params.endRow-25 , Take: 25 } );
       response.subscribe((res: any) => {
         this.dialog_gridOptions.api.hideOverlay();
+        if(res?.message != 'Unauthorized'){
+
+        
           if (res?.payload?.length > 0) {
             params.successCallback(res?.payload, res.matchedCount);
           }
           else{
             this.dialog_gridOptions.api.showNoRowsOverlay();
           }
+        }
       });
 
     }
@@ -459,6 +473,9 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
 
     const response = this._spotNegotiationService.updatePhySupplier(reqPayload);
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res.status) {
 
        //Update the locationRows in the store whenever physical supplier changes/added
@@ -485,6 +502,9 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     };
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res.status) {
         this.toastr.success(res.message);
         // Add in Store

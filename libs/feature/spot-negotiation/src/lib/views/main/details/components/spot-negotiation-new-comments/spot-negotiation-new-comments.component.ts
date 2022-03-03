@@ -225,6 +225,9 @@ export class SpotNegotiationNewCommentsComponent
     this.spotNegotiationService
       .updateNegotiationComments(payload)
       .subscribe((response: any) => {
+        if(response?.message == 'Unauthorized'){
+          return;
+        }
         if (response.status) {
           if (type == 'general') {
             this.requestInfo.oldNegoGeneralComments = _.cloneDeep(
@@ -370,7 +373,9 @@ export class SpotNegotiationNewCommentsComponent
     this.spotNegotiationService
       .copyNegotiationComments(payload)
       .subscribe((response: any) => {
-        console.log(response);
+        if(response?.message == 'Unauthorized'){
+          return;
+        }
         if (response.status) {
           let newSelectedRequests = this.copyComments(selectedRequests);
           this.store.dispatch(new UpdateSpecificRequests(newSelectedRequests));

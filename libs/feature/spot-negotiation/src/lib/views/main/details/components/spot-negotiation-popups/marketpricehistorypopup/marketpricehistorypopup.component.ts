@@ -61,6 +61,9 @@ export class MarketpricehistorypopupComponent implements OnInit {
      let payload = {LocationId : this.data.LocationId, ProductId : this.data.ProductId, RequestId: this.data.RequestId };
      const response = this._spotNegotiationService.getMarketPriceHistory(payload);
      response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       // this.priceHistoryData =  {date : res.marketPriceHistory.map(item => item.date), price : res.marketPriceHistory.map(item => item.price)};
          res.marketPriceHistory.forEach(item=>{
         this.tabledata.push({price:item.price,date:this.formatDate(item.date)})

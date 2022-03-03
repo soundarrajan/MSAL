@@ -122,6 +122,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     this.spotNegotiationService
       .getMasterAdditionalCosts({})
       .subscribe((response: any) => {
+        if(response?.message == 'Unauthorized'){
+          return;
+        }
         if (typeof response === 'string') {
           this.spinner.hide();
           this.toastr.error(response);
@@ -146,6 +149,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
             this.spotNegotiationService
               .getAdditionalCosts(payload)
               .subscribe((response: any) => {
+                if(response?.message == 'Unauthorized'){
+                  return;
+                }
                 if (typeof response === 'string') {
                   this.spinner.hide();
                   this.toastr.error(response);
@@ -507,6 +513,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         .getUomConversionFactor(payload)
         .pipe(finalize(() => {}))
         .subscribe((result: any) => {
+          if(result?.message == 'Unauthorized'){
+            return;
+          }
           if (typeof result == 'string') {
             this.toastr.error(result);
           } else {
@@ -842,6 +851,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       .saveOfferAdditionalCosts(payload)
       .subscribe((res: any) => {
         this.enableSave = false;
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res.status) {
           this.saveButtonClicked = false;
 

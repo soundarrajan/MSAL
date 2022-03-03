@@ -292,7 +292,6 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
   @ObservableException()
   SendRFQ(payload: any): Observable<any> {
-    debugger;
     return this.http
       .post<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.sendRFQ}`,
@@ -825,13 +824,11 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   handleErrorMessage(body: any) {
-    return of(
-      body instanceof HttpErrorResponse && body.status != 401?
-      (body.error.ErrorMessage
-      ? body.error.ErrorMessage
-      : body.error.errorMessage
-      ) : null
-    );
+    return of(body instanceof HttpErrorResponse && body.status != 401 ? (
+      body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
+      ) : { message: 'Unauthorized' }
+
+    );  
   }
 
   @ObservableException()

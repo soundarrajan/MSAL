@@ -40,6 +40,9 @@ export class ContactinformationpopupComponent implements OnInit {
     this.spotNegotiationService.getSellerContacts(this.data.sellerId, this.data.locationId)
     .subscribe((res: any) => {
       this.spinner.hide();
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res) {
        this.seller = res;
        this.seller.counterpartyContacts = res.counterpartyContacts.filter(x=> x.isEmailContact == true);
@@ -86,6 +89,9 @@ export class ContactinformationpopupComponent implements OnInit {
       this.spinner.show();
       this.spotNegotiationService.addNewSellerContact(newContact).subscribe((res:any) => {
         this.spinner.hide();
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if(res && res.status){
           this.toastr.success('Counterparty contact added successully.');
           this.dialogRef.close();

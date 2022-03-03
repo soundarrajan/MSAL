@@ -664,6 +664,9 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     };
     const response = this.spotNegotiationService.OtherDetails(otherDetails_data);
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res.status) {
         this.toastr.success('Saved successfully..');
         const futureLocationsRows = this.getLocationRowsWithOtherDetails(
