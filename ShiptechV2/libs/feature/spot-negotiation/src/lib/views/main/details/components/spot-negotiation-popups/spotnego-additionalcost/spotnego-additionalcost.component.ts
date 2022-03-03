@@ -1098,6 +1098,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
               newCost.ratePerUom = 0;
               newCost.offerId = null;
               newCost.selectedRequestLocation = requestLocation;
+              newCost.isCostCopy = true;
 
               let row = locationsRows.filter(
                 lr =>
@@ -1728,8 +1729,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     );
 
     if (this.endpointCount == 0 && checkCopiedAdditionalCostRowIndex == -1) {
-      console.log('Before calulating amount for percent type(tax component)');
-      console.log(this.copiedAdditionalCost);
       this.recalculatePercentAdditionalCostForCopiedAdditionalCost(
         this.copiedAdditionalCost
       );
@@ -1738,8 +1737,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   }
 
   saveCopiedAdditionalCost() {
-    console.log('CALL SAVE ACTION');
-    console.log(this.copiedAdditionalCost);
     let payload = {
       additionalCosts: this.offerAdditionalCostList
         .concat(this.locationAdditionalCostsList)
@@ -1747,8 +1744,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     };
 
     this.saveButtonClicked = false;
-    console.log('Payload');
-    console.log(payload);
     this.spotNegotiationService
       .saveOfferAdditionalCosts(payload)
       .subscribe((res: any) => {
