@@ -195,6 +195,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         const response = this._spotNegotiationService.delinkRequest(payload);
         response.subscribe((res: any) => {
           this.spinner.hide();
+          if(res?.message == 'Unauthorized'){
+            return;
+          }
           if (!isNaN(res)) {
             this.toastr.success(`Request ${item.id} was succesfully delinked`);
             /* select first request if selected reqeust is delinked */
@@ -319,6 +322,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     this.visibleCounterpartyList =  _.cloneDeep(this.counterpartyList.slice(0, 7));
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
+
       if (res.status) {
         for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
           this.visibleCounterpartyList[i].selected = false;
@@ -519,6 +526,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         );
         this.selectedRequestList = [];
         response.subscribe((res: any) => {
+          if(res?.message == 'Unauthorized'){
+            return;
+          }
           if (res.error) {
             alert('Handle Error');
             return;
@@ -588,6 +598,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       this.availableContracts[`request_${selectedRequestId}`] = [];
       const response = this._spotNegotiationService.getBestContract(payload);
       response.subscribe((res: any) => {
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res.payload) {
           this.availableContracts[`request_${selectedRequestId}`] = res.payload;
           this.store.dispatch(new SetAvailableContracts(res.payload));
@@ -675,6 +688,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     if(this.visibleCounterpartyList.length === 0){
       const response = this._spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], userInput.toLowerCase() , { Skip:0  , Take: 25 } );
       response.subscribe((res:any)=>{
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if(res?.payload?.length >0){
           let SelectedCounterpartyList = cloneDeep(res.payload);
           this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
@@ -705,6 +721,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         { Skip: 0, Take: 25 }
       );
       response.subscribe((res: any) => {
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res?.payload?.length > 0) {
           this.visibleRequestList = _.cloneDeep(
             this.removeDuplicatesRequest(res.payload, 'requestName')

@@ -150,6 +150,9 @@ export class SpotnegoemaillogComponent implements OnInit {
     this.spotNegotiationService
       .getRequestGroup(groupRequestIdFromUrl)
       .subscribe((res: any) => {
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         this.listOfRequests = res.requests;
 
         if (this.listOfRequests != null) {
@@ -172,6 +175,9 @@ export class SpotnegoemaillogComponent implements OnInit {
           );
           emailLogs.subscribe((res: any) => {
             this.spinner.hide();
+            if(res?.message == 'Unauthorized'){
+              return;
+            }
             if (res.payload) {
               this.rowData_grid = res.payload;
               if (!this.changeDetector['destroyed']) {

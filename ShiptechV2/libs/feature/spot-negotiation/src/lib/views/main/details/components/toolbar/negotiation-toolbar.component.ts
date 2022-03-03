@@ -73,6 +73,9 @@ export class NegotiationToolbarComponent
   getTenantConfiguration(): void {
     const response = this.spotNegotiationService.getTenantConfiguration();
     response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res.error) {
         this.toastr.error(res.error);
         return;

@@ -218,6 +218,9 @@ export class EmailPreviewPopupComponent implements OnInit {
       const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
       response.subscribe((res: any) => {
         this.spinner.hide();
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res['previewResponse']) {
           this.previewTemplate = res['previewResponse'];
           //this.rfqTemplate = this.previewTemplate
@@ -245,6 +248,9 @@ export class EmailPreviewPopupComponent implements OnInit {
       );
       emailLogsPreview.subscribe((res: any) => {
         this.spinner.hide();
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res.payload) {
           this.to = res.payload.to ? res.payload.to.split(',') : res.payload.to;
           this.cc = res.payload.cc ? res.payload.cc.split(',') : res.payload.cc;
@@ -411,7 +417,9 @@ export class EmailPreviewPopupComponent implements OnInit {
     );
     response.subscribe((res: any) => {
       this.spinner.hide();
-
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
       if (res instanceof Object && res['validationMessage'].length > 0) {
         // this.toaster.success('RFQ(s) skipped successfully.')
         // if(res['message'].length>5)
@@ -677,6 +685,9 @@ export class EmailPreviewPopupComponent implements OnInit {
       );
       response.subscribe((res: any) => {
         this.spinner.hide();
+        if(res?.message == 'Unauthorized'){
+          return;
+        }
         if (res) {
           this.getPreviewTemplate();
           this.toaster.success('Changes reverted successfully.');
@@ -731,6 +742,9 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.spotNegotiationService
       .getDocuments(payload)
       .subscribe((response: any) => {
+        if(response?.message == 'Unauthorized'){
+          return;
+        }
         if (typeof response === 'string') {
           this.spinner.hide();
           this.toaster.error(response);
