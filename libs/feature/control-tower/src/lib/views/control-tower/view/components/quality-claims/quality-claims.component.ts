@@ -675,7 +675,6 @@ export class QualityClaimsComponent implements OnInit {
   // ];
 
   // public onRowSelected(ev) {
-  //   // console.log(ev);
   //   // alert(ev.rowIndex);
   // }
 
@@ -696,7 +695,6 @@ export class QualityClaimsComponent implements OnInit {
   //       "Pagination":{"Skip":0,"Take":25}
   //     }};
 
-
   //   this.controlTowerService.getControlTowerQualityClaimsList$(requestPayload).subscribe((response: any)=> {
   //     this.rowData_aggrid = response?.payload;
 
@@ -706,21 +704,20 @@ export class QualityClaimsComponent implements OnInit {
   // filterByStatus(filtertype: string) {
   //   switch (filtertype) {
   //     case 'new':
-        
+
   //       break;
   //     case '7-14 days':
-        
+
   //       break;
   //     case '15+ days':
-        
+
   //       break;
-    
+
   //     default:
   //       break;
   //   }
   // }
   /*  public onrowClicked (ev){
-    //console.log("hhhhhhhhh");
     var index = ev.rowIndex;
     //alert(index);
     const dialogRef = this.dialog.open(RowstatusOnchangePopupComponent, {
@@ -733,7 +730,6 @@ export class QualityClaimsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
       var selectedData = this.gridOptions_data.api.getSelectedRows();
       //var res = this.gridOptions_data.api.applyTransaction({ remove: selectedData });
       // this.gridOptions_data.api.applyTransaction({
@@ -745,8 +741,7 @@ export class QualityClaimsComponent implements OnInit {
       //this.gridOptions_data.api.setRowData([]);
       var itemsToUpdate = [];
     this.gridOptions_data.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
-      // console.log("eeeeeeeee");
-      // console.log(rowNode);
+
       if (!rowNode.isSelected() === true) {
         return;
       }

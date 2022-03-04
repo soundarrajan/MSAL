@@ -124,7 +124,8 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
       return null;
     },
-    tooltipValueGetter: params => (params.value ? params.value?.portCallId : ''),
+    tooltipValueGetter: params =>
+      params.value ? params.value?.portCallId : '',
     cellClass: ['aggridlink'],
     width: 200
   };
@@ -133,34 +134,36 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     IControlTowerResidueSludgeDifferenceItemDto,
     ILookupDto
   > = {
-      headerName: ControlTowerResidueSludgeDifferenceListColumnsLabels.order,
-      headerTooltip:
-        ControlTowerResidueSludgeDifferenceListColumnsLabels.order,
-      colId: ControlTowerResidueSludgeDifferenceListColumns.order,
-      field: model('order'),
-      dtoForExport: ControlTowerResidueSludgeDifferenceListExportColumns.order,
-      cellRenderer: params => {
-        if (params.value) {
-          const a = document.createElement('a');
-          a.innerHTML = params.value?.id;
-          a.href = `/#/edit-order/${params.value?.id}`;
-          a.setAttribute('target', '_blank');
-          return a;
-        }
-        return null;
-      },
-      cellClass: ['aggridlink'],
-      tooltip: params => (params.value ? params.value?.id : ''),
-      width: 200
-    };
-  buyerCol: ITypedColDef<IControlTowerResidueSludgeDifferenceItemDto, string> = {
+    headerName: ControlTowerResidueSludgeDifferenceListColumnsLabels.order,
+    headerTooltip: ControlTowerResidueSludgeDifferenceListColumnsLabels.order,
+    colId: ControlTowerResidueSludgeDifferenceListColumns.order,
+    field: model('order'),
+    dtoForExport: ControlTowerResidueSludgeDifferenceListExportColumns.order,
+    cellRenderer: params => {
+      if (params.value) {
+        const a = document.createElement('a');
+        a.innerHTML = params.value?.id;
+        a.href = `/#/edit-order/${params.value?.id}`;
+        a.setAttribute('target', '_blank');
+        return a;
+      }
+      return null;
+    },
+    cellClass: ['aggridlink'],
+    tooltip: params => (params.value ? params.value?.id : ''),
+    width: 200
+  };
+  buyerCol: ITypedColDef<
+    IControlTowerResidueSludgeDifferenceItemDto,
+    string
+  > = {
     headerName: ControlTowerResidueSludgeDifferenceListColumnsLabels.buyer,
     headerTooltip: ControlTowerResidueSludgeDifferenceListColumnsLabels.buyer,
     colId: ControlTowerResidueSludgeDifferenceListColumns.buyer,
     field: model('buyer'),
     dtoForExport: ControlTowerResidueSludgeDifferenceListExportColumns.buyer,
     valueFormatter: params => this.format.htmlDecode(params.value?.name),
-    tooltip: params => (params.value ? params.value?.name  : ''),
+    tooltip: params => (params.value ? params.value?.name : ''),
     width: 150
   };
   portCol: ITypedColDef<IControlTowerResidueSludgeDifferenceItemDto, string> = {
@@ -195,7 +198,8 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerResidueSludgeDifferenceListExportColumns.eta,
-    tooltipValueGetter: params => (params.value ? this.format.date(params.value) : ''),
+    tooltipValueGetter: params =>
+      params.value ? this.format.date(params.value) : '',
     width: 150
   };
 
@@ -213,7 +217,8 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       ControlTowerResidueSludgeDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.dateOnly(params.value),
-    tooltipValueGetter: params => (params.value ? this.format.dateOnly(params.value) : ''),
+    tooltipValueGetter: params =>
+      params.value ? this.format.dateOnly(params.value) : '',
     width: 150
   };
 
@@ -265,8 +270,8 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     cellRenderer: params => {
       if (params.data) {
         const a = document.createElement('span');
-        a.classList.add("vessel-to-watch");
-        params.value ? a.classList.add("yes") : a.classList.add("no");
+        a.classList.add('vessel-to-watch');
+        params.value ? a.classList.add('yes') : a.classList.add('no');
         a.innerHTML = params.value ? 'Yes' : 'No';
         return a;
       }
@@ -299,7 +304,8 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     valueFormatter: params => this.format.quantity(params.value),
     dtoForExport:
       ControlTowerResidueSludgeDifferenceListExportColumns.sludgePercentage,
-    tooltipValueGetter: params => (params.value ? this.format.quantity(params.value) : ''),
+    tooltipValueGetter: params =>
+      params.value ? this.format.quantity(params.value) : '',
     filter: 'agNumberColumnFilter',
     width: 150
   };
@@ -308,107 +314,109 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
     IControlTowerResidueSludgeDifferenceItemDto,
     number
   > = {
-      headerName:
-        ControlTowerResidueSludgeDifferenceListColumnsLabels.sumOfOrderQuantity,
-      headerClass: ['aggrid-text-align-right'],
-      headerTooltip:
-        ControlTowerResidueSludgeDifferenceListColumnsLabels.sumOfOrderQuantity,
-      colId:
-        ControlTowerResidueSludgeDifferenceListColumns.sumOfOrderQuantity,
-      field: model('sumOfOrderQuantity'),
-      autoHeight: true,
-      wrapText: true,
-      dtoForExport:
-        ControlTowerResidueSludgeDifferenceListExportColumns.sumOfOrderQuantity,
-      cellRenderer: params => {
-        if (params.data) {///TODO something
-          let mergedValues = params.data.quantityReportDetails.map(
-            a => this.format.quantity(a.sumOfOrderQuantity) ?? '-'
-          );
-          return mergedValues.join('<br>');
-        }
-      },
-      filter: 'agNumberColumnFilter',
-      tooltip: params => {
-        if (params.data) {
-          let mergedValues = params.data.quantityReportDetails.map(
-            a => this.format.quantity(a.sumOfOrderQuantity) ?? '-'
-          );
-          return mergedValues.join(',');
-        }
-      },
-      width: 150
-    };
+    headerName:
+      ControlTowerResidueSludgeDifferenceListColumnsLabels.sumOfOrderQuantity,
+    headerClass: ['aggrid-text-align-right'],
+    headerTooltip:
+      ControlTowerResidueSludgeDifferenceListColumnsLabels.sumOfOrderQuantity,
+    colId: ControlTowerResidueSludgeDifferenceListColumns.sumOfOrderQuantity,
+    field: model('sumOfOrderQuantity'),
+    autoHeight: true,
+    wrapText: true,
+    dtoForExport:
+      ControlTowerResidueSludgeDifferenceListExportColumns.sumOfOrderQuantity,
+    cellRenderer: params => {
+      if (params.data) {
+        ///TODO something
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => this.format.quantity(a.sumOfOrderQuantity) ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
+    },
+    filter: 'agNumberColumnFilter',
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => this.format.quantity(a.sumOfOrderQuantity) ?? '-'
+        );
+        return mergedValues.join(',');
+      }
+    },
+    width: 150
+  };
   dischargedQtyCol: ITypedColDef<
     IControlTowerResidueSludgeDifferenceItemDto,
     number
   > = {
-      headerName:
-        ControlTowerResidueSludgeDifferenceListColumnsLabels.measuredDeliveredQuantity,
-      headerClass: ['aggrid-text-align-right'],
-      headerTooltip:
-        ControlTowerResidueSludgeDifferenceListColumnsLabels.measuredDeliveredQuantity,
-      colId:
-        ControlTowerResidueSludgeDifferenceListColumns.measuredDeliveredQuantity,
-      field: model('measuredDeliveredQuantity'),
-      autoHeight: true,
-      wrapText: true,
-      dtoForExport:
-        ControlTowerResidueSludgeDifferenceListExportColumns.measuredDeliveredQuantity,
-      cellRenderer: params => {
-        if (params.data) {///TODO something
-          let mergedValues = params.data.quantityReportDetails.map(
-            a => this.format.quantity(a.measuredDeliveredQuantity) ?? '-'
-          );
-          return mergedValues.join('<br>');
-        }
-      },
-      filter: 'agNumberColumnFilter',
-      tooltip: params => {
-        if (params.data) {
-          let mergedValues = params.data.quantityReportDetails.map(
-            a => this.format.quantity(a.measuredDeliveredQuantity) ?? '-'
-          );
-          return mergedValues.join(',');
-        }
-      },
-      width: 150
-    };
+    headerName:
+      ControlTowerResidueSludgeDifferenceListColumnsLabels.measuredDeliveredQuantity,
+    headerClass: ['aggrid-text-align-right'],
+    headerTooltip:
+      ControlTowerResidueSludgeDifferenceListColumnsLabels.measuredDeliveredQuantity,
+    colId:
+      ControlTowerResidueSludgeDifferenceListColumns.measuredDeliveredQuantity,
+    field: model('measuredDeliveredQuantity'),
+    autoHeight: true,
+    wrapText: true,
+    dtoForExport:
+      ControlTowerResidueSludgeDifferenceListExportColumns.measuredDeliveredQuantity,
+    cellRenderer: params => {
+      if (params.data) {
+        ///TODO something
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => this.format.quantity(a.measuredDeliveredQuantity) ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
+    },
+    filter: 'agNumberColumnFilter',
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => this.format.quantity(a.measuredDeliveredQuantity) ?? '-'
+        );
+        return mergedValues.join(',');
+      }
+    },
+    width: 150
+  };
   differenceCol: ITypedColDef<
     IControlTowerResidueSludgeDifferenceItemDto,
     number
   > = {
-      headerName:
-        ControlTowerResidueSludgeDifferenceListColumnsLabels.differenceInSludgeQuantity,
-      headerClass: ['aggrid-text-align-right'],
-      headerTooltip:
-        ControlTowerResidueSludgeDifferenceListColumnsLabels.differenceInSludgeQuantity,
-      colId:
-        ControlTowerResidueSludgeDifferenceListColumns.differenceInSludgeQuantity,
-      field: model('differenceInSludgeQuantity'),
-      autoHeight: true,
-      wrapText: true,
-      dtoForExport:
-        ControlTowerResidueSludgeDifferenceListExportColumns.differenceInSludgeQuantity,
-      cellRenderer: params => {
-        if (params.data) {///TODO something
-          let mergedValues = params.data.quantityReportDetails.map(
-            a => this.format.quantity(a.differenceInSludgeQuantity) ?? '-'
-          );
-          return mergedValues.join('<br>');
-        }
-      },
-      filter: 'agNumberColumnFilter',
-      tooltip: params => {
-        if (params.data) {
-          let mergedValues = params.data.quantityReportDetails.map(
-            a => this.format.quantity(a.differenceInSludgeQuantity) ?? '-'
-          );
-          return mergedValues.join(',');
-        }
-      },
-      width: 150
-    };
+    headerName:
+      ControlTowerResidueSludgeDifferenceListColumnsLabels.differenceInSludgeQuantity,
+    headerClass: ['aggrid-text-align-right'],
+    headerTooltip:
+      ControlTowerResidueSludgeDifferenceListColumnsLabels.differenceInSludgeQuantity,
+    colId:
+      ControlTowerResidueSludgeDifferenceListColumns.differenceInSludgeQuantity,
+    field: model('differenceInSludgeQuantity'),
+    autoHeight: true,
+    wrapText: true,
+    dtoForExport:
+      ControlTowerResidueSludgeDifferenceListExportColumns.differenceInSludgeQuantity,
+    cellRenderer: params => {
+      if (params.data) {
+        ///TODO something
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => this.format.quantity(a.differenceInSludgeQuantity) ?? '-'
+        );
+        return mergedValues.join('<br>');
+      }
+    },
+    filter: 'agNumberColumnFilter',
+    tooltip: params => {
+      if (params.data) {
+        let mergedValues = params.data.quantityReportDetails.map(
+          a => this.format.quantity(a.differenceInSludgeQuantity) ?? '-'
+        );
+        return mergedValues.join(',');
+      }
+    },
+    width: 150
+  };
   logBookRobQtyBeforeDeliveryCol: ITypedColDef<
     IControlTowerResidueSludgeDifferenceItemDto,
     number
@@ -576,7 +584,8 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
       }
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
-    tooltipValueGetter: params => (params.value ? params.value?.displayName : ''),
+    tooltipValueGetter: params =>
+      params.value ? params.value?.displayName : '',
     width: 150
   };
 
@@ -667,7 +676,6 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
   }
 
   public updateValues(ev, values): void {
-    console.log(values);
     const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
     if (values?.status) {
       const newStatus = _.cloneDeep(values.status);
@@ -801,7 +809,6 @@ export class ControlTowerResidueDifferenceListGridViewModel extends BaseGridView
         }
       ].concat(sortModel);
 
-      console.log(newSortModel);
       return newSortModel;
     } else {
       return sortModel;

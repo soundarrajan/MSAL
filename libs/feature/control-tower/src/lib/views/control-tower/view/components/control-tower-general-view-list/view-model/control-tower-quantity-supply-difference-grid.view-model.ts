@@ -141,7 +141,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
       return null;
     },
-    tooltipValueGetter: params => (params.value ? params.value?.portCallId : ''),
+    tooltipValueGetter: params =>
+      params.value ? params.value?.portCallId : '',
     cellClass: ['aggridlink'],
     width: 200
   };
@@ -181,7 +182,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQuantitySupplyDifferenceListExportColumns.eta,
-    tooltipValueGetter: params => (params.value ? this.format.date(params.value) : ''),
+    tooltipValueGetter: params =>
+      params.value ? this.format.date(params.value) : '',
     width: 150
   };
 
@@ -199,7 +201,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       ControlTowerQuantitySupplyDifferenceListExportColumns.surveyorDate,
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.dateOnly(params.value),
-    tooltipValueGetter: params => (params.value ? this.format.dateOnly(params.value) : ''),
+    tooltipValueGetter: params =>
+      params.value ? this.format.dateOnly(params.value) : '',
     width: 150
   };
 
@@ -249,8 +252,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
     cellRenderer: params => {
       if (params.data) {
         const a = document.createElement('span');
-        a.classList.add("vessel-to-watch");
-        params.value ? a.classList.add("yes") : a.classList.add("no");
+        a.classList.add('vessel-to-watch');
+        params.value ? a.classList.add('yes') : a.classList.add('no');
         a.innerHTML = params.value ? 'Yes' : 'No';
         return a;
       }
@@ -510,7 +513,8 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       }
     },
     cellRendererFramework: AGGridCellRendererStatusComponent,
-    tooltipValueGetter: params => (params.value ? params.value?.displayName : ''),
+    tooltipValueGetter: params =>
+      params.value ? params.value?.displayName : '',
     width: 150
   };
 
@@ -597,7 +601,6 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
   }
 
   public updateValues(ev, values): void {
-    console.log(values);
     const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
     if (values?.status) {
       const newStatus = _.cloneDeep(values.status);
@@ -781,9 +784,7 @@ export class ControlTowerQuantitySupplyDifferenceListGridViewModel extends BaseG
       };
 
       this.controlTowerService
-        .saveQuantityResiduePopUp(payloadData, payloadData => {
-          console.log('asd');
-        })
+        .saveQuantityResiduePopUp(payloadData, payloadData => {})
         .pipe(takeUntil(this.destroy$))
         .subscribe();
     }
