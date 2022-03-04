@@ -705,10 +705,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
                 e =>
                   (e.LocationID == reqLoc.locationId &&
                     e.SellerId == locRows.sellerCounterpartyId &&
-                    tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
+                    (tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
                     e.physicalSupplierCounterpartyId ==
-                      locRows.physicalSupplierCounterpartyId) ||
-                  locRows.physicalSupplierCounterpartyId == null
+                      locRows.physicalSupplierCounterpartyId) || (!tenantConfig['isPhysicalSupplierMandatoryForQuoting']))
               )
               .map(result => {
                 result.ReqProdOffers = result.ReqProdOffers.filter(p =>
@@ -1198,14 +1197,17 @@ export class SpotNegotiationHomeComponent implements OnInit {
     let locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
+
     let selectedFinalData = this.FilterselectedRowForRFQ();
     let requestLocationSellerIds = selectedFinalData.map(
       e => e.RequestLocationSellerId
     );
+
     let requestOfferIds = [];
     let requestOffers = [];
     this.selectedSellerList.forEach(e => {
-      requestOfferIds.push([...e.RequestOffers.map(e => e)]);
+      if(e.RequestOffers && e.RequestOffers.length > 0)
+        requestOfferIds.push([...e.RequestOffers.map(e => e)]);
     });
     requestOfferIds = requestOfferIds.reduce((acc, val) => acc.concat(val), []); // flatten array
     if (requestOfferIds.length == 0) {
@@ -1236,6 +1238,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       }
     }
+
     let noQuotePayload = {
       requestOfferIds: requestOfferIds.map(e => e.id),
       noQuote: type === 'no-quote' ? true : false
