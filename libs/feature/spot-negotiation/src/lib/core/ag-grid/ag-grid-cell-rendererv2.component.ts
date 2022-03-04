@@ -1615,7 +1615,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   changeCurrencyForAdditionalCost(currencyId, exchangeRateValue) {
-    console.log(currencyId);
     this.checkAdditionalCost(
       _.cloneDeep(this.params.data),
       currencyId,
@@ -1779,7 +1778,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.toastr.error('An error has occurred!');
       }
     });
-    console.log(noQuotePayload);
   }
 
   checkIfRequestOffersHasNoQuote(index) {
