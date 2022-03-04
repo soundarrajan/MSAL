@@ -473,7 +473,6 @@ export class CreateNewFormulaModalComponent
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
-    console.log(data);
     this.formValues = data.formValues;
     if (!this.formValues) {
       this.formValues = {
@@ -517,9 +516,7 @@ export class CreateNewFormulaModalComponent
     this.dialogRef.close();
   }
 
-  setDefaultValues = () => {
-    console.log(this.formValues);
-  };
+  setDefaultValues = () => {};
 
   originalOrder = (
     a: KeyValue<number, any>,
@@ -698,8 +695,6 @@ export class CreateNewFormulaModalComponent
         this.holidayRuleList[1]
       );
     }
-
-    console.log(this.formValues.formulaHolidayRules);
   }
 
   saveFormula() {

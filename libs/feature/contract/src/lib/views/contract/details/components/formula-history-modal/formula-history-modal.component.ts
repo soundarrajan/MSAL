@@ -61,50 +61,46 @@ export class FormulaHistoryModalComponent implements OnInit {
     private toastr: ToastrService,
     private format: TenantFormattingService,
     @Inject(DecimalPipe) private _decimalPipe,
-    
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.baseOrigin = new URL(window.location.href).origin;
-      console.log(this.baseOrigin);
-      console.log(data);
-      this.formulaHistoryDataResponse = data.formulaHistoryDataResponse;
 
-    }
-
-  ngOnInit() {
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.baseOrigin = new URL(window.location.href).origin;
+    this.formulaHistoryDataResponse = data.formulaHistoryDataResponse;
   }
+
+  ngOnInit() {}
 
   closeClick(): void {
     this.dialogRef.close();
   }
 
-  originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
+  originalOrder = (
+    a: KeyValue<number, any>,
+    b: KeyValue<number, any>
+  ): number => {
     return 0;
-  }
+  };
 
   formatDate(date?: any) {
-    if (date) {    
+    if (date) {
       let currentFormat = this.format.dateFormat;
       let hasDayOfWeek;
       if (currentFormat.startsWith('DDD ')) {
-          hasDayOfWeek = true;
-          currentFormat = currentFormat.split('DDD ')[1];
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
       }
       currentFormat = currentFormat.replace(/d/g, 'D');
       currentFormat = currentFormat.replace(/y/g, 'Y');
       let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
       let formattedDate = moment(elem).format(currentFormat);
       if (hasDayOfWeek) {
-        formattedDate = `${moment(date).format('ddd') } ${ formattedDate}`;
+        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
       }
       return formattedDate;
     }
   }
 
   formulaLink(formulaId) {
-    return `${this.baseOrigin}/#/masters/formula/edit/${formulaId}` 
+    return `${this.baseOrigin}/#/masters/formula/edit/${formulaId}`;
   }
-
-  
- 
-  
 }

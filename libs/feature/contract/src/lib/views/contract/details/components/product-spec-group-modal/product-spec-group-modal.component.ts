@@ -57,34 +57,35 @@ export class ProductSpecGroupModalComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     @Inject(DecimalPipe) private _decimalPipe,
-    
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-      console.log(data);
-      this.modalSpecGroupParameters = data.modalSpecGroupParameters;
-      this.modalSpecGroupParametersEditable = data.modalSpecGroupParametersEditable;
-      this.specParameterList = data.specParameterList;
-      this.activeProductForSpecGroupEdit = data.activeProductForSpecGroupEdit;
-    }
 
-  ngOnInit() {
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.modalSpecGroupParameters = data.modalSpecGroupParameters;
+    this.modalSpecGroupParametersEditable =
+      data.modalSpecGroupParametersEditable;
+    this.specParameterList = data.specParameterList;
+    this.activeProductForSpecGroupEdit = data.activeProductForSpecGroupEdit;
   }
+
+  ngOnInit() {}
 
   closeClick(): void {
     this.dialogRef.close();
   }
 
-  originalOrder = (a: KeyValue<number, any>, b: KeyValue<number, any>): number => {
+  originalOrder = (
+    a: KeyValue<number, any>,
+    b: KeyValue<number, any>
+  ): number => {
     return 0;
-  }
+  };
 
-  
   addProductSpecGroup() {
     if (!this.modalSpecGroupParameters) {
       this.modalSpecGroupParameters = [];
     }
-    this.modalSpecGroupParameters.push({'editable': true, 'id':0});
+    this.modalSpecGroupParameters.push({ editable: true, id: 0 });
   }
-
 
   removeProductSpecGroup(key) {
     if (this.modalSpecGroupParameters[key].id) {
@@ -94,18 +95,20 @@ export class ProductSpecGroupModalComponent implements OnInit {
     }
   }
 
-  
   displayFn(value): string {
     return value && value.name ? value.name : '';
   }
-  
-  
+
   filterSpecParameterList(value) {
     if (value) {
-      const filterValue = value.name ? value.name.toLowerCase() : value.toLowerCase();
-      console.log(filterValue);
+      const filterValue = value.name
+        ? value.name.toLowerCase()
+        : value.toLowerCase();
       if (this.specParameterList) {
-        return this.specParameterList.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0)
+        return this.specParameterList
+          .filter(
+            option => option.name.toLowerCase().indexOf(filterValue) === 0
+          )
           .slice(0, 10);
       } else {
         return [];
@@ -115,28 +118,25 @@ export class ProductSpecGroupModalComponent implements OnInit {
     }
   }
 
-
   modalSpecGroupParametersUpdateUom(specParam, index) {
-    console.log(specParam);
     this.spinner.show();
     this.contractService
-    .getSpecParameterById(specParam.id)
-    .pipe(
-      finalize(() => {
-        this.spinner.hide();
-      })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error(response);
-      } else {
-        console.log(response);
-        this.modalSpecGroupParameters[index].uom = response.uom;
-        this.modalSpecGroupParameters[index].energyParameterTypeId = response.energyParameterType.id;
-        this.changeDetectorRef.detectChanges();
-      }
-    });
-    
+      .getSpecParameterById(specParam.id)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          this.modalSpecGroupParameters[index].uom = response.uom;
+          this.modalSpecGroupParameters[index].energyParameterTypeId =
+            response.energyParameterType.id;
+          this.changeDetectorRef.detectChanges();
+        }
+      });
   }
 
   saveProcurementSpecGroup(data) {
@@ -151,22 +151,18 @@ export class ProductSpecGroupModalComponent implements OnInit {
 
     this.spinner.show();
     this.contractService
-    .saveSpecParameterForContractProduct(objToSend)
-    .pipe(
-      finalize(() => {
-        this.spinner.hide();
-      })
-    )
-    .subscribe((response: any) => {
-      if (typeof response == 'string') {
-        this.toastr.error(response);
-      } else {
-        this.toastr.success('Operation completed successfully');
-        console.log(response);
-        
-      }
-    });
+      .saveSpecParameterForContractProduct(objToSend)
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((response: any) => {
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          this.toastr.success('Operation completed successfully');
+        }
+      });
   }
-  
-  
 }

@@ -359,7 +359,6 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       currentFormat = currentFormat.replace(/y/g, 'Y');
       let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
       let newVal = moment(elem).format(currentFormat);
-      console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
       }
@@ -549,8 +548,6 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
     if (!this.formValues.details) {
       this.formValues.details = [];
     }
-    console.log('Add');
-    //console.log( this.formValues.details);
     this.formValues.details.push({
       id: 0,
       minContractQuantity: this.quantityFormatValue(0),
@@ -647,7 +644,6 @@ export class ContractQuantity extends DeliveryAutocompleteComponent
   ngAfterViewInit(): void {}
 
   focus(e, type) {
-    //console.log(type)
     if (type == 'min') {
       e.target.parentElement
         .closest('.minInputFocus')

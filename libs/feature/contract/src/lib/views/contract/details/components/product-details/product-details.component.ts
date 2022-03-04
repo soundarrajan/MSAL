@@ -682,9 +682,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
   ngOnInit() {
     this.entityName = 'Contract';
-    console.log('Product details');
-    console.log(this.locationMasterList);
-    console.log(this.formValues);
     if (this.formValues && this.formValues.products) {
       this.setAllowedLocations(this.selectedTabIndex);
       this.setAllowedProducts(this.selectedTabIndex);
@@ -724,13 +721,11 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   }
 
   setProductSpecGroup(data) {
-    console.log(data);
     this.productSpecGroup = data;
   }
 
   setContractForm(form) {
     this.formValues = form;
-    console.log(this.formValues);
   }
 
   async getPhysicalSupplierList() {
@@ -738,7 +733,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.physicalSupplierList.forEach((v, k) => {
       v.name = this.decodeSpecificField(v.name);
     });
-    console.log(this.physicalSupplierList);
   }
 
   getHeaderNameSelector1(): string {
@@ -761,7 +755,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   }
 
   clickAdd(key) {
-    console.log('as');
     let trigger = this.locationMenuTrigger._results;
     for (let i = 0; i < this.locationMenuTrigger._results.length; i++) {
       if (i != key) {
@@ -771,16 +764,12 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       }
     }
 
-    console.log(trigger);
     this.isMenuOpen = true;
   }
 
-  onClickedOutside(event) {
-    console.log(event);
-  }
+  onClickedOutside(event) {}
 
   addProductToContract() {
-    console.log(this.formValues);
     let emptyProductObj = {
       id: 0,
       details: [
@@ -821,8 +810,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.setAllowedLocations(this.selectedTabIndex);
     this.setAllowedProducts(this.selectedTabIndex);
     this.changeDetectorRef.detectChanges();
-
-    console.log(this.formValues);
   }
 
   setAllowedLocations(selectedTabIndex) {
@@ -849,7 +836,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         }
       }
     }
-    console.log(this.selectedLocationList);
   }
 
   saveAllowedLocations(selectedTabIndex) {
@@ -895,7 +881,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       }
     }
     this.changeDetectorRef.detectChanges();
-    console.log(this.selectedProductList);
   }
 
   saveAllowedProducts(selectedTabIndex) {
@@ -970,7 +955,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       if (field == 'dealDate') {
         this.isDealDateInvalid = false;
       }
-      console.log(beValue);
     } else {
       if (field == 'dealDate') {
         this.isDealDateInvalid = true;
@@ -1002,7 +986,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         : this.formValues.products[
             this.selectedTabIndex
           ].physicalSupplier.toLowerCase();
-      console.log(filterValue);
       if (this.physicalSupplierList) {
         return this.physicalSupplierList
           .filter(option =>
@@ -1027,7 +1010,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       };
       this.formValues.products[this.selectedTabIndex].physicalSupplier = obj;
       this.changeDetectorRef.detectChanges();
-      console.log(this.formValues.products[this.selectedTabIndex]);
     }
   }
 
@@ -1058,7 +1040,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
           if (response) {
             response = _.filter(response, function(o) {
               return o.isDeleted == false;
@@ -1124,7 +1105,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
           if (response) {
             this.modalSpecGroupParameters = response;
             for (let i = 0; i < this.modalSpecGroupParameters.length; i++) {
@@ -1146,9 +1126,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
               }
             });
 
-            dialogRef.afterClosed().subscribe(result => {
-              console.log(result);
-            });
+            dialogRef.afterClosed().subscribe(result => {});
           }
         }
       });
@@ -1164,9 +1142,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   }
 
   setLocationChange(location, index) {
-    console.log(location);
-    console.log(index);
-    console.log(this.formValues.products[index]);
     let objectLocation = {
       id: location.id,
       name: location.name
@@ -1177,9 +1152,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   }
 
   setProductChange(product, index) {
-    console.log(product);
-    console.log(index);
-    console.log(this.formValues.products[index]);
     let objectProduct = {
       id: product.id,
       name: product.name
@@ -1314,7 +1286,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
           if (typeof response == 'string') {
             this.toastr.error(response);
           } else {
-            console.log(response);
             let contractConversionFactor = {
               id: 3,
               name: 'Standard (Product)'
@@ -1386,7 +1357,6 @@ export class ProductDetails extends DeliveryAutocompleteComponent
             this.toastr.error(response);
             this.spinner.hide();
           } else {
-            console.log(response);
             if (response) {
               conversionFactors.value = response.value;
               conversionFactors.massUom = response.massUom;

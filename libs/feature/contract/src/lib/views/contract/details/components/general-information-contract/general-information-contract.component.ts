@@ -672,8 +672,6 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       }
     });
     this.changeDetectorRef.detectChanges();
-
-    console.log(this.companyList);
   }
   selectedCustomers() {
     this.formValues.customers.forEach((customer, k) => {
@@ -687,7 +685,6 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       }
     });
     this.changeDetectorRef.detectChanges();
-    console.log(this.customerList);
   }
 
   formatDate(date?: any) {
@@ -737,10 +734,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   getCounterpartyById(counterpartyId: number) {
     this.contractService
       .getCounterparty(this.formValues.seller.id)
-      .pipe(
-        finalize(() => {
-        })
-      )
+      .pipe(finalize(() => {}))
       .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastr.error(response);
@@ -748,15 +742,12 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
           if (response.defaultPaymentTerm != null) {
             this.formValues.paymentTerm = response.defaultPaymentTerm;
           }
-          console.log(this.formValues.paymentTerm);
         }
       });
   }
 
   selectCompany(event: MatAutocompleteSelectedEvent) {
     this.formValues.company = event.option.value;
-    console.log(this.entityId);
-    console.log(this.formValues.company);
     this.addAllowedCompanies();
   }
 
@@ -785,7 +776,6 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
         }
       });
     }
-    console.log(this.formValues.allowedCompanies);
   }
 
   getHeaderNameSelector(): string {
@@ -824,7 +814,6 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
               .includes(filterValue.trim().toLowerCase());
           })
           .splice(0, 10);
-        console.log(list);
         return list;
       } else {
         return [];
@@ -848,7 +837,6 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
               .includes(filterValue.trim().toLowerCase());
           })
           .splice(0, 10);
-        console.log(list);
         return list;
       } else {
         return [];
@@ -862,7 +850,6 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     let filterCompany = this.companyList.filter(company =>
       company.name.toLowerCase().includes(value)
     );
-    console.log(filterCompany);
     this.companyListForSearch = [...filterCompany];
   }
 
@@ -923,15 +910,11 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   changeAgreementType() {
     this.contractService
       .getAgreementTypeById(this.formValues.agreementType.id)
-      .pipe(
-        finalize(() => {
-        })
-      )
+      .pipe(finalize(() => {}))
       .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
           if (response) {
             this.formValues.incoterm = response.defaultIncoterm;
             //this.formValues.strategy = response.defaultStrategy;
@@ -950,7 +933,6 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       } else if (field == 'validTo') {
         this.isValidToDateInvalid = false;
       }
-      console.log(beValue);
     } else {
       if (field == 'validFrom') {
         this.isValidFromDateInvalid = true;
