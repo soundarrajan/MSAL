@@ -317,6 +317,7 @@ import { AdditionalCostViewModel } from '../models/additional-costs-model';
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
+                [disabled]="checkIfSellerHasAtleastOneProductStemmed()"
               >
                 <mat-select-trigger overlayPanelClass="123class">
                   {{ getCurrencyCode(paramsDataClone.currency) }}
@@ -698,6 +699,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   baseCurrencyId: any;
   additionalCostList: any[] = [];
   locationRowsAcrossRequest: any;
+  paramsDataCloneForNoQuote: any;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -722,7 +724,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.myFormGroup = new FormGroup({
       currency: new FormControl('')
     });
-
+    this.paramsDataClone = _.cloneDeep(this.params.data);
+    if (
+      this.paramsDataClone.requestOffers &&
+      this.params.type === 'price-calc'
+    ) {
+      this.paramsDataClone.currency = this.paramsDataClone.requestOffers[0].currencyId;
+      this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
+    }
     return this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.tenantService = spotNegotiation.tenantConfigurations;
@@ -753,9 +762,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         );
         if (currentLocation) {
           let products = currentLocation.requestProducts;
-
-          this.paramsDataClone = _.cloneDeep(this.params.data);
-          this.paramsDataClone.requestOffers = [];
+          this.paramsDataCloneForNoQuote = _.cloneDeep(this.params.data);
+          this.paramsDataCloneForNoQuote.requestOffers = [];
           for (let i = 0; i < products.length; i++) {
             let findRequestOfferIndex = _.findIndex(
               this.params.data.requestOffers,
@@ -764,17 +772,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
               }
             );
             if (findRequestOfferIndex === -1) {
-              this.paramsDataClone.requestOffers.push({});
+              this.paramsDataCloneForNoQuote.requestOffers.push({});
             } else {
-              this.paramsDataClone.requestOffers.push(
+              this.paramsDataCloneForNoQuote.requestOffers.push(
                 this.params.data.requestOffers[findRequestOfferIndex]
               );
             }
           }
-          this.paramsDataClone.currency = this.paramsDataClone.requestOffers[
-            this.params.index
-          ].currencyId;
-          this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
         }
       }
 
@@ -1471,27 +1475,32 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
   }
 
-  setNewRowData(newData, exchangeRateValue) {
-    for (let i = 0; i < newData.requestOffers.length; i++) {
-      if (!newData.requestOffers[i].hasProductStemmedOrConfirmed) {
-        newData.requestOffers[i].totalPrice =
-          newData.requestOffers[i].totalPrice / exchangeRateValue;
-        newData.requestOffers[i].amount =
-          newData.requestOffers[i].amount / exchangeRateValue;
-        newData.requestOffers[i].targetDifference =
-          newData.requestOffers[i].targetDifference / exchangeRateValue;
+  checkIfSellerHasAtleastOneProductStemmed() {
+    const requestLocation = this.getCurrentRequestLocation();
+    for (let i = 0; i < this.paramsDataClone.requestOffers.length; i++) {
+      if (
+        this.checkIfProductIsStemmedOrConfirmed(
+          requestLocation,
+          this.paramsDataClone.requestOffers[i]
+        )
+      ) {
+        return true;
       }
     }
-    newData.totalOffer = this.getSumOfAmount(newData.requestOffers);
-    return newData;
+    return false;
   }
 
-  getSumOfAmount(requestOffers) {
-    let totalOffer = 0;
-    for (let i = 0; i < requestOffers.length; i++) {
-      totalOffer += requestOffers[i].amount;
+  setNewRowData(newData, exchangeRateValue) {
+    for (let i = 0; i < newData.requestOffers.length; i++) {
+      newData.requestOffers[i].totalPrice =
+        newData.requestOffers[i].totalPrice / exchangeRateValue;
+      newData.requestOffers[i].amount =
+        newData.requestOffers[i].amount / exchangeRateValue;
+      newData.requestOffers[i].targetDifference =
+        newData.requestOffers[i].targetDifference / exchangeRateValue;
     }
-    return totalOffer;
+    newData.totalOffer = newData.totalOffer / exchangeRateValue;
+    return newData;
   }
 
   getCurrentRequestLocation() {
@@ -1534,22 +1543,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     var fromCurrency = this.paramsDataClone.oldCurrency;
     // var fromCurrency = this.tenantService.currencyId;
     let toCurrency = this.paramsDataClone.currency;
+
+    var rowNode = params.api.getRowNode(params.node.id);
     var newData = _.cloneDeep(params.data);
     newData.currency = toCurrency;
-    let requestLocation = this.getCurrentRequestLocation();
-    for (let i = 0; i < newData.requestOffers.length; i++) {
-      if (
-        this.checkIfProductIsStemmedOrConfirmed(
-          requestLocation,
-          newData.requestOffers[i]
-        )
-      ) {
-        newData.requestOffers[i].hasProductStemmedOrConfirmed = true;
-      } else {
-        newData.requestOffers[i].hasProductStemmedOrConfirmed = false;
-        newData.requestOffers[i].currencyId = toCurrency;
-      }
-    }
+    newData.requestOffers.map(el => {
+      return (el.currencyId = toCurrency);
+    });
+
     let payload = {
       fromCurrencyId: fromCurrency,
       toCurrencyId: toCurrency,
@@ -1563,36 +1564,25 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         exchangeRateValue = res.exchangeRateValue;
         this.store.dispatch(new EditLocationRow(newData));
         this.params.node.setData(newData);
-
-        let requestOffers = newData.requestOffers.map(e => {
+        let requestOffers = this.params.data.requestOffers.map(e => {
           return {
             id: e.id,
-            totalPrice: !e.hasProductStemmedOrConfirmed
-              ? e.totalPrice / res.exchangeRateValue
-              : e.totalPrice,
-            amount: !e.hasProductStemmedOrConfirmed
-              ? e.amount / res.exchangeRateValue
-              : e.amount,
-            targetDifference: !e.hasProductStemmedOrConfirmed
-              ? e.targetDifference / res.exchangeRateValue
-              : e.targetDifference,
-            currencyId: !e.hasProductStemmedOrConfirmed
-              ? toCurrency
-              : e.currencyId,
-            exchangeRateToBaseCurrency: !e.hasProductStemmedOrConfirmed
-              ? this.baseCurrencyId === toCurrency
-                ? 1
-                : res.exchangeRateValue
-              : e.exchangeRateToBaseCurrency
+            totalPrice: e.totalPrice / res.exchangeRateValue,
+            amount: e.amount / res.exchangeRateValue,
+            targetDifference: e.targetDifference / res.exchangeRateValue,
+            currencyId: toCurrency,
+            exchangeRateToBaseCurrency:
+              this.baseCurrencyId === toCurrency ? 1 : res.exchangeRateValue
           };
         });
         let payload = {
           Offers: {
             id: this.params.data.requestOffers[0].offerId,
-            totalOffer: this.getSumOfAmount(requestOffers),
+            totalOffer: this.params.data.totalOffer / res.exchangeRateValue,
             requestOffers: requestOffers
           }
         };
+
         const applyExchangeRate = this._spotNegotiationService.applyExchangeRate(
           payload
         );
@@ -1794,10 +1784,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   checkIfRequestOffersHasNoQuote(index) {
     if (
-      this.paramsDataClone &&
-      this.paramsDataClone.requestOffers &&
-      this.paramsDataClone.requestOffers[index] &&
-      this.paramsDataClone.requestOffers[index].hasNoQuote
+      this.paramsDataCloneForNoQuote &&
+      this.paramsDataCloneForNoQuote.requestOffers &&
+      this.paramsDataCloneForNoQuote.requestOffers[index] &&
+      this.paramsDataCloneForNoQuote.requestOffers[index].hasNoQuote
     ) {
       return true;
     }
