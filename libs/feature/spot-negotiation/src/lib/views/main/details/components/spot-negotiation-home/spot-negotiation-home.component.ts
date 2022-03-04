@@ -839,8 +839,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
             return { ...e, requestLocations };
           });
           this.store.dispatch(new UpdateRequest(this.requestOptions));
+          const locRows = this.store.selectSnapshot<any>((state: any) => {
+            return state.spotNegotiation.locationsRows;
+          });
           let futureLocationsRows = this.getLocationRowsWithSelectedSeller(
-            JSON.parse(JSON.stringify(locationsRows)),
+            JSON.parse(JSON.stringify(locRows)),
             selectedSellerRows
           );
           this.store.dispatch(new SetLocationsRows(futureLocationsRows));
