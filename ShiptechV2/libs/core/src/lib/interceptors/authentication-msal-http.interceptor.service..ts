@@ -39,7 +39,6 @@ export class AuthenticationMsalInterceptor implements HttpInterceptor {
           }
         },
         error => {
-          console.log(error);
           if (error instanceof HttpErrorResponse) {
             if (error.status === 401) {
               this.toastrService.error(

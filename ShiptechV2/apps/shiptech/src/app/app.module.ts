@@ -121,7 +121,6 @@ export function MSALInterceptConfigFactory() {
     interactionType: InteractionType.Redirect
   };
 }
-console.log(environment.useAdal);
 
 @NgModule({
   declarations: [AppComponent],

@@ -47,14 +47,12 @@ export class ControlTowerPopupComponent implements OnInit {
       .getTableByName('controlTowerActionStatus')
       .then(response => {
         this.controlTowerActionStatus = response;
-        console.log(this.controlTowePopupForm);
         this.status = this.data.progressId.toString();
       });
     this.legacyLookupsDatabase
       .getTableByName('controlTowerLogStatus')
       .then(response => {
         this.controlTowerLogStatus = response;
-        console.log(this.controlTowerLogStatus);
       });
   }
   changeStatus(status) {
@@ -77,9 +75,7 @@ export class ControlTowerPopupComponent implements OnInit {
 
   fetchLabsActionPopup(payloadData) {
     this.controlTowerService
-      .getQualityLabsPopUp(payloadData, payloadData => {
-        console.log('asd');
-      })
+      .getQualityLabsPopUp(payloadData, payloadData => {})
       .pipe()
       .subscribe(
         (response: any) => {
@@ -111,9 +107,7 @@ export class ControlTowerPopupComponent implements OnInit {
 
   getQuantityResiduePopUp(payloadData) {
     this.controlTowerService
-      .getQuantityResiduePopUp(payloadData, payloadData => {
-        console.log('Get quantity popup details!');
-      })
+      .getQuantityResiduePopUp(payloadData, payloadData => {})
       .pipe()
       .subscribe((response: any) => {
         if (typeof response == 'string') {
@@ -131,9 +125,7 @@ export class ControlTowerPopupComponent implements OnInit {
 
   getResiduePopUp(payloadData) {
     this.controlTowerService
-      .getResiduePopUp(payloadData, payloadData => {
-        console.log('Get residue popup details!');
-      })
+      .getResiduePopUp(payloadData, payloadData => {})
       .pipe()
       .subscribe((response: any) => {
         if (typeof response == 'string') {
@@ -173,8 +165,6 @@ export class ControlTowerPopupComponent implements OnInit {
         obj => obj.name == 'Comments'
       )[0];
     }
-
-    console.log(this.logStatus);
   }
 
   statusChanged() {
@@ -193,9 +183,7 @@ export class ControlTowerPopupComponent implements OnInit {
       };
 
       this.controlTowerService
-        .saveQualityLabsPopUp(payloadData, payloadData => {
-          console.log('labs changes updated..');
-        })
+        .saveQualityLabsPopUp(payloadData, payloadData => {})
         .pipe()
         .subscribe((response: any) => {
           if (typeof response == 'string') {
@@ -207,7 +195,6 @@ export class ControlTowerPopupComponent implements OnInit {
           }
         });
     } else {
-      console.log(this.data.differenceType);
       let payloadData = {
         differenceType: this.data.differenceType,
         quantityControlReport: {
@@ -222,9 +209,7 @@ export class ControlTowerPopupComponent implements OnInit {
         this.data.differenceType.name == 'Supply'
       ) {
         this.controlTowerService
-          .saveQuantityResiduePopUp(payloadData, payloadData => {
-            console.log('Quantity changes updated!');
-          })
+          .saveQuantityResiduePopUp(payloadData, payloadData => {})
           .pipe()
           .subscribe((response: any) => {
             if (typeof response == 'string') {
@@ -246,9 +231,7 @@ export class ControlTowerPopupComponent implements OnInit {
         this.data.differenceType.name == 'Egcs'
       ) {
         this.controlTowerService
-          .saveResiduePopUp(payloadData, payloadData => {
-            console.log('Residue changes updated!');
-          })
+          .saveResiduePopUp(payloadData, payloadData => {})
           .pipe()
           .subscribe((response: any) => {
             if (typeof response == 'string') {

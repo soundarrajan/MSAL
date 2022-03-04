@@ -211,7 +211,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.tenantService.quantityPrecision +
       '-' +
       this.tenantService.quantityPrecision;
-    console.log(this.deliverySettings);
     //this.loadingBar.start();
   }
 
@@ -222,7 +221,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
     this.route.data.subscribe(data => {
       if (localStorage.getItem(`${this.appId + this.screenId}_copy`)) {
-        console.log('copy contract');
         this.isLoading = true;
         this.setFormValuesAfterCopyContract();
       }
@@ -832,10 +830,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (notValidConversionFactor) {
       return false;
     }
-    
+
     this.formValues.hasApprovedInvoice = false;
     this.formValues.products.forEach((val, key) => {
-      if(val.hasApprovedInvoice) {
+      if (val.hasApprovedInvoice) {
         this.formValues.hasApprovedInvoice = true;
       }
     });
@@ -1014,7 +1012,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (!isValid) {
       return;
     }
-    
+
     this.buttonClicked = true;
     this.eventsSubject2.next(this.buttonClicked);
     this.spinner.show();

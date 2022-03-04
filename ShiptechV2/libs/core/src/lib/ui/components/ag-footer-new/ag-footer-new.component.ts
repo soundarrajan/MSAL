@@ -85,7 +85,7 @@ export class AgFooterNewComponent {
 
   pageChanged(e) {
     this.page = e;
-    //console.log(e);
+    //console.(e);
     //this.pageChange.emit(event)
   }
 }
