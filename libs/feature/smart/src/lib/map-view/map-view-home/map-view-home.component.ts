@@ -1,10 +1,20 @@
-import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Input,
+  ViewEncapsulation
+} from '@angular/core';
 import { OlMapComponent } from '../../shared/ol-map/ol-map.component';
 import { VesselDetailsComponent } from '../vessel-details/vessel-details.component';
 import { LocalService } from '../../services/local-service.service';
 import { fromLonLat } from 'ol/proj';
 import { WarningComponent } from '../../shared/warning/warning.component';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA
+} from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { SmartOperatorComponent } from '../../shared/smart-operator/smart-operator.component';
 @Component({
@@ -14,11 +24,10 @@ import { SmartOperatorComponent } from '../../shared/smart-operator/smart-operat
   encapsulation: ViewEncapsulation.None
 })
 export class MapViewHomeComponent implements OnInit {
-
   @ViewChild(OlMapComponent) olmap;
   @ViewChild(VesselDetailsComponent) vesselDetail;
   @ViewChild(SmartOperatorComponent) tableView;
-  public themeDark = true;//dark theme
+  public themeDark = true; //dark theme
   public portData;
   public showTable: boolean;
   public showHelp: boolean;
@@ -29,7 +38,11 @@ export class MapViewHomeComponent implements OnInit {
   public showPortInfo: boolean;
   public showMenu: boolean;
   public showLogout: boolean;
-  constructor(private localService: LocalService, public dialog: MatDialog, private router: Router) { }
+  constructor(
+    private localService: LocalService,
+    public dialog: MatDialog,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.localService.setTheme(this.themeDark);
@@ -94,10 +107,9 @@ export class MapViewHomeComponent implements OnInit {
     this.showRoute = event;
     this.showBPlan = false;
   }
-  logout(){
+  logout() {
     this.router.navigate(['login']);
     sessionStorage.removeItem('userlogin');
-    
   }
   changeVessel(event) {
     // let view = event.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
@@ -131,17 +143,23 @@ export class MapViewHomeComponent implements OnInit {
       lsmgo: '10',
       notificationsCount: 6,
       messagesCount: 2
-    }
+    };
     this.olmap.vessel_view = view;
     var locations = {
-      "start_location_name": event.StartLocation.LocationName,
-      "start_location_id": event.StartLocation.LocationId,
-      "end_location_name": event.EndLocation.LocationName,
-      "end_location_id": event.EndLocation.LocationId
-    }
+      start_location_name: event.StartLocation.LocationName,
+      start_location_id: event.StartLocation.LocationId,
+      end_location_name: event.EndLocation.LocationName,
+      end_location_id: event.EndLocation.LocationId
+    };
 
     var lonlat = fromLonLat([event.vesselLongitude, event.vesselLatitude]);
-    this.olmap.flyTo(lonlat, () => { this.olmap.isLoading = false }, 3);
+    this.olmap.flyTo(
+      lonlat,
+      () => {
+        this.olmap.isLoading = false;
+      },
+      3
+    );
     this.localService.setVesselPopupData(this.olmap.vesselPopData);
   }
 
@@ -153,15 +171,12 @@ export class MapViewHomeComponent implements OnInit {
         this.toggleRoutes(true);
         this.olmap.isBunkerPlanOpen = false;
       }
-    }
-    else {
+    } else {
       const dialogRef = this.dialog.open(WarningComponent, {
         panelClass: ['confirmation-popup']
-
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
         if (result == false) {
           if (this.olmap.vesselPopData.name.toLowerCase() == 'britta maersk') {
             this.olmap.showRoutes(true);
@@ -169,13 +184,10 @@ export class MapViewHomeComponent implements OnInit {
             this.olmap.isBunkerPlanOpen = false;
           }
           this.localService.setBunkerPlanState(false);
+        } else {
         }
-        else {
-        }
-
-      })
+      });
     }
-
   }
 
   changeTheme() {

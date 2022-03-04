@@ -211,7 +211,6 @@ export class InvoiceSplitviewComponent implements OnInit, OnDestroy {
         }
       });
     }
-    // console.log(validCostDetails);
     this.detailFormvalues.costDetails = _.cloneDeep(validCostDetails);
 
     this.changeDetectorRef.detectChanges();
