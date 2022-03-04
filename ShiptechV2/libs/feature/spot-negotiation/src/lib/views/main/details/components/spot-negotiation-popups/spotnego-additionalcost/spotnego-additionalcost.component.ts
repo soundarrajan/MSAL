@@ -775,7 +775,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
       );
       if (additionalCost.isTaxComponent) {
-        // console.log("Tax:" + additionalCost.additionalCost.name)
       } else {
         additionalCost.isTaxComponent = false;
       }

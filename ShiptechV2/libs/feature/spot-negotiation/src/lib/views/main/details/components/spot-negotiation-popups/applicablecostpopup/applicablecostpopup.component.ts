@@ -1120,8 +1120,6 @@ export class ApplicablecostpopupComponent implements OnInit {
       ? productList.find((item: any) => item.id == cost.requestProductId)
           ?.productId
       : 1;
-    console.log(cost);
-    console.log(productId);
     const payload = {
       Payload: {
         Filters: [

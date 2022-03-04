@@ -184,11 +184,13 @@ import _, { cloneDeep } from 'lodash';
               {{ params.product.uomName }}</span
             >
           </div>
-          <div class="arrow" [ngClass]="
-              params.product.status === 'Stemmed'
-                ? 'disabled-new-events'
-                : ''
-              " (click)="pricinghistorypopup()">
+          <div
+            class="arrow"
+            [ngClass]="
+              params.product.status === 'Stemmed' ? 'disabled-new-events' : ''
+            "
+            (click)="pricinghistorypopup()"
+          >
             <span class="title" title="{{ params.product.indexName }}">{{
               params.product.indexCode == null ? '--' : params.product.indexCode
             }}</span>
@@ -207,9 +209,7 @@ import _, { cloneDeep } from 'lodash';
             <div
               class="value"
               [ngClass]="
-              params.product.status === 'Stemmed'
-                ? 'disabled-gray'
-                : ''
+                params.product.status === 'Stemmed' ? 'disabled-gray' : ''
               "
               [matTooltip]="
                 'Pricing published on: ' +
@@ -230,12 +230,13 @@ import _, { cloneDeep } from 'lodash';
             }"
           >
             <div class="title">Perf/BM</div>
-            <div class="value" contenteditable="false"
-             [ngClass]="
-              params.product.status === 'Stemmed'
-                ? 'input-disabled-new'
-                : ''
-              ">
+            <div
+              class="value"
+              contenteditable="false"
+              [ngClass]="
+                params.product.status === 'Stemmed' ? 'input-disabled-new' : ''
+              "
+            >
               $
               {{
                 priceFormatValue(
@@ -272,14 +273,26 @@ import _, { cloneDeep } from 'lodash';
             class="label-element bestcontract"
             (click)="bestcontractpopup(params)"
           >
-            <div class="title" >
+            <div class="title">
               Best Contract
-              <span  [style.visibility]="params.product.status === 'Stemmed' ? 'hidden' : 'visible'"  class="eye-icon"></span>
+              <span
+                [style.visibility]="
+                  params.product.status === 'Stemmed' ? 'hidden' : 'visible'
+                "
+                class="eye-icon"
+              ></span>
             </div>
-            <div class="value" (keydown)="editQty($event)"
-            [matTooltip]="'Contract Id: ' +(this.bestContractId ? this.bestContractId:'--')"
-            [ngClass]="params.product.status === 'Stemmed'?'disabled-gray': ''"
-           >
+            <div
+              class="value"
+              (keydown)="editQty($event)"
+              [matTooltip]="
+                'Contract Id: ' +
+                (this.bestContractId ? this.bestContractId : '--')
+              "
+              [ngClass]="
+                params.product.status === 'Stemmed' ? 'disabled-gray' : ''
+              "
+            >
               {{ getBestContractPrice(params) }}
             </div>
           </div>
@@ -315,7 +328,7 @@ export class ShiptechCustomHeaderGroup {
   public expandState: string;
   closureValue: any;
   quoteDate: any;
-  closureDate:any;
+  closureDate: any;
   bestContractId: any;
   targetValue: any;
   livePrice: any;
@@ -455,7 +468,9 @@ export class ShiptechCustomHeaderGroup {
       this.livePrice = formattedLivePrice;
       this.targetValue = this.params.product.requestGroupProducts.targetPrice;
       this.closureValue = this.params.product.requestGroupProducts.closurePrice;
-      this.closureDate = moment(this.params.product.requestGroupProducts.closureDate).format('DD-MMM-YYYY');;
+      this.closureDate = moment(
+        this.params.product.requestGroupProducts.closureDate
+      ).format('DD-MMM-YYYY');
       this.benchMark = this.params.product.requestGroupProducts.benchMark;
       this.bestContractId = this.params.product.requestGroupProducts.bestContractId;
       this.requestProductId = this.params.product.id;
@@ -499,18 +514,18 @@ export class ShiptechCustomHeaderGroup {
     const dialogRef = this.dialog.open(SpotnegoOfferpricehistoryComponent, {
       width: '500vw',
       height: '90vh',
-      panelClass: 'additional-cost-popup' ,
-      data :{
-        LocationName: this.currentRequestInfo.requestLocations.find(x => x.id == params.requestLocationId)?.locationName,
+      panelClass: 'additional-cost-popup',
+      data: {
+        LocationName: this.currentRequestInfo.requestLocations.find(
+          x => x.id == params.requestLocationId
+        )?.locationName,
         ProductName: params.product.productName,
         RequestLocationId: params.requestLocationId,
-        RequestProductId:  params.product.id,
+        RequestProductId: params.product.id
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   pricinghistorypopup(): void {
@@ -525,9 +540,7 @@ export class ShiptechCustomHeaderGroup {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   availabletermcontractpopup(): void {
@@ -537,9 +550,7 @@ export class ShiptechCustomHeaderGroup {
       panelClass: 'additional-cost-popup'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   bestcontractpopup(params): void {
@@ -579,13 +590,16 @@ export class ShiptechCustomHeaderGroup {
           el.requestLocationId == params.requestLocationId
         );
       });
-      let prices = Object.keys(currentCellContracts).map(function (key) {
+      let prices = Object.keys(currentCellContracts).map(function(key) {
         return currentCellContracts[key].fixedPrice;
-      }); 
-      
+      });
+
       let min = Math.min.apply(null, prices);
-      let contractIds=currentCellContracts.length>0.?currentCellContracts.filter(a=>a.fixedPrice==min):[];
-      this.bestContractId =contractIds[0]?.contract.id;
+      let contractIds =
+        currentCellContracts.length > 0
+          ? currentCellContracts.filter(a => a.fixedPrice == min)
+          : [];
+      this.bestContractId = contractIds[0]?.contract.id;
       if (min !== null && min != 'Infinity') {
         return `$ ${this.priceFormatValue(min, 'benchMark')}`;
       }
@@ -593,18 +607,23 @@ export class ShiptechCustomHeaderGroup {
       let requestGroup, prices;
       this.requests.forEach(req => {
         req.requestLocations.forEach(reqLoc => {
-          if (reqLoc.requestProducts.length > 0 && reqLoc.id == params.requestLocationId) {
+          if (
+            reqLoc.requestProducts.length > 0 &&
+            reqLoc.id == params.requestLocationId
+          ) {
             requestGroup = reqLoc.requestProducts.filter(reqProd => {
-              return (reqProd.id == params.product.id)
+              return reqProd.id == params.product.id;
             });
           }
         });
       });
       this.closureValue = requestGroup[0].requestGroupProducts.closurePrice;
-      this.closureDate = moment(requestGroup[0].requestGroupProducts.closureDate).format('DD-MMM-YYYY');
+      this.closureDate = moment(
+        requestGroup[0].requestGroupProducts.closureDate
+      ).format('DD-MMM-YYYY');
       this.benchMark = requestGroup[0].requestGroupProducts.benchMark;
       this.bestContractId = requestGroup[0].requestGroupProducts.bestContractId;
-      prices = Object.keys(requestGroup).map(function (key) {
+      prices = Object.keys(requestGroup).map(function(key) {
         return requestGroup[key].requestGroupProducts.bestContract;
       });
       let min = Math.min.apply(null, prices);
@@ -653,7 +672,7 @@ export class ShiptechCustomHeaderGroup {
             portRating: '',
             prefferedProductIds: '',
             sellerComments: '',
-            isSellerPortalComments:false,
+            isSellerPortalComments: false,
             sellerCounterpartyId: val.id,
             sellerCounterpartyName: val.name,
             senRating: ''
@@ -683,12 +702,12 @@ export class ShiptechCustomHeaderGroup {
     }
     let format = /[^\d|\-+|\.+]/g;
     let plainNumber;
-    
-    if(format.test(value.toString()) && type == 'livePrice'){
-      this.toastr.warning('Live price should be a numeric value ')
-      plainNumber='';
-    }else{
-      plainNumber= value.toString().replace(format, '');
+
+    if (format.test(value.toString()) && type == 'livePrice') {
+      this.toastr.warning('Live price should be a numeric value ');
+      plainNumber = '';
+    } else {
+      plainNumber = value.toString().replace(format, '');
     }
 
     const number = parseFloat(plainNumber);
@@ -730,7 +749,7 @@ export class ShiptechCustomHeaderGroup {
     this.benchMark =
       this.benchMark == null || this.benchMark == '--' ? 0 : this.benchMark;
     const targetval =
-    parseFloat(this.livePrice.toString().replace(',', '')) + this.benchMark;
+      parseFloat(this.livePrice.toString().replace(',', '')) + this.benchMark;
     this.targetValue = parseFloat(targetval.toString());
     //this.closureValue=parseInt(this.livePrice);
     let payload = {
@@ -761,7 +780,6 @@ export class ShiptechCustomHeaderGroup {
               let filterLocationsRows = _.filter(locationsRows, function(elem) {
                 return elem.requestLocationId == element.id;
               });
-              console.log(filterLocationsRows);
               element.requestProducts.forEach((element1, index) => {
                 if (
                   element1.id == this.requestProductId &&
@@ -956,7 +974,6 @@ export class ShiptechCustomHeaderGroup {
         index < priceDetailsArray?.length &&
         row.id === priceDetailsArray[index]?.requestLocationSellerId
       ) {
-
         priceDetailsArray[index].requestOffers.forEach(element1 => {
           if (
             element1.requestProductId != undefined &&
@@ -989,10 +1006,16 @@ export class ShiptechCustomHeaderGroup {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           ).displayName;
         }
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> 
-        a.requestProductTypeId  === b.requestProductTypeId ? 
-        (a.requestProductId > b.requestProductId ? 1 : -1) : 
-        (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
+        row.requestOffers = priceDetailsArray[
+          index
+        ].requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
         );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
@@ -1007,7 +1030,7 @@ export class ShiptechCustomHeaderGroup {
         );
 
         // We found something
-        if (detailsForCurrentRow.length > 0) {          
+        if (detailsForCurrentRow.length > 0) {
           detailsForCurrentRow[0].requestOffers.forEach(element1 => {
             if (
               element1.requestProductId != undefined &&
@@ -1041,11 +1064,16 @@ export class ShiptechCustomHeaderGroup {
                 x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
             ).displayName;
           }
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> 
-          a.requestProductTypeId  === b.requestProductTypeId ? 
-          (a.requestProductId > b.requestProductId ? 1 : -1) : 
-         (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
-         );
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
+            (a, b) =>
+              a.requestProductTypeId === b.requestProductTypeId
+                ? a.requestProductId > b.requestProductId
+                  ? 1
+                  : -1
+                : a.requestProductTypeId > b.requestProductTypeId
+                ? 1
+                : -1
+          );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
         }

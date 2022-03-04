@@ -391,10 +391,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         }
       ]
     };
-    // console.log (updatedRow);
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
-      if(res?.message == 'Unauthorized'){
+      if (res?.message == 'Unauthorized') {
         return;
       }
       if (res.status) {
@@ -763,7 +762,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.spotNegotiationService
       .saveOfferAdditionalCosts(payload)
       .subscribe((res: any) => {
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res.status) {
@@ -779,7 +778,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       .getPriceDetailsById(groupId, requestLocationSellerId)
       .subscribe((priceDetailsRes: any) => {
         this.spinner.hide();
-        if(priceDetailsRes?.message == 'Unauthorized'){
+        if (priceDetailsRes?.message == 'Unauthorized') {
           return;
         }
         let updatedRow = { ...sellerOffers };
@@ -857,7 +856,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       this.spotNegotiationService
         .getAdditionalCosts(payload)
         .subscribe((response: any) => {
-          if(response?.message == 'Unauthorized'){
+          if (response?.message == 'Unauthorized') {
             return;
           }
           if (typeof response === 'string') {
@@ -1143,7 +1142,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         .pipe(finalize(() => {}))
         .subscribe((result: any) => {
           this.endpointCount -= 1;
-          if(result?.message == 'Unauthorized'){
+          if (result?.message == 'Unauthorized') {
             return;
           }
           if (typeof result == 'string') {
@@ -1382,7 +1381,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
       );
       if (additionalCost.isTaxComponent) {
-        // console.log("Tax:" + additionalCost.additionalCost.name)
       } else {
         additionalCost.isTaxComponent = false;
       }
@@ -1682,7 +1680,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.spotNegotiationService
       .getMasterAdditionalCosts({})
       .subscribe((response: any) => {
-        if(response?.message == 'Unauthorized'){
+        if (response?.message == 'Unauthorized') {
           return;
         }
         if (typeof response === 'string') {
@@ -1803,7 +1801,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       .RemoveCounterparty(rowData.id)
       .subscribe((res: any) => {
         this.spinner.hide();
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res.status) {
@@ -1962,7 +1960,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.spotNegotiationService
       .getPriceDetails(groupId)
       .subscribe((res: any) => {
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res['sellerOffers']) {

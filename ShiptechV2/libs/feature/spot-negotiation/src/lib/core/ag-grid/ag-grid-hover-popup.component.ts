@@ -56,7 +56,6 @@ export class AgGridHoverPopupComponent implements IToolPanelAngularComp {
   private data: any;
 
   agInit(params): void {
-    console.log('****aslkdjhsadh');
     this.params = params;
 
     this.data = params.api.getDisplayedRowAtIndex(params.rowIndex).data;
