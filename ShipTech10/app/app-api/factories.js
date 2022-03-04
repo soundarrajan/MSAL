@@ -6545,7 +6545,10 @@ APP_API.factory('$Api_Service', [
                             if (entry.columnType) {
                                 obj.columnType = entry.columnType;
                             }
-                            payload.columns.push(obj);
+                            
+                            if (param.screen != 'delivery' && obj.dtoPath != 'cb') {
+                                payload.columns.push(obj);
+                            }
                         }
                     });
 
