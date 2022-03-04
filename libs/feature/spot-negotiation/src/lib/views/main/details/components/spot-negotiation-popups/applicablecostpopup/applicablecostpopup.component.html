@@ -31,6 +31,14 @@
       >
         <div class="duplicate-comments-menu">
           <div
+            *ngIf="!requestListToDuplicateLocationBasedCost.length"
+            class="more-options-menu-inv no-border p-lr-0"
+            style="margin: 7px 5px;"
+          >
+            <div class="checkboxOptions">No request found</div>
+          </div>
+
+          <div
             class="more-options-menu-inv no-border p-lr-0"
             (click)="$event.stopPropagation()"
             style="margin: 7px 5px;"
