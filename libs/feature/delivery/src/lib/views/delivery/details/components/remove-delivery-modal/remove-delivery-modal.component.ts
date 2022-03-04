@@ -141,7 +141,6 @@ export class RemoveDeliveryModalComponent implements OnInit {
       }
     });
 
-    console.log(redirect);
     this.spinner.show();
     this.deliveryService
       .deleteDelivery(this.deliveryId)
@@ -155,7 +154,6 @@ export class RemoveDeliveryModalComponent implements OnInit {
           this.toastrService.error(response);
           this.dialogRef.close();
         } else {
-          console.log(response);
           this.toastrService.success('Delivery deleted!');
           this.dialogRef.close();
           this.router

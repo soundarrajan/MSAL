@@ -8,28 +8,23 @@ import { InvoiceDetailsService } from '../../../../../services/invoice-details.s
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductDetailsComponent implements OnInit {
-
-  public searchText:string;
+  public searchText: string;
   selectedRow;
-  isLoading:boolean= false;
+  isLoading: boolean = false;
   public dataSource: MatTableDataSource<any>;
-  @Input() productData:any;
+  @Input() productData: any;
   @Output() onSelected: EventEmitter<any> = new EventEmitter();
-  constructor(private invoiceService: InvoiceDetailsService) {
-
-  }
+  constructor(private invoiceService: InvoiceDetailsService) {}
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource(this.productData);
     this.dataSource.filterPredicate = this.getFilterPredicate();
   }
 
-  radioSelected(element){
-    this.selectedRow=element;
+  radioSelected(element) {
+    this.selectedRow = element;
 
-    console.log(this.selectedRow.product);
     // this.dialogRef.close({data:this.selectedRow.details});
-
   }
 
   getFilterPredicate() {
@@ -41,8 +36,13 @@ export class AddProductDetailsComponent implements OnInit {
       const columnDeliveries = row.deliveries;
 
       // verify fetching data by our searching values
-      const customFilterDS = columnProduct.toLowerCase().includes(this.searchText);
-      const customFilterAS = columnDeliveries.toString().toLowerCase().includes(this.searchText);
+      const customFilterDS = columnProduct
+        .toLowerCase()
+        .includes(this.searchText);
+      const customFilterAS = columnDeliveries
+        .toString()
+        .toLowerCase()
+        .includes(this.searchText);
 
       // push boolean values into array
       matchFilter.push(customFilterDS);
@@ -70,9 +70,7 @@ export class AddProductDetailsComponent implements OnInit {
     // this.dialogRef.close('close');
   }
 
-  onSelectedItem(data){
-    console.log("adding...")
+  onSelectedItem(data) {
     this.onSelected.emit(data);
   }
-
 }

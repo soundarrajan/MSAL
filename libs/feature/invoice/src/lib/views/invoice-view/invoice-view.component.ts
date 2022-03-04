@@ -376,7 +376,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
               response.bankAccount;
             this.changeDetectorRef.detectChanges();
           });
-          console.log(response);
         }
       });
   }
@@ -471,7 +470,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
             );
 
             dialogRef.afterClosed().subscribe(result => {
-              console.log(result);
               if (result) {
                 this.invoiceDetailsComponent.convertedAmount = this.convertDecimalSeparatorStringToNumber(
                   result.convertedAmount
@@ -481,7 +479,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
                   result.conversionRoe;
                 this.invoiceDetailsComponent.roeDisabled = result.roeDisabled;
               }
-              console.log(this.invoiceDetailsComponent);
             });
             this.changeDetectorRef.detectChanges();
           }

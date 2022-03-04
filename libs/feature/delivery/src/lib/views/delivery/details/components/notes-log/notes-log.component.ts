@@ -364,7 +364,6 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       currentFormat = currentFormat.replace(/y/g, 'Y');
       let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
       let newVal = moment(elem).format(currentFormat);
-      console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
       }
@@ -513,7 +512,6 @@ export class NotesLogComponent implements OnInit {
   };
 
   addNotesLine() {
-    console.log(this.displayName$);
     if (!this.formValues.deliveryNotes) {
       this.formValues.deliveryNotes = [];
     }
@@ -549,7 +547,6 @@ export class NotesLogComponent implements OnInit {
       event.relatedTarget &&
       event.relatedTarget.classList.contains('cust-btn')
     ) {
-      console.log('Click on button');
     } else {
       this.autoSave();
     }
@@ -573,7 +570,6 @@ export class NotesLogComponent implements OnInit {
             this.spinner.hide();
             this.toastr.error(result);
           } else {
-            console.log(result);
             this.formValues.deliveryNotes = _.cloneDeep(result);
             this.changeDetectorRef.detectChanges();
           }
