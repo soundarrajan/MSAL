@@ -76,20 +76,22 @@
   display: flex !important;
   justify-content: center;
 }
+ 
 .bg-failed-grid {
-  background-color: #ff6978;
+  background-color: #ED6161;
   color: #ffffff !important;
 }
 
 .bg-pending-grid {
-  background-color: #fad7a0;
+  background-color: #E4C381;
   color: #ffffff !important;
 }
 
 .bg-success-grid {
-  background-color: #99cb82;
+  background-color: #27AE60;
   color: #ffffff !important;
 }
+
 .aggrid-text-align-c {
   text-align: center;
   padding-left: 18px;
@@ -458,7 +460,7 @@
   .ag-header-cell-label .ag-header-cell-text {
     width: 100%;
     padding-left: 10px;
-    font-size: 1.214rem;
+    font-size: 14px;
     font-weight: 500;
     font-style: normal;
     line-height: 30px;
