@@ -55,6 +55,10 @@ export class NegotiationDocumentsComponent implements OnInit {
   isReadOnly: boolean = false;
   responseList: any;
   documentTypePopUp: any;
+  public rowSelection = 'multiple';
+  endpointCount: number = 0;
+  anErrorHasOccured: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     public dialog: MatDialog,
@@ -278,27 +282,36 @@ export class NegotiationDocumentsComponent implements OnInit {
   updateIsVerifiedDocument(): void {
     let selectedNodes = this.gridOptions_data.api.getSelectedNodes();
     let selectedData = selectedNodes.map(node => node.data);
-    let selectedRow = selectedData[0];
-    if (!selectedRow) {
+    if (!selectedData.length) {
       this.toastr.error('Please select a row !');
       return;
+    } else {
+      this.endpointCount = 0;
+      selectedData.forEach((selectedRow: any) => {
+        const request: IDocumentsUpdateIsVerifiedRequest = {
+          id: selectedRow.id,
+          isVerified: true
+        };
+        this.endpointCount += 1;
+        this.anErrorHasOccured = false;
+        this.spotNegotiationService
+          .updateIsVerifiedDocument(request)
+          .subscribe(response => {
+            this.endpointCount -= 1;
+            if (response?.message == 'Unauthorized') {
+              return;
+            } else if (typeof response == 'string') {
+              this.anErrorHasOccured = true;
+              this.toastr.error(response);
+            } else {
+              if (!this.endpointCount && !this.anErrorHasOccured) {
+                this.toastr.success('Document(s) verified !');
+                this.getDocumentsList();
+              }
+            }
+          });
+      });
     }
-    const request: IDocumentsUpdateIsVerifiedRequest = {
-      id: selectedRow.id,
-      isVerified: true
-    };
-    this.spotNegotiationService.updateIsVerifiedDocument(request).subscribe(
-      () => {},
-      () => {
-        this.appErrorHandler.handleError(
-          ModuleError.UpdateIsVerifiedDocumentFailed
-        );
-      },
-      () => {
-        this.toastr.success('Document verified !');
-        this.getDocumentsList();
-      }
-    );
   }
 
   setupAgGrid() {
