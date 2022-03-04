@@ -93,6 +93,15 @@ export class ApplicablecostpopupComponent implements OnInit {
     @Inject(DecimalPipe) private _decimalPipe,
     private store: Store
   ) {
+    this.legacyLookupsDatabase.getTableByName('costType').then(response => {
+      this.costTypeList = response;
+    });
+    this.legacyLookupsDatabase.getTableByName('uom').then(response => {
+      this.uomList = response;
+    });
+    this.legacyLookupsDatabase.getTableByName('currency').then(response => {
+      this.currencyList = response;
+    });
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.quantityPrecision = this.generalTenantSettings.defaultValues.quantityPrecision;
     this.quantityFormat =
@@ -122,15 +131,6 @@ export class ApplicablecostpopupComponent implements OnInit {
       );
       this.requestList = _.cloneDeep(spotNegotiation.requests);
       this.getRequestsList();
-    });
-    this.legacyLookupsDatabase.getTableByName('costType').then(response => {
-      this.costTypeList = response;
-    });
-    this.legacyLookupsDatabase.getTableByName('uom').then(response => {
-      this.uomList = response;
-    });
-    this.legacyLookupsDatabase.getTableByName('currency').then(response => {
-      this.currencyList = response;
     });
     this.buildApplicableForItems();
     this.getLocationCosts();
