@@ -363,7 +363,6 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       currentFormat = currentFormat.replace(/y/g, 'Y');
       const elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
       const newVal = moment(elem).format(currentFormat);
-      console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
       }
@@ -884,7 +883,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   ngOnInit() {
     this.entityName = 'Contract';
     if (this.locationMasterSearchList) {
-      console.log(this.formValues);
       this.setLocationsOptions();
     }
     this.getContractFormulaList1();
@@ -911,9 +909,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         this.productMasterList
       ).splice(0, 10);
     }
-
-    console.log(this.locationMasterSearchListOptions);
-    console.log(this.productMasterSearchListOptions);
   }
 
   setEntityCopied(data) {
@@ -927,7 +922,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   setRequiredFields(data) {
     this.buttonClicked = data;
-    console.log(this.buttonClicked);
     this.eventsSubject2.next(this.buttonClicked);
   }
 
@@ -940,7 +934,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     ) {
       return location?.name?.toLowerCase().includes(value.toLowerCase());
     });
-    console.log(filterLocations);
     this.locationMasterSearchListOptions[contractProductIndex] = [
       ...filterLocations
     ].splice(0, 10);
@@ -954,7 +947,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     const filterProducts = _.filter(this.productMasterList, function(product) {
       return product?.name?.toLowerCase().includes(value.toLowerCase());
     });
-    console.log(filterProducts);
     this.productMasterSearchListOptions[contractProductIndex] = [
       ...filterProducts
     ].splice(0, 10);
@@ -962,7 +954,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   addEmptyProductLine() {
-    console.log(this.formValues);
     const emptyProductObj = {
       id: 0,
       details: null,
@@ -1001,7 +992,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
   addProductToContract() {
     this.spinner.show();
-    console.log(this.formValues);
     const emptyProductObj = {
       id: 0,
       details: null,
@@ -1046,12 +1036,9 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     setTimeout(() => {
       this.spinner.hide();
     }, 300);
-
-    console.log(this.formValues);
   }
 
   getContractFormulaList1() {
-    console.log(this._entityId);
     const data = {
       Payload: {
         PageFilters: {
@@ -1083,7 +1070,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   getContractFormulaList() {
-    console.log(this._entityId);
     const data = {
       Payload: {
         PageFilters: {
@@ -1145,7 +1131,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         }
       }
     }
-    console.log(this.selectedLocationList);
   }
 
   saveAllowedLocations(selectedTabIndex) {
@@ -1191,7 +1176,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       }
     }
     this.changeDetectorRef.detectChanges();
-    console.log(this.selectedProductList);
   }
 
   saveAllowedProducts(selectedTabIndex) {
@@ -1266,7 +1250,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       if (field == 'dealDate') {
         this.isDealDateInvalid = false;
       }
-      console.log(beValue);
     } else {
       if (field == 'dealDate') {
         this.isDealDateInvalid = true;
@@ -1298,7 +1281,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         : this.formValues.products[
             this.selectedTabIndex
           ].physicalSuppliers[0].toLowerCase();
-      console.log(filterValue);
       if (this.physicalSupplierList) {
         return this.physicalSupplierList
           .filter(
@@ -1325,7 +1307,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         this.selectedTabIndex
       ].physicalSuppliers[0] = obj;
       this.changeDetectorRef.detectChanges();
-      console.log(this.formValues.products[this.selectedTabIndex]);
     }
   }
 
@@ -1378,7 +1359,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
           this.additionalCostForLocation[locationId] = response;
           this.changeAdditionalCostList(locationId);
           this.changeDetectorRef.detectChanges();
@@ -1417,7 +1397,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
           this.additionalCostForLocation[locationId] = response;
           for (
             let i = 0;
@@ -1464,9 +1443,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   setProductChange(product, index) {
-    console.log(product);
-    console.log(index);
-    console.log(this.formValues.products[index]);
     const objectProduct = {
       id: product.id,
       name: product.name
@@ -1496,7 +1472,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
           this.toastr.error(response);
           this.spinner.hide();
         } else {
-          console.log(response);
           let productTypeGroup = response.productTypeGroup;
           let payload1 = { Payload: {} };
           this.contractService
@@ -1507,17 +1482,13 @@ export class ContractProduct extends DeliveryAutocompleteComponent
                 this.toastr.error(res);
                 this.spinner.hide();
               } else {
-                console.log(res);
                 this.spinner.hide();
 
                 let defaultUomAndCompany = _.find(res, function(object) {
                   return object.id == productTypeGroup.id;
                 });
                 if (defaultUomAndCompany) {
-                  console.log(defaultUomAndCompany);
-                  console.log(index);
                   for (let i = 0; i < this.formValues.details.length; i++) {
-                    console.log(this.formValues.details[i]);
                     this.formValues.details[i].uom =
                       defaultUomAndCompany.defaultUom;
                   }
@@ -1561,7 +1532,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
           if (response) {
             response = _.filter(response, function(o) {
               return o.isDeleted == false;
@@ -1731,15 +1701,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       payload = { Payload: { ProductId: selectedProduct.product.id } };
       this.contractService
         .getProdDefaultConversionFactors(payload)
-        .pipe(
-          finalize(() => {
-          })
-        )
+        .pipe(finalize(() => {}))
         .subscribe((response: any) => {
           if (typeof response == 'string') {
             this.toastr.error(response);
           } else {
-            console.log(response);
             const contractConversionFactor = {
               id: 3,
               name: 'Standard (Product)'
@@ -1760,13 +1726,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   removeProductFromContract(key) {
-    console.log(key);
     if (!this.formValues.products[key].id) {
       this.formValues.products.splice(key, 1);
     } else {
       this.formValues.products[key].isDeleted = true;
     }
-    console.log(this.selectedTabIndex);
 
     const findFirstIndex = _.findIndex(this.formValues.products, function(
       object: any
@@ -1776,7 +1740,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     if (findFirstIndex != -1) {
       this.selectedTabIndex = findFirstIndex;
     }
-    console.log(this.selectedTabIndex);
   }
 
   originalOrder = (
@@ -1785,8 +1748,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   ): number => 0;
 
   changeAdditionalCostList(locationId) {
-    console.log(this.additionalCostList);
-    console.log(this.additionalCostForLocation[locationId]);
     const newAdditionalCostList = _.cloneDeep(
       this.additionalCostForLocation[locationId]
     );
@@ -1803,7 +1764,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     //   }
     // }
 
-    console.log(newAdditionalCostList);
     this.additionalCostForLocation[locationId] = _.cloneDeep(
       newAdditionalCostList
     );
@@ -1839,8 +1799,6 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         }
       }
     }
-
-    console.log(this.formValues);
   }
 
   ngAfterViewInit(): void {}

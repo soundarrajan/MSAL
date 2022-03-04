@@ -343,8 +343,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         this.selectedAllowedCompanies();
         this.changeDetectorRef.detectChanges();
       }
-
-      console.log(this.staticLists);
     });
   }
 
@@ -369,8 +367,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       }
     });
     this.changeDetectorRef.detectChanges();
-
-    console.log(this.companyList);
   }
 
   getColorCodeFromLabels(statusObj, labels) {
@@ -391,7 +387,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       `${this.appId + this.screenId}_copy`
     );
     localStorage.removeItem(`${this.appId + this.screenId}_copy`);
-    console.log('id', contractId);
     this.contractService
       .loadContractDetails(parseFloat(contractId))
       .pipe(
@@ -404,8 +399,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         if (typeof result == 'string') {
           this.toastr.error(result);
         } else {
-          console.log('Copy field');
-          console.log(result);
           this.formValues = _.cloneDeep(result);
           this.formValues.lastModifiedBy = null;
           this.formValues.hasBeenExtended = null;
@@ -464,7 +457,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.entityCopied = true;
           this.statusColorCode = '#9E9E9E';
           this.eventsSubject5.next(true);
-          console.log(this.formValues);
           this.changeDetectorRef.detectChanges();
           this.toastr.success('Entity copied');
         }
@@ -816,7 +808,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
                 this.formValues.products[i].formula.id
               ))
           ) {
-            console.log(findSystemInstrumentOption);
             notValidConversionFactor = true;
             this.toastr.error(
               `Please select formula for using system instrument conversion for Product ${i +
@@ -1159,7 +1150,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('close extend pop-up');
         this.formValues = result;
         this.formValues.hasBeenExtended = true;
         this.changeDetectorRef.detectChanges();
@@ -1179,13 +1169,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         0,
         KnownContractRoutes.ContractDetails
       ])
-      .then(() => {
-        console.log('copy contract');
-      });
+      .then(() => {});
   }
 
   public changeFormData(formValues: any): void {
-    console.log('Picked form values: ', formValues);
     this.formValues = formValues;
     this.eventsSubject5.next(formValues);
     this.changeDetectorRef.detectChanges();

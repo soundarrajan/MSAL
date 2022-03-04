@@ -41,29 +41,20 @@ export class CompanyModalComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     private toastrService: ToastrService,
     private spinner: NgxSpinnerService,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.companyList = data.companyList;
-      console.log(this.companyList);
-    }
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.companyList = data.companyList;
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
- 
-
-  changeGender(e) {
-    console.log(e.target.value);
-  }
+  changeGender(e) {}
 
   closeClick(): void {
     this.dialogRef.close();
   }
-
-
-
-  
 }
