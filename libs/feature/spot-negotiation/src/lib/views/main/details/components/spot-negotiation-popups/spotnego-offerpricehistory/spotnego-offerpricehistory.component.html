@@ -21,25 +21,31 @@
       <div class="operations-details-block offerprice-history" style="height: 75vh;">
         <table >
           <thead>
-            <tr *ngFor="let items of locationData" >
+            <tr  >
               <th class="text-left w-147">CounterParty</th>
               <th class="text-left w-95">Diff</th>
               <th class="text-left w-95">Curr. offer</th>
-              <th class="text-left " [attr.colspan]="items.oldPrices.length" >Past off</th>
+              <th class="text-left "  >Past off</th>
             </tr>
           </thead>
           <tbody style="height: 580px;  overflow: scroll;">
             <tr id = "commentList" *ngFor="let items of locationData">
               <td class="text-left w-147" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
               <td class="text-left w-95">$ {{items.priceDiff | number}}</td>
-              <td class="text-left w-95" >$ {{items.price}}</td>
-              <td class="text-left" *ngIf="items.oldPrices.length==0" >
-                ---
-              </td>
-                <td class="text-left" *ngFor="let item of items.oldPrices" >
-                  $ {{item}}
-                </td>
+              <td class="text-left w-95" >$ {{items.price}}</td>     
+                <td  class="text-left ">
+                  <table >
+                    <tbody  >
+                      <tr style="table-layout: auto;">
+                        <td  class="text-left "*ngIf="items.oldPrices.length==0" >
+                          ---
+                        </td>
+                        <td  *ngFor="let item of items.oldPrices">&nbsp;$ {{item}} &nbsp;</td>
+                      </tr>
+                    </tbody>
 
+                  </table>
+                </td>
             </tr>
           </tbody>
           </table>
