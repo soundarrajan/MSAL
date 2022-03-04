@@ -343,7 +343,13 @@ import { ToastrService } from 'ngx-toastr';
 
     <div *ngIf="params.type == 'revert'">
       <div class="aggrid-content-center unmatch" (click)="deleteWarning()">
-        <img id="list-icon" src="/assets/icon/unmatch.svg" alt="list" (click)="unmatch()" matTooltip="Revert">
+        <img
+          id="list-icon"
+          src="/assets/icon/unmatch.svg"
+          alt="list"
+          (click)="unmatch()"
+          matTooltip="Revert"
+        />
         <img [src]="imageSource" style="width:16px;height:16px" />
       </div>
     </div>
@@ -2499,13 +2505,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   //   });
 
   //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log(`Dialog result: ${result}`);
   //   });
   // }
 
   public isMarked = index => {
     var ratingcount = this.params.data.rating;
-    //console.log(ratingcount);
     if (this.score >= index + 1) {
       return 'check';
     } else if (this.score > index && this.score < index + 1) {
@@ -2526,11 +2530,9 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   openMenu() {
     this.menuTrigger.openMenu();
     this.hovered = true;
-    console.log(this.toolTip);
   }
 
   freezePopupClose(ev, left) {
-    //console.log(ev.parentElement);
     if (left) {
       //var  overlay11 = document.querySelector<HTMLElement>('.grey-popup');
       ev.target.parentElement.style.removeProperty('transform');
@@ -2635,7 +2637,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
 
   hoverOutPopup(left) {
     if (this.allowMouseLeave) {
-      console.log('leave');
       var overlay = document.querySelector('.cdk-overlay-container');
       if (left) {
         this.hovermenuTrigger.closeMenu();
@@ -2690,8 +2691,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   }
 
   toggleMenu(event) {
-    //console.log(this.hovermenuTrigger);
-    //console.log(this.menuTriggerToggle);
     // var  overlay = document.querySelector('.cdk-overlay-container');
     // overlay.classList.remove('fullOverlay');
 
@@ -2783,10 +2782,8 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.hovered = true;
     this.menuTrigger.openMenu();
     var overlay = document.querySelector('.cdk-overlay-container');
-    //console.log(overlay);
     overlay.classList.add('removeOverlay');
     var overlay1 = document.querySelector('.cdk-overlay-pane');
-    //console.log(overlay);
     overlay1.classList.add('movedpanel');
   }
 
@@ -2795,7 +2792,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.menuTrigger.closeMenu();
     //alert("s");
     var overlay = document.querySelector('.cdk-overlay-container');
-    //console.log(overlay);
     overlay.classList.remove('removeOverlay');
   }
 
@@ -2810,7 +2806,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   }
 
   checkValue(event: any) {
-    //console.log(event);
     this.checkboxmenuTrigger1.openMenu;
     if (event == 'A') {
       (<HTMLElement>document.querySelector('.saveBtn')).removeAttribute(
@@ -2845,18 +2840,11 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.params.api.applyTransaction({ remove: newData });
     //this.params.api.node.setSelected(true);
     //this.params.api.forEachNode(node=> node.rowIndex ? 0 : node.setSelected(true))
-    //console.log(this.params);
-    //console.log(this.params.api.getRenderedNodes()[0].data);
 
-    //console.log(rowData);
-    //console.log(this.params.rowIndex);
+
 
     // this.params.api.applyTransaction({ remove: selectedData });
-    // console.log(this.params);
-    // console.log("sssss");
-    // console.log(selectedData);
 
-    //console.log(rowData);
     //this.params.api.removeItems(newData);
     //const firstRow = this.params.api.getRenderedNodes()[index].data;
 

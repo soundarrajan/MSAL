@@ -76,7 +76,6 @@ export class LocPanDataComponent implements OnInit {
     let currentLocationId = this.reqLocation.id;
 
     let filterLocationRows = _.filter(this.locationsRows);
-    console.log(filterLocationRows);
     const dialogRef = this.dialog.open(ApplicablecostpopupComponent, {
       width: '1170px',
       height: 'auto',
@@ -89,7 +88,6 @@ export class LocPanDataComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
       if (result) {
         this.costChanged.emit(filterLocationRows);
       }
@@ -115,7 +113,6 @@ export class LocPanDataComponent implements OnInit {
   }
 
   doSomething(date: any): void {
-    console.log('Picked date: ', date);
     this.selectedETATime = date;
   }
 }

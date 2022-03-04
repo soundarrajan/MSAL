@@ -103,10 +103,8 @@ export class AgGridDatetimePickerNewComponent
     this.initialDate.setValue(new Date(this.valueField));
     this.timeValue = this.valueField.slice(-6);
     //var timervalue = this.timeValue;
-    //console.log(this.timeValue);
     var showTime = this.timeValue.split(':');
     this.timerValue = new Date(0, 0, 0, showTime[0], showTime[1]);
-    //console.log(this.timerValue);
     // let d = new Date(this.valueField);
     // let h = (d.getHours()<10?'0':'') + d.getHours();
     // let m = (d.getMinutes()<10?'0':'') + d.getMinutes();
@@ -118,7 +116,6 @@ export class AgGridDatetimePickerNewComponent
 
   onChange(event) {
     //alert("");
-    //console.log(event.value);
     this.timeValue = event.value.getHours() + ':' + event.value.getMinutes();
     let h = (event.value.getHours() < 10 ? '0' : '') + event.value.getHours();
     let m =
@@ -139,7 +136,6 @@ export class AgGridDatetimePickerNewComponent
 
   timepickerClosed() {
     //var elements = document.getElementsByClassName('owl-dt-control')[1] as HTMLElement;
-    //console.log(elements[1]);
     //elements.click();
   }
 
@@ -149,7 +145,6 @@ export class AgGridDatetimePickerNewComponent
     for (i = 0; i < arrowclick.length; i++) {
       arrowclick[i].addEventListener("click",function() {
         var elements = document.getElementsByClassName('owl-dt-control')[1] as HTMLElement;
-        //console.log(elements[1]);
         elements.click();
         event.stopPropagation();
         //this.dt.open();
@@ -166,7 +161,6 @@ export class AgGridDatetimePickerNewComponent
       var elements = document.getElementsByClassName(
         'owl-dt-control'
       )[1] as HTMLElement;
-      //console.log(elements[1]);
       elements.click();
       this.dt.close();
       this.picker.open();
