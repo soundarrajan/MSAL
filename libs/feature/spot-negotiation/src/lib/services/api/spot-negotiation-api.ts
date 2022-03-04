@@ -1,6 +1,10 @@
 import { Injectable, InjectionToken } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders
+} from '@angular/common/http';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
@@ -95,7 +99,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   @ApiCallUrl()
   private _masterApiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
 
-  constructor(private http: HttpClient, private appConfig: AppConfig) { }
+  constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
   @ObservableException()
   getTenantConfiguration(): Observable<any> {
@@ -724,8 +728,8 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   @ObservableException()
   updateIsVerifiedDocument(
     request: IDocumentsUpdateIsVerifiedRequest
-  ): Observable<IDocumentsUpdateIsVerifiedResponse> {
-    return this.http.post<IDocumentsListResponse>(
+  ): Observable<any> {
+    return this.http.post<any>(
       `${this._masterApiUrl}/${SpotNegotiationApiPaths.updateIsVerifiedDocument}`,
       { payload: { ...request } }
     );
@@ -824,11 +828,13 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   handleErrorMessage(body: any) {
-    return of(body instanceof HttpErrorResponse && body.status != 401 ? (
-      body.error.ErrorMessage ? body.error.ErrorMessage : body.error.errorMessage
-      ) : { message: 'Unauthorized' }
-
-    );  
+    return of(
+      body instanceof HttpErrorResponse && body.status != 401
+        ? body.error.ErrorMessage
+          ? body.error.ErrorMessage
+          : body.error.errorMessage
+        : { message: 'Unauthorized' }
+    );
   }
 
   @ObservableException()

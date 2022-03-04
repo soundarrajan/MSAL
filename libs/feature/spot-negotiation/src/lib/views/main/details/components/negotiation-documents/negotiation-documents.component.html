@@ -62,6 +62,7 @@
                     [ngClass]="{ 'search-icon-disabled': false }"
                     class="search-icon search-icon-bg"
                     [matMenuTriggerFor]="documentTypeMenu"
+                    (click)="resetDocumentData()"
                   >
                     <div class="img"></div>
                   </button>
@@ -165,6 +166,7 @@
             [rowData]="rowData_grid"
             (gridReady)="getDocumentsList()"
             class="ag-theme-material ag-grid-v2 angular-v9 documents-list"
+            [rowSelection]="rowSelection"
           ></ag-grid-angular>
         </div>
       </div>
