@@ -55,11 +55,9 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
       .getTableByName('controlTowerNotesViewType')
       .then(response => {
         this.controlTowerNotesViewType = response;
-        console.log(response);
       });
     this.legacyLookupsDatabase.getTableByName('screen').then(response => {
       this.screenList = response;
-      console.log(response);
     });
     //load default landing page screen based on user preference
     this.loadDefaultLandingPage();
@@ -163,7 +161,6 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
     }
   }
   getGlobalCount(view) {
-    console.log('************', view);
     switch (view) {
       case 'quality':
         this.controlTowerService
@@ -202,7 +199,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
               this.quantityCounts = response;
               if (!this.changeDetectorRef['destroyed']) {
                 this.changeDetectorRef.detectChanges();
-              } 
+              }
             }
           });
 
@@ -222,7 +219,7 @@ export class ControlTowerHomeNewComponent implements OnInit, AfterViewInit {
               this.residueCounts = response;
               if (!this.changeDetectorRef['destroyed']) {
                 this.changeDetectorRef.detectChanges();
-              }              
+              }
             }
           });
 
