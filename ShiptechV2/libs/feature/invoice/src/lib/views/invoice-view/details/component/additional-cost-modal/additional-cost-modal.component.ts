@@ -291,8 +291,6 @@ export class AdditionalCostModalComponent implements OnInit {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
-          console.log(response);
           this.applyForList = response;
           this.changeDetectorRef.detectChanges();
         }
@@ -305,7 +303,6 @@ export class AdditionalCostModalComponent implements OnInit {
 
   radioSelected(element) {
     this.selectedRow = element;
-    console.log(this.selectedRow.product);
   }
 
   getFilterPredicate() {}
@@ -504,7 +501,6 @@ export class AdditionalCostModalComponent implements OnInit {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
           additionalCost.invoiceRate = this.quantityFormatValue(response.price);
           this.invoiceConvertUom('cost', rowIndex);
         }
@@ -598,8 +594,6 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   invoiceConvertUom(type, rowIndex) {
-    console.log(type);
-    console.log(rowIndex);
     const currentRowIndex = rowIndex;
     this.calculateGrand(this.formValues);
     this.type = type;
@@ -632,7 +626,6 @@ export class AdditionalCostModalComponent implements OnInit {
               if (typeof response == 'string') {
                 this.toastr.error(response);
               } else {
-                console.log(response);
                 this.calculate(
                   this.old_cost,
                   response[1].productId,
