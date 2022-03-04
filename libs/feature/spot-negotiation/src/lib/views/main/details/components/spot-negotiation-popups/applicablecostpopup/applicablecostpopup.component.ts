@@ -142,7 +142,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       .getLocationCosts(this.requestLocation.locationId)
       .subscribe((res: any) => {
         // this.spinner.hide();
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           this.spinner.hide();
           return;
         }
@@ -157,7 +157,7 @@ export class ApplicablecostpopupComponent implements OnInit {
           .getAdditionalCosts(payload)
           .subscribe((response: any) => {
             this.spinner.hide();
-            if(response?.message == 'Unauthorized'){
+            if (response?.message == 'Unauthorized') {
               return;
             }
             this.locationBasedCosts = this.formatCostItemForDisplay(
@@ -170,7 +170,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     this.spotNegotiationService
       .getMasterAdditionalCosts({})
       .subscribe((response: any) => {
-        if(response?.message == 'Unauthorized'){
+        if (response?.message == 'Unauthorized') {
           return;
         }
         if (typeof response === 'string') {
@@ -270,7 +270,7 @@ export class ApplicablecostpopupComponent implements OnInit {
         .saveOfferAdditionalCosts(payload)
         .subscribe((res: any) => {
           this.enableSave = false;
-          if(res?.message == 'Unauthorized'){
+          if (res?.message == 'Unauthorized') {
             return;
           }
           if (res.status) {
@@ -565,7 +565,7 @@ export class ApplicablecostpopupComponent implements OnInit {
         .getUomConversionFactor(payload)
         .pipe(finalize(() => {}))
         .subscribe((result: any) => {
-          if(result?.message == 'Unauthorized'){
+          if (result?.message == 'Unauthorized') {
             return;
           }
           if (typeof result == 'string') {
@@ -628,7 +628,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       .getRangeTotalAdditionalCosts(payload)
       .subscribe((response: any) => {
         this.spinner.hide();
-        if(response?.message == 'Unauthorized'){
+        if (response?.message == 'Unauthorized') {
           return;
         }
         if (typeof response == 'string') {
@@ -689,11 +689,15 @@ export class ApplicablecostpopupComponent implements OnInit {
       const additionalCost = {
         selectedApplicableForId: this.applicableForItems[0]?.id
       } as AdditionalCostViewModel;
-      this.locationBasedCosts.push(additionalCost);
-      this.onApplicableForChange(
-        additionalCost.selectedApplicableForId,
-        this.locationBasedCosts.length - 1
-      );
+      if (!this.applicableForItems.length) {
+        this.toastr.warning('All products are stemmed!');
+      } else {
+        this.locationBasedCosts.push(additionalCost);
+        this.onApplicableForChange(
+          additionalCost.selectedApplicableForId,
+          this.locationBasedCosts.length - 1
+        );
+      }
     }
     this.enableSave = true;
   }
@@ -1084,7 +1088,7 @@ export class ApplicablecostpopupComponent implements OnInit {
         .pipe(finalize(() => {}))
         .subscribe((result: any) => {
           this.endpointCount -= 1;
-          if(result?.message == 'Unauthorized'){
+          if (result?.message == 'Unauthorized') {
             return;
           }
           if (typeof result == 'string') {
@@ -1154,7 +1158,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       .getRangeTotalAdditionalCosts(payload)
       .subscribe((response: any) => {
         this.endpointCount -= 1;
-        if(response?.message == 'Unauthorized'){
+        if (response?.message == 'Unauthorized') {
           return;
         }
         if (typeof response == 'string') {
@@ -1258,7 +1262,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       .saveOfferAdditionalCosts(payload)
       .subscribe((res: any) => {
         this.enableSave = false;
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res.status) {
