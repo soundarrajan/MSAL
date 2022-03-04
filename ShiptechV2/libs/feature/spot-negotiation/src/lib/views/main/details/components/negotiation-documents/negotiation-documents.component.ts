@@ -287,6 +287,7 @@ export class NegotiationDocumentsComponent implements OnInit {
       return;
     } else {
       this.endpointCount = 0;
+      this.spinner.show();
       selectedData.forEach((selectedRow: any) => {
         const request: IDocumentsUpdateIsVerifiedRequest = {
           id: selectedRow.id,
@@ -301,16 +302,22 @@ export class NegotiationDocumentsComponent implements OnInit {
             if (response?.message == 'Unauthorized') {
               return;
             } else if (typeof response == 'string') {
+              this.spinner.hide();
               this.anErrorHasOccured = true;
               this.toastr.error(response);
             } else {
-              if (!this.endpointCount && !this.anErrorHasOccured) {
-                this.toastr.success('Document(s) verified !');
-                this.getDocumentsList();
-              }
+              this.checkIfAllCalledAreFinished();
             }
           });
       });
+    }
+  }
+
+  checkIfAllCalledAreFinished() {
+    if (!this.endpointCount && !this.anErrorHasOccured) {
+      this.spinner.hide();
+      this.toastr.success('Document(s) verified !');
+      this.getDocumentsList();
     }
   }
 
