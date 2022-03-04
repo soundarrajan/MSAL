@@ -10,9 +10,7 @@ export class LazyLoadPocRouteResolver implements Resolve<any> {
   resolve(): Observable<any> {
     return of(true).pipe(
       delay(5000),
-      tap(() => {
-        console.log('resolved');
-      })
+      tap(() => {})
     );
   }
 }

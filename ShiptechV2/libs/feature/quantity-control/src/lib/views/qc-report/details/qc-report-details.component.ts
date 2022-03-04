@@ -91,7 +91,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
 
   private quantityPrecision: number;
-  
+
   private firstApiCallStartTime: any;
   deliverySettings: IDeliveryTenantSettings;
 
@@ -111,10 +111,10 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   ) {
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
     const deliveryTenantSettings = tenantSettings.getModuleTenantSettings<
-    IDeliveryTenantSettings
-  >(TenantSettingsModuleName.Delivery);
-  this.deliverySettings = {...deliveryTenantSettings};
-  // this.deliverySettings['sludgeTolerance'] = 3; //test
+      IDeliveryTenantSettings
+    >(TenantSettingsModuleName.Delivery);
+    this.deliverySettings = { ...deliveryTenantSettings };
+    // this.deliverySettings['sludgeTolerance'] = 3; //test
     this.quantityPrecision =
       generalTenantSettings.defaultValues.quantityPrecision;
 
@@ -285,8 +285,6 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
       actionLevel = 'Update ';
     }
     this.firstApiCallStartTime = Date.now();
-    console.log('FIRST API CALL START TIME!!!');
-    console.log(this.firstApiCallStartTime);
     this.reportService.saveReport$().subscribe(reportId => {
       this.toastrService.success('Report saved successfully');
       this.router
@@ -298,9 +296,10 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
         ])
         .then(() => {
           this.reportService.loadEventsLog$().subscribe(() => {
-            console.log('TIME AT ACTION LEVEL!');
-            console.log(Date.now() - this.firstApiCallStartTime);
-            this.myMonitoringService.logMetric(actionLevel + window.location.href, Date.now() - this.firstApiCallStartTime);
+            this.myMonitoringService.logMetric(
+              actionLevel + window.location.href,
+              Date.now() - this.firstApiCallStartTime
+            );
             delete this.firstApiCallStartTime;
             delete (<any>window).qcActions;
           });
@@ -329,13 +328,13 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
             ])
             .subscribe(() => {
               this.toastrService.success('Report marked for verification.');
-              console.log('TIME AT ACTION LEVEL!');
-              console.log(Date.now() - this.firstApiCallStartTime);
-              this.myMonitoringService.logMetric('Verify ' + window.location.href, Date.now() - this.firstApiCallStartTime);
+              this.myMonitoringService.logMetric(
+                'Verify ' + window.location.href,
+                Date.now() - this.firstApiCallStartTime
+              );
               delete this.firstApiCallStartTime;
               delete (<any>window).qcActions;
-            }
-            );
+            });
         });
     });
   }
@@ -349,9 +348,10 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
       ])
       .subscribe(() => {
         this.toastrService.success('Verification reverted successfully.');
-        console.log('TIME AT ACTION LEVEL!');
-        console.log(Date.now() - this.firstApiCallStartTime);
-        this.myMonitoringService.logMetric('Revert Verify ' + window.location.href, Date.now() - this.firstApiCallStartTime);
+        this.myMonitoringService.logMetric(
+          'Revert Verify ' + window.location.href,
+          Date.now() - this.firstApiCallStartTime
+        );
         delete this.firstApiCallStartTime;
         delete (<any>window).qcActions;
       });

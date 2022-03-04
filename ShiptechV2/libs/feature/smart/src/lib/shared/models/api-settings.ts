@@ -5,257 +5,261 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable()
-export class AppSettings{
-
-    readonly configSettingsTagName="PlanningDashboardSettings";
-
-    private baseUrl_;    
-    private bigDataServiceUrl_;
-    private blobUrl_;
-    private configApiUrl_;
-    private defaultFuelStatus_;
-    private mongoUrl_;
-    private integrationApiUrl_;
-    private integrationLocationUrl_;
-    private integrationRequestUrl_;
-    private integrationVesselUrl_;
-    private planningDashboardApiUrl_;
-    private priceHistoryofLocationUrl_;    
-    private supplierUrl_;
-    private productIntegration_:boolean=false;
-    private commentsHoverPos_:any;
-    get baseUrl():string{
-        return this.baseUrl_;
-    }
-
-    set baseUrl(val:string){
-        this.baseUrl_=this.baseUrl_==undefined?val:this.baseUrl_;
-    }
-
-    get bigDataServiceUrl():string{
-        return this.bigDataServiceUrl_;
-    }
-
-    set bigDataServiceUrl(val:string){
-        this.bigDataServiceUrl_=this.bigDataServiceUrl_==undefined?val:this.bigDataServiceUrl_;
-    }
-
-    get blobUrl():string{
-        return this.blobUrl_;
-    }
-
-    set blobUrl(val){
-        this.blobUrl_=this.blobUrl_==undefined?val:this.blobUrl_;
-    }
-
-    get configApiUrl():string{
-        return this.configApiUrl_;
-    }
-
-    set configApiUrl(val){
-        this.configApiUrl_=this.configApiUrl_==undefined?val:this.configApiUrl_;
-    }
-
-    get defaultFuelStatus():string{
-        return this.defaultFuelStatus_;
-    }
-
-    set defaultFuelStatus(val){
-        
-        this.defaultFuelStatus_=this.defaultFuelStatus_==undefined?val:this.defaultFuelStatus_;
-    }
-
-    get commentsPadding():any{
-        return this.commentsHoverPos_;
-    }
-
-    set commentsPadding(val){
-        this.commentsHoverPos_=this.commentsHoverPos_==undefined?val:this.commentsHoverPos_;
-    }
-        
-    get mongoUrl():string{
-        return this.mongoUrl_;
-    }
-
-    set mongoUrl(value:string){
-        this.mongoUrl_=this.mongoUrl_==undefined?value:this.mongoUrl_;
-    }
-
-    get integrationApiUrl():string{
-        return this.integrationApiUrl_;
-    }
-
-    set integrationApiUrl(value:string){
-        this.integrationApiUrl_=this.integrationApiUrl_==undefined?value:this.integrationApiUrl_;
-    }
-
-    get integrationLocationUrl():string{
-        return this.integrationLocationUrl_;
-    }
+export class AppSettings {
+  readonly configSettingsTagName = 'PlanningDashboardSettings';
+
+  private baseUrl_;
+  private bigDataServiceUrl_;
+  private blobUrl_;
+  private configApiUrl_;
+  private defaultFuelStatus_;
+  private mongoUrl_;
+  private integrationApiUrl_;
+  private integrationLocationUrl_;
+  private integrationRequestUrl_;
+  private integrationVesselUrl_;
+  private planningDashboardApiUrl_;
+  private priceHistoryofLocationUrl_;
+  private supplierUrl_;
+  private productIntegration_: boolean = false;
+  private commentsHoverPos_: any;
+  get baseUrl(): string {
+    return this.baseUrl_;
+  }
+
+  set baseUrl(val: string) {
+    this.baseUrl_ = this.baseUrl_ == undefined ? val : this.baseUrl_;
+  }
+
+  get bigDataServiceUrl(): string {
+    return this.bigDataServiceUrl_;
+  }
+
+  set bigDataServiceUrl(val: string) {
+    this.bigDataServiceUrl_ =
+      this.bigDataServiceUrl_ == undefined ? val : this.bigDataServiceUrl_;
+  }
+
+  get blobUrl(): string {
+    return this.blobUrl_;
+  }
+
+  set blobUrl(val) {
+    this.blobUrl_ = this.blobUrl_ == undefined ? val : this.blobUrl_;
+  }
+
+  get configApiUrl(): string {
+    return this.configApiUrl_;
+  }
+
+  set configApiUrl(val) {
+    this.configApiUrl_ =
+      this.configApiUrl_ == undefined ? val : this.configApiUrl_;
+  }
+
+  get defaultFuelStatus(): string {
+    return this.defaultFuelStatus_;
+  }
+
+  set defaultFuelStatus(val) {
+    this.defaultFuelStatus_ =
+      this.defaultFuelStatus_ == undefined ? val : this.defaultFuelStatus_;
+  }
+
+  get commentsPadding(): any {
+    return this.commentsHoverPos_;
+  }
+
+  set commentsPadding(val) {
+    this.commentsHoverPos_ =
+      this.commentsHoverPos_ == undefined ? val : this.commentsHoverPos_;
+  }
+
+  get mongoUrl(): string {
+    return this.mongoUrl_;
+  }
+
+  set mongoUrl(value: string) {
+    this.mongoUrl_ = this.mongoUrl_ == undefined ? value : this.mongoUrl_;
+  }
+
+  get integrationApiUrl(): string {
+    return this.integrationApiUrl_;
+  }
+
+  set integrationApiUrl(value: string) {
+    this.integrationApiUrl_ =
+      this.integrationApiUrl_ == undefined ? value : this.integrationApiUrl_;
+  }
+
+  get integrationLocationUrl(): string {
+    return this.integrationLocationUrl_;
+  }
+
+  set integrationLocationUrl(value: string) {
+    this.integrationLocationUrl_ =
+      this.integrationLocationUrl_ == undefined
+        ? value
+        : this.integrationLocationUrl_;
+  }
+
+  get integrationRequestUrl(): string {
+    return this.integrationRequestUrl_;
+  }
+
+  set integrationRequestUrl(value: string) {
+    this.integrationRequestUrl_ =
+      this.integrationRequestUrl_ == undefined
+        ? value
+        : this.integrationRequestUrl_;
+  }
+
+  get integrationVesselUrl(): string {
+    return this.integrationVesselUrl_;
+  }
+
+  set integrationVesselUrl(value: string) {
+    this.integrationVesselUrl_ =
+      this.integrationVesselUrl_ == undefined
+        ? value
+        : this.integrationVesselUrl_;
+  }
+
+  get planningDashboardApiUrl(): string {
+    return this.planningDashboardApiUrl_;
+  }
+
+  set planningDashboardApiUrl(val: string) {
+    this.planningDashboardApiUrl_ =
+      this.planningDashboardApiUrl_ == undefined
+        ? val
+        : this.planningDashboardApiUrl_;
+  }
+
+  get priceHistoryofLocationUrl(): string {
+    return this.priceHistoryofLocationUrl_;
+  }
+
+  set priceHistoryofLocationUrl(val: string) {
+    this.priceHistoryofLocationUrl_ =
+      this.priceHistoryofLocationUrl_ == undefined
+        ? val
+        : this.priceHistoryofLocationUrl_;
+  }
 
-    set integrationLocationUrl(value:string){
-        this.integrationLocationUrl_=this.integrationLocationUrl_==undefined?value:this.integrationLocationUrl_;
-    }
+  get supplierUrl(): string {
+    return this.supplierUrl_;
+  }
 
-    get integrationRequestUrl():string{
-        return this.integrationRequestUrl_;
-    }
+  set supplierUrl(val: string) {
+    this.supplierUrl_ =
+      this.supplierUrl_ == undefined ? val : this.supplierUrl_;
+  }
 
-    set integrationRequestUrl(value:string){
-        this.integrationRequestUrl_=this.integrationRequestUrl_==undefined?value:this.integrationRequestUrl_;
-    }
+  get productIntegration(): boolean {
+    return this.productIntegration_;
+  }
 
-    get integrationVesselUrl():string{
-        return this.integrationVesselUrl_;
-    }
+  set productIntegration(value: boolean) {
+    this.productIntegration_ = value;
+  }
 
-    set integrationVesselUrl(value:string){
-        this.integrationVesselUrl_=this.integrationVesselUrl_==undefined?
-        value:this.integrationVesselUrl_;
-    }
-        
-    get planningDashboardApiUrl():string{
-        return this.planningDashboardApiUrl_;
-    }
+  tenantId: any;
 
-    set planningDashboardApiUrl(val:string){
-        this.planningDashboardApiUrl_=this.planningDashboardApiUrl_==undefined?
-        val:this.planningDashboardApiUrl_;
-    }
+  userName: any;
 
-    get priceHistoryofLocationUrl():string{
-        return this.priceHistoryofLocationUrl_;
-    }
+  constructor(
+    // private objMongoService:MongodbService,
+    private http: HttpClient,
+    private snackBar: MatSnackBar
+  ) {
+    if (this.mongoUrl == undefined) this.getAppSettings();
 
-    set priceHistoryofLocationUrl(val:string){
-        this.priceHistoryofLocationUrl_=this.priceHistoryofLocationUrl_==undefined?
-        val:this.priceHistoryofLocationUrl_;
-    }
+    this.tenantId =
+      localStorage.getItem('TenantId') == undefined
+        ? 4
+        : localStorage.getItem('TenantId');
 
-    get supplierUrl():string{
-        return this.supplierUrl_;
-    }
+    this.userName =
+      localStorage.getItem('userInfo') == undefined
+        ? ''
+        : localStorage.getItem('userInfo');
 
-    set supplierUrl(val:string){
-        this.supplierUrl_=this.supplierUrl_==undefined?
-        val:this.supplierUrl_;
-    }
+    // this.getAppSettings(tenantId, userName);
+  }
 
-    get productIntegration():boolean{
-        return this.productIntegration_;
-    }
+  getSettingsJson(): Observable<any> {
+    return Observable.create((observer: any) => {
+      this.http.get('./assets/config/settings.json').subscribe(res => {
+        if (res != undefined) {
+          // this.mongoUrl=res["mongoUrl"];
 
-    set productIntegration(value:boolean){
-        this.productIntegration_=value;
-    }
+          // this.objMongoService.apiUrl=this.mongoUrl;
 
-    tenantId:any;
+          observer.next(res);
+        }
+      });
+    });
+  }
 
-    userName:any;
+  getAppSettings(): Observable<any> {
+    return Observable.create((observer: any) => {
+      var queryString =
+        'ConfigurationSettings?TenantId=' +
+        this.tenantId +
+        '&Tags=' +
+        this.configSettingsTagName;
 
-    constructor(
-        // private objMongoService:MongodbService,
-        private http:HttpClient,
-        private snackBar:MatSnackBar){
+      // if(this.userName!=undefined && this.userName!="")
+      // queryString=queryString + "&userName=" + this.userName;
 
-        if(this.mongoUrl==undefined)
-        this.getAppSettings();
+      this.getSettingsJson().subscribe(res => {
+        // this.objMongoService.apiUrl=this.mongoUrl= res["mongoUrl"];
 
-        this.tenantId=localStorage.getItem('TenantId')==undefined?4:localStorage.getItem('TenantId');
+        this.commentsPadding = res['CommentsHover_PaddingY'];
 
-        this.userName=localStorage.getItem('userInfo')==undefined?"":localStorage.getItem('userInfo');
+        //     this.objMongoService.GetNodeApiJson("GET", queryString).subscribe(settings => {
+        //     if(settings==undefined || settings.length==0)
+        //     {
+        //         this.snackBar.open('ERROR in getting App settings', 'error', { duration: 2000, });
 
-        // this.getAppSettings(tenantId, userName);
-    }
+        //         return;
 
-    getSettingsJson():Observable<any>{
+        //     }
 
-        return Observable.create((observer:any)=>{
+        //     this.bigDataServiceUrl=(settings.find(setting=>setting.key=="bigDataServiceUrl")).value;
 
-                this.http.get('./assets/config/settings.json').subscribe((res)=>{
-                
-                    if(res!=undefined){
+        //     this.blobUrl=settings.find(setting=>setting.key=="blobUrl").value;
 
-                        // this.mongoUrl=res["mongoUrl"];
+        //     this.configApiUrl=settings.find(setting=>setting.key=="configApiUrl").value;
 
-                        // this.objMongoService.apiUrl=this.mongoUrl;
+        //     this.defaultFuelStatus=settings.find(setting=>setting.key=="DefaultFuelStatus").value;
 
-                        observer.next(res);
+        //     this.integrationApiUrl=settings.find(setting=>setting.key=="integrationApiUrl").value;
 
-                    }
-                });
+        //     if(settings.find(setting=>setting.key=="ProductIntegration").value.toLowerCase()=="true")
+        //     {
+        //         this.productIntegration=true;
 
-        });
+        //         this.integrationLocationUrl=settings.find(setting=>setting.key=="ProductIntegrationLocationUrl").value;
 
-       
-    }
+        //         this.integrationRequestUrl=settings.find(setting=>setting.key=="ProductIntegrationRequestUrl").value;
 
-    getAppSettings():Observable<any>{
+        //         this.integrationVesselUrl=settings.find(setting=>setting.key=="ProductIntegrationVesselUrl").value;
 
-        return Observable.create((observer:any)=>{
+        //         this.priceHistoryofLocationUrl=settings.find(setting=>setting.key=="LocationPriceHistoryUrl").value;
 
-            var queryString="ConfigurationSettings?TenantId=" + this.tenantId + "&Tags=" + this.configSettingsTagName;
-            
-            // if(this.userName!=undefined && this.userName!="")
-            // queryString=queryString + "&userName=" + this.userName;
+        //         this.supplierUrl=settings.find(setting=>setting.key=="SupplierUrl").value;
+        //     }
 
-            this.getSettingsJson().subscribe((res)=>{
-                console.log("GET SETTINGS JSON");
-                    // this.objMongoService.apiUrl=this.mongoUrl= res["mongoUrl"];
+        //     this.planningDashboardApiUrl=settings.find(setting=>setting.key=="planningDashboardApiUrl").value;
 
-                    this.commentsPadding=res["CommentsHover_PaddingY"];
+        //     observer.next(this);
 
-                //     this.objMongoService.GetNodeApiJson("GET", queryString).subscribe(settings => {
-                //         //console.log(settings);
-                //     if(settings==undefined || settings.length==0)
-                //     {
-                //         this.snackBar.open('ERROR in getting App settings', 'error', { duration: 2000, });
+        //     observer.complete();
 
-                //         return;
-
-                //     }
-
-                //     this.bigDataServiceUrl=(settings.find(setting=>setting.key=="bigDataServiceUrl")).value;
-
-                //     this.blobUrl=settings.find(setting=>setting.key=="blobUrl").value;
-
-                //     this.configApiUrl=settings.find(setting=>setting.key=="configApiUrl").value;
-
-                //     this.defaultFuelStatus=settings.find(setting=>setting.key=="DefaultFuelStatus").value;
-
-                //     this.integrationApiUrl=settings.find(setting=>setting.key=="integrationApiUrl").value;
-                
-                //     if(settings.find(setting=>setting.key=="ProductIntegration").value.toLowerCase()=="true")
-                //     {
-                //         this.productIntegration=true;
-
-                //         this.integrationLocationUrl=settings.find(setting=>setting.key=="ProductIntegrationLocationUrl").value;
-
-                //         this.integrationRequestUrl=settings.find(setting=>setting.key=="ProductIntegrationRequestUrl").value;
-
-                //         this.integrationVesselUrl=settings.find(setting=>setting.key=="ProductIntegrationVesselUrl").value;
-
-                //         this.priceHistoryofLocationUrl=settings.find(setting=>setting.key=="LocationPriceHistoryUrl").value;
-
-                //         this.supplierUrl=settings.find(setting=>setting.key=="SupplierUrl").value;                  
-                //     }
-
-                //     this.planningDashboardApiUrl=settings.find(setting=>setting.key=="planningDashboardApiUrl").value;
-
-                //     observer.next(this);
-
-                //     observer.complete();
-
-                // });
-
-            });
-
-            
-
-        });
-        
-        
-        
-    }
-
+        // });
+      });
+    });
+  }
 }

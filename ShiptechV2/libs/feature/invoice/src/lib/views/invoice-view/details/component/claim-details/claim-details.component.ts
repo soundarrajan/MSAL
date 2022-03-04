@@ -140,7 +140,6 @@ export class ClaimDetailsComponent implements OnInit {
       }
     };
 
-    console.log(data);
     this.invoiceService
       .exchangeRatesConvert(data)
       .pipe(finalize(() => {}))
@@ -149,7 +148,6 @@ export class ClaimDetailsComponent implements OnInit {
           this.spinner.hide();
           this.toastr.error(result);
         } else {
-          console.log(result);
           this.formValues.invoiceClaimDetails[
             index
           ].orderCurrencyAmount = result;

@@ -88,11 +88,9 @@ export class LocalService {
         this.headersProp = new HttpHeaders();
         this.headersProp.append('Content-Type', 'application/json');   
         this.getVesselsList().subscribe(data => {
-            // console.log(data);
         });
 
         this.getCountriesList().subscribe(data => {
-            // console.log(data);
         });
 
     }
@@ -493,7 +491,6 @@ export class LocalService {
           errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
         }
         // this.snackbar.open(errorMessage, '', { duration: 0 });
-        console.log(errorMessage);
         return throwError(errorMessage);
       }
 
@@ -672,7 +669,6 @@ getUnmanagedVessels(request: any): Observable<any> {
 }
 
     // public getVesselByName(vesselName): Observable<any> {
-    //     console.log(vesselName)
     //     return this.http.get("./assets/data/vessels-list.json").pipe(
     //         map((res: any[]) => {
     //             let vesselList: VesselDataModel[] = [];
