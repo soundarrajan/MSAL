@@ -6546,7 +6546,7 @@ APP_API.factory('$Api_Service', [
                                 obj.columnType = entry.columnType;
                             }
                             
-                            if (param.screen != 'delivery' && obj.dtoPath != 'cb') {
+                            if (obj.dtoPath != 'cb') {
                                 payload.columns.push(obj);
                             }
                         }
