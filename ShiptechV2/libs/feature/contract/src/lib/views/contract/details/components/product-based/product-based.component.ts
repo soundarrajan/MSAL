@@ -340,7 +340,6 @@ export class ProductBased extends DeliveryAutocompleteComponent
 
   setContractForm(form) {
     this.formValues = form;
-    console.log(this.formValues);
   }
 
   compareUomObjects(object1: any, object2: any) {

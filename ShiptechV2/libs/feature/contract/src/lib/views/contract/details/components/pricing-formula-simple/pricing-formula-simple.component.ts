@@ -349,7 +349,6 @@ export class PricingFormulaSimple extends DeliveryAutocompleteComponent
 
   setContractForm(form) {
     this.formValues = form;
-    console.log(this.formValues);
   }
 
   compareUomObjects(object1: any, object2: any) {
@@ -376,7 +375,6 @@ export class PricingFormulaSimple extends DeliveryAutocompleteComponent
       const filterValue = this.formValues.simpleFormula.systemInstrument.name
         ? this.formValues.simpleFormula.systemInstrument.name.toLowerCase()
         : this.formValues.simpleFormula.systemInstrument.toLowerCase();
-      console.log(filterValue);
       if (this.systemInstumentList) {
         return this.systemInstumentList
           .filter(

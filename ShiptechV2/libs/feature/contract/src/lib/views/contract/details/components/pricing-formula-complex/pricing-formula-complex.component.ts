@@ -389,7 +389,6 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
 
   setContractForm(form) {
     this.formValues = form;
-    console.log(this.formValues);
   }
 
   compareUomObjects(object1: any, object2: any) {
@@ -459,7 +458,6 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
       const filterValue = this.formValues.currency.name
         ? this.formValues.currency.name.toLowerCase()
         : this.formValues.currency.toLowerCase();
-      console.log(filterValue);
       if (this.currencyList) {
         return this.currencyList
           .filter(
@@ -498,7 +496,6 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
   }
 
   isMeanChange(ob: MatCheckboxChange) {
-    console.log('checked: ' + ob.checked);
     if (ob.checked) {
       for (
         let i = 0;
@@ -578,7 +575,6 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
         line
       ].formulaOperation = _.cloneDeep(findObject);
     }
-    console.log(value);
   }
 
   selectSystemInstrumentFromComplexFormulaQuoteLine(value, line, key) {
