@@ -196,7 +196,6 @@ export class MasterChip {
         formValues.invoiceSummary.deductions
       );
     this.amountChanged.emit(true);
-    console.log(formValues);
   }
 
   calculateInvoiceGrandTotal(formValues) {
