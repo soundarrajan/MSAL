@@ -197,3 +197,11 @@ td.mat-footer-cell:first-of-type {
   line-height: 16px;
   color: #fff;
 }
+.email-preview-popup .header .close
+{
+  opacity: .5;
+}
+.email-preview-popup .header .close:hover
+{
+  opacity: 100;
+}

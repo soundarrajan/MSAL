@@ -1,0 +1,8 @@
+ .close
+{
+    opacity: .5;
+}
+ .close:hover
+{
+    opacity: 100;
+}
