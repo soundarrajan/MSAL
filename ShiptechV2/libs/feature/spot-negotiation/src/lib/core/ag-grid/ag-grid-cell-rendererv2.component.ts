@@ -33,6 +33,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AdditionalCostViewModel } from '../models/additional-costs-model';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -700,6 +701,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   additionalCostList: any[] = [];
   locationRowsAcrossRequest: any;
   paramsDataCloneForNoQuote: any;
+  costTypeList: any[] = [];
+  uomList: any[] = [];
+  currencyListForAdditionalCost: any[] = [];
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -712,8 +716,20 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     private changeDetector: ChangeDetectorRef,
     private route: ActivatedRoute,
     private tenantSettingsService: TenantSettingsService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private legacyLookupsDatabase: LegacyLookupsDatabase
   ) {
+    this.legacyLookupsDatabase.getTableByName('costType').then(response => {
+      this.costTypeList = response;
+    });
+    this.legacyLookupsDatabase.getTableByName('uom').then(response => {
+      this.uomList = response;
+    });
+
+    this.legacyLookupsDatabase.getTableByName('currency').then(response => {
+      this.currencyListForAdditionalCost = response;
+    });
+
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.baseCurrencyId = this.generalTenantSettings.tenantFormats.currency.id;
   }
@@ -994,7 +1010,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         panelClass: 'additional-cost-popup',
         data: {
           requestLocation: requestLocation,
-          rowData: this.params.data
+          rowData: this.params.data,
+          costTypeList: this.costTypeList,
+          uomList: this.uomList,
+          currencyList: this.currencyListForAdditionalCost
         }
       });
 
