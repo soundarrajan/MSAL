@@ -6,6 +6,7 @@
       class="checkbox-alignment"
       [(ngModel)]="duplicateCost"
       (change)="onRequestListCheckboxChange($event)"
+      [disabled]="!requestListToDuplicate.length"
     ></mat-checkbox>
 
     <div class="check-text">Duplicate Costs to:</div>
