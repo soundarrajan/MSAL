@@ -307,13 +307,13 @@
 </div>
 
 
-<mat-autocomplete  #autoCompleteCC="matAutocomplete" (optionSelected)="addCc($event.option.value)" [displayWith]="displayNull">
+<mat-autocomplete  #autoCompleteCC="matAutocomplete" (optionSelected)="addCc($event.option.value, true)" [displayWith]="displayNull">
   <mat-option *ngFor="let option of ccList2" [value]="option.name">
     {{option.name}}
   </mat-option>
 </mat-autocomplete>
 
-<mat-autocomplete  #autoCompleteTO="matAutocomplete" (optionSelected)="addTo($event.option.value)" [displayWith]="displayNull">
+<mat-autocomplete  #autoCompleteTO="matAutocomplete" (optionSelected)="addTo($event.option.value, true)" [displayWith]="displayNull">
   <mat-option *ngFor="let option of toList2" [value]="option.name">
     {{option.name}}
   </mat-option>
