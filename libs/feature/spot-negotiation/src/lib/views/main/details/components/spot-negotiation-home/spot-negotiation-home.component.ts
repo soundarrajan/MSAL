@@ -658,9 +658,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
               lr.requestOffers &&
               selectedSellerRows.some(
                 s =>
-                  s.SellerId == lr.sellerCounterpartyId &&
+                  s.SellerId == lr.sellerCounterpartyId && ((tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
                   lr.physicalSupplierCounterpartyId ==
-                    s.physicalSupplierCounterpartyId
+                    s.physicalSupplierCounterpartyId ) || (!tenantConfig['isPhysicalSupplierMandatoryForQuoting']))
               )
           );
           if (reqOffers.length == 0) {
@@ -785,9 +785,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
         return;
       }
-      if (reqIdwithLocationForSeller) {
+      if (tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && reqIdwithLocationForSeller) {
         this.toaster.error(
           'Selected seller(s) does not have same physical supplier in ' + reqIdwithLocationForSeller
+        );
+        return;
+      }
+      if (!tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && reqIdwithLocationForSeller) {
+        this.toaster.error(
+          'Selected seller(s) does not exists in ' + reqIdwithLocationForSeller
         );
         return;
       }
