@@ -75,9 +75,6 @@ export class AuthService {
   }
 
   private setLoggedIn() {
-    console.log('Accounts');
-    console.log(this.router.events);
-    console.log(this.authService.instance.getAllAccounts().length);
     this.loggedIn = this.authService.instance.getAllAccounts().length > 0;
   }
 

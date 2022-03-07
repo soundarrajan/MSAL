@@ -363,7 +363,6 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       currentFormat = currentFormat.replace(/y/g, 'Y');
       const elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
       const newVal = moment(elem).format(currentFormat);
-      console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
       }
@@ -677,7 +676,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   }
 
   roundDownValue(value, currentRowIndex, type) {
-    console.log(value);
     if (type == 'quantity') {
       let quantityPrecision = this.tenantService.quantityPrecision;
       let plainNumber = this.convertDecimalSeparatorStringToNumber(value);
@@ -724,7 +722,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
       if (amountPrecision) {
         plainNumber = this.truncateToDecimals(plainNumber, amountPrecision);
       }
-      console.log(plainNumber);
       if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {
@@ -767,7 +764,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
         name: selection.name
       };
       this.formValues.productDetails[line].invoicedProduct = obj;
-      console.log(this.formValues.productDetails[line]);
       this.changeDetectorRef.detectChanges();
     }
   }
@@ -799,7 +795,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
         name: this.htmlDecode(selection.name)
       };
       this.formValues.productDetails[line].physicalSupplierCounterparty = obj;
-      console.log(this.formValues.productDetails[line]);
       this.changeDetectorRef.detectChanges();
     }
   }
@@ -858,8 +853,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   }
 
   invoiceConvertUom(type, rowIndex) {
-    console.log(type);
-    console.log(rowIndex);
     const currentRowIndex = rowIndex;
     this.calculateGrand(this.formValues);
     this.type = type;
@@ -951,7 +944,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
           this.spinner.hide();
           this.toastr.error(result);
         } else {
-          console.log(result);
           conversionFactor = result;
           this.formValues.productDetails[currentRowIndex].invoiceAmount =
             this.convertDecimalSeparatorStringToNumber(
@@ -1007,7 +999,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     //   );
     // this.changeDetectorRef.detectChanges();
     this.productDetailChanged.emit(this.formValues.productDetails);
-    // console.log(formValues);
   }
 
   calculateInvoiceGrandTotal(formValues) {
@@ -1103,7 +1094,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
               name: 'Unmatched'
             };
           }
-          console.log(this.formValues);
           this.changeDetectorRef.detectChanges();
         }
       });
@@ -1167,7 +1157,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   }
 
   addTransactionsInInvoice(rowData) {
-    console.log(rowData);
     let transactionstobeinvoiced_dtRow;
     if (rowData.costName) {
       const transaction_type = 'cost';

@@ -366,7 +366,6 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       currentFormat = currentFormat.replace(/y/g, 'Y');
       let elem = moment(value, 'YYYY-MM-DDTHH:mm:ss');
       let newVal = moment(elem).format(currentFormat);
-      console.log(newVal);
       if (elem && this.isValid(elem)) {
         return elem;
       }
@@ -872,7 +871,6 @@ export class ProductPricing extends DeliveryAutocompleteComponent
 
   setContractForm(form) {
     this.formValues = form;
-    console.log(this.formValues);
     if (this.formValues && this.formValues.products[this.selectedTabIndex]) {
       this.selectedVal = this.formValues.products[this.selectedTabIndex]
         .isFormula
@@ -886,7 +884,6 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   setRequiredFields(data) {
     this.buttonClicked = data;
     //this.changeDetectorRef.detectChanges();
-    console.log(this.buttonClicked);
   }
 
   public onValChange(val: string) {
@@ -932,7 +929,6 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         }
       });
       dialogRef.afterClosed().subscribe(result => {
-        console.log('RESULT');
         if (result) {
           this.formValues.products[this.selectedTabIndex].formula = {
             id: result.id,
@@ -969,7 +965,6 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         this.formValues.products[this.selectedTabIndex].formula
       );
       this.changeDetectorRef.detectChanges();
-      console.log(this.formValues.products[this.selectedTabIndex]);
     }
   }
 
@@ -1165,7 +1160,6 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   resetUom(key1, key2) {
-    console.log(this.generalTenantSettings);
     if (
       this.formValues.products[key1].additionalCosts[key2].costType.name !=
       'Unit'
@@ -1290,11 +1284,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       additionalCostLine && additionalCostLine.additionalCostid
         ? additionalCostLine.additionalCostid
         : null;
-    console.log(additionalCostLine);
   }
 
   setAdditionalCost(value, key1, key2) {
-    console.log(value);
     if (value.additionalCostid) {
       this.formValues.products[key1].additionalCosts[key2].additionalCost = {
         id: value.additionalCostid,
@@ -1355,9 +1347,9 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   recomputeProductPricePrecision(productKey) {
-    let priceInput = (<HTMLInputElement>(
+    let priceInput = <HTMLInputElement>(
       document.getElementById('price_' + productKey)
-    ));
+    );
     if (this.formValues.products[productKey].price && priceInput) {
       (<HTMLInputElement>(
         document.getElementById('price_' + productKey)
@@ -1425,9 +1417,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     }
   }
 
-  changePricing(type) {
-    console.log(type);
-  }
+  changePricing(type) {}
 
   // Only Number
   keyPressNumber(event) {
@@ -1454,7 +1444,6 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   updateConversionFactor(event) {
-    console.log(event);
     if (!this.formValues.products[this.selectedTabIndex].conversionFactors) {
       return;
     }
@@ -1497,7 +1486,6 @@ export class ProductPricing extends DeliveryAutocompleteComponent
               this.toastr.error(response);
               this.spinner.hide();
             } else {
-              console.log(response);
               if (response) {
                 conversionFactors.value = response.value;
                 conversionFactors.massUom = response.massUom;
@@ -1544,7 +1532,6 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   }
 
   openFormulaHistory(productId) {
-    console.log(this._entityId);
     let payload = {
       ContractId: this._entityId,
       ContractProductId: productId
@@ -1561,7 +1548,6 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
           if (response) {
             const dialogRef = this.dialog.open(FormulaHistoryModalComponent, {
               width: '80%',
@@ -1570,9 +1556,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
               }
             });
 
-            dialogRef.afterClosed().subscribe(result => {
-              console.log(result);
-            });
+            dialogRef.afterClosed().subscribe(result => {});
           }
         }
       });

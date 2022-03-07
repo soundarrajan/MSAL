@@ -10,7 +10,6 @@ import { BootstrapResolver } from './resolver/bootstrap-resolver';
 import { MsalGuard } from '@azure/msal-angular';
 import { environment } from '@shiptech/environment';
 
-console.log(environment.useAdal);
 const routes: Routes = environment.useAdal
   ? [
       {
@@ -291,9 +290,9 @@ const routes: Routes = environment.useAdal
               import('@shiptech/feature/spot-negotiation').then(
                 m => m.SpotNegotiationModule
               ),
-              resolve: {
-                data: BootstrapResolver
-              }
+            resolve: {
+              data: BootstrapResolver
+            }
           }
         ]
       },

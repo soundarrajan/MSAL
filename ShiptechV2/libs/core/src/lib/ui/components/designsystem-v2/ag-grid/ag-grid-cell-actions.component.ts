@@ -81,7 +81,6 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
 
   agInit(params: any): void {
     this.params = params;
-    // console.log(this.params);
   }
 
   refresh(): boolean {

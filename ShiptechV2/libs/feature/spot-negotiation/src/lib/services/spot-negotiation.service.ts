@@ -25,6 +25,7 @@ import {
   IDocumentsUpdateNotesRequest,
   IDocumentsUpdateNotesResponse
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class SpotNegotiationService extends BaseStoreService
@@ -414,8 +415,19 @@ export class SpotNegotiationService extends BaseStoreService
   @ObservableException()
   updateIsVerifiedDocument(
     payload: IDocumentsUpdateIsVerifiedRequest
-  ): Observable<IDocumentsUpdateIsVerifiedResponse> {
-    return this.spotNegotiationApi.updateIsVerifiedDocument(payload);
+  ): Observable<any> {
+    return this.spotNegotiationApi.updateIsVerifiedDocument(payload).pipe(
+      map((body: any) => body.payload),
+      catchError((body: any) =>
+        of(
+          body.error?.ErrorMessage && body.error?.Reference
+            ? body.error.ErrorMessage + ' ' + body.error.Reference
+            : body.status == 401
+            ? { message: 'Unauthorized' }
+            : body.error.errorMessage + ' ' + body.error.reference
+        )
+      )
+    );
   }
 
   /**
@@ -469,11 +481,10 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.updateNegotiationComments(payload);
   }
 
-
   /**
-  * @param payload
-  */
-   UpdateSellerComments(payload: any): Observable<unknown> {
+   * @param payload
+   */
+  UpdateSellerComments(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.UpdateSellerComments(payload);
   }
 
@@ -492,8 +503,8 @@ export class SpotNegotiationService extends BaseStoreService
   }
 
   /**
-  * @param payload
-  */
+   * @param payload
+   */
   UpdateProductPrices(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.UpdateProductPrices(payload);
   }
@@ -541,7 +552,15 @@ export class SpotNegotiationService extends BaseStoreService
     return this.getRequestList(payload);
   }
 
-  formatRowData(row, product, field, newValue, currentLocation, isPriceCopied, sourceReqProOff) {
+  formatRowData(
+    row,
+    product,
+    field,
+    newValue,
+    currentLocation,
+    isPriceCopied,
+    sourceReqProOff
+  ) {
     const productDetails = this.getRowProductDetails(row, product.id);
 
     //Change with new value
@@ -553,10 +572,13 @@ export class SpotNegotiationService extends BaseStoreService
       default:
         break;
     }
-    productDetails.exchangeRateToBaseCurrency = isPriceCopied? (sourceReqProOff?.exchangeRateToBaseCurrency??1) : (productDetails.exchangeRateToBaseCurrency?? 1); 
+    productDetails.exchangeRateToBaseCurrency = isPriceCopied
+      ? sourceReqProOff?.exchangeRateToBaseCurrency ?? 1
+      : productDetails.exchangeRateToBaseCurrency ?? 1;
     // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
     productDetails.totalPrice =
-      (Number(productDetails.price) + productDetails.cost) / (productDetails.exchangeRateToBaseCurrency?? 1); // Amount = Total Price * Max. Quantity
+      (Number(productDetails.price) + productDetails.cost) /
+      (productDetails.exchangeRateToBaseCurrency ?? 1); // Amount = Total Price * Max. Quantity
     productDetails.amount = productDetails.totalPrice * product.maxQuantity;
 
     // Target Difference = Total Price - Target Price
@@ -570,10 +592,12 @@ export class SpotNegotiationService extends BaseStoreService
         ? 0
         : productDetails.targetDifference;
     productDetails.isOfferPriceCopied = isPriceCopied;
-    productDetails.currencyId = isPriceCopied ? sourceReqProOff?.currencyId : productDetails.currencyId;
+    productDetails.currencyId = isPriceCopied
+      ? sourceReqProOff?.currencyId
+      : productDetails.currencyId;
     // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
 
-    if(isPriceCopied)
+    if (isPriceCopied)
       productDetails.offerPriceCopiedFrom = sourceReqProOff?.id;
     const currentLocationAllProductsIds = currentLocation.requestProducts.map(
       e => e.id
@@ -644,5 +668,4 @@ export class SpotNegotiationService extends BaseStoreService
   getOfferPrice(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.getOfferPriceHistory(payload);
   }
-
 }

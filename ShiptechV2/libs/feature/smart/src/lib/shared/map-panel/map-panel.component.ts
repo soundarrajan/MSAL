@@ -11,7 +11,6 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
   styleUrls: ['./map-panel.component.scss']
 })
 export class MapPanelComponent implements OnInit {
-
   @Input() isShowPanel: boolean;
   @Input('highIntensity') highIntensity: boolean;
   @Input('hidePanel') hidePanel: boolean;
@@ -33,15 +32,15 @@ export class MapPanelComponent implements OnInit {
   public displayClose: boolean;
   public enableVesselPortList: boolean = true;
   public filterList = [];
-  public selectedValue = "";
+  public selectedValue = '';
   public isActiveVessel: boolean = true;
   public isActivePort: boolean = false;
-  public selectedType = "";
-  public theme:boolean = true;
+  public selectedType = '';
+  public theme: boolean = true;
   searchControl = new FormControl();
   filteredOptions: Observable<string[]>;
   toggleFlag: boolean;
-  constructor(private localService: LocalService) { }
+  constructor(private localService: LocalService) {}
 
   ngOnInit() {
     // this.localService.getVesselsList().subscribe((res: any) => {
@@ -52,13 +51,12 @@ export class MapPanelComponent implements OnInit {
     //   this.portList = response;
     //   this.filterList = this.vesselList.concat(this.portList)
     // });
-    this.localService.themeChange.subscribe(value => this.theme = value);
-    this.searchControl.setValue("");
-    this.selectedValue = "";
+    this.localService.themeChange.subscribe(value => (this.theme = value));
+    this.searchControl.setValue('');
+    this.selectedValue = '';
     this.filteredOptions = this.searchControl.valueChanges.pipe(
       map(value => this._filter(value))
     );
-
   }
   ngOnChanges() {
     this.setVesselPortList();
@@ -67,18 +65,16 @@ export class MapPanelComponent implements OnInit {
   changeTab(v, p) {
     this.isActiveVessel = v;
     this.isActivePort = p;
-    if (v)
-      this.list = this.vList;
-    else
-      this.list = this.pList;
-
+    if (v) this.list = this.vList;
+    else this.list = this.pList;
   }
   private _filter(value: string): string[] {
     const filterValue = value.toString().toLowerCase();
-    if (filterValue == "")
-      return;
+    if (filterValue == '') return;
     else
-      return this.filterList.filter(option => (option.name.toLowerCase().indexOf(filterValue) > -1));
+      return this.filterList.filter(
+        option => option.name.toLowerCase().indexOf(filterValue) > -1
+      );
   }
   clearSearch() {
     this.searchControl.setValue('');
@@ -91,16 +87,16 @@ export class MapPanelComponent implements OnInit {
   }
 
   onClickInput(vessel) {
-
     this.searchControl.setValue(vessel.value);
-    if (this.searchControl.value.trim() != "") {
+    if (this.searchControl.value.trim() != '') {
       this.displayClose = true;
       this.enableVesselPortList = false;
       this.toggleFlag = false;
     }
   }
   onKeyDown(trigger: MatAutocompleteTrigger, event) {
-    if (event.keyCode != '13') {//If not on keyboard ENTER keycode
+    if (event.keyCode != '13') {
+      //If not on keyboard ENTER keycode
       this.displayClose = true;
       this.enableVesselPortList = false;
       this.toggleFlag = false;
@@ -114,18 +110,33 @@ export class MapPanelComponent implements OnInit {
     this.pList = [];
     //Make a list of vesselname and vessel ID
     this.vesselList.forEach(vessel => {
-      this.filterList.push({ type: 'V', id: vessel.vesselId, name: vessel.vesselName });
-      this.vList.push({ type: 'V', id: vessel.vesselId, name: vessel.vesselName });
-     // this.filterList.push({ type: 'V', id: vessel.vesselId, name: vessel.vesselName });
+      this.filterList.push({
+        type: 'V',
+        id: vessel.vesselId,
+        name: vessel.vesselName
+      });
+      this.vList.push({
+        type: 'V',
+        id: vessel.vesselId,
+        name: vessel.vesselName
+      });
+      // this.filterList.push({ type: 'V', id: vessel.vesselId, name: vessel.vesselName });
     });
     // this.vesselList.forEach(vessel => {
     //   this.filterList.push({ type: 'V', id: vessel.VesselIMONO, name: vessel.VesselIMONO });
     // });
     this.portList.forEach(port => {
-      this.filterList.push({ type: 'P', id: port.locationId, name: port.locationName });
-      this.pList.push({ type: 'P', id: port.locationId, name: port.locationName });
+      this.filterList.push({
+        type: 'P',
+        id: port.locationId,
+        name: port.locationName
+      });
+      this.pList.push({
+        type: 'P',
+        id: port.locationId,
+        name: port.locationName
+      });
     });
-
   }
   onVesselSelected(event, trigger: MatAutocompleteTrigger) {
     this.selectedType = event.option.value.type;
@@ -139,21 +150,25 @@ export class MapPanelComponent implements OnInit {
       document.getElementById('vesselSearch').blur();
     }
     if (this.selectedType == 'V') {
-      console.log(this.searchControl.value + '')
-      let vessel = this.vesselList.filter(element => (element.vesselId == this.searchControl.value) ||
-      (element.vesselName.toLowerCase() == this.searchControl.value.toString().toLowerCase()));
+      let vessel = this.vesselList.filter(
+        element =>
+          element.vesselId == this.searchControl.value ||
+          element.vesselName.toLowerCase() ==
+            this.searchControl.value.toString().toLowerCase()
+      );
       if (vessel.length > 0) {
         this.changeVessel.emit(vessel[0]);
       }
-    }
-    else {
-      let port = this.portList.filter(element => (element.locationId == this.searchControl.value));
+    } else {
+      let port = this.portList.filter(
+        element => element.locationId == this.searchControl.value
+      );
       if (port.length > 0) {
         this.changePort.emit(port[0]);
       }
     }
     this.clearSearch();
-    this.selectedValue="";
+    this.selectedValue = '';
   }
   toggleVesselPortList(event, trigger: MatAutocompleteTrigger) {
     event.stopPropagation();
@@ -162,11 +177,9 @@ export class MapPanelComponent implements OnInit {
     if (!this.toggleFlag) {
       trigger.openPanel();
       this.toggleFlag = true;
-    }
-    else {
+    } else {
       trigger.closePanel();
       this.toggleFlag = false;
     }
-
   }
 }

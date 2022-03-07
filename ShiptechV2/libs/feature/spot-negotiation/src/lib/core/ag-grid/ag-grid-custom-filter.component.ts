@@ -171,8 +171,6 @@ export class AggridCustomFilter implements IFilterAngularComp {
   }
 
   doesFilterPass(params: IDoesFilterPassParams): boolean {
-    // console.log(typeof(params.data[this.params.primaryColId]));
-    // console.log(typeof(params.data[this.params.secondaryColId]));
     if (
       this.selectedUnit != null &&
       this.selectedUnit != '' &&

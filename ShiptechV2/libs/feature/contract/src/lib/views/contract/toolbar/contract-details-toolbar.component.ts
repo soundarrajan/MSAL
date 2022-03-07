@@ -81,7 +81,6 @@ export class ContractDetailsToolbarComponent
     private chRef: ChangeDetectorRef
   ) {
     this.baseOrigin = new URL(window.location.href).origin;
-    console.log(this.baseOrigin);
   }
 
   ngOnInit(): void {
@@ -274,7 +273,6 @@ export class ContractDetailsToolbarComponent
   createNavigationItems(payload) {
     // indexStatus = calculate if is previous, current or next
     if (typeof payload != 'undefined') {
-      console.log('the payload', payload);
     }
 
     var navigationItems = [
@@ -493,7 +491,6 @@ export class ContractDetailsToolbarComponent
       ];
     }
     this.navigationItems = [...navigationItems, ...shiptechLiteTransactions];
-    console.log(this.navigationItems);
   }
 
   markNavigationItems() {

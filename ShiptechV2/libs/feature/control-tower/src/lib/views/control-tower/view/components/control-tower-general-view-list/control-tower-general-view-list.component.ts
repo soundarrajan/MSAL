@@ -428,9 +428,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
-  ngOnChanges(): void {
-    console.log(this.gridViewModel.groupedCountValues);
-  }
+  ngOnChanges(): void {}
   ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
@@ -538,9 +536,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     };
 
     this.controlTowerService
-      .getQuantityResiduePopUp(payloadData, payloadData => {
-        console.log('asd');
-      })
+      .getQuantityResiduePopUp(payloadData, payloadData => {})
       .pipe()
       .subscribe(
         (response: any) => {
@@ -558,8 +554,6 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
               data: dialogData
             });
             dialogRef.afterClosed().subscribe(result => {
-              console.log(`Dialog result: ${result}`);
-              console.log(ev);
               this.gridViewModel.updateValues(ev, result);
             });
           }
@@ -641,9 +635,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     };
 
     this.controlTowerService
-      .getResiduePopUp(payloadData, payloadData => {
-        console.log('asd');
-      })
+      .getResiduePopUp(payloadData, payloadData => {})
       .pipe()
       .subscribe(
         (response: any) => {
@@ -661,8 +653,6 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
               data: dialogData
             });
             dialogRef.afterClosed().subscribe(result => {
-              console.log(`Dialog result: ${result}`);
-              console.log(ev);
               this.gridViewModel.updateValues(ev, result);
             });
           }
@@ -729,9 +719,7 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
     let payloadData = rowData?.id;
 
     this.controlTowerService
-      .getQualityLabsPopUp(payloadData, payloadData => {
-        console.log('asd');
-      })
+      .getQualityLabsPopUp(payloadData, payloadData => {})
       .pipe()
       .subscribe(
         (response: any) => {
@@ -757,8 +745,6 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
               data: dialogData
             });
             dialogRef.afterClosed().subscribe(result => {
-              console.log(`Dialog result: ${result}`);
-              console.log(ev);
               this.gridViewModel.updateValues(ev, result);
               // this.savePopupChanges(ev, result);
             });

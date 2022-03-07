@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { ICellEditorAngularComp } from 'ag-grid-angular';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import _moment from "moment"
-import {default as _rollupMoment} from 'moment';
+import _moment from 'moment';
+import { default as _rollupMoment } from 'moment';
 const moment = _rollupMoment || _moment;
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FormControl } from '@angular/forms';
@@ -19,8 +19,8 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
 
 @Component({
   selector: 'app-date-time-toggle',
-  template: `    
-  <div
+  template: `
+    <div
       (click)="$event.stopPropagation(); picker.open()"
       style="cursor:pointer;float: left;position:relative;font-size: 12px;color: #ffffff;
   font-weight: 500;"
@@ -41,7 +41,7 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
     right: -6px;"
         >
           {{ timeValue }}
-        </div>        
+        </div>
       </div>
     </div>
     <mat-datepicker-toggle matSuffix [for]="picker">
@@ -53,7 +53,7 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
       "
       #picker
       (opened)="opened()"
-    ></mat-datepicker>    
+    ></mat-datepicker>
     <input
       #timepicker
       [(ngModel)]="timerValue"
@@ -63,18 +63,19 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
       style="position: absolute;top: -19px;
                width: 100px;visibility:hidden;border: none"
     />
-    
-    <span [owlDateTimeTrigger]="dt" style="position: absolute;top: 7px;left: 116px;"><i class="fa">&#xf017;</i></span>
-      <owl-date-time [pickerType]="'timer'"
-        #dt        
-        [panelClass]="
-          dark ? ['timerPanelClass', 'darktheme'] : 'timerPanelClass'
-        "
-        (afterPickerClosed)="timepickerClosed()"
-        (afterPickerOpen)="timepickerOpened()"
-      ></owl-date-time>
-    
-    
+
+    <span
+      [owlDateTimeTrigger]="dt"
+      style="position: absolute;top: 7px;left: 116px;"
+      ><i class="fa">&#xf017;</i></span
+    >
+    <owl-date-time
+      [pickerType]="'timer'"
+      #dt
+      [panelClass]="dark ? ['timerPanelClass', 'darktheme'] : 'timerPanelClass'"
+      (afterPickerClosed)="timepickerClosed()"
+      (afterPickerOpen)="timepickerOpened()"
+    ></owl-date-time>
   `
 })
 export class AgGridDatetimePickerToggleComponent
@@ -108,10 +109,8 @@ export class AgGridDatetimePickerToggleComponent
     this.initialDate.setValue(new Date(this.valueField));
     this.timeValue = this.valueField.slice(-6);
     //var timervalue = this.timeValue;
-    //console.log(this.timeValue);
     var showTime = this.timeValue.split(':');
     this.timerValue = new Date(0, 0, 0, showTime[0], showTime[1]);
-    //console.log(this.timerValue);
     // let d = new Date(this.valueField);
     // let h = (d.getHours()<10?'0':'') + d.getHours();
     // let m = (d.getMinutes()<10?'0':'') + d.getMinutes();
@@ -123,7 +122,6 @@ export class AgGridDatetimePickerToggleComponent
 
   onChange(event) {
     //alert("");
-    //console.log(event.value);
     this.timeValue = event.value.getHours() + ':' + event.value.getMinutes();
     let h = (event.value.getHours() < 10 ? '0' : '') + event.value.getHours();
     let m =
@@ -147,7 +145,6 @@ export class AgGridDatetimePickerToggleComponent
   timepickerClosed() {
     //alert("");
     //var elements = document.getElementsByClassName('owl-dt-control')[1] as HTMLElement;
-    //console.log(elements[1]);
     //elements.click();
     //alert(this.timeValue);
     this.onDatePicked.emit({ date: this.initialDate, time: this.timeValue });
@@ -159,7 +156,6 @@ export class AgGridDatetimePickerToggleComponent
     for (i = 0; i < arrowclick.length; i++) {
       arrowclick[i].addEventListener("click",function() {
         var elements = document.getElementsByClassName('owl-dt-control')[1] as HTMLElement;
-        //console.log(elements[1]);
         elements.click();
         event.stopPropagation();
         //this.dt.open();
@@ -177,7 +173,6 @@ export class AgGridDatetimePickerToggleComponent
       var elements = document.getElementsByClassName(
         'owl-dt-control'
       )[1] as HTMLElement;
-      //console.log(elements[1]);
       //elements.click();
       this.dt.close();
       this.picker.open();

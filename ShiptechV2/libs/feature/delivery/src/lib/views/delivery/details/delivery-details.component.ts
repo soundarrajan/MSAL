@@ -665,11 +665,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
     if (variance != null) {
       if (conversionInfo.quantityReconciliation.name == 'Flat') {
-        if(variance < 0) { // negative
+        if (variance < 0) {
+          // negative
           if (Math.abs(variance) <= conversionInfo.maxToleranceLimit) {
             this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
-          }
-          else {
+          } else {
             this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
           }
         } else {
@@ -677,18 +677,16 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         }
       } else {
         const minValue =
-          (conversionInfo.minToleranceLimit *
-            Number(sellerConvertedValue)) /
+          (conversionInfo.minToleranceLimit * Number(sellerConvertedValue)) /
           100;
         const maxValue =
-          (conversionInfo.maxToleranceLimit *
-            Number(sellerConvertedValue)) /
+          (conversionInfo.maxToleranceLimit * Number(sellerConvertedValue)) /
           100;
-        if(variance < 0) { // negative
+        if (variance < 0) {
+          // negative
           if (Math.abs(variance) <= maxValue) {
             this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
-          }
-          else {
+          } else {
             this.formValues.temp.reconStatus[`product_${productIdx}`] = 3; // Unmatched Red
           }
         } else {
@@ -855,7 +853,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     }
 
     // #38774 - if splitted delivery, then calculate final quantity for unselected product as well
-    if (this.formValues.splittedDeliveryId && this.formValues.splittedDeliveryId > 0 && productIdx > -1) {
+    if (
+      this.formValues.splittedDeliveryId &&
+      this.formValues.splittedDeliveryId > 0 &&
+      productIdx > -1
+    ) {
       this.calculateFinalQuantity(productIdx);
     } else {
       this.calculateFinalQuantity(this.selectedProductIndex);
@@ -920,12 +922,11 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     ) {
       this.formValues.temp.variances[`mfm_color_${idx}`] = '';
     }
-      // new color code
-      // 1. If the variance is Negative value and exceeds Max tolerance, then display the “Variance Qty” value field in “Red” colour
-      // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
-      // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
+    // new color code
+    // 1. If the variance is Negative value and exceeds Max tolerance, then display the “Variance Qty” value field in “Red” colour
+    // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
+    // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
 
-    
     if (typeof this.formValues.temp.reconStatus == 'undefined') {
       this.formValues.temp.reconStatus = [];
       this.formValues.temp.reconStatus[`product_${idx}`] = undefined;
@@ -1645,15 +1646,19 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             this.decodeFields();
             this.toastrService.success('Delivery saved successfully');
             this.router
-            .navigate([
-              KnownPrimaryRoutes.Delivery,
-              `${KnownDeliverylRoutes.Delivery}`,
-              result,
-              KnownDeliverylRoutes.DeliveryDetails
-            ])
-            .then(() => {
-              this.myMonitoringService.logMetric('Create ' + (<any>window).location.href, Date.now() - (<any>window).startCreateDeliveryTime, (<any>window).location.href);
-            });
+              .navigate([
+                KnownPrimaryRoutes.Delivery,
+                `${KnownDeliverylRoutes.Delivery}`,
+                result,
+                KnownDeliverylRoutes.DeliveryDetails
+              ])
+              .then(() => {
+                this.myMonitoringService.logMetric(
+                  'Create ' + (<any>window).location.href,
+                  Date.now() - (<any>window).startCreateDeliveryTime,
+                  (<any>window).location.href
+                );
+              });
           }
         });
     } else {
@@ -1671,16 +1676,24 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           if (typeof result == 'string') {
             this.spinner.hide();
             this.toastrService.error(result);
-            this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);
+            this.myMonitoringService.logMetric(
+              'Update ' + (<any>window).location.href,
+              Date.now() - (<any>window).startUpdateDeliveryTime,
+              (<any>window).location.href
+            );
           } else {
             this.toastrService.success('Delivery saved successfully');
             this.deliveryService
-						.loadDeliverytDetails(result.id)
-						.pipe(
-              finalize(() => {
-                this.spinner.hide();
-                this.myMonitoringService.logMetric('Update ' + (<any>window).location.href, Date.now() - (<any>window).startUpdateDeliveryTime, (<any>window).location.href);
-							})
+              .loadDeliverytDetails(result.id)
+              .pipe(
+                finalize(() => {
+                  this.spinner.hide();
+                  this.myMonitoringService.logMetric(
+                    'Update ' + (<any>window).location.href,
+                    Date.now() - (<any>window).startUpdateDeliveryTime,
+                    (<any>window).location.href
+                  );
+                })
               )
               .subscribe((data: any) => {
                 this.formValues.sampleSources = data.sampleSources;
@@ -1705,7 +1718,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     this.formValues.deliveryProducts.forEach((product, k) => {
       if (this.formValues.temp.variances) {
         const getColor = this.formValues.temp.variances['color_' + k];
-        console.log(getColor);
         if (getColor == 'amber') {
           product.reconMatch = {
             id: 3
@@ -1995,7 +2007,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   notesUpdate() {
-    console.log('Mouse out notes section');
     const findNotesWithIdZero = _.filter(
       this.formValues.deliveryNotes,
       function(object) {
@@ -2026,7 +2037,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
             this.spinner.hide();
             this.toastrService.error(result);
           } else {
-            console.log(result);
             this.formValues.deliveryNotes = _.cloneDeep(result);
             this.changeDetectorRef.detectChanges();
           }
@@ -2043,9 +2053,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-    });
+    dialogRef.afterClosed().subscribe(result => {});
   }
-
 }

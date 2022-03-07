@@ -430,7 +430,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
               });
 
               dialogRef.afterClosed().subscribe(result => {
-                console.log(result);
                 if(result) {
                   this.menuClick = true;
                   this.inputMenuTrigger.openMenu();
@@ -532,7 +531,6 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                 });
 
                 dialogRef.afterClosed().subscribe(result => {
-                  console.log(result);
                   if(result) {
                     this.menuClick = true;
                     this.inputMenuTrigger.openMenu();
@@ -900,7 +898,6 @@ export class HoverMenuComponent {
   constructor(private elem: ElementRef, private localService: LocalService) {}
 
   ngOnInit() {
-    console.log(this.items);
     
     this.localService.themeChange.subscribe((value) => (this.theme = value));
   }

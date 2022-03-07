@@ -140,9 +140,6 @@ export class MyNotesComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.store.selectSnapshot(UserProfileState.user);
 
-    console.log(this.screenList);
-    console.log(this.controlTowerNotesViewType);
-    console.log(this.screenType);
     let screenType = this.screenType;
     this.view = _.find(this.screenList, function(object) {
       return object.name == screenType;
@@ -150,7 +147,6 @@ export class MyNotesComponent implements OnInit {
     this.timeView = this.controlTowerNotesViewType[0].id.toString();
     this.defaultTimeView = this.controlTowerNotesViewType[0].id.toString();
 
-    console.log(this.view);
     this.getMyNotes();
   }
 
@@ -260,7 +256,6 @@ export class MyNotesComponent implements OnInit {
       message: noteLine.message,
       isDeleted: noteLine.isDeleted
     };
-    console.log(payload);
     this.controlTowerService
       .saveControlTowerNote(payload, this.view)
       .pipe()
@@ -268,14 +263,12 @@ export class MyNotesComponent implements OnInit {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else if (response.message === 'Unauthorized') {
-          console.log(response);
           if (!noteLine.id) {
             selectedPeriodLine.notes.splice(0, 1);
           } else {
             let initialNote = this.initialNotesContent[lineIndex]?.notes[
               noteIndex
             ];
-            console.log(initialNote);
             noteLine.title = initialNote.title;
             noteLine.message = initialNote.message;
           }
@@ -378,7 +371,6 @@ export class MyNotesComponent implements OnInit {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
           this.filteredNotes = _.cloneDeep(response);
           for (let i = 0; i < this.filteredNotes.length; i++) {
             this.filteredNotes[i].displayName = selectedLinePeriod.displayName;

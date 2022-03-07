@@ -425,7 +425,6 @@ export class InvoiceListGridViewModel extends BaseGridViewModel {
   }
 
   public getParameters(data: any): string {
-    console.log(data);
     return 'red';
   }
 

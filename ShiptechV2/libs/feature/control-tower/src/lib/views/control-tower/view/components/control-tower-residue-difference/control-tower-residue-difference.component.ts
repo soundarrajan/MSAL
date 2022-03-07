@@ -25,7 +25,6 @@ export class ControlTowerResidueDifferenceComponent implements OnInit {
   ngOnInit(): void {}
 
   selectedTabChange(e: MatTabChangeEvent) {
-    //console.log(e);
     if (e.index == 0) this.gridTitle = 'Sludge Difference';
 
     if (e.index == 1) this.gridTitle = 'EGCS Product Difference';

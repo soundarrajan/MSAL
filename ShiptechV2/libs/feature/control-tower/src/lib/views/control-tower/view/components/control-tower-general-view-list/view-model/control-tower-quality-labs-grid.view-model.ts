@@ -447,7 +447,6 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   }
 
   public updateValues(ev, values): void {
-    console.log(values);
     const rowNode = this.gridApi.getRowNode(ev.data.id.toString());
     if (values?.status) {
       const newStatus = _.cloneDeep(values.status);
@@ -554,7 +553,6 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
       };
       params['request']['filterModel'] = updatedFilter;
     }
-    console.log(params);
   }
 
   public evaluateYesNoToBoolFilter(params, filterModel, filterVal) {
@@ -635,7 +633,6 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const grid1 = this.gridApi.getSortModel();
     this.getFiltersCount();
-    console.log(grid1);
     this.formatFilterModel(params);
     this.checkStatusAvailable();
     this.paramsServerSide = params;

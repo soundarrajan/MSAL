@@ -8,19 +8,17 @@ import { UpDownloadGridComponent } from '../up-download-grid/up-download-grid.co
 })
 export class DragDropUploadComponent implements OnInit {
   @ViewChild(UpDownloadGridComponent) uploadgrid: UpDownloadGridComponent;
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   files: any[] = [];
   public doc_type;
   public enableFileUpload: boolean = false;
   public enableDrag: boolean = false;
   enableUpload(e) {
-    //console.log(e.);
-   this.doc_type = e.value;
-   //(this.doc_type);
+    this.doc_type = e.value;
+    //(this.doc_type);
     this.enableFileUpload = true;
     this.enableDrag = true;
   }
@@ -47,8 +45,6 @@ export class DragDropUploadComponent implements OnInit {
     this.files.splice(index, 1);
   }
 
-
-
   /**
    * Convert Files list to normal array list
    * @param files (Files List)
@@ -57,12 +53,7 @@ export class DragDropUploadComponent implements OnInit {
     for (const item of files) {
       item.progress = 0;
       this.files.push(item);
-      this.uploadgrid.uploadDocument(this.files,this.doc_type);
+      this.uploadgrid.uploadDocument(this.files, this.doc_type);
     }
-
   }
-
-
-
-
 }

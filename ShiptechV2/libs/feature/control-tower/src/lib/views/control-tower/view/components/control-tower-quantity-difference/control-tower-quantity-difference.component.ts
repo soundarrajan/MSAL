@@ -30,7 +30,6 @@ export class ControlTowerQuantityDifferenceComponent implements OnInit {
   constructor(public dialog: MatDialog) {}
 
   selectedTabChange(e: MatTabChangeEvent) {
-    //console.log(e);
     if (e.index == 0) this.gridTitle = 'ROB Difference';
 
     if (e.index == 1) this.gridTitle = 'Supply Difference';

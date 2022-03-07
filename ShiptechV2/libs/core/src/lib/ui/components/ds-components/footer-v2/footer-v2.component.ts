@@ -24,7 +24,6 @@ export class FooterV2Component implements OnInit {
 
   pageChanged(e) {
     this.page = e;
-    //console.log(e);
     //this.pageChange.emit(event)
   }
 
@@ -36,7 +35,6 @@ export class FooterV2Component implements OnInit {
     //     '../assets/customicons/datepicker.svg'
     //   )
     // );
-
     // for (let i = 1; i <= 100; i++) {
     //   this.collection.push(`item ${i}`);
     // }

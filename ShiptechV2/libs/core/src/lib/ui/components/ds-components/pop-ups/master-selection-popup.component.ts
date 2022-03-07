@@ -117,7 +117,6 @@ export class MasterSelectionDialog implements OnInit{
         this.page = this.inputpage = 1;
         this.loadSelectedTypes(this.data.selectionType); 
         this.changeDetectorRef.detectChanges();
-        console.log("event",event)
     }
     
     pageNumberChanges(event){
@@ -298,7 +297,6 @@ export class MasterSelectionDialog implements OnInit{
     }
     onFilterModified(event){
         this.columnFilterModel = event.api.getFilterModel();
-        // console.log('this.columnFilterModel',this.columnFilterModel)
     }
     onFilterChanged(event){
         this.columnFilterModel = event.api.getFilterModel();
@@ -316,7 +314,6 @@ export class MasterSelectionDialog implements OnInit{
         let filterModelArr = Object.keys(filterModel)
         this.columnFilterModelArr = [];
         filterModelArr.forEach(async (filterKey, index) => {
-          console.log(filterKey);
           let filterType = (filterModel[filterKey]?.filterType);
           let columnFormat = Object.assign({}, columnCondSchema);
           columnFormat.columnValue = await this.mapColumnValue(filterKey.split('~~~')[0]);

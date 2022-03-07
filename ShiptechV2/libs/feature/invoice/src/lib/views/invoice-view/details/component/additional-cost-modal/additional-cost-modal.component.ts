@@ -291,8 +291,6 @@ export class AdditionalCostModalComponent implements OnInit {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
-          console.log(response);
           this.applyForList = response;
           this.changeDetectorRef.detectChanges();
         }
@@ -305,7 +303,6 @@ export class AdditionalCostModalComponent implements OnInit {
 
   radioSelected(element) {
     this.selectedRow = element;
-    console.log(this.selectedRow.product);
   }
 
   getFilterPredicate() {}
@@ -504,7 +501,6 @@ export class AdditionalCostModalComponent implements OnInit {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
           additionalCost.invoiceRate = this.quantityFormatValue(response.price);
           this.invoiceConvertUom('cost', rowIndex);
         }
@@ -598,8 +594,6 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   invoiceConvertUom(type, rowIndex) {
-    console.log(type);
-    console.log(rowIndex);
     const currentRowIndex = rowIndex;
     this.calculateGrand(this.formValues);
     this.type = type;
@@ -632,7 +626,6 @@ export class AdditionalCostModalComponent implements OnInit {
               if (typeof response == 'string') {
                 this.toastr.error(response);
               } else {
-                console.log(response);
                 this.calculate(
                   this.old_cost,
                   response[1].productId,
@@ -816,10 +809,6 @@ export class AdditionalCostModalComponent implements OnInit {
           .formValues.costDetails[rowIndex].product.deliveryProductId
           ? this.formValues.costDetails[rowIndex].product.deliveryProductId
           : this.formValues.costDetails[rowIndex].deliveryProductId;
-        console.log(
-          '-----------------------',
-          this.formValues.costDetails[rowIndex].deliveryProductId
-        );
         // calculate grandTotal
         if (this.cost) {
           this.calculateCostRecon(rowIndex);
@@ -835,7 +824,6 @@ export class AdditionalCostModalComponent implements OnInit {
         if (typeof result == 'string') {
           this.toastr.error(result);
         } else {
-          console.log(result);
           if (this.costType) {
             if (this.costType.name == 'Unit') {
               this.formValues.costDetails[rowIndex].invoiceAmount =
@@ -875,10 +863,6 @@ export class AdditionalCostModalComponent implements OnInit {
               .formValues.costDetails[rowIndex].product.deliveryProductId
               ? this.formValues.costDetails[rowIndex].product.deliveryProductId
               : this.formValues.costDetails[rowIndex].deliveryProductId;
-            console.log(
-              '-----------------------',
-              this.formValues.costDetails[rowIndex].deliveryProductId
-            );
             // calculate grandTotal
             if (this.cost) {
               this.calculateCostRecon(rowIndex);
@@ -1075,7 +1059,6 @@ export class AdditionalCostModalComponent implements OnInit {
       } else {
         plainNumber = Math.trunc(plainNumber);
       }
-      console.log(plainNumber);
       if (this.tenantService.pricePrecision == 0) {
         return plainNumber;
       } else {
@@ -1085,7 +1068,6 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   roundDownValue(value, type) {
-    console.log(value);
     if (type == 'quantity') {
       let quantityPrecision = this.tenantService.quantityPrecision;
       let plainNumber = this.convertDecimalSeparatorStringToNumber(value);
@@ -1128,7 +1110,6 @@ export class AdditionalCostModalComponent implements OnInit {
       if (amountPrecision) {
         plainNumber = this.truncateToDecimals(plainNumber, amountPrecision);
       }
-      console.log(plainNumber);
       if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {
@@ -1178,7 +1159,6 @@ export class AdditionalCostModalComponent implements OnInit {
       }
     }
 
-    console.log(this.formValues.costDetails);
     this.changeDetectorRef.detectChanges();
   }
 
@@ -1222,7 +1202,6 @@ export class AdditionalCostModalComponent implements OnInit {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
-          console.log(response);
           this.additionalCostForLocation[locationId] = _.cloneDeep(response);
           const filterElements = _.filter(
             this.additionalCostForLocation[locationId],

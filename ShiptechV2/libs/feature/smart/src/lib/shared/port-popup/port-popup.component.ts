@@ -1,4 +1,15 @@
-import { Component, OnInit, ViewChild, Input, ElementRef, Output, EventEmitter, QueryList, ViewChildren, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Input,
+  ElementRef,
+  Output,
+  EventEmitter,
+  QueryList,
+  ViewChildren,
+  HostListener
+} from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { GridOptions } from '@ag-grid-community/core';
@@ -14,17 +25,17 @@ import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-
 import { Store } from '@ngxs/store';
 
 export interface IPortGrade {
-  'HSFO': string[];
-  'ULSFO': string[];
-  'DIS': string[];
+  HSFO: string[];
+  ULSFO: string[];
+  DIS: string[];
 }
 export interface IPortProduct {
-  "ProductId": string;
-  "bopsProductType": string;
-  "MaxPumpRate": string;
-  "minSupplyQty": string;
-  "maxSupplyQty": string;
-  "LowestGrade": string;
+  ProductId: string;
+  bopsProductType: string;
+  MaxPumpRate: string;
+  minSupplyQty: string;
+  maxSupplyQty: string;
+  LowestGrade: string;
 }
 @Component({
   selector: 'app-port-popup',
@@ -32,7 +43,6 @@ export interface IPortProduct {
   styleUrls: ['./port-popup.component.scss']
 })
 export class PortPopupComponent implements OnInit {
-
   @ViewChild('newRemarksMenuTrigger') newRemarksMenuTrigger: MatMenuTrigger;
   public remarkLogs;
   public otherPorts;
@@ -43,22 +53,22 @@ export class PortPopupComponent implements OnInit {
   public dis;
   public gridOptions: GridOptions;
   public defaultView: boolean = true;
-  public selectionChange: boolean
-  public defaultSelection = ["second"];
+  public selectionChange: boolean;
+  public defaultSelection = ['second'];
   public changeLog;
   public remarkTypes = [];
   public portSeverities = [];
   public portStatuses = [];
   public selectedType;
   public severity;
-  public description = "";
-  public count = 0;//to serve as ID of alerts
+  public description = '';
+  public count = 0; //to serve as ID of alerts
   public theme: boolean = true;
   PortProductAvailability: any;
   PortProductList: IPortProduct[] = [];
   PortGradeList: IPortGrade;
   portRemarkList: any = [];
-  public shiptechUrl : string;
+  public shiptechUrl: string;
   portRemarkLogs: any;
   portBopsPrice: any;
   myDefaultView: boolean = false;
@@ -68,10 +78,18 @@ export class PortPopupComponent implements OnInit {
   viewotherDetails: boolean = false;
   viewPortProductAvailability: boolean = false;
 
-  constructor(private store: Store,private logger: LoggerService,private vesselService: VesselPopupService,private localService: LocalService, private portService : PortPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase, private dialog: MatDialog) {
-    this.shiptechUrl =  new URL(window.location.href).origin;
+  constructor(
+    private store: Store,
+    private logger: LoggerService,
+    private vesselService: VesselPopupService,
+    private localService: LocalService,
+    private portService: PortPopupService,
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private dialog: MatDialog
+  ) {
+    this.shiptechUrl = new URL(window.location.href).origin;
   }
-  @Input() status: string = "standard-view";
+  @Input() status: string = 'standard-view';
   @Input('portData') popup_data;
   @Output() closePopup = new EventEmitter();
   @Output() showPortInfo = new EventEmitter();
@@ -82,65 +100,54 @@ export class PortPopupComponent implements OnInit {
   @ViewChild('sixth') sixth: MatExpansionPanel;
 
   ngOnInit() {
-      if (this.vesselService.myDefaultViewPayload) {
-        if (this.vesselService.myDefaultViewPayload.port == 1) {
-          this.myDefaultView = true;
-          this.vesselService.myDefaultViewPayload.defaultView = 1;
-          if (this.vesselService.myDefaultViewPayload.portRemarks == 1) {
-            this.viewportRemarks = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.productAvailability == 1) {
-            this.viewPortProductAvailability = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.bopsPrice == 1) {
-            this.viewbopsPrice = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.portsAgents == 1) {
-            this.viewportsAgents = true;
-          }
-          else if (this.vesselService.myDefaultViewPayload.otherDetails == 1) {
-            this.viewotherDetails = true;
-          }
+    if (this.vesselService.myDefaultViewPayload) {
+      if (this.vesselService.myDefaultViewPayload.port == 1) {
+        this.myDefaultView = true;
+        this.vesselService.myDefaultViewPayload.defaultView = 1;
+        if (this.vesselService.myDefaultViewPayload.portRemarks == 1) {
+          this.viewportRemarks = true;
+        } else if (
+          this.vesselService.myDefaultViewPayload.productAvailability == 1
+        ) {
+          this.viewPortProductAvailability = true;
+        } else if (this.vesselService.myDefaultViewPayload.bopsPrice == 1) {
+          this.viewbopsPrice = true;
+        } else if (this.vesselService.myDefaultViewPayload.portsAgents == 1) {
+          this.viewportsAgents = true;
+        } else if (this.vesselService.myDefaultViewPayload.otherDetails == 1) {
+          this.viewotherDetails = true;
         }
-        //this.vesselService.myDefaultViewPayload.vessel = 0;
+      }
+      //this.vesselService.myDefaultViewPayload.vessel = 0;
       this.vesselService.myDefaultViewPayload.port = 1;
       //this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
-      }
-    this.localService.themeChange.subscribe(value => this.theme = value);
+    }
+    this.localService.themeChange.subscribe(value => (this.theme = value));
     this.loadMasterLookupData();
     // this.remarkTypes = ["Market type variation", "Port Closure", "Port Congestion", "Strike in Port"]
     this.changeLog = [
       {
-        time: "MAR 12, 2020 12:43PM",
-        action: "Alert marked as seen by John Smith"
+        time: 'MAR 12, 2020 12:43PM',
+        action: 'Alert marked as seen by John Smith'
       },
       {
-        time: "MAR 12, 2020 1:43PM",
-        action: "Alert marked as resolved by John Smith"
+        time: 'MAR 12, 2020 1:43PM',
+        action: 'Alert marked as resolved by John Smith'
       }
-    ]
+    ];
     this.loadPortBasicInfo(this.popup_data.locationId);
-    console.log("Angular Test", this.popup_data);
-    
+
     this.loadOtherDetails(this.popup_data.locationId);
     this.loadAgentInfo(this.popup_data.locationId);
-    this.hsfo = [
-      { prd: 'RMG18005' },
-      { prd: 'RMG38005' },
-      { prd: 'RMK50005' }
-    ]
+    this.hsfo = [{ prd: 'RMG18005' }, { prd: 'RMG38005' }, { prd: 'RMK50005' }];
     this.ulsfo = [
       { prd: 'RMD8001' },
       { prd: 'RMD8005L' },
       { prd: 'RMG18001' },
       { prd: 'RMG38001' }
-    ]
-    this.lsdis = [
-      { prd: 'DMA01' }
-    ]
-    this.dis = [
-
-    ]
+    ];
+    this.lsdis = [{ prd: 'DMA01' }];
+    this.dis = [];
     this.gridOptions = <GridOptions>{
       columnDefs: this.columnDefs,
       enableColResize: false,
@@ -155,13 +162,12 @@ export class PortPopupComponent implements OnInit {
         resizable: false
       },
       rowSelection: 'single',
-      onGridReady: (params) => {
+      onGridReady: params => {
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
         this.gridOptions.api.setRowData(this.PortProductList);
         this.gridOptions.api.setDomLayout('autoHeight');
-
-      },
+      }
     };
   }
   ngAfterViewInit() {
@@ -171,80 +177,80 @@ export class PortPopupComponent implements OnInit {
     this.remarkTypes = await this.legacyLookupsDatabase.getPortRemarks();
     this.portSeverities = await this.legacyLookupsDatabase.getPortSeverities();
     this.portStatuses = await this.legacyLookupsDatabase.getPortStatuses();
-    this.severity = this.portSeverities.find(item=>item.id==1);
-    console.log(this.remarkTypes);
+    this.severity = this.portSeverities.find(item => item.id == 1);
     this.loadPortRemarks();
   }
-  
-
 
   loadPortProductAvailability() {
     // let payloadReq = {'LocationId': 37}
-    let payloadReq = {'LocationId': this.popup_data.locationId}
-    
-    this.portService.getPortProductAvailability(payloadReq).subscribe(async (response) => {
-      console.log(response);
-      this.PortProductAvailability = response?.payload;
-      this.PortProductList = this.PortProductAvailability?.smartPortProductDtos;
-      //apply row data to ag grid
-      this.gridOptions.api.setRowData(this.PortProductList);
-      this.gridOptions.api.setDomLayout('autoHeight');
-      this.PortGradeList = await this.formatPortGrade(this.PortProductAvailability?.smartPortGradeDtos);
-      this.triggerEventToUpdate();
-    })
+    let payloadReq = { LocationId: this.popup_data.locationId };
+
+    this.portService
+      .getPortProductAvailability(payloadReq)
+      .subscribe(async response => {
+        this.PortProductAvailability = response?.payload;
+        this.PortProductList = this.PortProductAvailability?.smartPortProductDtos;
+        //apply row data to ag grid
+        this.gridOptions.api.setRowData(this.PortProductList);
+        this.gridOptions.api.setDomLayout('autoHeight');
+        this.PortGradeList = await this.formatPortGrade(
+          this.PortProductAvailability?.smartPortGradeDtos
+        );
+        this.triggerEventToUpdate();
+      });
   }
   async formatPortGrade(portgrade) {
-    let portGradeArr = {'HSFO': [], 'ULSFO': [], 'DIS': []};
+    let portGradeArr = { HSFO: [], ULSFO: [], DIS: [] };
     var promises = new Promise(resolve => {
-        portgrade.forEach((element, index) => {
-        console.log(element);
+      portgrade.forEach((element, index) => {
         portGradeArr['HSFO'].push(element.hsfO35);
         portGradeArr['ULSFO'].push(element.hsfO05);
         portGradeArr['DIS'].push(element.dis);
-        if(portgrade.length == index+1) { resolve(true) }
+        if (portgrade.length == index + 1) {
+          resolve(true);
+        }
       });
     });
     await Promise.all([promises]);
     return portGradeArr;
   }
-  
+
   triggerEventToUpdate() {
-    let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
-      titleEle.click();
+    let titleEle = document.getElementsByClassName(
+      'page-title'
+    )[0] as HTMLElement;
+    titleEle.click();
   }
   CheckDefaultView(event) {
     // debugger;
     if (event) {
       this.myDefaultView = true;
       this.vesselService.myDefaultViewPayload.defaultView = 1;
-      if(this.viewbopsPrice){
+      if (this.viewbopsPrice) {
         this.vesselService.myDefaultViewPayload.bopsPrice = 1;
         this.vesselService.myDefaultViewPayload.portRemarks = 0;
         this.vesselService.myDefaultViewPayload.portsAgents = 0;
         this.vesselService.myDefaultViewPayload.otherDetails = 0;
         this.vesselService.myDefaultViewPayload.productAvailability = 0;
-      }else if(this.viewportRemarks){
+      } else if (this.viewportRemarks) {
         this.vesselService.myDefaultViewPayload.portRemarks = 1;
         this.vesselService.myDefaultViewPayload.bopsPrice = 0;
         this.vesselService.myDefaultViewPayload.portsAgents = 0;
         this.vesselService.myDefaultViewPayload.otherDetails = 0;
         this.vesselService.myDefaultViewPayload.productAvailability = 0;
-      }
-      else if(this.viewportsAgents){
+      } else if (this.viewportsAgents) {
         this.vesselService.myDefaultViewPayload.portsAgents = 1;
         this.vesselService.myDefaultViewPayload.bopsPrice = 0;
         this.vesselService.myDefaultViewPayload.portRemarks = 0;
         this.vesselService.myDefaultViewPayload.otherDetails = 0;
         this.vesselService.myDefaultViewPayload.productAvailability = 0;
-      }
-      else if(this.viewotherDetails){
+      } else if (this.viewotherDetails) {
         this.vesselService.myDefaultViewPayload.otherDetails = 1;
         this.vesselService.myDefaultViewPayload.bopsPrice = 0;
         this.vesselService.myDefaultViewPayload.portRemarks = 0;
         this.vesselService.myDefaultViewPayload.portsAgents = 0;
         this.vesselService.myDefaultViewPayload.productAvailability = 0;
-      }
-      else if(this.viewPortProductAvailability){
+      } else if (this.viewPortProductAvailability) {
         this.vesselService.myDefaultViewPayload.productAvailability = 1;
         this.vesselService.myDefaultViewPayload.bopsPrice = 0;
         this.vesselService.myDefaultViewPayload.portRemarks = 0;
@@ -252,15 +258,14 @@ export class PortPopupComponent implements OnInit {
         this.vesselService.myDefaultViewPayload.otherDetails = 0;
       }
       this.vesselService.myDefaultViewPayload.port = 1;
-    }
-    else {
+    } else {
       this.myDefaultView = false;
       this.viewbopsPrice = false;
       this.viewportRemarks = false;
       this.viewportsAgents = false;
       this.viewotherDetails = false;
       this.viewPortProductAvailability = false;
-      this.vesselService.myDefaultViewPayload.defaultView = 0;      
+      this.vesselService.myDefaultViewPayload.defaultView = 0;
       this.vesselService.myDefaultViewPayload.portRemarks = 0;
       this.vesselService.myDefaultViewPayload.productAvailability = 0;
       this.vesselService.myDefaultViewPayload.bopsPrice = 0;
@@ -271,21 +276,20 @@ export class PortPopupComponent implements OnInit {
     // this.vesselService.myDefaultViewPayload.vessel = 0;
     // this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
     //this.vesselService.myDefaultViewPayload.port = 1;
-
   }
 
-  public changeDefault(expandRef?:any) {
-    if(this.third?.expanded || expandRef=='PortProductAvailabilityOpen') {
+  public changeDefault(expandRef?: any) {
+    if (this.third?.expanded || expandRef == 'PortProductAvailabilityOpen') {
       this.loadPortProductAvailability();
     }
     // if(this.second?.expanded || expandRef=='second') {
-    if(this.second?.expanded) {
+    if (this.second?.expanded) {
       this.loadPortRemarks();
     }
-    if(this.fourth?.expanded || expandRef=='bopsPriceOpen') {
+    if (this.fourth?.expanded || expandRef == 'bopsPriceOpen') {
       this.loadBopsPrice();
     }
-  
+
     switch (expandRef) {
       case 'bopsPriceClose':
         this.viewbopsPrice = false;
@@ -327,18 +331,17 @@ export class PortPopupComponent implements OnInit {
           this.vesselService.myDefaultViewPayload.otherDetails = 1;
         }
         break;
-        case 'PortProductAvailabilityClose':
+      case 'PortProductAvailabilityClose':
         this.viewPortProductAvailability = false;
         this.vesselService.myDefaultViewPayload.productAvailability = 0;
         break;
-        case 'PortProductAvailabilityOpen':
+      case 'PortProductAvailabilityOpen':
         this.viewPortProductAvailability = true;
         if (this.myDefaultView) {
           this.vesselService.myDefaultViewPayload.productAvailability = 1;
         }
         break;
     }
-
 
     // if (this.second.expanded && !this.third.expanded && !this.fourth.expanded && !this.fifth.expanded && !this.sixth.expanded) {
     //   this.defaultView = true;
@@ -348,66 +351,77 @@ export class PortPopupComponent implements OnInit {
   }
 
   private columnDefs = [
-
-    { headerName: 'Product ID', field: 'productId', headerTooltip: 'Product ID', width: 55,
-    suppressMenu: true, 
-    cellRendererFramework: AGGridCellRendererComponent, 
-    cellRendererParams: { cellClass: ['cell-ellipsis']},
-    cellClass: ['font-bold aggrid-content-l '] 
-    },
-    { 
-      headerName: 'Max Pump.Rate', 
-      field: 'maxPumpRate', 
-      headerTooltip: 'Max Pump.Rate', 
-      width: 70, 
-      cellClass: ['aggrid-text-align-l '], 
-      suppressMenu: true, 
+    {
+      headerName: 'Product ID',
+      field: 'productId',
+      headerTooltip: 'Product ID',
+      width: 55,
+      suppressMenu: true,
       cellRendererFramework: AGGridCellRendererComponent,
-      cellRendererParams: { cellClass: ['cell-ellipsis']},
-      valueGetter: (params) => {
-        if(params?.data?.maxPumpRate) {
-          return params?.data?.maxPumpRate+' mt/h'
-        } else {
-          return 0+' mt/h'
-        }
-      }
+      cellRendererParams: { cellClass: ['cell-ellipsis'] },
+      cellClass: ['font-bold aggrid-content-l ']
     },
-    { headerName: 'Min Supply Qty',
-    field: 'minSupplyQty',
-    headerTooltip: 'Min Supply Qty', 
-    width: 55, 
-    suppressMenu: true, 
-      cellClass: ['aggrid-text-align-l '], 
+    {
+      headerName: 'Max Pump.Rate',
+      field: 'maxPumpRate',
+      headerTooltip: 'Max Pump.Rate',
+      width: 70,
+      cellClass: ['aggrid-text-align-l '],
+      suppressMenu: true,
       cellRendererFramework: AGGridCellRendererComponent,
-      cellRendererParams: { cellClass: ['cell-ellipsis']},
-      valueGetter: (params) => {
-        if(params?.data?.minSupplyQty) {
-          return params?.data?.minSupplyQty+' mt'
+      cellRendererParams: { cellClass: ['cell-ellipsis'] },
+      valueGetter: params => {
+        if (params?.data?.maxPumpRate) {
+          return params?.data?.maxPumpRate + ' mt/h';
         } else {
-          return 0+' mt'
+          return 0 + ' mt/h';
         }
       }
     },
-    { headerName: 'Max Supply Qty', 
-    field: 'maxSupplyQty', 
-    headerTooltip: 'Max Supply Qty', 
-    width: 70, 
-    suppressMenu: true,
-    cellClass: ['aggrid-text-align-l '], 
-    cellRendererFramework: AGGridCellRendererComponent,
-    cellRendererParams: { cellClass: ['cell-ellipsis']},
-      valueGetter: (params) => {
-        if(params?.data?.maxSupplyQty) {
-          return params?.data?.maxSupplyQty+' mt'
+    {
+      headerName: 'Min Supply Qty',
+      field: 'minSupplyQty',
+      headerTooltip: 'Min Supply Qty',
+      width: 55,
+      suppressMenu: true,
+      cellClass: ['aggrid-text-align-l '],
+      cellRendererFramework: AGGridCellRendererComponent,
+      cellRendererParams: { cellClass: ['cell-ellipsis'] },
+      valueGetter: params => {
+        if (params?.data?.minSupplyQty) {
+          return params?.data?.minSupplyQty + ' mt';
         } else {
-          return 0+' mt'
+          return 0 + ' mt';
         }
       }
     },
-    { headerName: 'Lowest Grade', field: 'lowestGrade', headerTooltip: 'Lowest Grade', width: 55, 
-      suppressMenu: true, 
-      cellRendererParams: { cellClass: ['cell-ellipsis']},
-      cellRendererFramework: AGGridCellRendererComponent, cellClass: ['aggrid-content-l'] }
+    {
+      headerName: 'Max Supply Qty',
+      field: 'maxSupplyQty',
+      headerTooltip: 'Max Supply Qty',
+      width: 70,
+      suppressMenu: true,
+      cellClass: ['aggrid-text-align-l '],
+      cellRendererFramework: AGGridCellRendererComponent,
+      cellRendererParams: { cellClass: ['cell-ellipsis'] },
+      valueGetter: params => {
+        if (params?.data?.maxSupplyQty) {
+          return params?.data?.maxSupplyQty + ' mt';
+        } else {
+          return 0 + ' mt';
+        }
+      }
+    },
+    {
+      headerName: 'Lowest Grade',
+      field: 'lowestGrade',
+      headerTooltip: 'Lowest Grade',
+      width: 55,
+      suppressMenu: true,
+      cellRendererParams: { cellClass: ['cell-ellipsis'] },
+      cellRendererFramework: AGGridCellRendererComponent,
+      cellClass: ['aggrid-content-l']
+    }
   ];
 
   // private rowData = [
@@ -424,91 +438,93 @@ export class PortPopupComponent implements OnInit {
   //     productid: 'HSFO 0.5', maxpumprate: '1500 mt/h', minsupqty: '100 mt', maxsupqty: '12000 mt', lowestgrade: 'RMK85005'
   //   },
 
-
   // ];
 
-  loadPortBasicInfo(locationId){
-    if(locationId != null){
-      let req = { LocationId : locationId}
-      this.portService.getPortBasicInfo(req).subscribe((res: any)=>{
-        if(res.payload.length > 0){
-          this.popup_data.earliestTradingTime = res.payload[0].earliestTradingTime;
+  loadPortBasicInfo(locationId) {
+    if (locationId != null) {
+      let req = { LocationId: locationId };
+      this.portService.getPortBasicInfo(req).subscribe((res: any) => {
+        if (res.payload.length > 0) {
+          this.popup_data.earliestTradingTime =
+            res.payload[0].earliestTradingTime;
           this.popup_data.latestTradingTime = res.payload[0].latestTradingTime;
           this.popup_data.avlProdCategory = [];
-          res.payload.filter(item=> {
+          res.payload.filter(item => {
             this.popup_data.avlProdCategory.push(item.availableProductCategory);
           });
           // this.popup_data.notavlProdCategory = ['DIS'],
         }
         this.triggerEventToUpdate();
-      })
+      });
     }
   }
 
-  loadAgentInfo(locationId){
-    if(locationId != null){
-      let req = { LocationId : locationId}
-      this.portService.getAgentInfo(req).subscribe((res: any)=>{
-        if(res.payload != undefined){
-          this.agentsInfo = res.payload
+  loadAgentInfo(locationId) {
+    if (locationId != null) {
+      let req = { LocationId: locationId };
+      this.portService.getAgentInfo(req).subscribe((res: any) => {
+        if (res.payload != undefined) {
+          this.agentsInfo = res.payload;
         }
-      })
+      });
     }
   }
 
-  loadOtherDetails(locationId){
-    if(locationId != null){
-      let req = { LocationId : locationId };
-      this.portService.getOtherDetails(req).subscribe((res: any)=>{
-        if(res.payload != undefined){
+  loadOtherDetails(locationId) {
+    if (locationId != null) {
+      let req = { LocationId: locationId };
+      this.portService.getOtherDetails(req).subscribe((res: any) => {
+        if (res.payload != undefined) {
           this.otherPorts = res.payload[0];
         }
-      })
+      });
     }
   }
 
   saveRemark() {
-    if(!(this.description) || this.description.trim()=='') {
-      let descWarnMsg = "please enter description for the remark";
+    if (!this.description || this.description.trim() == '') {
+      let descWarnMsg = 'please enter description for the remark';
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         panelClass: 'confirmation-popup-operator',
-        data:  { message: descWarnMsg, source: 'hardWarning' }
+        data: { message: descWarnMsg, source: 'hardWarning' }
       });
       return;
-    } else if(!(this.severity?.id)) {
-      let severityWarnMsg = "select severity of the remark";
+    } else if (!this.severity?.id) {
+      let severityWarnMsg = 'select severity of the remark';
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         panelClass: 'confirmation-popup-operator',
-        data:  { message: severityWarnMsg, source: 'hardWarning' }
+        data: { message: severityWarnMsg, source: 'hardWarning' }
       });
       return;
     }
-    
-    let remarkdefaultStatus = this.portStatuses.find(item=>item.name=='No Action Taken')
-    let requestPayload = { 
-        "PortId": this.popup_data?.locationId,
-        "Remarks": [
-          {
-            "Id" : 0,
-            "PortId": this.popup_data?.locationId,
-            "RemarkTypes": {
-              "id": this.selectedType?.id,
-              "name": this.selectedType?.name
-            },
-            "RemarkStatus": {
-              "id": remarkdefaultStatus?.id,
-              "name": remarkdefaultStatus?.name
-            },
-            "RemarkSeverity": {
-              "id": this.severity?.id,
-              "name": this.severity?.name
-            },
-            "RemarkDescriptions": this.description,
-            "RemarkComments": "",
-            "IsDeleted" : 0
-          }
-        ]
-    }
+
+    let remarkdefaultStatus = this.portStatuses.find(
+      item => item.name == 'No Action Taken'
+    );
+    let requestPayload = {
+      PortId: this.popup_data?.locationId,
+      Remarks: [
+        {
+          Id: 0,
+          PortId: this.popup_data?.locationId,
+          RemarkTypes: {
+            id: this.selectedType?.id,
+            name: this.selectedType?.name
+          },
+          RemarkStatus: {
+            id: remarkdefaultStatus?.id,
+            name: remarkdefaultStatus?.name
+          },
+          RemarkSeverity: {
+            id: this.severity?.id,
+            name: this.severity?.name
+          },
+          RemarkDescriptions: this.description,
+          RemarkComments: '',
+          IsDeleted: 0
+        }
+      ]
+    };
     // this.alerts.push(
     //   {
     //     id: this.count++,
@@ -523,21 +539,18 @@ export class PortPopupComponent implements OnInit {
     // )
     // this.severity = this.portSeverities.find(item=>item.id==1);
     this.selectionChange = false;
-    this.portService.putPortRemark(requestPayload).subscribe(data=> {
-      console.log(data);
+    this.portService.putPortRemark(requestPayload).subscribe(data => {
       this.closeMenu();
       this.portRemarkList = data?.payload?.portRemarkDetails;
       this.portRemarkLogs = data?.payload?.portRemarkLogs;
       this.triggerClickEvent();
-    })
+    });
   }
   loadPortRemarks() {
     let requestPayload = {
-      "PortId": this.popup_data?.locationId
-    }
-    this.portService.loadPortRemark(requestPayload).subscribe(data=> {
-      console.log(data);
-
+      PortId: this.popup_data?.locationId
+    };
+    this.portService.loadPortRemark(requestPayload).subscribe(data => {
       //new mock
       // data = {
       //   "payload": {
@@ -1688,17 +1701,21 @@ export class PortPopupComponent implements OnInit {
       //   }
       // ];
       this.triggerClickEvent();
-    })
+    });
   }
   refreshPortRemark(portRemarkRes) {
-    this.portRemarkList = (portRemarkRes?.payload?.portRemarkDetails)? portRemarkRes.payload.portRemarkDetails: [];
-    this.portRemarkLogs = (portRemarkRes?.payload?.portRemarkLogs)? portRemarkRes.payload.portRemarkLogs: [];
+    this.portRemarkList = portRemarkRes?.payload?.portRemarkDetails
+      ? portRemarkRes.payload.portRemarkDetails
+      : [];
+    this.portRemarkLogs = portRemarkRes?.payload?.portRemarkLogs
+      ? portRemarkRes.payload.portRemarkLogs
+      : [];
     this.triggerClickEvent();
   }
   loadBopsPrice() {
     let requestPayload = {
-      "PortId": this.popup_data?.locationId
-    }
+      PortId: this.popup_data?.locationId
+    };
     // let portBopsPrice = {
     //   "payload": {
     //     "hsfo": [
@@ -1799,23 +1816,23 @@ export class PortPopupComponent implements OnInit {
     // }
     // this.portBopsPrice = portBopsPrice.payload;
     // this.triggerClickEvent();
-    this.portService.getPortBopsPrice(requestPayload).subscribe(data=> {
-      console.log(data);
+    this.portService.getPortBopsPrice(requestPayload).subscribe(data => {
       this.portBopsPrice = data?.payload;
       this.triggerClickEvent();
-    })
-
+    });
   }
-  
+
   triggerClickEvent() {
-    let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
-      titleEle.click();
+    let titleEle = document.getElementsByClassName(
+      'page-title'
+    )[0] as HTMLElement;
+    titleEle.click();
   }
   closeMenu() {
-    this.selectedType = "";
-    this.description = "";
+    this.selectedType = '';
+    this.description = '';
     // this.severity = "";
-    this.severity = this.portSeverities.find(item=>item.id==1);
+    this.severity = this.portSeverities.find(item => item.id == 1);
     this.selectionChange = false;
     this.newRemarksMenuTrigger.closeMenu();
   }
@@ -1825,79 +1842,148 @@ export class PortPopupComponent implements OnInit {
   }
 }
 
-
 @Component({
   selector: 'port-menu',
   template: `
-  <mat-icon class="dropdown-icon" [ngClass]="{'active':!menuClick}" style="z-index: 1050;"
-  [matMenuTriggerFor]="clickalertsmenu" #menuTrigger="matMenuTrigger"
-  (mouseenter)="menuClick && toggleMenu($event);"
-  (mouseleave)="!menuClick && toggleMenu2();" (click)="toggleMenu3($event)"
-  (menuClosed)="toggleMenu1($event);">more_vert</mat-icon>
-<mat-menu #clickalertsmenu="matMenu" class="common" xPosition="after">
-<div (click)="$event.stopPropagation();">
-<div cdkDrag class="alert-menu" [ngClass]="{'dark-theme':theme,'light-theme':!theme}">
-  <div class="warning-header">
-    <div style="margin-bottom: 5px;">
-      <ng-container [ngSwitch]="item?.remarkSeverity?.name">
-        <img *ngSwitchCase="'High'" class="warning-icon"
-          src="./assets/customicons/red-warning-o.svg" alt="warning-icon">
-        <img *ngSwitchCase="'Medium'" class="warning-icon"
-          src="./assets/customicons/amber-warning-o.svg" alt="warning-icon">
-        <img *ngSwitchDefault class="warning-icon"
-          src="./assets/customicons/green-warning-o.svg" alt="warning-icon">
-      </ng-container>
-    </div>
-    <div class="warning-title">
-      {{item?.remarkTypes?.name}}
-    </div>
-    <div (click)="cancelMenu()" style="position: absolute;top: 8px;right: 0px;">
-      <mat-icon class="close">close</mat-icon>
-    </div>
-  </div>
-  <div class="comments">
-                            <div>Description</div>
-                            <mat-form-field appearance="fill">
-                              <textarea matInput disabled [value]="item?.remarkDescriptions"></textarea>
-                            </mat-form-field>
-                          </div>
-  <div class="status">
-    <div>Status</div>
-    <mat-form-field appearance="fill">
-      <mat-select #statusDropdown [value]="item?.remarkStatus?.name" [panelClass]="{'dark-theme':theme,'light-theme':!theme}"
-        (selectionChange)="checkDirty()" (click)="$event.stopPropagation();">
-        <mat-option *ngFor="let status of portStatuses" [value]="status.name">{{status.displayName}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div *ngIf="item?.remarkStatus?.name == 'Resolved' || statusDropdown.value== 'Resolved'"
-    class="comments">
-    <div>Comments</div>
-    <mat-form-field appearance="fill">
-      <textarea style="caret-color:#fff !important;" matInput [(ngModel)]="item.remarkComments"
-        (click)="$event.stopPropagation();" (change)="checkDirty()"></textarea>
-    </mat-form-field>
-  </div>
-  <div *ngIf="portRemarkLogs?.length" class="change-log">
-    <div>Change Log</div>
-    <div style="height:70px;max-height: 100px;overflow-y: scroll;">
-      <div *ngFor="let data of portRemarkLogs" style="margin:5px 0px">
-        <div style="display: flex;align-items: center;">
-          <div class="circle-blue"></div>
-          <div class="log-date">{{data?.createdOn | date: 'MMM d, y hh:mm a'}}</div>
+    <mat-icon
+      class="dropdown-icon"
+      [ngClass]="{ active: !menuClick }"
+      style="z-index: 1050;"
+      [matMenuTriggerFor]="clickalertsmenu"
+      #menuTrigger="matMenuTrigger"
+      (mouseenter)="menuClick && toggleMenu($event)"
+      (mouseleave)="!menuClick && toggleMenu2()"
+      (click)="toggleMenu3($event)"
+      (menuClosed)="toggleMenu1($event)"
+      >more_vert</mat-icon
+    >
+    <mat-menu #clickalertsmenu="matMenu" class="common" xPosition="after">
+      <div (click)="$event.stopPropagation()">
+        <div
+          cdkDrag
+          class="alert-menu"
+          [ngClass]="{ 'dark-theme': theme, 'light-theme': !theme }"
+        >
+          <div class="warning-header">
+            <div style="margin-bottom: 5px;">
+              <ng-container [ngSwitch]="item?.remarkSeverity?.name">
+                <img
+                  *ngSwitchCase="'High'"
+                  class="warning-icon"
+                  src="./assets/customicons/red-warning-o.svg"
+                  alt="warning-icon"
+                />
+                <img
+                  *ngSwitchCase="'Medium'"
+                  class="warning-icon"
+                  src="./assets/customicons/amber-warning-o.svg"
+                  alt="warning-icon"
+                />
+                <img
+                  *ngSwitchDefault
+                  class="warning-icon"
+                  src="./assets/customicons/green-warning-o.svg"
+                  alt="warning-icon"
+                />
+              </ng-container>
+            </div>
+            <div class="warning-title">
+              {{ item?.remarkTypes?.name }}
+            </div>
+            <div
+              (click)="cancelMenu()"
+              style="position: absolute;top: 8px;right: 0px;"
+            >
+              <mat-icon class="close">close</mat-icon>
+            </div>
+          </div>
+          <div class="comments">
+            <div>Description</div>
+            <mat-form-field appearance="fill">
+              <textarea
+                matInput
+                disabled
+                [value]="item?.remarkDescriptions"
+              ></textarea>
+            </mat-form-field>
+          </div>
+          <div class="status">
+            <div>Status</div>
+            <mat-form-field appearance="fill">
+              <mat-select
+                #statusDropdown
+                [value]="item?.remarkStatus?.name"
+                [panelClass]="{ 'dark-theme': theme, 'light-theme': !theme }"
+                (selectionChange)="checkDirty()"
+                (click)="$event.stopPropagation()"
+              >
+                <mat-option
+                  *ngFor="let status of portStatuses"
+                  [value]="status.name"
+                  >{{ status.displayName }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div
+            *ngIf="
+              item?.remarkStatus?.name == 'Resolved' ||
+              statusDropdown.value == 'Resolved'
+            "
+            class="comments"
+          >
+            <div>Comments</div>
+            <mat-form-field appearance="fill">
+              <textarea
+                style="caret-color:#fff !important;"
+                matInput
+                [(ngModel)]="item.remarkComments"
+                (click)="$event.stopPropagation()"
+                (change)="checkDirty()"
+              ></textarea>
+            </mat-form-field>
+          </div>
+          <div *ngIf="portRemarkLogs?.length" class="change-log">
+            <div>Change Log</div>
+            <div style="height:70px;max-height: 100px;overflow-y: scroll;">
+              <div *ngFor="let data of portRemarkLogs" style="margin:5px 0px">
+                <div style="display: flex;align-items: center;">
+                  <div class="circle-blue"></div>
+                  <div class="log-date">
+                    {{ data?.createdOn | date: 'MMM d, y hh:mm a' }}
+                  </div>
+                </div>
+                <div class="log-action">
+                  Alert marked as {{ data?.remarkStatus?.name }} by
+                  {{ data?.createdBy?.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="actions">
+            <button
+              mat-button
+              class="cancel"
+              (click)="cancelMenu(); $event.stopPropagation()"
+            >
+              CANCEL
+            </button>
+            <button
+              mat-raised-button
+              [ngClass]="{
+                active: selectionChange,
+                inactive: !selectionChange
+              }"
+              [disabled]="!selectionChange"
+              class="save"
+              (click)="updatePortRemark(statusDropdown.value)"
+            >
+              SAVE
+            </button>
+          </div>
         </div>
-        <div class="log-action">Alert marked as {{data?.remarkStatus?.name}} by {{data?.createdBy?.name}}</div>
       </div>
-    </div>
-  </div>
-  <div class="actions">
-    <button mat-button class="cancel" (click)="cancelMenu();$event.stopPropagation();">CANCEL</button>
-    <button mat-raised-button [ngClass]="{'active':selectionChange, 'inactive':!selectionChange}" [disabled]="!selectionChange" class="save"
-      (click)="updatePortRemark(statusDropdown.value)">SAVE</button>
-  </div>
-  </div>
-  </div>
-</mat-menu>
+    </mat-menu>
   `
 })
 export class PortMenuComponent {
@@ -1914,20 +2000,31 @@ export class PortMenuComponent {
   portRemarkLogs: any;
   portRemarkStatusTemp: string = '';
   portRemarkCommentTemp: string = '';
-  constructor(private elem: ElementRef,private localService: LocalService, private portService : PortPopupService, private legacyLookupsDatabase: LegacyLookupsDatabase, private dialog: MatDialog) { }
-  ngOnInit(){
+  constructor(
+    private elem: ElementRef,
+    private localService: LocalService,
+    private portService: PortPopupService,
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private dialog: MatDialog
+  ) {}
+  ngOnInit() {
     this.portRemarkStatusTemp = this.item?.remarkStatus?.name;
     this.portRemarkCommentTemp = this.item?.remarkComments;
-    this.localService.themeChange.subscribe(value => this.theme = value);
+    this.localService.themeChange.subscribe(value => (this.theme = value));
     this.loadMasterLookupData();
   }
   async loadMasterLookupData() {
     let remarkType = this.item?.id;
     let groupRemarkLog = await this.groupByRemarkLogs();
-    if(groupRemarkLog[remarkType]?.length) {
+    if (groupRemarkLog[remarkType]?.length) {
       let groupRemarkLogData = groupRemarkLog[remarkType];
       //sort change log in desc based on log created time
-      this.portRemarkLogs = groupRemarkLogData.sort((val1, val2)=> {return new Date(val2.createdOn).valueOf() - new Date(val1.createdOn).valueOf()});
+      this.portRemarkLogs = groupRemarkLogData.sort((val1, val2) => {
+        return (
+          new Date(val2.createdOn).valueOf() -
+          new Date(val1.createdOn).valueOf()
+        );
+      });
     } else {
       this.portRemarkLogs = [];
     }
@@ -1936,19 +2033,21 @@ export class PortMenuComponent {
   }
   groupByRemarkLogs() {
     var groupRemarkType = [];
-    var groupRemarkLog = {}
-    return new Promise(resolve=> {
+    var groupRemarkLog = {};
+    return new Promise(resolve => {
       // return with empty object if remark doesn't contain any changelog
-      if(!(this.remarkLogs?.length)) { resolve(groupRemarkLog); }
-      this.remarkLogs.map((logs, index)=>{
+      if (!this.remarkLogs?.length) {
+        resolve(groupRemarkLog);
+      }
+      this.remarkLogs.map((logs, index) => {
         let type = logs.sequenceno;
-        if(!(groupRemarkType.includes(type))) {
-            groupRemarkType.push(type);
-            groupRemarkLog[type] = [logs];
+        if (!groupRemarkType.includes(type)) {
+          groupRemarkType.push(type);
+          groupRemarkLog[type] = [logs];
         } else {
-            groupRemarkLog[type].push(logs);
+          groupRemarkLog[type].push(logs);
         }
-        if(this.remarkLogs.length == index+1) {
+        if (this.remarkLogs.length == index + 1) {
           resolve(groupRemarkLog);
         }
       });
@@ -1957,11 +2056,12 @@ export class PortMenuComponent {
   openMenu() {
     this.menuTrigger.openMenu();
     this.selectionChange = false;
-
   }
   checkDirty() {
-    
-    if((this.portRemarkStatusTemp !== this.statusDropdown?.value) || (this.portRemarkCommentTemp !== this.item?.remarkComments)){
+    if (
+      this.portRemarkStatusTemp !== this.statusDropdown?.value ||
+      this.portRemarkCommentTemp !== this.item?.remarkComments
+    ) {
       this.selectionChange = true;
     } else {
       this.selectionChange = false;
@@ -1969,39 +2069,42 @@ export class PortMenuComponent {
   }
   closeMenu() {
     this.item.remarkComments = this.portRemarkCommentTemp;
-    this.item.remarkStatus = this.portStatuses.find(item=>item.name==this.portRemarkStatusTemp);
+    this.item.remarkStatus = this.portStatuses.find(
+      item => item.name == this.portRemarkStatusTemp
+    );
     this.statusDropdown.value = this.item.remarkStatus?.name;
     this.menuTrigger.closeMenu();
     this.selectionChange = false;
     this.menuClick = false;
     let panels = this.elem.nativeElement.querySelectorAll('.dropdown-icon');
-    panels.forEach((element) => {
+    panels.forEach(element => {
       element.classList.remove('active-class');
     });
   }
-  toggleMenu1(event) {//onmenuclose
+  toggleMenu1(event) {
+    //onmenuclose
     this.selectionChange = false;
     this.menuClick = false;
     let panels = this.elem.nativeElement.querySelectorAll('.dropdown-icon');
-    panels.forEach((element) => {
+    panels.forEach(element => {
       element.classList.remove('active-class');
     });
     this.closeMenu();
   }
-  toggleMenu(event) {//onenter
+  toggleMenu(event) {
+    //onenter
 
-    this.openMenu()
+    this.openMenu();
     var overlay = document.querySelector('.cdk-overlay-container');
     overlay.classList.add('removeOverlay');
-
   }
 
-  toggleMenu2() {//onleave
+  toggleMenu2() {
+    //onleave
     this.menuClick = false;
     this.closeMenu();
     var overlay = document.querySelector('.cdk-overlay-container');
     overlay?.classList.remove('removeOverlay');
-
   }
   //onclick
   toggleMenu3(event) {
@@ -2010,66 +2113,68 @@ export class PortMenuComponent {
     this.menuClick = true;
     event.target.classList.add('active-class');
     this.openMenu();
-
   }
 
   deletePortRemark() {
     let requestPayload = {
-      "PortId": this.item?.portId,
-      "RemarkTypesId" : this.item?.remarkTypes?.id,
-      "SequenceNo" : this.item?.id
-    }
+      PortId: this.item?.portId,
+      RemarkTypesId: this.item?.remarkTypes?.id,
+      SequenceNo: this.item?.id
+    };
     this.selectionChange = false;
-    this.portService.DeletePortRemark(requestPayload).subscribe(data=> {
-      console.log(data);
+    this.portService.DeletePortRemark(requestPayload).subscribe(data => {
       this.closeMenu();
       this.refreshPortRemark.emit(data);
-    })
+    });
   }
   updatePortRemark(status) {
-    if((status=='Resolved') && (!(this.item?.remarkComments) || (this.item?.remarkComments.trim()==''))) {
-      let warnCommentMsg = "please enter a comment";
+    if (
+      status == 'Resolved' &&
+      (!this.item?.remarkComments || this.item?.remarkComments.trim() == '')
+    ) {
+      let warnCommentMsg = 'please enter a comment';
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         panelClass: 'confirmation-popup-operator',
-        data:  { message: warnCommentMsg, source: 'hardWarning' }
+        data: { message: warnCommentMsg, source: 'hardWarning' }
       });
       return;
     }
-    if(status.toLowerCase() == 'deleted') {
+    if (status.toLowerCase() == 'deleted') {
       this.deletePortRemark();
       return;
     }
-      let selectedRemarkStatus = this.portStatuses.find(item=>item.name==status)
-      let requestPayload = { 
-          "PortId": this.item?.portId,
-          "Remarks": [
-            {
-              "Id" : this.item?.id,
-              "PortId": this.item?.portId,
-              "RemarkTypes": {
-                "id": this.item?.remarkTypes?.id,
-                "name": this.item?.remarkTypes?.name
-              },
-              "RemarkStatus": {
-                "id": selectedRemarkStatus?.id,
-                "name": selectedRemarkStatus?.name
-              },
-              "RemarkSeverity": {
-                "id": this.item?.remarkSeverity?.id,
-                "name": this.item?.remarkSeverity?.name
-              },
-              "RemarkDescriptions": this.item?.remarkDescriptions,
-              "RemarkComments": this.item?.remarkComments,
-              "IsDeleted" : 0
-            }
-          ]
-      }
-      this.selectionChange = false;
-      this.portService.putPortRemark(requestPayload).subscribe(data=> {
-        console.log(data);
-        this.closeMenu();
-        this.refreshPortRemark.emit(data);
-      })
+    let selectedRemarkStatus = this.portStatuses.find(
+      item => item.name == status
+    );
+    let requestPayload = {
+      PortId: this.item?.portId,
+      Remarks: [
+        {
+          Id: this.item?.id,
+          PortId: this.item?.portId,
+          RemarkTypes: {
+            id: this.item?.remarkTypes?.id,
+            name: this.item?.remarkTypes?.name
+          },
+          RemarkStatus: {
+            id: selectedRemarkStatus?.id,
+            name: selectedRemarkStatus?.name
+          },
+          RemarkSeverity: {
+            id: this.item?.remarkSeverity?.id,
+            name: this.item?.remarkSeverity?.name
+          },
+          RemarkDescriptions: this.item?.remarkDescriptions,
+          RemarkComments: this.item?.remarkComments,
+          IsDeleted: 0
+        }
+      ]
+    };
+    this.selectionChange = false;
+    this.portService.putPortRemark(requestPayload).subscribe(data => {
+      this.closeMenu();
+      this.refreshPortRemark.emit(data);
+    });
   }
   cancelMenu() {
     this.closeMenu();

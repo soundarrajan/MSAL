@@ -828,7 +828,6 @@ export class QualityLabsComponent implements OnInit {
   // ];
 
   // public onRowSelected(ev) {
-  //   // console.log(ev);
   //   // alert(ev.rowIndex);
   // }
 
@@ -838,7 +837,6 @@ export class QualityLabsComponent implements OnInit {
   // }
 
   // public onrowClicked(ev) {
-  //   //console.log("hhhhhhhhh");
   //   var index = ev.rowIndex;
   //   //alert(index);
   //   const dialogRef = this.dialog.open(
@@ -865,7 +863,6 @@ export class QualityLabsComponent implements OnInit {
   //   );
 
   //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log(`Dialog result: ${result}`);
   //     var selectedData = this.gridOptions_data.api.getSelectedRows();
   //     //var res = this.gridOptions_data.api.applyTransaction({ remove: selectedData });
   //     // this.gridOptions_data.api.applyTransaction({
@@ -880,8 +877,6 @@ export class QualityLabsComponent implements OnInit {
   //       rowNode,
   //       index
   //     ) {
-  //       // console.log("eeeeeeeee");
-  //       // console.log(rowNode);
   //       if (!rowNode.isSelected() === true) {
   //         return;
   //       }

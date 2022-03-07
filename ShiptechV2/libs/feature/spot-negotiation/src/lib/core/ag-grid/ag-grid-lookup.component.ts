@@ -64,7 +64,6 @@ export class AgGridLookupEditor
     this.params = params;
     this.valueField = params.value;
     this.oldCellValue = params.value;
-    console.log('Calling lookup editor');
   }
 
   getValue(): any {

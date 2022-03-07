@@ -192,7 +192,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.date(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.eta,
-    tooltipValueGetter: params => (params.value ? this.format.date(params.value) : ''),
+    tooltipValueGetter: params =>
+      params.value ? this.format.date(params.value) : '',
     width: 200
   };
 
@@ -257,7 +258,8 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
     filter: 'agDateColumnFilter',
     valueFormatter: params => this.format.dateUtc(params.value),
     dtoForExport: ControlTowerQualityClaimsListExportColumns.createdDate,
-    tooltipValueGetter: params => (params.value ? this.format.dateUtc(params.value) : ''),
+    tooltipValueGetter: params =>
+      params.value ? this.format.dateUtc(params.value) : '',
     width: 200
   };
 
@@ -506,7 +508,6 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     const grid1 = this.gridApi.getSortModel();
     this.getFiltersCount();
-    console.log(grid1);
     this.checkStatusAvailable();
     this.paramsServerSide = params;
     this.exportUrl = this.controlTowerService.getControlTowerQualityClaimsListExportUrl();

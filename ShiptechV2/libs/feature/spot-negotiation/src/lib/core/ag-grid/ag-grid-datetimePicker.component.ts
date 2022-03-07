@@ -153,7 +153,6 @@ export class AGGridDateTimePickerComponent
     // overlay.style.width='0';
     // let el: HTMLElement = this.trigger.nativeElement;
     // el.click();
-    //console.log(this.trigger);
     // setTimeout(function() {
     //     this.trigger.nativeElement.click();
     //     this.trigger.triggerEventHandler('click', null);
@@ -173,8 +172,7 @@ export class AGGridDateTimePickerComponent
     // noShadow();
     //this.fileInput.nativeElement.click()
     //alert("");
-    //console.log("ssssssssss");
-    //console.log(this.trigger);
+
     // setTimeout(function() {
     //   this.trigger.nativeElement.click();
     //   this.trigger.triggerEventHandler('click', null);
@@ -186,36 +184,28 @@ export class AGGridDateTimePickerComponent
 
   getValue(): any {
     //this.params.api.stopEditing(false);
-    // console.log("9");
     // return false;
 
     //this.params.api.stopEditing(true);
-    console.log('9');
 
     return this.value;
   }
 
   isPopup(): boolean {
-    console.log('8');
     return true;
   }
 
   setValue(val: string): void {
-    console.log('7');
     this.value = val;
   }
 
   setUnit(unit: string): void {
-    console.log('6');
     this.unit = unit;
   }
 
-  toggleData(): void {
-    console.log('5');
-  }
+  toggleData(): void {}
 
   onSave() {
-    console.log('4');
     // if(this.value!="" && this.unit!=""){
     //     this.setValue(this.value+","+this.unit);
     //     this.params.api.stopEditing();
@@ -224,12 +214,10 @@ export class AGGridDateTimePickerComponent
   }
 
   onCancel() {
-    console.log('3');
     // this.params.api.stopEditing(true);
   }
 
   onKeyDown(event): void {
-    console.log('2');
     let key = event.which || event.keyCode;
     if (
       key == 37 || // left
@@ -243,16 +231,13 @@ export class AGGridDateTimePickerComponent
   }
 
   onEnter(evt) {
-    console.log('1');
     if (evt.source.selected) {
       // evt.stopPropagation();
       // this.onSave();
     }
   }
 
-  destroy() {
-    console.log('destryo');
-  }
+  destroy() {}
 
   closed() {
     this.show = false;

@@ -53,18 +53,18 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
   @Input() groupId: string;
   @Input() gridId: string;
   @Input() gridIds: any;
-  
-  
+
   @Input() _groupedCountValues: any;
   get groupedCountValues(): any {
     return this._groupedCountValues;
   }
   @Input() set groupedCountValues(value: any) {
     this._groupedCountValues = value;
-    if(this._groupedCountValues) {
-      this.filterComponent.updateSystemPreferencesCount(this._groupedCountValues);
-    }  
-    console.log(value);
+    if (this._groupedCountValues) {
+      this.filterComponent.updateSystemPreferencesCount(
+        this._groupedCountValues
+      );
+    }
   }
 
   @Input() id: string;
@@ -91,8 +91,8 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
       this.setRangeUntilNow(
         this.gridIds[this.id].timeDeltaValue,
         this.gridIds[this.id].timeDeltaUnit,
-        this.gridIds[this.id].mappedKey
-        , filterPresetName
+        this.gridIds[this.id].mappedKey,
+        filterPresetName
       );
     }
 
@@ -101,9 +101,17 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     // }
   }
 
-  setRangeUntilNow(timeDeltaValue: number, timeDeltaUnit, mappingKey: string, filterPresetName) {
+  setRangeUntilNow(
+    timeDeltaValue: number,
+    timeDeltaUnit,
+    mappingKey: string,
+    filterPresetName
+  ) {
     for (let i = 0; i < this.filterComponent.filterPresets.length; i++) {
-      if (this.filterComponent.filterPresets[i].filterModels && this.filterComponent.filterPresets[i].name == filterPresetName) {
+      if (
+        this.filterComponent.filterPresets[i].filterModels &&
+        this.filterComponent.filterPresets[i].name == filterPresetName
+      ) {
         let filters = this.filterComponent.filterPresets[i].filterModels[
           this.id
         ];
@@ -188,9 +196,11 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
           this.filterComponent.hasActiveFilterPresets = filterPresets.some(
             item => !item.isDefault && !item.isClear
           );
-          let activeFilterPreset = this.filterComponent.filterPresets.filter( item => item.isActive);
+          let activeFilterPreset = this.filterComponent.filterPresets.filter(
+            item => item.isActive
+          );
           if (activeFilterPreset.length) {
-            let defaultFilterPresetName = "Default";
+            let defaultFilterPresetName = 'Default';
             this.addedFilterByFromAndToByDefault(defaultFilterPresetName);
           } else {
             this.filterComponent.filterPresets[0].isActive = true;
@@ -373,8 +383,6 @@ export class AgGridFilterPresetsDirective implements OnInit, OnDestroy {
     this._destroy$.next();
     this._destroy$.complete();
   }
-
-    
 
   // NOTE: This gets called when FilterChangedEvent gets fired by the grid and updates tells the service that the current preset has changes
   private onGridFilterChanged(event: FilterChangedEvent): void {

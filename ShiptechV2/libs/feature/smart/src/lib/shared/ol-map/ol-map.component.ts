@@ -299,18 +299,15 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       this.isBunkerPlanEdited = value;
     });
     this.routeActive.data.subscribe(data => {
-      console.log(data);
       this.vesselListWithImo = data?.vesselListWithImono;
     });
     // this.localService.themeChange.subscribe(value => {
     //   this.theme = value;
     //   if(!this.theme){
-    //     console.log("HELLO")
     //     // var styleJson = 'https://api.maptiler.com/maps/675b0894-9653-46dc-a025-c2530aaa9eaf/style.json?key=PAYU1Mctev9jZaYj5AGF';
     //     // olms(this.map, styleJson);
     //   }
     //   else{
-    //     console.log("HELLO2");
     //   }
 
     // }
@@ -1619,7 +1616,6 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
         if (result == false) {
           this.showBplan(false);
           this.localService.setBunkerPlanState(false);
@@ -1665,10 +1661,6 @@ export class OlMapComponent implements OnInit, AfterViewInit {
   }
 
   SavemyDefaultView() {
-    console.log(
-      '======Final Payload===========',
-      this.vesselService.myDefaultViewPayload
-    );
     let requestPayload = {};
     requestPayload = {
       Payload: {
@@ -1698,7 +1690,6 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       }
     };
     this.vesselService.saveDefaultView(requestPayload).subscribe(response => {
-      console.log(response.payload);
       this.vesselService.myDefaultViewPayload = [];
       this.vesselService.APImyDefaultView = [];
       if (response.payload[0].success == 1) {
@@ -2046,7 +2037,6 @@ export class OlMapComponent implements OnInit, AfterViewInit {
     //MAP - click
     this.map.on('click', evt => {
       const coordinates = evt.coordinate;
-      // console.log(coordinates)
       // this.flyTo(coordinates, () => { this.isLoading = false }, 3)
       if (hoverItems != null && hoverItems.length > 0)
         this.resetHoverItems(hoverItems);
@@ -2061,13 +2051,12 @@ export class OlMapComponent implements OnInit, AfterViewInit {
       if (hit) {
         const items = this.map.getFeaturesAtPixel(pixel);
         // this.routePopupOverlay.setPosition(evt.coordinate);
-        // console.log(evt.coordinate)
 
         if (
           items[0].get('type') == 'vessel' ||
           items[0].get('type') == 'vessel-glow'
         ) {
-          if(this.showVesselPop) return;
+          if (this.showVesselPop) return;
           if (!this.displayRoute) {
             this.logger.logInfo('OlMapComponent-vesselClick', new Date());
             if (this.showPortList.length != 3) {
