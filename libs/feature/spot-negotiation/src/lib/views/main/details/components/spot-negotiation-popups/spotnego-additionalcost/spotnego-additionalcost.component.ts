@@ -86,17 +86,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     @Inject(DecimalPipe) private _decimalPipe,
     private store: Store
   ) {
-    this.legacyLookupsDatabase.getTableByName('costType').then(response => {
-      this.costTypeList = response;
-    });
-    this.legacyLookupsDatabase.getTableByName('uom').then(response => {
-      this.uomList = response;
-    });
-
-    this.legacyLookupsDatabase.getTableByName('currency').then(response => {
-      this.currencyList = response;
-    });
-
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.quantityPrecision = this.generalTenantSettings.defaultValues.quantityPrecision;
     this.currency = this.generalTenantSettings.tenantFormats.currency;
@@ -117,6 +106,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       this.tenantService.pricePrecision;
     this.requestLocation = data.requestLocation;
     this.rowData = data.rowData;
+    this.costTypeList = data.costTypeList;
+    this.uomList = data.uomList;
+    this.currencyList = data.currencyList;
   }
 
   ngOnInit() {
