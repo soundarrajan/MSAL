@@ -77,6 +77,13 @@ export class SpotNegotiationService extends BaseStoreService
   getStaticLists(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.getStaticLists(payload);
   }
+  /**
+ * @param payload = null
+ */
+  @ObservableException()
+  CheckWhetherUserIsAuthorizedForReportsTab(): Observable<unknown> {
+    return this.spotNegotiationApi.CheckWhetherUserIsAuthorizedForReportsTab();
+  }
 
   /**
    * @param payload = False

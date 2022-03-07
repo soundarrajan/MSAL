@@ -79,7 +79,8 @@ export const SpotNegotiationApiPaths = {
   copyComments: `groups/copyComments`,
   updateSellerComment: `RFQ/UpdateSellerComments`,
   getOfferPriceHistory: `Price/getOfferPriceHistory`,
-  updateProductPrice: `RFQ/FreezeMarketPrices`
+  updateProductPrice: `RFQ/FreezeMarketPrices`,
+  isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`
 };
 
 @Injectable({
@@ -859,6 +860,19 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  CheckWhetherUserIsAuthorizedForReportsTab(): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.isAuthorizedForReportsTab}`, 
+        { Payload: null }
+      )
+      .pipe(
+        map((body: any) => body.payload),
         catchError((body: any) => this.handleErrorMessage(body))
       );
   }
