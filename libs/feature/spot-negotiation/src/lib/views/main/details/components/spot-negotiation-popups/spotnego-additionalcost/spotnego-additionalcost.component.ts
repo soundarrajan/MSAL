@@ -989,6 +989,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
+    if (value.toString().includes('e')) {
+      value = value.toString().split('e')[0];
+    }
     const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
     if (isNaN(number)) {

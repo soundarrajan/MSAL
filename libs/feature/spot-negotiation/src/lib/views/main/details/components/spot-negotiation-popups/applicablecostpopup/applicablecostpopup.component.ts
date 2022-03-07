@@ -285,13 +285,17 @@ export class ApplicablecostpopupComponent implements OnInit {
 
   // To check if Location based Range/Total additional costs are valid
   checkIfLocRTAddCostsValid(additionalCosts) {
-    let zeroPricedRTAddCosts = _.filter(additionalCosts, function(
-      addCost
-    ) {
-      return !addCost.isDeleted && (<string><unknown>addCost.costType == 'Total' || <string><unknown>addCost.costType == 'Range')
-        && addCost.price <= 0;
+    let zeroPricedRTAddCosts = _.filter(additionalCosts, function(addCost) {
+      return (
+        !addCost.isDeleted &&
+        (<string>(<unknown>addCost.costType) == 'Total' ||
+          <string>(<unknown>addCost.costType) == 'Range') &&
+        addCost.price <= 0
+      );
     });
-    return zeroPricedRTAddCosts && zeroPricedRTAddCosts.length > 0 ? true : false;
+    return zeroPricedRTAddCosts && zeroPricedRTAddCosts.length > 0
+      ? true
+      : false;
   }
 
   formatCostItemForDisplay(locationAdditionalCosts: any) {
@@ -756,6 +760,9 @@ export class ApplicablecostpopupComponent implements OnInit {
   priceFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
       return null;
+    }
+    if (value.toString().includes('e')) {
+      value = value.toString().split('e')[0];
     }
     const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
