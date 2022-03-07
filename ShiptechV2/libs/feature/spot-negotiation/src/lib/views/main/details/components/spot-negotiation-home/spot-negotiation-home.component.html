@@ -35,7 +35,7 @@
                   #clickmenu="matMenu"
                   class="more-options-menu-panel menu-panel-requestOptionsDuplicate"
                 >
-                  <div class="duplicate-price-menu">
+                  <div class="duplicate-price-menu" *ngIf="requestOptionsToDuplicatePrice?.length">
                     <div class="text">
                       <span>Duplicate To</span>
                     </div>
@@ -68,6 +68,10 @@
                         Proceed
                       </button>
                     </div>
+                  </div>
+                  <div *ngIf="!requestOptionsToDuplicatePrice?.length" class="more-options-menu-inv no-border p-lr-0"
+                    style="margin: 7px 5px;">
+                    <div class="checkboxOptions">No request found</div>
                   </div>
                 </mat-menu>
                 <!-- <span class="duplicate-cost" matTooltip="Duplicate Cost" matTooltipClass="blueTooltip"></span>-->

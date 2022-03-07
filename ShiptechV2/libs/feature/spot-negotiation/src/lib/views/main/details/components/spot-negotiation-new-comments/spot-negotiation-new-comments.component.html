@@ -30,7 +30,7 @@
                 #duplicateComments="matMenu"
                 class="more-options-menu-panel menu-panel-requestOptionsDuplicateComments"
               >
-                <div class="duplicate-comments-menu">
+                <div class="duplicate-comments-menu" *ngIf="requestListToDuplicateComments?.length">
                   <div class="text">
                     <span>Duplicate To</span>
                   </div>
@@ -68,6 +68,10 @@
                     </button>
                   </div>
                 </div>
+                <div *ngIf="!requestListToDuplicateComments?.length" class="more-options-menu-inv no-border p-lr-0"
+                style="margin: 7px 5px;">
+                <div class="checkboxOptions">No request found</div>
+              </div>
               </mat-menu>
             </div>
           </div>
