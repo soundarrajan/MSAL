@@ -40,6 +40,7 @@ export class NegotiationToolbarComponent
   negotiationId: any;
   disabled: boolean;
   tenantConfiguration: any;
+  isAuthorizedForReportsTab: boolean = false;
 
   @Input('activeTab') set _setActiveTab(activeTab) {
     this.activeTab = activeTab;
@@ -62,6 +63,15 @@ export class NegotiationToolbarComponent
   }
 
   ngOnInit(): void {
+      const response = this.spotNegotiationService.CheckWhetherUserIsAuthorizedForReportsTab();
+      response.subscribe((res: any) => {
+        if(res?.message == 'Unauthorized'){
+          this.isAuthorizedForReportsTab = false;
+        }
+        else
+        this.isAuthorizedForReportsTab = true;
+      });
+      
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.negotiationId = params.spotNegotiationId;
       this.disabled = this.negotiationId === '0';
@@ -116,7 +126,8 @@ export class NegotiationToolbarComponent
               KnownSpotNegotiationRoutes.reportPath
             ],
         routerLinkActiveOptions: { exact: true },
-        disabled
+        disabled,
+        visible: this.isAuthorizedForReportsTab
       },
       {
         label: 'Documents',

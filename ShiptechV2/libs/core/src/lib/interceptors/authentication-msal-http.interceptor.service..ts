@@ -40,7 +40,7 @@ export class AuthenticationMsalInterceptor implements HttpInterceptor {
         },
         error => {
           if (error instanceof HttpErrorResponse) {
-            if (error.status === 401) {
+            if (error.status === 401 && !error.url.includes('api/procurement/rfq/isAuthorizedForReportsTab')) {
               this.toastrService.error(
                 'You do not have authorization to perform this action.'
               );
