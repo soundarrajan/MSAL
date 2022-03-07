@@ -60,6 +60,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   negotiationId: any;
   emailLogUrl: string;
   baseOrigin: string;
+  isAuthorizedForReportsTab: boolean = false;
   public menuItems: MenuItem[];
 
   constructor(
@@ -79,7 +80,16 @@ export class SpotNegotiationHomeComponent implements OnInit {
     // this.route.data.subscribe(data => {
     //   this.navBar = data.navBar;
     // });
-
+    const response = this.spotNegotiationService.CheckWhetherUserIsAuthorizedForReportsTab();
+    response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        this.isAuthorizedForReportsTab  = false;
+      }
+      else{
+        this.isAuthorizedForReportsTab  = true;
+      }
+        
+    });
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       if (
@@ -145,7 +155,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
               KnownSpotNegotiationRoutes.reportPath
             ],
         routerLinkActiveOptions: { exact: true },
-        disabled
+        disabled,
+        visible: this.isAuthorizedForReportsTab
       },
       {
         label: 'Documents',
@@ -165,7 +176,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
     ];
   }
-
+   
   goToEmailLog() {
     this.router
       .navigate([
