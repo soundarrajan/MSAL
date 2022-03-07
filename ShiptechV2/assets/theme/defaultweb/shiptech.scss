@@ -11447,7 +11447,7 @@ width: 25px;
                         display: none;
                         content:url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTk5OTkgMEMyLjIzNzUxIDAgMCAyLjIzNzUxIDAgNUMwIDcuNzYyNDkgMi4yMzc1MSAxMCA0Ljk5OTk5IDEwQzcuNzYyNDcgMTAgMTAgNy43NjI1MSAxMCA1QzEwIDIuMjM3NDkgNy43NjI0OSAwIDQuOTk5OTkgMFpNNy40OTk5OSA1LjUwMDAySDUuNVY3LjUwMDAxSDQuNVY1LjUwMDAySDIuNTAwMDFWNC41MDAwMUg0LjVWMi41MDAwMUg1LjVWNC41MDAwMUg3LjQ5OTk5VjUuNTAwMDJaIiBmaWxsPSIjMzMzMzMzIi8+Cjwvc3ZnPgo=');
                       }
-                      &:hover{                                                 
+                      &:hover{
                         .addButton{
                           display: block;
                         }
@@ -15113,7 +15113,7 @@ font-size:14px;
         .close-icon{
           display: none;
         }
-  
+
       }
       .add-doc{
         margin: 0px 10px;
@@ -24265,7 +24265,7 @@ td.mat-cell {
         color: $black;
         padding: 4px;
        // border: 2px solid #E9EAEC;
-        padding-left: 10px;
+        // padding-left: 10px;
         &:last-child{
           text-align: right;
           padding-right: 15px;
