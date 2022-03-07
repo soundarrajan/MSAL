@@ -6,10 +6,21 @@
 </div>
 
 <div class="header-content" (click)="$event.stopPropagation()">
-  <div class="location-cost" (click)="additionalcostpopup()">
-    <span class="title">View location cost</span>
-    <span class="eye-icon"></span>
+
+<!-- <div mattooltip="View/edit location additional costs" mattooltipclass="lightTooltip" class="location-cost" (click)="additionalcostpopup()">
+  <span class="eye-icon"></span>
+  <span class="title">View location cost</span>
+</div> -->
+
+
+
+  <div class="location-cost" (click)="additionalcostpopup()"> 
+      
+      <span class="eye-icon" ></span>
+    <span class="title" matTooltip="View/edit location additional costs" matTooltipClass="lightTooltip" style="margin-left: 3px;">View location cost</span>
+    
   </div>
+  
   <!-- <div class="terminal">
     <span class="title">Terminal:</span>
     <div class="location w-180" style="margin-bottom: 3px;">
