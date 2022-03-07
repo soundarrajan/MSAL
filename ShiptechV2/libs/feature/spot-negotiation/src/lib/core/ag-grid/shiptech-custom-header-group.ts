@@ -184,13 +184,9 @@ import _, { cloneDeep } from 'lodash';
               {{ params.product.uomName }}</span
             >
           </div>
-          <div
-            class="arrow"
-            [ngClass]="
-              params.product.status === 'Stemmed' ? 'disabled-new-events' : ''
-            "
-            (click)="pricinghistorypopup()"
-          >
+          <div class="arrow" [ngClass]="
+              params.product.status === 'Stemmed' ? 'disabled-new-events' : ''"
+              (click)="pricinghistorypopup(params)">
             <span class="title" title="{{ params.product.indexName }}">{{
               params.product.indexCode == null ? '--' : params.product.indexCode
             }}</span>
@@ -528,15 +524,19 @@ export class ShiptechCustomHeaderGroup {
     dialogRef.afterClosed().subscribe(result => {});
   }
 
-  pricinghistorypopup(): void {
+  pricinghistorypopup(params: any): void {
+    const reqLocation = this.currentRequestInfo.requestLocations.find(x => x.id == params.requestLocationId);
     const dialogRef = this.dialog.open(MarketpricehistorypopupComponent, {
       width: '500vw',
       height: '90vh',
       panelClass: 'additional-cost-popup',
       data: {
-        LocationId: this.currentRequestInfo.requestLocations[0].locationId,
+        LocationId: reqLocation.locationId,
         ProductId: this.params.product.productId,
-        RequestId: this.currentRequestInfo.id
+        RequestId: this.currentRequestInfo.id,
+        indexName: params.product.indexName,
+        locationName: reqLocation.locationName,
+        productName: params.product.productName
       }
     });
 
@@ -1006,16 +1006,10 @@ export class ShiptechCustomHeaderGroup {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           ).displayName;
         }
-        row.requestOffers = priceDetailsArray[
-          index
-        ].requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
-            ? a.requestProductId > b.requestProductId
-              ? 1
-              : -1
-            : a.requestProductTypeId > b.requestProductTypeId
-            ? 1
-            : -1
+        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=>
+        a.requestProductTypeId  === b.requestProductTypeId ?
+        (a.requestProductId > b.requestProductId ? 1 : -1) :
+        (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
         );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
@@ -1064,16 +1058,11 @@ export class ShiptechCustomHeaderGroup {
                 x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
             ).displayName;
           }
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
-            (a, b) =>
-              a.requestProductTypeId === b.requestProductTypeId
-                ? a.requestProductId > b.requestProductId
-                  ? 1
-                  : -1
-                : a.requestProductTypeId > b.requestProductTypeId
-                ? 1
-                : -1
-          );
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=>
+          a.requestProductTypeId  === b.requestProductTypeId ?
+          (a.requestProductId > b.requestProductId ? 1 : -1) :
+         (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
+         );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
         }
