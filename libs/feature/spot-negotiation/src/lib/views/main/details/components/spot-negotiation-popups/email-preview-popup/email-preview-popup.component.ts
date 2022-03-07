@@ -269,8 +269,9 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.filesList = [];
     this.previewTemplate = null;
   }
-  addTo(item) {
-    this.to.push(item);
+
+  addTo(item, selectedFromLookup) {
+    this.to.push(item);    
     if (this.previewTemplate == null) {
       this.previewTemplate = [];
     }
@@ -279,7 +280,10 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.previewTemplate.to == null
     ) {
       this.previewTemplate.to = [];
-      this.previewTemplate.to.push({ IdEmailAddress: item });
+    }
+
+    if(selectedFromLookup){
+      this.previewTemplate.to.push(this.toList2?.find(c => c.name == item));
     } else {
       this.previewTemplate.to.push({ IdEmailAddress: item });
     }
@@ -331,7 +335,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     }
   }
 
-  addCc(item) {
+  addCc(item, selectedFromLookup) {
     this.cc.push(item);
     if (this.previewTemplate == null) {
       this.previewTemplate = [];
@@ -341,7 +345,9 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.previewTemplate.cc == null
     ) {
       this.previewTemplate.cc = [];
-      this.previewTemplate.cc.push({ IdEmailAddress: item });
+    }
+    if(selectedFromLookup){
+      this.previewTemplate.cc.push(this.ccList2?.find(c => c.name == item));
     } else {
       this.previewTemplate.cc.push({ IdEmailAddress: item });
     }
@@ -700,10 +706,10 @@ export class EmailPreviewPopupComponent implements OnInit {
     const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const validateemail =  regularExpression.test(String(inputData).toLowerCase());
     if(validateemail && type == 'ccMail'){
-        this.addCc(inputData);
+        this.addCc(inputData, false);
     }
     if(validateemail && type == 'toMail'){
-      this.addTo(inputData);
+      this.addTo(inputData, false);
     }
     if(!validateemail && type == 'ccMail'){
       this.ccEmail ='';
