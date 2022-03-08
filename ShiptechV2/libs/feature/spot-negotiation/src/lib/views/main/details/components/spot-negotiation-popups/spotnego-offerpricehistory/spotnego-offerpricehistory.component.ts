@@ -4,7 +4,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import * as Highcharts from "highcharts";
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { Store } from '@ngxs/store';
+import { DecimalPipe } from '@angular/common';
 @Component({
   selector: 'app-spotnego-offerpricehistory',
   templateUrl: './spotnego-offerpricehistory.component.html',
@@ -122,6 +123,7 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
 
   disableScrollDown = false
   public showaddbtn=true;
+  public priceFormat ='';
   isShown: boolean = true; // hidden by default
   isBtnActive: boolean = false;
   isButtonVisible=true;
@@ -131,11 +133,15 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
   locationName: string;
   productName: string ;
   locationData: any;
+  tenantService:any;
 
   constructor(public dialogRef: MatDialogRef<SpotnegoOfferpricehistoryComponent>,
      @Inject(MAT_DIALOG_DATA) public data: any,
+     @Inject(DecimalPipe)
+     private _decimalPipe,
      private spotNegotiationService : SpotNegotiationService,
      private spinner: NgxSpinnerService,
+     public store: Store,
      ) {
         this.requestProductId = data.RequestProductId;
         this.requestLocationId = data.RequestLocationId;
@@ -155,11 +161,56 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
       this.spinner.hide();
          this.locationData = res.marketPriceHistory;
     });
+    this.store.subscribe(({ spotNegotiation }) => {
+      this.tenantService = spotNegotiation.tenantConfigurations;
+    })
 }
 
   closeDialog() {
       this.dialogRef.close();
 
+    }
+    priceFormatValue(value) {
+      if (typeof value == 'undefined' || value == null) {
+        return null;
+      }
+      let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+      const number = parseFloat(plainNumber);
+      if (isNaN(number)) {
+        return null;
+      }
+      let productPricePrecision = this.tenantService.pricePrecision;
+  
+      this.priceFormat =
+        '1.' + productPricePrecision + '-' + productPricePrecision;
+      if (plainNumber) {
+        if (productPricePrecision) {
+          plainNumber = this.roundDown(plainNumber, productPricePrecision + 1);
+        } else {
+          plainNumber = Math.trunc(plainNumber);
+        }
+  
+        return this._decimalPipe.transform(plainNumber, this.priceFormat);
+      }
+    }
+    roundDown(value, pricePrecision) {
+      let precisionFactor = 1;
+      let response = 0;
+      const intvalue = parseFloat(value);
+      if (pricePrecision === 1) {
+        precisionFactor = 10;
+      }
+      if (pricePrecision === 2) {
+        precisionFactor = 100;
+      }
+      if (pricePrecision === 3) {
+        precisionFactor = 1000;
+      }
+      if (pricePrecision === 4) {
+        precisionFactor = 10000;
+      }
+      response = Math.floor(intvalue * precisionFactor) / precisionFactor;
+      return response.toString();
     }
 
   tabledatas2=[ ];
