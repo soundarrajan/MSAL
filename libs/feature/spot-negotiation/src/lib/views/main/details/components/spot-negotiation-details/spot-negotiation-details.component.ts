@@ -867,20 +867,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               _.filter(response.offerAdditionalCosts, function(
                 offerAdditionalCost
               ) {
-                return (
-                  offerAdditionalCost.isAllProductsCost ||
-                  offerAdditionalCost.costTypeId == COST_TYPE_IDS.PERCENT
-                );
+                return offerAdditionalCost.isAllProductsCost;
               })
             ) as AdditionalCostViewModel[];
             this.notAllSelectedCostRows = _.cloneDeep(
               _.filter(response.offerAdditionalCosts, function(
                 offerAdditionalCost
               ) {
-                return !(
-                  offerAdditionalCost.isAllProductsCost ||
-                  offerAdditionalCost.costTypeId == COST_TYPE_IDS.PERCENT
-                );
+                return !offerAdditionalCost.isAllProductsCost;
               })
             ) as AdditionalCostViewModel[];
 
@@ -921,19 +915,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             this.recalculateLocationAdditionalCosts(
               locationAdditionalCostList,
               true,
-              productList,
-              offerAdditionalCostList,
-              sellerOffers,
-              locationAdditionalCostList,
-              updatedRow,
-              colDef,
-              newValue,
-              -1
-            );
-
-            this.recalculateLocationAdditionalCosts(
-              offerAdditionalCostList,
-              false,
               productList,
               offerAdditionalCostList,
               sellerOffers,
@@ -1259,16 +1240,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           ) {
             return object.requestProductId == additionalCost.requestProductId;
           });
-
           if (findProductIndex != -1) {
-            let product = _.cloneDeep(rowData.requestOffers[findProductIndex]);
-            let currentPrice = Number(product.price);
-            let findProduct = _.find(productList, function(item) {
-              return item.id == product.requestProductId;
-            });
-            if (findProduct) {
-              totalAmount = Number(currentPrice * findProduct.maxQuantity);
-            }
+            let product = rowData.requestOffers[findProductIndex];
+            totalAmount = product.amount;
           }
         }
         if (productComponent) {
@@ -1325,10 +1299,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     let checkAdditionalCostRowIndex = _.findIndex(
       offerAdditionalCostList,
       function(obj: any) {
-        return (
-          !obj.amountIsCalculated &&
-          (obj.isAllProductsCost || obj.costTypeId == COST_TYPE_IDS.PERCENT)
-        );
+        return !obj.amountIsCalculated && obj.isAllProductsCost;
       }
     );
     let checkLocationCostRowIndex = _.findIndex(
