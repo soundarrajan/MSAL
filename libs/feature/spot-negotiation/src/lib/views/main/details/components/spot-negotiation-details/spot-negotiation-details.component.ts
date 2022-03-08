@@ -1439,7 +1439,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function(
           object: any
         ) {
-          return object.requestProductId == product.id && object.price;
+          return object.requestProductId == product.id;
         });
         if (findRowDataOfferIndex != -1) {
           applicableForItemsArray.push({
