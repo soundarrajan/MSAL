@@ -105,8 +105,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
   @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();
   ngOnInit(): void {
-
-    if((<any>window).activeRequest) {
+    if ((<any>window).activeRequest) {
       this.selReqIndex = (<any>window).activeRequest.i;
     }
 
@@ -122,7 +121,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           this.requestsAndVessels = this.removeDuplicatesRequest(
             spotNegotiation.requestList,
             'requestName'
-            );
+          );
         }
         this.visibleRequestList = _.cloneDeep(
           this.requestsAndVessels.slice(0, 7)
@@ -132,21 +131,20 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if (spotNegotiation.currentRequestSmallInfo) {
           this.locations =
             spotNegotiation.currentRequestSmallInfo.requestLocations;
-            if (
+          if (
             this.counterpartyList.length === 0 &&
             spotNegotiation.counterpartyList
-            ) {
-              this.counterpartyList = spotNegotiation.counterpartyList;
+          ) {
+            this.counterpartyList = spotNegotiation.counterpartyList;
             this.visibleCounterpartyList = _.cloneDeep(
               this.counterpartyList.slice(0, 7)
-              );
-            }
+            );
           }
+        }
         if (!this.initAvailableContracts && this.currentRequestInfo) {
           this.initAvailableContracts = true;
           this.getBestContractForCurrentRequest(this.currentRequestInfo.id);
         }
-
       });
     }, 100);
   }
@@ -195,7 +193,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         const response = this._spotNegotiationService.delinkRequest(payload);
         response.subscribe((res: any) => {
           this.spinner.hide();
-          if(res?.message == 'Unauthorized'){
+          if (res?.message == 'Unauthorized') {
             return;
           }
           if (!isNaN(res)) {
@@ -319,10 +317,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       counterparties: selectedCounterparties
     };
     this.couterpartyValue = null;
-    this.visibleCounterpartyList =  _.cloneDeep(this.counterpartyList.slice(0, 7));
+    this.visibleCounterpartyList = _.cloneDeep(
+      this.counterpartyList.slice(0, 7)
+    );
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
-      if(res?.message == 'Unauthorized'){
+      if (res?.message == 'Unauthorized') {
         return;
       }
 
@@ -424,11 +424,17 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           )?.displayName;
         }
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=>
-        a.requestProductTypeId  === b.requestProductTypeId ?
-        (a.requestProductId > b.requestProductId ? 1 : -1) :
-       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
-       );
+        row.requestOffers = priceDetailsArray[
+          index
+        ].requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
+        );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
 
@@ -476,10 +482,15 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
             )?.displayName;
           }
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=>
-            a.requestProductTypeId  === b.requestProductTypeId ?
-            (a.requestProductId > b.requestProductId ? 1 : -1) :
-          (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
+            (a, b) =>
+              a.requestProductTypeId === b.requestProductTypeId
+                ? a.requestProductId > b.requestProductId
+                  ? 1
+                  : -1
+                : a.requestProductTypeId > b.requestProductTypeId
+                ? 1
+                : -1
           );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
@@ -526,7 +537,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         );
         this.selectedRequestList = [];
         response.subscribe((res: any) => {
-          if(res?.message == 'Unauthorized'){
+          if (res?.message == 'Unauthorized') {
             return;
           }
           if (res.error) {
@@ -588,7 +599,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       selReqIndex: i
     };
     this.selectionChange.emit(obj);
-    (<any>window).activeRequest = {i,selected};
     this.getBestContractForCurrentRequest(selected.id);
   }
 
@@ -598,7 +608,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       this.availableContracts[`request_${selectedRequestId}`] = [];
       const response = this._spotNegotiationService.getBestContract(payload);
       response.subscribe((res: any) => {
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res.payload) {
@@ -607,7 +617,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
           if (res.payload.length > 0) {
             const futurerequestContract = this.getRequestAddContract(
-              JSON.parse(JSON.stringify(this.requestOptions)), res.payload);
+              JSON.parse(JSON.stringify(this.requestOptions)),
+              res.payload
+            );
 
             this.store.dispatch(new SetRequests(futurerequestContract));
           }
@@ -629,9 +641,15 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     contracts.forEach((row, index) => {
       requests.forEach(req => {
         req.requestLocations.forEach(reqLoc => {
-          if (reqLoc.requestProducts.length>0 && reqLoc.id == row.requestLocationId) {
+          if (
+            reqLoc.requestProducts.length > 0 &&
+            reqLoc.id == row.requestLocationId
+          ) {
             reqLoc.requestProducts.forEach(reqProd => {
-              if (reqProd.id == row.requestProductId && reqProd.status !='Stemmed') {
+              if (
+                reqProd.id == row.requestProductId &&
+                reqProd.status != 'Stemmed'
+              ) {
                 reqProd.requestGroupProducts.bestContract = row.fixedPrice;
                 reqProd.requestGroupProducts.bestContractId = row.contract.id;
               }
@@ -685,13 +703,20 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         })
         .slice(0, 7)
     );
-    if(this.visibleCounterpartyList.length === 0){
-      const response = this._spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], userInput.toLowerCase() , { Skip:0  , Take: 25 } );
-      response.subscribe((res:any)=>{
-        if(res?.message == 'Unauthorized'){
+    if (this.visibleCounterpartyList.length === 0) {
+      const response = this._spotNegotiationService.getResponse(
+        null,
+        { Filters: [] },
+        { SortList: [] },
+        [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
+        userInput.toLowerCase(),
+        { Skip: 0, Take: 25 }
+      );
+      response.subscribe((res: any) => {
+        if (res?.message == 'Unauthorized') {
           return;
         }
-        if(res?.payload?.length >0){
+        if (res?.payload?.length > 0) {
           let SelectedCounterpartyList = cloneDeep(res.payload);
           this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
           this.changeDetector.detectChanges();
@@ -721,7 +746,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         { Skip: 0, Take: 25 }
       );
       response.subscribe((res: any) => {
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res?.payload?.length > 0) {
