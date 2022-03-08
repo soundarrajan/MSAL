@@ -844,9 +844,20 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     ) {
       return request.isSelected;
     });
+
+    if (this.duplicateCost && !selectedRequestList.length) {
+      this.toastr.warning('At least one request should be selected!');
+      return;
+    }
+
     let reqIdForLocation: String;
     let reqIdwithLocationForSeller: String;
+    let reqIdwithLocationForProduct: String;
+    let reqIdwithLocationForLength: String;
+
     let requestLocationId = this.requestLocation.locationId;
+
+    let currentRequestProducts = this.requestLocation.requestProducts;
     for (let i = 0; i < selectedRequestList.length; i++) {
       let reqLocation = selectedRequestList[i].requestLocations.filter(function(
         location
@@ -873,6 +884,50 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
               reqLoc.locationName
             : selectedRequestList[i].name + ' - ' + reqLoc.locationName;
         }
+        let reqProductIdForLocation = [];
+        currentRequestProducts.forEach((currentProduct: any) => {
+          let findProduct = _.filter(reqLoc.requestProducts, function(
+            product: any
+          ) {
+            return currentProduct.productId == product.productId;
+          });
+          if (findProduct.length == 0) {
+            reqProductIdForLocation.push(currentProduct.productName);
+          }
+        });
+        reqProductIdForLocation = _.uniq(reqProductIdForLocation);
+        let reqProductIdForLocationString = reqProductIdForLocation.join(',');
+        if (reqProductIdForLocationString != '') {
+          reqIdwithLocationForProduct = reqIdwithLocationForProduct
+            ? reqIdwithLocationForProduct +
+              ', ' +
+              reqProductIdForLocationString +
+              ' is not available in ' +
+              selectedRequestList[i].name +
+              ' '
+            : reqProductIdForLocationString +
+              ' is not available in ' +
+              selectedRequestList[i].name +
+              ' ';
+        }
+
+        if (currentRequestProducts.length < reqLoc.requestProducts.length) {
+          reqIdwithLocationForLength = reqIdwithLocationForLength
+            ? reqIdwithLocationForLength +
+              ', ' +
+              selectedRequestList[i].name +
+              ' - ' +
+              reqLoc.locationName +
+              ' has ' +
+              reqLoc.requestProducts.length +
+              ' product(s)  '
+            : selectedRequestList[i].name +
+              ' - ' +
+              reqLoc.locationName +
+              ' has ' +
+              reqLoc.requestProducts.length +
+              ' product(s) ';
+        }
       });
     }
     if (reqIdForLocation) {
@@ -891,6 +946,26 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           this.rowData.sellerCounterpartyName +
           ' is not available in ' +
           reqIdwithLocationForSeller
+      );
+      return;
+    }
+
+    if (reqIdwithLocationForProduct) {
+      this.toastr.warning(
+        'Cost cannot be copied as the ' + reqIdwithLocationForProduct
+      );
+      return;
+    }
+
+    if (reqIdwithLocationForLength) {
+      this.toastr.warning(
+        'Cost cannot be copied as the ' +
+          this.requestLocation.locationName +
+          ' has ' +
+          this.requestLocation.requestProducts.length +
+          ' products ' +
+          ' and  ' +
+          reqIdwithLocationForLength
       );
       return;
     }
@@ -988,6 +1063,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   priceFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
       return null;
+    }
+    if (value.toString().includes('e')) {
+      value = value.toString().split('e')[0];
     }
     const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
