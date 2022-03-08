@@ -4,10 +4,7 @@
     <div class="spot-dialog-title-right">
       <button class="proceed-btn" mat-button (click)="confirmOffers(true)"[mat-dialog-close]="true">Proceed</button>
       <div class="title-divider">|</div>
-      <div class="close-circle">
-        <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() "
-          style="font-size: 14px; display: inline; position:relative; top:-1px; ">close</mat-icon>
-      </div>
+      <span class="close" style="cursor: pointer;" type="button" [mat-dialog-close]="true" ></span>
     </div>
   </div>
   <hr class="hr-line">
