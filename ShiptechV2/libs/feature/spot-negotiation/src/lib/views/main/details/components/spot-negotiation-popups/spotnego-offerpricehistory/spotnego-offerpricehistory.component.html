@@ -10,7 +10,7 @@
     <div class="row">
       <div class="p-l-15">
 
-        <span class="location-main-heading">Tabular Represenation</span>
+        <span class="location-main-heading">Tabular Representation</span>
       </div>
     </div>
 
@@ -28,8 +28,8 @@
           <tbody style="height: 580px;  overflow: scroll;">
             <tr id = "commentList" *ngFor="let items of locationData">
               <td class="text-left w-147" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
-              <td class="text-left w-95">$ {{items.priceDiff | number}}</td>
-              <td class="text-left w-95" >$ {{items.price}}</td>     
+              <td class="text-left w-95">$ {{priceFormatValue(items.priceDiff) | number}}</td>
+              <td class="text-left w-95" >$ {{priceFormatValue(items.price)| number}}</td>     
                 <td  class="text-left ">
                   <table >
                     <tbody  >
