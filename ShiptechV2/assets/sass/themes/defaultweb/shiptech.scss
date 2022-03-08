@@ -11847,7 +11847,13 @@ tr.title {
     font-size: 14px;
     font-weight: 500;
   }
-
+  .close{
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 1px;
+    content: url("data:image/svg+xml, %3Csvg width='19' height='19' viewBox='0 0 19 19' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg filter='url(%23filter0_i)'%3E%3Cpath d='M0.0117245 8.00128C0.0154965 3.5825 3.60105 0.00660844 8.01982 0.0147595L10.0169 0.0184435C14.4347 0.0265927 18.0126 3.61414 18.0088 8.03191L18.0071 10.0319C18.0033 14.4507 14.4178 18.0266 9.99901 18.0184L8.00189 18.0148C3.58412 18.0066 0.00624604 14.4191 0.0100172 10.0013L0.0117245 8.00128Z' fill='%23FAFAFB'/%3E%3C/g%3E%3Cpath d='M12.6304 5.10714C12.3154 4.79241 11.805 4.79241 11.4902 5.10714L8.84711 7.75013L6.2425 5.14541C5.92766 4.83068 5.41729 4.83068 5.10234 5.14541C4.7875 5.46036 4.7875 5.97072 5.10234 6.28556L7.70695 8.89017L5.14061 11.4565C4.82577 11.7715 4.82577 12.2818 5.14061 12.5967C5.29808 12.754 5.50436 12.8327 5.71074 12.8327C5.91701 12.8327 6.1234 12.754 6.28087 12.5967L8.84711 10.0304L11.4517 12.635C11.6092 12.7924 11.8155 12.8711 12.0218 12.8711C12.2281 12.8711 12.4345 12.7924 12.592 12.635C12.9068 12.3201 12.9068 11.8097 12.592 11.4949L9.98737 8.89028L12.6304 6.2473C12.9452 5.93235 12.9452 5.42198 12.6304 5.10714Z' fill='%237791A8'/%3E%3Cdefs%3E%3Cfilter id='filter0_i' x='0.00976562' y='0.0147705' width='17.9988' height='20.0037' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeFlood flood-opacity='0' result='BackgroundImageFix'/%3E%3CfeBlend mode='normal' in='SourceGraphic' in2='BackgroundImageFix' result='shape'/%3E%3CfeColorMatrix in='SourceAlpha' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0' result='hardAlpha'/%3E%3CfeOffset dy='2'/%3E%3CfeGaussianBlur stdDeviation='2'/%3E%3CfeComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'/%3E%3CfeBlend mode='normal' in2='shape' result='effect1_innerShadow'/%3E%3C/filter%3E%3C/defs%3E%3C/svg%3E%0A");
+  }
   .spot-dialog-title-right {
     display: flex;
     align-items: center;
