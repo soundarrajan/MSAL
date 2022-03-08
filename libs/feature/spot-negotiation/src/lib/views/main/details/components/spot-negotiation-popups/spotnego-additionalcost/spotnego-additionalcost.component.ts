@@ -950,24 +950,33 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       return;
     }
 
-    if (reqIdwithLocationForProduct) {
-      this.toastr.warning(
-        'Cost cannot be copied as the ' + reqIdwithLocationForProduct
-      );
-      return;
-    }
+    let findIfAdditionalCostWithAllExists = _.filter(
+      this.offerAdditionalCostList,
+      function(object) {
+        return !object.isDeleted && object.isAllProductsCost;
+      }
+    );
 
-    if (reqIdwithLocationForLength) {
-      this.toastr.warning(
-        'Cost cannot be copied as the ' +
-          this.requestLocation.locationName +
-          ' has ' +
-          this.requestLocation.requestProducts.length +
-          ' products ' +
-          ' and  ' +
-          reqIdwithLocationForLength
-      );
-      return;
+    if (findIfAdditionalCostWithAllExists.length) {
+      if (reqIdwithLocationForProduct) {
+        this.toastr.warning(
+          'Cost cannot be copied as the ' + reqIdwithLocationForProduct
+        );
+        return;
+      }
+
+      if (reqIdwithLocationForLength) {
+        this.toastr.warning(
+          'Cost cannot be copied as the ' +
+            this.requestLocation.locationName +
+            ' has ' +
+            this.requestLocation.requestProducts.length +
+            ' products ' +
+            ' and  ' +
+            reqIdwithLocationForLength
+        );
+        return;
+      }
     }
 
     if (selectedRequestList.length) {
