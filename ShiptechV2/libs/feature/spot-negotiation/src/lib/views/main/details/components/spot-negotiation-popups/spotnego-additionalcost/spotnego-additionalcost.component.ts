@@ -1204,6 +1204,22 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                 newCost.productList = productDetails.productList;
                 newCost.maxQuantity = productDetails.maxQty;
                 newCost.maxQuantityUomId = productDetails.maxQtyUomId;
+
+                requestLocation.requestProducts.forEach((product: any) => {
+                  if (product.status !== 'Stemmed') {
+                    //Check if exist request offer for product
+                    let findRequestOffer = _.filter(
+                      rowData.requestOffers,
+                      function(object) {
+                        return object.requestProductId == product.id;
+                      }
+                    );
+                    if (!findRequestOffer.length) {
+                      reqOfferIdForLocation.push(product.productName);
+                    }
+                  }
+                });
+
                 if (productDetails.productList.length > 1) {
                   newCost.requestOfferIds = this.getRequestOfferIdsForCopyAdditionalCost(
                     0,
@@ -1218,10 +1234,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                       return object.requestProductId == product.id;
                     }
                   );
-
-                  if (!findRequestOffer.length) {
-                    reqOfferIdForLocation.push(product.productName);
-                  } else {
+                  if (findRequestOffer.length) {
                     this.formatCopiedAdditionalCostForSpecificProduct(
                       newCost,
                       product,
