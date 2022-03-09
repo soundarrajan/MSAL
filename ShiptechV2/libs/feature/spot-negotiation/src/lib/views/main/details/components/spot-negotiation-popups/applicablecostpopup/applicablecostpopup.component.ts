@@ -213,7 +213,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.toastr.warning('No changes are made to perform save.');
       return;
     }
-    if (this.checkIfLocRTAddCostsValid(this.locationBasedCosts)) {
+    if (this.checkIfLocRTAddCostsInvalid(this.locationBasedCosts)) {
       this.toastr.error(
         'Range/Total cost cannot be saved due to request quantity is greater than the defined cost quantity.'
       );
@@ -289,13 +289,13 @@ export class ApplicablecostpopupComponent implements OnInit {
     }
   }
 
-  // To check if Location based Range/Total additional costs are valid
-  checkIfLocRTAddCostsValid(additionalCosts) {
+  // To check if Location based Range/Total additional costs are invalid
+  checkIfLocRTAddCostsInvalid(additionalCosts) {
     let zeroPricedRTAddCosts = _.filter(additionalCosts, function(addCost) {
       return (
         !addCost.isDeleted &&
-        (<string>(<unknown>addCost.costType) == 'Total' ||
-          <string>(<unknown>addCost.costType) == 'Range') &&
+        (addCost.costType == 'Total' ||
+          addCost.costType == 'Range') &&
         addCost.price <= 0
       );
     });
@@ -1259,7 +1259,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   saveCopiedLocationCost() {
-    if (this.checkIfLocRTAddCostsValid(this.copiedLocationCost)) {
+    if (this.checkIfLocRTAddCostsInvalid(this.copiedLocationCost)) {
       this.toastr.error(
         'Range/Total for duplicate cost cannot be saved due to request quantity is greater than the defined cost quantity.'
       );
