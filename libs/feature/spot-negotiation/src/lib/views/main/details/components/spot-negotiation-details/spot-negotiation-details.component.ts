@@ -1263,8 +1263,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             return object.requestProductId == additionalCost.requestProductId;
           });
           if (findProductIndex != -1) {
-            let product = rowData.requestOffers[findProductIndex];
-            totalAmount = product.amount;
+            let product = _.cloneDeep(rowData.requestOffers[findProductIndex]);
+            let currentPrice = Number(product.price);
+            let findProduct = _.find(productList, function(item) {
+              return item.id == product.requestProductId;
+            });
+            if (findProduct) {
+              totalAmount = Number(currentPrice * findProduct.maxQuantity);
+            }
           }
         }
         if (productComponent) {
