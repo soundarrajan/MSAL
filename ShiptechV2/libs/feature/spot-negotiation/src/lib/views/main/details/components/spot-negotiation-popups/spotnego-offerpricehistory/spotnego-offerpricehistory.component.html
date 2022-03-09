@@ -37,7 +37,7 @@
                         <td  class="text-left "*ngIf="items.oldPrices.length==0" >
                           ---
                         </td>
-                        <td  *ngFor="let item of items.oldPrices">&nbsp;$ {{item}} &nbsp;</td>
+                        <td  *ngFor="let item of items.oldPrices">&nbsp;$ {{priceFormatValue(item)| number}} &nbsp;</td>
                       </tr>
                     </tbody>
 
