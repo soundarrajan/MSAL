@@ -4,4 +4,12 @@
   .search-request-popup .header .close:hover {
     opacity: 100;
   }
-  
+  .blue-button {
+    background-color: #1cabe0!important;
+    border: none;
+    border-radius: 5px;
+    color: #fff!important;
+    height: 25px!important;
+    line-height: 25px!important;
+    cursor:pointer;
+}
