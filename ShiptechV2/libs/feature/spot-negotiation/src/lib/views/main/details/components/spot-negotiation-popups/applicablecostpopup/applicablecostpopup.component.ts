@@ -233,6 +233,12 @@ export class ApplicablecostpopupComponent implements OnInit {
         return request.isSelected;
       }
     );
+
+    if (this.duplicateCost && selectedRequestList.length == 0) {
+      this.toastr.error('At least one request should be selected!');
+      return;
+    }
+
     let reqIdForLocation: String;
     let requestLocationId = this.requestLocation.locationId;
     for (let i = 0; i < selectedRequestList.length; i++) {
@@ -725,6 +731,9 @@ export class ApplicablecostpopupComponent implements OnInit {
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
+    if (value.toString().includes('e')) {
+      value = value.toString().split('e')[0];
+    }
     const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
     if (isNaN(number)) {
@@ -742,6 +751,9 @@ export class ApplicablecostpopupComponent implements OnInit {
   amountFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
       return null;
+    }
+    if (value.toString().includes('e')) {
+      value = value.toString().split('e')[0];
     }
     const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
