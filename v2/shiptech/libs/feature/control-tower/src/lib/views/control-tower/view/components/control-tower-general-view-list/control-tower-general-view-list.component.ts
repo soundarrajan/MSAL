@@ -584,14 +584,15 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
         let productTypeList = rowData.quantityReportDetails.map(obj => {
           let rowObj = {};
           /**
-           * For residue sludge difference
+           * For residue sludge & egcs difference; Values are based on condition
            */
           rowObj['sludgePercentage'] = rowData.sludgePercentage;
-          rowObj['logBookRobQtyBeforeDelivery'] =
-            obj.logBookRobQtyBeforeDelivery;
-          rowObj['measuredRobQtyBeforeDelivery'] =
-            obj.measuredRobQtyBeforeDelivery;
-          rowObj['differenceInRobQuantity'] = obj.differenceInRobQuantity;
+          rowObj['logBookRobQtyBeforeDelivery'] = this.differenceType?.name?.toLowerCase() == 'sludge' ?
+            obj.sumOfOrderQuantity : obj.logBookRobQtyBeforeDelivery;
+          rowObj['measuredRobQtyBeforeDelivery'] = this.differenceType?.name?.toLowerCase() == 'sludge' ?
+          obj.measuredDeliveredQuantity : obj.measuredRobQtyBeforeDelivery;
+          rowObj['differenceInRobQuantity'] = this.differenceType?.name?.toLowerCase() == 'sludge' ?
+          obj.differenceInSludgeQuantity : obj.differenceInRobQuantity;
           rowObj['uom'] = obj.robUom.name;
 
           return rowObj;
@@ -618,12 +619,19 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
       quantityControlReport: {
         id: ev.data.quantityControlReport.id
       },
-      popupType: type == 'Egcs' ? 'egcs' : 'sludge',
+      popupType: type.toLowerCase() == 'egcs' ? 'egcs' : 'sludge',
       title:
-        type == 'Egcs'
+        type.toLowerCase() == 'egcs'
           ? 'EGCS Scrubber Difference'
           : 'Residue Sludge Difference',
-      measuredQuantityLabel: 'Measured ROB',
+      logBookLabel:
+        type.toLowerCase() == 'sludge'
+          ? 'Ordered Qty'
+          : 'Log Book ROB',
+      measuredQuantityLabel:
+        type.toLowerCase() == 'sludge'
+          ? 'Discharged Qty'
+          : 'Measured ROB',
       differenceQuantityLabel: 'Difference in Qty',
       vessel: rowData.vessel,
       port: rowData.port,
