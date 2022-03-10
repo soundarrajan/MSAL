@@ -75,7 +75,7 @@
                           (change)="onConfirmOfferCheckboxChange($event,requestOfferItem.value)"
                         >
                         </mat-checkbox></td>
-                        <td class="w-125">{{requestOfferItem.value.SellerName}}</td>
+                        <td class="w-125">{{this.format.htmlDecode(requestOfferItem.value.SellerName)}}</td>
                         <!-- <td class="">Rotterdam</td> -->
                         <td class=""> {{requestOfferItem.value.ProductName}}</td>
                         <td class="">{{format.quantity(requestOfferItem.value.minQuantity)}} {{requestOfferItem.value.UomName}}</td>
@@ -89,7 +89,7 @@
                         <td class=""> {{requestOfferItem.value.UomName}}</td>
                         <td class="">{{requestOfferItem.value.currencyName}} {{format.price(requestOfferItem.value.OfferPrice)||0}}</td>
                         <td class="">{{requestOfferItem.value.currencyName}} {{format.price(requestOfferItem.value.Amount)}}</td>
-                        <td class="w-125">{{requestOfferItem.value.PhysicalSupplierName}}</td>
+                        <td class="w-125">{{this.format.htmlDecode(requestOfferItem.value.PhysicalSupplierName)}}</td>
                       </tr>
                     </tbody>
                   </table>
