@@ -1,5 +1,5 @@
 .search-request-popup .header .close {
-    opacity: .5;  
+    opacity: .5;
   }
   .search-request-popup .header .close:hover {
     opacity: 100;
@@ -12,4 +12,11 @@
     height: 25px!important;
     line-height: 25px!important;
     cursor:pointer;
+}
+
+::ng-deep .ag-header-cell-text  {
+  line-height: 58px;
+  font-size: 16.99px;
+  color: #0000008A;
+  font-family: Roboto, sans-serif;
 }
