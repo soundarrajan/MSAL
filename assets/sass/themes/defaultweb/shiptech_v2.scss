@@ -14517,16 +14517,20 @@ mat-form-field {
       border-bottom: 2px solid #e0e1e4;
       padding: 15px;
       .cust-input-field {
-        padding: 5px 8px;
-        border: 1px solid #e0e1e4;
-        box-sizing: border-box;
-        border-radius: 3px;
+        padding: 5px 7px;
+        min-width: 70px;
+        max-width: 230px;
+
         font-family: Roboto;
         font-style: normal;
         font-weight: 500;
         font-size: 13px;
         line-height: 15px;
-        color: #333333;
+        color: #333;
+        display: inline-block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
       .add-new {
         width: 85px;

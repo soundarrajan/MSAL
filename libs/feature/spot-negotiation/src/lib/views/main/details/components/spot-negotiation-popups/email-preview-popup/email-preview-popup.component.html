@@ -78,16 +78,17 @@
           >
             <div
               class="recipientClass"
-              style="margin: 0px 5px; display:  flex;height:25px;"
+              style="margin: 5px;"
               *ngFor="let item of to"
             >
-              <input
+            <div class="cust-input-field">{{item}}</div>
+              <!-- <input
                 [readonly]="readonly"
                 class="cust-input-field"
                 matInput
                 value="{{ item }}"
                 style="border: none;"
-              />
+              /> -->
               <div
                 [style.visibility]="readonly ? 'hidden' : 'visible'"
                 class="close-icon"
@@ -121,22 +122,23 @@
           >
             <div
               class="recipientClass"
-              style="margin: 0px 5px; display: flex;height:25px;"
+              style="margin: 5px;"
               *ngFor="let item of cc"
             >
-              <input
+            <div class="cust-input-field">{{item}}</div>
+              <!-- <input
                 [readonly]="readonly"
                 class="cust-input-field"
                 matInput
                 value="{{ item }}"
                 style="border: none;"
-              />
+              /> -->
               <div
                 [style.visibility]="readonly ? 'hidden' : 'visible'"
                 class="close-icon flex-shrink-1"
                 (click)="RemoveEmailId(item, 'ccEmail')"
               ></div>
-            </div>
+              </div>
             <div
               [style.visibility]="readonly ? 'hidden' : 'visible'"
               class="add-new"
