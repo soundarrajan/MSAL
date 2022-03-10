@@ -85,6 +85,7 @@ export class SpotNegotiationNewCommentsComponent
   matExpansionPanelElement: MatExpansionPanel;
 
   currentRequestInfo: any;
+  previousRequestInfo: any;
   requestList: any[] = [];
   requestListToDuplicateComments: any[] = [];
 
@@ -221,11 +222,12 @@ export class SpotNegotiationNewCommentsComponent
         NegoVesselAgentComments: this.requestInfo.negoVesselAgentComments.trim()
       };
     }
+    this.previousRequestInfo = _.cloneDeep(this.requestInfo);
 
     this.spotNegotiationService
       .updateNegotiationComments(payload)
       .subscribe((response: any) => {
-        if(response?.message == 'Unauthorized'){
+        if (response?.message == 'Unauthorized') {
           return;
         }
         if (response.status) {
@@ -246,7 +248,7 @@ export class SpotNegotiationNewCommentsComponent
               this.requestInfo.negoVesselAgentComments
             );
           }
-          let currentRequest = _.cloneDeep([this.requestInfo]);
+          let currentRequest = _.cloneDeep([this.previousRequestInfo]);
           this.store.dispatch(new UpdateSpecificRequests(currentRequest));
           this.checkEditableFields();
           this.toastr.success('Comments saved successfully!');
@@ -373,7 +375,7 @@ export class SpotNegotiationNewCommentsComponent
     this.spotNegotiationService
       .copyNegotiationComments(payload)
       .subscribe((response: any) => {
-        if(response?.message == 'Unauthorized'){
+        if (response?.message == 'Unauthorized') {
           return;
         }
         if (response.status) {
