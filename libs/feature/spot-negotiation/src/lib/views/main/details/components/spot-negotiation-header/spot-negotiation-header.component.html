@@ -217,13 +217,13 @@
                   style="padding-right: 5px;"
                   *ngIf="requestOptions.length >= 5"
                 >
-                  {{ item.vesselName }}
+                  {{ item.vesselName| titlecase }}
                 </span>
                 <span
                   style="padding-right: 5px;"
                   *ngIf="requestOptions.length < 5"
                 >
-                  {{ item.name }} - {{ item.vesselName }}
+                  {{ item.name | titlecase}} - {{ item.vesselName | titlecase }}
                 </span>
                 <div
                   class="requestTooltip"
