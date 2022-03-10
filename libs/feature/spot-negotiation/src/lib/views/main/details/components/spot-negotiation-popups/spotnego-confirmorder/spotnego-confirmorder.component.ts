@@ -234,7 +234,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         QuotedProductGroupId: 1,
         isCheckBox: true,
         //End
-        Amount: requestOffer.amount * requestOffer.exchangeRateToBaseCurrency,
+        Amount: requestOffer.amount * (requestOffer.exchangeRateToBaseCurrency?? 1),
         RequestOfferId: requestOffer.id,
         RfqId: requestOffer.rfqId,
         OrderFields: {
