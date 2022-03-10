@@ -1,10 +1,10 @@
-﻿commit b5b4edeb8a1d83ccd3118cca1ebf7ad6b4351591
+﻿commit 05d2ed17ac3f3c5446edb1ab890a4ca7d94c4682
 Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Thu Mar 10 10:43:01 2022 +0000
+Date:   Thu Mar 10 13:57:27 2022 +0000
 
-    Merged PR 16315: 39024 - CT Sludge Diff. Row popup - New cols
+    Merged PR 16323: 39204 - CT Residue Sludge Diff popup UI fixes
     
-    39024 - CT Sludge Diff. Row popup - New cols
+    39204 - CT Residue Sludge Diff popup UI fixes as per latest discussion with Saravana Balan. Mentioned in comments by self on 2022-03-10.
     
     Related work items: #39204
 

@@ -626,13 +626,16 @@ export class ControlTowerGeneralListComponent implements OnInit, OnDestroy {
           : 'Residue Sludge Difference',
       logBookLabel:
         type.toLowerCase() == 'sludge'
-          ? 'Ordered Qty'
+          ? 'Ordered Qty (CBM)'
           : 'Log Book ROB',
       measuredQuantityLabel:
         type.toLowerCase() == 'sludge'
-          ? 'Discharged Qty'
+          ? 'Discharged Qty (CBM)'
           : 'Measured ROB',
-      differenceQuantityLabel: 'Difference in Qty',
+      differenceQuantityLabel:
+        type.toLowerCase() == 'sludge'
+          ? 'Difference in Qty (CBM)'
+          : 'Difference in Qty',
       vessel: rowData.vessel,
       port: rowData.port,
       portCall: rowData.portCall.portCallId,
