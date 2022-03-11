@@ -113,6 +113,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
+        if(localStorage.getItem('reqIdx')){
+          this.selReqIndex = parseInt(localStorage.getItem('reqIdx'));
+          localStorage.removeItem('reqIdx');
+        }
         this.requestOptions = spotNegotiation.requests;
         if (this.requestOptions.length > 6) {
           this.displayVessel = true;
