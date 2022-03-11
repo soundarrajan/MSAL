@@ -21,14 +21,6 @@ const routes: Routes = [
         path: '',
         children: [
           {
-            path: '',
-            redirectTo: KnownSpotNegotiationRoutes.spotNegotiationList,
-            pathMatch: 'full'
-          },
-          {
-            path: KnownSpotNegotiationRoutes.spotNegotiationList
-          },
-          {
             path: `:${KnownSpotNegotiationRoutes.idParam}`,
             children: [
               {
@@ -41,13 +33,25 @@ const routes: Routes = [
                 component: SpotNegotiationComponent,
                 resolve: {
                   staticLists: StaticListsRouteResolver,
-                  //navBar: NavBarResolver,
                   uoms: UomsRouteResolver
                 },
                 data: {
                   title: 'Negotiation',
                   breadcrumb: 'Negotiation'
                 }
+              },
+              {
+                path: `:${KnownSpotNegotiationRoutes.reqId}`,
+                component: SpotNegotiationComponent,
+                resolve: {
+                  staticLists: StaticListsRouteResolver,
+                  uoms: UomsRouteResolver
+                },
+                data: {
+                  title: 'Negotiation',
+                  breadcrumb: 'Negotiation'
+                },
+                pathMatch:'full'
               },
               {
                 path: KnownSpotNegotiationRoutes.emailLog,
