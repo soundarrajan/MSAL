@@ -17,11 +17,29 @@
         <ag-grid-angular id="tradelistgrid" style="height: calc(100vh - 156px);"
             [gridOptions]="dialog_gridOptions"
             class="ag-theme-material angular-v9"
-            [pagination]="true"
-            [paginationPageSize]="25"
+            [overlayLoadingTemplate]="overlayLoadingTemplate"
+            [overlayNoRowsTemplate]="overlayNoRowsTemplate"
             >
         </ag-grid-angular>
-        <!-- <app-footer-v2 class="footer-popup" [id]="'inv-report-popup'"  [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>   -->
+        <div class="footer-popup">
+          <app-ag-footer-new
+          [gridViewModel]="dialog_gridOptions"
+          [page]="page"
+          [size]="pageSize"
+          [count]="totalItems"
+          [singleGrid]="true"
+          [doublePagination]="true"
+          [maxSize]="765"
+          id="{{ gridId }}"
+          (pageChange)="onPageChange($event.page)"
+          (newPageSize) = "onPageSizeChange($event.pageSize)"
+          [enabler] = "true"
+        >
+        </app-ag-footer-new>
+        </div>
+
     </mat-dialog-content>
 </div>
+
+<div class="mainFooterWhiteSpace"></div>
 
