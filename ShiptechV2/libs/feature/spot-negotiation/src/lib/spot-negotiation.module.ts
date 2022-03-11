@@ -72,6 +72,7 @@ import { RfqspopupComponent } from './views/main/details/components/spot-negotia
 import { BadgeComponent } from './views/main/details/components/badge/badge.component';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { FooterV2Component } from '@shiptech/core/ui/components/ds-components/footer-v2/footer-v2.component';
+import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
 import { SpotnegoRequestChangesComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-request-changes/spotnego-request-changes.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NegotiationDetailsToolbarComponent } from './views/main/toolbar/spot-negotiation-details-toolbar.component';
@@ -114,6 +115,7 @@ import { MatTableModule } from '@angular/material/table';
     SpotNegotiationGridModule,
     SpotNegotiationRoutingModule,
     LoggingModule,
+    AgFooterNewModule,
     PortalModule,
     !environment.useAdal
       ? AuthenticationMsalModule.forFeature()
