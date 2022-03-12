@@ -41,19 +41,6 @@ const routes: Routes = [
                 }
               },
               {
-                path: `:${KnownSpotNegotiationRoutes.reqId}`,
-                component: SpotNegotiationComponent,
-                resolve: {
-                  staticLists: StaticListsRouteResolver,
-                  uoms: UomsRouteResolver
-                },
-                data: {
-                  title: 'Negotiation',
-                  breadcrumb: 'Negotiation'
-                },
-                pathMatch:'full'
-              },
-              {
                 path: KnownSpotNegotiationRoutes.emailLog,
                 component: SpotnegoemaillogComponent,
                 data: {
@@ -76,6 +63,19 @@ const routes: Routes = [
                   title: 'Negotiation - Report',
                   breadcrumb: 'Report'
                 }
+              },
+              {
+                path: `:${KnownSpotNegotiationRoutes.reqId}`,
+                component: SpotNegotiationComponent,
+                resolve: {
+                  staticLists: StaticListsRouteResolver,
+                  uoms: UomsRouteResolver
+                },
+                data: {
+                  title: 'Negotiation',
+                  breadcrumb: 'Negotiation'
+                },
+                pathMatch:'full'
               }
               // Note: Left here just for reference, QC does not have related links.
               // relatedLinksRouteDefinition(EntityType.PortCall, KnownQuantityControlRoutes.ReportIdParam)
