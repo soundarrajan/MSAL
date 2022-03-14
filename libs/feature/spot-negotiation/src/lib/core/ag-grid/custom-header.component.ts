@@ -51,6 +51,37 @@ export class CustomHeader implements IHeaderAngularComp {
     return false;
   }
 
+  updateSpecificRequest(requestLocationId, requestProductId, selectAll) {
+    let currentRequestSmallInfo = _.cloneDeep(
+      this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+        return state['spotNegotiation'].currentRequestSmallInfo;
+      })
+    );
+    let findRequestLocationIndex = _.findIndex(
+      currentRequestSmallInfo.requestLocations,
+      function(object: any) {
+        return object.id == requestLocationId;
+      }
+    );
+    if (findRequestLocationIndex != -1) {
+      let requestLocation =
+        currentRequestSmallInfo.requestLocations[findRequestLocationIndex];
+      let findProductIndex = _.findIndex(
+        requestLocation?.requestProducts,
+        function(object: any) {
+          return object.id == requestProductId;
+        }
+      );
+      if (findProductIndex != -1) {
+        let requestProduct = requestLocation.requestProducts[findProductIndex];
+        requestProduct.isSelected = selectAll;
+        this.store.dispatch(
+          new UpdateSpecificRequests([currentRequestSmallInfo])
+        );
+      }
+    }
+  }
+
   onSelectAllProductCheckboxChange(checkbox: any) {
     this.selectAll = checkbox.checked ? true : false;
     let colId = this.params.column.colId;
@@ -92,6 +123,11 @@ export class CustomHeader implements IHeaderAngularComp {
           }
         });
         this.store.dispatch(new EditLocations(requestLocation));
+        this.updateSpecificRequest(
+          this.requestLocationId,
+          this.requestProductId,
+          this.selectAll
+        );
         this.store.dispatch(new SetLocationsRows(locationsRows));
       }
     }
