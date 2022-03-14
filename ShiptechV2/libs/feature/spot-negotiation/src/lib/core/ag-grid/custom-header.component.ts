@@ -30,7 +30,7 @@ import { SetCurrentRequestSmallInfo } from '../../store/actions/request-group-ac
 })
 export class CustomHeader implements IHeaderAngularComp {
   public params: any;
-  private selectAll: boolean = false;
+  selectAll: boolean = false;
   product: { id: number; name: string };
   status: string = '';
   requestLocationId: any;
