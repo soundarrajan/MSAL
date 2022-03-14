@@ -119,7 +119,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           lockPosition: true,
           pinned: 'left',
           headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
-          cellClass: 'p-1 checkbox-center ag-checkbox-v2',
+
+          cellClass:
+            'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
           cellRendererFramework: AGGridCellActionsComponent,
 
           cellRendererParams: { type: 'checkbox-selection' }
