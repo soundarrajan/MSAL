@@ -42,10 +42,9 @@ export class SearchRequestPopupComponent implements OnInit {
   public pageSize: number;
   public totalItems : number;
   public gridId:any;
-  requestListServerKeys:any;
   public overlayLoadingTemplate =
-  '<span class="ag-overlay-loading-center" style="color:white;border-radius:10px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading rows...</span>';
-public overlayNoRowsTemplate =
+  '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
+  public overlayNoRowsTemplate =
   '<span>No rows to show</span>';
   ngOnInit() {}
   constructor(
