@@ -497,7 +497,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           cellRendererParams: {
             type: 'mat-check-box',
             productId: product.productId,
-            status: product.status
+            status: product.status,
+            productName: product.productName,
+            requestLocationId: requestLocationId,
+            requestProductId: product.id,
+            productData: productData
           },
           lockPosition: true,
           headerComponentFramework: CustomHeader
