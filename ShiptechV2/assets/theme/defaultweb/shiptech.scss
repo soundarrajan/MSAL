@@ -11331,7 +11331,7 @@ width: 25px;
                     &.ag-checkbox-v2{
                       .mat-checkbox{
                         &.light-checkbox.small{
-                          width: 12px;
+                          width: 11px;
                           height: 11px;
                           font-size: 11px;
                           line-height: 11px;
@@ -11345,7 +11345,7 @@ width: 25px;
                             }
                           }
                           .mat-checkbox-inner-container{
-                            width: 12px;
+                            width: 11px;
                             height: 11px;
                             line-height: 11px;
                             .mat-checkbox-frame{
@@ -11468,6 +11468,14 @@ width: 25px;
                   .ag-header-cell-text{
                     font-size: 12px;
                     color: #333333;
+                  }
+                }
+                .ag-checkbox-v2 {
+                  .ag-checkbox-input-wrapper {
+                    width: 11px;
+                    height: 11px;
+                    font-size: 11px;
+                    line-height: 11px;
                   }
                 }
               }
@@ -13937,6 +13945,11 @@ border-left: none !important;
             }
           }
         }
+        & table tr th.increment-circle-button {
+          width: 20px;
+          cursor: pointer;
+          padding-left: 10px;
+        }
         tbody{
           height: fit-content;
           overflow: hidden;
@@ -15053,18 +15066,18 @@ font-size:14px;
       padding: 15px;
       .cust-input-field{
         padding: 5px 7px;
-        width: 156px;
-        // border: 1px solid #E0E1E4;
-        // box-sizing: border-box;
-        // border-radius: 3px;
+        min-width: 70px;
+        max-width: 230px;
         font-family: Roboto;
         font-style: normal;
         font-weight: 500;
         font-size: 13px;
         line-height: 15px;
-        color: #333333;
-        display: flex;
+        color: #333;
+        display: inline-block;
         text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
       .add-new{
         width: 85px;

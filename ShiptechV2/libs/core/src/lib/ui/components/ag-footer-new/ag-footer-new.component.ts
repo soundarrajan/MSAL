@@ -22,7 +22,7 @@ export class AgFooterNewComponent {
   @Input() gridViewModel;
 
   @Input() serverKeys;
-
+  @Input() enabler: boolean = false;
   @Input() rowCount;
   @Input() maxSize;
   @Input() doublePagination;
@@ -34,6 +34,8 @@ export class AgFooterNewComponent {
   @Input() showFooterDatepicker;
 
   @Output() pageChange: EventEmitter<any> = new EventEmitter();
+
+  @Output() newPageSize: EventEmitter<any> = new EventEmitter();
 
   @Input()
   set size(val: number) {
@@ -77,6 +79,10 @@ export class AgFooterNewComponent {
     this.pageChange.emit({
       page
     });
+  }
+
+  onPageSizeChanged(pageSize: number){
+    this.newPageSize.emit({pageSize});
   }
 
   onPageSizeChange(pageSize: number): void {

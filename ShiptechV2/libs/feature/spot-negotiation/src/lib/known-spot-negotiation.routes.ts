@@ -3,6 +3,7 @@ export enum KnownSpotNegotiationRoutes {
   spotNegotiation = 'group-of-requests',
   details = 'details',
   idParam = 'spotNegotiationId',
+  reqId = 'requestId',
   reportPath = 'report',
   auditPath = 'audit-log',
   documentsPath = 'documents',

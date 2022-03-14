@@ -9,7 +9,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { Select, Store } from '@ngxs/store';
-import { SelectSeller, EditLocationRow } from '../../store/actions/ag-grid-row.action';
+import {
+  SelectSeller,
+  EditLocationRow
+} from '../../store/actions/ag-grid-row.action';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -36,12 +39,15 @@ import { ToastrService } from 'ngx-toastr';
     <div *ngIf="params.type === 'radio-button-selection'">
       <mat-radio-button
         [checked]="params.value"
-
         class="grid-radio-btn"
       ></mat-radio-button>
     </div>
     <div *ngIf="params.type === 'checkbox-selection'">
-      <mat-checkbox class="grid-checkbox test22" [checked]="params.value" (click)="selectCounterParties(params)"></mat-checkbox>
+      <mat-checkbox
+        class="light-checkbox small"
+        [checked]="params.value"
+        (click)="selectCounterParties(params)"
+      ></mat-checkbox>
     </div>
     <div
       class="hover-popup-icon grid-popup"
@@ -145,7 +151,15 @@ import { ToastrService } from 'ngx-toastr';
 export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   public params: any;
   public popupOpen: boolean;
-  constructor(private toaster: ToastrService,private spinner: NgxSpinnerService,public router: Router, public dialog: MatDialog,private store: Store,private changeDetector: ChangeDetectorRef,private spotNegotiationService: SpotNegotiationService,) {}
+  constructor(
+    private toaster: ToastrService,
+    private spinner: NgxSpinnerService,
+    public router: Router,
+    public dialog: MatDialog,
+    private store: Store,
+    private changeDetector: ChangeDetectorRef,
+    private spotNegotiationService: SpotNegotiationService
+  ) {}
 
   agInit(params: any): void {
     this.params = params;
@@ -167,66 +181,78 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     this.params.onClick(this.params);
   }
 
-  selectCounterParties(params){
+  selectCounterParties(params) {
     let updatedRow = { ...Object.assign({}, params.data) };
-    updatedRow = this.formatRowData(updatedRow,params);
+    updatedRow = this.formatRowData(updatedRow, params);
     var FinalAPIdata = {
-      reqLocSellers: [{
-        requestLocationSellerId: updatedRow.id,
-        isSelected: params.value === false? true : false
-      }]
-
+      reqLocSellers: [
+        {
+          requestLocationSellerId: updatedRow.id,
+          isSelected: params.value === false ? true : false
+        }
+      ]
     };
     this.spinner.show();
-    const response = this.spotNegotiationService.UpdateSelectSeller(FinalAPIdata);
+    const response = this.spotNegotiationService.UpdateSelectSeller(
+      FinalAPIdata
+    );
     response.subscribe((res: any) => {
       this.spinner.hide();
-      if(res?.message == 'Unauthorized'){
+      if (res?.message == 'Unauthorized') {
         return;
       }
-      if(res['isUpdated']){
+      if (res['isUpdated']) {
         // this.toaster.success('Updated successfully.');
         // Update the store
         this.store.dispatch(new EditLocationRow(updatedRow));
         params.node.setData(updatedRow);
-      }
-      else{
-        this.toaster.error("Something went wrong")
+      } else {
+        this.toaster.error('Something went wrong');
       }
     });
-}
-
-setProductSelection(row, currentLocProducts, paramsvalue){
-  for (let index = 0; index < currentLocProducts.length; index++) {
-    if(paramsvalue){
-      let indx = index +1;
-      let val = "checkProd" + indx;
-      row[val] = false;
-    }else{
-      let indx = index +1;
-      let val = "checkProd" + indx;
-      // set product selection false while request product status is stemmed or confirmed.
-      const status = currentLocProducts[index].status;
-      row[val] =  status === 'Stemmed' || status === 'Confirmed'? false : true;
-    }
   }
-  return row
-}
+
+  setProductSelection(row, currentLocProducts, paramsvalue) {
+    for (let index = 0; index < currentLocProducts.length; index++) {
+      if (paramsvalue) {
+        let indx = index + 1;
+        let val = 'checkProd' + indx;
+        row[val] = false;
+      } else {
+        let indx = index + 1;
+        let val = 'checkProd' + indx;
+        // set product selection false while request product status is stemmed or confirmed.
+        const status = currentLocProducts[index].status;
+        row[val] =
+          status === 'Stemmed' || status === 'Confirmed' ? false : true;
+      }
+    }
+    return row;
+  }
   formatRowData(row, params) {
-  //  alert(4);
-    let row1
+    //  alert(4);
+    let row1;
     this.store.subscribe(({ spotNegotiation }) => {
       let Currentproduct = spotNegotiation.locations;
-      let currentLocProd= Currentproduct.filter(row2 => row2.locationId == row.locationId);
-      if(currentLocProd.length != 0){
+      let currentLocProd = Currentproduct.filter(
+        row2 => row2.locationId == row.locationId
+      );
+      if (currentLocProd.length != 0) {
         row1 = { ...Object.assign({}, row) };
-        if(params.value){
+        if (params.value) {
           row1.isSelected = false;
-          row1 = this.setProductSelection(row1, currentLocProd[0].requestProducts, params.value)
-
-        }else{
+          row1 = this.setProductSelection(
+            row1,
+            currentLocProd[0].requestProducts,
+            params.value
+          );
+        } else {
           row1.isSelected = true;
-          row1 = this.setProductSelection(row1, currentLocProd[0].requestProducts, params.value)
+          row1 = this.setProductSelection(
+            row1,
+            currentLocProd[0].requestProducts,
+            params.value
+          );
         }
       }
     });

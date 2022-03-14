@@ -243,7 +243,7 @@ import _, { cloneDeep } from 'lodash';
             </div>
           </div>
           <div class="label-element dashed">
-            <div class="title">Live price</div>
+            <div class="title">Manual Live price</div>
             $<input
               class="value"
               contenteditable="true"

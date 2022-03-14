@@ -3,13 +3,12 @@
 
   <div class="spot-dialog-title-right popup-header-form">
     <mat-checkbox
-      class="checkbox-alignment"
+      class="check-text"
       [(ngModel)]="duplicateCost"
       (change)="onRequestListCheckboxChange($event)"
       [disabled]="!requestListToDuplicate.length"
-    ></mat-checkbox>
-
-    <div class="check-text">Duplicate Costs to:</div>
+      [matTooltip]="!requestListToDuplicate.length? 'No request to copy': ''"
+    >Duplicate Costs to:</mat-checkbox>
     <ng-container *ngIf="!duplicateCost">
       <div class="vessels_req">
         All Vessels <span class="down-arrow"></span>
@@ -74,7 +73,8 @@
     </button>
 
     <div class="title-divider">|</div>
-    <div class="close-circle" style="padding:0px;">
+    <span class="close" style="cursor: pointer;" (click)="closeDialog(false)" type="button"  ></span>
+    <!-- <div class="close-circle" style="padding:0px;">
       <mat-icon
         id="dialogCloseButton"
         matSuffix
@@ -83,7 +83,7 @@
         style="font-size: 14px; display: inline; "
         >close</mat-icon
       >
-    </div>
+    </div> -->
   </div>
 </div>
 <hr class="hr-line" />

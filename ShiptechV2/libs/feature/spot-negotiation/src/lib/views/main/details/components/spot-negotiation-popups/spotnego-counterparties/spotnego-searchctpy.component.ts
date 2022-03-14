@@ -19,8 +19,8 @@ import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib
 })
 export class SpotnegoSearchCtpyComponent implements OnInit {
   public dialog_gridOptions: GridOptions;
-  public counterpartyListRowCount: number;
-  public physicalSupplierRowCount: number;
+  public counterpartyListRowCount: number = this.spotNegotiationService.counterpartyTotalCount ;
+  public physicalSupplierRowCount: number= this.spotNegotiationService.physicalSupplierTotalCount;
   public AddCounterpartiesAcrossLocations: boolean;
   public RequestGroupId: number;
   public RequestLocationId: number;
@@ -39,11 +39,17 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   public count2: number = 0;
   public counterpartyList : any;
   public physicalSuppilierList : any;
-  public counterpartyListLength = 0;
-  public physicalSupplierListLength = 0;
-  public overlayLoadingTemplate;
-  public overlayNoRowsTemplate;
+  public counterpartyListLength;
+  public physicalSupplierListLength;
+  public overlayLoadingTemplate =
+  '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
+public overlayNoRowsTemplate =
+  '<span>No rows to show</span>';
   requestOptions: any;
+  public page: number;
+  public pageSize: number;
+  public totalItems : number;
+  public gridId:any;
   constructor(
     public format: TenantFormattingService,
     private router: Router,
@@ -70,15 +76,8 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       this.LocationId = data.LocationId;
     }
 
-    this.overlayLoadingTemplate =
-      `<span class="ag-overlay-loading-center">Loading Rows....</span>`;
-    this.overlayNoRowsTemplate =
-      `"<span">No rows to show</span>"`;
-
     this.dialog_gridOptions = <GridOptions>{
       defaultColDef: {
-        filter: true,
-        sortable: true,
         resizable: true
       },
       columnDefs: this.columnDefs,
@@ -86,33 +85,27 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       headerHeight: 30,
       rowHeight: 30,
       rowSelection: this.rowSelection,
-      rowModelType: 'infinite',
-      cacheBlockSize: 25,
-      groupIncludeTotalFooter: true,
 
       onGridReady: params => {
         this.dialog_gridOptions.api = params.api;
         this.dialog_gridOptions.columnApi = params.columnApi;
         this.dialog_gridOptions.api.sizeColumnsToFit();
-        if (data.isPhysicalSupplier != undefined && data.isPhysicalSupplier){
-             params.api.setDatasource(this.physicalSupplierListDataSource);
-        }
-        else{
-          params.api.setDatasource(this.counterPartyListDataSource);
-        }
 
-        // this.store.subscribe(({ spotNegotiation }) => {
-        //   if (spotNegotiation.counterpartyList && this.dialog_gridOptions.api) {
-        //     if (data.isPhysicalSupplier != undefined && data.isPhysicalSupplier) {
-        //       this.rowData = spotNegotiation.counterpartyList.filter(x => x.supplier == true);
-        //     }
-        //     else {
-        //       this.rowData = spotNegotiation.counterpartyList;
-        //     }
-        //     this.dialog_gridOptions.api.setRowData(this.rowData);
-        //     this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
-        //   }
-        // });
+        this.store.subscribe(({ spotNegotiation }) => {
+          if(data.isPhysicalSupplier != undefined && data.isPhysicalSupplier){
+            this.pageSize = 25;
+            this.totalItems = this.physicalSupplierRowCount ;
+            this.rowData = spotNegotiation.physicalSupplierCounterpartyList;
+            this.dialog_gridOptions.api.setRowData(this.rowData);
+          }
+          else{
+            this.pageSize = 25;
+            this.totalItems = this.counterpartyListRowCount;
+            this.rowData = spotNegotiation.counterpartyList;
+            this.dialog_gridOptions.api.setRowData(this.rowData);
+          }
+        });
+
         // if(data.isPhysicalSupplier != undefined && data.isPhysicalSupplier){
         //   this.dialog_gridOptions.api.forEachNode(function (node) {
         //     node.setSelected(node.data.id === data?.physicalSupplierCounterpartyId);
@@ -137,15 +130,83 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     };
   }
 
+  onPageChangeforCounterparty(page: number){
+    var endRowData = page * this.pageSize ;
+    this.dialog_gridOptions.api.showLoadingOverlay();
+    this.page = page;
+    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], null, { Skip:endRowData-this.pageSize, Take: this.pageSize  } );
+     response.subscribe((res:any)=>{
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
+      this.dialog_gridOptions.api.hideOverlay();
+      this.rowData = res.payload;
+      this.dialog_gridOptions.api.setRowData(this.rowData);
+     });
+
+  }
+
+  onPageChangeforPhysicalSupplier(page: number){
+    var endRowData = page * this.pageSize ;
+    this.dialog_gridOptions.api.showLoadingOverlay();
+    this.page = page;
+    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], null, { Skip:endRowData-this.pageSize, Take: this.pageSize  } );
+     response.subscribe((res:any)=>{
+      this.dialog_gridOptions.api.hideOverlay();
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
+      this.dialog_gridOptions.api.setRowData(res.payload);
+     });
+  }
+
+  onPageSizeChangeforCounterparty(pageSize: number){
+    this.pageSize =  pageSize;
+    this.dialog_gridOptions.api.showLoadingOverlay();
+    var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+      this.page = currentPage + 1;
+    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], null, { Skip: 0 , Take: this.pageSize } );
+    response.subscribe((res:any)=>{
+    this.dialog_gridOptions.api.hideOverlay();
+    if(res?.message == 'Unauthorized'){
+      return;
+    }
+    if(res?.payload?.length >0){
+      this.rowData = res.payload;
+    this.dialog_gridOptions.api.setRowData(res.payload);
+      }
+    else{
+      this.dialog_gridOptions.api.showNoRowsOverlay();
+    }
+  });
+  }
+
+  onPageSizeChangeforPhysicalSupplier(pageSize: number){
+    this.pageSize =  pageSize;
+    this.dialog_gridOptions.api.showLoadingOverlay();
+    var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+      this.page = currentPage + 1;
+    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], null, { Skip: 0 , Take: this.pageSize } );
+    response.subscribe((res:any)=>{
+      this.dialog_gridOptions.api.hideOverlay();
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
+    if(res?.payload?.length >0){
+      this.rowData = res.payload;
+    this.dialog_gridOptions.api.setRowData(res.payload);
+      }
+    else{
+      this.dialog_gridOptions.api.showNoRowsOverlay();
+    }
+  });
+  }
+
   onCounterpartyChange(value){
     this.searchingCounterparty = value;
     if(this.searchingCounterparty.length === 0 ){
-      let datasource: IDatasource = {
-        getRows: (params: IGetRowsParams) =>{
-            params.successCallback(this.counterpartyList, this.counterpartyListRowCount);
-        }
-     };
-     this.dialog_gridOptions.api.setDatasource(datasource);
+      this.totalItems = this.counterpartyListRowCount;
+      this.dialog_gridOptions.api.setRowData(this.rowData);
     }
 
   }
@@ -153,123 +214,104 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   onPhysicalSuppilierChange(value){
     this.searchingPhysicalSuppilier = value;
     if(this.searchingPhysicalSuppilier.length ===0 ){
-      let datasource: IDatasource = {
-         getRows: (params: IGetRowsParams) =>{
-             params.successCallback(this.physicalSuppilierList, this.physicalSupplierRowCount);
-         }
-      };
-      this.dialog_gridOptions.api.setDatasource(datasource);
+      this.totalItems = this.physicalSupplierRowCount ;
+      this.dialog_gridOptions.api.setRowData(this.rowData);
    }
   }
 
   // For fetching counterparties List
-  counterPartyListDataSource: IDatasource = {
-    getRows: (params: IGetRowsParams) => {
-      this.counterpartyListRowCount = this.spotNegotiationService.counterpartyTotalCount ;
-      if(this.count !=0 && this.counterpartyListLength < params.endRow  ){
-        this.dialog_gridOptions.api.showLoadingOverlay();
-        let response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], null, { Skip:params.endRow-25 , Take: 25 } );
-        response.subscribe((res: any) => {
-            this.dialog_gridOptions.api.hideOverlay();
-            if(res?.message == 'Unauthorized'){
-              return;
-            }
-              if (res?.payload?.length > 0) {
-                this.store.dispatch(new AppendCounterpartyList(res.payload));
-                params.successCallback(res.payload, this.counterpartyListRowCount);
-              }
-          });
-      }
-      else{
-        this.count = 1;
-        this.store.subscribe(({ spotNegotiation }) => {
-          this.counterpartyList = spotNegotiation.counterpartyList ;
-          params.successCallback(this.counterpartyList.slice(params.startRow, params.endRow), this.counterpartyListRowCount);
-           this.counterpartyListLength = this.counterpartyList.length;
-        });
-      }
-      }
-  }
+  // counterPartyListDataSource: IDatasource = {
+  //   getRows: (params: IGetRowsParams) => {
+  //     this.counterpartyListRowCount = this.spotNegotiationService.counterpartyTotalCount ;
+  //     if(this.count !=0 && this.counterpartyListLength < params.endRow  ){
+  //       this.dialog_gridOptions.api.showLoadingOverlay();
+  //       let response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], null, { Skip:params.endRow-25 , Take: 25 } );
+  //       response.subscribe((res: any) => {
+  //           this.dialog_gridOptions.api.hideOverlay();
+  //           if(res?.message == 'Unauthorized'){
+  //             return;
+  //           }
+  //             if (res?.payload?.length > 0) {
+  //               this.store.dispatch(new AppendCounterpartyList(res.payload));
+  //               params.successCallback(res.payload, this.counterpartyListRowCount);
+  //             }
+  //         });
+  //     }
+  //     else{
+  //       this.count = 1;
+  //       this.store.subscribe(({ spotNegotiation }) => {
+  //         this.counterpartyList = spotNegotiation.counterpartyList ;
+  //         params.successCallback(this.counterpartyList.slice(params.startRow, params.endRow), this.counterpartyListRowCount);
+  //          this.counterpartyListLength = this.counterpartyList.length;
+  //       });
+  //     }
+  //     }
+  // }
 
   // For fetching PhysicalSupplier List
-  physicalSupplierListDataSource : IDatasource = {
-    getRows: (params: IGetRowsParams) =>{
-      this.physicalSupplierRowCount = this.spotNegotiationService.physicalSupplierTotalCount;
-        if(this.count2 !=0 && this.physicalSupplierListLength < params.endRow){
-          this.dialog_gridOptions.api.showLoadingOverlay();
-          let response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], null, { Skip:params.endRow-25 , Take: 25 } );
-          response.subscribe((res:any)=>{
-            this.dialog_gridOptions.api.hideOverlay();
-            if(res?.message == 'Unauthorized'){
-              return;
-            }
-            if(res?.payload?.length > 0){
-              this.physicalSupplierRowCount = res.matchedCount;
-              this.store.dispatch(new AppendPhysicalSupplierCounterpartyList(res.payload));
-                params.successCallback(res.payload, this.physicalSupplierRowCount);
-            }
-          });
-        }
-        else{
-          this.count2 = 1;
-          this.store.subscribe(({ spotNegotiation }) => {
-          this.physicalSuppilierList = spotNegotiation.physicalSupplierCounterpartyList ;
-          params.successCallback(this.physicalSuppilierList.slice(params.startRow, params.endRow), this.physicalSupplierRowCount);
-           this.physicalSupplierListLength = this.physicalSuppilierList.length;
-        });
-        }
-    }
-  };
+  // physicalSupplierListDataSource : IDatasource = {
+  //   getRows: (params: IGetRowsParams) =>{
+  //     this.physicalSupplierRowCount = this.spotNegotiationService.physicalSupplierTotalCount;
+  //       if(this.count2 !=0 && this.physicalSupplierListLength < params.endRow){
+  //         this.dialog_gridOptions.api.showLoadingOverlay();
+  //         let response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], null, { Skip:params.endRow-25 , Take: 25 } );
+  //         response.subscribe((res:any)=>{
+  //           this.dialog_gridOptions.api.hideOverlay();
+  //           if(res?.message == 'Unauthorized'){
+  //             return;
+  //           }
+  //           if(res?.payload?.length > 0){
+  //             this.physicalSupplierRowCount = res.matchedCount;
+  //             this.store.dispatch(new AppendPhysicalSupplierCounterpartyList(res.payload));
+  //               params.successCallback(res.payload, this.physicalSupplierRowCount);
+  //           }
+  //         });
+  //       }
+  //       else{
+  //         this.count2 = 1;
+  //         this.store.subscribe(({ spotNegotiation }) => {
+  //         this.physicalSuppilierList = spotNegotiation.physicalSupplierCounterpartyList ;
+  //         params.successCallback(this.physicalSuppilierList.slice(params.startRow, params.endRow), this.physicalSupplierRowCount);
+  //          this.physicalSupplierListLength = this.physicalSuppilierList.length;
+  //       });
+  //       }
+  //   }
+  // };
 
   SearchCounterparty(userInput: string): void{
-    this.dialog_gridOptions.api.hideOverlay();
-    let dataSource: IDatasource = {
-       getRows: (params:IGetRowsParams) =>{
-        this.dialog_gridOptions.api.showLoadingOverlay();
-      const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], userInput.toLowerCase() , { Skip:params.endRow-25 , Take: 25 } );
-      response.subscribe((res: any) => {
-        this.dialog_gridOptions.api.hideOverlay();
-        if(res?.message != 'Unauthorized'){
-          
-        
-          if (res?.payload?.length > 0) {
-            params.successCallback(res?.payload, res.matchedCount);
-          }
-          else{
-              this.dialog_gridOptions.api.showNoRowsOverlay();
-          }
-        }
-      });
-
+    this.dialog_gridOptions.api.showLoadingOverlay();
+    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], userInput.toLowerCase() , { Skip:0 , Take: this.pageSize } );
+    response.subscribe((res:any)=>{
+      this.totalItems = res.matchedCount;
+      this.dialog_gridOptions.api.hideOverlay();
+    if(res?.payload?.length >0){
+      var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+      this.page = currentPage + 1;
+      this.dialog_gridOptions.api.setRowData(res.payload);
+      }
+    else{
+      this.dialog_gridOptions.api.showNoRowsOverlay();
     }
-    };
-    this.dialog_gridOptions.api.setDatasource(dataSource);
+  });
+
   }
 
 
   SearchPhysicalSupplier(userInput: string): void{
-    this.dialog_gridOptions.api.hideOverlay();
-    let dataSource: IDatasource = {
-       getRows: (params:IGetRowsParams) =>{
-        this.dialog_gridOptions.api.showLoadingOverlay();
-        const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], userInput.toLowerCase(), { Skip:params.endRow-25 , Take: 25 } );
-      response.subscribe((res: any) => {
-        this.dialog_gridOptions.api.hideOverlay();
-        if(res?.message != 'Unauthorized'){
-
-        
-          if (res?.payload?.length > 0) {
-            params.successCallback(res?.payload, res.matchedCount);
-          }
-          else{
-            this.dialog_gridOptions.api.showNoRowsOverlay();
-          }
-        }
-      });
-
+    this.dialog_gridOptions.api.showLoadingOverlay();
+    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], userInput.toLowerCase() , { Skip:0 , Take: this.pageSize } );
+    response.subscribe((res:any)=>{
+      this.totalItems = res.matchedCount;
+      this.dialog_gridOptions.api.hideOverlay();
+    if(res?.payload?.length >0){
+      var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+      this.page = currentPage + 1;
+      this.dialog_gridOptions.api.setRowData(res.payload);
+      }
+    else{
+      this.dialog_gridOptions.api.showNoRowsOverlay();
     }
-    };
-    this.dialog_gridOptions.api.setDatasource(dataSource);
+  });
   }
 
   public columnDefs = [
@@ -290,7 +332,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       headerTooltip: 'Counterparty',
       field: 'name',
       width: 175,
-      cellClass: ['aggridtextalign-left']
+      cellClass: ['aggridtextalign-left'],
     },
     {
       headerName: 'Parent',
@@ -348,7 +390,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   toBeAddedCounterparties(): SpnegoAddCounterpartyModel[] {
     this.selectedRows = this.dialog_gridOptions.api.getSelectedRows();
 
-    
+
     if (this.AddCounterpartiesAcrossLocations) {
       this.requestOptions = this.store.selectSnapshot(
         (state: SpotNegotiationStoreModel) => {

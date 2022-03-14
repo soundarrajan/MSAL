@@ -2,11 +2,17 @@
     <div class="header">
         <div class="title">Search Counterparties</div>
         <div style="display:flex"  *ngIf="data.isPhysicalSupplier != undefined && data.isPhysicalSupplier" >
-            <input type="text" [(ngModel)]="searchingCounterparty"  placeholder="Search Counterparty here" class="search-product-input" (keydown.enter)="SearchPhysicalSupplier($event.target.value)" (ngModelChange)="onPhysicalSuppilierChange($event)"         >
+            <input type="text" [(ngModel)]="searchingCounterparty"  placeholder="Search Counterparty here" class="search-box" (keydown.enter)="SearchPhysicalSupplier($event.target.value)" (ngModelChange)="onPhysicalSuppilierChange($event)">
+            <button class="searchButton" type="submit">
+              <i class="fa fa-search"></i>
+          </button>
         </div>
         <div style="display:flex"  *ngIf="data.isPhysicalSupplier == undefined && !data.isPhysicalSupplier" >
-          <input type="text" [(ngModel)]="searchingPhysicalSuppilier" placeholder="Search Counterparty here" class="search-product-input" (keydown.enter)="SearchCounterparty($event.target.value)" (ngModelChange)="onCounterpartyChange($event)"
+          <input type="text" [(ngModel)]="searchingPhysicalSuppilier" placeholder="Search Counterparty here" class="search-box" (keydown.enter)="SearchCounterparty($event.target.value)" (ngModelChange)="onCounterpartyChange($event)"
           >
+          <button class="searchButton" type="submit">
+            <i class="fa fa-search"></i>
+        </button>
       </div>
 
         <div class="header-btn">
@@ -19,10 +25,27 @@
         <ag-grid-angular id="tradelistgrid" style="height: calc(100vh - 156px);"
             [gridOptions]="dialog_gridOptions"
             class="ag-theme-material angular-v9"
-            [pagination]="true"
-            [paginationPageSize]="25"
+            [overlayLoadingTemplate]="overlayLoadingTemplate"
+            [overlayNoRowsTemplate]="overlayNoRowsTemplate"
             >
         </ag-grid-angular>
-        <!-- <app-footer-v2 class="footer-popup" [id]="'inv-report-popup'"  [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>   -->
+
+        <div class="footer-popup">
+          <app-ag-footer-new
+          [gridViewModel]="dialog_gridOptions"
+          [page]="page"
+          [size]="pageSize"
+          [count]="totalItems"
+          [singleGrid]="true"
+          [doublePagination]="true"
+          [maxSize]="765"
+          id="{{ gridId }}"
+          (pageChange)="data.isPhysicalSupplier ? onPageChangeforPhysicalSupplier($event.page) : onPageChangeforCounterparty($event.page)"
+          (newPageSize) = "data.isPhysicalSupplier ?  onPageSizeChangeforPhysicalSupplier($event.pageSize) : onPageSizeChangeforCounterparty($event.pageSize)"
+          [enabler] = "true"
+        >
+        </app-ag-footer-new>
+        </div>
+
     </mat-dialog-content>
 </div>

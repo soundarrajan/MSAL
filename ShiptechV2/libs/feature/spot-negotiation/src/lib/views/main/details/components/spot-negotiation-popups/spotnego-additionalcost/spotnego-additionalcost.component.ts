@@ -844,9 +844,20 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     ) {
       return request.isSelected;
     });
+
+    if (this.duplicateCost && !selectedRequestList.length) {
+      this.toastr.warning('At least one request should be selected!');
+      return;
+    }
+
     let reqIdForLocation: String;
     let reqIdwithLocationForSeller: String;
+    let reqIdwithLocationForProduct: String;
+    let reqIdwithLocationForLength: String;
+
     let requestLocationId = this.requestLocation.locationId;
+
+    let currentRequestProducts = this.requestLocation.requestProducts;
     for (let i = 0; i < selectedRequestList.length; i++) {
       let reqLocation = selectedRequestList[i].requestLocations.filter(function(
         location
@@ -873,6 +884,50 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
               reqLoc.locationName
             : selectedRequestList[i].name + ' - ' + reqLoc.locationName;
         }
+        let reqProductIdForLocation = [];
+        currentRequestProducts.forEach((currentProduct: any) => {
+          let findProduct = _.filter(reqLoc.requestProducts, function(
+            product: any
+          ) {
+            return currentProduct.productId == product.productId;
+          });
+          if (findProduct.length == 0) {
+            reqProductIdForLocation.push(currentProduct.productName);
+          }
+        });
+        reqProductIdForLocation = _.uniq(reqProductIdForLocation);
+        let reqProductIdForLocationString = reqProductIdForLocation.join(',');
+        if (reqProductIdForLocationString != '') {
+          reqIdwithLocationForProduct = reqIdwithLocationForProduct
+            ? reqIdwithLocationForProduct +
+              ', ' +
+              reqProductIdForLocationString +
+              ' is not available in ' +
+              selectedRequestList[i].name +
+              ' '
+            : reqProductIdForLocationString +
+              ' is not available in ' +
+              selectedRequestList[i].name +
+              ' ';
+        }
+
+        if (currentRequestProducts.length < reqLoc.requestProducts.length) {
+          reqIdwithLocationForLength = reqIdwithLocationForLength
+            ? reqIdwithLocationForLength +
+              ', ' +
+              selectedRequestList[i].name +
+              ' - ' +
+              reqLoc.locationName +
+              ' has ' +
+              reqLoc.requestProducts.length +
+              ' product(s)  '
+            : selectedRequestList[i].name +
+              ' - ' +
+              reqLoc.locationName +
+              ' has ' +
+              reqLoc.requestProducts.length +
+              ' product(s) ';
+        }
       });
     }
     if (reqIdForLocation) {
@@ -893,6 +948,35 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           reqIdwithLocationForSeller
       );
       return;
+    }
+
+    let findIfAdditionalCostWithAllExists = _.filter(
+      this.offerAdditionalCostList,
+      function(object) {
+        return !object.isDeleted && object.isAllProductsCost;
+      }
+    );
+
+    if (findIfAdditionalCostWithAllExists.length) {
+      if (reqIdwithLocationForProduct) {
+        this.toastr.warning(
+          'Cost cannot be copied as the ' + reqIdwithLocationForProduct
+        );
+        return;
+      }
+
+      if (reqIdwithLocationForLength) {
+        this.toastr.warning(
+          'Cost cannot be copied as the ' +
+            this.requestLocation.locationName +
+            ' has ' +
+            this.requestLocation.requestProducts.length +
+            ' products ' +
+            ' and  ' +
+            reqIdwithLocationForLength
+        );
+        return;
+      }
     }
 
     if (selectedRequestList.length) {
@@ -953,6 +1037,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
+    if (value.toString().includes('e')) {
+      value = value.toString().split('e')[0];
+    }
     const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
     if (isNaN(number)) {
@@ -971,6 +1058,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
+    if (value.toString().includes('e')) {
+      value = value.toString().split('e')[0];
+    }
     const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
     if (isNaN(number)) {
@@ -988,6 +1078,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   priceFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
       return null;
+    }
+    if (value.toString().includes('e')) {
+      value = value.toString().split('e')[0];
     }
     const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
@@ -1060,7 +1153,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     let reqIdForLocation: String;
     let noRequestOffer: String;
     let reqIdForOfferLocation: String;
-    let reqNoPriceForRequesOffer: String;
+    let reqIdForStemmedProduct: String;
+
     let requestLocationId = this.requestLocation.locationId;
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
@@ -1076,7 +1170,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           let reqProductIdForLocation = [];
           let reqOfferIdForLocation = [];
           let noRequestOfferArray = [];
-          let noPriceRequestOfferArray = [];
+          let productsStemmedArray = [];
           this.offerAdditionalCostList.forEach(additionalCost => {
             if (!additionalCost.isDeleted) {
               let newCost = _.cloneDeep(additionalCost);
@@ -1119,6 +1213,22 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                 newCost.productList = productDetails.productList;
                 newCost.maxQuantity = productDetails.maxQty;
                 newCost.maxQuantityUomId = productDetails.maxQtyUomId;
+
+                requestLocation.requestProducts.forEach((product: any) => {
+                  if (product.status !== 'Stemmed') {
+                    //Check if exist request offer for product
+                    let findRequestOffer = _.filter(
+                      rowData.requestOffers,
+                      function(object) {
+                        return object.requestProductId == product.id;
+                      }
+                    );
+                    if (!findRequestOffer.length) {
+                      reqOfferIdForLocation.push(product.productName);
+                    }
+                  }
+                });
+
                 if (productDetails.productList.length > 1) {
                   newCost.requestOfferIds = this.getRequestOfferIdsForCopyAdditionalCost(
                     0,
@@ -1126,24 +1236,12 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                   );
                   newCost.offerId = rowData.requestOffers[0].offerId;
                 } else if (productDetails.productList.length == 1) {
-                  let product = productDetails.productList[0];
-                  let findRequestOffer = _.filter(
-                    rowData.requestOffers,
-                    function(object) {
-                      return object.requestProductId == product.id;
+                  newCost.excludeCost = true;
+                  requestLocation.requestProducts.forEach((product: any) => {
+                    if (product.status === 'Stemmed') {
+                      productsStemmedArray.push(product.productName);
                     }
-                  );
-
-                  if (!findRequestOffer.length) {
-                    reqOfferIdForLocation.push(product.productName);
-                  } else {
-                    this.formatCopiedAdditionalCostForSpecificProduct(
-                      newCost,
-                      product,
-                      requestLocation,
-                      rowData
-                    );
-                  }
+                  });
                 } else if (!productDetails.productList.length) {
                   newCost.excludeCost = true;
                 }
@@ -1192,10 +1290,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                       applicableForProduct.productName
                     );
                   } else {
-                    if (!findRequestOffer[0].price) {
-                      noPriceRequestOfferArray.push(
-                        applicableForProduct.productName
-                      );
+                    if (product.status == 'Stemmed') {
+                      productsStemmedArray.push(product.productName);
                     }
                     this.formatCopiedAdditionalCostForSpecificProduct(
                       newCost,
@@ -1256,22 +1352,18 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                 ' ';
           }
 
-          //If selected product doesn't have price in request offer
-          noPriceRequestOfferArray = _.uniq(noPriceRequestOfferArray);
-          let noPriceRequestOfferString = noPriceRequestOfferArray.join(',');
-          if (noPriceRequestOfferString != '') {
-            reqNoPriceForRequesOffer = reqNoPriceForRequesOffer
-              ? reqNoPriceForRequesOffer +
-                ', price for  ' +
-                noPriceRequestOfferString +
-                ' is not available in ' +
+          //If user select stemmed product  for selected product
+          productsStemmedArray = _.uniq(productsStemmedArray);
+          let productsStemmedString = productsStemmedArray.join(',');
+          if (productsStemmedString != '') {
+            reqIdForStemmedProduct = reqIdForStemmedProduct
+              ? productsStemmedString +
+                ', ' +
+                productsStemmedString +
+                ' are stemmed in ' +
                 request.name +
                 ' '
-              : ' price for ' +
-                noPriceRequestOfferString +
-                ' is not available in ' +
-                request.name +
-                ' ';
+              : productsStemmedString + ' are stemmed in ' + request.name + ' ';
           }
         }
       });
@@ -1303,12 +1395,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       return;
     }
 
-    if (reqNoPriceForRequesOffer) {
+    if (reqIdForStemmedProduct) {
       this.toastr.warning(
-        'Cost cannot be copied as the ' +
-          reqNoPriceForRequesOffer +
-          ' for the counterparty ' +
-          this.rowData.sellerCounterpartyName
+        'Cost cannot be copied as the product(s) ' + reqIdForStemmedProduct
       );
       return;
     }
@@ -1768,25 +1857,13 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       const product = selectedRequestLocation.requestProducts.find(
         (item: any) => item.id === requestProductId
       );
-      let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function(
-        object: any
-      ) {
-        return object.requestProductId == product.id && object.price;
-      });
-      if (findRowDataOfferIndex != -1) {
-        return {
-          productList: [product],
-          maxQty: product.maxQuantity,
-          maxQtyUomId: product.uomId,
-          maxQtyUom: product.uomName
-        };
-      } else
-        return {
-          productList: [],
-          maxQty: product.maxQuantity,
-          maxQtyUomId: product.uomId,
-          maxQtyUom: product.uomName
-        };
+
+      return {
+        productList: [product],
+        maxQty: product.maxQuantity,
+        maxQtyUomId: product.uomId,
+        maxQtyUom: product.uomName
+      };
     } else {
       let totalMaxQuantity = 0,
         maxQuantityUomId,
@@ -1796,7 +1873,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           let findRowDataOfferIndex = _.findIndex(
             rowData.requestOffers,
             function(object: any) {
-              return object.requestProductId == product.id && object.price;
+              return object.requestProductId == product.id;
             }
           );
           if (findRowDataOfferIndex != -1) {

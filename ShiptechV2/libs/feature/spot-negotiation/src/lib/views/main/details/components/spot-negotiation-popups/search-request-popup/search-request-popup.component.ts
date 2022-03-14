@@ -18,7 +18,7 @@ import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib
 })
 export class SearchRequestPopupComponent implements OnInit {
   public dialog_gridOptions: GridOptions;
-  public requestRowCount: number;
+  public requestRowCount: number = this._spotNegotiationService.requestCount;
   public count;
   public requestListLength;
   public requestList;
@@ -38,8 +38,14 @@ export class SearchRequestPopupComponent implements OnInit {
   RequestGroupId: any;
   rowData:any = [];
   searchingRequest :string = null;
-  public overlayLoadingTemplate;
-  public overlayNoRowsTemplate;
+  public page: number;
+  public pageSize: number;
+  public totalItems : number;
+  public gridId:any;
+  public overlayLoadingTemplate =
+  '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
+  public overlayNoRowsTemplate =
+  '<span>No rows to show</span>';
   ngOnInit() {}
   constructor(
     private router: Router,
@@ -51,15 +57,9 @@ export class SearchRequestPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.RequestGroupId = data.RequestGroupId;
-    this.overlayLoadingTemplate =
-      `<span class="ag-overlay-loading-center">Loading Rows....</span>`;
-    this.overlayNoRowsTemplate =
-      `"<span">No rows to show</span>"`;
 
     this.dialog_gridOptions = <GridOptions>{
       defaultColDef: {
-        filter: true,
-        sortable: true,
         resizable: true
       },
 
@@ -68,22 +68,25 @@ export class SearchRequestPopupComponent implements OnInit {
       headerHeight: 30,
       rowHeight: 30,
       rowSelection: 'multiple',
-      rowModelType: 'infinite',
-      cacheBlockSize: 25,
+      //rowModelType: 'single',
+      //cacheBlockSize: 50,
 
       // groupIncludeTotalFooter: true,
       onGridReady: params => {
         this.dialog_gridOptions.api = params.api;
         this.dialog_gridOptions.columnApi = params.columnApi;
         this.dialog_gridOptions.api.sizeColumnsToFit();
-        // this.store.subscribe(({ spotNegotiation }) => {
-        //   if (spotNegotiation.requestList && this.dialog_gridOptions.api) {
-        //     this.rowData = spotNegotiation.requestList;
-        //     this.dialog_gridOptions.api.setRowData(this.rowData);
-        //     this.rowCount = this.dialog_gridOptions.api.getDisplayedRowCount();
-        //   }
-        // });
-        params.api.setDatasource(this.dataSource);
+        //params.api.setDatasource(this.dataSource);
+
+        this.store.subscribe(({ spotNegotiation }) => {
+          this.requestList = spotNegotiation.requestList ;
+          var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+           this.page = currentPage + 1;
+           this.pageSize=25;
+           this.totalItems = this.requestRowCount;
+           this.dialog_gridOptions.api.setRowData(this.requestList);
+             this.requestListLength = this.requestList.length;
+          });
       },
       getRowStyle: function(params) {
         if (params.node.rowPinned) {
@@ -103,69 +106,179 @@ export class SearchRequestPopupComponent implements OnInit {
     };
   }
 
+  onPageChange(page: number){
+    var endRowData = page * this.pageSize ;
+    this.dialog_gridOptions.api.showLoadingOverlay();
+    this.page = page;
+    const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip:endRowData-this.pageSize, Take: this.pageSize });
+     response.subscribe((res:any)=>{
+      this.dialog_gridOptions.api.hideOverlay();
+      this.dialog_gridOptions.api.setRowData(res.payload);
+     });
+
+  }
+
+  onPageSizeChange(pageSize: number){
+    this.pageSize =  pageSize;
+    this.dialog_gridOptions.api.showLoadingOverlay();
+    var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+      this.page = currentPage + 1;
+    const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip:0, Take: this.pageSize });
+    response.subscribe((res:any)=>{
+             this.dialog_gridOptions.api.hideOverlay();
+           if(res?.payload?.length >0){
+            this.requestList = res.payload;
+            this.dialog_gridOptions.api.setRowData(res.payload);
+             }
+           else{
+             this.dialog_gridOptions.api.showNoRowsOverlay();
+           }
+         });
+  }
+
   onCounterpartyChange(value){
     this.searchingRequest = value;
     if(this.searchingRequest.length ===0 ){
-      let datasource: IDatasource = {
-         getRows: (params: IGetRowsParams) =>{
-             params.successCallback(this.requestList, this.requestRowCount);
-         }
-      };
-      this.dialog_gridOptions.api.setDatasource(datasource);
-   }
-  }
-
-  dataSource: IDatasource = {
-    getRows: (params: IGetRowsParams) => {
-      this.requestRowCount = this._spotNegotiationService.requestCount;
-      if(this.count !=0 && this.requestListLength < params.endRow ){
-        this.dialog_gridOptions.api.showLoadingOverlay();
-        const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip: params.endRow-25, Take: 25 })
-        response.subscribe((res: any) => {
-          this.dialog_gridOptions.api.hideOverlay();
-          if(res?.message == 'Unauthorized'){
-            return;
-          }
-            if (res?.payload?.length > 0) {
-              params.successCallback(res.payload, this.requestRowCount);
-              this.store.dispatch(new AppendRequestList(res.payload));
-            }
-        });
-      }
-      else{
-        this.count =1 ;
-        this.dialog_gridOptions.api.hideOverlay();
-        this.store.subscribe(({ spotNegotiation }) => {
-          this.requestList = spotNegotiation.requestList ;
-          params.successCallback(this.requestList.slice(params.startRow, params.endRow), this.requestRowCount);
-           this.requestListLength = this.requestList.length;
-        });
-      }
-      }
+      this.totalItems = this.requestRowCount;
+      this.dialog_gridOptions.api.setRowData(this.requestList);
+    }
+    else{
+      return;
+    }
   }
 
   search(userInput: string){
-   let dataSource : IDatasource ={
-     getRows: (params: IGetRowsParams)=>{
-      this.dialog_gridOptions.api.showLoadingOverlay();
-      const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , userInput.toLowerCase() , { Skip:0, Take: 25 });
-      response.subscribe((res:any)=>{
-        this.dialog_gridOptions.api.hideOverlay();
-        if(res?.message != 'Unauthorized'){          
-        
-      if(res?.payload?.length >0){
-         params.successCallback(res.payload, res.matchedCount);
-        }
-      else{
-        this.dialog_gridOptions.api.showNoRowsOverlay();
+    this.dialog_gridOptions.api.showLoadingOverlay();
+    const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , userInput.toLowerCase() , { Skip:0, Take: this.pageSize });
+    response.subscribe((res:any)=>{
+      this.totalItems = res.matchedCount;
+      this.dialog_gridOptions.api.hideOverlay();
+    if(res?.payload?.length >0){
+      var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+      this.page = currentPage + 1;
+      this.dialog_gridOptions.api.setRowData(res.payload);
       }
+    else{
+      this.dialog_gridOptions.api.showNoRowsOverlay();
     }
-    });
-     }
-     };
-
-    this.dialog_gridOptions.api.setDatasource(dataSource);
+  });
   }
+
+  // onPageSizeChange(pageSize: number): void {
+  //   var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+  //  this.page = currentPage + 1;
+  //   this.pageSize =  pageSize;
+  //   console.log("Page Size = "+ this.pageSize);
+  //   let dataSource : IDatasource ={
+  //     getRows: (params: IGetRowsParams)=>{
+  //      this.dialog_gridOptions.api.showLoadingOverlay();
+  //      const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip:0, Take: this.pageSize });
+  //      //this.page = page;
+  //      response.subscribe((res:any)=>{
+  //       this.totalItems = this.requestRowCount;
+  //        this.dialog_gridOptions.api.hideOverlay();
+  //      if(res?.payload?.length >0){
+  //         params.successCallback(res.payload, res.matchedCount);
+  //        }
+  //      else{
+  //        this.dialog_gridOptions.api.showNoRowsOverlay();
+  //      }
+  //    });
+  //     }
+  //     };
+  //   this.dialog_gridOptions.api.setDatasource(dataSource);
+  // }
+
+  // onPageChange(page: number){
+  //   var endRowData = page * this.pageSize ;
+  //   let dataSource : IDatasource ={
+  //     getRows: (params: IGetRowsParams)=>{
+  //      this.dialog_gridOptions.api.showLoadingOverlay();
+  //      const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip:endRowData, Take: this.pageSize });
+  //      this.page = page;
+  //      response.subscribe((res:any)=>{
+  //       this.totalItems = this.requestRowCount;
+  //        this.dialog_gridOptions.api.hideOverlay();
+  //      if(res?.payload?.length >0){
+  //         params.successCallback(res.payload, res.matchedCount);
+  //        }
+  //      else{
+  //        this.dialog_gridOptions.api.showNoRowsOverlay();
+  //      }
+  //    });
+  //     }
+  //     };
+  //   this.dialog_gridOptions.api.setDatasource(dataSource);
+
+  // }
+
+  // onCounterpartyChange(value){
+  //   this.searchingRequest = value;
+  //   if(this.searchingRequest.length ===0 ){
+  //     let datasource: IDatasource = {
+  //        getRows: (params: IGetRowsParams) =>{
+  //            var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+  //           this.page = currentPage + 1;
+  //           this.totalItems =this.requestRowCount;
+  //            params.successCallback(this.requestList, this.requestRowCount);
+  //        }
+  //     };
+  //     this.dialog_gridOptions.api.setDatasource(datasource);
+  //  }
+  // }
+
+  // dataSource: IDatasource = {
+  //   getRows: (params: IGetRowsParams) => {
+  //     this.requestRowCount = this._spotNegotiationService.requestCount;
+  //     if(this.count !=0 && this.requestListLength < params.endRow ){
+  //       this.dialog_gridOptions.api.showLoadingOverlay();
+  //       const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip: params.endRow-25, Take: 25 })
+  //       response.subscribe((res: any) => {
+  //         this.dialog_gridOptions.api.hideOverlay();
+  //           if (res?.payload?.length > 0) {
+
+  //             params.successCallback(res.payload, this.requestRowCount);
+  //             this.store.dispatch(new AppendRequestList(res.payload));
+  //           }
+  //       });
+  //     }
+  //     else{
+  //       this.count =1 ;
+  //       this.dialog_gridOptions.api.hideOverlay();
+  //       this.store.subscribe(({ spotNegotiation }) => {
+  //       this.requestList = spotNegotiation.requestList ;
+  //       var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+  //        this.page = currentPage + 1;
+  //        this.totalItems = this.requestRowCount;
+  //         params.successCallback(this.requestList.slice(params.startRow, params.endRow), this.requestRowCount);
+  //          this.requestListLength = this.requestList.length;
+  //       });
+  //     }
+  //     }
+  // }
+
+  // search(userInput: string){
+  //  let dataSource : IDatasource ={
+  //    getRows: (params: IGetRowsParams)=>{
+  //     this.dialog_gridOptions.api.showLoadingOverlay();
+  //     const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , userInput.toLowerCase() , { Skip:0, Take: 25 });
+  //     response.subscribe((res:any)=>{
+  //       var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+  //       this.page = currentPage + 1;
+  //       this.totalItems = res.matchedCount;
+  //       this.dialog_gridOptions.api.hideOverlay();
+  //     if(res?.payload?.length >0){
+  //        params.successCallback(res.payload, res.matchedCount);
+  //       }
+  //     else{
+  //       this.dialog_gridOptions.api.showNoRowsOverlay();
+  //     }
+  //   });
+  //    }
+  //    };
+
+  //   this.dialog_gridOptions.api.setDatasource(dataSource);
+  // }
 
   addToRequestList() {
     this.selectedRequestList = this.dialog_gridOptions.api.getSelectedRows();
@@ -256,7 +369,6 @@ export class SearchRequestPopupComponent implements OnInit {
     {
       headerName: '',
       field: 'check',
-      filter: true,
       suppressMenu: true,
       width: 35,
       checkboxSelection: true,

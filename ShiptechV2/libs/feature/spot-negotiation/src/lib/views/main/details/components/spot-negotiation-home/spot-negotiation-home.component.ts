@@ -52,6 +52,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
   @ViewChild(SpotnegoemaillogComponent)
   spotEmailComp: SpotnegoemaillogComponent;
 
+  @ViewChild('headerDetails') headerDetailsComponent: any;
+
   selectedSellerList = [];
   selectedRequestList: any = [];
   currentRequestInfo: any;
@@ -82,13 +84,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
     // });
     const response = this.spotNegotiationService.CheckWhetherUserIsAuthorizedForReportsTab();
     response.subscribe((res: any) => {
-      if(res?.message == 'Unauthorized'){
-        this.isAuthorizedForReportsTab  = false;
+      if (res?.message == 'Unauthorized') {
+        this.isAuthorizedForReportsTab = false;
+      } else {
+        this.isAuthorizedForReportsTab = true;
       }
-      else{
-        this.isAuthorizedForReportsTab  = true;
-      }
-        
     });
     this.store.subscribe(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
@@ -144,7 +144,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
           ...routeLinkToNegotiationDetails,
           KnownSpotNegotiationRoutes.details
         ],
-        routerLinkActiveOptions: { exact: true }
+        routerLinkActiveOptions: { exact: true },
+        command: () => {
+          this.setActiveRequest();
+        }
       },
       {
         label: 'Report',
@@ -156,7 +159,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
             ],
         routerLinkActiveOptions: { exact: true },
         disabled,
-        visible: this.isAuthorizedForReportsTab
+        visible: this.isAuthorizedForReportsTab,
+        command: () => {
+          this.setActiveRequest();
+        }
       },
       {
         label: 'Documents',
@@ -164,7 +170,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
           ...routeLinkToNegotiationDetails,
           KnownSpotNegotiationRoutes.documentsPath
         ],
-        routerLinkActiveOptions: { exact: true }
+        routerLinkActiveOptions: { exact: true },
+        command: () => {
+          this.setActiveRequest();
+        }
       },
       {
         label: 'Email Log',
@@ -172,11 +181,20 @@ export class SpotNegotiationHomeComponent implements OnInit {
           ...routeLinkToNegotiationDetails,
           KnownSpotNegotiationRoutes.emailLog
         ],
-        routerLinkActiveOptions: { exact: true }
+        routerLinkActiveOptions: { exact: true },
+        command: () => {
+          this.setActiveRequest();
+        }
       }
     ];
   }
-   
+
+  setActiveRequest() {
+    (<any>window).activeRequest = {
+      i: this.headerDetailsComponent.selReqIndex
+    };
+  }
+
   goToEmailLog() {
     this.router
       .navigate([
@@ -339,7 +357,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     const response = this.spotNegotiationService.SendRFQ(FinalAPIdata);
     response.subscribe((res: any) => {
       this.spinner.hide();
-      if(res?.message == 'Unauthorized'){
+      if (res?.message == 'Unauthorized') {
         return;
       }
       if (res instanceof Object && res['sellerOffers'].length > 0) {
@@ -438,11 +456,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         this.UpdateProductsSelection(requestLocations, row);
-        row.requestOffers = row.requestOffers?.sort((a,b)=> 
-        a.requestProductTypeId  === b.requestProductTypeId ? 
-        (a.requestProductId > b.requestProductId ? 1 : -1) : 
-       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
-       );
+        row.requestOffers = row.requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
+        );
         //row.totalOffer = priceDetailsArray[index].totalOffer;
         return row;
       }
@@ -466,11 +488,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
         this.UpdateProductsSelection(requestLocations, row);
-        row.requestOffers = row.requestOffers?.sort((a,b)=> 
-        a.requestProductTypeId  === b.requestProductTypeId ? 
-        (a.requestProductId > b.requestProductId ? 1 : -1) : 
-       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
-       );
+        row.requestOffers = row.requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
+        );
       }
       return row;
     });
@@ -669,9 +695,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
               lr.requestOffers &&
               selectedSellerRows.some(
                 s =>
-                  s.SellerId == lr.sellerCounterpartyId && ((tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
-                  lr.physicalSupplierCounterpartyId ==
-                    s.physicalSupplierCounterpartyId ) || (!tenantConfig['isPhysicalSupplierMandatoryForQuoting']))
+                  s.SellerId == lr.sellerCounterpartyId &&
+                  ((tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
+                    lr.physicalSupplierCounterpartyId ==
+                      s.physicalSupplierCounterpartyId) ||
+                    !tenantConfig['isPhysicalSupplierMandatoryForQuoting'])
               )
           );
           if (reqOffers.length == 0) {
@@ -716,9 +744,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
                 e =>
                   (e.LocationID == reqLoc.locationId &&
                     e.SellerId == locRows.sellerCounterpartyId &&
-                    (tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
+                    tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
                     e.physicalSupplierCounterpartyId ==
-                      locRows.physicalSupplierCounterpartyId) || (!tenantConfig['isPhysicalSupplierMandatoryForQuoting']))
+                      locRows.physicalSupplierCounterpartyId) ||
+                  !tenantConfig['isPhysicalSupplierMandatoryForQuoting']
               )
               .map(result => {
                 result.ReqProdOffers = result.ReqProdOffers.filter(p =>
@@ -796,13 +825,20 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
         return;
       }
-      if (tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && reqIdwithLocationForSeller) {
+      if (
+        tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
+        reqIdwithLocationForSeller
+      ) {
         this.toaster.error(
-          'Selected seller(s) does not have same physical supplier in ' + reqIdwithLocationForSeller
+          'Selected seller(s) does not have same physical supplier in ' +
+            reqIdwithLocationForSeller
         );
         return;
       }
-      if (!tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && reqIdwithLocationForSeller) {
+      if (
+        !tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
+        reqIdwithLocationForSeller
+      ) {
         this.toaster.error(
           'Selected seller(s) does not exists in ' + reqIdwithLocationForSeller
         );
@@ -824,14 +860,18 @@ export class SpotNegotiationHomeComponent implements OnInit {
       selectedSellerRows.forEach(sellerRow => {
         requestLocationIds.push(sellerRow.RequestLocationId);
       });
-      const copyPricePayload = { copyPriceDetailsRequest: sellerDetails, RequestLocationIds: requestLocationIds, RequestGroupId: this.currentRequestInfo.requestGroupId };
+      const copyPricePayload = {
+        copyPriceDetailsRequest: sellerDetails,
+        RequestLocationIds: requestLocationIds,
+        RequestGroupId: this.currentRequestInfo.requestGroupId
+      };
       this.spinner.show();
       const response = this.spotNegotiationService.copyPriceDetails(
         copyPricePayload
       );
       response.subscribe((res: any) => {
         this.spinner.hide();
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (typeof res === 'boolean' && res == true) {
@@ -877,12 +917,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
   getLocationRowsWithSelectedSeller(rowsArray, selectedSellerRows) {
     rowsArray.forEach(row => {
       selectedSellerRows.forEach(sellerRow => {
-        let reqLocations =this.requestOptions.filter(req=>req.requestLocations.some(reqloc=>reqloc.id==sellerRow.RequestLocationId));
+        let reqLocations = this.requestOptions.filter(
+          row1 => row1.id == sellerRow.RequestId
+        );
         let reqProducts =
           reqLocations.length > 0
             ? reqLocations[0].requestLocations.filter(
-              row1 => row1.id == sellerRow.RequestLocationId
-            )
+                row1 => row1.id == sellerRow.RequestLocationId
+              )
             : [];
         let currentLocProdCount =
           reqProducts.length > 0 ? reqProducts[0].requestProducts.length : 0;
@@ -926,7 +968,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       );
       response.subscribe((res: any) => {
         this.spinner.hide();
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res instanceof Object && res['rfqIds'].length > 0) {
@@ -974,7 +1016,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       const response = this.spotNegotiationService.SkipRFQ(FinalAPIPayload);
       response.subscribe((res: any) => {
         this.spinner.hide();
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res instanceof Object && res['sellerOffers'].length > 0) {
@@ -1082,7 +1124,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       const response = this.spotNegotiationService.RevokeFQ(FinalAPIdata);
       response.subscribe((res: any) => {
         this.spinner.hide();
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res instanceof Object) {
@@ -1195,7 +1237,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       );
       response.subscribe((res: any) => {
         this.spinner.hide();
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res instanceof Object && res['rfqIds'].length > 0) {
@@ -1223,7 +1265,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     let requestOfferIds = [];
     let requestOffers = [];
     this.selectedSellerList.forEach(e => {
-      if(e.RequestOffers && e.RequestOffers.length > 0)
+      if (e.RequestOffers && e.RequestOffers.length > 0)
         requestOfferIds.push([...e.RequestOffers.map(e => e)]);
     });
     requestOfferIds = requestOfferIds.reduce((acc, val) => acc.concat(val), []); // flatten array
@@ -1265,7 +1307,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     );
     this.spinner.show();
     response.subscribe((res: any) => {
-      if(res?.message == 'Unauthorized'){
+      if (res?.message == 'Unauthorized') {
         return;
       }
       if (res) {
@@ -1289,7 +1331,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       .getPriceDetails(groupId)
       .subscribe((priceDetailsRes: any) => {
         this.spinner.hide();
-        if(priceDetailsRes?.message == 'Unauthorized'){
+        if (priceDetailsRes?.message == 'Unauthorized') {
           return;
         }
         let priceDetails = _.cloneDeep(priceDetailsRes.sellerOffers);
