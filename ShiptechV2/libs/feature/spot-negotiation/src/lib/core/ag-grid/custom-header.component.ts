@@ -16,9 +16,11 @@ import { SetCurrentRequestSmallInfo } from '../../store/actions/request-group-ac
 @Component({
   selector: 'app-custom-header',
   template: `
-    <div class="header-checkbox-center checkbox-center ag-checkbox-v2">
+    <div
+      class="header-checkbox-center checkbox-center ag-checkbox-v2 select-all-product-container"
+    >
       <mat-checkbox
-        class="mat-checkbox light-checkbox small preferred mat-accent header-selectAll1 mat-checkbox-checked"
+        class="mat-checkbox mat-accent light-checkbox small select-all-product"
         [(ngModel)]="selectAll"
         (change)="onSelectAllProductCheckboxChange($event)"
       ></mat-checkbox>

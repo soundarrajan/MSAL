@@ -5283,7 +5283,7 @@ tr.title {
 }
 
 .ag-cell .vessel-to-watch.yes {
-  color:#EB5757;
+  color: #eb5757;
 }
 
 .more-dots {
@@ -11847,7 +11847,7 @@ tr.title {
     font-size: 14px;
     font-weight: 500;
   }
-  .close{
+  .close {
     width: 20px;
     height: 20px;
     position: relative;
@@ -22540,7 +22540,6 @@ mat-form-field {
   width: 0px !important;
 }
 
-
 .menu-panel-requestOptionsDuplicateComments {
   .mat-menu-content {
     margin: 0px !important;
@@ -22644,4 +22643,20 @@ mat-form-field {
     height: 35px;
     line-height: 26px !important;
   }
+}
+
+.select-all-product-container {
+  width: 11px;
+  height: 11px;
+  font-size: 11px;
+  line-height: 11px;
+}
+
+.select-all-product .mat-checkbox-inner-container {
+  background: #ffffff !important;
+  border-radius: 4px;
+  width: 11px;
+  height: 11px;
+  font-size: 11px;
+  line-height: 11px;
 }
