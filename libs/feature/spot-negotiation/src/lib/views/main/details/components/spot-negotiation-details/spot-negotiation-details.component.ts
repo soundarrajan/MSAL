@@ -854,7 +854,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       };
       this.notPercentageLocationCostRows = [];
       this.notAllSelectedCostRows = [];
-      this.spinner.show();
       this.spotNegotiationService
         .getAdditionalCosts(payload)
         .subscribe((response: any) => {
