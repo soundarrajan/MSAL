@@ -286,6 +286,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             );
             if (checkIfSelectedCounterpartyExist == -1) {
               perLocationCtpys.push(<SpnegoAddCounterpartyModel>{
+                requestId: request.id,
                 requestGroupId: RequestGroupId,
                 requestLocationId: reqLoc.id,
                 locationId: reqLoc.locationId,
