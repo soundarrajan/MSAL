@@ -576,7 +576,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       let currentLocProd = currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
-      let reqLocations = requestlist.filter(row1 => row1.id == row.requestId);
+      let reqLocations = requestlist.filter(req=>req.requestLocations.some(reqloc=>reqloc.id==row.requestLocationId));
       let reqProducts = reqLocations[0].requestLocations.filter(
         row1 => row1.id == row.requestLocationId
       );
