@@ -113,7 +113,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
-        if(localStorage.getItem('reqIdx')){
+        if (localStorage.getItem('reqIdx')) {
           this.selReqIndex = parseInt(localStorage.getItem('reqIdx'));
           localStorage.removeItem('reqIdx');
         }
@@ -326,6 +326,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     );
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
+      this.selectedCounterparty = _.cloneDeep([]);
       if (res?.message == 'Unauthorized') {
         return;
       }
@@ -334,7 +335,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
           this.visibleCounterpartyList[i].selected = false;
         }
-        this.selectedCounterparty = _.cloneDeep([]);
         this.toastr.success(res.message);
         // Add in Store
         // this.store.dispatch(
