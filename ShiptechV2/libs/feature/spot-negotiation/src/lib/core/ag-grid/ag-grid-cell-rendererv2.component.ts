@@ -1030,7 +1030,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
   selectCounterParties(params) {
-    console.log(params);
     let updatedRow = { ...params.data };
     // if(updatedRow.requestOffers?.length >0 && updatedRow.requestOffers[0].price != null){
     //   if( (document.getElementsByClassName("Enabledconfirm") as any).length > 0){
