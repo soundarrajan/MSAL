@@ -26,7 +26,8 @@ import {
   EditLocationRow,
   SetLocationsRows,
   EditCounterpartyList,
-  EditLocations
+  EditLocations,
+  UpdateSpecificRequests
 } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
@@ -944,6 +945,38 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     event.target.classList.add('selectedIcon');
     this.menuTriggerHover.openMenu();
   }
+
+  updateSpecificRequest(requestLocationId, requestProductId, selectAll) {
+    let currentRequestSmallInfo = _.cloneDeep(
+      this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+        return state['spotNegotiation'].currentRequestSmallInfo;
+      })
+    );
+    let findRequestLocationIndex = _.findIndex(
+      currentRequestSmallInfo.requestLocations,
+      function(object: any) {
+        return object.id == requestLocationId;
+      }
+    );
+    if (findRequestLocationIndex != -1) {
+      let requestLocation =
+        currentRequestSmallInfo.requestLocations[findRequestLocationIndex];
+      let findProductIndex = _.findIndex(
+        requestLocation?.requestProducts,
+        function(object: any) {
+          return object.id == requestProductId;
+        }
+      );
+      if (findProductIndex != -1) {
+        let requestProduct = requestLocation.requestProducts[findProductIndex];
+        requestProduct.isSelected = selectAll;
+        this.store.dispatch(
+          new UpdateSpecificRequests([currentRequestSmallInfo])
+        );
+      }
+    }
+  }
+
   changeSelectProductCheckbox() {
     let requestProductId = this.params.requestProductId;
     let requestLocationId = this.params.requestLocationId;
@@ -988,6 +1021,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           requestProduct.isSelected = true;
         }
         this.store.dispatch(new EditLocations(requestLocation));
+        this.updateSpecificRequest(
+          requestLocationId,
+          requestProductId,
+          requestProduct.isSelected
+        );
       }
     }
   }
