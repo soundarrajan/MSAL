@@ -13945,6 +13945,11 @@ border-left: none !important;
             }
           }
         }
+        & table tr th.increment-circle-button {
+          width: 20px;
+          cursor: pointer;
+          padding-left: 10px;
+        }
         tbody{
           height: fit-content;
           overflow: hidden;
