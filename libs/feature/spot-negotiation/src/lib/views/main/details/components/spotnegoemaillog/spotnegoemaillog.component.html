@@ -11,11 +11,26 @@
       [rowData]="rowData_grid"
       (rowClicked)="onrowClicked($event)"
       [enableBrowserTooltips]="true"
-      [pagination]="true"
-      [paginationPageSize]="25"
       (gridReady)="getEmailLogs()"
+      [overlayLoadingTemplate]="overlayLoadingTemplate"
+      [overlayNoRowsTemplate]="overlayNoRowsTemplate"
     >
     </ag-grid-angular>
   </div>
+  <div class="footer">
+    <app-ag-footer-new
+    [gridViewModel]="gridOptions_data"
+    [page]="page"
+    [size]="pageSize"
+    [count]="totalItems"
+    [singleGrid]="true"
+    [doublePagination]="true"
+    [maxSize]="765"
+    id="{{ gridId }}"
+    (pageChange)="onPageChange($event.page)"
+    (newPageSize) = "onPageSizeChange($event.pageSize)"
+    [enabler] = "true"
+  >
+  </app-ag-footer-new>
+  </div>
 </div>
-<!-- <app-footer-v2 [id]="'spot-email-log'" [singleGrid]="true" [doublePagination]="true" [rowCount]="500"] [maxSize]="7"></app-footer-v2> -->

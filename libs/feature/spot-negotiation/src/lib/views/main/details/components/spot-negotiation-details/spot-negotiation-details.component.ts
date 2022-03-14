@@ -108,8 +108,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           field: 'isSelected',
           filter: true,
           suppressMenu: true,
-          width: 30,
-          minWidth: 30,
+          width: 20,
+          minWidth: 20,
           maxWidth: 30,
           // checkboxSelection: true,
           headerCheckboxSelection: true,
@@ -119,7 +119,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           lockPosition: true,
           pinned: 'left',
           headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
-          cellClass: 'p-1 checkbox-center ag-checkbox-v2',
+
+          cellClass:
+            'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
           cellRendererFramework: AGGridCellActionsComponent,
 
           cellRendererParams: { type: 'checkbox-selection' }
@@ -867,14 +869,20 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               _.filter(response.offerAdditionalCosts, function(
                 offerAdditionalCost
               ) {
-                return offerAdditionalCost.isAllProductsCost;
+                return (
+                  offerAdditionalCost.isAllProductsCost ||
+                  offerAdditionalCost.costTypeId == COST_TYPE_IDS.PERCENT
+                );
               })
             ) as AdditionalCostViewModel[];
             this.notAllSelectedCostRows = _.cloneDeep(
               _.filter(response.offerAdditionalCosts, function(
                 offerAdditionalCost
               ) {
-                return !offerAdditionalCost.isAllProductsCost;
+                return !(
+                  offerAdditionalCost.isAllProductsCost ||
+                  offerAdditionalCost.costTypeId == COST_TYPE_IDS.PERCENT
+                );
               })
             ) as AdditionalCostViewModel[];
 
@@ -939,6 +947,22 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                   cost,
                   offerAdditionalCostList,
                   productList,
+                  sellerOffers,
+                  locationAdditionalCostList,
+                  updatedRow,
+                  colDef,
+                  newValue,
+                  i
+                );
+              } else if (
+                offerAdditionalCostList[i].costTypeId == COST_TYPE_IDS.PERCENT
+              ) {
+                offerAdditionalCostList[i].totalAmount = 0;
+                this.calculateAdditionalCostAmounts(
+                  offerAdditionalCostList[i],
+                  false,
+                  productList,
+                  offerAdditionalCostList,
                   sellerOffers,
                   locationAdditionalCostList,
                   updatedRow,
@@ -1241,8 +1265,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             return object.requestProductId == additionalCost.requestProductId;
           });
           if (findProductIndex != -1) {
-            let product = rowData.requestOffers[findProductIndex];
-            totalAmount = product.amount;
+            let product = _.cloneDeep(rowData.requestOffers[findProductIndex]);
+            let currentPrice = Number(product.price);
+            let findProduct = _.find(productList, function(item) {
+              return item.id == product.requestProductId;
+            });
+            if (findProduct) {
+              totalAmount = Number(currentPrice * findProduct.maxQuantity);
+            }
           }
         }
         if (productComponent) {
@@ -1302,6 +1332,17 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         return !obj.amountIsCalculated && obj.isAllProductsCost;
       }
     );
+
+    let checkAdditionalPercentCostRowIndex = _.findIndex(
+      offerAdditionalCostList,
+      function(obj: any) {
+        return (
+          !obj.amountIsCalculated &&
+          !obj.isAllProductsCost &&
+          obj.costTypeId == COST_TYPE_IDS.PERCENT
+        );
+      }
+    );
     let checkLocationCostRowIndex = _.findIndex(
       locationAdditionalCostsList,
       function(obj: any) {
@@ -1314,6 +1355,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     if (
       this.endpointCount == 0 &&
       checkAdditionalCostRowIndex == -1 &&
+      checkAdditionalPercentCostRowIndex == -1 &&
       checkLocationCostRowIndex == -1
     ) {
       this.saveAdditionalCosts(

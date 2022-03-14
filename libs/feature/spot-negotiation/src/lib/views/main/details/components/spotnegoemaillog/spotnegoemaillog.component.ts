@@ -32,7 +32,14 @@ export class SpotnegoemaillogComponent implements OnInit {
   dateFormat: string;
   date: string;
   generalTenantSettings: any;
-
+  public page: number;
+  public pageSize: number;
+  public totalItems : number;
+  public gridId:any
+  public overlayLoadingTemplate =
+  '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
+  public overlayNoRowsTemplate =
+  '<span>No rows to show</span>';
   constructor(
     public dialog: MatDialog,
     private spotNegotiationService: SpotNegotiationService,
@@ -62,6 +69,7 @@ export class SpotnegoemaillogComponent implements OnInit {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
         params.api.sizeColumnsToFit();
+        this.gridOptions_data.api.showLoadingOverlay();
       },
       onColumnResized: function(params) {
         if (
@@ -146,7 +154,7 @@ export class SpotnegoemaillogComponent implements OnInit {
   getEmailLogs() {
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
     this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
-    
+    this.pageSize = 25;
     this.spotNegotiationService
       .getRequestGroup(groupRequestIdFromUrl)
       .subscribe((res: any) => {
@@ -166,19 +174,21 @@ export class SpotnegoemaillogComponent implements OnInit {
               }
             ],
             PageFilters: { Filters: [] },
-            Pagination: { Skip: 0, Take: 1000 },
+            Pagination: { Skip: 0, Take: this.pageSize },
             SortList: { SortList: [] }
           };
-          this.spinner.show();
+          //this.gridOptions_data.api.showLoadingOverlay();
           const emailLogs = this.spotNegotiationService.getEmailLogsList(
             reqpayload
           );
           emailLogs.subscribe((res: any) => {
-            this.spinner.hide();
+            //this.spinner.hide();
+            this.gridOptions_data.api.hideOverlay();
             if(res?.message == 'Unauthorized'){
               return;
             }
             if (res.payload) {
+              this.totalItems = res.matchedCount;
               this.rowData_grid = res.payload;
               if (!this.changeDetector['destroyed']) {
                 this.changeDetector.detectChanges();
@@ -189,6 +199,72 @@ export class SpotnegoemaillogComponent implements OnInit {
           });
         }
       });
+  }
+
+  onPageChange(page: number){
+    var endRowData = page * this.pageSize ;
+    this.gridOptions_data.api.showLoadingOverlay();
+    this.page = page;
+    let reqpayload = {
+      Order: null,
+      Filters: [
+        { ColumnName: 'TransactionTypeId', Value: '1,10,11,12,13,21' },
+        {
+          ColumnName: 'TransactionIds',
+          Value: this.listOfRequests.map(req => req.id).join(',')
+        }
+      ],
+      PageFilters: { Filters: [] },
+      Pagination: { Skip: endRowData-this.pageSize, Take: this.pageSize },
+      SortList: { SortList: [] }
+    };
+    const response = this.spotNegotiationService.getEmailLogsList(reqpayload);
+     response.subscribe((res:any)=>{
+      this.gridOptions_data.api.hideOverlay();
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
+      if(res.payload){
+        this.gridOptions_data.api.setRowData(res.payload);
+      }
+      else{
+        this.toaster.error(res);
+      }
+     });
+
+  }
+
+  onPageSizeChange(pageSize: number){
+    this.pageSize =  pageSize;
+    this.gridOptions_data.api.showLoadingOverlay();
+    var currentPage = this.gridOptions_data.api.paginationGetCurrentPage();
+      this.page = currentPage + 1;
+      let reqpayload = {
+        Order: null,
+        Filters: [
+          { ColumnName: 'TransactionTypeId', Value: '1,10,11,12,13,21' },
+          {
+            ColumnName: 'TransactionIds',
+            Value: this.listOfRequests.map(req => req.id).join(',')
+          }
+        ],
+        PageFilters: { Filters: [] },
+        Pagination: { Skip: 0, Take: this.pageSize },
+        SortList: { SortList: [] }
+      };
+    const response = this.spotNegotiationService.getEmailLogsList(reqpayload);
+    response.subscribe((res:any)=>{
+    this.gridOptions_data.api.hideOverlay();
+    if(res?.message == 'Unauthorized'){
+      return;
+    }
+    if(res?.payload?.length >0){
+    this.gridOptions_data.api.setRowData(res.payload);
+      }
+    else{
+      this.gridOptions_data.api.showNoRowsOverlay();
+    }
+  });
   }
 
   public onrowClicked(ev) {

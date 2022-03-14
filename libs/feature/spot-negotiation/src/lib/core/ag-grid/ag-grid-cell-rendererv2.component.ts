@@ -318,7 +318,11 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="checkIfSellerHasAtleastOneProductStemmed()"
+                [disabled]="
+                  checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated(
+                    paramsDataClone
+                  )
+                "
               >
                 <mat-select-trigger overlayPanelClass="123class">
                   {{ getCurrencyCode(paramsDataClone.currency) }}
@@ -535,9 +539,7 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
         (click)="selectCounterParties(params)"
         class="light-checkbox small"
         [ngClass]="
-          params.data.preferredProducts?.includes(params.productId)
-            ? 'darkBorder'
-            : ''
+          params.data.preferredProducts?.includes(params.productId) ? '' : ''
         "
       ></mat-checkbox>
     </div>
@@ -1494,14 +1496,16 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
   }
 
-  checkIfSellerHasAtleastOneProductStemmed() {
+  checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated(params) {
     const requestLocation = this.getCurrentRequestLocation();
-    for (let i = 0; i < this.paramsDataClone.requestOffers.length; i++) {
+    for (let i = 0; i < params.requestOffers.length; i++) {
       if (
         this.checkIfProductIsStemmedOrConfirmed(
           requestLocation,
-          this.paramsDataClone.requestOffers[i]
-        )
+          params.requestOffers[i]
+        ) &&
+        params.requestOffers[i].orderProducts &&
+        params.requestOffers[i].orderProducts.length > 0
       ) {
         return true;
       }

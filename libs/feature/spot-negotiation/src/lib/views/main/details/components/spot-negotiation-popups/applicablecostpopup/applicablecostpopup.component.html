@@ -4,13 +4,13 @@
   </div>
   <div class="spot-dialog-title-right popup-header-form">
     <mat-checkbox
-      class="checkbox-alignment"
+      class="check-text"
       [(ngModel)]="duplicateCost"
       (change)="onRequestListCheckboxChange($event)"
       [disabled]="!requestListToDuplicateLocationBasedCost.length"
-    ></mat-checkbox>
+      [matTooltip]="!requestListToDuplicateLocationBasedCost.length? 'No request to copy': ''"
+    >Duplicate Costs to:</mat-checkbox>
 
-    <div class="check-text">Duplicate Costs to:</div>
     <ng-container *ngIf="!duplicateCost">
       <div class="vessels_req">
         All Vessels <span class="down-arrow"></span>

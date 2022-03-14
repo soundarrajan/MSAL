@@ -35,6 +35,7 @@ import {
   EditLocationRow
 } from '../../../store/actions/ag-grid-row.action';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { isNumeric } from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'spot-negotiation-main-component',
@@ -73,6 +74,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const requestIdFromUrl = this.route.snapshot.params.requestId;
+    if(requestIdFromUrl && isNumeric(requestIdFromUrl)){
+      localStorage.setItem('activeRequestId', requestIdFromUrl.toString());
+    }
     this.spinner.show();
     this.getRequestGroup();
     this.getGroupOfSellers();
@@ -131,14 +136,22 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       } else {
         if (res['requests'] && res['requests'].length > 0) {
           // Set first request default;
-          this.store.dispatch(new SetCurrentRequestSmallInfo(res['requests'][0]));
-          this.store.dispatch(
-            new SetLocations(res['requests'][0].requestLocations)
-          );
+          let activeRequest = res['requests'][0];
+          if(localStorage.getItem('activeRequestId')){
+              const requestIndex = res['requests'].findIndex(x=> x.id == localStorage.getItem('activeRequestId'));
+              if(requestIndex > -1){
+                activeRequest = res['requests'].find(x=> x.id == localStorage.getItem('activeRequestId'));
+                localStorage.setItem('reqIdx', requestIndex);
+              }
+
+              localStorage.removeItem('activeRequestId');
+          }
+          this.store.dispatch(new SetCurrentRequestSmallInfo(activeRequest));
+          this.store.dispatch(new SetLocations(activeRequest.requestLocations));
           this.changeDetector.detectChanges();
         }
       }
-        
+
     });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
@@ -194,15 +207,15 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               ) {
                 row.isEditable = true;
               }
-              
+
             }
           }
         });
 
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=> 
-         a.requestProductTypeId  === b.requestProductTypeId ? 
-         (a.requestProductId > b.requestProductId ? 1 : -1) : 
-        (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
+        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=>
+         a.requestProductTypeId  === b.requestProductTypeId ?
+         (a.requestProductId > b.requestProductId ? 1 : -1) :
+        (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
         );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
@@ -242,10 +255,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               }
             }
           });
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=> 
-          a.requestProductTypeId  === b.requestProductTypeId ? 
-          (a.requestProductId > b.requestProductId ? 1 : -1) : 
-         (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)        
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=>
+          a.requestProductTypeId  === b.requestProductTypeId ?
+          (a.requestProductId > b.requestProductId ? 1 : -1) :
+         (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
          );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;

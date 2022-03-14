@@ -213,7 +213,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.toastr.warning('No changes are made to perform save.');
       return;
     }
-    if (this.checkIfLocRTAddCostsValid(this.locationBasedCosts)) {
+    if (this.checkIfLocRTAddCostsInvalid(this.locationBasedCosts)) {
       this.toastr.error(
         'Range/Total cost cannot be saved due to request quantity is greater than the defined cost quantity.'
       );
@@ -233,6 +233,12 @@ export class ApplicablecostpopupComponent implements OnInit {
         return request.isSelected;
       }
     );
+
+    if (this.duplicateCost && selectedRequestList.length == 0) {
+      this.toastr.error('At least one request should be selected!');
+      return;
+    }
+
     let reqIdForLocation: String;
     let requestLocationId = this.requestLocation.locationId;
     for (let i = 0; i < selectedRequestList.length; i++) {
@@ -283,15 +289,19 @@ export class ApplicablecostpopupComponent implements OnInit {
     }
   }
 
-  // To check if Location based Range/Total additional costs are valid
-  checkIfLocRTAddCostsValid(additionalCosts) {
-    let zeroPricedRTAddCosts = _.filter(additionalCosts, function(
-      addCost
-    ) {
-      return !addCost.isDeleted && (<string><unknown>addCost.costType == 'Total' || <string><unknown>addCost.costType == 'Range')
-        && addCost.price <= 0;
+  // To check if Location based Range/Total additional costs are invalid
+  checkIfLocRTAddCostsInvalid(additionalCosts) {
+    let zeroPricedRTAddCosts = _.filter(additionalCosts, function(addCost) {
+      return (
+        !addCost.isDeleted &&
+        (addCost.costType == 'Total' ||
+          addCost.costType == 'Range') &&
+        addCost.price <= 0
+      );
     });
-    return zeroPricedRTAddCosts && zeroPricedRTAddCosts.length > 0 ? true : false;
+    return zeroPricedRTAddCosts && zeroPricedRTAddCosts.length > 0
+      ? true
+      : false;
   }
 
   formatCostItemForDisplay(locationAdditionalCosts: any) {
@@ -721,6 +731,9 @@ export class ApplicablecostpopupComponent implements OnInit {
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
+    if (value.toString().includes('e')) {
+      value = value.toString().split('e')[0];
+    }
     const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
     if (isNaN(number)) {
@@ -739,6 +752,9 @@ export class ApplicablecostpopupComponent implements OnInit {
     if (typeof value == 'undefined' || value == null) {
       return null;
     }
+    if (value.toString().includes('e')) {
+      value = value.toString().split('e')[0];
+    }
     const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
     if (isNaN(number)) {
@@ -756,6 +772,9 @@ export class ApplicablecostpopupComponent implements OnInit {
   priceFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
       return null;
+    }
+    if (value.toString().includes('e')) {
+      value = value.toString().split('e')[0];
     }
     const plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     const number = parseFloat(plainNumber);
@@ -1240,7 +1259,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   saveCopiedLocationCost() {
-    if (this.checkIfLocRTAddCostsValid(this.copiedLocationCost)) {
+    if (this.checkIfLocRTAddCostsInvalid(this.copiedLocationCost)) {
       this.toastr.error(
         'Range/Total for duplicate cost cannot be saved due to request quantity is greater than the defined cost quantity.'
       );
