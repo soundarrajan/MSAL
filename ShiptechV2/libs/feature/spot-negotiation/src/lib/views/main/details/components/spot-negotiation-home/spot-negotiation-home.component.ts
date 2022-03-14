@@ -406,7 +406,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       let requestLocations = currentRequestData.filter(
         row1 => row1.id == row.requestLocationId
       );
-      let reqLocations = requestlist.filter(row1 => row1.id == row.requestId);
+      let reqLocations =requestlist.filter(rq=>rq.requestLocations.some(rl=>rl.id==row.requestLocationId));
       let reqProducts =
         reqLocations.length > 0
           ? reqLocations[0].requestLocations.filter(
