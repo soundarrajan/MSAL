@@ -539,9 +539,7 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
         (click)="selectCounterParties(params)"
         class="light-checkbox small"
         [ngClass]="
-          params.data.preferredProducts?.includes(params.productId)
-            ? 'darkBorder'
-            : ''
+          params.data.preferredProducts?.includes(params.productId) ? '' : ''
         "
       ></mat-checkbox>
     </div>
