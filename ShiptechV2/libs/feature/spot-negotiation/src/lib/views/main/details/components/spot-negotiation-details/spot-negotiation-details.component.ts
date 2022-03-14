@@ -33,6 +33,7 @@ import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.stor
 import { Observable } from 'rxjs';
 import { RemoveCounterpartyComponent } from '../remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { AdditionalCostViewModel } from 'libs/feature/spot-negotiation/src/lib/core/models/additional-costs-model';
+import { CustomHeader } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/custom-header.component';
 
 export const COMPONENT_TYPE_IDS = {
   TAX_COMPONENT: 1,
@@ -481,7 +482,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           maxWidth: 30,
           // checkboxSelection: true,
           resizable: false,
-          headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
+          // headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
           cellClass: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
               params.data,
@@ -498,7 +499,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             productId: product.productId,
             status: product.status
           },
-          lockPosition: true
+          lockPosition: true,
+          headerComponentFramework: CustomHeader
         },
         {
           headerName: 'Offer price',
