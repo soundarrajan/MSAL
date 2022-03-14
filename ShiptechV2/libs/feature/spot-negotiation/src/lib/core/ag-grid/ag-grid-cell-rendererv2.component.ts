@@ -987,9 +987,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       })
     );
 
-    let currentLocationsRows = _.filter(locationsRows, function(row) {
-      return row.requestLocationId == requestLocationId;
-    });
+    let currentLocationsRows = _.cloneDeep(
+      _.filter(locationsRows, function(row) {
+        return row.requestLocationId == requestLocationId;
+      })
+    );
     let locations = _.cloneDeep(
       this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
         return state['spotNegotiation'].locations;
@@ -1020,7 +1022,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         } else {
           requestProduct.isSelected = true;
         }
-        this.store.dispatch(new EditLocations(requestLocation));
+        // this.store.dispatch(new EditLocations(requestLocation));
         this.updateSpecificRequest(
           requestLocationId,
           requestProductId,
@@ -1037,10 +1039,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     //   }
     // }
     updatedRow = this.formatRowData(updatedRow, params);
+    this.changeSelectProductCheckbox();
 
     // Update the store
     this.store.dispatch(new EditLocationRow(updatedRow));
-    this.changeSelectProductCheckbox();
 
     params.node.setData(updatedRow);
   }

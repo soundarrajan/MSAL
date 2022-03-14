@@ -99,6 +99,7 @@ export class CustomHeader implements IHeaderAngularComp {
         return state['spotNegotiation'].locations;
       })
     );
+    console.log(locations);
     let findRequestLocationIndex = _.findIndex(locations, function(
       object: any
     ) {
