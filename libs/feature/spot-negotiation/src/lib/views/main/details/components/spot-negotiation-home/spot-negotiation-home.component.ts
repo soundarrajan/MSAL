@@ -877,7 +877,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   getLocationRowsWithSelectedSeller(rowsArray, selectedSellerRows) {
     rowsArray.forEach(row => {
       selectedSellerRows.forEach(sellerRow => {
-        let reqLocations = this.requestOptions.filter(req=>req.requestLocations.some(reqloc=>reqloc.id==sellerRow.RequestLocationId));
+        let reqLocations =this.requestOptions.filter(req=>req.requestLocations.some(reqloc=>reqloc.id==sellerRow.RequestLocationId));
         let reqProducts =
           reqLocations.length > 0
             ? reqLocations[0].requestLocations.filter(
