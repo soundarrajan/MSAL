@@ -22645,18 +22645,39 @@ mat-form-field {
   }
 }
 
-.select-all-product-container {
-  width: 11px;
-  height: 11px;
-  font-size: 11px;
-  line-height: 11px;
-}
-
-.select-all-product .mat-checkbox-inner-container {
-  background: #ffffff !important;
-  border-radius: 4px;
-  width: 11px;
-  height: 11px;
-  font-size: 11px;
-  line-height: 11px;
+.select-all-product {
+  .mat-checkbox {
+    &.light-checkbox.small {
+      width: 11px;
+      height: 11px;
+      font-size: 11px;
+      line-height: 11px;
+      &.darkBorder {
+        .mat-checkbox-inner-container {
+          .mat-checkbox-frame {
+            border: 2px solid #364150;
+            background: #ecf4ff;
+            border-radius: 1px;
+          }
+        }
+      }
+      .mat-checkbox-inner-container {
+        width: 11px;
+        height: 11px;
+        line-height: 11px;
+        .mat-checkbox-frame {
+          border: 2px solid #c4c4c4;
+          border-radius: 1px;
+        }
+      }
+      &.mat-checkbox-checked {
+        .mat-checkbox-background {
+          background-color: #525a66 !important;
+          svg {
+            top: -1px !important;
+          }
+        }
+      }
+    }
+  }
 }

@@ -17,11 +17,12 @@ import { SetCurrentRequestSmallInfo } from '../../store/actions/request-group-ac
   selector: 'app-custom-header',
   template: `
     <div
-      class="header-checkbox-center checkbox-center ag-checkbox-v2 select-all-product-container"
+      class="header-checkbox-center checkbox-center ag-checkbox-v2 select-all-product"
     >
       <mat-checkbox
-        class="mat-checkbox mat-accent light-checkbox small select-all-product"
+        class="mat-checkbox mat-accent light-checkbox small"
         [(ngModel)]="selectAll"
+        [disabled]="status == 'Stemmed' || status == 'Confirmed'"
         (change)="onSelectAllProductCheckboxChange($event)"
       ></mat-checkbox>
     </div>
@@ -39,7 +40,6 @@ export class CustomHeader implements IHeaderAngularComp {
 
   agInit(params: IHeaderParams): void {
     this.params = params;
-    console.log(this.params);
     this.product = {
       id: this.params.column.colDef.cellRendererParams.productId,
       name: this.params.column.colDef.cellRendererParams.productName
@@ -114,13 +114,27 @@ export class CustomHeader implements IHeaderAngularComp {
       );
       if (findProductIndex != -1) {
         let requestProduct = requestLocation.requestProducts[findProductIndex];
+        let requestProductLength = requestLocation.requestProducts.length;
         requestProduct.isSelected = this.selectAll;
+
         locationsRows.forEach(locationRow => {
           if (locationRow.requestLocationId == this.requestLocationId) {
             if (!locationRow[colId] && this.selectAll) {
               locationRow[colId] = true;
             } else if (locationRow[colId] && !this.selectAll) {
               locationRow[colId] = false;
+            }
+            let hasUncheckedCheckbox = false;
+            for (let i = 0; i < requestProductLength; i++) {
+              let colIdIndex = 'checkProd' + (i + 1);
+              if (!locationRow[colIdIndex]) {
+                hasUncheckedCheckbox = true;
+              }
+            }
+            if (!hasUncheckedCheckbox) {
+              locationRow.isSelected = true;
+            } else {
+              locationRow.isSelected = false;
             }
           }
         });
