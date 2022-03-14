@@ -386,7 +386,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       let currentLocProd = this.currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
-      this.UpdateProductsSelection(currentLocProd, row);
+      let reqLocations = this.requestOptions.filter(req=>req.requestLocations.some(reqloc=>reqloc.id==row.requestLocationId));
+      let reqProducts = reqLocations[0].requestLocations.filter(
+        row1 => row1.id == row.requestLocationId
+      );
+      this.UpdateProductsSelection(reqProducts, row);
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
         index < priceDetailsArray?.length &&
