@@ -39,3 +39,13 @@
 {
  opacity: 100;
 }
+.title-divider {
+  display: inline-block;
+  color: #c4c4c4;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-left: 2px solid #c4c4c4;
+  color: transparent;
+  height: 24px;
+  margin-top: 0px;
+}
