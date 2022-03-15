@@ -403,7 +403,6 @@ export class SpotNegotiationNewCommentsComponent
   checkCommentsLimit(comments, type) {
     if (type === 'general') {
       if (comments.length > 1000) {
-        this.toastr.warning('Is exists the character limit of 1000');
         setTimeout(() => {
           this.requestInfo.negoGeneralComments = _.cloneDeep(
             comments.substr(0, 1000)
@@ -413,7 +412,6 @@ export class SpotNegotiationNewCommentsComponent
       }
     } else if (type == 'performance') {
       if (comments.length > 1000) {
-        this.toastr.warning('Is exists the character limit of 1000');
         setTimeout(() => {
           this.requestInfo.negoPerformanceComments = _.cloneDeep(
             comments.substr(0, 1000)
@@ -423,7 +421,6 @@ export class SpotNegotiationNewCommentsComponent
       }
     } else if (type == 'supplier') {
       if (comments.length > 1000) {
-        this.toastr.warning('Is exists the character limit of 1000');
         setTimeout(() => {
           this.requestInfo.negoSupplierComments = _.cloneDeep(
             comments.substr(0, 1000)
@@ -433,7 +430,6 @@ export class SpotNegotiationNewCommentsComponent
       }
     } else if (type == 'vesselAndAgent') {
       if (comments.length > 1000) {
-        this.toastr.warning('Is exists the character limit of 1000');
         setTimeout(() => {
           this.requestInfo.negoVesselAgentComments = _.cloneDeep(
             comments.substr(0, 1000)
