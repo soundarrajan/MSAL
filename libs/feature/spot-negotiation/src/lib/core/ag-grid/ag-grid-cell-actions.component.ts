@@ -192,7 +192,6 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
         }
       ]
     };
-    this.spinner.show();
     const response = this.spotNegotiationService.UpdateSelectSeller(
       FinalAPIdata
     );

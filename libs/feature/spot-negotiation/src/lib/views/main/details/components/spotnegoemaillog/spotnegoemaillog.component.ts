@@ -141,7 +141,6 @@ export class SpotnegoemaillogComponent implements OnInit {
       suppressSizeToFit: false
     }
   ];
-  public rowData_grid = [];
 
   ngOnInit() {
     if (this.dateFormat.includes('dd/')) {
@@ -189,7 +188,8 @@ export class SpotnegoemaillogComponent implements OnInit {
             }
             if (res.payload) {
               this.totalItems = res.matchedCount;
-              this.rowData_grid = res.payload;
+              //this.rowData_grid = res.payload;
+              this.gridOptions_data.api.setRowData(res.payload);
               if (!this.changeDetector['destroyed']) {
                 this.changeDetector.detectChanges();
               }
@@ -258,7 +258,7 @@ export class SpotnegoemaillogComponent implements OnInit {
     if(res?.message == 'Unauthorized'){
       return;
     }
-    if(res?.payload?.length >0){
+    if(res.payload){
     this.gridOptions_data.api.setRowData(res.payload);
       }
     else{
