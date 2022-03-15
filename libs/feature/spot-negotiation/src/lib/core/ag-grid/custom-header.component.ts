@@ -54,59 +54,29 @@ export class CustomHeader implements IHeaderAngularComp {
   }
 
   detectIfColumnIsSelected() {
-    let locationsRows;
+    let locationsRows = [];
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       locationsRows = spotNegotiation.locationsRows;
     });
-
-    let requestLocationId = this.requestLocationId;
-    let currentLocationsRows = _.cloneDeep(
-      _.filter(locationsRows, function(row) {
-        return row.requestLocationId == requestLocationId;
-      })
-    );
-
-    let colId = this.params.column.colId;
-    let hasUncheckedCheckbox = false;
-    for (let i = 0; i < currentLocationsRows.length; i++) {
-      if (!currentLocationsRows[i][colId]) {
-        hasUncheckedCheckbox = true;
-      }
-    }
-    if (hasUncheckedCheckbox) {
-      this.selectAll = false;
-    } else {
-      this.selectAll = true;
-    }
-  }
-
-  updateSpecificRequest(requestLocationId, requestProductId, selectAll) {
-    let currentRequestSmallInfo = _.cloneDeep(
-      this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
-        return state['spotNegotiation'].currentRequestSmallInfo;
-      })
-    );
-    let findRequestLocationIndex = _.findIndex(
-      currentRequestSmallInfo.requestLocations,
-      function(object: any) {
-        return object.id == requestLocationId;
-      }
-    );
-    if (findRequestLocationIndex != -1) {
-      let requestLocation =
-        currentRequestSmallInfo.requestLocations[findRequestLocationIndex];
-      let findProductIndex = _.findIndex(
-        requestLocation?.requestProducts,
-        function(object: any) {
-          return object.id == requestProductId;
-        }
+    if (locationsRows.length) {
+      let requestLocationId = this.requestLocationId;
+      let currentLocationsRows = _.cloneDeep(
+        _.filter(locationsRows, function(row) {
+          return row.requestLocationId == requestLocationId;
+        })
       );
-      if (findProductIndex != -1) {
-        let requestProduct = requestLocation.requestProducts[findProductIndex];
-        requestProduct.isSelected = selectAll;
-        this.store.dispatch(
-          new UpdateSpecificRequests([currentRequestSmallInfo])
-        );
+
+      let colId = this.params.column.colId;
+      let hasUncheckedCheckbox = false;
+      for (let i = 0; i < currentLocationsRows.length; i++) {
+        if (!currentLocationsRows[i][colId]) {
+          hasUncheckedCheckbox = true;
+        }
+      }
+      if (hasUncheckedCheckbox) {
+        this.selectAll = false;
+      } else {
+        this.selectAll = true;
       }
     }
   }
@@ -166,12 +136,6 @@ export class CustomHeader implements IHeaderAngularComp {
             }
           }
         });
-        this.store.dispatch(new EditLocations(requestLocation));
-        this.updateSpecificRequest(
-          this.requestLocationId,
-          this.requestProductId,
-          this.selectAll
-        );
         this.store.dispatch(new SetLocationsRows(locationsRows));
       }
     }
