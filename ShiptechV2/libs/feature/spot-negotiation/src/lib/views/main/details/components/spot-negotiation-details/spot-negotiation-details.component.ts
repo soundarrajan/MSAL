@@ -555,14 +555,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               newValue
             );
 
-            this.checkAdditionalCost(updatedRow, updatedRow, colDef, newValue);
+            this.checkAdditionalCost(updatedRow, updatedRow, colDef, newValue, elementidValue);
 
-            setTimeout(() => {
-              let element = document.getElementById(elementidValue);
-              if (element) {
-                element.focus();
-              }
-            }, 300);
 
             // setTimeout(() => {
             // //  alert(1)
@@ -768,12 +762,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           return;
         }
         if (res.status) {
-          this.getSellerLine(updatedRow, colDef, newValue);
+          this.getSellerLine(updatedRow, colDef, newValue, '');
         } else this.toastr.error('Please try again later.');
       });
   }
 
-  getSellerLine(sellerOffers, colDef, newValue) {
+  getSellerLine(sellerOffers, colDef, newValue, elementidValue) {
     const groupId = parseFloat(this.route.snapshot.params.spotNegotiationId);
     const requestLocationSellerId = sellerOffers.id;
     this.spotNegotiationService
@@ -827,12 +821,18 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // Update the store
         this.store.dispatch(new EditLocationRow(updatedRow));
 
+              setTimeout(() => {
+                let element = document.getElementById(elementidValue);
+                if (element) {
+                  element.focus();
+                }
+              }, 500);
         // Save to the cloud
         this.saveRowToCloud(updatedRow, colDef['product']);
       });
   }
 
-  checkAdditionalCost(sellerOffers, updatedRow, colDef, newValue) {
+  checkAdditionalCost(sellerOffers, updatedRow, colDef, newValue, elementidValue) {
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
     });
@@ -861,7 +861,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             return;
           }
           if (typeof response === 'string') {
-            this.getSellerLine(updatedRow, colDef, newValue);
+            this.getSellerLine(updatedRow, colDef, newValue, elementidValue);
             return;
           } else {
             let offerAdditionalCostList = _.cloneDeep(
@@ -908,7 +908,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               offerAdditionalCostList.length == 0 &&
               locationAdditionalCostList.length == 0
             ) {
-              this.getSellerLine(updatedRow, colDef, newValue);
+              this.getSellerLine(updatedRow, colDef, newValue, elementidValue);
               return;
             }
 
