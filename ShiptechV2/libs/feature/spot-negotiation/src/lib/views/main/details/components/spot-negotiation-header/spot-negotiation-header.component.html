@@ -21,7 +21,7 @@
                   matInput
                   (input)="search($event.target.value)"
                   placeholder="Search and select counterparty"
-                  [(ngModel)] = "couterpartyValue"
+                  [(ngModel)]="couterpartyValue"
                   class="search-product-input"
                 />
               </div>
@@ -105,8 +105,8 @@
     </div>
 
     <div class="section2" #headerContainer>
-      <div class="d-flex">
-        <div style="margin: 8px 0px;display: flex;align-items: flex-start;">
+      <div class="d-flex align-items-center">
+        <div style="margin: 4px 0px; display: flex; align-items: center;">
           <span
             class="add-icon"
             matTooltip="Add a request"
@@ -186,7 +186,7 @@
             </div>
           </mat-menu>
         </div>
-        <div style="display: flex; margin-left: 10px;">
+        <div style="display: flex; margin-left: 10px; width: 100%;">
           <div style="float:left;" #requestContainer>
             <div
               class="addRemoveRequest"
@@ -212,26 +212,24 @@
                 <!-- <span style="padding-right: 5px;" *ngIf="displayVessel">
                   {{item.vesselName  }}
                 </span> -->
-
-                <span
-                  style="padding-right: 5px;"
-                  *ngIf="requestOptions.length >= 5"
+                <div
+                  class="d-flex align-items-center"
+                  style="padding-right: 5px; max-width: 143.4px;"
                 >
-                  {{ item.vesselName| titlecase }}
-                </span>
-                <span
-                  style="padding-right: 5px;"
-                  *ngIf="requestOptions.length < 5"
-                >
-                  {{ item.name | titlecase}} - {{ item.vesselName | titlecase }}
-                </span>
+                  <div>{{ item.name | titlecase }}</div>
+                  <div class="vesselName">
+                    - {{ item.vesselName | titlecase }}
+                  </div>
+                </div>
                 <div
                   class="requestTooltip"
                   (click)="openRequestTab($event, item)"
                 >
                   <span class="white-space"></span>
                   <span class="linkImg"></span>
-                  <span class="linkText">View {{ item.name }}</span>
+                  <span class="linkText"
+                    >View {{ item.name }} - {{ item.vesselName | titlecase }}
+                  </span>
                 </div>
               </div>
               <mat-menu
