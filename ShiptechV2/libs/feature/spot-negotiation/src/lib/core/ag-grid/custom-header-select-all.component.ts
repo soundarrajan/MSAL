@@ -13,6 +13,8 @@ import {
   UpdateSpecificRequests
 } from '../../store/actions/ag-grid-row.action';
 import { SetCurrentRequestSmallInfo } from '../../store/actions/request-group-actions';
+import { SpotNegotiationService } from '../../services/spot-negotiation.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-custom-header-select-all',
   template: `
@@ -33,11 +35,14 @@ export class CustomHeaderSelectAll implements IHeaderAngularComp {
   selectAll: boolean = false;
   requestLocationId: any;
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private spotNegotiationService: SpotNegotiationService,
+    private toastr: ToastrService
+  ) {}
 
   agInit(params: IHeaderParams): void {
     this.params = params;
-    console.log(this.params);
     this.requestLocationId = this.params.column.colDef.cellRendererParams.requestLocationId;
     this.detectIfColumnIsSelected();
   }
@@ -101,9 +106,31 @@ export class CustomHeaderSelectAll implements IHeaderAngularComp {
             locationRow[colIdIndex] = this.selectAll;
           }
           locationRow.isSelected = this.selectAll;
+          this.selectCounterparty(locationRow);
         }
       });
       this.store.dispatch(new SetLocationsRows(locationsRows));
     }
+  }
+
+  selectCounterparty(locationRow) {
+    var payload = {
+      reqLocSellers: [
+        {
+          requestLocationSellerId: locationRow.id,
+          isSelected: locationRow.isSelected
+        }
+      ]
+    };
+    const response = this.spotNegotiationService.UpdateSelectSeller(payload);
+    response.subscribe((res: any) => {
+      if (res?.message == 'Unauthorized') {
+        return;
+      }
+      if (res['isUpdated']) {
+      } else {
+        this.toastr.error('An error has occurred!');
+      }
+    });
   }
 }
