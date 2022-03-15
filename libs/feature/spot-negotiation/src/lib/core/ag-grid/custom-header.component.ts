@@ -47,10 +47,37 @@ export class CustomHeader implements IHeaderAngularComp {
     this.status = this.params.column.colDef.cellRendererParams.status;
     this.requestLocationId = this.params.column.colDef.cellRendererParams.requestLocationId;
     this.requestProductId = this.params.column.colDef.cellRendererParams.requestProductId;
-    this.selectAll = this.params.column.colDef.cellRendererParams.productData.isSelected;
+    this.detectIfColumnIsSelected();
   }
   refresh(params: IHeaderParams): boolean {
     return false;
+  }
+
+  detectIfColumnIsSelected() {
+    let locationsRows;
+    this.store.subscribe(({ spotNegotiation, ...props }) => {
+      locationsRows = spotNegotiation.locationsRows;
+    });
+
+    let requestLocationId = this.requestLocationId;
+    let currentLocationsRows = _.cloneDeep(
+      _.filter(locationsRows, function(row) {
+        return row.requestLocationId == requestLocationId;
+      })
+    );
+
+    let colId = this.params.column.colId;
+    let hasUncheckedCheckbox = false;
+    for (let i = 0; i < currentLocationsRows.length; i++) {
+      if (!currentLocationsRows[i][colId]) {
+        hasUncheckedCheckbox = true;
+      }
+    }
+    if (hasUncheckedCheckbox) {
+      this.selectAll = false;
+    } else {
+      this.selectAll = true;
+    }
   }
 
   updateSpecificRequest(requestLocationId, requestProductId, selectAll) {

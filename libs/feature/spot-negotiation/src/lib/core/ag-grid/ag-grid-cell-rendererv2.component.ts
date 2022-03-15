@@ -977,60 +977,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
 
-  changeSelectProductCheckbox() {
-    let requestProductId = this.params.requestProductId;
-    let requestLocationId = this.params.requestLocationId;
-    let colId = this.params.column.colId;
-    let locationsRows = _.cloneDeep(
-      this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
-        return state['spotNegotiation'].locationsRows;
-      })
-    );
-
-    let currentLocationsRows = _.cloneDeep(
-      _.filter(locationsRows, function(row) {
-        return row.requestLocationId == requestLocationId;
-      })
-    );
-    let locations = _.cloneDeep(
-      this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
-        return state['spotNegotiation'].locations;
-      })
-    );
-    let findRequestLocationIndex = _.findIndex(locations, function(
-      object: any
-    ) {
-      return object.id == requestLocationId;
-    });
-    if (findRequestLocationIndex != -1) {
-      let requestLocation = locations[findRequestLocationIndex];
-      let findProductIndex = _.findIndex(
-        requestLocation?.requestProducts,
-        function(object: any) {
-          return object.id == requestProductId;
-        }
-      );
-      if (findProductIndex != -1) {
-        let requestProduct = requestLocation.requestProducts[findProductIndex];
-        let findIfExistUnselectedItem = _.filter(currentLocationsRows, function(
-          row
-        ) {
-          return !row[colId];
-        });
-        if (findIfExistUnselectedItem.length) {
-          requestProduct.isSelected = false;
-        } else {
-          requestProduct.isSelected = true;
-        }
-        // this.store.dispatch(new EditLocations(requestLocation));
-        this.updateSpecificRequest(
-          requestLocationId,
-          requestProductId,
-          requestProduct.isSelected
-        );
-      }
-    }
-  }
   selectCounterParties(params) {
     let updatedRow = { ...params.data };
     // if(updatedRow.requestOffers?.length >0 && updatedRow.requestOffers[0].price != null){
@@ -1039,7 +985,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     //   }
     // }
     updatedRow = this.formatRowData(updatedRow, params);
-    this.changeSelectProductCheckbox();
 
     // Update the store
     this.store.dispatch(new EditLocationRow(updatedRow));
