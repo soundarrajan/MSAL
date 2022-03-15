@@ -127,6 +127,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           cellRendererFramework: AGGridCellActionsComponent,
 
           cellRendererParams: { type: 'checkbox-selection' },
+
           headerComponentFramework: CustomHeaderSelectAll
 
           //pinned: 'left'
@@ -1688,6 +1689,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           col => col.field != 'genRating' && col.field != 'portRating'
         );
       }
+
       // Set headers of products;
       this.columnDef_aggridObj = [];
       this.highlightedCells = {};
@@ -1714,6 +1716,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         ).length;
         this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts =
           reqLocation.requestProducts.length;
+
+        this.columnDef_aggridObj[
+          i
+        ][0].children[0].cellRendererParams.requestLocationId = reqLocation.id;
 
         // These are locations!!
         const requestProductsLength = reqLocation.requestProducts.length;

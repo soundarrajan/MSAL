@@ -32,14 +32,14 @@ export class CustomHeaderSelectAll implements IHeaderAngularComp {
   public params: any;
   selectAll: boolean = false;
   requestLocationId: any;
-  requestProductId: any;
 
   constructor(private store: Store) {}
 
   agInit(params: IHeaderParams): void {
     this.params = params;
+    console.log(this.params);
     this.requestLocationId = this.params.column.colDef.cellRendererParams.requestLocationId;
-    // this.detectIfColumnIsSelected();
+    this.detectIfColumnIsSelected();
   }
   refresh(params: IHeaderParams): boolean {
     return false;
@@ -59,6 +59,11 @@ export class CustomHeaderSelectAll implements IHeaderAngularComp {
       );
 
       let hasUncheckedCheckbox = false;
+      for (let i = 0; i < currentLocationsRows.length; i++) {
+        if (!currentLocationsRows[i].isSelected) {
+          hasUncheckedCheckbox = true;
+        }
+      }
       if (hasUncheckedCheckbox) {
         this.selectAll = false;
       } else {
@@ -75,5 +80,30 @@ export class CustomHeaderSelectAll implements IHeaderAngularComp {
         return state['spotNegotiation'].locationsRows;
       })
     );
+
+    let locations = _.cloneDeep(
+      this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+        return state['spotNegotiation'].locations;
+      })
+    );
+    let findRequestLocationIndex = _.findIndex(locations, function(
+      object: any
+    ) {
+      return object.id == requestLocationId;
+    });
+    if (findRequestLocationIndex != -1) {
+      let requestLocation = locations[findRequestLocationIndex];
+      let requestProductLength = requestLocation.requestProducts.length;
+      locationsRows.forEach(locationRow => {
+        if (locationRow.requestLocationId == this.requestLocationId) {
+          for (let i = 0; i < requestProductLength; i++) {
+            let colIdIndex = 'checkProd' + (i + 1);
+            locationRow[colIdIndex] = this.selectAll;
+          }
+          locationRow.isSelected = this.selectAll;
+        }
+      });
+      this.store.dispatch(new SetLocationsRows(locationsRows));
+    }
   }
 }
