@@ -1101,3 +1101,7 @@ ag-grid-angular {
     overflow: initial;
   }
 }
+
+ag-grid-angular .ag-body-horizontal-scroll-viewport{
+  top: -15px !important;
+}
