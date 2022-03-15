@@ -18,12 +18,11 @@ import { SetCurrentRequestSmallInfo } from '../../store/actions/request-group-ac
   template: `
     <div
       class="header-checkbox-center checkbox-center ag-checkbox-v2 select-all-product"
-      style="position:relative; left:50%;"
+      style="position:relative; left:42%;"
     >
       <mat-checkbox
         class="mat-checkbox mat-accent light-checkbox small"
         [(ngModel)]="selectAll"
-        [disabled]="status == 'Stemmed' || status == 'Confirmed'"
         (change)="onSelectAllProductCheckboxChange($event)"
       ></mat-checkbox>
     </div>
