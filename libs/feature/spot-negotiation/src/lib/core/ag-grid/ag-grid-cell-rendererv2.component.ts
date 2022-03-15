@@ -349,7 +349,7 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
           </div>
           <input
             class="inputField"
-            id="{{ params.data.locationId }}/{{ params.rowIndex }}/{{
+            id="{{ params.data.requestLocationId }}/{{ params.rowIndex }}/{{
               params.index
             }}"
             (keyup.enter)="onGetFocus($event, params)"
@@ -1502,7 +1502,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
                       j +
                       '/' +
                       columnIndex;
-                    // console.log(id);
+                    console.log(id);
                     return id;
                   } else if (
                     currentLocationRows[j].id !== currentLocationRowId
@@ -1515,7 +1515,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
                       j +
                       '/' +
                       columnIndex;
-                    // console.log(id);
+                    console.log(id);
                     return id;
                   }
                 }
