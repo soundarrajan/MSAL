@@ -349,10 +349,10 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
           </div>
           <input
             class="inputField"
-            id="{{ params.data.locationId }}/{{ params.index }}/{{
-              params.rowIndex
+            id="{{ params.data.requestLocationId }}/{{ params.rowIndex }}/{{
+              params.index
             }}"
-            (keyup.enter)="ongetfocus($event, params)"
+            (keyup.enter)="onGetFocus($event, params)"
             (change)="onPriceChange($event, params)"
             autofocus
             #inputSection
@@ -1423,45 +1423,103 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     e.target.parentElement.classList.add('active');
   }
 
-  returnrowindex(params) {
-    const locations = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.locations;
-    });
+  getColumnProductIndex(requestLocation, requestOffer) {
+    if (requestLocation) {
+      let findProductIndex = _.findIndex(
+        requestLocation.requestProducts,
+        function(object: any) {
+          return object.id == requestOffer.requestProductId;
+        }
+      );
+      if (findProductIndex != -1) {
+        let product = requestLocation.requestProducts[findProductIndex];
+        if (!(product.status === 'Stemmed' || product.status === 'Confirmed')) {
+          return findProductIndex;
+        }
+      }
+    }
+    return -1;
+  }
+
+  returnRowIndex(params) {
+    let locations = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
+    }).requestLocations;
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
-    let StartLocation = locations.findIndex(
+    let indexOfStartLocation = locations.findIndex(
       row => row.locationId == params.data.locationId
     );
-    let startrow = params.rowIndex;
-    let paramsindex = params.index;
-    for (let st = StartLocation; st < locations.length; st++) {
-      let currentlocationprodlen = locations[st].requestProducts.length - 1;
-      let currentlocationsrows = locationsRows.filter(
-        loc => loc.locationId == locations[st].locationId
+    let rowIndex = params.rowIndex;
+    let paramsIndex = params.index;
+    let currentLocationRowId = params.data.id;
+    let currentRequestLocationId = params.data.requestLocationId;
+    // console.log('Row Index:', rowIndex);
+    // console.log('Params Index:', paramsIndex);
+
+    for (let i = indexOfStartLocation; i < locations.length; i++) {
+      let requestLocation = locations[i];
+      if (requestLocation.id !== currentRequestLocationId) {
+        rowIndex = 0;
+      }
+      let currentLocationRows = locationsRows.filter(
+        loc => loc.requestLocationId == requestLocation.id
       );
-      let Endrow = currentlocationsrows.length;
-      if (currentlocationsrows.length > 0) {
-        for (let index = startrow; index < Endrow; index++) {
-          let nextindex = index + 1;
-          if (
-            currentlocationsrows[nextindex] &&
-            currentlocationsrows[nextindex].requestOffers
-          ) {
-            return (
-              currentlocationsrows[nextindex].locationId +
-              '/' +
-              paramsindex +
-              '/' +
-              nextindex
-            );
-          } else {
-            if (paramsindex < currentlocationprodlen) {
-              index = -2;
-              paramsindex = paramsindex + 1;
-            } else {
-              startrow = -1;
-              paramsindex = 0;
+      if (currentLocationRows.length > 0) {
+        // console.log('Current Location Rows:', currentLocationRows);
+        for (let j = rowIndex; j < currentLocationRows.length; j++) {
+          if (currentLocationRows[j].requestOffers) {
+            // console.log('Row :', currentLocationRows[i]);
+            for (
+              let k = 0;
+              k < currentLocationRows[j].requestOffers.length;
+              k++
+            ) {
+              let requestOffer = currentLocationRows[j].requestOffers[k];
+              let productAreStemmedOrConfirmed = this.checkIfProductIsStemmedOrConfirmed(
+                requestLocation,
+                requestOffer
+              );
+              if (!productAreStemmedOrConfirmed) {
+                // console.log('Request Offer :', requestOffer);
+
+                let columnIndex = this.getColumnProductIndex(
+                  requestLocation,
+                  requestOffer
+                );
+                if (columnIndex != -1) {
+                  // console.log('Column Product Index:', columnIndex);
+                  //If exists cells with no stemmed product on the same row && columnIndex > paramsIndex
+                  if (
+                    currentLocationRows[j].id == currentLocationRowId &&
+                    columnIndex > paramsIndex
+                  ) {
+                    // console.log('Same line', currentLocationRows[j]);
+                    let id =
+                      currentLocationRows[j].requestLocationId +
+                      '/' +
+                      j +
+                      '/' +
+                      columnIndex;
+                    console.log(id);
+                    return id;
+                  } else if (
+                    currentLocationRows[j].id !== currentLocationRowId
+                  ) {
+                    //Next rows
+                    // console.log('Next line', currentLocationRows[j]);
+                    let id =
+                      currentLocationRows[j].requestLocationId +
+                      '/' +
+                      j +
+                      '/' +
+                      columnIndex;
+                    console.log(id);
+                    return id;
+                  }
+                }
+              }
             }
           }
         }
@@ -1469,8 +1527,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
 
-  ongetfocus(event, params) {
-    let idValue = this.returnrowindex(params);
+  onGetFocus(event, params) {
+    let idValue = this.returnRowIndex(params);
     let element = document.getElementById(idValue);
     if (element) {
       element.focus();
@@ -1492,7 +1550,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       data: params.data,
       newValue: e.target.value,
       event: e,
-      elementidValue: this.returnrowindex(params)
+      elementidValue: this.returnRowIndex(params)
     });
   }
 

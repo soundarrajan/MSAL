@@ -126,7 +126,7 @@ export class SearchRequestPopupComponent implements OnInit {
     const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip:0, Take: this.pageSize });
     response.subscribe((res:any)=>{
              this.dialog_gridOptions.api.hideOverlay();
-           if(res?.payload?.length >0){
+           if(res.payload){
             this.requestList = res.payload;
             this.dialog_gridOptions.api.setRowData(res.payload);
              }
@@ -153,7 +153,7 @@ export class SearchRequestPopupComponent implements OnInit {
     response.subscribe((res:any)=>{
       this.totalItems = res.matchedCount;
       this.dialog_gridOptions.api.hideOverlay();
-    if(res?.payload?.length >0){
+    if(res.payload){
       var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
       this.page = currentPage + 1;
       this.dialog_gridOptions.api.setRowData(res.payload);

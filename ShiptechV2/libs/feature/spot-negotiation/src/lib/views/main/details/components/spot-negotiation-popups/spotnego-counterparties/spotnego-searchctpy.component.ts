@@ -171,7 +171,7 @@ public overlayNoRowsTemplate =
     if(res?.message == 'Unauthorized'){
       return;
     }
-    if(res?.payload?.length >0){
+    if(res.payload){
       this.rowData = res.payload;
     this.dialog_gridOptions.api.setRowData(res.payload);
       }
@@ -192,7 +192,7 @@ public overlayNoRowsTemplate =
       if(res?.message == 'Unauthorized'){
         return;
       }
-    if(res?.payload?.length >0){
+    if(res.payload){
       this.rowData = res.payload;
     this.dialog_gridOptions.api.setRowData(res.payload);
       }
@@ -284,7 +284,7 @@ public overlayNoRowsTemplate =
     response.subscribe((res:any)=>{
       this.totalItems = res.matchedCount;
       this.dialog_gridOptions.api.hideOverlay();
-    if(res?.payload?.length >0){
+    if(res.payload){
       var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
       this.page = currentPage + 1;
       this.dialog_gridOptions.api.setRowData(res.payload);
@@ -303,7 +303,7 @@ public overlayNoRowsTemplate =
     response.subscribe((res:any)=>{
       this.totalItems = res.matchedCount;
       this.dialog_gridOptions.api.hideOverlay();
-    if(res?.payload?.length >0){
+    if(res.payload){
       var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
       this.page = currentPage + 1;
       this.dialog_gridOptions.api.setRowData(res.payload);

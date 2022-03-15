@@ -113,7 +113,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       this.store.subscribe(({ spotNegotiation }) => {
-        if(localStorage.getItem('reqIdx')){
+        if (localStorage.getItem('reqIdx')) {
           this.selReqIndex = parseInt(localStorage.getItem('reqIdx'));
           localStorage.removeItem('reqIdx');
         }
@@ -263,13 +263,30 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           return state['spotNegotiation'].requests;
         }
       );
+
+      let locationsRows = _.cloneDeep(
+        this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].locationsRows;
+        })
+      );
       //Looping through all the Request Locations
       this.requestOptions.forEach(request => {
         request.requestLocations.forEach(reqLoc => {
-          // this.requestOptions[0].requestLocations.forEach(reqLoc => {
-          let perLocationCtpys = this.selectedCounterparty.map(
-            val =>
-              <SpnegoAddCounterpartyModel>{
+          let currentLocationRows = _.filter(locationsRows, function(row) {
+            return row.requestLocationId == reqLoc.id;
+          });
+          let perLocationCtpys = [];
+          for (let i = 0; i < this.selectedCounterparty.length; i++) {
+            let val = this.selectedCounterparty[i];
+            let checkIfSelectedCounterpartyExist = _.findIndex(
+              currentLocationRows,
+              function(row) {
+                return row.sellerCounterpartyId == val.id;
+              }
+            );
+            if (checkIfSelectedCounterpartyExist == -1) {
+              perLocationCtpys.push(<SpnegoAddCounterpartyModel>{
+                requestId: request.id,
                 requestGroupId: RequestGroupId,
                 requestLocationId: reqLoc.id,
                 locationId: reqLoc.locationId,
@@ -298,8 +315,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 sellerCounterpartyId: val.id,
                 sellerCounterpartyName: val.name,
                 senRating: ''
-              }
-          );
+              });
+            }
+          }
           selectedCounterparties.push(...perLocationCtpys);
         });
       });
@@ -326,6 +344,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     );
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
+      this.selectedCounterparty = _.cloneDeep([]);
       if (res?.message == 'Unauthorized') {
         return;
       }
@@ -334,7 +353,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
           this.visibleCounterpartyList[i].selected = false;
         }
-        this.selectedCounterparty = _.cloneDeep([]);
         this.toastr.success(res.message);
         // Add in Store
         // this.store.dispatch(
@@ -390,7 +408,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       let currentLocProd = this.currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
-      this.UpdateProductsSelection(currentLocProd, row);
+      let reqLocations = this.requestOptions.filter(req=>req.requestLocations.some(reqloc=>reqloc.id==row.requestLocationId));
+      let reqProducts = reqLocations[0].requestLocations.filter(
+        row1 => row1.id == row.requestLocationId
+      );
+      this.UpdateProductsSelection(reqProducts, row);
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
         index < priceDetailsArray?.length &&
