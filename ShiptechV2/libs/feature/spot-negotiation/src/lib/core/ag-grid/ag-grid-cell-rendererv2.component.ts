@@ -308,6 +308,61 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
             <mat-form-field
               class="without-search currency-select-trigger"
               appearance="none"
+              *ngIf="
+                !(
+                  params.product.status === 'Stemmed' ||
+                  params.product.status === 'Confirmed'
+                )
+              "
+            >
+              <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
+              <!-- ** {{params.currency}} --  -->
+              <!-- ** {{ paramsDataClone.currency  --  -->
+              <mat-label>Select Field</mat-label>
+              <mat-select
+                disableOptionCentering
+                [(ngModel)]="paramsDataClone.currency"
+                panelClass="currencyselecttrigger"
+                (selectionChange)="onCurrencyChange($event, params)"
+                [disabled]="
+                  checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated(
+                    paramsDataClone
+                  )
+                "
+              >
+                <mat-select-trigger overlayPanelClass="123class">
+                  {{ getCurrencyCode(paramsDataClone.currency) }}
+                </mat-select-trigger>
+                <mat-option [disabled]>Change Currency </mat-option>
+                <mat-option
+                  class="currency-mat-select"
+                  *ngFor="let currency of currencyList"
+                  [value]="currency.id"
+                >
+                  <span>
+                    <mat-radio-group>
+                      <mat-radio-button
+                        [value]="currency.id"
+                        [checked]="paramsDataClone.currency == currency.id"
+                      >
+                        {{ currency.code }}
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </span>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field
+              class="without-search currency-select-trigger"
+              appearance="none"
+              *ngIf="
+                (params.product.status === 'Stemmed' ||
+                  params.product.status === 'Confirmed') &&
+                checkIfProductIsStemmedWithAnotherSeller(
+                  paramsDataClone,
+                  params.product
+                )
+              "
             >
               <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
               <!-- ** {{params.currency}} --  -->
@@ -1565,6 +1620,18 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         params.requestOffers[i].orderProducts &&
         params.requestOffers[i].orderProducts.length > 0
       ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  checkIfProductIsStemmedWithAnotherSeller(params, product) {
+    let findOffer = _.find(params.requestOffers, function(requestOffer) {
+      return requestOffer.requestProductId === product.id;
+    });
+    if (findOffer) {
+      if (findOffer.orderProducts && findOffer.orderProducts.length > 0) {
         return true;
       }
     }
