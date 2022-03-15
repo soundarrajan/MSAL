@@ -1,10 +1,7 @@
 <div class="spot-nego-content">
   <div class="grid-in-accordion">
     <div *ngFor="let loc of locations; let i = index">
-      <mat-expansion-panel
-        [expanded]="i == 0 ? true : false"
-        style="margin-top: 1px;"
-      >
+      <mat-expansion-panel [expanded]="true" style="margin-top: 1px;">
         <mat-expansion-panel-header>
           <mat-panel-title>
             <app-loc-pan-data
