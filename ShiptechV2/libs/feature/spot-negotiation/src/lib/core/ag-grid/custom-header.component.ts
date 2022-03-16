@@ -147,7 +147,7 @@ export class CustomHeader implements IHeaderAngularComp {
   }
 
   selectCounterparty(locationRow) {
-    var payload = {
+    let payload = {
       reqLocSellers: [
         {
           requestLocationSellerId: locationRow.id,
