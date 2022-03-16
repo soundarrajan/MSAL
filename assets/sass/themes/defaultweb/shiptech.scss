@@ -22452,6 +22452,13 @@ mat-form-field {
   margin: 0 4px;
   color: #364150 !important;
 }
+.spot-dropdown-component.applicable-location-based .mat-select-arrow {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid;
+  margin-right: 12px;
+  color: #364150 !important;
+}
 
 .spot-dropdown-component .mat-select-value-text {
   font-family: Roboto;
