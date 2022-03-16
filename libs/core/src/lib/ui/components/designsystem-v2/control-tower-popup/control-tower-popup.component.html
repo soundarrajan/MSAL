@@ -79,7 +79,7 @@
           </div>
         </div>
         <div
-          class="w-20p plr-0"
+          [ngClass]="{'w-18p plr-0': data.popupType == 'sludge', 'w-20p plr-0': data.popupType != 'sludge'}"
           *ngIf="data.popupType == 'sludge' || data.popupType == 'egcs'"
         >
           <div class="col-header">Sludge %</div>
@@ -100,7 +100,7 @@
             data.popupType == 'egcs'
           "
         >
-          <div class="col-header">Log Book ROB</div>
+          <div class="col-header">{{ data.logBookLabel }}</div>
           <div
             *ngFor="let value of data.productTypeList"
             class="col-value tooltip-container"
@@ -123,7 +123,8 @@
             {{ format.quantity(value.bdnQuantity) }}
           </div>
         </div>
-        <div class="w-24p plr-0">
+        <div
+        [ngClass]="{'w-30p plr-0': data.popupType == 'sludge', 'w-24p plr-0': data.popupType != 'sludge'}">
           <div class="col-header">{{ data.measuredQuantityLabel }}</div>
           <div
             *ngFor="let value of data.productTypeList"
@@ -146,7 +147,7 @@
             }}
           </div>
         </div>
-        <div class="w-20p plr-0">
+        <div [ngClass]="{'w-28p plr-0': data.popupType == 'sludge', 'w-20p plr-0': data.popupType != 'sludge'}">
           <div class="col-header">{{ data.differenceQuantityLabel }}</div>
           <div
             *ngFor="let value of data.productTypeList"
@@ -169,7 +170,7 @@
             }}
           </div>
         </div>
-        <div class=" w-10p plr-0">
+        <div class=" w-10p plr-0" *ngIf="data.popupType != 'sludge'">
           <div class="col-header">UOM</div>
           <div
             *ngFor="let value of data.productTypeList"
