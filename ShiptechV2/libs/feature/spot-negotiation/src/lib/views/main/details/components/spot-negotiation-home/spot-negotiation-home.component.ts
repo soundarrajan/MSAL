@@ -975,11 +975,18 @@ export class SpotNegotiationHomeComponent implements OnInit {
       var amendRFQRequestPayload = this.selectedSellerList;
 
       this.spinner.show();
+      (<any>window).startAmendRFQTime = Date.now();
       // Get response from server
       const response = this.spotNegotiationService.AmendRFQ(
         amendRFQRequestPayload
       );
       response.subscribe((res: any) => {
+        this.myMonitoringService.logMetric(
+          'Amend RFQ ' + (<any>window).location.href,
+          Date.now() - (<any>window).startAmendRFQTime,
+          (<any>window).location.href
+        );
+
         this.spinner.hide();
         if (res?.message == 'Unauthorized') {
           return;

@@ -15,6 +15,7 @@ import { AppConfig } from '@shiptech/core/config/app-config';
 import { KeyValue } from '@angular/common';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import _ from 'lodash';
+import { MyMonitoringService } from '../../../../../service/logging.service';
 @Component({
   selector: 'app-spotnego-confirmorder',
   templateUrl: './spotnego-confirmorder.component.html',
@@ -49,6 +50,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     private urlService: UrlService,
     public appConfig: AppConfig,
     public format: TenantFormattingService,
+    private myMonitoringService: MyMonitoringService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.getRequests();
@@ -394,6 +396,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     this.buttonsDisabled = true;
 
     (<any>window).startConfirmOfferTime = Date.now();
+
     const response = this.spotNegotiationService.GetExistingOrders(payload);
     response.subscribe(
       (res: any) => {
@@ -497,6 +500,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           const response = this.spotNegotiationService.ConfirmRfq(rfq_data);
           response.subscribe(
             (res: any) => {
+              this.myMonitoringService.logMetric(
+                'Confirm Offer ' + (<any>window).location.href,
+                Date.now() - (<any>window).startConfirmOfferTime,
+                (<any>window).location.href
+              );
+
               this.buttonsDisabled = false;
               var receivedOffers = res;
               this.spinner.hide();
