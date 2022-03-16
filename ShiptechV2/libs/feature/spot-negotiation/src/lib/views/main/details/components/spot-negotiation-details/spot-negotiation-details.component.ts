@@ -33,6 +33,8 @@ import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.stor
 import { Observable } from 'rxjs';
 import { RemoveCounterpartyComponent } from '../remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { AdditionalCostViewModel } from 'libs/feature/spot-negotiation/src/lib/core/models/additional-costs-model';
+import { CustomHeader } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/custom-header.component';
+import { CustomHeaderSelectAll } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/custom-header-select-all.component';
 
 export const COMPONENT_TYPE_IDS = {
   TAX_COMPONENT: 1,
@@ -112,7 +114,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           minWidth: 20,
           maxWidth: 30,
           // checkboxSelection: true,
-          headerCheckboxSelection: true,
+          // headerCheckboxSelection: true,
           resizable: false,
           // suppressMovable: true,
           suppressNavigable: true,
@@ -124,7 +126,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             'p-1 checkbox-center ag-checkbox-v2 grey-opacity-cell pad-lr-0 mat-check-center',
           cellRendererFramework: AGGridCellActionsComponent,
 
-          cellRendererParams: { type: 'checkbox-selection' }
+          cellRendererParams: { type: 'checkbox-selection' },
+
+          headerComponentFramework: CustomHeaderSelectAll
+
           //pinned: 'left'
         },
         {
@@ -481,7 +486,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           maxWidth: 30,
           // checkboxSelection: true,
           resizable: false,
-          headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
+          // headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
           cellClass: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
               params.data,
@@ -496,9 +501,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           cellRendererParams: {
             type: 'mat-check-box',
             productId: product.productId,
-            status: product.status
+            status: product.status,
+            productName: product.productName,
+            requestLocationId: requestLocationId,
+            requestProductId: product.id,
+            productData: productData
           },
-          lockPosition: true
+          lockPosition: true,
+          headerComponentFramework: CustomHeader
         },
         {
           headerName: 'Offer price',
@@ -555,8 +565,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               newValue
             );
 
-            this.checkAdditionalCost(updatedRow, updatedRow, colDef, newValue, elementidValue);
-
+            this.checkAdditionalCost(
+              updatedRow,
+              updatedRow,
+              colDef,
+              newValue,
+              elementidValue
+            );
 
             // setTimeout(() => {
             // //  alert(1)
@@ -821,18 +836,24 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // Update the store
         this.store.dispatch(new EditLocationRow(updatedRow));
 
-              setTimeout(() => {
-                let element = document.getElementById(elementidValue);
-                if (element) {
-                  element.focus();
-                }
-              }, 500);
+        setTimeout(() => {
+          let element = document.getElementById(elementidValue);
+          if (element) {
+            element.focus();
+          }
+        }, 500);
         // Save to the cloud
         this.saveRowToCloud(updatedRow, colDef['product']);
       });
   }
 
-  checkAdditionalCost(sellerOffers, updatedRow, colDef, newValue, elementidValue) {
+  checkAdditionalCost(
+    sellerOffers,
+    updatedRow,
+    colDef,
+    newValue,
+    elementidValue
+  ) {
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
     });
@@ -1668,6 +1689,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           col => col.field != 'genRating' && col.field != 'portRating'
         );
       }
+
       // Set headers of products;
       this.columnDef_aggridObj = [];
       this.highlightedCells = {};
@@ -1694,6 +1716,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         ).length;
         this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts =
           reqLocation.requestProducts.length;
+
+        this.columnDef_aggridObj[
+          i
+        ][0].children[0].cellRendererParams.requestLocationId = reqLocation.id;
 
         // These are locations!!
         const requestProductsLength = reqLocation.requestProducts.length;

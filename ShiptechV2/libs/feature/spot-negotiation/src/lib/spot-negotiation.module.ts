@@ -98,6 +98,8 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
 import { DragDropFileUploadDirective } from './views/main/details/directives/drag-drop-file-upload.directive';
 import { MatTableModule } from '@angular/material/table';
+import { CustomHeader } from './core/ag-grid/custom-header.component';
+import { CustomHeaderSelectAll } from './core/ag-grid/custom-header-select-all.component';
 
 @NgModule({
   imports: [
@@ -198,7 +200,9 @@ import { MatTableModule } from '@angular/material/table';
     NegotiationDocumentsComponent,
     NegotiationReportComponent,
     PriceTenantFormatDirective,
-    DragDropFileUploadDirective
+    DragDropFileUploadDirective,
+    CustomHeader,
+    CustomHeaderSelectAll
     // QuantityTenantFormatDirective,
     // AmountTenantFormatDirective,
     // NumberOnlyDirective,
@@ -228,7 +232,9 @@ import { MatTableModule } from '@angular/material/table';
     SpotnegoSendRfqComponent,
     SearchRequestPopupComponent,
     SpotnegoSearchCtpyComponent,
-    RemoveCounterpartyComponent
+    RemoveCounterpartyComponent,
+    CustomHeader,
+    CustomHeaderSelectAll
   ],
   exports: [],
   providers: [
