@@ -1197,6 +1197,7 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
         amountInInvoice: '',
         deliveryId: rowData.delivery.id,
         agreementType: rowData.agreementType,
+        contract: rowData.contract,
         deliveryProductId: rowData.deliveryProductId,
         invoicedProduct: rowData.invoicedProduct,
         orderedProduct: rowData.orderedProduct,
