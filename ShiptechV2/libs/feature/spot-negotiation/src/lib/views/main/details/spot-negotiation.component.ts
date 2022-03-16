@@ -176,7 +176,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           row[val] =
             status === 'Stemmed' || status === 'Confirmed'
               ? false
-              : row.isSelected;
+              : row.preferredProducts==currentLocProd[0].requestProducts[index].productId; ///Requirement 38481
           row.isEditable = false;
         }
       }
