@@ -180,7 +180,6 @@ import { CustomHeaderSelectAll } from './core/ag-grid/custom-header-select-all.c
     AGGridCellActionsComponent,
     AGGridCellRendererComponent,
     AGGridCellRendererV2Component,
-    ShiptechCustomHeaderGroup,
     AGGridCellV2RendererComponent,
     AGGridCellActionsDocumentsComponent,
 

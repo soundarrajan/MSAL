@@ -200,16 +200,18 @@ import _, { cloneDeep } from 'lodash';
       </div>
       <div class="label">
         <div class="label-content">
-          <div class="label-element">
-            <div class="title">Closure</div>
+          <div class="label-element"
+            [matTooltip]="((params.product.status.toLowerCase() != 'stemmed' && !isLatestClosurePrice) ?
+            'Price Outdated. Last published on: ' : 'Pricing published on: ')
+            + (this.closureDate == 'Invalid date' ? '--' : this.closureDate)">
+            <div class="title">
+              <span class="info-icon-amber" *ngIf="params.product.status.toLowerCase() != 'stemmed' && !isLatestClosurePrice"></span>
+              Closure
+            </div>
             <div
               class="value"
               [ngClass]="
                 params.product.status === 'Stemmed' ? 'disabled-gray' : ''
-              "
-              [matTooltip]="
-                'Pricing published on: ' +
-                (this.closureDate == 'Invalid date' ? '--' : this.closureDate)
               "
               contenteditable="false"
               (keydown)="editQty($event)"
@@ -341,6 +343,7 @@ export class ShiptechCustomHeaderGroup {
   sellersCount$: Observable<number>;
   availableContracts = [];
   requests: any;
+  isLatestClosurePrice: boolean = false;
   ngOnInit(): any {
     this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
@@ -464,6 +467,7 @@ export class ShiptechCustomHeaderGroup {
       this.livePrice = formattedLivePrice;
       this.targetValue = this.params.product.requestGroupProducts.targetPrice;
       this.closureValue = this.params.product.requestGroupProducts.closurePrice;
+      this.isLatestClosurePrice = this.params.product.requestGroupProducts.isLatestClosurePrice;
       this.closureDate = moment(
         this.params.product.requestGroupProducts.closureDate
       ).format('DD-MMM-YYYY');
@@ -618,6 +622,7 @@ export class ShiptechCustomHeaderGroup {
         });
       });
       this.closureValue = requestGroup[0].requestGroupProducts.closurePrice;
+      this.isLatestClosurePrice = requestGroup[0].requestGroupProducts.isLatestClosurePrice;
       this.closureDate = moment(
         requestGroup[0].requestGroupProducts.closureDate
       ).format('DD-MMM-YYYY');
