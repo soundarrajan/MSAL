@@ -178,7 +178,6 @@ import { MatTableModule } from '@angular/material/table';
     AGGridCellActionsComponent,
     AGGridCellRendererComponent,
     AGGridCellRendererV2Component,
-    ShiptechCustomHeaderGroup,
     AGGridCellV2RendererComponent,
     AGGridCellActionsDocumentsComponent,
 
