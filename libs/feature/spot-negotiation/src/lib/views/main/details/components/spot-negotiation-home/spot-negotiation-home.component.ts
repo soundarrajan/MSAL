@@ -1273,6 +1273,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       var requoteRFQRequestPayload = this.selectedSellerList;
 
       this.spinner.show();
+
+      (<any>window).startRevokeRFQTime = Date.now();
+
       // Get response from server
       const response = this.spotNegotiationService.RequoteRFQ(
         requoteRFQRequestPayload
@@ -1283,6 +1286,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
           return;
         }
         if (res instanceof Object && res['rfqIds'].length > 0) {
+          this.myMonitoringService.logMetric(
+            'Revoke RFQ ' + (<any>window).location.href,
+            Date.now() - (<any>window).startRevokeRFQTime,
+            (<any>window).location.href
+          );
+
           this.toaster.success('Requote RFQ(s) sent successfully.');
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
