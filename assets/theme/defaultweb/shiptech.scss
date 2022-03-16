@@ -11483,6 +11483,15 @@ width: 25px;
     content: url("data:image/svg+xml,%3Csvg width='13' height='7' viewBox='0 0 13 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0L6.50003 6.50003L13 0H0Z' fill='white'/%3E%3C/svg%3E%0A");
   }
 }
+.search-request-popup .ag-theme-material .ag-checkbox-input-wrapper {
+  font-size: 11px !important;
+  }
+
+.search-request-popup{
+  .checkbox-center .ag-cell-wrapper .ag-selection-checkbox{
+    margin-left: -5px !important;
+  }
+}
 
 .customRowClass{
     .grey-opacity-cell{
@@ -24306,4 +24315,9 @@ td.mat-cell {
       }
     }
   }
+}
+
+
+.mat-menu-panel {
+  max-width: fit-content !important;
 }
