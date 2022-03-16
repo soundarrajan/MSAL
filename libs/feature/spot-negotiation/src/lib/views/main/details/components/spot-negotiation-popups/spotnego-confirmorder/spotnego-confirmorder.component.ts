@@ -500,12 +500,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           const response = this.spotNegotiationService.ConfirmRfq(rfq_data);
           response.subscribe(
             (res: any) => {
-              this.myMonitoringService.logMetric(
-                'Confirm Offer ' + (<any>window).location.href,
-                Date.now() - (<any>window).startConfirmOfferTime,
-                (<any>window).location.href
-              );
-
               this.buttonsDisabled = false;
               var receivedOffers = res;
               this.spinner.hide();
@@ -513,6 +507,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                 return;
               }
               if (res instanceof Object && res.payload.length > 0) {
+                this.myMonitoringService.logMetric(
+                  'Confirm Offer ' + (<any>window).location.href,
+                  Date.now() - (<any>window).startConfirmOfferTime,
+                  (<any>window).location.href
+                );
                 //add/modifiy market prices
                 var FreezeMarketPricesPayload = {
                   FreezePriceRequests: this.productPricePayload(
