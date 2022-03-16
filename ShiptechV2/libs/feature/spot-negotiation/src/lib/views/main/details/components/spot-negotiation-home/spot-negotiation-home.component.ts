@@ -356,20 +356,21 @@ export class SpotNegotiationHomeComponent implements OnInit {
     this.spinner.show();
 
     (<any>window).startSendRFQTime = Date.now();
+
     // Get response from server
     const response = this.spotNegotiationService.SendRFQ(FinalAPIdata);
     response.subscribe((res: any) => {
-      this.myMonitoringService.logMetric(
-        'Send RFQ ' + (<any>window).location.href,
-        Date.now() - (<any>window).startSendRFQTime,
-        (<any>window).location.href
-      );
-
       this.spinner.hide();
       if (res?.message == 'Unauthorized') {
         return;
       }
       if (res instanceof Object && res['sellerOffers'].length > 0) {
+        this.myMonitoringService.logMetric(
+          'Send RFQ ' + (<any>window).location.href,
+          Date.now() - (<any>window).startSendRFQTime,
+          (<any>window).location.href
+        );
+
         this.toaster.success('RFQ(s) sent successfully.');
         if (res['message'].length > 5) this.toaster.warning(res['message']);
       } else if (res instanceof Object) {
@@ -975,23 +976,25 @@ export class SpotNegotiationHomeComponent implements OnInit {
       var amendRFQRequestPayload = this.selectedSellerList;
 
       this.spinner.show();
+
       (<any>window).startAmendRFQTime = Date.now();
+
       // Get response from server
       const response = this.spotNegotiationService.AmendRFQ(
         amendRFQRequestPayload
       );
       response.subscribe((res: any) => {
-        this.myMonitoringService.logMetric(
-          'Amend RFQ ' + (<any>window).location.href,
-          Date.now() - (<any>window).startAmendRFQTime,
-          (<any>window).location.href
-        );
-
         this.spinner.hide();
         if (res?.message == 'Unauthorized') {
           return;
         }
         if (res instanceof Object && res['rfqIds'].length > 0) {
+          this.myMonitoringService.logMetric(
+            'Amend RFQ ' + (<any>window).location.href,
+            Date.now() - (<any>window).startAmendRFQTime,
+            (<any>window).location.href
+          );
+
           this.toaster.success('Amend RFQ(s) sent successfully.');
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
@@ -1038,16 +1041,18 @@ export class SpotNegotiationHomeComponent implements OnInit {
       // Get response from server
       const response = this.spotNegotiationService.SkipRFQ(FinalAPIPayload);
       response.subscribe((res: any) => {
-        this.myMonitoringService.logMetric(
-          'Skip RFQ ' + (<any>window).location.href,
-          Date.now() - (<any>window).startSkipRFQTime,
-          (<any>window).location.href
-        );
         this.spinner.hide();
         if (res?.message == 'Unauthorized') {
           return;
         }
+
         if (res instanceof Object && res['sellerOffers'].length > 0) {
+          this.myMonitoringService.logMetric(
+            'Skip RFQ ' + (<any>window).location.href,
+            Date.now() - (<any>window).startSkipRFQTime,
+            (<any>window).location.href
+          );
+
           this.toaster.success('RFQ(s) skipped successfully.');
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
@@ -1154,16 +1159,17 @@ export class SpotNegotiationHomeComponent implements OnInit {
       // Get response from server
       const response = this.spotNegotiationService.RevokeFQ(FinalAPIdata);
       response.subscribe((res: any) => {
-        this.myMonitoringService.logMetric(
-          'Revoke RFQ ' + (<any>window).location.href,
-          Date.now() - (<any>window).startRevokeRFQTime,
-          (<any>window).location.href
-        );
         this.spinner.hide();
         if (res?.message == 'Unauthorized') {
           return;
         }
         if (res instanceof Object) {
+          this.myMonitoringService.logMetric(
+            'Revoke RFQ ' + (<any>window).location.href,
+            Date.now() - (<any>window).startRevokeRFQTime,
+            (<any>window).location.href
+          );
+
           this.toaster.success('RFQ(s) revoked successfully.');
           if (res['message'].length > 3) this.toaster.warning(res['message']);
           // else
@@ -1333,6 +1339,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       }
     }
+    if (type == 'no-quote') {
+      (<any>window).startNoQuoteTime = Date.now();
+    } else if (type == 'enable-quote') {
+      (<any>window).startEnableQuoteTime = Date.now();
+    }
 
     let noQuotePayload = {
       requestOfferIds: requestOfferIds.map(e => e.id),
@@ -1347,6 +1358,19 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       }
       if (res) {
+        if (type == 'no-quote') {
+          this.myMonitoringService.logMetric(
+            'No Quote ' + (<any>window).location.href,
+            Date.now() - (<any>window).startNoQuoteTime,
+            (<any>window).location.href
+          );
+        } else if (type == 'enable-quote') {
+          this.myMonitoringService.logMetric(
+            'Enable Quote ' + (<any>window).location.href,
+            Date.now() - (<any>window).startEnableQuoteTime,
+            (<any>window).location.href
+          );
+        }
         let updatedRows = _.cloneDeep(locationsRows);
         this.getPriceDetailsInformation(updatedRows, requestLocationSellerIds);
         let successMessage =
