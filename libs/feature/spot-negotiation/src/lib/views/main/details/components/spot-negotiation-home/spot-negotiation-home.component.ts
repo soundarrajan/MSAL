@@ -1032,9 +1032,17 @@ export class SpotNegotiationHomeComponent implements OnInit {
         selectedSellers: this.selectedSellerList
       };
       this.spinner.show();
+
+      (<any>window).startSkipRFQTime = Date.now();
+
       // Get response from server
       const response = this.spotNegotiationService.SkipRFQ(FinalAPIPayload);
       response.subscribe((res: any) => {
+        this.myMonitoringService.logMetric(
+          'Skip RFQ ' + (<any>window).location.href,
+          Date.now() - (<any>window).startSkipRFQTime,
+          (<any>window).location.href
+        );
         this.spinner.hide();
         if (res?.message == 'Unauthorized') {
           return;
