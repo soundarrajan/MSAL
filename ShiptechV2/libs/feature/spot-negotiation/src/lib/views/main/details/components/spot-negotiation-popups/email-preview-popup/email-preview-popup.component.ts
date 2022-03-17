@@ -271,7 +271,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   addTo(item, selectedFromLookup) {
-    this.to.push(item);    
+    this.to.push(item);
     if (this.previewTemplate == null) {
       this.previewTemplate = [];
     }
