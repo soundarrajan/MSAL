@@ -535,9 +535,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                 const baseOrigin = new URL(window.location.href).origin;
                 window.open(
                   `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
-                  '_blank'
+                  '_self'
                 );
-                this.getPriceDetails();
                 this.toaster.success('order created successfully.');
               } else if (res instanceof Object) {
                 this.toaster.warning(res.Message);
