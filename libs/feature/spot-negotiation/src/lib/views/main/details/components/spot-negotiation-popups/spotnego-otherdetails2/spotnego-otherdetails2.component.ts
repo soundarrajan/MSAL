@@ -378,6 +378,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   otherDetailsItems: any = [];
   staticLists: any;
   productList: any = [];
+  inactiveList: any = [];
   selectedProductList: any;
   productIndex: any = 0;
   locationsRows: any;
@@ -441,6 +442,8 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     });
     this.uomList = this.setListFromStaticLists('Uom');
     this.productList = this.setListFromStaticLists('Product');
+    this.inactiveList = this.setListFromStaticLists('InactiveProducts');
+    this.productList  = this.productList.concat(this.inactiveList);
     this.getOtherDetailsLoad();
   }
 
@@ -478,7 +481,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
       return null;
     }
   }
- 
+
 
   //popup initial load data..
   getOtherDetailsLoad() {
@@ -680,7 +683,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
       }
     });
   }
-  /// update store loctionrows 
+  /// update store loctionrows
   getLocationRowsWithOtherDetails(rowdata, requestChangeData) {
     rowdata.forEach((element1, key) => {
       if (element1.requestOffers != undefined) {
