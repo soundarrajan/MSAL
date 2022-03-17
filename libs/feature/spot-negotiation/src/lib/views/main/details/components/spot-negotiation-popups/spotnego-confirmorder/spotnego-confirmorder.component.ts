@@ -38,7 +38,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   tenantConfiguration: any;
   responseOrderData: any;
   currencyList: any;
-  productList: any;
+  productList: any = [];
+  inactiveList: any = [];
   uomList: any;
   errorMessages: string;
   staticLists: any;
@@ -86,6 +87,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     });
     this.currencyList = this.setListFromStaticLists('Currency');
     this.productList = this.setListFromStaticLists('Product');
+    this.inactiveList = this.setListFromStaticLists('InactiveProducts');
+    this.productList = this.productList.concat(this.inactiveList);
     this.uomList = this.setListFromStaticLists('Uom');
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
