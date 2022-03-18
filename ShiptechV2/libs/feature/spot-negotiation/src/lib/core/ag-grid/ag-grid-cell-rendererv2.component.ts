@@ -597,7 +597,7 @@ import { SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
         (click)="selectCounterParties(params)"
         class="light-checkbox small"
         [ngClass]="
-          params.data.preferredProducts?.includes(params.productId) ? '' : ''
+          params.data.preferredProducts?.includes(params.productId) ? 'darkBorder' : ''
         "
       ></mat-checkbox>
     </div>
