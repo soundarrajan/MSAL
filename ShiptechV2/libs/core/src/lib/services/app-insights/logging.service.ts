@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, InjectionToken } from '@angular/core';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { environment } from '@shiptech/environment';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { Select, Store } from '@ngxs/store';
+import { ILoggingService } from './logging.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class MyMonitoringService {
+export class MyMonitoringService implements ILoggingService {
   appInsights: ApplicationInsights;
   constructor(private appConfig: AppConfig, private store: Store) {
     const configInstrumentationKey = this.appConfig.v1.INSTRUMENTATION_KEY;
@@ -68,3 +69,7 @@ export class MyMonitoringService {
     this.appInsights.trackTrace({ message: message }, properties);
   }
 }
+
+export const APP_INSIGHTS_SERVICE = new InjectionToken<ILoggingService>(
+  'APP_INSIGHTS_SERVICE'
+);

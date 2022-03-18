@@ -29,7 +29,7 @@ import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib
 import _ from 'lodash';
 import { NegotiationDetailsToolbarComponent } from '../../../toolbar/spot-negotiation-details-toolbar.component';
 import { LoadReportSurveyHistoryAction } from 'libs/feature/quantity-control/src/lib/store/report/qc-report-survey-history.actions';
-import { MyMonitoringService } from '../../../../service/logging.service';
+import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
 
 @Component({
   selector: 'app-spot-negotiation-home',
