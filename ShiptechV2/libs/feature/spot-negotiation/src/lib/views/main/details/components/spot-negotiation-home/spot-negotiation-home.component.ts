@@ -29,6 +29,7 @@ import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib
 import _ from 'lodash';
 import { NegotiationDetailsToolbarComponent } from '../../../toolbar/spot-negotiation-details-toolbar.component';
 import { LoadReportSurveyHistoryAction } from 'libs/feature/quantity-control/src/lib/store/report/qc-report-survey-history.actions';
+import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -73,7 +74,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
     private store: Store,
     private spinner: NgxSpinnerService,
     private spotNegotiationService: SpotNegotiationService,
-    private router: Router
+    private router: Router,
+    private myMonitoringService: MyMonitoringService
   ) {
     this.baseOrigin = new URL(window.location.href).origin;
   }
@@ -351,8 +353,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
       quoteByDate: new Date(this.child.getValue()),
       selectedSellers: this.selectedSellerList
     };
-
     this.spinner.show();
+
+    (<any>window).startSendRFQTime = Date.now();
+
     // Get response from server
     const response = this.spotNegotiationService.SendRFQ(FinalAPIdata);
     response.subscribe((res: any) => {
@@ -361,6 +365,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       }
       if (res instanceof Object && res['sellerOffers'].length > 0) {
+        this.myMonitoringService.logMetric(
+          'Send RFQ ' + (<any>window).location.href,
+          Date.now() - (<any>window).startSendRFQTime,
+          (<any>window).location.href
+        );
+
         this.toaster.success('RFQ(s) sent successfully.');
         if (res['message'].length > 5) this.toaster.warning(res['message']);
       } else if (res instanceof Object) {
@@ -424,7 +434,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       let requestLocations = currentRequestData.filter(
         row1 => row1.id == row.requestLocationId
       );
-      let reqLocations =requestlist.filter(rq=>rq.requestLocations.some(rl=>rl.id==row.requestLocationId));
+      let reqLocations = requestlist.filter(rq =>
+        rq.requestLocations.some(rl => rl.id == row.requestLocationId)
+      );
       let reqProducts =
         reqLocations.length > 0
           ? reqLocations[0].requestLocations.filter(
@@ -917,7 +929,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
   getLocationRowsWithSelectedSeller(rowsArray, selectedSellerRows) {
     rowsArray.forEach(row => {
       selectedSellerRows.forEach(sellerRow => {
-        let reqLocations = this.requestOptions.filter(req=>req.requestLocations.some(reqloc=>reqloc.id==row.RequestLocationId));
+        let reqLocations = this.requestOptions.filter(req =>
+          req.requestLocations.some(
+            reqloc => reqloc.id == row.RequestLocationId
+          )
+        );
         let reqProducts =
           reqLocations.length > 0
             ? reqLocations[0].requestLocations.filter(
@@ -960,6 +976,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       var amendRFQRequestPayload = this.selectedSellerList;
 
       this.spinner.show();
+
+      (<any>window).startAmendRFQTime = Date.now();
+
       // Get response from server
       const response = this.spotNegotiationService.AmendRFQ(
         amendRFQRequestPayload
@@ -970,6 +989,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
           return;
         }
         if (res instanceof Object && res['rfqIds'].length > 0) {
+          this.myMonitoringService.logMetric(
+            'Amend RFQ ' + (<any>window).location.href,
+            Date.now() - (<any>window).startAmendRFQTime,
+            (<any>window).location.href
+          );
+
           this.toaster.success('Amend RFQ(s) sent successfully.');
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
@@ -1010,6 +1035,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         selectedSellers: this.selectedSellerList
       };
       this.spinner.show();
+
+      (<any>window).startSkipRFQTime = Date.now();
+
       // Get response from server
       const response = this.spotNegotiationService.SkipRFQ(FinalAPIPayload);
       response.subscribe((res: any) => {
@@ -1017,7 +1045,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
         if (res?.message == 'Unauthorized') {
           return;
         }
+
         if (res instanceof Object && res['sellerOffers'].length > 0) {
+          this.myMonitoringService.logMetric(
+            'Skip RFQ ' + (<any>window).location.href,
+            Date.now() - (<any>window).startSkipRFQTime,
+            (<any>window).location.href
+          );
+
           this.toaster.success('RFQ(s) skipped successfully.');
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
@@ -1118,6 +1153,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         selectedSellers: this.selectedSellerList
       };
       this.spinner.show();
+
+      (<any>window).startRevokeRFQTime = Date.now();
+
       // Get response from server
       const response = this.spotNegotiationService.RevokeFQ(FinalAPIdata);
       response.subscribe((res: any) => {
@@ -1126,6 +1164,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
           return;
         }
         if (res instanceof Object) {
+          this.myMonitoringService.logMetric(
+            'Revoke RFQ ' + (<any>window).location.href,
+            Date.now() - (<any>window).startRevokeRFQTime,
+            (<any>window).location.href
+          );
+
           this.toaster.success('RFQ(s) revoked successfully.');
           if (res['message'].length > 3) this.toaster.warning(res['message']);
           // else
@@ -1229,6 +1273,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       var requoteRFQRequestPayload = this.selectedSellerList;
 
       this.spinner.show();
+
+      (<any>window).startRevokeRFQTime = Date.now();
+
       // Get response from server
       const response = this.spotNegotiationService.RequoteRFQ(
         requoteRFQRequestPayload
@@ -1239,6 +1286,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
           return;
         }
         if (res instanceof Object && res['rfqIds'].length > 0) {
+          this.myMonitoringService.logMetric(
+            'Revoke RFQ ' + (<any>window).location.href,
+            Date.now() - (<any>window).startRevokeRFQTime,
+            (<any>window).location.href
+          );
+
           this.toaster.success('Requote RFQ(s) sent successfully.');
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
@@ -1295,6 +1348,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       }
     }
+    if (type == 'no-quote') {
+      (<any>window).startNoQuoteTime = Date.now();
+    } else if (type == 'enable-quote') {
+      (<any>window).startEnableQuoteTime = Date.now();
+    }
 
     let noQuotePayload = {
       requestOfferIds: requestOfferIds.map(e => e.id),
@@ -1309,6 +1367,19 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       }
       if (res) {
+        if (type == 'no-quote') {
+          this.myMonitoringService.logMetric(
+            'No Quote ' + (<any>window).location.href,
+            Date.now() - (<any>window).startNoQuoteTime,
+            (<any>window).location.href
+          );
+        } else if (type == 'enable-quote') {
+          this.myMonitoringService.logMetric(
+            'Enable Quote ' + (<any>window).location.href,
+            Date.now() - (<any>window).startEnableQuoteTime,
+            (<any>window).location.href
+          );
+        }
         let updatedRows = _.cloneDeep(locationsRows);
         this.getPriceDetailsInformation(updatedRows, requestLocationSellerIds);
         let successMessage =
