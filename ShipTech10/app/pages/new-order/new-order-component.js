@@ -3598,12 +3598,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 			if (product.contractProductId) { 
 				product.referencePrice = parseInt(product.originalPrice);
 			}
-            product.price = $filter("number")(convertDecimalSeparatorStringToNumber(product.originalPrice), product.pricePrecision);
+            if (product.originalPrice === 0) {
+                product.originalPrice = '0';
+            }
             if(product.originalPrice) {
                 product.price = $filter("number")(convertDecimalSeparatorStringToNumber(product.originalPrice), product.pricePrecision);
             } else {
                 product.price = null;
-            }            
+            }
             product.amount = calculateProductAmount(product);
             updateOrderSummary();
             ctrl.evaluateAdditionalCostList();
