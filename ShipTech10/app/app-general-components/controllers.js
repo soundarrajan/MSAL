@@ -2114,10 +2114,6 @@
 
                 var amount = function(cellValue, options, rowObject) {
                     element = "";
-                    if (options.colModel.name == 'invoiceAmount' || options.colModel.name == 'calculatedAmount') {
-                        cellValue = truncateToDecimals(cellValue, $scope.tenantSettings.defaultValues.amountPrecision);
-
-                    } 
                     if (cellValue != null) {
                         element = $filter("number")(cellValue, $scope.tenantSettings.defaultValues.amountPrecision);
                     }
