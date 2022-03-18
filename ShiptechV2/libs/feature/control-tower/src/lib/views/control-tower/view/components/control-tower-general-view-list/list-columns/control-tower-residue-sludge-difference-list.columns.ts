@@ -1,6 +1,8 @@
 export enum ControlTowerResidueSludgeDifferenceListColumns {
   actions = 'actions',
   portCall = 'portCall',
+  order='order',
+  buyer='buyer',
   port = 'port',
   vessel = 'vessel',
   eta = 'eta',
@@ -8,6 +10,9 @@ export enum ControlTowerResidueSludgeDifferenceListColumns {
   emailToVessel = 'emailToVessel',
   vesselToWatch = 'vesselToWatch',
   sludgePercentage = 'sludgePercentage',
+  sumOfOrderQuantity='sumOfOrderQuantity',
+  measuredDeliveredQuantity='measuredDeliveredQuantity',
+  differenceInSludgeQuantity='differenceInSludgeQuantity',
   progress = 'progress',
   logBookRobQtyBeforeDelivery = 'logBookRobQtyBeforeDelivery',
   measuredRobQtyBeforeDelivery = 'measuredRobQtyBeforeDelivery',
@@ -17,6 +22,8 @@ export enum ControlTowerResidueSludgeDifferenceListColumns {
 
 export enum ControlTowerResidueSludgeDifferenceListExportColumns {
   portCall = 'portCall.portCallId',
+  order='order.id',
+  buyer='buyer.name',
   port = 'port',
   vessel = 'vessel',
   eta = 'eta',
@@ -24,6 +31,9 @@ export enum ControlTowerResidueSludgeDifferenceListExportColumns {
   emailToVessel = 'emailToVessel',
   vesselToWatch = 'vesselToWatch',
   sludgePercentage = 'sludgePercentage',
+  sumOfOrderQuantity='quantityReportDetails.sumOfOrderQuantity',
+  measuredDeliveredQuantity='quantityReportDetails.measuredDeliveredQuantity',
+  differenceInSludgeQuantity='quantityReportDetails.differenceInSludgeQuantity',
   logBookRobQtyBeforeDelivery = 'quantityReportDetails.logBookRobQtyBeforeDelivery',
   measuredRobQtyBeforeDelivery = 'quantityReportDetails.measuredRobQtyBeforeDelivery',
   differenceInRobQuantity = 'quantityReportDetails.differenceInRobQuantity',
@@ -34,6 +44,8 @@ export enum ControlTowerResidueSludgeDifferenceListExportColumns {
 export enum ControlTowerResidueSludgeDifferenceListColumnsLabels {
   actions = 'Actions',
   portCall = 'Port Call',
+  order='PO Number',
+  buyer='Buyer',
   port = 'Port',
   vessel = 'Vessel',
   eta = 'ETA',
@@ -41,6 +53,9 @@ export enum ControlTowerResidueSludgeDifferenceListColumnsLabels {
   emailToVessel = 'Email To Vessel',
   vesselToWatch = 'Vessel To Watch',
   sludgePercentage = 'Sludge %',
+  sumOfOrderQuantity='Ordered Qty',
+  measuredDeliveredQuantity='Discharged Qty',
+  differenceInSludgeQuantity='Difference',
   logBookRobQtyBeforeDelivery = 'Log Book ROB',
   measuredRobQtyBeforeDelivery = 'Measured ROB',
   differenceInRobQuantity = 'Difference in Qty',
@@ -58,6 +73,10 @@ export const ControlTowerResidueSludgeDifferenceListColumnServerKeys: Record<
   [ControlTowerResidueSludgeDifferenceListColumns.actions]: undefined,
   [ControlTowerResidueSludgeDifferenceListColumns.portCall]:
     'PortCall_PortCallId',
+  [ControlTowerResidueSludgeDifferenceListColumns.order]:
+    'Order_Id',
+    [ControlTowerResidueSludgeDifferenceListColumns.buyer]:
+    'Buyer_Name',
   [ControlTowerResidueSludgeDifferenceListColumns.port]: 'Port',
   [ControlTowerResidueSludgeDifferenceListColumns.vessel]: 'Vessel',
   [ControlTowerResidueSludgeDifferenceListColumns.eta]: 'Eta',
@@ -69,6 +88,12 @@ export const ControlTowerResidueSludgeDifferenceListColumnServerKeys: Record<
     'SludgeProgress_DisplayName',
   [ControlTowerResidueSludgeDifferenceListColumns.sludgePercentage]:
     'SludgePercentage',
+  [ControlTowerResidueSludgeDifferenceListColumns.sumOfOrderQuantity]:
+   'QuantityReportDetails_SumOfOrderQuantity',
+  [ControlTowerResidueSludgeDifferenceListColumns.measuredDeliveredQuantity]:
+    'QuantityReportDetails_MeasuredDeliveredQuantity',
+  [ControlTowerResidueSludgeDifferenceListColumns.differenceInSludgeQuantity]:
+    'QuantityReportDetails_DifferenceInSludgeQuantity',
   [ControlTowerResidueSludgeDifferenceListColumns.logBookRobQtyBeforeDelivery]:
     'QuantityReportDetails_LogBookRobQtyBeforeDelivery',
   [ControlTowerResidueSludgeDifferenceListColumns.measuredRobQtyBeforeDelivery]:

@@ -60,6 +60,7 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
     }
 
     this.isEditing = false;
+    this.filterItems = [...this.filterItems, ...this.systemFilters];
     this.dialogRef.close(this.filterItems);
   }
 
@@ -92,6 +93,10 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
 
   enableEditing(): void {
     this.isEditing = true;
+  }
+
+  toggleEditing(): void {
+    this.isEditing = !this.isEditing;
   }
 
   cancelEditing(): void {
@@ -138,6 +143,18 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
     this.changeDetector.markForCheck();
   }
 
+  setActive(filter) : void {
+    if(!this.isEditing) {
+      this.systemFilters.forEach(element => {
+        element.isActive = false; 
+      });
+      this.filterItems.forEach(element => {
+        element.isActive = false; 
+      });
+      filter.isActive = true;
+    }
+  }
+
   ngOnInit(): void {
     if (this.data) {
       this.filterItems = _.cloneDeep(this.data.filterPresets); // .sort((x, y) => (x.isPinned !== y.isPinned) ? 0 : x ? -1 : 1);
@@ -145,9 +162,8 @@ export class AvailableFiltersComponent implements OnInit, OnDestroy {
       if (!this.systemFilters) {
         this.systemFilters = [];
       }
-      this.systemFilters.unshift({
-        label: 'Default'
-      });
+      this.filterItems[0].label = this.filterItems[0].name;
+      this.systemFilters.unshift(this.filterItems[0]);
       this.hasAvailableFilterItems =
         !this.filterItems.some(item => !item.isDefault && !item.isClear) &&
         !this.systemFilters;

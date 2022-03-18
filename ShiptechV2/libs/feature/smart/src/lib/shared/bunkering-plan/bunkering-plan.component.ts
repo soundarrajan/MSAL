@@ -28,6 +28,7 @@ export class BunkeringPlanComponent implements OnInit {
   public rowCount: Number;
   public gridSaved: boolean;
   public gridChanged: boolean = false;
+  public sodCommentsUpdated: boolean = false;
   public rowData ;
   public bPlanData: any;
   public selectedPort: any = [];
@@ -41,6 +42,7 @@ export class BunkeringPlanComponent implements OnInit {
   @Output() voyage_detail = new EventEmitter();
   @Output() loadBplan = new EventEmitter();
   @Output() isCellClicked?:EventEmitter<any> = new EventEmitter();
+  @Output() bunkerPlanSaved = new EventEmitter();
   @Input("isExpanded") isExpanded: boolean;
   @Input('planId') 
   public set planId(v : string) {
@@ -426,7 +428,8 @@ export class BunkeringPlanComponent implements OnInit {
   ];
 
   public loadBunkeringPlanDetails(){
-    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
+    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
+    let oldRowData = this.rowData;
     this.rowData = [];
     
     if(this.latestPlanId){
@@ -434,6 +437,14 @@ export class BunkeringPlanComponent implements OnInit {
       this.bplanService.getBunkeringPlanDetails(req).subscribe((data)=> {
         console.log('bunker plan details',data);
         this.rowData = this.latestPlanId == null ?[]:(data.payload && data.payload.length)? data.payload: [];
+        if (this.rowData?.length > 0 && oldRowData?.length > 0) {
+          this.rowData.forEach(row => {
+            let ordRow = oldRowData.find(ord => ord.detail_no == row.detail_no);
+            if (ordRow && row.operator_ack != ordRow.operator_ack) {
+              row.operator_ack = ordRow.operator_ack;
+            }
+          });
+        }
         if(this.gridOptions?.api) {
           this.gridOptions.api.setRowData(this.rowData);
         }
@@ -604,6 +615,7 @@ export class BunkeringPlanComponent implements OnInit {
           this.store.dispatch(new GeneratePlanProgressAction(data.payload.gen_in_progress))
           this.latestPlanId = storeVesselData.planId;
           this.loadBunkeringPlanDetails();
+          this.bunkerPlanSaved.emit();
         }
       })
     }
@@ -848,6 +860,9 @@ export class BunkeringPlanComponent implements OnInit {
     // this.gridOptions.api.applyTransaction({
     //   update: [data]
     // })
+  }
+  sodCommentsUpdatedEvent() {
+    this.sodCommentsUpdated = true;
   }
 
   calculateSOA(column){

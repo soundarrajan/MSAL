@@ -163,7 +163,7 @@ export class FilterPreferencesComponent implements OnDestroy {
     // NOTE: We are telling the presets directive the active preset was changed
     // NOTE: The presets directive will tell the service to update the presets store and set the selected preset to the grid
     this.activePresetChange$.next(this.filterPresets);
-
+    
     // reset SystemFilters
     if (this.currentSystemFilters) {
       this.currentSystemFilters.map(o => (o.isActive = false));
@@ -242,7 +242,7 @@ export class FilterPreferencesComponent implements OnDestroy {
 
     // NOTE: Updating the hasActiveFilterPresets variable so we can decide if we display the chip for available filters pop-up
     this.hasActiveFilterPresets = this.filterPresets.some(
-      item => !item.isDefault && !item.isClear
+      item => !item.isDefault && !item.isClear && !item.countId
     );
 
     // NOTE: After creating a new filter preset we are notifying the directive that we want to save the presets
@@ -270,7 +270,7 @@ export class FilterPreferencesComponent implements OnDestroy {
   public openAvailablePresetsDialog(): void {
     const dialog = this.matDialog.open(AvailableFiltersComponent, {
       maxHeight: '400px',
-      width: '700px',
+      width: '610px',
       data: {
         filterPresets: this.filterPresets,
         systemFilters: this.currentSystemFilters,
@@ -282,19 +282,25 @@ export class FilterPreferencesComponent implements OnDestroy {
     // NOTE: Also updating the hasActiveFilterPresets variable so we can decide if we display the chip for available filters pop-up
     dialog
       .afterClosed()
-      .pipe(
+      .pipe( 
         filter(updatedPresetsList => !!updatedPresetsList),
         distinctUntilChanged(),
         tap(updatedPresetsList => {
-          this.filterPresets = updatedPresetsList;
           this.hasActiveFilterPresets = updatedPresetsList.some(
-            item => !item.isDefault && !item.isClear
+            item => !item.isDefault && !item.isClear && !item.countId
           );
-          let activeFilter = this.filterPresets.filter(item => item.isActive);
-          if (activeFilter.length) {
-            this.applyFilter(activeFilter[0].id);
+            let activeFilter = updatedPresetsList.filter(item => item.isActive);
+            if (activeFilter.length) {
+            if (activeFilter[0].countId) {
+              this.currentSystemFilters = updatedPresetsList.filter(item => item.countId);
+              this.systemFilterUpdate(activeFilter[0])
+            } else {
+              this.filterPresets = updatedPresetsList.filter(item => !item.countId && !item.isDefault);
+              this.filterPresets = [... new Set(this.filterPresets)];
+              this.applyFilter(activeFilter[0].id);
+              this.filterPresetsUpdate$.next(this.filterPresets);
+            }
           }
-          this.filterPresetsUpdate$.next(this.filterPresets);
 
           this.changeDetector.markForCheck();
         }),

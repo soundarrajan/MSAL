@@ -643,6 +643,9 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     if (params.value != value || this.params?.data[commentType] != this.usercomments) {
       this.showInfoIcon = true;
       this.params.value = value;
+      if(this.params.data[commentType] != this.usercomments) {
+        this.params.context.componentParent.sodCommentsUpdatedEvent();
+      }
       this.params.data[commentType] = this.usercomments;
     }
     this.menuClick = false;

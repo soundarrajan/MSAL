@@ -14,6 +14,31 @@ $red: red;
   border: 1px solid #364150;
 }
 
+.mat-dialog-content:not(.isEditing) {
+  .chip-look-alike {
+    cursor: move;
+    input {
+      cursor: move;
+    }
+    &.active-selected {
+      color: white !important;
+      background-color: #364150 !important;
+
+      .chip-circle {
+        border-left: 1px solid #fff;
+
+        i.fa-circle {
+          color: white !important;
+        }
+
+        i:not(.fa-circle) {
+          filter: invert(1) brightness(2);
+        }
+      }
+    }
+  }
+}
+
 .chip-icon {
   // margin-top: 4px;
   margin-left: 15px;
@@ -82,6 +107,7 @@ $red: red;
   border-left: 1px solid;
   border-radius: 0;
   padding: 0 15px;
+  font-size: 7px;
 }
 
 .delete-chip {
@@ -106,6 +132,7 @@ mat-dialog-content.isEditing {
 mat-dialog-content .system-filter {
   .chip-label {
     font-size: 14px !important;
+    padding: 0 5px;
   }
 }
 mat-dialog-content.isEditing .system-filter {

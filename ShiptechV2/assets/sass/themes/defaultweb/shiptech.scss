@@ -53,10 +53,10 @@ body {
     overflow: hidden;
     layout-main .layout-footer,
     .mainFooterWhiteSpace {
-      // display: none;
+      display: none;
     }
     ag-grid-angular {
-      height: calc(100vh - 245px) !important;
+      height: calc(100vh - 235px) !important;
     }
   }
 }
@@ -1930,7 +1930,7 @@ button:focus {
   }
 }
 
-.comments {
+.shiptech-comments {
   position: absolute;
   right: 15px;
   bottom: 2px;
@@ -5281,6 +5281,11 @@ tr.title {
     }
   }
 }
+
+.ag-cell .vessel-to-watch.yes {
+  color:#EB5757;
+}
+
 .more-dots {
   width: 20px;
   height: 5px;
@@ -7004,6 +7009,8 @@ tr.title {
             input,
             textarea {
               color: #ffffff;
+              font-size: 16px;
+              font-family: 'Roboto';              
               &::placeholder {
                 color: #527292;
               }
@@ -7776,6 +7783,8 @@ tr.title {
             input,
             textarea {
               color: #364150;
+              font-size: 16px;
+              font-family: 'Roboto';               
               &::placeholder {
                 color: #527292;
               }
@@ -8617,6 +8626,18 @@ tr.title {
         overflow: hidden;
         text-overflow: ellipsis;
       }
+      .w-18p {
+        width: 18%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .w-30 {
+        width: 30%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       .w-12 {
         width: 12%;
       }
@@ -8901,6 +8922,12 @@ tr.title {
       }
       .w-15 {
         width: 15%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .w-18p {
+        width: 18%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
