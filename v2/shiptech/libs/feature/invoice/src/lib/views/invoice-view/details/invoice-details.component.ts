@@ -535,7 +535,9 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         this.formValues.paymentDetails = <IInvoiceDetailsItemPaymentDetails>{};
       }
       if (!this.formValues.counterpartyDetails.counterpartyBankAccount) {
-          this.formValues.counterpartyDetails.counterpartyBankAccount = <IInvoiceDetailsItemBaseInfo>null;
+        this.formValues.counterpartyDetails.counterpartyBankAccount = <
+          IInvoiceDetailsItemBaseInfo
+        >null;
       }
       this.setOrderDetailsLables(this.formValues.orderDetails);
       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
@@ -2235,9 +2237,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           ' ' +
           currencyCode
         : emptyValue;
-      this.chipData[5].Data = (ivs?.provisionalInvoiceNo && ivs?.provisionalInvoiceNo !== null)
-        ? ivs?.provisionalInvoiceNo?.toString()
-        : '';
+      this.chipData[5].Data =
+        ivs?.provisionalInvoiceNo && ivs?.provisionalInvoiceNo !== null
+          ? ivs?.provisionalInvoiceNo?.toString()
+          : '';
       this.chipData[6].Data = !!ivs?.provisionalInvoiceAmount
         ? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()) +
           ' ' +
@@ -2481,9 +2484,12 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (this.formSubmitted) {
       return;
     }
-    if(!this.formValues.counterpartyDetails.counterpartyBankAccount && this.tenantConfiguration?.invoiceConfiguration
-      ?.fieldVisibility?.isBankAccountNumberMandatory) {
-      this.toastr.error("Bank Account Number is Mandatory");
+    if (
+      !this.formValues.counterpartyDetails.counterpartyBankAccount &&
+      this.tenantConfiguration?.invoiceConfiguration?.fieldVisibility
+        ?.isBankAccountNumberMandatory
+    ) {
+      this.toastr.error('Bank Account Number is Mandatory');
       return;
     }
     this.spinner.show();
@@ -2769,14 +2775,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.showMoreButtons = !this.showMoreButtons;
   }
 
-  /**
-   * truncate to decimal place.
-   */
-  truncateToDecimals(num, dec) {
-    const calcDec = Math.pow(10, dec);
-    return Math.trunc(num * calcDec) / calcDec;
-  }
-
   amountFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
       return null;
@@ -2789,10 +2787,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       return null;
     }
     if (plainNumber) {
-      if (amountPrecision) {
-        plainNumber = this.truncateToDecimals(plainNumber, amountPrecision);
-      }
-      console.log(plainNumber);
       if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {

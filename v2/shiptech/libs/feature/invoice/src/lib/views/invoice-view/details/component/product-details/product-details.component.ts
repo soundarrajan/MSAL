@@ -701,14 +701,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     }
   }
 
-  /**
-   * truncate to decimal place.
-   */
-  truncateToDecimals(num, dec) {
-    const calcDec = Math.pow(10, dec);
-    return Math.trunc(num * calcDec) / calcDec;
-  }
-
   amountFormatValue(value) {
     if (typeof value == 'undefined' || !value) {
       return null;
@@ -721,10 +713,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
       return null;
     }
     if (plainNumber) {
-      if (amountPrecision) {
-        plainNumber = this.truncateToDecimals(plainNumber, amountPrecision);
-      }
-      console.log(plainNumber);
       if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {
