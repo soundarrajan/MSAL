@@ -15,9 +15,10 @@ import { AppConfig } from '@shiptech/core/config/app-config';
 import { KeyValue } from '@angular/common';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import _ from 'lodash';
-import { MyMonitoringService } from '../../../../../service/logging.service';
 import { ActivatedRoute } from '@angular/router';
 import { SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
+
 @Component({
   selector: 'app-spotnego-confirmorder',
   templateUrl: './spotnego-confirmorder.component.html',
