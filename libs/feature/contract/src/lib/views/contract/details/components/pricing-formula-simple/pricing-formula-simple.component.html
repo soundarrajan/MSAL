@@ -112,9 +112,11 @@
     <mat-form-field class="without-search" appearance="legacy">
       <mat-label>Amount</mat-label>
       <input
+        #simpleFormulaAmount
         required
         matInput
         [(ngModel)]="formValues.simpleFormula.amount"
+        (blur)="formValues.simpleFormula.amount = simpleFormulaAmount.value;"
         placeholder="Amount"
         autocomplete="off"
         amountFormat

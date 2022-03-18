@@ -1,13 +1,12 @@
 <div class="header">
   <div class="title">Filters and Preferences</div>
   <div class="header-btn">
-    <button class="blue-button" (click)="enableEditing()">Edit</button
+    <button class="blue-button" (click)="toggleEditing()">{{ isEditing ? "Done" : "Edit" }}</button
     ><button
       class="blue-button"
-      [disabled]="!isEditing"
       (click)="updateAllFilters()"
     >
-      Save
+      Apply
     </button>
     <div class="mat-divider"></div>
 
@@ -18,27 +17,21 @@
   <div id="available-filter-content">
     <mat-chip-list>
       <!-- start system filters -->
-      <div *ngFor="let filter of systemFilters" class="system-filter">
+      <div *ngFor="let filter of systemFilters" class="system-filter" >
         <!-- NOTE: Add track by -->
         <div
-          *ngIf="!filter.isDefault && !filter.isClear"
-          [matTooltip]="filter.label"
+          [matTooltip]="filter.label"      
           [ngClass]="[
-            filter.isActive && !isEditing
+            (filter.isActive && !isEditing
               ? 'chip-look-alike text-center'
-              : ' chip-look-alike inactive-chip text-center'
+              : ' chip-look-alike inactive-chip text-center'),
+            filter.isActive ? 'active-selected' : ''              
           ]"
+
         >
-          <div class="truncate-f85 text-center chip-label">
+          <div class="truncate-f85 text-center chip-label"
+          (click)="setActive(filter)">
             {{ filter.label }}
-            <!-- <input
-              matInput
-              required
-              type="text"
-              [(ngModel)]="filter.label"
-              [readonly]="true"
-              placeholder="{{ filter.label }}"
-            /> -->
           </div>
 
           <div matSuffix class="chip-circle chip-icon">
@@ -54,12 +47,13 @@
           *ngIf="!filter.isDefault && !filter.isClear"
           [matTooltip]="filter.name"
           [ngClass]="[
-            filter.isActive && !isEditing
+            (filter.isActive && !isEditing
               ? 'chip-look-alike text-center'
-              : ' chip-look-alike inactive-chip text-center'
+              : ' chip-look-alike inactive-chip text-center'),
+              filter.isActive ? 'active-selected' : ''
           ]"
         >
-          <div class="truncate-f85 text-center">
+          <div class="truncate-f85 text-center" (click)="setActive(filter)">
             <input
               matInput
               required

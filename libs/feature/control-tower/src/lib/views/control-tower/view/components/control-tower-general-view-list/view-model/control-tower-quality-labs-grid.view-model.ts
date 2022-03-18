@@ -37,6 +37,7 @@ import {
 import { AGGridCellRendererStatusComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 import { ToastrService } from 'ngx-toastr';
 import _ from 'lodash';
+import { BooleanFilterParams } from '@shiptech/core/ui/components/ag-grid/ag-grid-utils';
 
 function model(
   prop: keyof IControlTowerQualityLabsItemDto
@@ -222,6 +223,17 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     width: 200
   };
 
+  specGroupName: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
+    headerName: ControlTowerQualityLabsListColumnsLabels.specGroupName,
+    headerTooltip: ControlTowerQualityLabsListColumnsLabels.specGroupName,
+    colId: ControlTowerQualityLabsListColumns.specGroupName,
+    field: model('specGroupName'),
+    dtoForExport: ControlTowerQualityLabsListExportColumns.specGroupName,
+    tooltip: params =>
+      params.value ? this.format.htmlDecode(params.value) : '',
+    width: 200
+  };
+
   labStatusCol: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.labStatus,
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.labStatus,
@@ -235,15 +247,58 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     width: 200
   };
 
-  claimRaisedCol: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
+  densityDifference: ITypedColDef<IControlTowerQualityLabsItemDto, boolean> = {
+    headerName: ControlTowerQualityLabsListColumnsLabels.densityDifference,
+    headerTooltip: ControlTowerQualityLabsListColumnsLabels.densityDifference,
+    colId: ControlTowerQualityLabsListColumns.densityDifference,
+    field: model('densityDifference'),
+    dtoForExport: ControlTowerQualityLabsListExportColumns.densityDifference,
+    cellRenderer: params => {
+      if (params.data) {
+        const a = document.createElement('span');
+        a.innerHTML = params.value ? 'Yes' : 'No';
+        return a;
+      }
+      return null;
+    },
+    tooltip: params => {
+      if (params.data) {
+        return params.value ? 'Yes' : 'No';
+      }
+    },
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }
+  };
+
+  claimRaisedCol: ITypedColDef<IControlTowerQualityLabsItemDto, boolean> = {
     headerName: ControlTowerQualityLabsListColumnsLabels.claimRaised,
     headerTooltip: ControlTowerQualityLabsListColumnsLabels.claimRaised,
     colId: ControlTowerQualityLabsListColumns.claimRaised,
     field: model('claimsRaised'),
-    valueFormatter: params => (params.value ? 'Yes' : 'No'),
     dtoForExport: ControlTowerQualityLabsListExportColumns.claimRaised,
-    tooltip: params => (params.value ? 'Yes' : 'No'),
-    width: 150
+    cellRenderer: params => {
+      if (params.data) {
+        const a = document.createElement('span');
+        a.innerHTML = params.value ? 'Yes' : 'No';
+        return a;
+      }
+      return null;
+    },
+    tooltip: params => {
+      if (params.data) {
+        return params.value ? 'Yes' : 'No';
+      }
+    },
+    width: 150,
+    filter: 'agNumberColumnFilter',
+    filterParams: {
+      ...this.defaultColFilterParams,
+      ...BooleanFilterParams
+    }
   };
 
   createdDateCol: ITypedColDef<IControlTowerQualityLabsItemDto, string> = {
@@ -339,7 +394,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     private toastr: ToastrService
   ) {
     super(
-      'control-tower-quality-labs-list-grid-8',
+      'control-tower-quality-labs-list-grid-10',
       columnPreferences,
       changeDetector,
       loggerFactory.createLogger(ControlTowerQualityLabsListGridViewModel.name)
@@ -372,7 +427,9 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
       this.portCol,
       this.etaCol,
       this.productCol,
+      this.specGroupName,
       this.labStatusCol,
+      this.densityDifference,
       this.claimRaisedCol,
       this.createdByCol,
       this.createdDateCol,
@@ -397,28 +454,15 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   }
 
   public filterGridNew(statusName: string): void {
-    if (this.toggleNewFilter) {
-      this.filterByStatus(statusName);
-    } else {
-      this.filterByStatus('');
-    }
+    this.filterByStatus(statusName);
   }
 
   public filterGridMAS(statusName: string): void {
-    if (this.toggleMASFilter) {
-      //MarkedAsSeen hard coded to avoid other screen MAS filter impact
-      this.filterByStatus('MarkedAsSeen');
-    } else {
-      this.filterByStatus('');
-    }
+    this.filterByStatus('MarkedAsSeen');
   }
 
   public filterGridResolved(statusName: string): void {
-    if (this.toggleResolvedFilter) {
-      this.filterByStatus(statusName);
-    } else {
-      this.filterByStatus('');
-    }
+    this.filterByStatus(statusName);
   }
 
   public filterByStatus(statusName: string): void {
@@ -473,54 +517,75 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
     // claimsRaised column filter value format
     if (Object.keys(filterModel).indexOf('claimsRaised') !== -1) {
       let claimRaisedFilterVal = filterModel.claimsRaised?.filter;
-      if (!claimRaisedFilterVal || !claimRaisedFilterVal.trim()) {
-        return;
-      }
-      claimRaisedFilterVal = claimRaisedFilterVal.trim().toLowerCase();
-      let filterClaimCondition = '';
-      if (
-        filterModel.claimsRaised?.type == 'equals' ||
-        filterModel.claimsRaised?.type == 'notEqual'
-      ) {
-        filterClaimCondition =
-          claimRaisedFilterVal == 'no'
-            ? '0'
-            : claimRaisedFilterVal == 'yes'
-            ? '1'
-            : '2';
-      } else if (filterModel.claimsRaised?.type == 'startsWith') {
-        filterClaimCondition = 'no'.startsWith(claimRaisedFilterVal)
-          ? '0'
-          : 'yes'.startsWith(claimRaisedFilterVal)
-          ? '1'
-          : '2';
-      } else if (filterModel.claimsRaised?.type == 'endsWith') {
-        filterClaimCondition = 'no'.endsWith(claimRaisedFilterVal)
-          ? '0'
-          : 'yes'.endsWith(claimRaisedFilterVal)
-          ? '1'
-          : '2';
-      } else {
-        filterClaimCondition =
-          claimRaisedFilterVal == 'no' ||
-          ['n', 'o'].indexOf(claimRaisedFilterVal) != -1
-            ? '0'
-            : claimRaisedFilterVal == 'yes' ||
-              ['y', 'e', 's', 'ye', 'es'].indexOf(claimRaisedFilterVal) != -1
-            ? '1'
-            : '2';
-      }
-      var updatedFilter = {
+      let filterCondition = this.evaluateYesNoToBoolFilter(params, filterModel, claimRaisedFilterVal);
+      
+      let updatedFilter = {
         ...filterModel,
         claimsRaised: {
           ...filterModel.claimsRaised,
-          filter: filterClaimCondition
+          filter: filterCondition
+        }
+      };
+      params['request']['filterModel'] = updatedFilter;
+    }
+    filterModel = params?.request?.filterModel;
+    // densityDifference column filter value format
+    if (Object.keys(filterModel).indexOf('densityDifference') !== -1) {
+      let densityDifferenceFilterVal = filterModel.densityDifference?.filter;
+      let filterCondition = this.evaluateYesNoToBoolFilter(params, filterModel, densityDifferenceFilterVal);
+      
+      let updatedFilter = {
+        ...filterModel,
+        densityDifference: {
+          ...filterModel.densityDifference,
+          filter: filterCondition
         }
       };
       params['request']['filterModel'] = updatedFilter;
     }
     console.log(params);
   }
+
+  public evaluateYesNoToBoolFilter(params, filterModel, filterVal) {
+    if (!filterVal || !filterVal.trim()) {
+      return;
+    }
+    filterVal = filterVal.trim().toLowerCase();
+    let filterCondition = '';
+    if (
+      filterModel.claimsRaised?.type == 'equals' ||
+      filterModel.claimsRaised?.type == 'notEqual'
+    ) {
+      filterCondition =
+        filterVal == 'no'
+          ? '0'
+          : filterVal == 'yes'
+          ? '1'
+          : '2';
+    } else if (filterModel.claimsRaised?.type == 'startsWith') {
+      filterCondition = 'no'.startsWith(filterVal)
+        ? '0'
+        : 'yes'.startsWith(filterVal)
+        ? '1'
+        : '2';
+    } else if (filterModel.claimsRaised?.type == 'endsWith') {
+      filterCondition = 'no'.endsWith(filterVal)
+        ? '0'
+        : 'yes'.endsWith(filterVal)
+        ? '1'
+        : '2';
+    } else {
+      filterCondition =
+        filterVal == 'no' ||
+        ['n', 'o'].indexOf(filterVal) != -1
+          ? '0'
+          : filterVal == 'yes' ||
+            ['y', 'e', 's', 'ye', 'es'].indexOf(filterVal) != -1
+          ? '1'
+          : '2';
+    }
+    return filterCondition;
+}
 
   public getFiltersCount() {
     if (this.groupedCounts) {

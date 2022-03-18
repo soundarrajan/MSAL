@@ -36,7 +36,7 @@ $red: red;
     display: block;
     width: 1px;
     height: 27px;
-    background-color: #364150;
+    background-color: #37414f;
     position: absolute;
     left: -10px;
     top: -3px;
@@ -58,7 +58,7 @@ $red: red;
 }
 
 .active-chip {
-  background-color: #364150 !important;
+  background-color: #37414f !important;
   color: white !important;
   .chip-circle {
     // border: 1px solid $darker;
@@ -67,7 +67,7 @@ $red: red;
       background-color: #fff;
     }
     i {
-      color: #364150 !important;
+      color: #37414f !important;
       font-size: 0.7rem;
     }
   }
@@ -75,16 +75,16 @@ $red: red;
 
 .inactive-chip {
   background-color: white !important;
-  color: #364150 !important;
-  border: 1px solid #364150;
+  color: #37414f !important;
+  border: 1px solid #37414f;
   width: auto;
 
   .chip-circle {
-    // border: 1px solid #364150;
+    // border: 1px solid #37414F;
     // background-color: white;
 
     i {
-      color: #364150 !important;
+      color: #37414f !important;
       font-size: 0.7rem;
     }
   }
@@ -92,7 +92,9 @@ $red: red;
 
 .mat-chip.mat-standard-chip {
   color: rgba(0, 0, 0, 0.87);
-  min-height: 28px;
+  min-height: 30px;
+  line-height: initial;
+  font-size: 14px;
 }
 
 .mat-chip:focus {
@@ -120,9 +122,11 @@ $red: red;
     }
     .pin {
       top: 6px !important;
-      color: #364150;
+      color: #37414f;
       position: absolute;
-      margin-left: 1px;
+      margin-left: 3px;
+      font-size: 7px;
+      text-align: center;
     }
     &.active-chip {
       width: auto;
@@ -133,12 +137,12 @@ $red: red;
       }
       .count-circle {
         background-color: #fff;
-        color: #364150;
+        color: #37414f;
       }
     }
   }
   .count-circle {
-    background-color: #364150;
+    background-color: #37414f;
     width: 20px;
     height: 20px;
     border-radius: 100%;
@@ -150,7 +154,7 @@ $red: red;
 }
 .icon-chip {
   width: 55px;
-  background-color: #364150 !important;
+  background-color: #37414f !important;
   color: $white !important;
 }
 
@@ -219,10 +223,6 @@ $red: red;
   }
 }
 
-.more-filter-chipV2 {
-  margin-left: 15px;
-}
-
 .mat-dialog-title {
   border-bottom: 1px solid #ddd;
 }
@@ -235,4 +235,23 @@ $red: red;
   margin-left: -1px;
   margin-top: -3px;
   display: block;
+}
+
+.mat-dialog-actions {
+  padding-bottom: 25px !important;
+}
+
+.blue-button {
+  background-color: #1cabe0 !important;
+  border: none;
+  border-radius: 3px !important;
+  color: #fff !important;
+  padding: 0 8px !important;
+  text-align: center;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  white-space: nowrap !important;
+  font-weight: 400;
+  font-size: 14px;
+  margin: 0 5px !important;
 }
