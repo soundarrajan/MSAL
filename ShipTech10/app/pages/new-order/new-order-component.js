@@ -3598,10 +3598,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 			if (product.contractProductId) { 
 				product.referencePrice = parseInt(product.originalPrice);
 			}
-            if (product.originalPrice === 0) {
-                product.originalPrice = '0';
-            }
-            if(product.originalPrice) {
+            if(product.originalPrice || product.originalPrice === 0) {
                 product.price = $filter("number")(convertDecimalSeparatorStringToNumber(product.originalPrice), product.pricePrecision);
             } else {
                 product.price = null;
