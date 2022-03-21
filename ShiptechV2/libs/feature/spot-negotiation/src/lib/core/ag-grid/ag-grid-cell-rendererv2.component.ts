@@ -25,7 +25,9 @@ import _, { cloneDeep } from 'lodash';
 import {
   EditLocationRow,
   SetLocationsRows,
-  EditCounterpartyList
+  EditCounterpartyList,
+  EditLocations,
+  UpdateSpecificRequests
 } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
@@ -34,6 +36,7 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AdditionalCostViewModel } from '../models/additional-costs-model';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -594,7 +597,7 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
         (click)="selectCounterParties(params)"
         class="light-checkbox small"
         [ngClass]="
-          params.data.preferredProducts?.includes(params.productId) ? '' : ''
+          params.data.preferredProducts?.includes(params.productId) ? 'darkBorder' : ''
         "
       ></mat-checkbox>
     </div>
@@ -997,6 +1000,38 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     event.target.classList.add('selectedIcon');
     this.menuTriggerHover.openMenu();
   }
+
+  updateSpecificRequest(requestLocationId, requestProductId, selectAll) {
+    let currentRequestSmallInfo = _.cloneDeep(
+      this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+        return state['spotNegotiation'].currentRequestSmallInfo;
+      })
+    );
+    let findRequestLocationIndex = _.findIndex(
+      currentRequestSmallInfo.requestLocations,
+      function(object: any) {
+        return object.id == requestLocationId;
+      }
+    );
+    if (findRequestLocationIndex != -1) {
+      let requestLocation =
+        currentRequestSmallInfo.requestLocations[findRequestLocationIndex];
+      let findProductIndex = _.findIndex(
+        requestLocation?.requestProducts,
+        function(object: any) {
+          return object.id == requestProductId;
+        }
+      );
+      if (findProductIndex != -1) {
+        let requestProduct = requestLocation.requestProducts[findProductIndex];
+        requestProduct.isSelected = selectAll;
+        this.store.dispatch(
+          new UpdateSpecificRequests([currentRequestSmallInfo])
+        );
+      }
+    }
+  }
+
   selectCounterParties(params) {
     let updatedRow = { ...params.data };
     // if(updatedRow.requestOffers?.length >0 && updatedRow.requestOffers[0].price != null){
@@ -1005,8 +1040,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     //   }
     // }
     updatedRow = this.formatRowData(updatedRow, params);
+
     // Update the store
     this.store.dispatch(new EditLocationRow(updatedRow));
+
     params.node.setData(updatedRow);
   }
 
