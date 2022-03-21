@@ -63,6 +63,11 @@ export class EmailPreviewPopupComponent implements OnInit {
   ccList2: any;
   toList2: any;
   locationRowsAcrossRequest: any;
+  prod1: boolean;
+  prod2: boolean;
+  prod3: boolean;
+  prod4: boolean;
+  prod5: boolean;
   constructor(
     public dialogRef: MatDialogRef<EmailPreviewPopupComponent>,
     private store: Store,
@@ -77,6 +82,31 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.SelectedSellerWithProds = data;
     this.selected = 'MultipleRfqNewRFQEmailTemplate';
     this.readonly = this.SelectedSellerWithProds.ReadOnly;
+
+     this.SelectedSellerWithProds.some((prod)=>{
+      this.prod1 = prod.checkProd1? prod.checkProd1: false;
+      this.prod2 = prod.checkProd2? prod.checkProd2: false;
+      this.prod3 = prod.checkProd3? prod.checkProd3: false;
+      this.prod4 = prod.checkProd4? prod.checkProd4: false;
+      this.prod5 = prod.checkProd5? prod.checkProd5: false;
+
+      if( this.prod1 == true) {
+        return(this.prod1);
+      }
+      if( this.prod2 == true) {
+        return(this.prod2);
+      }
+      if( this.prod3 == true) {
+        return(this.prod3);
+      }
+      if( this.prod4 == true) {
+        return(this.prod4);
+      }
+      if( this.prod5 == true) {
+        return(this.prod5);
+      }
+    });
+
     //if(this.SelectedSellerWithProds.requestOffers?.length > 0){
     //if(this.SelectedSellerWithProds.requestOffers == undefined && this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length > 0){
     // this.items =  [
@@ -107,6 +137,11 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.requestOptions = spotNegotiation.requests;
       this.locationRowsAcrossRequest = spotNegotiation.locationsRows;
     });
+
+    if(this.prod1 ==false && this.prod2 ==false && this.prod3 ==false && this.prod4 ==false && this.prod5 ==false){
+      this.toaster.error('Please select products to preview email');
+      return;
+    }
     if (this.selected) {
       this.getPreviewTemplate();
       this.getDocumentsList();
@@ -271,7 +306,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   addTo(item, selectedFromLookup) {
-    this.to.push(item);    
+    this.to.push(item);
     if (this.previewTemplate == null) {
       this.previewTemplate = [];
     }
