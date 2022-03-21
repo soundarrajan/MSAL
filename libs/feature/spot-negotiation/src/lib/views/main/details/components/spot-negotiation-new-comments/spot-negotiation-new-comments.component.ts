@@ -117,25 +117,6 @@ export class SpotNegotiationNewCommentsComponent
   ngOnInit(): void {}
   ngAfterViewInit() {}
 
-  editNegotiationGeneralComment(): void {
-    this.editableGeneralComment = true;
-    this.moveCursorToEnd(this.generalCommentBox.nativeElement);
-  }
-
-  editPerformanceComment(): void {
-    this.editablePerformanceComment = true;
-    this.moveCursorToEnd(this.performanceCommentBox.nativeElement);
-  }
-
-  editSupplyComments(): void {
-    this.editableSupplyComment = true;
-    this.moveCursorToEnd(this.supplyCommentBox.nativeElement);
-  }
-
-  editvesselAndAgentCommentBox(): void {
-    this.editableVesselAndAgentComment = true;
-    this.moveCursorToEnd(this.vesselAndAgentCommentBox.nativeElement);
-  }
 
   moveCursorToEnd(element) {
     var len = element.value.length;
