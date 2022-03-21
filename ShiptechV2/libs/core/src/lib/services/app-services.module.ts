@@ -50,6 +50,10 @@ import {
   ExportApiService
 } from '@shiptech/core/ui/components/export/api/export-api.service';
 import { ExportApiServiceMock } from '@shiptech/core/ui/components/export/api/export-api.service.mock';
+import {
+  APP_INSIGHTS_SERVICE,
+  MyMonitoringService
+} from './app-insights/logging.service';
 
 @NgModule({
   imports: [],
@@ -57,7 +61,7 @@ import { ExportApiServiceMock } from '@shiptech/core/ui/components/export/api/ex
   exports: []
 })
 export class AppServicesModule {
-  static forRoot(): ModuleWithProviders <any> {
+  static forRoot(): ModuleWithProviders<any> {
     return {
       ngModule: AppServicesModule,
       providers: [
@@ -109,6 +113,12 @@ export class AppServicesModule {
         {
           provide: EXPORT_API_SERVICE,
           useClass: environment.production ? ExportApiService : ExportApiService
+        },
+        {
+          provide: APP_INSIGHTS_SERVICE,
+          useClass: environment.production
+            ? MyMonitoringService
+            : MyMonitoringService
         },
         // {
         //   provide: RouteReuseStrategy,
