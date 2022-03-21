@@ -13169,10 +13169,9 @@ tr.title {
       margin: 0px -14px;
       height: 35px;
       .proceed-btn {
-         left: 270px;
+         left: 205px;
         top: 10px;
-      margin-right: 3px;
-        cursor: pointer;
+         cursor: pointer;
         width: 90px;
         border-radius: 3px;
         background: #1d9fff !important;
@@ -14971,7 +14970,7 @@ mat-form-field {
     color: #333333;
   }
   .email-container {
-    overflow:hidden;
+    overflow: hidden;
     height: 80vh;
     top: 30px;
     border: 5px solid #e0e1e4;
