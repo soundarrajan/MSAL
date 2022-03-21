@@ -13162,8 +13162,9 @@ tr.title {
       margin: 0px -14px;
       height: 35px;
       .proceed-btn {
-        left: 205px;
+         left: 270px;
         top: 10px;
+      margin-right: 3px;
         cursor: pointer;
         width: 90px;
         border-radius: 3px;
@@ -14963,7 +14964,7 @@ mat-form-field {
     color: #333333;
   }
   .email-container {
-    overflow: auto;
+    overflow: hidden;
     height: 80vh;
     top: 30px;
     border: 5px solid #e0e1e4;
@@ -24140,5 +24141,6 @@ mat-form-field {
 
 
 .mat-menu-panel {
-  max-width: fit-content !important;
+  max-width: fit-content  !important;
+  border-radius: 5px;
 }
