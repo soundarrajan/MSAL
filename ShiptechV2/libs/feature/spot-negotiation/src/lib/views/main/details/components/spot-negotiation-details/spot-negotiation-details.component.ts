@@ -334,6 +334,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         customHeaderGroupComponent: ShiptechCustomHeaderGroup
       }
     };
+    this.spotNegotiationService.gridRefreshService$.subscribe(() => {
+      this.refreshGridDetails();
+    });
   }
 
   isselectedrowfun(row, isSelected) {
@@ -365,14 +368,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
 
   saveRowToCloud(updatedRow, product) {
-    this.spinner.show();
     const productDetails = this.spotNegotiationService.getRowProductDetails(
       updatedRow,
       product.id
     );
 
     if (productDetails.id == null || productDetails.price == null) {
-      this.spinner.hide();
       return;
     }
 
@@ -404,7 +405,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     };
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
-      this.spinner.hide();
       if (res?.message == 'Unauthorized') {
         return;
       }
@@ -424,8 +424,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           });
           return { ...e, requestLocations };
         });
-        // Update the store
-        this.store.dispatch(new EditLocationRow(updatedRow));
         this.store.dispatch(new UpdateRequest(reqs));
       } else {
         this.toastr.error(res.message);
@@ -435,9 +433,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
 
   refreshGridDetails(){
-    console.log("g refresh..");
     var params = { force: true };
-    this.gridOptions_counterparty.api?.refreshCells(params);
+    setTimeout(() => this.gridOptions_counterparty.api?.refreshCells(params),1000);
   }
   
   formatRowDataPrice(row, product, field, newValue) {
@@ -846,7 +843,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           false,
           null
         );
-
+        // Update the store
+        this.store.dispatch(new EditLocationRow(updatedRow));
         setTimeout(() => {
           let element = document.getElementById(elementidValue);
           if (element) {
