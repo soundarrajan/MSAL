@@ -1709,18 +1709,20 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   checkIfProductIsStemmedOrConfirmed(requestLocation, requestOffer) {
-    let findProductIndex = _.findIndex(
-      requestLocation.requestProducts,
-      function(object: any) {
-        return object.id == requestOffer.requestProductId;
+      if(requestLocation != null){
+      let findProductIndex = _.findIndex(
+        requestLocation.requestProducts,
+        function(object: any) {
+          return object.id == requestOffer.requestProductId;
+        }
+      );
+      if (findProductIndex != -1) {
+        let product = requestLocation.requestProducts[findProductIndex];
+        if (product.status === 'Stemmed' || product.status === 'Confirmed') {
+          return true;
+        }
+        return false;
       }
-    );
-    if (findProductIndex != -1) {
-      let product = requestLocation.requestProducts[findProductIndex];
-      if (product.status === 'Stemmed' || product.status === 'Confirmed') {
-        return true;
-      }
-      return false;
     }
   }
 
