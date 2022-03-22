@@ -372,6 +372,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
 
         this.toaster.success('RFQ(s) sent successfully.');
+        this.spotNegotiationService.callGridRefreshService();
         if (res['message'].length > 5) this.toaster.warning(res['message']);
       } else if (res instanceof Object) {
         this.toaster.warning(res.Message);
@@ -1054,6 +1055,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) skipped successfully.');
+          this.spotNegotiationService.callGridRefreshService();
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
           this.toaster.warning(res.Message);
@@ -1160,6 +1162,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       const response = this.spotNegotiationService.RevokeFQ(FinalAPIdata);
       response.subscribe((res: any) => {
         this.spinner.hide();
+        
         if (res?.message == 'Unauthorized') {
           return;
         }
@@ -1171,6 +1174,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) revoked successfully.');
+          this.spotNegotiationService.callGridRefreshService();
           if (res['message'].length > 3) this.toaster.warning(res['message']);
           // else
           //   this.toaster.success('RFQ(s) revoked successfully.');
@@ -1387,6 +1391,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
             ? 'Selected Offer Price has been enabled.'
             : "Selected Offers have been marked as 'No Quote' successfully.";
         this.toaster.success(successMessage);
+        this.spotNegotiationService.callGridRefreshService();
       } else {
         this.toaster.error('An error has occurred!');
         this.spinner.hide();

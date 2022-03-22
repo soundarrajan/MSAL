@@ -31,6 +31,7 @@ import { catchError, map } from 'rxjs/operators';
 export class SpotNegotiationService extends BaseStoreService
   implements OnDestroy {
   private futureSetTabIndex = new Subject<any>();
+  private gridRefreshService = new Subject<any>();
   QuoteByDate: any;
   counterpartyTotalCount: any;
   physicalSupplierTotalCount: any;
@@ -45,7 +46,12 @@ export class SpotNegotiationService extends BaseStoreService
   ) {
     super(store, loggerFactory.createLogger(SpotNegotiationService.name));
   }
-
+    // Observable string streams
+    gridRefreshService$ = this.gridRefreshService.asObservable();
+    // Grid Refrsh Service invoke commands
+    callGridRefreshService() {
+      this.gridRefreshService.next();
+    }
   /* Gets the list of Email Logs
    * @param payload =
    */
