@@ -390,7 +390,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         row[val] =
           status === 'Stemmed' || status === 'Confirmed'
             ? false
-            : row.isSelected;
+            : row.isSelected && row.preferredProducts ? row.preferredProducts.some(x=>x == currentLocProdCount[0].requestProducts[index].productId) :false;
         //row[val] = row.isSelected;
       }
     }
