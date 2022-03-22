@@ -233,10 +233,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 this.highlightedCells[params.data.requestLocationId]
             ) {
               return { background: '#C5DCCF' };
-            }else{
+            } else {
               return { background: 'transparent' };
             }
-            
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' },
@@ -279,7 +278,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         sortable: false,
         suppressMenu: true
       },
-      
+
       columnDefs: this.columnDef_aggrid,
       suppressCellSelection: true,
       suppressMovable: true,
@@ -307,7 +306,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         //this.gridOptions_counterparty.api.sizeColumnsToFit();
         //  this.gridOptions_counterparty.api.selectAll();
         // this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
-        this.rowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();        
+        this.rowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
         this.totalOfferHeaderWidth = params.columnApi
           .getColumn('totalOffer')
           .getActualWidth();
@@ -367,7 +366,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
   }
 
-  saveRowToCloud(updatedRow, product) {
+  saveRowToCloud(updatedRow, product, elementidValue) {
     const productDetails = this.spotNegotiationService.getRowProductDetails(
       updatedRow,
       product.id
@@ -410,7 +409,18 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
       if (res.status) {
         this.toastr.success('Price update successful.');
-        this.refreshGridDetails();
+
+        var params = { force: true };
+        setTimeout(() => {
+          this.gridOptions_counterparty.api?.refreshCells(params);
+          setTimeout(() => {
+            let element = document.getElementById(elementidValue);
+            if (element) {
+              element.focus();
+            }
+          });
+        }, 1000);
+        // this.refreshGridDetails();
         reqs = reqs.map(e => {
           let requestLocations = e.requestLocations.map(reqLoc => {
             let requestProducts = reqLoc.requestProducts.map(reqPro =>
@@ -432,11 +442,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
   }
 
-  refreshGridDetails(){
+  refreshGridDetails() {
     var params = { force: true };
-    setTimeout(() => this.gridOptions_counterparty.api?.refreshCells(params),1000);
+    setTimeout(
+      () => this.gridOptions_counterparty.api?.refreshCells(params),
+      1000
+    );
   }
-  
+
   formatRowDataPrice(row, product, field, newValue) {
     const productDetails = this.spotNegotiationService.getRowProductDetails(
       row,
@@ -483,7 +496,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       resizable: false,
       groupId: 'grid1',
       suppressMovable: true,
-     lockPosition: true,
+      lockPosition: true,
 
       children: [
         {
@@ -644,9 +657,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               this.highlightedCells[product.id] &&
               params.data.id === this.highlightedCells[product.id].rowId &&
               product.id === this.highlightedCells[product.id].requestProductId
-            ){
+            ) {
               return { background: '#C5DCCF' };
-            }else{
+            } else {
               return { background: 'transparent' };
             }
           },
@@ -852,7 +865,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           }
         }, 500);
         // Save to the cloud
-        this.saveRowToCloud(updatedRow, colDef['product']);
+        this.saveRowToCloud(updatedRow, colDef['product'], elementidValue);
       });
   }
 
@@ -1605,13 +1618,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         ) {
           smallestOffer = row.totalOffer;
           // Create key with id if dosen't exists;
-          
+
           this.highlightedCells[reqLocationId] = row.id;
         }
       });
     }
   }
-  
+
   shouldUpdate({ spotNegotiation }): boolean {
     // Stop function if not necessary
     // TODO make a function to stop the update if not necessary;
@@ -1733,7 +1746,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // These are locations!!
         const requestProductsLength = reqLocation.requestProducts.length;
         reqLocation.requestProducts.map((reqProduct, index) => {
-         this.checkHighlight(
+          this.checkHighlight(
             { product: reqProduct },
             requestProductsLength,
             reqLocation.id
@@ -1743,7 +1756,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           );
         });
       });
-      
+
       // Detect change and update the ui
       if (!this.changeDetector['destroyed']) {
         this.changeDetector.detectChanges();
