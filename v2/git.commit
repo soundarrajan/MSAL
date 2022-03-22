@@ -1,9 +1,13 @@
-﻿commit 11b0939ee34a046779b8ec040160587c27cf1444
-Author: Ioana Avram <Ioana.Avram@24software.ro>
-Date:   Fri Mar 18 15:39:17 2022 +0000
+﻿commit 0e66cce62d45b8c8d1243d0f3e480bcb25db83ce
+Author: Prathiban T <prathiban.t@Inatech.com>
+Date:   Tue Mar 22 16:55:20 2022 +0000
 
-    Merged PR 16459:  Fixed Rounding off errors in invoice screen
+    Merged PR 16507: 39516 - Contract: AddCost name load issue fix
     
-    Related work items: #39506
+    39516 - Contract: AddCost name load issue fix.
+    
+    After getting contract - some work is required to set the locationid property in additionalCost object. Implemented it in contract-details.component based on contract-product.component.
+    
+    Related work items: #39516
 
 branch: master
