@@ -93,6 +93,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
     });
     this.store.subscribe(({ spotNegotiation }) => {
+      this.spotNegotiationService.callGridRefreshService();
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       if (
         this.currentRequestInfo &&

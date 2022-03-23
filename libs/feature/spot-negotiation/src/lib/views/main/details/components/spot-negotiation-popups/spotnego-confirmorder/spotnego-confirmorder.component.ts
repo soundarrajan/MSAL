@@ -281,7 +281,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         RfqId: requestOffer.rfqId,
         OrderFields: {
           ConfirmedQuantity:
-            requestOffer.supplyQuantity ?? requestProducts.maxQuantity
+          this.format.quantity(requestOffer.supplyQuantity) ??
+          this.format.quantity(requestProducts.maxQuantity)
         },
         ClosurePrice: requestProducts.requestGroupProducts.closurePrice,
         BestContract: requestProducts.requestGroupProducts.bestContract,
@@ -313,9 +314,9 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       offers.ConfirmedQuantity != 'undefined' &&
       offers.OfferPrice != 'undefined'
     ) {
-      this.requestOfferItems[currentRowIndex].TotalPrice = this.format.quantity(
-        offers.OfferPrice * offers.ConfirmedQuantity
-      );
+      // this.requestOfferItems[currentRowIndex].TotalPrice = this.format.quantity(
+      //   offers.OfferPrice * offers.ConfirmedQuantity
+      // );
       this.requestOfferItems[
         currentRowIndex
       ].ConfirmedQuantity = this.format.quantity(offers.ConfirmedQuantity);
