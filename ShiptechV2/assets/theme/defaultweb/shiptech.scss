@@ -15082,7 +15082,7 @@ mat-form-field {
       border-radius: 3px;
       &:hover {
         .cust-input-field {
-          width: 139px;
+          min-width: fit-content;
         }
         .close-icon {
           display: block;
