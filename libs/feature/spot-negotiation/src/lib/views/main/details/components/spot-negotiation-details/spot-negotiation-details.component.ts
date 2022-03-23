@@ -603,12 +603,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               newValue
             );
 
-            setTimeout(() => {
-              let element = document.getElementById(elementidValue);
-              if (element) {
-                this.moveCursorToEnd(element);
-              }
-            });
+            let element = document.getElementById(elementidValue);
+            if (element) {
+              this.moveCursorToEnd(element);
+            }
 
             this.checkAdditionalCost(
               updatedRow,

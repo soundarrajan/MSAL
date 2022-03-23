@@ -93,7 +93,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
     });
     this.store.subscribe(({ spotNegotiation }) => {
-      this.spotNegotiationService.callGridRefreshService();
+      // this.spotNegotiationService.callGridRefreshService();
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       if (
         this.currentRequestInfo &&
@@ -1163,7 +1163,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       const response = this.spotNegotiationService.RevokeFQ(FinalAPIdata);
       response.subscribe((res: any) => {
         this.spinner.hide();
-        
+
         if (res?.message == 'Unauthorized') {
           return;
         }
