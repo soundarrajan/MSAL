@@ -597,7 +597,9 @@ import { SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
         (click)="selectCounterParties(params)"
         class="light-checkbox small"
         [ngClass]="
-          params.data.preferredProducts?.includes(params.productId) ? 'darkBorder' : ''
+          params.data.preferredProducts?.includes(params.productId)
+            ? 'darkBorder'
+            : ''
         "
       ></mat-checkbox>
     </div>
@@ -1619,11 +1621,26 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
 
+
   onGetFocus(event, params) {
     let idValue = this.returnRowIndex(params);
     let element = document.getElementById(idValue);
     if (element) {
+      this.moveCursorToEnd(element);
+    }
+  }
+
+  moveCursorToEnd(element) {
+    var len = element.value.length;
+    if (element.setSelectionRange) {
       element.focus();
+      element.setSelectionRange(len, len);
+    } else if (element.createTextRange) {
+      var t = element.createTextRange();
+      t.collapse(true);
+      t.moveEnd('character', len);
+      t.moveStart('character', len);
+      t.select();
     }
   }
 
@@ -1709,7 +1726,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   checkIfProductIsStemmedOrConfirmed(requestLocation, requestOffer) {
-      if(requestLocation != null){
+    if (requestLocation != null) {
       let findProductIndex = _.findIndex(
         requestLocation.requestProducts,
         function(object: any) {
@@ -1786,7 +1803,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             );
           } else {
             this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
-
           }
         });
 
