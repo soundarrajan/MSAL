@@ -81,7 +81,7 @@
               style="margin: 5px;"
               *ngFor="let item of to"
             >
-            <div class="cust-input-field">{{item}}</div>
+            <div class="cust-input-field" matTooltip="{{item}}">{{item}}</div>
               <!-- <input
                 [readonly]="readonly"
                 class="cust-input-field"
@@ -125,7 +125,7 @@
               style="margin: 5px;"
               *ngFor="let item of cc"
             >
-            <div class="cust-input-field">{{item}}</div>
+            <div class="cust-input-field" matTooltip="{{item}}" >{{item}}</div>
               <!-- <input
                 [readonly]="readonly"
                 class="cust-input-field"

@@ -11,7 +11,7 @@
   display: none;
 }
 :host ::ng-deep .ck-editor__editable_inline {
-  max-height: 450px !important;
+  max-height: 170px !important;
 }
 .custome-border {
   border: none;
