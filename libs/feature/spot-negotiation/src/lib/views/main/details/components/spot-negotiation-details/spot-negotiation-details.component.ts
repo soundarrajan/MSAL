@@ -416,11 +416,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           setTimeout(() => {
             let element = document.getElementById(elementidValue);
             if (element) {
-              element.focus();
+              this.moveCursorToEnd(element);
             }
           });
-        }, 1000);
-        // this.refreshGridDetails();
+        });
+
         reqs = reqs.map(e => {
           let requestLocations = e.requestLocations.map(reqLoc => {
             let requestProducts = reqLoc.requestProducts.map(reqPro =>
@@ -440,6 +440,20 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         return;
       }
     });
+  }
+
+  moveCursorToEnd(element) {
+    var len = element.value.length;
+    if (element.setSelectionRange) {
+      element.focus();
+      element.setSelectionRange(len, len);
+    } else if (element.createTextRange) {
+      var t = element.createTextRange();
+      t.collapse(true);
+      t.moveEnd('character', len);
+      t.moveStart('character', len);
+      t.select();
+    }
   }
 
   refreshGridDetails() {
@@ -588,6 +602,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               colDef.field,
               newValue
             );
+
+            setTimeout(() => {
+              let element = document.getElementById(elementidValue);
+              if (element) {
+                this.moveCursorToEnd(element);
+              }
+            });
 
             this.checkAdditionalCost(
               updatedRow,
@@ -785,7 +806,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     locationAdditionalCostsList,
     updatedRow,
     colDef,
-    newValue
+    newValue,
+    elementidValue
   ) {
     let payload = {
       additionalCosts: offerAdditionalCostList
@@ -801,7 +823,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           return;
         }
         if (res.status) {
-          this.getSellerLine(updatedRow, colDef, newValue, '');
+          this.getSellerLine(updatedRow, colDef, newValue, elementidValue);
         } else this.toastr.error('Please try again later.');
       });
   }
@@ -858,12 +880,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         );
         // Update the store
         this.store.dispatch(new EditLocationRow(updatedRow));
-        setTimeout(() => {
-          let element = document.getElementById(elementidValue);
-          if (element) {
-            element.focus();
-          }
-        }, 500);
         // Save to the cloud
         this.saveRowToCloud(updatedRow, colDef['product'], elementidValue);
       });
@@ -972,7 +988,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               updatedRow,
               colDef,
               newValue,
-              -1
+              -1,
+              elementidValue
             );
 
             for (let i = 0; i < offerAdditionalCostList.length; i++) {
@@ -994,7 +1011,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                   updatedRow,
                   colDef,
                   newValue,
-                  i
+                  i,
+                  elementidValue
                 );
               } else if (
                 offerAdditionalCostList[i].costTypeId == COST_TYPE_IDS.PERCENT
@@ -1010,7 +1028,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                   updatedRow,
                   colDef,
                   newValue,
-                  i
+                  i,
+                  elementidValue
                 );
               }
             }
@@ -1029,7 +1048,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     updatedRow,
     colDef,
     newValue,
-    index
+    index,
+    elementidValue
   ) {
     for (let i = 0; i < additionalCostList.length; i++) {
       if (!additionalCostList[i].isDeleted) {
@@ -1045,7 +1065,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             updatedRow,
             colDef,
             newValue,
-            i
+            i,
+            elementidValue
           );
         }
       }
@@ -1061,7 +1082,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     updatedRow,
     colDef,
     newValue,
-    index
+    index,
+    elementidValue
   ) {
     if (additionalCost.costTypeId == 2) {
       this.addPriceUomChanged(
@@ -1073,7 +1095,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         updatedRow,
         colDef,
         newValue,
-        index
+        index,
+        elementidValue
       );
     } else {
       this.calculateAdditionalCostAmounts(
@@ -1086,7 +1109,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         updatedRow,
         colDef,
         newValue,
-        index
+        index,
+        elementidValue
       );
     }
   }
@@ -1100,7 +1124,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     updatedRow,
     colDef,
     newValue,
-    index
+    index,
+    elementidValue
   ) {
     if (!additionalCost.priceUomId) {
       return;
@@ -1120,7 +1145,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         updatedRow,
         colDef,
         newValue,
-        index
+        index,
+        elementidValue
       );
     }
   }
@@ -1136,7 +1162,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     updatedRow,
     colDef,
     newValue,
-    index
+    index,
+    elementidValue
   ) {
     this.getConvertedUOM(
       prod.productId,
@@ -1152,7 +1179,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       updatedRow,
       colDef,
       newValue,
-      index
+      index,
+      elementidValue
     );
   }
 
@@ -1170,7 +1198,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     updatedRow,
     colDef,
     newValue,
-    index
+    index,
+    elementidValue
   ) {
     let payload = {
       Payload: {
@@ -1198,7 +1227,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           updatedRow,
           colDef,
           newValue,
-          index
+          index,
+          elementidValue
         );
       }
     } else {
@@ -1230,7 +1260,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 updatedRow,
                 colDef,
                 newValue,
-                index
+                index,
+                elementidValue
               );
             }
           }
@@ -1251,7 +1282,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     updatedRow,
     colDef,
     newValue,
-    index
+    index,
+    elementidValue
   ) {
     let totalAmount, productComponent;
     if (!additionalCost.costTypeId) {
@@ -1405,7 +1437,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         locationAdditionalCostsList,
         updatedRow,
         colDef,
-        newValue
+        newValue,
+        elementidValue
       );
     }
   }
