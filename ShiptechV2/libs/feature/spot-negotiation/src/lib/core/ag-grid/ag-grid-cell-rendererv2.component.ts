@@ -1709,18 +1709,20 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   checkIfProductIsStemmedOrConfirmed(requestLocation, requestOffer) {
-    let findProductIndex = _.findIndex(
-      requestLocation.requestProducts,
-      function(object: any) {
-        return object.id == requestOffer.requestProductId;
+      if(requestLocation != null){
+      let findProductIndex = _.findIndex(
+        requestLocation.requestProducts,
+        function(object: any) {
+          return object.id == requestOffer.requestProductId;
+        }
+      );
+      if (findProductIndex != -1) {
+        let product = requestLocation.requestProducts[findProductIndex];
+        if (product.status === 'Stemmed' || product.status === 'Confirmed') {
+          return true;
+        }
+        return false;
       }
-    );
-    if (findProductIndex != -1) {
-      let product = requestLocation.requestProducts[findProductIndex];
-      if (product.status === 'Stemmed' || product.status === 'Confirmed') {
-        return true;
-      }
-      return false;
     }
   }
 
@@ -1741,7 +1743,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       toCurrencyId: toCurrency,
       toCurrencyCode: this.getCurrencyCode(toCurrency)
     };
-    this.spinner.show();
     let exchangeRateValue = 1;
     const response = this._spotNegotiationService.getExchangeRate(payload);
     response.subscribe((res: any) => {
@@ -1785,7 +1786,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             );
           } else {
             this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
-            this.spinner.hide();
+
           }
         });
 
@@ -1793,7 +1794,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       } else {
         this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
         this.toastr.warning(res.message);
-        this.spinner.hide();
         this.changeDetector.detectChanges();
       }
     });
@@ -1828,12 +1828,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         isLocationBased: false
       };
 
-      this.spinner.show();
+      //this.spinner.show();
       this._spotNegotiationService
         .getAdditionalCosts(payload)
         .subscribe((response: any) => {
           if (typeof response === 'string') {
-            this.spinner.hide();
+            //this.spinner.hide();
             return;
           } else {
             let offerAdditionalCostList = _.cloneDeep(
