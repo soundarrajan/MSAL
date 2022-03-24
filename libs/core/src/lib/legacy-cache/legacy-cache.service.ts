@@ -77,9 +77,6 @@ export class LookupsCacheService {
         )
         .toPromise();
 
-      // Note: Due to a bug?! the backend returns more lists than actually requested.
-      // Note: If we decide that the server will force push updates, then we need to also update the lookup version. Currently the server does not return this info.
-
       const updatedLookupsArray = lookupsResponse.map(s => {
         const tableName = this.mapToTableName(s.name);
         if (tableName === 'scheduleDashboardLabelConfiguration') {
@@ -100,9 +97,6 @@ export class LookupsCacheService {
           updatedLookups.push(updatedLookupsArray[i]);
         }
       }
-      // updatedLookups = _.uniqBy(updatedLookups, function(object) {
-      //   return object.name;
-      // });
 
       // Process the updates
       await this.db.transaction(
@@ -193,8 +187,6 @@ export class LookupsCacheService {
         )
         .toPromise();
 
-      // Note: Due to a bug?! the backend returns more lists than actually requested.
-      // Note: If we decide that the server will force push updates, then we need to also update the lookup version. Currently the server does not return this info.
       const updatedLookups = lookupsResponse
         .filter(s =>
           lookupsToUpdate.some(l => s.name.toUpperCase() === l.toUpperCase())
