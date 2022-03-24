@@ -522,7 +522,7 @@ export class SpotNegotiationStore {
           ) {
             let indx = index + 1;
             let val = 'checkProd' + indx;
-            c[val] = c.isSelected && c.preferredProducts ? c.preferredProducts.some(x=>x == reqLocation.requestProducts[index].productId) :false;
+            c[val] = c.isSelected;
           }
         }
       }
