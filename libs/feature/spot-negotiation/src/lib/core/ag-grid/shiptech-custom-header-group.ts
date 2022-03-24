@@ -505,12 +505,13 @@ export class ShiptechCustomHeaderGroup {
       .getOriginalColumnGroup()
       .isExpanded();
 
-    this.params.columnApi.setColumnGroupOpened(
-      this.params.columnGroup.groupId,
-      !currentState
-    );
+    const groupNames = ['grid1', 'grid2', 'grid3'];
+    groupNames.forEach(groupId => {
+      this.params.columnApi.setColumnGroupOpened(groupId, !currentState);
+    });
 
-    this.params.api.sizeColumnsToFit();
+    if (currentState) this.params.api.sizeColumnsToFit();
+    //this.invokeParentMethod();
   }
 
   invokeParentMethod(): void {
