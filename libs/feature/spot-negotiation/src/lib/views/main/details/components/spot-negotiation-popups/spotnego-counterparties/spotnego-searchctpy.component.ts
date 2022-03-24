@@ -96,13 +96,13 @@ public overlayNoRowsTemplate =
             this.pageSize = 25;
             this.totalItems = this.physicalSupplierRowCount ;
             this.rowData = spotNegotiation.physicalSupplierCounterpartyList;
-            this.dialog_gridOptions.api.setRowData(this.rowData);
+            this.dialog_gridOptions.api?.setRowData(this.rowData);
           }
           else{
             this.pageSize = 25;
             this.totalItems = this.counterpartyListRowCount;
             this.rowData = spotNegotiation.counterpartyList;
-            this.dialog_gridOptions.api.setRowData(this.rowData);
+            this.dialog_gridOptions.api?.setRowData(this.rowData);
           }
         });
 
