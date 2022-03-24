@@ -2,6 +2,7 @@
 
 <div class="input-group" ng-controller="Controller_Master as CM" tooltip tooltiptrigger="hover"
 data-original-title="{{MODEL_COL_FIELD.name | decodeReadOnly}}">
+    <span ng-if="col.colDef.cellObject.resetIfEmpty" ng-init="col.colDef.cellObject.origCopy[grid.element[0].id + '_' + col.colDef.name + '_' + rowRenderIndex] = MODEL_COL_FIELD"></span>
     <input decode-input-format ng-model="MODEL_COL_FIELD" 
     ng-class="'colt' + col.uid" 
     uib-typeahead="item as item.name for item in grid.appScope.fVal().options[col.colDef.cellObject.Name] | typeaheadCustomFilter:$viewValue:'name'"  
@@ -20,7 +21,11 @@ data-original-title="{{MODEL_COL_FIELD.name | decodeReadOnly}}">
     typeahead-on-select="triggerChangeFields(col.colDef.name); $eval(col.colDef.cellObject.customChangeAction); grid.element[0].id == 'grid_specGroupParameters' ? MODEL_COL_FIELD.name = CM.decodeHtml(MODEL_COL_FIELD.name) : ''" 
     data-cell-id="{{MODEL_COL_FIELD.id}}" 
     ng-disabled="$eval(col.colDef.cellObject.Disabled)"
-    ng-blur="!MODEL_COL_FIELD.id ? MODEL_COL_FIELD = null : ''"/>
+    ng-blur="col.colDef.cellObject.resetIfEmpty && !MODEL_COL_FIELD.id
+    && (col.colDef.cellObject.required == true || col.colDef.required == true)
+    ? MODEL_COL_FIELD = col.colDef.cellObject.origCopy[grid.element[0].id + '_' + col.colDef.name + '_' + rowRenderIndex]
+    : (!MODEL_COL_FIELD.id ? MODEL_COL_FIELD = null : '')"/>
+    
     <span class="input-group-addon "  
     ng-click="triggerModal('general', col.colDef.cellObject.clc_id, col.colDef.displayName , col.colDef.name,grid.options.data, rowRenderIndex, null, col.colDef.cellObject.filter);" 
     ng-if="col.colDef.name != 'formula' && !$eval(col.colDef.cellCondition)"

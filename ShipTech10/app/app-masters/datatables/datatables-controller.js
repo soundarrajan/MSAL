@@ -2509,7 +2509,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'lookup',
                             masterSource: 'Product',
                             customChangeAction: 'validateSystemInstrument(rowRenderIndex, grid.appScope.fVal().formValues, col.colDef.name)',
-                            clc_id: 'masters_productlist'
+                            clc_id: 'masters_productlist',
+                            resetIfEmpty: true
                         },
                         required: true,
                         category: '1'
@@ -2523,7 +2524,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'lookup',
                             masterSource: 'SystemInstrument',
                             customChangeAction: 'validateSystemInstrument(rowRenderIndex, grid.appScope.fVal().formValues, col.colDef.name)',
-                            clc_id: 'masters_systeminstrument'
+                            clc_id: 'masters_systeminstrument',
+                            resetIfEmpty: true
                         },
                         required: true,
                         category: '1'
