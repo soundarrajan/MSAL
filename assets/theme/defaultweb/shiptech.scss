@@ -13169,13 +13169,14 @@ tr.title {
       margin: 0px -14px;
       height: 35px;
       .proceed-btn {
-         left: 205px;
-        top: 10px;
+        //  left: 205px;
+        // top: 10px;
          cursor: pointer;
         width: 90px;
-        border-radius: 3px;
+        // border-radius: 3px;
         background: #1d9fff !important;
         height: 30px;
+        float: right;
       }
     }
     mat-checkbox {
