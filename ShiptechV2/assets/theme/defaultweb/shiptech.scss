@@ -13169,13 +13169,14 @@ tr.title {
       margin: 0px -14px;
       height: 35px;
       .proceed-btn {
-         left: 205px;
-        top: 10px;
+        //  left: 205px;
+        // top: 10px;
          cursor: pointer;
         width: 90px;
-        border-radius: 3px;
+        // border-radius: 3px;
         background: #1d9fff !important;
         height: 30px;
+        float: right;
       }
     }
     mat-checkbox {
@@ -13872,6 +13873,7 @@ tr.title {
             border-left: 1px solid #e0e1e4;
             border-bottom: 1px solid #e0e1e4;
             font-size: 13px;
+            overflow: hidden;
           }
         }
       }
@@ -15082,7 +15084,7 @@ mat-form-field {
       border-radius: 3px;
       &:hover {
         .cust-input-field {
-          width: 139px;
+          min-width: fit-content;
         }
         .close-icon {
           display: block;
