@@ -162,7 +162,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
             ],
         routerLinkActiveOptions: { exact: true },
         disabled,
-        visible: this.isAuthorizedForReportsTab,
+        visible: this.isAuthorizedForReportsTab && this.tenantConfiguration.isNegotiationReport,
         command: () => {
           this.setActiveRequest();
         }
