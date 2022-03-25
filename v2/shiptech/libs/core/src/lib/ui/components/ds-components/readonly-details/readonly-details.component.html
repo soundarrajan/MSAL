@@ -3,7 +3,12 @@
   [ngClass]="{ 'section2-details': data?.hasSeparator }"
 >
   <div class="details-content-holder" *ngFor="let item of data?.contents" [ngStyle]="data?.hasSeparator && { 'justify-content': 'space-between' }">
-    <div [ngClass]="{ 'show-full-value': item.label === 'Vessel' || item.label === 'Seller' }">
+    <div [ngClass]="{
+      'w-vessel': item.label === 'Vessel',
+      'w-buyer': item.label === 'Buyer',
+      'w-trader': item.label === 'Trader',
+      'w-seller': item.label === 'Seller',
+      'w-broker': item.label === 'Broker' }">
       <div class="label" Class="customLabelClass">{{ item.label }}</div>
       <div
         class="value label_text"

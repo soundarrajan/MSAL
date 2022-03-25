@@ -1,5 +1,20 @@
 
 .show-full-value .label_text {
     width: unset;
-    padding-right: 16px;
+    padding-right: 10px;
+}
+.w-vessel .label_text {
+    width: 220px;
+    padding-right: 10px;
+    font-size: 13px;
+}
+.w-buyer .label_text, .w-trader .label_text {
+    width: 100px;
+}
+.w-seller .label_text {
+    width: 190px;
+    font-size: 13px;
+}
+.w-broker .label_text {
+    width: 150px;
 }

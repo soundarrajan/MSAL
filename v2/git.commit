@@ -1,13 +1,11 @@
-﻿commit 0e66cce62d45b8c8d1243d0f3e480bcb25db83ce
+﻿commit 7039ec49b10e9f3e956c8a70c759e00e73301189
 Author: Prathiban T <prathiban.t@Inatech.com>
-Date:   Tue Mar 22 16:55:20 2022 +0000
+Date:   Fri Mar 25 06:39:26 2022 +0000
 
-    Merged PR 16507: 39516 - Contract: AddCost name load issue fix
+    Merged PR 16564: 39508 - Invoice: UI fix for Vessel and Seller names
     
-    39516 - Contract: AddCost name load issue fix.
+    39508 - Invoice: UI fix for Vessel and Seller names
     
-    After getting contract - some work is required to set the locationid property in additionalCost object. Implemented it in contract-details.component based on contract-product.component.
-    
-    Related work items: #39516
+    Related work items: #39508
 
 branch: master
