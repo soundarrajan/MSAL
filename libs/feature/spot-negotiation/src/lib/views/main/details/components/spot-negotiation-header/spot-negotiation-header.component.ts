@@ -395,6 +395,32 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       }
     }
   }
+  getLocationRowsWithLinkRequest(rowsArray) {
+    rowsArray.map(row => {
+      if (row.requestOffers == undefined) {
+        var payloadReq = this.requestOptions.find(x => x.id === row.requestId);
+        if (payloadReq && payloadReq.requestLocations) {
+          var reqLocation = payloadReq.requestLocations.find(
+            y => y.locationId === row.locationId
+          );
+        }
+        if (reqLocation && reqLocation.requestProducts) {
+          for (
+            let index = 0;
+            index < reqLocation.requestProducts.length;
+            index++
+          ) {
+            let indx = index + 1;
+            let val = 'checkProd' + indx;
+            row[val] = row.isSelected && row.preferredProducts ? row.preferredProducts.some(x => x == reqLocation.requestProducts[index].productId) : false;
+            row.isEditable = false;
+          }
+        }
+      }
+    });
+    let locRowsArray = [...this.locationsRows, ...rowsArray];
+    return locRowsArray;    
+  }
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let counterpartyList: any;
@@ -586,9 +612,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 res['requestLocationSellers'] &&
                 res['requestLocationSellers'].length > 0
               ) {
-                this.store.dispatch(
-                  new AddCounterpartyToLocations(res['requestLocationSellers'])
+                const futureLocationsRows = this.getLocationRowsWithLinkRequest(
+                  res['requestLocationSellers']
                 );
+                this.store.dispatch(new SetLocationsRows(futureLocationsRows));
               }
               const requests = this.store.selectSnapshot(
                 (state: SpotNegotiationStoreModel) => {

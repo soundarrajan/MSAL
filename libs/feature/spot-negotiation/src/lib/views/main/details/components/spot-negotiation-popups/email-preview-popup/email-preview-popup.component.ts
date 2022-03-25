@@ -82,6 +82,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.SelectedSellerWithProds = data;
     this.selected = 'MultipleRfqNewRFQEmailTemplate';
     this.readonly = this.SelectedSellerWithProds.ReadOnly;
+
 if(!this.readonly){
   this.SelectedSellerWithProds.some((prod)=>{
     this.prod1 = prod.checkProd1? prod.checkProd1: false;
@@ -108,7 +109,6 @@ if(!this.readonly){
   });
 
 }
-     
 
     //if(this.SelectedSellerWithProds.requestOffers?.length > 0){
     //if(this.SelectedSellerWithProds.requestOffers == undefined && this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length > 0){
@@ -432,9 +432,9 @@ if(!this.readonly){
         RequestId: singleSeller.requestId,
         PhysicalSupplierCounterpartyId:
           singleSeller.physicalSupplierCounterpartyId,
-        RequestProductIds: this.currentRequestInfo.requestLocations
-          .filter(loc => loc.id === singleSeller.requestLocationId)
-          .map(prod => prod.requestProducts.map(i => i.id))[0]
+        RequestProductIds:this.currentRequestInfo.requestLocations
+        .filter(loc => loc.id === singleSeller.requestLocationId).map(prod =>
+          prod.requestProducts.map((e, i) => singleSeller['checkProd' + (i + 1)] ? e.id : '').filter(x => x))[0]
       };
       selectedSellers.push(selectedSeller);
     });

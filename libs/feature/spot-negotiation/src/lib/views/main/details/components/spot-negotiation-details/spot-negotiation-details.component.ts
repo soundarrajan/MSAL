@@ -233,10 +233,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 this.highlightedCells[params.data.requestLocationId]
             ) {
               return { background: '#C5DCCF' };
-            }else{
+            } else {
               return { background: 'transparent' };
             }
-            
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' },
@@ -279,7 +278,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         sortable: false,
         suppressMenu: true
       },
-      
+
       columnDefs: this.columnDef_aggrid,
       suppressCellSelection: true,
       suppressMovable: true,
@@ -307,7 +306,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         //this.gridOptions_counterparty.api.sizeColumnsToFit();
         //  this.gridOptions_counterparty.api.selectAll();
         // this.gridOptions_counterparty.api.setRowData(this.rowData_aggrid);
-        this.rowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();        
+        this.rowCount = this.gridOptions_counterparty.api.getDisplayedRowCount();
         this.totalOfferHeaderWidth = params.columnApi
           .getColumn('totalOffer')
           .getActualWidth();
@@ -367,7 +366,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
   }
 
-  saveRowToCloud(updatedRow, product) {
+  saveRowToCloud(updatedRow, product, elementidValue) {
     const productDetails = this.spotNegotiationService.getRowProductDetails(
       updatedRow,
       product.id
@@ -410,7 +409,18 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
       if (res.status) {
         this.toastr.success('Price update successful.');
-        this.refreshGridDetails();
+
+        var params = { force: true };
+        setTimeout(() => {
+          this.gridOptions_counterparty.api?.refreshCells(params);
+          setTimeout(() => {
+            let element = document.getElementById(elementidValue);
+            if (element) {
+              this.moveCursorToEnd(element);
+            }
+          });
+        });
+
         reqs = reqs.map(e => {
           let requestLocations = e.requestLocations.map(reqLoc => {
             let requestProducts = reqLoc.requestProducts.map(reqPro =>
@@ -432,11 +442,28 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
   }
 
-  refreshGridDetails(){
-    var params = { force: true };
-    setTimeout(() => this.gridOptions_counterparty.api?.refreshCells(params),1000);
+  moveCursorToEnd(element) {
+    var len = element.value.length;
+    if (element.setSelectionRange) {
+      element.focus();
+      element.setSelectionRange(len, len);
+    } else if (element.createTextRange) {
+      var t = element.createTextRange();
+      t.collapse(true);
+      t.moveEnd('character', len);
+      t.moveStart('character', len);
+      t.select();
+    }
   }
-  
+
+  refreshGridDetails() {
+    var params = { force: true };
+    setTimeout(
+      () => this.gridOptions_counterparty.api?.refreshCells(params),
+      1000
+    );
+  }
+
   formatRowDataPrice(row, product, field, newValue) {
     const productDetails = this.spotNegotiationService.getRowProductDetails(
       row,
@@ -483,7 +510,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       resizable: false,
       groupId: 'grid1',
       suppressMovable: true,
-     lockPosition: true,
+      lockPosition: true,
 
       children: [
         {
@@ -576,6 +603,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               newValue
             );
 
+            let element = document.getElementById(elementidValue);
+            if (element) {
+              this.moveCursorToEnd(element);
+            }
+
             this.checkAdditionalCost(
               updatedRow,
               updatedRow,
@@ -644,9 +676,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               this.highlightedCells[product.id] &&
               params.data.id === this.highlightedCells[product.id].rowId &&
               product.id === this.highlightedCells[product.id].requestProductId
-            ){
+            ) {
               return { background: '#C5DCCF' };
-            }else{
+            } else {
               return { background: 'transparent' };
             }
           },
@@ -772,7 +804,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     locationAdditionalCostsList,
     updatedRow,
     colDef,
-    newValue
+    newValue,
+    elementidValue
   ) {
     let payload = {
       additionalCosts: offerAdditionalCostList
@@ -788,7 +821,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           return;
         }
         if (res.status) {
-          this.getSellerLine(updatedRow, colDef, newValue, '');
+          this.getSellerLine(updatedRow, colDef, newValue, elementidValue);
         } else this.toastr.error('Please try again later.');
       });
   }
@@ -845,14 +878,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         );
         // Update the store
         this.store.dispatch(new EditLocationRow(updatedRow));
-        setTimeout(() => {
-          let element = document.getElementById(elementidValue);
-          if (element) {
-            element.focus();
-          }
-        }, 500);
         // Save to the cloud
-        this.saveRowToCloud(updatedRow, colDef['product']);
+        this.saveRowToCloud(updatedRow, colDef['product'], elementidValue);
       });
   }
 
@@ -959,7 +986,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               updatedRow,
               colDef,
               newValue,
-              -1
+              -1,
+              elementidValue
             );
 
             for (let i = 0; i < offerAdditionalCostList.length; i++) {
@@ -981,7 +1009,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                   updatedRow,
                   colDef,
                   newValue,
-                  i
+                  i,
+                  elementidValue
                 );
               } else if (
                 offerAdditionalCostList[i].costTypeId == COST_TYPE_IDS.PERCENT
@@ -997,7 +1026,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                   updatedRow,
                   colDef,
                   newValue,
-                  i
+                  i,
+                  elementidValue
                 );
               }
             }
@@ -1016,7 +1046,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     updatedRow,
     colDef,
     newValue,
-    index
+    index,
+    elementidValue
   ) {
     for (let i = 0; i < additionalCostList.length; i++) {
       if (!additionalCostList[i].isDeleted) {
@@ -1032,7 +1063,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             updatedRow,
             colDef,
             newValue,
-            i
+            i,
+            elementidValue
           );
         }
       }
@@ -1048,7 +1080,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     updatedRow,
     colDef,
     newValue,
-    index
+    index,
+    elementidValue
   ) {
     if (additionalCost.costTypeId == 2) {
       this.addPriceUomChanged(
@@ -1060,7 +1093,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         updatedRow,
         colDef,
         newValue,
-        index
+        index,
+        elementidValue
       );
     } else {
       this.calculateAdditionalCostAmounts(
@@ -1073,7 +1107,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         updatedRow,
         colDef,
         newValue,
-        index
+        index,
+        elementidValue
       );
     }
   }
@@ -1087,7 +1122,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     updatedRow,
     colDef,
     newValue,
-    index
+    index,
+    elementidValue
   ) {
     if (!additionalCost.priceUomId) {
       return;
@@ -1107,7 +1143,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         updatedRow,
         colDef,
         newValue,
-        index
+        index,
+        elementidValue
       );
     }
   }
@@ -1123,7 +1160,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     updatedRow,
     colDef,
     newValue,
-    index
+    index,
+    elementidValue
   ) {
     this.getConvertedUOM(
       prod.productId,
@@ -1139,7 +1177,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       updatedRow,
       colDef,
       newValue,
-      index
+      index,
+      elementidValue
     );
   }
 
@@ -1157,7 +1196,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     updatedRow,
     colDef,
     newValue,
-    index
+    index,
+    elementidValue
   ) {
     let payload = {
       Payload: {
@@ -1185,7 +1225,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           updatedRow,
           colDef,
           newValue,
-          index
+          index,
+          elementidValue
         );
       }
     } else {
@@ -1217,7 +1258,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 updatedRow,
                 colDef,
                 newValue,
-                index
+                index,
+                elementidValue
               );
             }
           }
@@ -1238,7 +1280,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     updatedRow,
     colDef,
     newValue,
-    index
+    index,
+    elementidValue
   ) {
     let totalAmount, productComponent;
     if (!additionalCost.costTypeId) {
@@ -1392,7 +1435,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         locationAdditionalCostsList,
         updatedRow,
         colDef,
-        newValue
+        newValue,
+        elementidValue
       );
     }
   }
@@ -1605,13 +1649,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         ) {
           smallestOffer = row.totalOffer;
           // Create key with id if dosen't exists;
-          
+
           this.highlightedCells[reqLocationId] = row.id;
         }
       });
     }
   }
-  
+
   shouldUpdate({ spotNegotiation }): boolean {
     // Stop function if not necessary
     // TODO make a function to stop the update if not necessary;
@@ -1733,7 +1777,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // These are locations!!
         const requestProductsLength = reqLocation.requestProducts.length;
         reqLocation.requestProducts.map((reqProduct, index) => {
-         this.checkHighlight(
+          this.checkHighlight(
             { product: reqProduct },
             requestProductsLength,
             reqLocation.id
@@ -1743,7 +1787,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           );
         });
       });
-      
+
       // Detect change and update the ui
       if (!this.changeDetector['destroyed']) {
         this.changeDetector.detectChanges();
