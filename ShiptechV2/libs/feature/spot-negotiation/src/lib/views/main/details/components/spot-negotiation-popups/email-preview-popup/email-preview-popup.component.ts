@@ -82,6 +82,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.SelectedSellerWithProds = data;
     this.selected = 'MultipleRfqNewRFQEmailTemplate';
     this.readonly = this.SelectedSellerWithProds.ReadOnly;
+
 if(!this.readonly){
   this.SelectedSellerWithProds.some((prod)=>{
     this.prod1 = prod.checkProd1? prod.checkProd1: false;
@@ -108,7 +109,6 @@ if(!this.readonly){
   });
 
 }
-     
 
     //if(this.SelectedSellerWithProds.requestOffers?.length > 0){
     //if(this.SelectedSellerWithProds.requestOffers == undefined && this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length > 0){
