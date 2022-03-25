@@ -127,7 +127,7 @@ export class NegotiationToolbarComponent
             ],
         routerLinkActiveOptions: { exact: true },
         disabled,
-        visible: this.isAuthorizedForReportsTab
+        visible: this.isAuthorizedForReportsTab && this.tenantConfiguration.isNegotiationReport
       },
       {
         label: 'Documents',
