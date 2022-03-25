@@ -432,9 +432,9 @@ if(!this.readonly){
         RequestId: singleSeller.requestId,
         PhysicalSupplierCounterpartyId:
           singleSeller.physicalSupplierCounterpartyId,
-        RequestProductIds: this.currentRequestInfo.requestLocations
-          .filter(loc => loc.id === singleSeller.requestLocationId)
-          .map(prod => prod.requestProducts.map(i => i.id))[0]
+        RequestProductIds:this.currentRequestInfo.requestLocations
+        .filter(loc => loc.id === singleSeller.requestLocationId).map(prod =>
+          prod.requestProducts.map((e, i) => singleSeller['checkProd' + (i + 1)] ? e.id : '').filter(x => x))[0]
       };
       selectedSellers.push(selectedSeller);
     });
