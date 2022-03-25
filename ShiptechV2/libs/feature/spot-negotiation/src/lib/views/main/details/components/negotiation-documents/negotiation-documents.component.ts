@@ -6,7 +6,8 @@ import {
   OnInit,
   ViewChild,
   Injectable,
-  HostListener
+  HostListener,
+  ElementRef
 } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
@@ -58,6 +59,8 @@ export class NegotiationDocumentsComponent implements OnInit {
   public rowSelection = 'multiple';
   endpointCount: number = 0;
   anErrorHasOccured: boolean = false;
+
+  @ViewChild('inputContent') inputContent: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
@@ -217,7 +220,11 @@ export class NegotiationDocumentsComponent implements OnInit {
     }
   }
 
-  clearUploadedFiles(): void {}
+  clearUploadedFiles(): void {
+    this.inputContent.nativeElement.value = '';
+    this.selectedDocumentType = null;
+    this.file = null;
+  }
 
   /**
    * on file drop handler
@@ -255,6 +262,11 @@ export class NegotiationDocumentsComponent implements OnInit {
           }
         }
       };
+      if (event.type.includes('mp4')) {
+        this.clearUploadedFiles();
+        this.toastr.error('File type Mp4 is not supported!');
+        return;
+      }
       const formRequest: FormData = new FormData();
       formRequest.append('file', event);
       formRequest.append('request', JSON.stringify(requestPayload));
@@ -274,8 +286,6 @@ export class NegotiationDocumentsComponent implements OnInit {
         });
 
       this.clearUploadedFiles();
-      this.selectedDocumentType = null;
-      this.file = null;
     }
   }
 

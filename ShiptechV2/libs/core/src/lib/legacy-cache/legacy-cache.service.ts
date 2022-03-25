@@ -64,6 +64,8 @@ export class LookupsCacheService {
     }
 
     if (
+      (window.location.href.indexOf('v2/quantity-control') != -1 &&
+        window.location.href.indexOf('/report') == -1) ||
       window.location.href.indexOf('v2/quantity-control/reports-list') != -1 ||
       window.location.href.indexOf(
         'v2/control-tower/control-tower-list-view'
