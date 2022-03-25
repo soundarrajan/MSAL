@@ -295,7 +295,7 @@ import _, { cloneDeep } from 'lodash';
             </div>
           </div>
         </div>
-        <div class="resize-icon">
+        <div class="resize-icon" style="display: none;">
           <div
             class="img resizeIcons"
             [ngClass]="this.expandState"
