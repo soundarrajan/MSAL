@@ -267,7 +267,10 @@
     class="col-md-12"
     style="background-color: #ffffff;padding: 0px 5px;"
   >
-    <app-spot-negotiation-details> </app-spot-negotiation-details>
+  <div *ngFor="let location of locations; let locationIndex = index">
+    <app-spot-negotiation-details [location]="location" [locationIndex] = "locationIndex" > </app-spot-negotiation-details>
+  </div>
+    
   </div>
   <div
     #comments

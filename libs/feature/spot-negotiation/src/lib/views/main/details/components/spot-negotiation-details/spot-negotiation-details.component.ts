@@ -7,6 +7,7 @@ import {
   ChangeDetectorRef,
   Component,
   Inject,
+  Input,
   OnInit
 } from '@angular/core';
 import _, { cloneDeep } from 'lodash';
@@ -71,6 +72,19 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   highlightedCells = {};
   uomsMap: any;
   requestOptions: any;
+  locationIndex: number;
+
+  @Input('location') set _setlocation(
+    location
+  ) {
+    this.locations = [location];
+  }
+  @Input('locationIndex') set _setlocationIndex(
+    locationIndex
+  ) {
+    this.locationIndex = locationIndex;
+  }
+
 
   context: any;
 
@@ -1716,7 +1730,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
 
       this.locationsRows = spotNegotiation.locationsRows;
-      this.locations = spotNegotiation.locations;
+      //this.locations = spotNegotiation.locations;
       this.requestOptions = spotNegotiation.requests;
 
       // setTimeout(() => {
