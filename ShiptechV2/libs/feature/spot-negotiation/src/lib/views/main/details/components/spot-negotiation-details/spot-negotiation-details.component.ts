@@ -1705,10 +1705,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
   ngOnInit(): void {
     const self = this;
-    // Set Counterparty list;
+    
     this.route.data.subscribe(data => {
-      this.store.dispatch(new SetCounterpartyList(data.counterpartyList));
-
+      //this.store.dispatch(new SetCounterpartyList(data.counterpartyList));
       this.uomsMap = new Map(data.uoms.map(key => [key.id, key.name]));
     });
 
