@@ -765,6 +765,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   costTypeList: any[] = [];
   uomList: any[] = [];
   currencyListForAdditionalCost: any[] = [];
+  priceChanged: boolean = false;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -802,6 +803,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       currency: new FormControl('')
     });
     this.paramsDataClone = _.cloneDeep(this.params.data);
+    this.priceChanged = false;
     if (
       this.paramsDataClone.requestOffers &&
       this.params.type === 'price-calc'
@@ -1621,11 +1623,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   onGetFocus(event, params) {
-    console.log(params);
-    let idValue = this.returnRowIndex(params);
-    let element = document.getElementById(idValue);
-    if (element) {
-      this.moveCursorToEnd(element);
+    if (!this.priceChanged) {
+      let idValue = this.returnRowIndex(params);
+      let element = document.getElementById(idValue);
+      if (element) {
+        this.moveCursorToEnd(element);
+      }
     }
   }
 
@@ -1644,6 +1647,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   onPriceChange(e, params) {
+    this.priceChanged = true;
     // const futureValue = e.target.value;
 
     // if (!futureValue) {
