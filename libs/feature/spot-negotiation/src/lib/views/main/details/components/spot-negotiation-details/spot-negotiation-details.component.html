@@ -31,11 +31,13 @@
                         [rowData]="rowData_aggridObj[i]"
                         [columnDefs]="columnDef_aggridObj[i]"
                         [gridOptions]="gridOptions_counterparty"
+                        [overlayLoadingTemplate]="overlayLoadingTemplate"
+                        [overlayNoRowsTemplate]="overlayNoRowsTemplate"
                         [rowClassRules]="rowClassRules"
                         [immutableData]="true"
                         [getRowNodeId]="getRowNodeId"
                         [suppressRowClickSelection]="true"
-                        [context]="context"
+                        [context]="context"                        
                       >
                       </ag-grid-angular>
                     </div>
