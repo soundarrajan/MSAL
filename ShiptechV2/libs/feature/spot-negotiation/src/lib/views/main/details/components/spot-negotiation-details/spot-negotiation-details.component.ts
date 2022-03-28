@@ -682,9 +682,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             return 'grey-opacity-cell pad-lr-0';
           },
           cellStyle: params => {
-            if (this.highlightedCells[product.productId] &&
-              params.data.id === this.highlightedCells[product.productId].rowId &&
-              product.id === this.highlightedCells[product.productId].requestProductId) {
+            if (
+              this.highlightedCells[product.productId] &&
+              params.data.id ===
+                this.highlightedCells[product.productId].rowId &&
+              product.id ===
+                this.highlightedCells[product.productId].requestProductId
+            ) {
               return { background: '#C5DCCF' };
             } else {
               return { background: 'transparent' };
@@ -1599,9 +1603,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     var smallestOffer = Infinity;
     if (this.locationsRows && this.locationsRows.length > 0) {
       if (this.highlightedCells[product.productId]) {
-        const smallestRow = this.locationsRows.find(x => x.id === this.highlightedCells[product.productId].rowId);
-        const offerDetails = smallestRow?.requestOffers?.find(x => x.requestProductId === this.highlightedCells[product.productId].requestProductId);
-        if(offerDetails) smallestTotalPrice = offerDetails.totalPrice;
+        const smallestRow = this.locationsRows.find(
+          x => x.id === this.highlightedCells[product.productId].rowId
+        );
+        const offerDetails = smallestRow?.requestOffers?.find(
+          x =>
+            x.requestProductId ===
+            this.highlightedCells[product.productId].requestProductId
+        );
+        if (offerDetails) smallestTotalPrice = offerDetails.totalPrice;
       }
 
       if (this.highlightedCells[requestId]) {
@@ -1618,11 +1628,21 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           this.highlightedCells[product.productId] = {};
         }
         // Set smallest total price
-        const productDetails = this.spotNegotiationService.getRowProductDetails(row, product.id)
-        if (productDetails.totalPrice && Number(productDetails.totalPrice) > 0 && Number(smallestTotalPrice) > Number(productDetails.totalPrice)) {
+        const productDetails = this.getRowProductDetails(
+          row,
+          product.productId
+        );
+        if (
+          productDetails &&
+          productDetails.totalPrice &&
+          row.requestId == requestId &&
+          Number(productDetails.totalPrice) > 0 &&
+          Number(smallestTotalPrice) > Number(productDetails.totalPrice)
+        ) {
           smallestTotalPrice = productDetails.totalPrice;
           this.highlightedCells[product.productId].rowId = row.id;
-          this.highlightedCells[product.productId].requestProductId = product.id;
+          this.highlightedCells[product.productId].requestProductId =
+            product.id;
         }
     
         if (!this.highlightedCells[requestId]) {
@@ -1645,6 +1665,31 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         }
       });
     }
+  }
+
+
+  getRowProductDetails(row, productId) {
+    // const currentLocation = this.locations.find(
+    //   e => e.id === this.reqLocId
+    // );
+
+    let futureRow = JSON.parse(JSON.stringify(row));
+    // let selectedSellerRows = futureRow?.requestOffers?.map(e => {
+    //   let prodId = currentLocation?.requestProducts?.find(rp => rp.id === e. requestProductId)?.productId;
+    //   return { ...e, prodId: prodId };
+    // });
+  
+    //let reqProdId = currentLocation?.requestProducts?.find(rp => rp.productId == productId)?.id;
+    
+    const priceDetails = futureRow?.requestOffers?.find(
+      item => item.quotedProductId === productId
+    );
+
+    if (priceDetails) {
+      return priceDetails;
+    }
+    return null;
+
   }
 
   shouldUpdate({ spotNegotiation }): boolean {
