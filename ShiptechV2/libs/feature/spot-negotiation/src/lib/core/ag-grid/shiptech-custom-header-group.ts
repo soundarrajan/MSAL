@@ -360,6 +360,7 @@ export class ShiptechCustomHeaderGroup {
   availableContracts = [];
   requests: any;
   isLatestClosurePrice: boolean = false;
+  locations: any;
   ngOnInit(): any {
     this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
@@ -475,23 +476,34 @@ export class ShiptechCustomHeaderGroup {
 
   agInit(params: any): void {
     this.params = params;
+    this.store.selectSnapshot(({ spotNegotiation }) => {
+      this.locations = spotNegotiation.locations;
+    });
+
     if (this.params.product) {
-      let formattedLivePrice = this.priceFormatValue(
-        this.params.product.requestGroupProducts.livePrice,
-        'livePrice'
-      );
-      this.livePrice = formattedLivePrice;
-      this.targetValue = this.params.product.requestGroupProducts.targetPrice;
-      this.closureValue = this.params.product.requestGroupProducts.closurePrice;
-      this.isLatestClosurePrice = this.params.product.requestGroupProducts.isLatestClosurePrice;
-      this.closureDate = moment(
-        this.params.product.requestGroupProducts.closureDate
-      ).format('DD-MMM-YYYY');
-      this.benchMark = this.params.product.requestGroupProducts.benchMark;
       this.bestContractId = this.params.product.requestGroupProducts.bestContractId;
       this.requestProductId = this.params.product.id;
       this.requestLocationId = this.params.requestLocationId;
       this.quoteDate = moment(this.quoteDate).format('DD-MMM-YYYY');
+      //debugger;
+      if(this.locations){
+        let requestLoc = this.locations.find(l => l.id == this.requestLocationId);
+        if(requestLoc?.requestProducts){
+          let updatedProdLivePrice = requestLoc.requestProducts.find(p => p.id == this.requestProductId);
+          let formattedLivePrice = this.priceFormatValue(
+            updatedProdLivePrice.requestGroupProducts.livePrice,
+            'livePrice'
+          );
+          this.livePrice = formattedLivePrice;
+          this.targetValue = updatedProdLivePrice.requestGroupProducts.targetPrice;
+          this.closureValue = updatedProdLivePrice.requestGroupProducts.closurePrice;
+          this.isLatestClosurePrice = updatedProdLivePrice.requestGroupProducts.isLatestClosurePrice;
+          this.closureDate = moment(
+            updatedProdLivePrice.requestGroupProducts.closureDate
+          ).format('DD-MMM-YYYY');
+          this.benchMark = updatedProdLivePrice.requestGroupProducts.benchMark;
+        }
+      }
     }
 
     this.params.columnGroup
