@@ -1,4 +1,11 @@
-import { Component, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnInit,
+  ChangeDetectorRef,
+  ViewChild,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
@@ -9,12 +16,12 @@ import {
   UpdateRequest
   // SetLocationsRowsPriceDetails
 } from '../../../../../../store/actions/ag-grid-row.action';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import _ from 'lodash';
 import { MatRadioChange } from '@angular/material/radio';
 import { FileSaverService } from 'ngx-filesaver';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { ModuleError } from '../../negotiation-documents/error-handling/module-error';
+import { CKEditorComponent } from 'ckeditor4-angular';
 
 interface Items {
   value: string;
@@ -28,9 +35,28 @@ interface EmailAddress {
 @Component({
   selector: 'app-email-preview-popup',
   templateUrl: './email-preview-popup.component.html',
-  styleUrls: ['./email-preview-popup.component.css']
+  styleUrls: ['./email-preview-popup.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmailPreviewPopupComponent implements OnInit {
+  @ViewChild('editor', { static: false })
+  public editorComponent: CKEditorComponent;
+
+  public configuration = {
+    height: '450px',
+    disableNativeSpellChecker: false,
+    // fullPage: true,
+    allowContent: true,
+    extraAllowedContent:
+      'div;h1;h2;h3;h4;h5;h6;p;textarea;text;script;template;span;ol;ul;li;table;td;style;*[id];*(*);*{*};<!--(*); -->(*)',
+    defaultLanguage: 'en',
+    language: 'en',
+    toolbar: 'MyToolbar',
+    removePlugins: 'elementspath',
+    ignoreEmptyParagraph: true,
+    removeButtons: 'Anchor'
+  };
+
   public SelectedSellerWithProds: any;
   currentRequestInfo: any;
   selected: any;
@@ -41,13 +67,12 @@ export class EmailPreviewPopupComponent implements OnInit {
   to: any;
   cc: any;
   subject: any;
-  content: any;
+  content: any = null;
   readonly: boolean = false;
   previewTemplate: any = [];
   requestOptions: any;
   //rfqTemplate: any;
   items: Items[];
-  public Editor = ClassicEditor;
   documentsList: any;
   entityId: any;
 
@@ -83,32 +108,31 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.selected = 'MultipleRfqNewRFQEmailTemplate';
     this.readonly = this.SelectedSellerWithProds.ReadOnly;
 
-if(!this.readonly){
-  this.SelectedSellerWithProds.some((prod)=>{
-    this.prod1 = prod.checkProd1? prod.checkProd1: false;
-    this.prod2 = prod.checkProd2? prod.checkProd2: false;
-    this.prod3 = prod.checkProd3? prod.checkProd3: false;
-    this.prod4 = prod.checkProd4? prod.checkProd4: false;
-    this.prod5 = prod.checkProd5? prod.checkProd5: false;
+    if (!this.readonly) {
+      this.SelectedSellerWithProds.some(prod => {
+        this.prod1 = prod.checkProd1 ? prod.checkProd1 : false;
+        this.prod2 = prod.checkProd2 ? prod.checkProd2 : false;
+        this.prod3 = prod.checkProd3 ? prod.checkProd3 : false;
+        this.prod4 = prod.checkProd4 ? prod.checkProd4 : false;
+        this.prod5 = prod.checkProd5 ? prod.checkProd5 : false;
 
-    if( this.prod1 == true) {
-      return(this.prod1);
+        if (this.prod1 == true) {
+          return this.prod1;
+        }
+        if (this.prod2 == true) {
+          return this.prod2;
+        }
+        if (this.prod3 == true) {
+          return this.prod3;
+        }
+        if (this.prod4 == true) {
+          return this.prod4;
+        }
+        if (this.prod5 == true) {
+          return this.prod5;
+        }
+      });
     }
-    if( this.prod2 == true) {
-      return(this.prod2);
-    }
-    if( this.prod3 == true) {
-      return(this.prod3);
-    }
-    if( this.prod4 == true) {
-      return(this.prod4);
-    }
-    if( this.prod5 == true) {
-      return(this.prod5);
-    }
-  });
-
-}
 
     //if(this.SelectedSellerWithProds.requestOffers?.length > 0){
     //if(this.SelectedSellerWithProds.requestOffers == undefined && this.SelectedSellerWithProds.requestOffers?.filter(off => off.isRfqskipped === false).length > 0){
@@ -141,7 +165,14 @@ if(!this.readonly){
       this.locationRowsAcrossRequest = spotNegotiation.locationsRows;
     });
 
-    if(!this.readonly && (this.prod1 ==false && this.prod2 ==false && this.prod3 ==false && this.prod4 ==false && this.prod5 ==false)){
+    if (
+      !this.readonly &&
+      this.prod1 == false &&
+      this.prod2 == false &&
+      this.prod3 == false &&
+      this.prod4 == false &&
+      this.prod5 == false
+    ) {
       this.toaster.error('Please select products to preview email');
       return;
     }
@@ -256,7 +287,7 @@ if(!this.readonly){
       const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
       response.subscribe((res: any) => {
         this.spinner.hide();
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res['previewResponse']) {
@@ -273,6 +304,7 @@ if(!this.readonly){
           for (let i = 0; i < this.filesList.length; i++) {
             this.filesList[i].isIncludedInMail = true;
           }
+          this.changeDetector.markForCheck();
         } else {
           this.clearData();
           this.toaster.error(res);
@@ -286,7 +318,7 @@ if(!this.readonly){
       );
       emailLogsPreview.subscribe((res: any) => {
         this.spinner.hide();
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res.payload) {
@@ -320,7 +352,7 @@ if(!this.readonly){
       this.previewTemplate.to = [];
     }
 
-    if(selectedFromLookup){
+    if (selectedFromLookup) {
       this.previewTemplate.to.push(this.toList2?.find(c => c.name == item));
     } else {
       this.previewTemplate.to.push({ IdEmailAddress: item });
@@ -345,28 +377,26 @@ if(!this.readonly){
     }
   }
 
-  searchCC(item){
+  searchCC(item) {
     this.ccList2 = this.ccList;
-    if(item != null){
+    if (item != null) {
       this.ccList2 = this.ccList.filter(e => {
         if (e.name.toLowerCase().includes(item.toLowerCase())) {
           return true;
-        }
-        else{
+        } else {
           return false;
         }
       });
     }
   }
 
-  searchTO(item){
+  searchTO(item) {
     this.toList2 = this.toList;
-    if(item != null){
+    if (item != null) {
       this.toList2 = this.toList.filter(e => {
         if (e.name.toLowerCase().includes(item.toLowerCase())) {
           return true;
-        }
-        else{
+        } else {
           return false;
         }
       });
@@ -384,7 +414,7 @@ if(!this.readonly){
     ) {
       this.previewTemplate.cc = [];
     }
-    if(selectedFromLookup){
+    if (selectedFromLookup) {
       this.previewTemplate.cc.push(this.ccList2?.find(c => c.name == item));
     } else {
       this.previewTemplate.cc.push({ IdEmailAddress: item });
@@ -432,9 +462,13 @@ if(!this.readonly){
         RequestId: singleSeller.requestId,
         PhysicalSupplierCounterpartyId:
           singleSeller.physicalSupplierCounterpartyId,
-        RequestProductIds:this.currentRequestInfo.requestLocations
-        .filter(loc => loc.id === singleSeller.requestLocationId).map(prod =>
-          prod.requestProducts.map((e, i) => singleSeller['checkProd' + (i + 1)] ? e.id : '').filter(x => x))[0]
+        RequestProductIds: this.currentRequestInfo.requestLocations
+          .filter(loc => loc.id === singleSeller.requestLocationId)
+          .map(prod =>
+            prod.requestProducts
+              .map((e, i) => (singleSeller['checkProd' + (i + 1)] ? e.id : ''))
+              .filter(x => x)
+          )[0]
       };
       selectedSellers.push(selectedSeller);
     });
@@ -461,7 +495,7 @@ if(!this.readonly){
     );
     response.subscribe((res: any) => {
       this.spinner.hide();
-      if(res?.message == 'Unauthorized'){
+      if (res?.message == 'Unauthorized') {
         return;
       }
       if (res instanceof Object && res['validationMessage'].length > 0) {
@@ -614,7 +648,9 @@ if(!this.readonly){
       let currentLocProd = currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
-      let reqLocations = requestlist.filter(req=>req.requestLocations.some(reqloc=>reqloc.id==row.requestLocationId));
+      let reqLocations = requestlist.filter(req =>
+        req.requestLocations.some(reqloc => reqloc.id == row.requestLocationId)
+      );
       let reqProducts = reqLocations[0].requestLocations.filter(
         row1 => row1.id == row.requestLocationId
       );
@@ -643,11 +679,15 @@ if(!this.readonly){
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
-        row.requestOffers = row.requestOffers?.sort((a,b)=>
-        a.requestProductTypeId  === b.requestProductTypeId ?
-        (a.requestProductId > b.requestProductId ? 1 : -1) :
-       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
-       );
+        row.requestOffers = row.requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
+        );
         return row;
       }
 
@@ -670,11 +710,15 @@ if(!this.readonly){
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
         this.UpdateProductsSelection(currentLocProd, row);
-        row.requestOffers = row.requestOffers?.sort((a,b)=>
-        a.requestProductTypeId  === b.requestProductTypeId ?
-        (a.requestProductId > b.requestProductId ? 1 : -1) :
-       (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
-       );
+        row.requestOffers = row.requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
+        );
       }
       return row;
     });
@@ -729,7 +773,7 @@ if(!this.readonly){
       );
       response.subscribe((res: any) => {
         this.spinner.hide();
-        if(res?.message == 'Unauthorized'){
+        if (res?.message == 'Unauthorized') {
           return;
         }
         if (res) {
@@ -740,20 +784,22 @@ if(!this.readonly){
     }
   }
 
-  validateEmail(inputData:string, type: string){
+  validateEmail(inputData: string, type: string) {
     const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const validateemail =  regularExpression.test(String(inputData).toLowerCase());
-    if(validateemail && type == 'ccMail'){
-        this.addCc(inputData, false);
+    const validateemail = regularExpression.test(
+      String(inputData).toLowerCase()
+    );
+    if (validateemail && type == 'ccMail') {
+      this.addCc(inputData, false);
     }
-    if(validateemail && type == 'toMail'){
+    if (validateemail && type == 'toMail') {
       this.addTo(inputData, false);
     }
-    if(!validateemail && type == 'ccMail'){
-      this.ccEmail ='';
+    if (!validateemail && type == 'ccMail') {
+      this.ccEmail = '';
     }
-    if(!validateemail && type == 'toMail' ){
-      this.toEmail ='';
+    if (!validateemail && type == 'toMail') {
+      this.toEmail = '';
     }
   }
 
@@ -786,7 +832,7 @@ if(!this.readonly){
     this.spotNegotiationService
       .getDocuments(payload)
       .subscribe((response: any) => {
-        if(response?.message == 'Unauthorized'){
+        if (response?.message == 'Unauthorized') {
           return;
         }
         if (typeof response === 'string') {
