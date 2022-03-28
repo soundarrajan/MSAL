@@ -21,11 +21,9 @@ import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-gr
 import { ShiptechCustomHeaderGroup } from '../../../../../core/ag-grid/shiptech-custom-header-group';
 import { SpotNegotiationService } from '../../../../../services/spot-negotiation.service';
 import {
-  DeleteSeller,
   EditLocationRow,
   RemoveCounterparty,
   RemoveLocationsRowsOriData,
-  SetCounterpartyList,
   SetLocationsRows,
   UpdateAdditionalCostList,
   UpdateRequest
@@ -73,11 +71,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   uomsMap: any;
   requestOptions: any;
   locationIndex: number;
+  reqLocId: number;
 
   @Input('location') set _setlocation(
     location
   ) {
-    this.locations = [location];
+    this.reqLocId = location.id;
+    
   }
   @Input('locationIndex') set _setlocationIndex(
     locationIndex
@@ -85,7 +85,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.locationIndex = locationIndex;
   }
 
-
+  public overlayLoadingTemplate =
+  '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Please wait...</span>';
+public overlayNoRowsTemplate =
+  '<span>No rows to show</span>';
   context: any;
 
   menuOptions = [{ label: 'ETA' }, { label: 'ETB' }, { label: 'ETD' }];
@@ -311,7 +314,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       onGridReady: params => {
         // Ng init for AG GRID;
         this.Isspotgridrefresh = true;
-
+        params.api.showLoadingOverlay();
         this.gridOptions_counterparty.api = params.api;
         this.gridOptions_counterparty.columnApi = params.columnApi;
         if (params.columnApi.getAllDisplayedColumns().length <= 20) {
@@ -324,7 +327,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.totalOfferHeaderWidth = params.columnApi
           .getColumn('totalOffer')
           .getActualWidth();
-        // this.gridOptions_counterparty.api.showLoadingOverlay();
+         // this.gridOptions_counterparty.api.showLoadingOverlay();
       },
 
       onColumnResized: function(params) {
@@ -416,23 +419,25 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         }
       ]
     };
+    this.gridOptions_counterparty.api.showLoadingOverlay();
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
+      this.gridOptions_counterparty.api.hideOverlay();
       if (res?.message == 'Unauthorized') {
         return;
       }
       if (res.status) {
         this.toastr.success('Price update successful.');
 
-        var params = { force: true };
+        //var params = { force: true };
         setTimeout(() => {
-          this.gridOptions_counterparty.api?.refreshCells(params);
+          //this.gridOptions_counterparty.api?.refreshCells(params);
           setTimeout(() => {
             let element = document.getElementById(elementidValue);
             if (element) {
               this.moveCursorToEnd(element);
             }
-          });
+          },1000);
         });
 
         reqs = reqs.map(e => {
@@ -448,6 +453,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           });
           return { ...e, requestLocations };
         });
+        // Update the store
+        this.store.dispatch(new EditLocationRow(updatedRow));
         this.store.dispatch(new UpdateRequest(reqs));
       } else {
         this.toastr.error(res.message);
@@ -734,6 +741,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           flex: 5,
           minWidth: 94,
           valueGetter: params => {
+            //debugger;
             const details = this.spotNegotiationService.getRowProductDetails(
               params.data,
               product.id
@@ -890,8 +898,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           false,
           null
         );
-        // Update the store
-        this.store.dispatch(new EditLocationRow(updatedRow));
+
         // Save to the cloud
         this.saveRowToCloud(updatedRow, colDef['product'], elementidValue);
       });
@@ -1705,7 +1712,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
   ngOnInit(): void {
     const self = this;
-    
+
     this.route.data.subscribe(data => {
       //this.store.dispatch(new SetCounterpartyList(data.counterpartyList));
       this.uomsMap = new Map(data.uoms.map(key => [key.id, key.name]));
@@ -1729,7 +1736,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
 
       this.locationsRows = spotNegotiation.locationsRows;
-      //this.locations = spotNegotiation.locations;
+      this.locations = spotNegotiation.locations.filter(req => req.id == this.reqLocId);
       this.requestOptions = spotNegotiation.requests;
 
       // setTimeout(() => {
