@@ -73,22 +73,16 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   locationIndex: number;
   reqLocId: number;
 
-  @Input('location') set _setlocation(
-    location
-  ) {
+  @Input('location') set _setlocation(location) {
     this.reqLocId = location.id;
-    
   }
-  @Input('locationIndex') set _setlocationIndex(
-    locationIndex
-  ) {
+  @Input('locationIndex') set _setlocationIndex(locationIndex) {
     this.locationIndex = locationIndex;
   }
 
   public overlayLoadingTemplate =
-  '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Please wait...</span>';
-public overlayNoRowsTemplate =
-  '<span>No rows to show</span>';
+    '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Please wait...</span>';
+  public overlayNoRowsTemplate = '<span>No rows to show</span>';
   context: any;
 
   menuOptions = [{ label: 'ETA' }, { label: 'ETB' }, { label: 'ETD' }];
@@ -327,7 +321,7 @@ public overlayNoRowsTemplate =
         this.totalOfferHeaderWidth = params.columnApi
           .getColumn('totalOffer')
           .getActualWidth();
-         // this.gridOptions_counterparty.api.showLoadingOverlay();
+        // this.gridOptions_counterparty.api.showLoadingOverlay();
       },
 
       onColumnResized: function(params) {
@@ -437,7 +431,7 @@ public overlayNoRowsTemplate =
             if (element) {
               this.moveCursorToEnd(element);
             }
-          },1000);
+          }, 1000);
         });
 
         reqs = reqs.map(e => {
@@ -623,11 +617,6 @@ public overlayNoRowsTemplate =
               colDef.field,
               newValue
             );
-
-            let element = document.getElementById(elementidValue);
-            if (element) {
-              this.moveCursorToEnd(element);
-            }
 
             this.checkAdditionalCost(
               updatedRow,
@@ -1736,7 +1725,9 @@ public overlayNoRowsTemplate =
       }
 
       this.locationsRows = spotNegotiation.locationsRows;
-      this.locations = spotNegotiation.locations.filter(req => req.id == this.reqLocId);
+      this.locations = spotNegotiation.locations.filter(
+        req => req.id == this.reqLocId
+      );
       this.requestOptions = spotNegotiation.requests;
 
       // setTimeout(() => {
