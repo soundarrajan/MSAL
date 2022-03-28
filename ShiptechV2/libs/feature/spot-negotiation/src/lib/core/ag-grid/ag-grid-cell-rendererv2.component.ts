@@ -1620,8 +1620,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
 
-
   onGetFocus(event, params) {
+    console.log(params);
     let idValue = this.returnRowIndex(params);
     let element = document.getElementById(idValue);
     if (element) {
@@ -1814,7 +1814,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.toastr.warning(res.message);
         this.changeDetector.detectChanges();
       }
-    });    
+    });
   }
 
   changeCurrencyForAdditionalCost(currencyId, exchangeRateValue) {
