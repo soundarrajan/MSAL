@@ -1107,9 +1107,6 @@ export class AdditionalCostModalComponent implements OnInit {
       return null;
     }
     if (plainNumber) {
-      if (amountPrecision) {
-        plainNumber = this.truncateToDecimals(plainNumber, amountPrecision);
-      }
       if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {
