@@ -305,7 +305,6 @@ export class EmailPreviewPopupComponent implements OnInit {
             this.filesList[i].isIncludedInMail = true;
           }
           this.changeDetector.markForCheck();
-          this.changeDetector.detectChanges();
         } else {
           this.clearData();
           this.toaster.error(res);
