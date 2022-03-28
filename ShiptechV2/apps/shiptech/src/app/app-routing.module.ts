@@ -308,7 +308,10 @@ const routes: Routes = environment.useAdal
             path: KnownPrimaryRoutes.Invoices,
             canActivate: [MsalGuard],
             loadChildren: () =>
-              import('@shiptech/feature/invoice').then(m => m.InvoiceModule)
+              import('@shiptech/feature/invoice').then(m => m.InvoiceModule),
+            resolve: {
+              data: BootstrapResolver
+            }
           }
         ]
       },
