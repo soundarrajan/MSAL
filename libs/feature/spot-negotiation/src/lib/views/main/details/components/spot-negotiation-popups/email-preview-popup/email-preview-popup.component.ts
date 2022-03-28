@@ -39,9 +39,6 @@ interface EmailAddress {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmailPreviewPopupComponent implements OnInit {
-  @ViewChild('editor', { static: false })
-  public editorComponent: CKEditorComponent;
-
   public configuration = {
     height: '450px',
     disableNativeSpellChecker: false,
