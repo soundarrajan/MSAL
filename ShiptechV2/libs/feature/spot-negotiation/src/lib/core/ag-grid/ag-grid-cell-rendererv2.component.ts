@@ -26,7 +26,6 @@ import {
   EditLocationRow,
   SetLocationsRows,
   EditCounterpartyList,
-  EditLocations,
   UpdateSpecificRequests
 } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
@@ -1761,8 +1760,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       toCurrencyCode: this.getCurrencyCode(toCurrency)
     };
     let exchangeRateValue = 1;
+    params.api?.showLoadingOverlay();
     const response = this._spotNegotiationService.getExchangeRate(payload);
     response.subscribe((res: any) => {
+      params.api.hideOverlay();
       if (res.status) {
         exchangeRateValue = res.exchangeRateValue;
         this.store.dispatch(new EditLocationRow(newData));
@@ -1785,7 +1786,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             requestOffers: requestOffers
           }
         };
-
+        params.api?.showLoadingOverlay();
         const applyExchangeRate = this._spotNegotiationService.applyExchangeRate(
           payload
         );
@@ -1794,6 +1795,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           res.exchangeRateValue
         );
         applyExchangeRate.subscribe((res: any) => {
+          params.api?.hideOverlay();
           if (res.status) {
             this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
             this.store.dispatch(new EditLocationRow(futureRowData));
@@ -1812,7 +1814,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.toastr.warning(res.message);
         this.changeDetector.detectChanges();
       }
-    });
+    });    
   }
 
   changeCurrencyForAdditionalCost(currencyId, exchangeRateValue) {
