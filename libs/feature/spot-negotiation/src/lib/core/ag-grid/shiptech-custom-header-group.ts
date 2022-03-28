@@ -167,9 +167,10 @@ import _, { cloneDeep } from 'lodash';
     <div class="resize-grid-header" *ngIf="params.type == 'bg-header'">
       <div class="options">
         <div class="checkBox" matTooltip="{{ params.product.productName }}">
-          <mat-checkbox class="noborder" [checked]="true">{{
+          <!-- <mat-checkbox class="noborder" [checked]="true">{{
             params.product.productName
-          }}</mat-checkbox>
+          }}</mat-checkbox> -->
+         <span class="noborder" style="padding: 4px !important"> {{params.product.productName}} </span>
         </div>
         <div class="optionsText">
           <div class="qty">
