@@ -267,7 +267,7 @@ import _, { cloneDeep } from 'lodash';
               class="value"
               contenteditable="true"
               [(ngModel)]="livePrice"
-              (focusout)="calculateTargetPrice()"
+              (change)="calculateTargetPrice()"
               [disabled]="
                 params.product.status === 'Stemmed' ||
                 params.product.status === 'Confirmed'
