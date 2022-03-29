@@ -2753,14 +2753,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.showMoreButtons = !this.showMoreButtons;
   }
 
-  /**
-   * truncate to decimal place.
-   */
-  truncateToDecimals(num, dec) {
-    const calcDec = Math.pow(10, dec);
-    return Math.trunc(num * calcDec) / calcDec;
-  }
-
   amountFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
       return null;
@@ -2773,9 +2765,6 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       return null;
     }
     if (plainNumber) {
-      if (amountPrecision) {
-        plainNumber = this.truncateToDecimals(plainNumber, amountPrecision);
-      }
       if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {

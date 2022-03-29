@@ -678,7 +678,8 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   roundDownValue(value, currentRowIndex, type) {
     if (type == 'quantity') {
       let quantityPrecision = this.tenantService.quantityPrecision;
-      let plainNumber = this.convertDecimalSeparatorStringToNumber(value);
+      let viewValue = `${value}`;
+      let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
       let roundedValue = this._decimalPipe.transform(
         plainNumber,
         '1.' + quantityPrecision + '-' + quantityPrecision
@@ -689,7 +690,8 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
         .pricePrecision
         ? this.formValues.productDetails[currentRowIndex].pricePrecision
         : this.tenantService.pricePrecision;
-      let plainNumber = this.convertDecimalSeparatorStringToNumber(value);
+      let viewValue = `${value}`;
+      let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
       let roundedValue = this._decimalPipe.transform(
         plainNumber,
         '1.' + pricePrecision + '-' + pricePrecision
@@ -697,14 +699,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
 
       return roundedValue;
     }
-  }
-
-  /**
-   * truncate to decimal place.
-   */
-  truncateToDecimals(num, dec) {
-    const calcDec = Math.pow(10, dec);
-    return Math.trunc(num * calcDec) / calcDec;
   }
 
   amountFormatValue(value) {
@@ -719,9 +713,6 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
       return null;
     }
     if (plainNumber) {
-      if (amountPrecision) {
-        plainNumber = this.truncateToDecimals(plainNumber, amountPrecision);
-      }
       if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {

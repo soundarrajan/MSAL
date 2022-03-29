@@ -246,6 +246,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
       if (data.contract) {
         this.formValues = data.contract;
+        this.formatAdditionalCostIds();
         if (this.entityId) {
           this.titleService.setTitle('Contract' + ' - ' + this.formValues.name);
           document.getElementById('navbar-text').innerHTML =
@@ -400,6 +401,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.toastr.error(result);
         } else {
           this.formValues = _.cloneDeep(result);
+          this.formatAdditionalCostIds();
           this.formValues.lastModifiedBy = null;
           this.formValues.hasBeenExtended = null;
           this.formValues.lastModifiedByUser = null;
@@ -964,6 +966,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
               )
               .subscribe((data: any) => {
                 this.formValues = _.cloneDeep(data);
+                this.formatAdditionalCostIds();
                 this.eventsSubject3.next(0);
                 if (typeof this.formValues.status != 'undefined') {
                   if (this.formValues.status.name) {
@@ -977,6 +980,26 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
               });
           }
         });
+    }
+  }
+
+  formatAdditionalCostIds() {
+    for (let i = 0; i < this.formValues.products.length; i++) {
+      for (
+        let j = 0;
+        j < this.formValues.products[i].additionalCosts.length;
+        j++
+      ) {
+        if (!this.formValues.products[i].additionalCosts[j].isDeleted) {
+          if (this.formValues.products[i].additionalCosts[j].additionalCost) {
+            const additionalLocationId = this.formValues.products[i]
+              .additionalCosts[j].locationAdditionalCostId;
+            if (!this.formValues.products[i].additionalCosts[j].additionalCost?.locationid && additionalLocationId) {
+              this.formValues.products[i].additionalCosts[j].additionalCost.locationid = additionalLocationId;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -1023,6 +1046,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.toastr.success('Contract confirmed!');
           this.spinner.hide();
           this.formValues = _.cloneDeep(result);
+          this.formatAdditionalCostIds();
           this.eventsSubject3.next(0);
           if (typeof this.formValues.status != 'undefined') {
             if (this.formValues.status.name) {
@@ -1059,6 +1083,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             )
             .subscribe((data: any) => {
               this.formValues = _.cloneDeep(data);
+              this.formatAdditionalCostIds();
               this.eventsSubject3.next(0);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
@@ -1093,6 +1118,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             )
             .subscribe((data: any) => {
               this.formValues = _.cloneDeep(data);
+              this.formatAdditionalCostIds();
               this.eventsSubject3.next(0);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
@@ -1129,6 +1155,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             )
             .subscribe((data: any) => {
               this.formValues = _.cloneDeep(data);
+              this.formatAdditionalCostIds();
               this.eventsSubject3.next(0);
               if (typeof this.formValues.status != 'undefined') {
                 if (this.formValues.status.name) {
@@ -1151,6 +1178,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.formValues = result;
+        this.formatAdditionalCostIds();
         this.formValues.hasBeenExtended = true;
         this.changeDetectorRef.detectChanges();
       }
@@ -1174,6 +1202,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
   public changeFormData(formValues: any): void {
     this.formValues = formValues;
+    this.formatAdditionalCostIds();
     this.eventsSubject5.next(formValues);
     this.changeDetectorRef.detectChanges();
     this.changeDetectorRef.markForCheck();

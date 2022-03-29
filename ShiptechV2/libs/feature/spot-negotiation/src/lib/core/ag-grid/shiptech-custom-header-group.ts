@@ -167,9 +167,10 @@ import _, { cloneDeep } from 'lodash';
     <div class="resize-grid-header" *ngIf="params.type == 'bg-header'">
       <div class="options">
         <div class="checkBox" matTooltip="{{ params.product.productName }}">
-          <mat-checkbox class="noborder" [checked]="true">{{
+          <!-- <mat-checkbox class="noborder" [checked]="true">{{
             params.product.productName
-          }}</mat-checkbox>
+          }}</mat-checkbox> -->
+         <span class="noborder" style="padding: 4px !important"> {{params.product.productName}} </span>
         </div>
         <div class="optionsText">
           <div class="qty">
@@ -184,9 +185,13 @@ import _, { cloneDeep } from 'lodash';
               {{ params.product.uomName }}</span
             >
           </div>
-          <div class="arrow" [ngClass]="
-              params.product.status === 'Stemmed' ? 'disabled-new-events' : ''"
-              (click)="pricinghistorypopup(params)">
+          <div
+            class="arrow"
+            [ngClass]="
+              params.product.status === 'Stemmed' ? 'disabled-new-events' : ''
+            "
+            (click)="pricinghistorypopup(params)"
+          >
             <span class="title" title="{{ params.product.indexName }}">{{
               params.product.indexCode == null ? '--' : params.product.indexCode
             }}</span>
@@ -200,12 +205,24 @@ import _, { cloneDeep } from 'lodash';
       </div>
       <div class="label">
         <div class="label-content">
-          <div class="label-element"
-            [matTooltip]="((params.product.status.toLowerCase() != 'stemmed' && !isLatestClosurePrice) ?
-            'Price Outdated. Last published on: ' : 'Pricing published on: ')
-            + (this.closureDate == 'Invalid date' ? '--' : this.closureDate)">
+          <div
+            class="label-element"
+            [matTooltip]="
+              (params.product.status.toLowerCase() != 'stemmed' &&
+              !isLatestClosurePrice
+                ? 'Price Outdated. Last published on: '
+                : 'Pricing published on: ') +
+              (this.closureDate == 'Invalid date' ? '--' : this.closureDate)
+            "
+          >
             <div class="title">
-              <span class="info-icon-amber" *ngIf="params.product.status.toLowerCase() != 'stemmed' && !isLatestClosurePrice"></span>
+              <span
+                class="info-icon-amber"
+                *ngIf="
+                  params.product.status.toLowerCase() != 'stemmed' &&
+                  !isLatestClosurePrice
+                "
+              ></span>
               Closure
             </div>
             <div
@@ -250,7 +267,7 @@ import _, { cloneDeep } from 'lodash';
               class="value"
               contenteditable="true"
               [(ngModel)]="livePrice"
-              (focusout)="calculateTargetPrice()"
+              (change)="calculateTargetPrice()"
               [disabled]="
                 params.product.status === 'Stemmed' ||
                 params.product.status === 'Confirmed'
@@ -295,7 +312,7 @@ import _, { cloneDeep } from 'lodash';
             </div>
           </div>
         </div>
-        <div class="resize-icon">
+        <div class="resize-icon" style="display: none;">
           <div
             class="img resizeIcons"
             [ngClass]="this.expandState"
@@ -344,6 +361,7 @@ export class ShiptechCustomHeaderGroup {
   availableContracts = [];
   requests: any;
   isLatestClosurePrice: boolean = false;
+  locations: any;
   ngOnInit(): any {
     this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
@@ -459,23 +477,33 @@ export class ShiptechCustomHeaderGroup {
 
   agInit(params: any): void {
     this.params = params;
+    this.store.selectSnapshot(({ spotNegotiation }) => {
+      this.locations = spotNegotiation.locations;
+    });
+
     if (this.params.product) {
-      let formattedLivePrice = this.priceFormatValue(
-        this.params.product.requestGroupProducts.livePrice,
-        'livePrice'
-      );
-      this.livePrice = formattedLivePrice;
-      this.targetValue = this.params.product.requestGroupProducts.targetPrice;
-      this.closureValue = this.params.product.requestGroupProducts.closurePrice;
-      this.isLatestClosurePrice = this.params.product.requestGroupProducts.isLatestClosurePrice;
-      this.closureDate = moment(
-        this.params.product.requestGroupProducts.closureDate
-      ).format('DD-MMM-YYYY');
-      this.benchMark = this.params.product.requestGroupProducts.benchMark;
       this.bestContractId = this.params.product.requestGroupProducts.bestContractId;
       this.requestProductId = this.params.product.id;
       this.requestLocationId = this.params.requestLocationId;
       this.quoteDate = moment(this.quoteDate).format('DD-MMM-YYYY');
+      if(this.locations){
+        let requestLoc = this.locations.find(l => l.id == this.requestLocationId);
+        if(requestLoc?.requestProducts){
+          let updatedProdLivePrice = requestLoc.requestProducts.find(p => p.id == this.requestProductId);
+          let formattedLivePrice = this.priceFormatValue(
+            updatedProdLivePrice.requestGroupProducts.livePrice,
+            'livePrice'
+          );
+          this.livePrice = formattedLivePrice;
+          this.targetValue = updatedProdLivePrice.requestGroupProducts.targetPrice;
+          this.closureValue = updatedProdLivePrice.requestGroupProducts.closurePrice;
+          this.isLatestClosurePrice = updatedProdLivePrice.requestGroupProducts.isLatestClosurePrice;
+          this.closureDate = moment(
+            updatedProdLivePrice.requestGroupProducts.closureDate
+          ).format('DD-MMM-YYYY');
+          this.benchMark = updatedProdLivePrice.requestGroupProducts.benchMark;
+        }
+      }
     }
 
     this.params.columnGroup
@@ -529,7 +557,9 @@ export class ShiptechCustomHeaderGroup {
   }
 
   pricinghistorypopup(params: any): void {
-    const reqLocation = this.currentRequestInfo.requestLocations.find(x => x.id == params.requestLocationId);
+    const reqLocation = this.currentRequestInfo.requestLocations.find(
+      x => x.id == params.requestLocationId
+    );
     const dialogRef = this.dialog.open(MarketpricehistorypopupComponent, {
       width: '500vw',
       height: '90vh',
@@ -622,7 +652,8 @@ export class ShiptechCustomHeaderGroup {
         });
       });
       this.closureValue = requestGroup[0].requestGroupProducts.closurePrice;
-      this.isLatestClosurePrice = requestGroup[0].requestGroupProducts.isLatestClosurePrice;
+      this.isLatestClosurePrice =
+        requestGroup[0].requestGroupProducts.isLatestClosurePrice;
       this.closureDate = moment(
         requestGroup[0].requestGroupProducts.closureDate
       ).format('DD-MMM-YYYY');
@@ -1011,10 +1042,16 @@ export class ShiptechCustomHeaderGroup {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           ).displayName;
         }
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=>
-        a.requestProductTypeId  === b.requestProductTypeId ?
-        (a.requestProductId > b.requestProductId ? 1 : -1) :
-        (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
+        row.requestOffers = priceDetailsArray[
+          index
+        ].requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
         );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
@@ -1063,11 +1100,16 @@ export class ShiptechCustomHeaderGroup {
                 x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
             ).displayName;
           }
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=>
-          a.requestProductTypeId  === b.requestProductTypeId ?
-          (a.requestProductId > b.requestProductId ? 1 : -1) :
-         (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
-         );
+          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
+            (a, b) =>
+              a.requestProductTypeId === b.requestProductTypeId
+                ? a.requestProductId > b.requestProductId
+                  ? 1
+                  : -1
+                : a.requestProductTypeId > b.requestProductTypeId
+                ? 1
+                : -1
+          );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
         }
