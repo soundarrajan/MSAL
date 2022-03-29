@@ -162,6 +162,14 @@ export class ApplicablecostpopupComponent implements OnInit {
             this.locationBasedCosts = this.formatCostItemForDisplay(
               response.locationAdditionalCosts
             );
+            for (let i = 0; i < this.locationBasedCosts.length; i++) {
+              if (
+                this.locationBasedCosts[i].costTypeId == COST_TYPE_IDS.PERCENT
+              ) {
+                this.locationBasedCosts[i].requestOfferId = null;
+                this.locationBasedCosts[i].requestOfferIds = null;
+              }
+            }
             this.changeDetectorRef.detectChanges();
           });
       });
@@ -294,8 +302,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     let zeroPricedRTAddCosts = _.filter(additionalCosts, function(addCost) {
       return (
         !addCost.isDeleted &&
-        (addCost.costType == 'Total' ||
-          addCost.costType == 'Range') &&
+        (addCost.costType == 'Total' || addCost.costType == 'Range') &&
         addCost.price <= 0
       );
     });
