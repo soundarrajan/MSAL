@@ -251,8 +251,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' },
           suppressNavigable: true,
-          lockPosition: true
-          //, pinned:'left',
+          lockPosition: true,
+          valueGetter: params=>{
+            console.log(params);
+            let totalOfferVal = null;
+            params.data.requestOffers?.forEach(element => {
+                totalOfferVal += element.amount;
+            });
+            return totalOfferVal;
+          }
         }
       ]
     }
@@ -1622,7 +1629,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           smallestOffer = lowestTotalOfferRow.totalOffer;
       }
 
-      this.locationsRows.map(row => {
+    this.locationsRows.map(row => {
         // Create key with id if dosen't exists;
         if (!this.highlightedCells[product.productId]) {
           this.highlightedCells[product.productId] = {};
@@ -1644,7 +1651,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           this.highlightedCells[product.productId].requestProductId =
             product.id;
         }
-    
+
         if (!this.highlightedCells[requestId]) {
           this.highlightedCells[requestId] = 0;
         }
@@ -1653,7 +1660,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           .length;
         if (
           row.totalOffer &&
-          quotedProductsLength === requestProductsLength &&
+          //quotedProductsLength === requestProductsLength &&
           row.requestId == requestId &&
           Number(row.totalOffer) > 0 &&
           Number(smallestOffer) > Number(row.totalOffer)
@@ -1669,20 +1676,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
 
   getRowProductDetails(row, productId) {
-    // const currentLocation = this.locations.find(
-    //   e => e.id === this.reqLocId
-    // );
-
+ 
     let futureRow = JSON.parse(JSON.stringify(row));
-    // let selectedSellerRows = futureRow?.requestOffers?.map(e => {
-    //   let prodId = currentLocation?.requestProducts?.find(rp => rp.id === e. requestProductId)?.productId;
-    //   return { ...e, prodId: prodId };
-    // });
-  
-    //let reqProdId = currentLocation?.requestProducts?.find(rp => rp.productId == productId)?.id;
     
     const priceDetails = futureRow?.requestOffers?.find(
-      item => item.quotedProductId === productId
+      item =>  item.productId === productId
     );
 
     if (priceDetails) {
@@ -1750,10 +1748,19 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         return null;
       }
 
-      this.locationsRows = spotNegotiation.locationsRows;
+      //this.locationsRows = spotNegotiation.locationsRows;
       this.locations = spotNegotiation.locations.filter(
         req => req.id == this.reqLocId
       );
+      this.locationsRows = spotNegotiation?.locationsRows?.map(e => {
+        let reqProdOffers = e?.requestOffers?.map(reqProd => {
+          let reqProOffers = spotNegotiation.locations.find(
+            req => req.id == e.requestLocationId
+          )?.requestProducts?.find(rp => rp.id === reqProd.requestProductId)?.productId;
+          return { ...reqProd, productId: reqProOffers };
+        });
+        return { ...e, requestOffers: reqProdOffers };
+      });
       this.requestOptions = spotNegotiation.requests;
 
       // setTimeout(() => {
