@@ -251,8 +251,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' },
           suppressNavigable: true,
-          lockPosition: true
-          //, pinned:'left',
+          lockPosition: true,
+          valueGetter: params=>{
+            console.log(params);
+            let totalOfferVal = null;
+            params.data.requestOffers?.forEach(element => {
+                totalOfferVal += element.amount;
+            });
+            return totalOfferVal;
+          }
         }
       ]
     }
@@ -1644,7 +1651,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           this.highlightedCells[product.productId].requestProductId =
             product.id;
         }
-    
+
         if (!this.highlightedCells[requestId]) {
           this.highlightedCells[requestId] = 0;
         }
@@ -1678,9 +1685,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     //   let prodId = currentLocation?.requestProducts?.find(rp => rp.id === e. requestProductId)?.productId;
     //   return { ...e, prodId: prodId };
     // });
-  
+
     //let reqProdId = currentLocation?.requestProducts?.find(rp => rp.productId == productId)?.id;
-    
+
     const priceDetails = futureRow?.requestOffers?.find(
       item => item.quotedProductId === productId
     );
