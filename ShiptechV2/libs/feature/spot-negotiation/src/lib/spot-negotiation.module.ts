@@ -79,7 +79,6 @@ import { NegotiationDetailsToolbarComponent } from './views/main/toolbar/spot-ne
 import { NavBarResolver } from './views/main/details/navbar-route.resolver';
 import { UomsRouteResolver } from './uoms-route.resolver';
 import { RemoveCounterpartyComponent } from './views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PortalModule } from '@angular/cdk/portal';
@@ -100,6 +99,7 @@ import { DragDropFileUploadDirective } from './views/main/details/directives/dra
 import { MatTableModule } from '@angular/material/table';
 import { CustomHeader } from './core/ag-grid/custom-header.component';
 import { CustomHeaderSelectAll } from './core/ag-grid/custom-header-select-all.component';
+import { CKEditorModule } from 'ckeditor4-angular';
 
 @NgModule({
   imports: [
