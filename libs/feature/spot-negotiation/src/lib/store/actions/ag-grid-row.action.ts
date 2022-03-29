@@ -5,7 +5,7 @@ export class SetStaticLists {
 }
 
 export class SetCounterpartyList {
-  static readonly type = '[Counterparty List] Set';
+  static readonly type = '[CounterpartyList] Set';
 
   constructor(public payload: any) {}
 }

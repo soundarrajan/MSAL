@@ -107,7 +107,6 @@ export class NegotiationToolbarComponent
       KnownPrimaryRoutes.SpotNegotiation,
       this.negotiationId
     ];
-    let disabled = !this.tenantConfiguration?.isNegotiationReport;
     this.menuItems = [
       {
         label: 'Main Page',
@@ -118,16 +117,14 @@ export class NegotiationToolbarComponent
         routerLinkActiveOptions: { exact: true }
       },
       {
-        label: 'Report',
-        routerLink: disabled
+        label: 'Report'
           ? null
           : [
               ...routeLinkToNegotiationDetails,
               KnownSpotNegotiationRoutes.reportPath
             ],
         routerLinkActiveOptions: { exact: true },
-        disabled,
-        visible: this.isAuthorizedForReportsTab
+        visible: this.isAuthorizedForReportsTab && this.tenantConfiguration.isNegotiationReport
       },
       {
         label: 'Documents',

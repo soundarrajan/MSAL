@@ -64,7 +64,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   emailLogUrl: string;
   baseOrigin: string;
   isAuthorizedForReportsTab: boolean = false;
-  public menuItems: MenuItem[];
+  public menuItems: any[];
 
   constructor(
     private route: ActivatedRoute,
@@ -139,7 +139,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       KnownPrimaryRoutes.SpotNegotiation,
       this.negotiationId
     ];
-    let disabled = !this.tenantConfiguration.isNegotiationReport;
+    //let disabled = !this.tenantConfiguration.isNegotiationReport;
     this.menuItems = [
       {
         label: 'Main Page',
@@ -153,16 +153,16 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       },
       {
-        label: 'Report',
-        routerLink: disabled
+        label: 'Report' //,
+        //routerLink: disabled
           ? null
           : [
               ...routeLinkToNegotiationDetails,
               KnownSpotNegotiationRoutes.reportPath
             ],
         routerLinkActiveOptions: { exact: true },
-        disabled,
-        visible: this.isAuthorizedForReportsTab,
+        //disabled,
+        visible: this.isAuthorizedForReportsTab && this.tenantConfiguration.isNegotiationReport,
         command: () => {
           this.setActiveRequest();
         }
@@ -1163,7 +1163,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       const response = this.spotNegotiationService.RevokeFQ(FinalAPIdata);
       response.subscribe((res: any) => {
         this.spinner.hide();
-        
+
         if (res?.message == 'Unauthorized') {
           return;
         }

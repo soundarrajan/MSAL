@@ -26,7 +26,6 @@ import {
   EditLocationRow,
   SetLocationsRows,
   EditCounterpartyList,
-  EditLocations,
   UpdateSpecificRequests
 } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
@@ -597,7 +596,9 @@ import { SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
         (click)="selectCounterParties(params)"
         class="light-checkbox small"
         [ngClass]="
-          params.data.preferredProducts?.includes(params.productId) ? 'darkBorder' : ''
+          params.data.preferredProducts?.includes(params.productId)
+            ? 'darkBorder'
+            : ''
         "
       ></mat-checkbox>
     </div>
@@ -764,6 +765,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   costTypeList: any[] = [];
   uomList: any[] = [];
   currencyListForAdditionalCost: any[] = [];
+  priceChanged: boolean = false;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -801,6 +803,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       currency: new FormControl('')
     });
     this.paramsDataClone = _.cloneDeep(this.params.data);
+    this.priceChanged = false;
     if (
       this.paramsDataClone.requestOffers &&
       this.params.type === 'price-calc'
@@ -1620,14 +1623,31 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   onGetFocus(event, params) {
-    let idValue = this.returnRowIndex(params);
-    let element = document.getElementById(idValue);
-    if (element) {
+    if (!this.priceChanged) {
+      let idValue = this.returnRowIndex(params);
+      let element = document.getElementById(idValue);
+      if (element) {
+        this.moveCursorToEnd(element);
+      }
+    }
+  }
+
+  moveCursorToEnd(element) {
+    var len = element.value.length;
+    if (element.setSelectionRange) {
       element.focus();
+      element.setSelectionRange(len, len);
+    } else if (element.createTextRange) {
+      var t = element.createTextRange();
+      t.collapse(true);
+      t.moveEnd('character', len);
+      t.moveStart('character', len);
+      t.select();
     }
   }
 
   onPriceChange(e, params) {
+    this.priceChanged = true;
     // const futureValue = e.target.value;
 
     // if (!futureValue) {
@@ -1709,7 +1729,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   checkIfProductIsStemmedOrConfirmed(requestLocation, requestOffer) {
-      if(requestLocation != null){
+    if (requestLocation != null) {
       let findProductIndex = _.findIndex(
         requestLocation.requestProducts,
         function(object: any) {
@@ -1744,8 +1764,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       toCurrencyCode: this.getCurrencyCode(toCurrency)
     };
     let exchangeRateValue = 1;
+    params.api?.showLoadingOverlay();
     const response = this._spotNegotiationService.getExchangeRate(payload);
     response.subscribe((res: any) => {
+      params.api.hideOverlay();
       if (res.status) {
         exchangeRateValue = res.exchangeRateValue;
         this.store.dispatch(new EditLocationRow(newData));
@@ -1768,7 +1790,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             requestOffers: requestOffers
           }
         };
-
+        params.api?.showLoadingOverlay();
         const applyExchangeRate = this._spotNegotiationService.applyExchangeRate(
           payload
         );
@@ -1777,6 +1799,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           res.exchangeRateValue
         );
         applyExchangeRate.subscribe((res: any) => {
+          params.api?.hideOverlay();
           if (res.status) {
             this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
             this.store.dispatch(new EditLocationRow(futureRowData));
@@ -1786,7 +1809,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             );
           } else {
             this.paramsDataClone.currency = this.paramsDataClone.oldCurrency;
-
           }
         });
 

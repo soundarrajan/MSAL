@@ -1070,7 +1070,8 @@ export class AdditionalCostModalComponent implements OnInit {
   roundDownValue(value, type) {
     if (type == 'quantity') {
       let quantityPrecision = this.tenantService.quantityPrecision;
-      let plainNumber = this.convertDecimalSeparatorStringToNumber(value);
+      let viewValue = `${value}`;
+      let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
       let roundedValue = this._decimalPipe.transform(
         plainNumber,
         '1.' + quantityPrecision + '-' + quantityPrecision
@@ -1078,7 +1079,8 @@ export class AdditionalCostModalComponent implements OnInit {
       return roundedValue;
     } else if (type == 'price') {
       let pricePrecision = this.tenantService.pricePrecision;
-      let plainNumber = this.convertDecimalSeparatorStringToNumber(value);
+      let viewValue = `${value}`;
+      let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
       let roundedValue = this._decimalPipe.transform(
         plainNumber,
         '1.' + pricePrecision + '-' + pricePrecision
@@ -1107,9 +1109,6 @@ export class AdditionalCostModalComponent implements OnInit {
       return null;
     }
     if (plainNumber) {
-      if (amountPrecision) {
-        plainNumber = this.truncateToDecimals(plainNumber, amountPrecision);
-      }
       if (this.tenantService.amountPrecision == 0) {
         return plainNumber;
       } else {

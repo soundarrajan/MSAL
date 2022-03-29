@@ -1,8 +1,7 @@
 <div class="spot-nego-content">
   <div class="grid-in-accordion">
-    <div *ngFor="let loc of locations; let i = index">
-      <mat-expansion-panel
-        [expanded]="i == 0 ? true : false"
+      <mat-expansion-panel *ngFor="let loc of locations; let i = index; trackBy: identifyer" 
+        [expanded]="Index == 0 ? true : false"
         style="margin-top: 1px;"
       >
         <mat-expansion-panel-header>
@@ -31,6 +30,8 @@
                         [rowData]="rowData_aggridObj[i]"
                         [columnDefs]="columnDef_aggridObj[i]"
                         [gridOptions]="gridOptions_counterparty"
+                        [overlayLoadingTemplate]="overlayLoadingTemplate"
+                        [overlayNoRowsTemplate]="overlayNoRowsTemplate"
                         [rowClassRules]="rowClassRules"
                         [immutableData]="true"
                         [getRowNodeId]="getRowNodeId"
@@ -46,7 +47,7 @@
           </div>
         </ng-template>
       </mat-expansion-panel>
-    </div>
+    
   </div>
 </div>
 <!-- (rowSelected)="rowSelected($event)" -->
