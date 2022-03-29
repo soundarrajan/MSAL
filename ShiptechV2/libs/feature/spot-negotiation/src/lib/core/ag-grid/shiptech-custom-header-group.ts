@@ -486,7 +486,6 @@ export class ShiptechCustomHeaderGroup {
       this.requestProductId = this.params.product.id;
       this.requestLocationId = this.params.requestLocationId;
       this.quoteDate = moment(this.quoteDate).format('DD-MMM-YYYY');
-      //debugger;
       if(this.locations){
         let requestLoc = this.locations.find(l => l.id == this.requestLocationId);
         if(requestLoc?.requestProducts){
