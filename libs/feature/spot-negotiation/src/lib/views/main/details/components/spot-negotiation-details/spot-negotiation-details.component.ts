@@ -347,8 +347,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.spotNegotiationService.gridRefreshService$.subscribe(() => {
       this.refreshGridDetails();
     });
-  }
-
+  } 
+  identifyer = (index:number, item: any) => item.name;
   isselectedrowfun(row, isSelected) {
     if (isSelected) {
       row.isSelected = true;
