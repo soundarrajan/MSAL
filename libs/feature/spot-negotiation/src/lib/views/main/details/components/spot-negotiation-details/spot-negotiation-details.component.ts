@@ -239,9 +239,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           cellClass: 'line-seperator',
           cellStyle: params => {
             if (
-              this.highlightedCells[params.data.requestLocationId] &&
+              this.highlightedCells[params.data.requestId] &&
               params.data.id ==
-                this.highlightedCells[params.data.requestLocationId]
+                this.highlightedCells[params.data.requestId]
             ) {
               return { background: '#C5DCCF' };
             } else {
@@ -683,9 +683,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           },
           cellStyle: params => {
             if (
-              this.highlightedCells[product.id] &&
-              params.data.id === this.highlightedCells[product.id].rowId &&
-              product.id === this.highlightedCells[product.id].requestProductId
+              this.highlightedCells[product.productId] &&
+              params.data.id ===
+                this.highlightedCells[product.productId].rowId &&
+              product.id ===
+                this.highlightedCells[product.productId].requestProductId
             ) {
               return { background: '#C5DCCF' };
             } else {
@@ -730,7 +732,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           flex: 5,
           minWidth: 94,
           valueGetter: params => {
-            //debugger;
             const details = this.spotNegotiationService.getRowProductDetails(
               params.data,
               product.id
@@ -1597,26 +1598,25 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     };
   }
 
-  checkHighlight({ product }, requestProductsLength, reqLocationId) {
+  checkHighlight({ product }, requestProductsLength, requestId) {
     var smallestTotalPrice = Infinity;
     var smallestOffer = Infinity;
-
     if (this.locationsRows && this.locationsRows.length > 0) {
-      if (this.highlightedCells[product.id]) {
+      if (this.highlightedCells[product.productId]) {
         const smallestRow = this.locationsRows.find(
-          x => x.id === this.highlightedCells[product.id].rowId
+          x => x.id === this.highlightedCells[product.productId].rowId
         );
         const offerDetails = smallestRow?.requestOffers?.find(
           x =>
             x.requestProductId ===
-            this.highlightedCells[product.id].requestProductId
+            this.highlightedCells[product.productId].requestProductId
         );
         if (offerDetails) smallestTotalPrice = offerDetails.totalPrice;
       }
 
-      if (this.highlightedCells[reqLocationId]) {
+      if (this.highlightedCells[requestId]) {
         const lowestTotalOfferRow = this.locationsRows.find(
-          x => x.id === this.highlightedCells[reqLocationId]
+          x => x.id === this.highlightedCells[requestId]
         );
         if (lowestTotalOfferRow.totalOffer)
           smallestOffer = lowestTotalOfferRow.totalOffer;
@@ -1624,28 +1624,29 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       this.locationsRows.map(row => {
         // Create key with id if dosen't exists;
-        if (!this.highlightedCells[product.id]) {
-          this.highlightedCells[product.id] = {};
+        if (!this.highlightedCells[product.productId]) {
+          this.highlightedCells[product.productId] = {};
         }
-
         // Set smallest total price
-        const productDetails = this.spotNegotiationService.getRowProductDetails(
+        const productDetails = this.getRowProductDetails(
           row,
-          product.id
+          product.productId
         );
-
         if (
+          productDetails &&
           productDetails.totalPrice &&
+          row.requestId == requestId &&
           Number(productDetails.totalPrice) > 0 &&
           Number(smallestTotalPrice) > Number(productDetails.totalPrice)
         ) {
           smallestTotalPrice = productDetails.totalPrice;
-          this.highlightedCells[product.id].rowId = row.id;
-          this.highlightedCells[product.id].requestProductId = product.id;
+          this.highlightedCells[product.productId].rowId = row.id;
+          this.highlightedCells[product.productId].requestProductId =
+            product.id;
         }
-
-        if (!this.highlightedCells[reqLocationId]) {
-          this.highlightedCells[reqLocationId] = 0;
+    
+        if (!this.highlightedCells[requestId]) {
+          this.highlightedCells[requestId] = 0;
         }
         // Set smallest offer price
         const quotedProductsLength = row.requestOffers?.filter(x => x.price)
@@ -1653,17 +1654,42 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         if (
           row.totalOffer &&
           quotedProductsLength === requestProductsLength &&
-          row.requestLocationId == reqLocationId &&
+          row.requestId == requestId &&
           Number(row.totalOffer) > 0 &&
           Number(smallestOffer) > Number(row.totalOffer)
         ) {
           smallestOffer = row.totalOffer;
           // Create key with id if dosen't exists;
 
-          this.highlightedCells[reqLocationId] = row.id;
+          this.highlightedCells[requestId] = row.id;
         }
       });
     }
+  }
+
+
+  getRowProductDetails(row, productId) {
+    // const currentLocation = this.locations.find(
+    //   e => e.id === this.reqLocId
+    // );
+
+    let futureRow = JSON.parse(JSON.stringify(row));
+    // let selectedSellerRows = futureRow?.requestOffers?.map(e => {
+    //   let prodId = currentLocation?.requestProducts?.find(rp => rp.id === e. requestProductId)?.productId;
+    //   return { ...e, prodId: prodId };
+    // });
+  
+    //let reqProdId = currentLocation?.requestProducts?.find(rp => rp.productId == productId)?.id;
+    
+    const priceDetails = futureRow?.requestOffers?.find(
+      item => item.quotedProductId === productId
+    );
+
+    if (priceDetails) {
+      return priceDetails;
+    }
+    return null;
+
   }
 
   shouldUpdate({ spotNegotiation }): boolean {
@@ -1791,7 +1817,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           this.checkHighlight(
             { product: reqProduct },
             requestProductsLength,
-            reqLocation.id
+            this.currentRequestSmallInfo.id
           );
           this.columnDef_aggridObj[i].push(
             this.createProductHeader(reqProduct, reqLocation.id, index)
