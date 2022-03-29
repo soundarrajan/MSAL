@@ -1,8 +1,8 @@
 <div class="spot-nego-content">
   <div class="grid-in-accordion">
-      <mat-expansion-panel *ngFor="let loc of locations; let i = index; trackBy: identifyer"
-        [expanded]="i == 0 ? true : false"
-        style="margin-top: 1px;" 
+      <mat-expansion-panel *ngFor="let loc of locations; let i = index; trackBy: identifyer" 
+        [expanded]="Index == 0 ? true : false"
+        style="margin-top: 1px;"
       >
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -36,7 +36,7 @@
                         [immutableData]="true"
                         [getRowNodeId]="getRowNodeId"
                         [suppressRowClickSelection]="true"
-                        [context]="context"                        
+                        [context]="context"
                       >
                       </ag-grid-angular>
                     </div>
