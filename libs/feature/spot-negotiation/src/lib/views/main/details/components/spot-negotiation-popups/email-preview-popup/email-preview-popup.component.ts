@@ -283,8 +283,8 @@ export class EmailPreviewPopupComponent implements OnInit {
       // Get response from server
       const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
       response.subscribe((res: any) => {
-        this.spinner.hide();
         if (res?.message == 'Unauthorized') {
+          this.spinner.hide();
           return;
         }
         if (res['previewResponse']) {
@@ -301,8 +301,12 @@ export class EmailPreviewPopupComponent implements OnInit {
           for (let i = 0; i < this.filesList.length; i++) {
             this.filesList[i].isIncludedInMail = true;
           }
-          this.changeDetector.markForCheck();
+          setTimeout(() => {
+            this.changeDetector.detectChanges();
+            this.spinner.hide();
+          }, 1000);
         } else {
+          this.spinner.hide();
           this.clearData();
           this.toaster.error(res);
         }
@@ -825,7 +829,6 @@ export class EmailPreviewPopupComponent implements OnInit {
         Take: 9999
       }
     };
-    this.spinner.show();
     this.spotNegotiationService
       .getDocuments(payload)
       .subscribe((response: any) => {
@@ -833,7 +836,6 @@ export class EmailPreviewPopupComponent implements OnInit {
           return;
         }
         if (typeof response === 'string') {
-          this.spinner.hide();
           this.toaster.error(response);
         } else {
           for (let i = 0; i < response.length; i++) {
@@ -841,6 +843,7 @@ export class EmailPreviewPopupComponent implements OnInit {
           }
           this.documentsList = _.cloneDeep(response);
           this.documentListForSearch = _.cloneDeep(response);
+          this.changeDetector.detectChanges();
         }
       });
   }
