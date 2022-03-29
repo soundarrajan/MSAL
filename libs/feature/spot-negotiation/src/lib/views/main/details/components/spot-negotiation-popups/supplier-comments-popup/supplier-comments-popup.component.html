@@ -17,16 +17,12 @@
                         <span class="circle internal"></span>
                         <span class="label">{{requestInfo.sellerCounterpartyName}}</span>
                     </div>
-                    <textarea  
-                    class="comments-text"             
+                    <textarea
+                    class="comments-text"
                     [(ngModel)]="requestInfo.sellerComments"
                     placeholder="Type notes here.."
                     maxlength="1000">
                     </textarea>
-                    <div class="char-left">
-                        {{ 1000 - requestInfo?.sellerComments?.length }}
-                        characters left
-                      </div>
                 </div>
             </div>
         </div>
