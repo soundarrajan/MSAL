@@ -1610,7 +1610,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
                       j +
                       '/' +
                       columnIndex;
-                    console.log(id);
                     return id;
                   }
                 }

@@ -267,7 +267,7 @@ import _, { cloneDeep } from 'lodash';
               class="value"
               contenteditable="true"
               [(ngModel)]="livePrice"
-              (focusout)="calculateTargetPrice()"
+              (change)="calculateTargetPrice()"
               [disabled]="
                 params.product.status === 'Stemmed' ||
                 params.product.status === 'Confirmed'
@@ -805,7 +805,6 @@ export class ShiptechCustomHeaderGroup {
         this.store.subscribe(({ spotNegotiation, ...props }) => {
           locations = spotNegotiation.locations;
           locationsRows = spotNegotiation.locationsRows;
-          JSON.parse(JSON.stringify(locations));
         });
         if (locations.length > 0) {
           locations.forEach(element => {
@@ -816,6 +815,7 @@ export class ShiptechCustomHeaderGroup {
               let filterLocationsRows = _.filter(locationsRows, function(elem) {
                 return elem.requestLocationId == element.id;
               });
+              let updatedLocRows = [];
               element.requestProducts.forEach((element1, index) => {
                 if (
                   element1.id == this.requestProductId &&
@@ -842,10 +842,12 @@ export class ShiptechCustomHeaderGroup {
                       productDetails,
                       updatedRow1.requestProducts[index].id
                     );
-                    this.store.dispatch(new EditLocationRow(futureRow));
+                    updatedLocRows.push(futureRow); 
                   }
                 }
               });
+              if(updatedLocRows && updatedLocRows.length > 0)
+                  this.store.dispatch(new EditLocationRow(updatedLocRows));
             }
           });
         }

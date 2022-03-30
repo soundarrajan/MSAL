@@ -81,7 +81,9 @@
               style="margin: 5px;"
               *ngFor="let item of to"
             >
-            <div class="cust-input-field" matTooltip="{{item}}">{{item}}</div>
+              <div class="cust-input-field" matTooltip="{{ item }}">
+                {{ item }}
+              </div>
               <!-- <input
                 [readonly]="readonly"
                 class="cust-input-field"
@@ -125,7 +127,9 @@
               style="margin: 5px;"
               *ngFor="let item of cc"
             >
-            <div class="cust-input-field" matTooltip="{{item}}" >{{item}}</div>
+              <div class="cust-input-field" matTooltip="{{ item }}">
+                {{ item }}
+              </div>
               <!-- <input
                 [readonly]="readonly"
                 class="cust-input-field"
@@ -138,7 +142,7 @@
                 class="close-icon flex-shrink-1"
                 (click)="RemoveEmailId(item, 'ccEmail')"
               ></div>
-              </div>
+            </div>
             <div
               [style.visibility]="readonly ? 'hidden' : 'visible'"
               class="add-new"
@@ -298,9 +302,10 @@
         </div>
         <div class="email-draft">
           <ckeditor
-            [disabled]="readonly"
-            [editor]="Editor"
+            #editor
             [(ngModel)]="content"
+            [config]="configuration"
+            [disabled]="readonly"
           ></ckeditor>
         </div>
       </div>
@@ -308,16 +313,23 @@
   </mat-dialog-content>
 </div>
 
-
-<mat-autocomplete  #autoCompleteCC="matAutocomplete" (optionSelected)="addCc($event.option.value, true)" [displayWith]="displayNull">
+<mat-autocomplete
+  #autoCompleteCC="matAutocomplete"
+  (optionSelected)="addCc($event.option.value, true)"
+  [displayWith]="displayNull"
+>
   <mat-option *ngFor="let option of ccList2" [value]="option.name">
-    {{option.name}}
+    {{ option.name }}
   </mat-option>
 </mat-autocomplete>
 
-<mat-autocomplete  #autoCompleteTO="matAutocomplete" (optionSelected)="addTo($event.option.value, true)" [displayWith]="displayNull">
+<mat-autocomplete
+  #autoCompleteTO="matAutocomplete"
+  (optionSelected)="addTo($event.option.value, true)"
+  [displayWith]="displayNull"
+>
   <mat-option *ngFor="let option of toList2" [value]="option.name">
-    {{option.name}}
+    {{ option.name }}
   </mat-option>
 </mat-autocomplete>
 
