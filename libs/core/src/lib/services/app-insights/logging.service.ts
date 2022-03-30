@@ -11,7 +11,7 @@ import { ILoggingService } from './logging.interface';
 export class MyMonitoringService implements ILoggingService {
   appInsights: ApplicationInsights;
   constructor(private appConfig: AppConfig, private store: Store) {
-    const configInstrumentationKey = this.appConfig.v1.INSTRUMENTATION_KEY;
+    const configInstrumentationKey = this.appConfig.v1.AppInsightsId;
     this.appInsights = new ApplicationInsights({
       config: {
         instrumentationKey: configInstrumentationKey,
