@@ -1,9 +1,5 @@
 import { StaticListsRouteResolver } from './static-lists-route.resolver';
-import { EntityStatusModule } from './../../../../core/src/lib/ui/components/entity-status/entity-status.module';
-import { RelatedLinksModule } from './../../../../core/src/lib/ui/components/related-links/related-links.module';
 import { MessageBoxModule } from './../../../../core/src/lib/ui/components/message-box/message-box.module';
-import { MasterAutocompleteModule } from './../../../../core/src/lib/ui/components/master-autocomplete/master-autocomplete.module';
-import { SearchBoxModule } from './../../../../core/src/lib/ui/components/search-box/search-box.module';
 import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
 import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { LoggingModule } from './../../../../core/src/lib/logging/logging.module';
@@ -65,7 +61,6 @@ import { NavBarResolver } from './views/main/details/navbar-route.resolver';
 import { UomsRouteResolver } from './uoms-route.resolver';
 import { RemoveCounterpartyComponent } from './views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
-import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PortalModule } from '@angular/cdk/portal';
 import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
 import { PriceTenantFormatDirective } from './views/main/details/directives/price-tenant-format.directive';
@@ -73,7 +68,6 @@ import { NegotiationToolbarComponent } from './views/main/details/components/too
 import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.module';
 import { NegotiationDocumentsComponent } from './views/main/details/components/negotiation-documents/negotiation-documents.component';
 import { NegotiationReportComponent } from './views/main/details/components/negotiation-report/negotiation-report.component';
-import { FileUploadModule } from 'primeng/fileupload';
 import { AGGridCellV2RendererComponent } from './core/ag-grid/ag-grid-cell-renderer-v2.component';
 import { AGGridCellActionsDocumentsComponent } from './core/ag-grid/ag-grid-cell-actions-documents.component';
 import { TabMenuModule } from 'primeng/tabmenu';
