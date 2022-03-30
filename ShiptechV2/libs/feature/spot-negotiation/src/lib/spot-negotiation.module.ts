@@ -38,7 +38,6 @@ import { SpotnegoAdditionalcostComponent } from './views/main/details/components
 import { SpotnegoPricingDetailsComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-pricing-details/spotnego-pricing-details.component';
 import { SupplierCommentsPopupComponent } from './views/main/details/components/spot-negotiation-popups/supplier-comments-popup/supplier-comments-popup.component';
 import { EmailPreviewPopupComponent } from './views/main/details/components/spot-negotiation-popups/email-preview-popup/email-preview-popup.component';
-import { SpotnegoOtherdetailsComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-otherdetails/spotnego-otherdetails.component';
 import { SellerratingpopupComponent } from './views/main/details/components/spot-negotiation-popups/sellerratingpopup/sellerratingpopup.component';
 import { ContactinformationpopupComponent } from './views/main/details/components/spot-negotiation-popups/contactinformationpopup/contactinformationpopup.component';
 import { SpotnegoOtherdetails2Component } from './views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
@@ -150,7 +149,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
     SpotnegoPricingDetailsComponent,
     SupplierCommentsPopupComponent,
     EmailPreviewPopupComponent,
-    SpotnegoOtherdetailsComponent,
     SellerratingpopupComponent,
     ContactinformationpopupComponent,
     SpotnegoOtherdetails2Component,

@@ -17,25 +17,24 @@ export class SupplierCommentsPopupComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<SupplierCommentsPopupComponent>,
     private store: Store,
-    private toaster: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.supplierCommentDetails = data;
     this.requestInfo = _.cloneDeep(this.supplierCommentDetails);
     this.requestInfo.sellerCounterpartyName = this.transform(
-      this.requestInfo.sellerCounterpartyName);
+      this.requestInfo.sellerCounterpartyName
+    );
     this.requestInfo.sellerComments = this.transform(
       this.requestInfo.sellerComments
     );
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   transform(str: any, property?: string): any {
-    var decode = function (str) {
-      return str.replace(/&#(\d+);/g, function (match, dec) {
+    var decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
         return String.fromCharCode(dec);
       });
     };
@@ -56,17 +55,20 @@ export class SupplierCommentsPopupComponent implements OnInit {
       sellerCounterpartyId: this.supplierCommentDetails.sellerCounterpartyId,
       sellerComment: this.requestInfo.sellerComments,
       requestLocationSellerId: this.supplierCommentDetails.id,
-      sellerCounterpartyName: this.supplierCommentDetails.sellerCounterpartyName,
+      sellerCounterpartyName: this.supplierCommentDetails
+        .sellerCounterpartyName,
       sellerPortalRead: str
     };
     const response = this._spotNegotiationService.UpdateSellerComments(payload);
     response.subscribe((res: any) => {
-      if(res?.message == 'Unauthorized'){
+      if (res?.message == 'Unauthorized') {
         return;
       }
       if (res.status) {
         const futureLocationsRows = this.getLocationRowsAddSellerComment(
-          JSON.parse(JSON.stringify(locationsRows)), str);
+          JSON.parse(JSON.stringify(locationsRows)),
+          str
+        );
         this.dialogRef.close();
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         //this.toaster.success('Seller comment added successfully');
@@ -75,18 +77,20 @@ export class SupplierCommentsPopupComponent implements OnInit {
   }
   //Close sellerCommentPopup
   closeSellerComment(str) {
-    this.saveSellerComment(str);//Update read the seller portal comments
+    this.saveSellerComment(str); //Update read the seller portal comments
     this.dialogRef.close();
   }
   //Update the store
   getLocationRowsAddSellerComment(locationrow, str) {
     locationrow.forEach((element, key) => {
       if (element.id == this.supplierCommentDetails.id) {
-        element.sellerComments = str == 'S' ? this.requestInfo.sellerComments : this.supplierCommentDetails.sellerComments;
+        element.sellerComments =
+          str == 'S'
+            ? this.requestInfo.sellerComments
+            : this.supplierCommentDetails.sellerComments;
         element.isSellerPortalComments = false;
       }
     });
     return locationrow;
   }
-
 }

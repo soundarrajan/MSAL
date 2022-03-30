@@ -1,15 +1,17 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { GridOptions, IDatasource, IGetRowsParams } from 'ag-grid-community';
+import { GridOptions } from 'ag-grid-community';
 import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/lib/core/models/spnego-addcounterparty.model';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import { AddCounterpartyToLocations, AppendCounterpartyList, AppendLocationsRowsOriData, AppendPhysicalSupplierCounterpartyList, SetCounterpartyList, SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import {
+  AddCounterpartyToLocations,
+  AppendLocationsRowsOriData,
+  SetLocationsRows
+} from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 import { ToastrService } from 'ngx-toastr';
-import _, { cloneDeep } from 'lodash';
-import { NgxSpinnerService } from 'ngx-spinner';
+import _ from 'lodash';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 
 @Component({
@@ -19,8 +21,10 @@ import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib
 })
 export class SpotnegoSearchCtpyComponent implements OnInit {
   public dialog_gridOptions: GridOptions;
-  public counterpartyListRowCount: number = this.spotNegotiationService.counterpartyTotalCount ;
-  public physicalSupplierRowCount: number= this.spotNegotiationService.physicalSupplierTotalCount;
+  public counterpartyListRowCount: number = this.spotNegotiationService
+    .counterpartyTotalCount;
+  public physicalSupplierRowCount: number = this.spotNegotiationService
+    .physicalSupplierTotalCount;
   public AddCounterpartiesAcrossLocations: boolean;
   public RequestGroupId: number;
   public RequestLocationId: number;
@@ -31,40 +35,36 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   public editedSeller = '';
   currentRequest: any;
   rowSelection: string;
-  searchingCounterparty:string = null;
+  searchingCounterparty: string = null;
   searchingPhysicalSuppilier: string = null;
   controlTowerListServerKeys: any;
   selectedCounterparties: any;
   public count: number = 0;
   public count2: number = 0;
-  public counterpartyList : any;
-  public physicalSuppilierList : any;
+  public counterpartyList: any;
+  public physicalSuppilierList: any;
   public counterpartyListLength;
   public physicalSupplierListLength;
   public overlayLoadingTemplate =
-  '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
-public overlayNoRowsTemplate =
-  '<span>No rows to show</span>';
+    '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
+  public overlayNoRowsTemplate = '<span>No rows to show</span>';
   requestOptions: any;
   public page: number;
   public pageSize: number;
-  public totalItems : number;
-  public gridId:any;
+  public totalItems: number;
+  public gridId: any;
   constructor(
     public format: TenantFormattingService,
-    private router: Router,
     private store: Store,
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
     public dialogRef: MatDialogRef<SpotnegoSearchCtpyComponent>,
     private spotNegotiationService: SpotNegotiationService,
-    private spinner : NgxSpinnerService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    if(data.isPhysicalSupplier != undefined && data.isPhysicalSupplier){
+    if (data.isPhysicalSupplier != undefined && data.isPhysicalSupplier) {
       this.rowSelection = 'single';
-    }
-    else{
+    } else {
       this.rowSelection = 'multiple';
     }
     this.AddCounterpartiesAcrossLocations =
@@ -92,13 +92,12 @@ public overlayNoRowsTemplate =
         this.dialog_gridOptions.api.sizeColumnsToFit();
 
         this.store.subscribe(({ spotNegotiation }) => {
-          if(data.isPhysicalSupplier != undefined && data.isPhysicalSupplier){
+          if (data.isPhysicalSupplier != undefined && data.isPhysicalSupplier) {
             this.pageSize = 25;
-            this.totalItems = this.physicalSupplierRowCount ;
+            this.totalItems = this.physicalSupplierRowCount;
             this.rowData = spotNegotiation.physicalSupplierCounterpartyList;
             this.dialog_gridOptions.api?.setRowData(this.rowData);
-          }
-          else{
+          } else {
             this.pageSize = 25;
             this.totalItems = this.counterpartyListRowCount;
             this.rowData = spotNegotiation.counterpartyList;
@@ -130,93 +129,117 @@ public overlayNoRowsTemplate =
     };
   }
 
-  onPageChangeforCounterparty(page: number){
-    var endRowData = page * this.pageSize ;
+  onPageChangeforCounterparty(page: number) {
+    var endRowData = page * this.pageSize;
     this.dialog_gridOptions.api.showLoadingOverlay();
     this.page = page;
-    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], null, { Skip:endRowData-this.pageSize, Take: this.pageSize  } );
-     response.subscribe((res:any)=>{
-      if(res?.message == 'Unauthorized'){
+    const response = this.spotNegotiationService.getResponse(
+      null,
+      { Filters: [] },
+      { SortList: [] },
+      [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
+      null,
+      { Skip: endRowData - this.pageSize, Take: this.pageSize }
+    );
+    response.subscribe((res: any) => {
+      if (res?.message == 'Unauthorized') {
         return;
       }
       this.dialog_gridOptions.api.hideOverlay();
       this.rowData = res.payload;
       this.dialog_gridOptions.api.setRowData(this.rowData);
-     });
-
+    });
   }
 
-  onPageChangeforPhysicalSupplier(page: number){
-    var endRowData = page * this.pageSize ;
+  onPageChangeforPhysicalSupplier(page: number) {
+    var endRowData = page * this.pageSize;
     this.dialog_gridOptions.api.showLoadingOverlay();
     this.page = page;
-    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], null, { Skip:endRowData-this.pageSize, Take: this.pageSize  } );
-     response.subscribe((res:any)=>{
+    const response = this.spotNegotiationService.getResponse(
+      null,
+      { Filters: [] },
+      { SortList: [] },
+      [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
+      null,
+      { Skip: endRowData - this.pageSize, Take: this.pageSize }
+    );
+    response.subscribe((res: any) => {
       this.dialog_gridOptions.api.hideOverlay();
-      if(res?.message == 'Unauthorized'){
+      if (res?.message == 'Unauthorized') {
         return;
       }
       this.dialog_gridOptions.api.setRowData(res.payload);
-     });
+    });
   }
 
-  onPageSizeChangeforCounterparty(pageSize: number){
-    this.pageSize =  pageSize;
+  onPageSizeChangeforCounterparty(pageSize: number) {
+    this.pageSize = pageSize;
     this.dialog_gridOptions.api.showLoadingOverlay();
     var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
-      this.page = currentPage + 1;
-    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], null, { Skip: 0 , Take: this.pageSize } );
-    response.subscribe((res:any)=>{
-    this.dialog_gridOptions.api.hideOverlay();
-    if(res?.message == 'Unauthorized'){
-      return;
-    }
-    if(res.payload){
-      this.rowData = res.payload;
-    this.dialog_gridOptions.api.setRowData(res.payload);
-      }
-    else{
-      this.dialog_gridOptions.api.showNoRowsOverlay();
-    }
-  });
-  }
-
-  onPageSizeChangeforPhysicalSupplier(pageSize: number){
-    this.pageSize =  pageSize;
-    this.dialog_gridOptions.api.showLoadingOverlay();
-    var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
-      this.page = currentPage + 1;
-    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], null, { Skip: 0 , Take: this.pageSize } );
-    response.subscribe((res:any)=>{
+    this.page = currentPage + 1;
+    const response = this.spotNegotiationService.getResponse(
+      null,
+      { Filters: [] },
+      { SortList: [] },
+      [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
+      null,
+      { Skip: 0, Take: this.pageSize }
+    );
+    response.subscribe((res: any) => {
       this.dialog_gridOptions.api.hideOverlay();
-      if(res?.message == 'Unauthorized'){
+      if (res?.message == 'Unauthorized') {
         return;
       }
-    if(res.payload){
-      this.rowData = res.payload;
-    this.dialog_gridOptions.api.setRowData(res.payload);
+      if (res.payload) {
+        this.rowData = res.payload;
+        this.dialog_gridOptions.api.setRowData(res.payload);
+      } else {
+        this.dialog_gridOptions.api.showNoRowsOverlay();
       }
-    else{
-      this.dialog_gridOptions.api.showNoRowsOverlay();
-    }
-  });
+    });
   }
 
-  onCounterpartyChange(value){
+  onPageSizeChangeforPhysicalSupplier(pageSize: number) {
+    this.pageSize = pageSize;
+    this.dialog_gridOptions.api.showLoadingOverlay();
+    var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+    this.page = currentPage + 1;
+    const response = this.spotNegotiationService.getResponse(
+      null,
+      { Filters: [] },
+      { SortList: [] },
+      [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
+      null,
+      { Skip: 0, Take: this.pageSize }
+    );
+    response.subscribe((res: any) => {
+      this.dialog_gridOptions.api.hideOverlay();
+      if (res?.message == 'Unauthorized') {
+        return;
+      }
+      if (res.payload) {
+        this.rowData = res.payload;
+        this.dialog_gridOptions.api.setRowData(res.payload);
+      } else {
+        this.dialog_gridOptions.api.showNoRowsOverlay();
+      }
+    });
+  }
+
+  onCounterpartyChange(value) {
     this.searchingCounterparty = value;
-    if(this.searchingCounterparty.length === 0 ){
+    if (this.searchingCounterparty.length === 0) {
       this.totalItems = this.counterpartyListRowCount;
       this.dialog_gridOptions.api.setRowData(this.rowData);
     }
-
   }
 
-  onPhysicalSuppilierChange(value){
+  onPhysicalSuppilierChange(value) {
     this.searchingPhysicalSuppilier = value;
-    if(this.searchingPhysicalSuppilier.length ===0 ){
-      this.totalItems = this.physicalSupplierRowCount ;
+    if (this.searchingPhysicalSuppilier.length === 0) {
+      this.totalItems = this.physicalSupplierRowCount;
       this.dialog_gridOptions.api.setRowData(this.rowData);
-   }
+    }
   }
 
   // For fetching counterparties List
@@ -278,40 +301,50 @@ public overlayNoRowsTemplate =
   //   }
   // };
 
-  SearchCounterparty(userInput: string): void{
+  SearchCounterparty(userInput: string): void {
     this.dialog_gridOptions.api.showLoadingOverlay();
-    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], userInput.toLowerCase() , { Skip:0 , Take: this.pageSize } );
-    response.subscribe((res:any)=>{
+    const response = this.spotNegotiationService.getResponse(
+      null,
+      { Filters: [] },
+      { SortList: [] },
+      [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
+      userInput.toLowerCase(),
+      { Skip: 0, Take: this.pageSize }
+    );
+    response.subscribe((res: any) => {
       this.totalItems = res.matchedCount;
       this.dialog_gridOptions.api.hideOverlay();
-    if(res.payload){
-      var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
-      this.page = currentPage + 1;
-      this.dialog_gridOptions.api.setRowData(res.payload);
+      if (res.payload) {
+        var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+        this.page = currentPage + 1;
+        this.dialog_gridOptions.api.setRowData(res.payload);
+      } else {
+        this.dialog_gridOptions.api.showNoRowsOverlay();
       }
-    else{
-      this.dialog_gridOptions.api.showNoRowsOverlay();
-    }
-  });
-
+    });
   }
 
-
-  SearchPhysicalSupplier(userInput: string): void{
+  SearchPhysicalSupplier(userInput: string): void {
     this.dialog_gridOptions.api.showLoadingOverlay();
-    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], userInput.toLowerCase() , { Skip:0 , Take: this.pageSize } );
-    response.subscribe((res:any)=>{
+    const response = this.spotNegotiationService.getResponse(
+      null,
+      { Filters: [] },
+      { SortList: [] },
+      [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
+      userInput.toLowerCase(),
+      { Skip: 0, Take: this.pageSize }
+    );
+    response.subscribe((res: any) => {
       this.totalItems = res.matchedCount;
       this.dialog_gridOptions.api.hideOverlay();
-    if(res.payload){
-      var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
-      this.page = currentPage + 1;
-      this.dialog_gridOptions.api.setRowData(res.payload);
+      if (res.payload) {
+        var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+        this.page = currentPage + 1;
+        this.dialog_gridOptions.api.setRowData(res.payload);
+      } else {
+        this.dialog_gridOptions.api.showNoRowsOverlay();
       }
-    else{
-      this.dialog_gridOptions.api.showNoRowsOverlay();
-    }
-  });
+    });
   }
 
   public columnDefs = [
@@ -332,18 +365,18 @@ public overlayNoRowsTemplate =
       headerTooltip: 'Counterparty',
       field: 'name',
       width: 175,
-      cellClass: ['aggridtextalign-left'],
+      cellClass: ['aggridtextalign-left']
     },
     {
       headerName: 'Parent',
       headerTooltip: 'Parent',
       field: 'parent.name',
       width: 175,
-      cellClass: ['aggridtextalign-left'],
+      cellClass: ['aggridtextalign-left']
       //cellRendererFramework: AGGridCellRendererV2Component,
-          // cellRendererParams: {
-          //   type: 'searchbox-parent',
-          // }
+      // cellRendererParams: {
+      //   type: 'searchbox-parent',
+      // }
     },
     {
       headerName: 'Created By',
@@ -390,7 +423,6 @@ public overlayNoRowsTemplate =
   toBeAddedCounterparties(): SpnegoAddCounterpartyModel[] {
     this.selectedRows = this.dialog_gridOptions.api.getSelectedRows();
 
-
     if (this.AddCounterpartiesAcrossLocations) {
       this.requestOptions = this.store.selectSnapshot(
         (state: SpotNegotiationStoreModel) => {
@@ -399,7 +431,7 @@ public overlayNoRowsTemplate =
       );
       let selectedCounterparties = [];
       //Looping through all the Request Locations
-      this.requestOptions.forEach( reqOption => {
+      this.requestOptions.forEach(reqOption => {
         reqOption.requestLocations.forEach(reqLoc => {
           let perLocationCtpys = this.selectedRows.map(
             val =>
@@ -421,7 +453,7 @@ public overlayNoRowsTemplate =
                 portRating: '',
                 prefferedProductIds: '',
                 sellerComments: '',
-                isSellerPortalComments:false,
+                isSellerPortalComments: false,
                 sellerCounterpartyId: val.id,
                 sellerCounterpartyName: val.name,
                 senRating: ''
@@ -429,7 +461,7 @@ public overlayNoRowsTemplate =
           );
           selectedCounterparties.push(...perLocationCtpys);
         });
-      })
+      });
 
       return selectedCounterparties;
     } else {
@@ -453,7 +485,7 @@ public overlayNoRowsTemplate =
             portRating: '',
             prefferedProductIds: '',
             sellerComments: '',
-            isSellerPortalComments:false,
+            isSellerPortalComments: false,
             sellerCounterpartyId: val.id,
             sellerCounterpartyName: val.name,
             senRating: ''
@@ -465,30 +497,28 @@ public overlayNoRowsTemplate =
   search(userInput: string): void {
     this.store.subscribe(({ spotNegotiation }) => {
       if (spotNegotiation.counterpartyList) {
-        this.rowData = spotNegotiation.counterpartyList
-          .filter(e => {
-            if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
-              return true;
-            }
-            else{
-              return false;
-            }
-          });
+        this.rowData = spotNegotiation.counterpartyList.filter(e => {
+          if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
+            return true;
+          } else {
+            return false;
+          }
+        });
         this.dialog_gridOptions.api.setRowData(this.rowData);
-        if(this.rowData.length > 0){
-          let physicalSupplierCounterpartyId = this.data.physicalSupplierCounterpartyId;
-          this.dialog_gridOptions.api.forEachNode(function (node) {
+        if (this.rowData.length > 0) {
+          let physicalSupplierCounterpartyId = this.data
+            .physicalSupplierCounterpartyId;
+          this.dialog_gridOptions.api.forEachNode(function(node) {
             node.setSelected(node.data.id === physicalSupplierCounterpartyId);
           });
         }
       }
     });
-
   }
 
   //Update physical Supplier Counterparty Name
   getLocationRowsAddPhySupplier(locationrow) {
-    locationrow.forEach((element) => {
+    locationrow.forEach(element => {
       if (element.id == this.data.requestLocationSellerId) {
         element.physicalSupplierCounterpartyId = this.selectedCounterparties[0].sellerCounterpartyId;
         element.physicalSupplierCounterpartyName = this.selectedCounterparties[0].sellerCounterpartyName;
@@ -498,67 +528,73 @@ public overlayNoRowsTemplate =
   }
 
   AddCounterparties() {
-     this.selectedCounterparties = this.toBeAddedCounterparties();
+    this.selectedCounterparties = this.toBeAddedCounterparties();
     if (this.selectedCounterparties.length === 0) return;
-    if(this.data.isPhysicalSupplier){
-        let reqPayload={
-          "requestGroupId":this.data.RequestGroupId,
-          "requestLocationId":this.data.RequestLocationId,
-          "requestLocationSellerId":this.data.requestLocationSellerId,
-          "phySupplierId": this.selectedCounterparties[0].sellerCounterpartyId,
-          "sellerCounterpartyId":this.selectedCounterparties[0].sellerCounterpartyId ,
-          "physicalSupplierCounterpartyName":this.selectedCounterparties[0].sellerCounterpartyName
-      }
+    if (this.data.isPhysicalSupplier) {
+      let reqPayload = {
+        requestGroupId: this.data.RequestGroupId,
+        requestLocationId: this.data.RequestLocationId,
+        requestLocationSellerId: this.data.requestLocationSellerId,
+        phySupplierId: this.selectedCounterparties[0].sellerCounterpartyId,
+        sellerCounterpartyId: this.selectedCounterparties[0]
+          .sellerCounterpartyId,
+        physicalSupplierCounterpartyName: this.selectedCounterparties[0]
+          .sellerCounterpartyName
+      };
       const locationsRows = this.store.selectSnapshot<string>((state: any) => {
         return state.spotNegotiation.locationsRows;
       });
 
-    const response = this._spotNegotiationService.updatePhySupplier(reqPayload);
-    response.subscribe((res: any) => {
-      if(res?.message == 'Unauthorized'){
-        return;
-      }
-      if (res.status) {
+      const response = this._spotNegotiationService.updatePhySupplier(
+        reqPayload
+      );
+      response.subscribe((res: any) => {
+        if (res?.message == 'Unauthorized') {
+          return;
+        }
+        if (res.status) {
+          //Update the locationRows in the store whenever physical supplier changes/added
+          const futureLocationsRows = this.getLocationRowsAddPhySupplier(
+            JSON.parse(JSON.stringify(locationsRows))
+          );
+          this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+          this.toastr.success('Phy. Supplier added successfully');
+        } else {
+          this.toastr.error(res.message);
+          return;
+        }
+      });
 
-       //Update the locationRows in the store whenever physical supplier changes/added
-        const futureLocationsRows = this.getLocationRowsAddPhySupplier(JSON.parse(JSON.stringify(locationsRows)));
-        this.store.dispatch(new SetLocationsRows(futureLocationsRows));
-        this.toastr.success('Phy. Supplier added successfully');
-      } else {
-        this.toastr.error(res.message);
-        return;
-      }
-    });
-
-    this.dialogRef.close({
-      sellerName: this.selectedCounterparties[0].sellerCounterpartyName
+      this.dialogRef.close({
+        sellerName: this.selectedCounterparties[0].sellerCounterpartyName
+      });
     }
-    );
-    }
 
-    if(!this.data.isPhysicalSupplier){
-    let payload = {
-      requestGroupId: this.RequestGroupId,
-      isAllLocation: this.data.AddCounterpartiesAcrossLocations,
-      counterparties: this.selectedCounterparties
-    };
-    const response = this._spotNegotiationService.addCounterparties(payload);
-    response.subscribe((res: any) => {
-      if(res?.message == 'Unauthorized'){
-        return;
-      }
-      if (res.status) {
-        this.toastr.success(res.message);
-        // Add in Store
-        this.store.dispatch(
-          new AddCounterpartyToLocations(res.counterparties)
-        );
-        this.store.dispatch(new AppendLocationsRowsOriData(res.counterparties));
-      } else {
-        this.toastr.error(res.message);
-        return;
-      }
-    });
-  }
+    if (!this.data.isPhysicalSupplier) {
+      let payload = {
+        requestGroupId: this.RequestGroupId,
+        isAllLocation: this.data.AddCounterpartiesAcrossLocations,
+        counterparties: this.selectedCounterparties
+      };
+      const response = this._spotNegotiationService.addCounterparties(payload);
+      response.subscribe((res: any) => {
+        if (res?.message == 'Unauthorized') {
+          return;
+        }
+        if (res.status) {
+          this.toastr.success(res.message);
+          // Add in Store
+          this.store.dispatch(
+            new AddCounterpartyToLocations(res.counterparties)
+          );
+          this.store.dispatch(
+            new AppendLocationsRowsOriData(res.counterparties)
+          );
+        } else {
+          this.toastr.error(res.message);
+          return;
+        }
+      });
+    }
   }
 }
