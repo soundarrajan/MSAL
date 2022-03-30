@@ -678,7 +678,8 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
   roundDownValue(value, currentRowIndex, type) {
     if (type == 'quantity') {
       let quantityPrecision = this.tenantService.quantityPrecision;
-      let plainNumber = this.convertDecimalSeparatorStringToNumber(value);
+      let viewValue = `${value}`;
+      let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
       let roundedValue = this._decimalPipe.transform(
         plainNumber,
         '1.' + quantityPrecision + '-' + quantityPrecision
@@ -689,7 +690,8 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
         .pricePrecision
         ? this.formValues.productDetails[currentRowIndex].pricePrecision
         : this.tenantService.pricePrecision;
-      let plainNumber = this.convertDecimalSeparatorStringToNumber(value);
+      let viewValue = `${value}`;
+      let plainNumber = viewValue.replace(/[^\d|\-+|\.+]/g, '');
       let roundedValue = this._decimalPipe.transform(
         plainNumber,
         '1.' + pricePrecision + '-' + pricePrecision

@@ -202,18 +202,24 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       this.requestLocation.requestProducts,
       function(product: any) {
         return (
-          product.id == additionalCost.requestProductId &&
           product.status == 'Stemmed'
         );
       }
     );
     if (findProductIndex != -1) {
       additionalCost.hasStemmedProduct = true;
-      additionalCost.product = {
-        name: this.requestLocation.requestProducts[findProductIndex]
-          .productName,
-        id: this.requestLocation.requestProducts[findProductIndex].productId
-      };
+      if(!additionalCost.isAllProductsCost){
+        additionalCost.product = {
+          name: this.requestLocation.requestProducts[findProductIndex]
+            .productName,
+          id: this.requestLocation.requestProducts[findProductIndex].productId
+        };
+      }else{
+        additionalCost.product ={
+          name:'All',
+          id:0
+        };
+      }
     }
   }
 

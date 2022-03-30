@@ -29,15 +29,15 @@
             <tr id = "commentList" *ngFor="let items of locationData">
               <td class="text-left w-147" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
               <td class="text-left w-95">$ {{priceFormatValue(items.priceDiff) | number}}</td>
-              <td class="text-left w-95" >$ {{priceFormatValue(items.price)| number}}</td>     
+              <td class="text-left w-95" >$ {{priceFormatValue(items.price)| number}}</td>
                 <td  class="text-left ">
                   <table >
                     <tbody  >
-                      <tr style="table-layout: auto;">
+                      <tr style="table-layout: auto; width: fit-content">
                         <td  class="text-left "*ngIf="items.oldPrices.length==0" >
                           ---
                         </td>
-                        <td  *ngFor="let item of items.oldPrices">&nbsp;$ {{priceFormatValue(item)| number}} &nbsp;</td>
+                        <td class="text-left" *ngFor="let item of items.oldPrices">&nbsp;$ {{priceFormatValue(item)| number}} &nbsp;</td>
                       </tr>
                     </tbody>
 
