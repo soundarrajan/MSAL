@@ -315,7 +315,7 @@ export interface ILegacyAppConfig {
   EXPORT_FILETYPE: IExportFileTypeLegacyConfig;
   EXPORT_FILETYPE_EXTENSION: EXPORTFILETYPEEXTENSION;
   IDS: IIDSLegacyConfig;
-  INSTRUMENTATION_KEY: string;
+  AppInsightsId: string;
   LOOKUP_MAP: ILookupMapLegacyConfig;
   LOOKUP_TYPE: ILookupTypeLegacyConfig;
   ORDER_COMMANDS: IOrderCommandsLegacyConfig;
