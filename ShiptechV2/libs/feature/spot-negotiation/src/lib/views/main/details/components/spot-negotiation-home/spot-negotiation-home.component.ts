@@ -666,10 +666,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
         return;
       }
-      const locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      let locationsRows = this.store.selectSnapshot<any>((state: any) => {
         return state.spotNegotiation.locationsRows;
       });
-
       let selectedSellerRows = selectedRows.map(e => {
         let reqProdOffers = e.RequestProducts.map(reqProd => {
           let reqProOffers = e.RequestOffers?.find(
@@ -693,6 +692,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       );
       let reqIdwithSellerName: String;
+      let reqLocationsRows = [];
       this.selectedRequestList.forEach(req => {
         var reqLocation = req.requestLocations.filter(l =>
           selectedSellerRows.some(s => s.LocationID == l.locationId)
@@ -756,12 +756,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
             let filterRequestWithSameDtails = selectedSellerRows
               .filter(
                 e =>
-                  (e.LocationID == reqLoc.locationId &&
+                  e.LocationID == reqLoc.locationId &&
                     e.SellerId == locRows.sellerCounterpartyId &&
-                    tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
+                    ((tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
                     e.physicalSupplierCounterpartyId ==
                       locRows.physicalSupplierCounterpartyId) ||
-                  !tenantConfig['isPhysicalSupplierMandatoryForQuoting']
+                  !tenantConfig['isPhysicalSupplierMandatoryForQuoting'])
               )
               .map(result => {
                 result.ReqProdOffers = result.ReqProdOffers.filter(p =>
@@ -804,15 +804,13 @@ export class SpotNegotiationHomeComponent implements OnInit {
                     );
                   });
 
-                  // Update the store
-                  this.store.dispatch(new EditLocationRow(locRows));
-
                   const reqLocSell = this.ConstructUpdatePricePayload(
                     locRows,
                     reqLoc.requestProducts,
                     true
                   );
                   sellerDetails.push(reqLocSell);
+                  reqLocationsRows.push(locRows);
                 });
             } else {
               if (reqIdwithSellerName)
@@ -870,6 +868,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
         return;
       }
+    
       let requestLocationIds = [];
       selectedSellerRows.forEach(sellerRow => {
         requestLocationIds.push(sellerRow.RequestLocationId);
@@ -908,14 +907,21 @@ export class SpotNegotiationHomeComponent implements OnInit {
             });
             return { ...e, requestLocations };
           });
-          this.store.dispatch(new UpdateRequest(this.requestOptions));
-          const locRows = this.store.selectSnapshot<any>((state: any) => {
-            return state.spotNegotiation.locationsRows;
+
+          let updatedLocationRows = locationsRows.map(row => {
+            let updatedRow =  reqLocationsRows?.find(x => x.id === row.id);
+              if (updatedRow) {
+                return updatedRow;
+              }            
+            return row;
           });
           let futureLocationsRows = this.getLocationRowsWithSelectedSeller(
-            JSON.parse(JSON.stringify(locRows)),
+            JSON.parse(JSON.stringify(updatedLocationRows)),
             selectedSellerRows
           );
+
+          // Update the store
+          this.store.dispatch(new UpdateRequest(this.requestOptions));
           this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         } else {
           this.toaster.error(res);
