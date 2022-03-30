@@ -1,30 +1,17 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { Select, Store } from '@ngxs/store';
 
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmationService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
 import { IDocumentsDeleteRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { ModuleError } from '../../views/main/details/components/negotiation-documents/error-handling/module-error';
 import { FileSaverService } from 'ngx-filesaver';
-import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
 import { IDocumentsUpdateNotesRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
-// import { ChangeLogPopupComponent } from '../dialog-popup/change-log-popup/change-log-popup.component';
-
-// Not found
-// import { OperationalAmountDialog } from 'src/app/movements/popup-screens/operational-amount.component';
 
 @Component({
   selector: 'ag-grid-cell-renderer',
@@ -67,11 +54,8 @@ export class AGGridCellActionsDocumentsComponent
     private spinner: NgxSpinnerService,
     public router: Router,
     public dialog: MatDialog,
-    private store: Store,
-    private changeDetector: ChangeDetectorRef,
     private spotNegotiationService: SpotNegotiationService,
     private confirmationService: ConfirmationService,
-    private dialogService: DialogService,
     private appErrorHandler: AppErrorHandler
   ) {}
 
