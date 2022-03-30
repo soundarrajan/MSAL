@@ -12,7 +12,6 @@ import { MatExpansionPanel } from '@angular/material/expansion';
 import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { UpdateSpecificRequests } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
-import { SetCurrentRequestSmallInfo } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
 import _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -103,7 +102,6 @@ export class SpotNegotiationNewCommentsComponent
     private store: Store,
     public changeDetector: ChangeDetectorRef,
     private spotNegotiationService: SpotNegotiationService,
-    private spinner: NgxSpinnerService,
     private toastr: ToastrService
   ) {
     this.store.subscribe(({ spotNegotiation }) => {
@@ -116,7 +114,6 @@ export class SpotNegotiationNewCommentsComponent
 
   ngOnInit(): void {}
   ngAfterViewInit() {}
-
 
   moveCursorToEnd(element) {
     var len = element.value.length;
