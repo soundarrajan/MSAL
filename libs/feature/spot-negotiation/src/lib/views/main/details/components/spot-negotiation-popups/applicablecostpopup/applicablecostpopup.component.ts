@@ -1,5 +1,4 @@
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
-import { MatSelect } from '@angular/material/select';
 import { AdditionalCostViewModel } from './../../../../../../core/models/additional-costs-model';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -8,8 +7,6 @@ import {
   Component,
   OnInit,
   Inject,
-  ElementRef,
-  ViewChild,
   ChangeDetectorRef,
   ChangeDetectionStrategy
 } from '@angular/core';
@@ -294,8 +291,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     let zeroPricedRTAddCosts = _.filter(additionalCosts, function(addCost) {
       return (
         !addCost.isDeleted &&
-        (addCost.costType == 'Total' ||
-          addCost.costType == 'Range') &&
+        (addCost.costType == 'Total' || addCost.costType == 'Range') &&
         addCost.price <= 0
       );
     });
