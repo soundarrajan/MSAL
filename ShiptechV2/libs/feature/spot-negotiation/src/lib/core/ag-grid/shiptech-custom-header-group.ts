@@ -1,16 +1,10 @@
 import { Observable, pipe } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  Inject,
-  ViewChild,
-  ViewChildren
-} from '@angular/core';
+import { Component, ElementRef, Inject, ViewChildren } from '@angular/core';
 import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Store, Select } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 import {
@@ -27,14 +21,10 @@ import { SpnegoAddCounterpartyModel } from '../models/spnego-addcounterparty.mod
 import { TenantFormattingService } from '../../../../../../core/src/lib/services/formatting/tenant-formatting.service';
 import { DecimalPipe } from '@angular/common';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
-import {
-  SpotNegotiationStore,
-  SpotNegotiationStoreModel
-} from '../../store/spot-negotiation.store';
-import { count, filter, map } from 'rxjs/operators';
+
 import moment from 'moment';
 import { BestcontractpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/bestcontractpopup/bestcontractpopup.component';
-import _, { cloneDeep } from 'lodash';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -170,7 +160,9 @@ import _, { cloneDeep } from 'lodash';
           <!-- <mat-checkbox class="noborder" [checked]="true">{{
             params.product.productName
           }}</mat-checkbox> -->
-         <span class="noborder" style="padding: 4px !important"> {{params.product.productName}} </span>
+          <span class="noborder" style="padding: 4px !important">
+            {{ params.product.productName }}
+          </span>
         </div>
         <div class="optionsText">
           <div class="qty">
@@ -486,18 +478,25 @@ export class ShiptechCustomHeaderGroup {
       this.requestProductId = this.params.product.id;
       this.requestLocationId = this.params.requestLocationId;
       this.quoteDate = moment(this.quoteDate).format('DD-MMM-YYYY');
-      if(this.locations){
-        let requestLoc = this.locations.find(l => l.id == this.requestLocationId);
-        if(requestLoc?.requestProducts){
-          let updatedProdLivePrice = requestLoc.requestProducts.find(p => p.id == this.requestProductId);
+      if (this.locations) {
+        let requestLoc = this.locations.find(
+          l => l.id == this.requestLocationId
+        );
+        if (requestLoc?.requestProducts) {
+          let updatedProdLivePrice = requestLoc.requestProducts.find(
+            p => p.id == this.requestProductId
+          );
           let formattedLivePrice = this.priceFormatValue(
             updatedProdLivePrice.requestGroupProducts.livePrice,
             'livePrice'
           );
           this.livePrice = formattedLivePrice;
-          this.targetValue = updatedProdLivePrice.requestGroupProducts.targetPrice;
-          this.closureValue = updatedProdLivePrice.requestGroupProducts.closurePrice;
-          this.isLatestClosurePrice = updatedProdLivePrice.requestGroupProducts.isLatestClosurePrice;
+          this.targetValue =
+            updatedProdLivePrice.requestGroupProducts.targetPrice;
+          this.closureValue =
+            updatedProdLivePrice.requestGroupProducts.closurePrice;
+          this.isLatestClosurePrice =
+            updatedProdLivePrice.requestGroupProducts.isLatestClosurePrice;
           this.closureDate = moment(
             updatedProdLivePrice.requestGroupProducts.closureDate
           ).format('DD-MMM-YYYY');

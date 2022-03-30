@@ -1,18 +1,10 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { IHeaderAngularComp } from '@ag-grid-community/angular';
-import {
-  IAfterGuiAttachedParams,
-  IHeaderParams
-} from '@ag-grid-community/core';
+import { IHeaderParams } from '@ag-grid-community/core';
 import { Store } from '@ngxs/store';
 import { SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
 import _ from 'lodash';
-import {
-  EditLocations,
-  SetLocationsRows,
-  UpdateSpecificRequests
-} from '../../store/actions/ag-grid-row.action';
-import { SetCurrentRequestSmallInfo } from '../../store/actions/request-group-actions';
+import { SetLocationsRows } from '../../store/actions/ag-grid-row.action';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 import { ToastrService } from 'ngx-toastr';
 @Component({
