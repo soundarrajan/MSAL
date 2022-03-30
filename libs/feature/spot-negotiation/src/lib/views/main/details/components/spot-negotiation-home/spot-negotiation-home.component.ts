@@ -19,16 +19,13 @@ import {
   SetLocationsRows,
   UpdateRequest
 } from '../../../../../store/actions/ag-grid-row.action';
-import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { SpotnegoemaillogComponent } from '../spotnegoemaillog/spotnegoemaillog.component';
 import { KnownSpotNegotiationRoutes } from 'libs/feature/spot-negotiation/src/lib/known-spot-negotiation.routes';
-import { find, takeUntil } from 'rxjs/operators';
-import { MenuItem } from 'primeng/api';
+
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 import _ from 'lodash';
 import { NegotiationDetailsToolbarComponent } from '../../../toolbar/spot-negotiation-details-toolbar.component';
-import { LoadReportSurveyHistoryAction } from 'libs/feature/quantity-control/src/lib/store/report/qc-report-survey-history.actions';
 import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
 
 @Component({
@@ -154,15 +151,17 @@ export class SpotNegotiationHomeComponent implements OnInit {
       },
       {
         label: 'Report' //,
-        //routerLink: disabled
-          ? null
+          ? //routerLink: disabled
+            null
           : [
               ...routeLinkToNegotiationDetails,
               KnownSpotNegotiationRoutes.reportPath
             ],
         routerLinkActiveOptions: { exact: true },
         //disabled,
-        visible: this.isAuthorizedForReportsTab && this.tenantConfiguration.isNegotiationReport,
+        visible:
+          this.isAuthorizedForReportsTab &&
+          this.tenantConfiguration.isNegotiationReport,
         command: () => {
           this.setActiveRequest();
         }

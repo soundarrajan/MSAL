@@ -7,10 +7,9 @@ import {
   ElementRef
 } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { Store } from '@ngxs/store';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import _ from 'lodash';
