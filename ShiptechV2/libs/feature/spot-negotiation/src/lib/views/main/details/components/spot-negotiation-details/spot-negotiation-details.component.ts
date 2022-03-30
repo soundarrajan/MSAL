@@ -254,7 +254,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           suppressNavigable: true,
           lockPosition: true,
           valueGetter: params=>{
-            console.log(params);
             let totalOfferVal = null;
             params.data.requestOffers?.forEach(element => {
                 totalOfferVal += element.amount;
