@@ -1,8 +1,4 @@
 import { StaticListsRouteResolver } from './static-lists-route.resolver';
-import { DocumentsModule } from './../../../../core/src/lib/ui/components/documents/documents.module';
-import { AuditLogModule } from './../../../../core/src/lib/ui/components/audit-log/audit-log.module';
-import { EmailLogModule } from './../../../../core/src/lib/ui/components/email-log/email-log.module';
-import { ExportModule } from './../../../../core/src/lib/ui/components/export/export.module';
 import { EntityStatusModule } from './../../../../core/src/lib/ui/components/entity-status/entity-status.module';
 import { RelatedLinksModule } from './../../../../core/src/lib/ui/components/related-links/related-links.module';
 import { MessageBoxModule } from './../../../../core/src/lib/ui/components/message-box/message-box.module';
@@ -56,14 +52,11 @@ import { ConfirmdialogComponent } from './views/main/details/components/spot-neg
 import { SpotNegotiationNewCommentsComponent } from './views/main/details/components/spot-negotiation-new-comments/spot-negotiation-new-comments.component';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
-import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
-import { AgFooterModule } from '@shiptech/core/ui/components/ag-footer/ag-footer.module';
 import { SelectTextOnFocusDirectiveModule } from '@shiptech/core/ui/directives/default/select-text-on-focus.directive';
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SpotnegoConfirmorderComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
 import { SpotnegoSendRfqComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
-import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
 import { SpotnegoRequestChangesComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-request-changes/spotnego-request-changes.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -74,8 +67,6 @@ import { RemoveCounterpartyComponent } from './views/main/details/components/rem
 import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PortalModule } from '@angular/cdk/portal';
-import { DeliveryModule } from '@shiptech/feature/delivery';
-import { DeliveryRoutingModule } from 'libs/feature/delivery/src/lib/delivery-routing.module';
 import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
 import { PriceTenantFormatDirective } from './views/main/details/directives/price-tenant-format.directive';
 import { NegotiationToolbarComponent } from './views/main/details/components/toolbar/negotiation-toolbar.component';
@@ -102,7 +93,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    FilterPresetsModule,
     MasterSelectorModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
@@ -124,19 +114,11 @@ import { CKEditorModule } from 'ckeditor4-angular';
     RelatedLinksModule,
     EntityStatusModule,
     DynamicDialogModule,
-    ExportModule,
-    AgFilterDisplayModule,
-    AgFooterModule,
     SelectTextOnFocusDirectiveModule,
-    EmailLogModule,
-    AuditLogModule,
-    DocumentsModule,
     BreadcrumbsModule,
     HighchartsChartModule,
     NgxSpinnerModule,
     CKEditorModule,
-    DeliveryModule,
-    DeliveryRoutingModule,
     WunderBarModule,
     FileUploadModule,
     SharedModule
@@ -171,29 +153,31 @@ import { CKEditorModule } from 'ckeditor4-angular';
     AGGridCellRendererV2Component,
     AGGridCellV2RendererComponent,
     AGGridCellActionsDocumentsComponent,
-
     ShiptechCustomHeaderGroup,
+    CustomHeader,
+    CustomHeaderSelectAll,
+    AgGridDatetimePickerToggleComponent,
+
     SpotnegoConfirmorderComponent,
     SpotnegoSendRfqComponent,
-    AgGridDatetimePickerToggleComponent,
     SpotnegoRequestChangesComponent,
     NegotiationDetailsToolbarComponent,
     RemoveCounterpartyComponent,
     NegotiationDocumentsComponent,
     NegotiationReportComponent,
     PriceTenantFormatDirective,
-    DragDropFileUploadDirective,
-    CustomHeader,
-    CustomHeaderSelectAll
+    DragDropFileUploadDirective
   ],
   entryComponents: [
-    MainSpotNegotiationComponent,
+    AGGridCellActionsComponent,
     AGGridCellRendererComponent,
+    AGGridCellRendererV2Component,
     AGGridCellV2RendererComponent,
     AGGridCellActionsDocumentsComponent,
-    AGGridCellRendererV2Component,
-    AGGridCellActionsComponent,
     ShiptechCustomHeaderGroup,
+    CustomHeader,
+    CustomHeaderSelectAll,
+
     SellerratingpopupComponent,
     ApplicablecostpopupComponent,
     BestcontractpopupComponent,
@@ -210,9 +194,7 @@ import { CKEditorModule } from 'ckeditor4-angular';
     SpotnegoSendRfqComponent,
     SearchRequestPopupComponent,
     SpotnegoSearchCtpyComponent,
-    RemoveCounterpartyComponent,
-    CustomHeader,
-    CustomHeaderSelectAll
+    RemoveCounterpartyComponent
   ],
   exports: [],
   providers: [
