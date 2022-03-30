@@ -13,7 +13,6 @@ import {
   EditLocationRow,
   EditLocations
 } from '../../store/actions/ag-grid-row.action';
-import { AvailabletermcontractspopupComponent } from '../../views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 
 import { SpotnegoOfferpricehistoryComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-offerpricehistory/spotnego-offerpricehistory.component';
@@ -571,16 +570,6 @@ export class ShiptechCustomHeaderGroup {
         locationName: reqLocation.locationName,
         productName: params.product.productName
       }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {});
-  }
-
-  availabletermcontractpopup(): void {
-    const dialogRef = this.dialog.open(AvailabletermcontractspopupComponent, {
-      width: '1164px',
-      height: '179px',
-      panelClass: 'additional-cost-popup'
     });
 
     dialogRef.afterClosed().subscribe(result => {});

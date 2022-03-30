@@ -48,7 +48,6 @@ import { SpotNegotiationHeaderComponent } from './views/main/details/components/
 import { SearchRequestPopupComponent } from './views/main/details/components/spot-negotiation-popups/search-request-popup/search-request-popup.component';
 import { SpotnegoSearchCtpyComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { ShiptechCustomHeaderGroup } from './core/ag-grid/shiptech-custom-header-group';
-import { AvailabletermcontractspopupComponent } from './views/main/details/components/spot-negotiation-popups/availabletermcontractspopup/availabletermcontractspopup.component';
 import { SpotnegoOfferpricehistoryComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-offerpricehistory/spotnego-offerpricehistory.component';
 import { MarketpricehistorypopupComponent } from './views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 import { LocPanDataComponent } from './views/main/details/components/loc-pan-data/loc-pan-data.component';
@@ -161,7 +160,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
     SearchRequestPopupComponent,
     SpotnegoSearchCtpyComponent,
     SpotNegotiationDetailsComponent,
-    AvailabletermcontractspopupComponent,
     SpotnegoOfferpricehistoryComponent,
     MarketpricehistorypopupComponent,
     LocPanDataComponent,
@@ -206,7 +204,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
     ConfirmdialogComponent,
     SpotnegoOfferpricehistoryComponent,
     MarketpricehistorypopupComponent,
-    AvailabletermcontractspopupComponent,
     SpotnegoAdditionalcostComponent,
     SupplierCommentsPopupComponent,
     SpotnegoConfirmorderComponent,
