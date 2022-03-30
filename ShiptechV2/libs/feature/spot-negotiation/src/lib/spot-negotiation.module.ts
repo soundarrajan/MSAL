@@ -33,7 +33,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { AGGridCellActionsComponent } from './core/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellRendererComponent } from './core/ag-grid/ag-grid-cell-renderer.component';
-import { DocDragDropUploadComponent } from './views/main/details/components/doc-drag-drop-upload/doc-drag-drop-upload.component';
 import { AGGridCellRendererV2Component } from './core/ag-grid/ag-grid-cell-rendererv2.component';
 import { SpotnegoAdditionalcostComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-additionalcost/spotnego-additionalcost.component';
 import { SpotnegoPricingDetailsComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-pricing-details/spotnego-pricing-details.component';
@@ -67,7 +66,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { SpotnegoConfirmorderComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
 import { SpotnegoSendRfqComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
 import { RfqspopupComponent } from './views/main/details/components/spot-negotiation-popups/rfqspopup/rfqspopup.component';
-import { BadgeComponent } from './views/main/details/components/badge/badge.component';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
 import { SpotnegoRequestChangesComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-request-changes/spotnego-request-changes.component';
@@ -150,7 +148,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
     MainSpotNegotiationComponent,
     SpotNegotiationComponent,
     SpotNegotiationHomeComponent,
-    DocDragDropUploadComponent,
     SpotnegoAdditionalcostComponent,
     SpotnegoPricingDetailsComponent,
     SupplierCommentsPopupComponent,
@@ -184,9 +181,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
     SpotnegoConfirmorderComponent,
     SpotnegoSendRfqComponent,
     RfqspopupComponent,
-    // SpotNegotiationCommentsComponent,
-    BadgeComponent,
-    // FooterV2Component,
     AgGridDatetimePickerToggleComponent,
     SpotnegoRequestChangesComponent,
     NegotiationDetailsToolbarComponent,
@@ -197,9 +191,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
     DragDropFileUploadDirective,
     CustomHeader,
     CustomHeaderSelectAll
-    // QuantityTenantFormatDirective,
-    // AmountTenantFormatDirective,
-    // NumberOnlyDirective,
   ],
   entryComponents: [
     MainSpotNegotiationComponent,
