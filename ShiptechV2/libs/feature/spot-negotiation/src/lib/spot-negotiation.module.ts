@@ -104,15 +104,10 @@ import { CKEditorModule } from 'ckeditor4-angular';
     !environment.useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
-    SearchBoxModule,
     UIModule,
 
-    MasterAutocompleteModule,
     NgxMatDatetimePickerModule,
-    AutoCompleteModule,
     MessageBoxModule,
-    RelatedLinksModule,
-    EntityStatusModule,
     DynamicDialogModule,
     SelectTextOnFocusDirectiveModule,
     BreadcrumbsModule,
@@ -120,7 +115,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
     NgxSpinnerModule,
     CKEditorModule,
     WunderBarModule,
-    FileUploadModule,
     SharedModule
   ],
   declarations: [
