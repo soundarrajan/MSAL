@@ -64,7 +64,6 @@ import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/brea
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SpotnegoConfirmorderComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
 import { SpotnegoSendRfqComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
-import { RfqspopupComponent } from './views/main/details/components/spot-negotiation-popups/rfqspopup/rfqspopup.component';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
 import { SpotnegoRequestChangesComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-request-changes/spotnego-request-changes.component';
@@ -178,7 +177,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
     ShiptechCustomHeaderGroup,
     SpotnegoConfirmorderComponent,
     SpotnegoSendRfqComponent,
-    RfqspopupComponent,
     AgGridDatetimePickerToggleComponent,
     SpotnegoRequestChangesComponent,
     NegotiationDetailsToolbarComponent,
