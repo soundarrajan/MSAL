@@ -1,17 +1,12 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
   Component,
   OnInit,
   ViewChild,
-  Injectable,
-  HostListener,
   ElementRef
 } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
-import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
-import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -21,7 +16,6 @@ import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/se
 import _ from 'lodash';
 import { MatRadioChange } from '@angular/material/radio';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { FileUpload } from 'primeng/fileupload';
 import {
   IDocumentsCreateUploadDetailsDto,
   IDocumentsCreateUploadDto
@@ -32,8 +26,6 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { AGGridCellV2RendererComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-renderer-v2.component';
 import { AGGridCellActionsDocumentsComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-actions-documents.component';
 import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
-import { Subject } from 'rxjs';
-import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-negotiation-documents',
@@ -66,10 +58,8 @@ export class NegotiationDocumentsComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private changeDetector: ChangeDetectorRef,
-    private store: Store,
     private spinner: NgxSpinnerService,
     private spotNegotiationService: SpotNegotiationService,
-    private router: Router,
     private toastr: ToastrService,
     private appErrorHandler: AppErrorHandler,
     private format: TenantFormattingService
