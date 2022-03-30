@@ -1,25 +1,12 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { Select, Store } from '@ngxs/store';
-import {
-  SelectSeller,
-  EditLocationRow
-} from '../../store/actions/ag-grid-row.action';
+import { Store } from '@ngxs/store';
+import { EditLocationRow } from '../../store/actions/ag-grid-row.action';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-// import { ChangeLogPopupComponent } from '../dialog-popup/change-log-popup/change-log-popup.component';
-
-// Not found
-// import { OperationalAmountDialog } from 'src/app/movements/popup-screens/operational-amount.component';
 
 @Component({
   selector: 'ag-grid-cell-renderer',
@@ -157,7 +144,6 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
     public router: Router,
     public dialog: MatDialog,
     private store: Store,
-    private changeDetector: ChangeDetectorRef,
     private spotNegotiationService: SpotNegotiationService
   ) {}
 

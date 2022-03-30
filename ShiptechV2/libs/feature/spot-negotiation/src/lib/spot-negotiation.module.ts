@@ -66,12 +66,9 @@ import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/brea
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SpotnegoConfirmorderComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-confirmorder/spotnego-confirmorder.component';
 import { SpotnegoSendRfqComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-send-rfq/spotnego-send-rfq.component';
-import { CustomHeaderGroupNotify } from './core/ag-grid/custom-header-group-notification.component';
-import { CustomHeaderGroup } from './core/ag-grid/custom-header-group.component';
 import { RfqspopupComponent } from './views/main/details/components/spot-negotiation-popups/rfqspopup/rfqspopup.component';
 import { BadgeComponent } from './views/main/details/components/badge/badge.component';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
-import { FooterV2Component } from '@shiptech/core/ui/components/ds-components/footer-v2/footer-v2.component';
 import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
 import { SpotnegoRequestChangesComponent } from './views/main/details/components/spot-negotiation-popups/spotnego-request-changes/spotnego-request-changes.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -183,8 +180,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
     AGGridCellV2RendererComponent,
     AGGridCellActionsDocumentsComponent,
 
-    CustomHeaderGroupNotify,
-    CustomHeaderGroup,
     ShiptechCustomHeaderGroup,
     SpotnegoConfirmorderComponent,
     SpotnegoSendRfqComponent,
