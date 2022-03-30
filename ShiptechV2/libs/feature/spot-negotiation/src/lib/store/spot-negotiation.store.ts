@@ -375,21 +375,32 @@ export class SpotNegotiationStore {
     });
   }
 
-  // Rows lists
-  @Action(EditLocationRow)
-  EditLocationRow(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-    { payload }: EditLocationRow
-  ) {
-    patchState({
-      locationsRows: getState().locationsRows.map(row => {
-        if (row.id === payload.id) {
-          return payload;
-        }
-        return row;
-      })
-    });
-  }
+// Rows lists
+@Action(EditLocationRow)
+EditLocationRow(
+  { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+  { payload }: EditLocationRow
+) {
+  let currentLocRows = payload;
+  let locs = getState().locationsRows;
+  let upaLocations = locs.map(row => {
+    let payRows: any;
+    if(currentLocRows instanceof Object && row.id === currentLocRows.id)
+      return currentLocRows;
+    else if(currentLocRows instanceof Array){     
+      payRows =  currentLocRows?.find(x => x.id === row.id);
+      if (payRows) {
+        return payRows;
+      }
+    }
+    return row;
+  });
+
+   patchState({
+    locationsRows: upaLocations
+  });
+}
+ 
 
   @Action(SelectSeller)
   addUser(
