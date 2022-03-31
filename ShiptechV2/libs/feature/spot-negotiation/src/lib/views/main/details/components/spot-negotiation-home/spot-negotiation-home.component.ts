@@ -247,7 +247,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
       if (element.requestOffers != undefined) {
         if (element.checkProd1 && element.requestOffers[0] != undefined) {
           if (
-            element.requestOffers[0].price < 0 ||
             element.requestOffers[0].price == null
           ) {
             isallow = true;
@@ -255,7 +254,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
         if (element.checkProd2 && element.requestOffers[1] != undefined) {
           if (
-            element.requestOffers[1].price < 0 ||
             element.requestOffers[1].price == null
           ) {
             isallow = true;
@@ -263,7 +261,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
         if (element.checkProd3 && element.requestOffers[2] != undefined) {
           if (
-            element.requestOffers[2].price < 0 ||
             element.requestOffers[2].price == null
           ) {
             isallow = true;
@@ -271,7 +268,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
         if (element.checkProd4 && element.requestOffers[3] != undefined) {
           if (
-            element.requestOffers[3].price < 0 ||
             element.requestOffers[3].price == null
           ) {
             isallow = true;
@@ -279,7 +275,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
         if (element.checkProd5 && element.requestOffers[4] != undefined) {
           if (
-            element.requestOffers[4].price < 0 ||
             element.requestOffers[4].price == null
           ) {
             isallow = true;
