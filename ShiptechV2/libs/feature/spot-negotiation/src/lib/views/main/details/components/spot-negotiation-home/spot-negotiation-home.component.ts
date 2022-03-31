@@ -651,7 +651,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
   copyPriceToSelectedRequests() {
     if (this.selectedRequestList.length > 0) {
       this.selectedSellerList = [];
-
+      const tenantConfig = this.store.selectSnapshot(
+        (state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].tenantConfigurations;
+        }
+      );
       var selectedRows = this.FilterselectedRowForCurrentRequest();
       if (selectedRows.length == 0) {
         this.toaster.error('Atleast 1 product should be selected');
@@ -663,6 +667,19 @@ export class SpotNegotiationHomeComponent implements OnInit {
       ) {
         this.toaster.error(
           'Please select the product(s) that has offer price.'
+        );
+        return;
+      }
+      else if (
+        tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
+        selectedRows.filter(
+              x =>
+                (x.physicalSupplierCounterpartyId == null ||
+                  x.physicalSupplierCounterpartyId == '')
+            ).length != 0
+      ) {
+        this.toaster.error(
+          'Physical Supplier(s) should be provided to copy offer price.'
         );
         return;
       }
@@ -686,11 +703,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
       let sellerDetails = [];
       let requestProductIds = [];
       //avoid calculation based on physical supplier mandatory configurations.
-      const tenantConfig = this.store.selectSnapshot(
-        (state: SpotNegotiationStoreModel) => {
-          return state['spotNegotiation'].tenantConfigurations;
-        }
-      );
       let reqIdwithSellerName: String;
       let reqLocationsRows = [];
       this.selectedRequestList.forEach(req => {
@@ -703,19 +715,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
             : req.name;
         }
         reqLocation.forEach(reqLoc => {
-          if (
-            tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
-            selectedSellerRows.filter(
-              x =>
-                x.LocationID == reqLoc.locationId &&
-                (x.physicalSupplierCounterpartyId == null ||
-                  x.physicalSupplierCounterpartyId == '')
-            ).length > 0
-          ){
-            isPhySupMandatoryForQuoting = true;
-              return false;
-          }
-
           var reqOffers = locationsRows.filter(
             lr =>
               lr.requestLocationId == reqLoc.id &&
