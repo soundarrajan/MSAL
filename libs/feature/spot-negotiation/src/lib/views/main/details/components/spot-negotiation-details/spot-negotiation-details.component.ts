@@ -1700,7 +1700,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           .length;
         if (
           row.totalOffer &&
-          //quotedProductsLength === requestProductsLength &&
+          quotedProductsLength === requestProductsLength &&
           row.requestId == requestId &&
           Number(row.totalOffer) > 0 &&
           Number(smallestOffer) > Number(row.totalOffer)
