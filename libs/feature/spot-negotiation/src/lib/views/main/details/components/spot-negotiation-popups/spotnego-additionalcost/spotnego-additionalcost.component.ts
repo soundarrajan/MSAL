@@ -458,6 +458,16 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       if (!additionalCostList[i].isDeleted) {
         if (additionalCostList[i].costTypeId == COST_TYPE_IDS.PERCENT) {
           additionalCostList[i].totalAmount = 0;
+          if (additionalCostList[i].isAllProductsCost) {
+            additionalCostList[i].requestOfferIds = this.getRequestOfferIds(0);
+          } else {
+            additionalCostList[i].requestOfferIds = this.getRequestOfferIds(
+              additionalCostList[i].requestProductId
+            );
+            additionalCostList[i].requestOfferId = parseFloat(
+              additionalCostList[i].requestOfferIds
+            );
+          }
           this.calculateAdditionalCostAmounts(
             additionalCostList[i],
             locationAdditionalCostFlag
