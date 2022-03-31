@@ -1,4 +1,3 @@
-import { HttpParams } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,18 +6,12 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
-import { Select, Store } from '@ngxs/store';
-import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
-import { GridOptions } from 'ag-grid-community';
+import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { SetTenantConfigurations } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
-import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 import _ from 'lodash';
-import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { EmailPreviewPopupComponent } from '../spot-negotiation-popups/email-preview-popup/email-preview-popup.component';
 
 @Component({
   selector: 'app-negotiation-report',
@@ -35,11 +28,9 @@ export class NegotiationReportComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private spotNegotiationService: SpotNegotiationService,
-    private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private sanitizer: DomSanitizer,
-    private store: Store,
-    private changeDetectorRef: ChangeDetectorRef
+    private store: Store
   ) {}
   ngOnInit(): void {
     this.getTenantConfiguration();
@@ -48,7 +39,7 @@ export class NegotiationReportComponent implements OnInit {
   getTenantConfiguration(): void {
     const response = this.spotNegotiationService.getTenantConfiguration();
     response.subscribe((res: any) => {
-      if(res?.message == 'Unauthorized'){
+      if (res?.message == 'Unauthorized') {
         return;
       }
       if (res.error) {

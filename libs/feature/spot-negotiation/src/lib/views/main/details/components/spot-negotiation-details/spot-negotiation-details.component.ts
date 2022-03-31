@@ -1,5 +1,5 @@
 import { SpotNegotiationStoreModel } from './../../../../../store/spot-negotiation.store';
-import { map, filter, finalize } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {
@@ -274,8 +274,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   notPercentageLocationCostRows: any[];
 
   constructor(
-    @Inject(DOCUMENT) private _document: HTMLDocument,
-    private datePipe: DatePipe,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private store: Store,

@@ -1,14 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { GridOptions, IDatasource,  IGetRowsParams } from 'ag-grid-community';
+import { GridOptions } from 'ag-grid-community';
 import { Store } from '@ngxs/store';
 import { AGGridCellRendererComponent } from '../../../../../../core/ag-grid/ag-grid-cell-renderer.component';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { AddRequest } from '../../../../../../store/actions/request-group-actions';
-import { AddCounterpartyToLocations, AppendRequestList } from '../../../../../../store/actions/ag-grid-row.action';
+import { AddCounterpartyToLocations } from '../../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 
 @Component({
@@ -36,16 +36,15 @@ export class SearchRequestPopupComponent implements OnInit {
   ];
   selectedRequestList: any[];
   RequestGroupId: any;
-  rowData:any = [];
-  searchingRequest :string = null;
+  rowData: any = [];
+  searchingRequest: string = null;
   public page: number;
   public pageSize: number;
-  public totalItems : number;
-  public gridId:any;
+  public totalItems: number;
+  public gridId: any;
   public overlayLoadingTemplate =
-  '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
-  public overlayNoRowsTemplate =
-  '<span>No rows to show</span>';
+    '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
+  public overlayNoRowsTemplate = '<span>No rows to show</span>';
   ngOnInit() {}
   constructor(
     private router: Router,
@@ -79,14 +78,14 @@ export class SearchRequestPopupComponent implements OnInit {
         //params.api.setDatasource(this.dataSource);
 
         this.store.subscribe(({ spotNegotiation }) => {
-          this.requestList = spotNegotiation.requestList ;
+          this.requestList = spotNegotiation.requestList;
           var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
-           this.page = currentPage + 1;
-           this.pageSize=25;
-           this.totalItems = this.requestRowCount;
-           this.dialog_gridOptions.api.setRowData(this.requestList);
-             this.requestListLength = this.requestList.length;
-          });
+          this.page = currentPage + 1;
+          this.pageSize = 25;
+          this.totalItems = this.requestRowCount;
+          this.dialog_gridOptions.api.setRowData(this.requestList);
+          this.requestListLength = this.requestList.length;
+        });
       },
       getRowStyle: function(params) {
         if (params.node.rowPinned) {
@@ -106,62 +105,79 @@ export class SearchRequestPopupComponent implements OnInit {
     };
   }
 
-  onPageChange(page: number){
-    var endRowData = page * this.pageSize ;
+  onPageChange(page: number) {
+    var endRowData = page * this.pageSize;
     this.dialog_gridOptions.api.showLoadingOverlay();
     this.page = page;
-    const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip:endRowData-this.pageSize, Take: this.pageSize });
-     response.subscribe((res:any)=>{
+    const response = this._spotNegotiationService.getRequestresponse(
+      null,
+      { Filters: [] },
+      { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }] },
+      [],
+      null,
+      { Skip: endRowData - this.pageSize, Take: this.pageSize }
+    );
+    response.subscribe((res: any) => {
       this.dialog_gridOptions.api.hideOverlay();
       this.dialog_gridOptions.api.setRowData(res.payload);
-     });
-
+    });
   }
 
-  onPageSizeChange(pageSize: number){
-    this.pageSize =  pageSize;
+  onPageSizeChange(pageSize: number) {
+    this.pageSize = pageSize;
     this.dialog_gridOptions.api.showLoadingOverlay();
     var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
-      this.page = currentPage + 1;
-    const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip:0, Take: this.pageSize });
-    response.subscribe((res:any)=>{
-             this.dialog_gridOptions.api.hideOverlay();
-           if(res.payload){
-            this.requestList = res.payload;
-            this.dialog_gridOptions.api.setRowData(res.payload);
-             }
-           else{
-             this.dialog_gridOptions.api.showNoRowsOverlay();
-           }
-         });
+    this.page = currentPage + 1;
+    const response = this._spotNegotiationService.getRequestresponse(
+      null,
+      { Filters: [] },
+      { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }] },
+      [],
+      null,
+      { Skip: 0, Take: this.pageSize }
+    );
+    response.subscribe((res: any) => {
+      this.dialog_gridOptions.api.hideOverlay();
+      if (res.payload) {
+        this.requestList = res.payload;
+        this.dialog_gridOptions.api.setRowData(res.payload);
+      } else {
+        this.dialog_gridOptions.api.showNoRowsOverlay();
+      }
+    });
   }
 
-  onCounterpartyChange(value){
+  onCounterpartyChange(value) {
     this.searchingRequest = value;
-    if(this.searchingRequest.length ===0 ){
+    if (this.searchingRequest.length === 0) {
       this.totalItems = this.requestRowCount;
       this.dialog_gridOptions.api.setRowData(this.requestList);
-    }
-    else{
+    } else {
       return;
     }
   }
 
-  search(userInput: string){
+  search(userInput: string) {
     this.dialog_gridOptions.api.showLoadingOverlay();
-    const response = this._spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , userInput.toLowerCase() , { Skip:0, Take: this.pageSize });
-    response.subscribe((res:any)=>{
+    const response = this._spotNegotiationService.getRequestresponse(
+      null,
+      { Filters: [] },
+      { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }] },
+      [],
+      userInput.toLowerCase(),
+      { Skip: 0, Take: this.pageSize }
+    );
+    response.subscribe((res: any) => {
       this.totalItems = res.matchedCount;
       this.dialog_gridOptions.api.hideOverlay();
-    if(res.payload){
-      var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
-      this.page = currentPage + 1;
-      this.dialog_gridOptions.api.setRowData(res.payload);
+      if (res.payload) {
+        var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
+        this.page = currentPage + 1;
+        this.dialog_gridOptions.api.setRowData(res.payload);
+      } else {
+        this.dialog_gridOptions.api.showNoRowsOverlay();
       }
-    else{
-      this.dialog_gridOptions.api.showNoRowsOverlay();
-    }
-  });
+    });
   }
 
   // onPageSizeChange(pageSize: number): void {
@@ -282,79 +298,90 @@ export class SearchRequestPopupComponent implements OnInit {
 
   addToRequestList() {
     this.selectedRequestList = this.dialog_gridOptions.api.getSelectedRows();
-    if(this.selectedRequestList.length > 0){
-      const requests = this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
-        return state['spotNegotiation'].requests;
-       });
+    if (this.selectedRequestList.length > 0) {
+      const requests = this.store.selectSnapshot(
+        (state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].requests;
+        }
+      );
       let selectedreqId = [];
       this.selectedRequestList.forEach(element => {
         let filterduplicaterequest = requests.filter(
           e => e.id == element.requestId
         );
-        if(filterduplicaterequest.length > 0){
-          let ErrorMessage =  filterduplicaterequest[0].name + ' - ' + filterduplicaterequest[0].vesselName + ' already linked to the request.';
+        if (filterduplicaterequest.length > 0) {
+          let ErrorMessage =
+            filterduplicaterequest[0].name +
+            ' - ' +
+            filterduplicaterequest[0].vesselName +
+            ' already linked to the request.';
           this.toastr.error(ErrorMessage);
-
-        }else{
+        } else {
           selectedreqId.push(element.requestId);
         }
       });
-      if(this.selectedRequestList.length > 0){
+      if (this.selectedRequestList.length > 0) {
         let payload = {
-        groupId: parseInt(this.RequestGroupId),
-        requestIds: selectedreqId
-      };
-      const response = this._spotNegotiationService.addRequesttoGroup(payload);
-      response.subscribe((res: any) => {
-        if(res?.message == 'Unauthorized'){
-          return;
-        }
-        if (res.error) {
-          alert('Handle Error');
-          return;
-        } else {
-
-
-          if (res['requests'] && res['requests'].length > 0)
-            {
-                this.store.dispatch(new AddRequest(res['requests']));
-                res['requests'].forEach(element => {
-                  let SuccessMessage =  element.name + ' - ' + element.vesselName + ' has been linked successfully.';
-                  this.toastr.success(SuccessMessage);
-                  });
+          groupId: parseInt(this.RequestGroupId),
+          requestIds: selectedreqId
+        };
+        const response = this._spotNegotiationService.addRequesttoGroup(
+          payload
+        );
+        response.subscribe((res: any) => {
+          if (res?.message == 'Unauthorized') {
+            return;
+          }
+          if (res.error) {
+            alert('Handle Error');
+            return;
+          } else {
+            if (res['requests'] && res['requests'].length > 0) {
+              this.store.dispatch(new AddRequest(res['requests']));
+              res['requests'].forEach(element => {
+                let SuccessMessage =
+                  element.name +
+                  ' - ' +
+                  element.vesselName +
+                  ' has been linked successfully.';
+                this.toastr.success(SuccessMessage);
+              });
             }
-            if (res['requestLocationSellers'] && res['requestLocationSellers'].length > 0)
-            {
-                this.store.dispatch(new AddCounterpartyToLocations(res['requestLocationSellers']));
+            if (
+              res['requestLocationSellers'] &&
+              res['requestLocationSellers'].length > 0
+            ) {
+              this.store.dispatch(
+                new AddCounterpartyToLocations(res['requestLocationSellers'])
+              );
             }
-        }
-      });
+          }
+        });
       }
-    }
-    else{
-      this.toastr.error("Select atlease one Request");
+    } else {
+      this.toastr.error('Select atlease one Request');
       return;
     }
   }
   search1(userInput: string): void {
     this.store.subscribe(({ spotNegotiation }) => {
       if (spotNegotiation.requestList) {
-        this.rowData = spotNegotiation.requestList
-          .filter(e => {
-            if (e.requestName.toLowerCase().includes(userInput.toLowerCase()) || e.vesselName.toLowerCase().includes(userInput.toLowerCase())
+        this.rowData = spotNegotiation.requestList.filter(e => {
+          if (
+            e.requestName.toLowerCase().includes(userInput.toLowerCase()) ||
+            e.vesselName.toLowerCase().includes(userInput.toLowerCase())
             // || e.serviceName?.toLowerCase().includes(userInput.toLowerCase())
             // || e.buyerName.toLowerCase().includes(userInput.toLowerCase()) || e.locationName.toLowerCase().includes(userInput.toLowerCase())
             // || e.productName.toLowerCase().includes(userInput.toLowerCase())
-            ) {
-              return true;
-            }
-            else{
-              return false;
-            }
-          });
-          if(this.rowData.length > 0){
-            this.dialog_gridOptions.api.setRowData(this.rowData);
+          ) {
+            return true;
+          } else {
+            return false;
           }
+        });
+        if (this.rowData.length > 0) {
+          this.dialog_gridOptions.api.setRowData(this.rowData);
+        }
       }
     });
   }
@@ -474,7 +501,7 @@ export class SearchRequestPopupComponent implements OnInit {
       field: 'terminal',
       suppressMenu: true,
       cellRendererFramework: AGGridCellRendererComponent,
-      cellClass: ['aggridtextalign-center'],
+      cellClass: ['aggridtextalign-center']
     }
   ];
 

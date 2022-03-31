@@ -1,5 +1,14 @@
-
-import { Component, OnInit, Inject, ViewChild, ChangeDetectorRef, Input, Injectable, EventEmitter, Output, InjectionToken, Optional, } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  ViewChild,
+  ChangeDetectorRef,
+  Input,
+  Injectable,
+  InjectionToken,
+  Optional
+} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
@@ -15,10 +24,21 @@ import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 import { OrderListGridViewModel } from '@shiptech/core/ui/components/delivery/view-model/order-list-grid-view-model.service';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { NgxMatDateAdapter, NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE
+} from '@angular/material/core';
+import {
+  NgxMatDateAdapter,
+  NgxMatDateFormats,
+  NGX_MAT_DATE_FORMATS
+} from '@angular-material-components/datetime-picker';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import {  MAT_MOMENT_DATE_ADAPTER_OPTIONS, PickDateAdapter } from 'libs/feature/delivery/src/lib/views/delivery/details/components/notes-log/notes-log.component';
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  PickDateAdapter
+} from 'libs/feature/delivery/src/lib/views/delivery/details/components/notes-log/notes-log.component';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -104,7 +124,6 @@ function range<T>(length: number, valueFunction: (index: number) => T): T[] {
   }
   return valuesArray;
 }
-
 
 @Injectable()
 export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
@@ -385,16 +404,14 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   locations: any;
   supplyDeliveryDate: '';
   dateFormat_rel_SupplyDate: any;
-  tenantConfiguration:any;
+  tenantConfiguration: any;
   autocompleteProducts: knownMastersAutocomplete;
   _entityId: number;
   _entityName: string;
   private _autocompleteType: any;
   @ViewChild(AgGridDatetimePickerToggleComponent)
   child: AgGridDatetimePickerToggleComponent;
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
   get entityId(): number {
     return this._entityId;
   }
@@ -443,7 +460,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     this.uomList = this.setListFromStaticLists('Uom');
     this.productList = this.setListFromStaticLists('Product');
     this.inactiveList = this.setListFromStaticLists('InactiveProducts');
-    this.productList  = this.productList.concat(this.inactiveList);
+    this.productList = this.productList.concat(this.inactiveList);
     this.getOtherDetailsLoad();
   }
 
@@ -482,7 +499,6 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     }
   }
 
-
   //popup initial load data..
   getOtherDetailsLoad() {
     this.store.subscribe(({ spotNegotiation }) => {
@@ -496,15 +512,26 @@ export class SpotnegoOtherdetails2Component implements OnInit {
       this.locationsRows.forEach(element1 => {
         if (element1.requestOffers != undefined) {
           element1.requestOffers.forEach(reqOff => {
-            if (reqOff.requestProductId == this.selectedProductList.column.userProvidedColDef.product.id && element1.id == this.selectedProductList.data.id && ele.locationId == element1.locationId) {
-              let etaDate,reqProd;
+            if (
+              reqOff.requestProductId ==
+                this.selectedProductList.column.userProvidedColDef.product.id &&
+              element1.id == this.selectedProductList.data.id &&
+              ele.locationId == element1.locationId
+            ) {
+              let etaDate, reqProd;
               if (reqOff.supplyDeliveryDate == null) {
-                etaDate =ele.recentEta??ele.eta;
+                etaDate = ele.recentEta ?? ele.eta;
               } else {
                 etaDate = reqOff.supplyDeliveryDate;
               }
-              reqProd= ele.requestProducts.filter(item => item.id === reqOff.requestProductId);
-              otherDetailsPayload = this.ConstructOtherDetailsPayload(reqOff, etaDate,reqProd);
+              reqProd = ele.requestProducts.filter(
+                item => item.id === reqOff.requestProductId
+              );
+              otherDetailsPayload = this.ConstructOtherDetailsPayload(
+                reqOff,
+                etaDate,
+                reqProd
+              );
               this.otherDetailsItems.push(otherDetailsPayload[0]);
             }
           });
@@ -515,17 +542,14 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   ///product lookup filter
   filterProductList() {
     if (this.otherDetailsItems[this.productIndex].product) {
-      const filterValue = this.otherDetailsItems[
-        this.productIndex
-      ].product.name
-        ? this.otherDetailsItems[
-          this.productIndex
-        ].product.name.toLowerCase()
+      const filterValue = this.otherDetailsItems[this.productIndex].product.name
+        ? this.otherDetailsItems[this.productIndex].product.name.toLowerCase()
         : this.otherDetailsItems[this.productIndex].product.toLowerCase();
       if (this.productList) {
         return this.productList
           .filter(
-            option => option.name.toLowerCase().indexOf(filterValue.trim()) === 0 //
+            option =>
+              option.name.toLowerCase().indexOf(filterValue.trim()) === 0 //
           )
           .slice(0, 10);
       } else {
@@ -536,30 +560,40 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     }
   }
   //Construct UI Value's to bind the popup grid
-  ConstructOtherDetailsPayload(requestOffers, etaDate,reqProd) {
+  ConstructOtherDetailsPayload(requestOffers, etaDate, reqProd) {
     let QtyUomId;
     if (requestOffers.supplyQuantityUomId == null) {
-      QtyUomId = requestOffers.priceQuantityUomId??this.tenantConfiguration.uomId;
+      QtyUomId =
+        requestOffers.priceQuantityUomId ?? this.tenantConfiguration.uomId;
     } else {
       QtyUomId = requestOffers.supplyQuantityUomId;
     }
     return [
-
       {
         OfferId: requestOffers.offerId,
         RequestOfferId: requestOffers.id,
-        SupplyQuantity: this.tenantFormat.quantity(requestOffers.supplyQuantity) ? this.tenantFormat.quantity(requestOffers.supplyQuantity) : '',
-        SupplyDeliveryDate: etaDate ? moment(etaDate).format(this.dateFormat_rel_SupplyDate) : '',
-        product:requestOffers.quotedProductId==reqProd[0].productId?'': {
-          id: requestOffers.quotedProductId,
-          name:this.productList.find(x => x.id == requestOffers.quotedProductId).name,
-        },
-        QuotedProductId:requestOffers.quotedProductId,
+        SupplyQuantity: this.tenantFormat.quantity(requestOffers.supplyQuantity)
+          ? this.tenantFormat.quantity(requestOffers.supplyQuantity)
+          : '',
+        SupplyDeliveryDate: etaDate
+          ? moment(etaDate).format(this.dateFormat_rel_SupplyDate)
+          : '',
+        product:
+          requestOffers.quotedProductId == reqProd[0].productId
+            ? ''
+            : {
+                id: requestOffers.quotedProductId,
+                name: this.productList.find(
+                  x => x.id == requestOffers.quotedProductId
+                ).name
+              },
+        QuotedProductId: requestOffers.quotedProductId,
         uom: {
           id: QtyUomId,
-          name: this.uomList.find(x => x.id == QtyUomId).name,  //Default Uom is Id:5
+          name: this.uomList.find(x => x.id == QtyUomId).name //Default Uom is Id:5
         }
-      }]
+      }
+    ];
   }
   // Only Number
   keyPressNumber(event) {
@@ -591,8 +625,8 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   }
   //decode
   htmlDecode(str: any): any {
-    var decode = function (str) {
-      return str.replace(/&#(\d+);/g, function (match, dec) {
+    var decode = function(str) {
+      return str.replace(/&#(\d+);/g, function(match, dec) {
         return String.fromCharCode(dec);
       });
     };
@@ -621,7 +655,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   }
   /// lists class separate
   setListFromStaticLists(name) {
-    const findList = _.find(this.staticLists, function (object) {
+    const findList = _.find(this.staticLists, function(object) {
       return object.name == name;
     });
     if (findList != -1) {
@@ -643,8 +677,15 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     this.locations.forEach(ele => {
       if (ele.requestProducts != undefined) {
         ele.requestProducts.forEach(reqOff => {
-          if (reqOff.id == this.selectedProductList.column.userProvidedColDef.product.id && ele.locationId == this.selectedProductList.data.locationId) {
-            if (reqOff.productId == this.otherDetailsItems[this.productIndex].product.id) {
+          if (
+            reqOff.id ==
+              this.selectedProductList.column.userProvidedColDef.product.id &&
+            ele.locationId == this.selectedProductList.data.locationId
+          ) {
+            if (
+              reqOff.productId ==
+              this.otherDetailsItems[this.productIndex].product.id
+            ) {
               isAllow = true;
             }
           }
@@ -663,11 +704,18 @@ export class SpotnegoOtherdetails2Component implements OnInit {
       QuotedProductId: this.otherDetailsItems[this.productIndex].product.id,
       SupplyQuantity: this.otherDetailsItems[this.productIndex].SupplyQuantity,
       SupplyQuantityUomId: this.otherDetailsItems[this.productIndex].uom.id,
-      SupplyDeliveryDate: this.otherDetailsItems[this.productIndex].SupplyDeliveryDate ? moment(this.otherDetailsItems[this.productIndex].SupplyDeliveryDate).format(this.dateFormat_rel_SupplyDate) : ''
+      SupplyDeliveryDate: this.otherDetailsItems[this.productIndex]
+        .SupplyDeliveryDate
+        ? moment(
+            this.otherDetailsItems[this.productIndex].SupplyDeliveryDate
+          ).format(this.dateFormat_rel_SupplyDate)
+        : ''
     };
-    const response = this.spotNegotiationService.OtherDetails(otherDetails_data);
+    const response = this.spotNegotiationService.OtherDetails(
+      otherDetails_data
+    );
     response.subscribe((res: any) => {
-      if(res?.message == 'Unauthorized'){
+      if (res?.message == 'Unauthorized') {
         return;
       }
       if (res.status) {
@@ -688,13 +736,20 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     rowdata.forEach((element1, key) => {
       if (element1.requestOffers != undefined) {
         element1.requestOffers.forEach((reqOff, reqkey) => {
-          if (reqOff.requestProductId == this.selectedProductList.column.userProvidedColDef.product.id && element1.id == this.selectedProductList.data.id) {
+          if (
+            reqOff.requestProductId ==
+              this.selectedProductList.column.userProvidedColDef.product.id &&
+            element1.id == this.selectedProductList.data.id
+          ) {
             reqOff.supplyQuantity = requestChangeData.SupplyQuantity;
             reqOff.supplyDeliveryDate = requestChangeData.SupplyDeliveryDate;
             reqOff.supplyQuantityUomId = requestChangeData.SupplyQuantityUomId;
-            reqOff.quotedProductId = requestChangeData.QuotedProductId==undefined?this.otherDetailsItems[this.productIndex].QuotedProductId:requestChangeData.QuotedProductId;
-            reqOff.isSupplyQuantityEdited=true;
-            reqOff.priceQuantityUomId= requestChangeData.SupplyQuantityUomId;
+            reqOff.quotedProductId =
+              requestChangeData.QuotedProductId == undefined
+                ? this.otherDetailsItems[this.productIndex].QuotedProductId
+                : requestChangeData.QuotedProductId;
+            reqOff.isSupplyQuantityEdited = true;
+            reqOff.priceQuantityUomId = requestChangeData.SupplyQuantityUomId;
           }
         });
       }
@@ -702,10 +757,30 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     return rowdata;
   }
 
-  tabledata = [{ seller: 'Total Marine Fuel', port: 'Amstredam', contractname: 'Cambodia Contarct 2021', contractproduct: 'DMA 1.5%', formula: 'Cambodia Con', schedule: 'Average of 5 Days', contractqty: '10,000,.00', liftedqty: '898.00 MT', availableqty: '96,602.00 MT', price: '$500.00' },
-  { seller: 'Total Marine Fuel', port: 'Amstredam', contractname: 'Amstredam Contarct 2021', contractproduct: 'DMA 1.5%', formula: 'Cambodia Con', schedule: 'Average of 5 Days', contractqty: '10,000,.00', liftedqty: '898.00 MT', availableqty: '96,602.00 MT', price: '$500.00' }];
-
-
-
+  tabledata = [
+    {
+      seller: 'Total Marine Fuel',
+      port: 'Amstredam',
+      contractname: 'Cambodia Contarct 2021',
+      contractproduct: 'DMA 1.5%',
+      formula: 'Cambodia Con',
+      schedule: 'Average of 5 Days',
+      contractqty: '10,000,.00',
+      liftedqty: '898.00 MT',
+      availableqty: '96,602.00 MT',
+      price: '$500.00'
+    },
+    {
+      seller: 'Total Marine Fuel',
+      port: 'Amstredam',
+      contractname: 'Amstredam Contarct 2021',
+      contractproduct: 'DMA 1.5%',
+      formula: 'Cambodia Con',
+      schedule: 'Average of 5 Days',
+      contractqty: '10,000,.00',
+      liftedqty: '898.00 MT',
+      availableqty: '96,602.00 MT',
+      price: '$500.00'
+    }
+  ];
 }
-
