@@ -7,14 +7,12 @@ import {
   AfterViewInit,
   ViewChild,
   EventEmitter,
-  Input
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  OnDestroy
 } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/lib/core/models/spnego-addcounterparty.model';

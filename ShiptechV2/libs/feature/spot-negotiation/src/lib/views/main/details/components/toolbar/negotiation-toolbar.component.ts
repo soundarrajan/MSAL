@@ -8,7 +8,6 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { TabMenu } from 'primeng/tabmenu';
 import {
   ActivatedRoute,
@@ -17,8 +16,8 @@ import {
   Router
 } from '@angular/router';
 import { KnownPrimaryRoutes } from '@shiptech/core/enums/known-modules-routes.enum';
-import { Select, Store } from '@ngxs/store';
-import { Observable, Subject } from 'rxjs';
+import { Store } from '@ngxs/store';
+import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { KnownSpotNegotiationRoutes } from 'libs/feature/spot-negotiation/src/lib/known-spot-negotiation.routes';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
@@ -63,15 +62,13 @@ export class NegotiationToolbarComponent
   }
 
   ngOnInit(): void {
-      const response = this.spotNegotiationService.CheckWhetherUserIsAuthorizedForReportsTab();
-      response.subscribe((res: any) => {
-        if(res?.message == 'Unauthorized'){
-          this.isAuthorizedForReportsTab = false;
-        }
-        else
-        this.isAuthorizedForReportsTab = true;
-      });
-      
+    const response = this.spotNegotiationService.CheckWhetherUserIsAuthorizedForReportsTab();
+    response.subscribe((res: any) => {
+      if (res?.message == 'Unauthorized') {
+        this.isAuthorizedForReportsTab = false;
+      } else this.isAuthorizedForReportsTab = true;
+    });
+
     this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
       this.negotiationId = params.spotNegotiationId;
       this.disabled = this.negotiationId === '0';
@@ -83,7 +80,7 @@ export class NegotiationToolbarComponent
   getTenantConfiguration(): void {
     const response = this.spotNegotiationService.getTenantConfiguration();
     response.subscribe((res: any) => {
-      if(res?.message == 'Unauthorized'){
+      if (res?.message == 'Unauthorized') {
         return;
       }
       if (res.error) {
@@ -124,7 +121,9 @@ export class NegotiationToolbarComponent
               KnownSpotNegotiationRoutes.reportPath
             ],
         routerLinkActiveOptions: { exact: true },
-        visible: this.isAuthorizedForReportsTab && this.tenantConfiguration.isNegotiationReport
+        visible:
+          this.isAuthorizedForReportsTab &&
+          this.tenantConfiguration.isNegotiationReport
       },
       {
         label: 'Documents',

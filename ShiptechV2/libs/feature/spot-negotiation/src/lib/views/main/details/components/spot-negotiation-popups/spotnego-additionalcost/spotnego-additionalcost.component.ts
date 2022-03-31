@@ -3,15 +3,11 @@ import {
   Component,
   OnInit,
   Inject,
-  ViewChild,
-  ElementRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
-import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
@@ -79,7 +75,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     private toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private spotNegotiationService: SpotNegotiationService,
-    private legacyLookupsDatabase: LegacyLookupsDatabase,
     private tenantSettingsService: TenantSettingsService,
     private changeDetectorRef: ChangeDetectorRef,
     private tenantService: TenantFormattingService,
@@ -201,23 +196,21 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     let findProductIndex = _.findIndex(
       this.requestLocation.requestProducts,
       function(product: any) {
-        return (
-          product.status == 'Stemmed'
-        );
+        return product.status == 'Stemmed';
       }
     );
     if (findProductIndex != -1) {
       additionalCost.hasStemmedProduct = true;
-      if(!additionalCost.isAllProductsCost){
+      if (!additionalCost.isAllProductsCost) {
         additionalCost.product = {
           name: this.requestLocation.requestProducts[findProductIndex]
             .productName,
           id: this.requestLocation.requestProducts[findProductIndex].productId
         };
-      }else{
-        additionalCost.product ={
-          name:'All',
-          id:0
+      } else {
+        additionalCost.product = {
+          name: 'All',
+          id: 0
         };
       }
     }

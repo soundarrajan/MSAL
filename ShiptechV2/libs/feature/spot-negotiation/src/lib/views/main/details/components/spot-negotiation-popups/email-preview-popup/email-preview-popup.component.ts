@@ -3,7 +3,6 @@ import {
   Inject,
   OnInit,
   ChangeDetectorRef,
-  ViewChild,
   ChangeDetectionStrategy
 } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -14,22 +13,16 @@ import { SpotNegotiationService } from '../../../../../../../../../spot-negotiat
 import {
   SetLocationsRows,
   UpdateRequest
-  // SetLocationsRowsPriceDetails
 } from '../../../../../../store/actions/ag-grid-row.action';
 import _ from 'lodash';
 import { MatRadioChange } from '@angular/material/radio';
 import { FileSaverService } from 'ngx-filesaver';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { ModuleError } from '../../negotiation-documents/error-handling/module-error';
-import { CKEditorComponent } from 'ckeditor4-angular';
 
 interface Items {
   value: string;
   viewValue: string;
-}
-interface EmailAddress {
-  IdEmailAddress: string;
-  Name: string;
 }
 
 @Component({
