@@ -23,7 +23,8 @@ import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components
 
 import moment from 'moment';
 import { BestcontractpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/bestcontractpopup/bestcontractpopup.component';
-import _ from 'lodash';
+import _, { cloneDeep } from 'lodash';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -380,6 +381,7 @@ export class ShiptechCustomHeaderGroup {
     private _spotNegotiationService: SpotNegotiationService,
     private changeDetector: ChangeDetectorRef,
     private tenantService: TenantFormattingService,
+    private spinner: NgxSpinnerService,
     @Inject(DOCUMENT) private _document: HTMLDocument
   ) {
     this.targetValue = '';
@@ -766,6 +768,7 @@ export class ShiptechCustomHeaderGroup {
     }
   }
   calculateTargetPrice() {
+    this.spinner.show();
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     this.livePrice = this.priceFormatValue(this.livePrice, 'livePrice');
     this.livePrice =
@@ -787,6 +790,7 @@ export class ShiptechCustomHeaderGroup {
     };
     const response = this._spotNegotiationService.saveTargetPrice(payload);
     response.subscribe((res: any) => {
+      this.spinner.hide();
       if (res.status) {
         let locations = [];
         let locationsRows = [];
