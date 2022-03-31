@@ -325,7 +325,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.totalOfferHeaderWidth = params.columnApi
           .getColumn('totalOffer')
           .getActualWidth();
-        // this.gridOptions_counterparty.api.showLoadingOverlay();
       },
 
       onColumnResized: function(params) {
