@@ -382,8 +382,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     this.selectedOffers.forEach((va, k) => {
       if (
         va.OfferPrice == null ||
-        va.OfferPrice == undefined ||
-        va.OfferPrice == 0
+        va.OfferPrice == undefined
       ) {
         this.toaster.error('Cannot confirm offer as no offer price available');
         return;
