@@ -19,7 +19,7 @@
         <table >
           <thead>
             <tr  >
-              <th class="text-left w-147">CounterParty</th>
+              <th class="text-left w-157">CounterParty</th>
               <th class="text-left w-95">Diff</th>
               <th class="text-left w-95">Curr. offer</th>
               <th class="text-left "  >Past off</th>
@@ -27,7 +27,7 @@
           </thead>
           <tbody style="height: 580px;  overflow: scroll;">
             <tr id = "commentList" *ngFor="let items of locationData">
-              <td class="text-left w-147" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
+              <td class="text-left w-157" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
               <td class="text-left w-95">$ {{priceFormatValue(items.priceDiff) | number}}</td>
               <td class="text-left w-95" >$ {{priceFormatValue(items.price)| number}}</td>
                 <td  class="text-left ">

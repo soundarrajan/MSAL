@@ -540,8 +540,7 @@ export class ShiptechCustomHeaderGroup {
 
   offerpricehistorypopup(params: any) {
     const dialogRef = this.dialog.open(SpotnegoOfferpricehistoryComponent, {
-      width: '500vw',
-      height: '90vh',
+      width: '40vw',
       panelClass: 'additional-cost-popup',
       data: {
         LocationName: this.currentRequestInfo.requestLocations.find(
