@@ -703,6 +703,19 @@ export class SpotNegotiationHomeComponent implements OnInit {
             : req.name;
         }
         reqLocation.forEach(reqLoc => {
+          if (
+            tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
+            selectedSellerRows.filter(
+              x =>
+                x.LocationID == reqLoc.locationId &&
+                (x.physicalSupplierCounterpartyId == null ||
+                  x.physicalSupplierCounterpartyId == '')
+            ).length > 0
+          ){
+            isPhySupMandatoryForQuoting = true;
+              return false;
+          }
+
           var reqOffers = locationsRows.filter(
             lr =>
               lr.requestLocationId == reqLoc.id &&
@@ -856,13 +869,19 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
         return;
       }
+            // if (isPhySupMandatoryForQuoting) {
+      //   this.toaster.error(
+      //     'Physical Supplier(s) should be provided to copy offer price to ' +
+      //       reqIdwithSellerName
+      //   );
+      //   return;
+      // } 
       if (isPhySupMandatoryForQuoting) {
         this.toaster.error(
-          'Physical Supplier(s) should be provided to copy offer price to ' +
-            reqIdwithSellerName
-        );
+          'Physical Supplier(s) should be provided to copy offer price');
         return;
-      } else if (!isProductsExists) {
+      }
+      else if (!isProductsExists) {
         this.toaster.error(
           'Selected product(s) does not exist for ' + reqIdwithSellerName
         );
@@ -937,9 +956,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
   getLocationRowsWithSelectedSeller(rowsArray, selectedSellerRows) {
     rowsArray.forEach(row => {
       selectedSellerRows.forEach(sellerRow => {
-        let reqLocations = this.requestOptions.filter(req =>
+        let reqLocations = this.requestOptions.filter(req => req.id == row.requestId &&
           req.requestLocations.some(
-            reqloc => reqloc.id == row.RequestLocationId
+            reqloc => reqloc.id == row.requestLocationId
           )
         );
         let reqProducts =
