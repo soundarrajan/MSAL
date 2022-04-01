@@ -958,6 +958,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               })
             ) as AdditionalCostViewModel[];
 
+            this.getRequestOfferIdsForCurrentRow(response.locationAdditionalCosts, sellerOffers);
             let locationAdditionalCostList = _.cloneDeep(
               _.filter(response.locationAdditionalCosts, function(
                 locationAdditionalCost
@@ -1069,24 +1070,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       if (!additionalCostList[i].isDeleted) {
         if (additionalCostList[i].costTypeId == COST_TYPE_IDS.PERCENT) {
           additionalCostList[i].totalAmount = 0;
-          if (additionalCostList[i].isAllProductsCost) {
-            additionalCostList[
-              i
-            ].requestOfferIds = this.getRequestOfferIdsForPercentLocationBasedCost(
-              rowData,
-              0
-            );
-          } else {
-            additionalCostList[
-              i
-            ].requestOfferIds = this.getRequestOfferIdsForPercentLocationBasedCost(
-              rowData,
-              additionalCostList[i].requestProductId
-            );
-            additionalCostList[i].requestOfferId = parseFloat(
-              additionalCostList[i].requestOfferIds
-            );
-          }
+
           this.calculateAdditionalCostAmounts(
             additionalCostList[i],
             locationAdditionalCostFlag,
@@ -1105,7 +1089,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
   }
 
-  getRequestOfferIdsForPercentLocationBasedCost(
+  getRequestOfferIdsForLocationBasedCost(
     rowData,
     selectedApplicableForId
   ) {
@@ -1124,6 +1108,19 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
     }
     return requestOfferIds.join(',');
+  }
+
+  getRequestOfferIdsForCurrentRow(costs: any, rowData: any){
+
+    for (let i = 0; i < costs.length; i++) {
+      if (!costs[i].isDeleted && costs[i].isLocationBased) {
+        if (costs[i].isAllProductsCost) {
+          costs[i].requestOfferIds = this.getRequestOfferIdsForLocationBasedCost(rowData, 0);
+        } else {
+          costs[i].requestOfferIds = this.getRequestOfferIdsForLocationBasedCost(rowData, costs[i].requestProductId);
+        }
+      }
+    }
   }
 
   additionalCostNameChanged(
