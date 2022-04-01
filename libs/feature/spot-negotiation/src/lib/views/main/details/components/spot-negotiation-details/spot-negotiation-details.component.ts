@@ -481,7 +481,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.interval = setTimeout(() => {
       var params = { force: true };
       this.gridOptions_counterparty.api?.refreshCells(params);
-    }, 1000);
+    }, 200);
   }
 
   formatRowDataPrice(row, product, field, newValue) {
