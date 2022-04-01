@@ -501,7 +501,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           QuoteByTimeZoneId: this.selectedOffers[0].QuoteByTimeZoneId, //this.requestOffers.Select(off => off.QuoteByTimeZoneId).FirstOrDefault()
           Comments: ''
         };
-        this.toaster.info('Please wait while the offer is confirmed');
+        //this.toaster.info('Please wait while the offer is confirmed');
         this.spinner.show();
         setTimeout(() => {
           const response = this.spotNegotiationService.ConfirmRfq(rfq_data);
