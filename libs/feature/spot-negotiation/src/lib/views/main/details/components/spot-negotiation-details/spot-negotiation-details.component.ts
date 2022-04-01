@@ -82,7 +82,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
 
   public overlayLoadingTemplate =
-    '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Please wait...</span>';
+    '<div class="bootstrap-loading"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>';
   public overlayNoRowsTemplate = '<span>No rows to show</span>';
   context: any;
 
@@ -472,6 +472,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       t.moveStart('character', len);
       t.select();
     }
+    element.parentNode.classList.add("focus-price-highlight");
   }
 
   refreshGridDetails() {
