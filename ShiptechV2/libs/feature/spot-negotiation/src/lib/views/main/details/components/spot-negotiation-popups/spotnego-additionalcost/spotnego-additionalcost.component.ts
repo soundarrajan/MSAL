@@ -464,12 +464,14 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           );
         }
 
-        if (additionalCostList[i].isAllProductsCost) {
-          additionalCostList[i].requestOfferIds = this.getRequestOfferIds(0);
-        } else {
-          additionalCostList[i].requestOfferIds = this.getRequestOfferIds(
-            additionalCostList[i].requestProductId
-          );
+        if (additionalCostList[i].isLocationBased) {
+          if (additionalCostList[i].isAllProductsCost) {
+            additionalCostList[i].requestOfferIds = this.getRequestOfferIds(0);
+          } else {
+            additionalCostList[i].requestOfferIds = this.getRequestOfferIds(
+              additionalCostList[i].requestProductId
+            );
+          }
         }
       }
     }
