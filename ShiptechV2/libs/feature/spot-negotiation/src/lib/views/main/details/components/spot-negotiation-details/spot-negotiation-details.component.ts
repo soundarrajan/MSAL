@@ -325,6 +325,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.totalOfferHeaderWidth = params.columnApi
           .getColumn('totalOffer')
           .getActualWidth();
+        if(this.rowData_aggrid.filter(x => x.requestLocationId == this.reqLocId).length == 0)
+          params.api.showNoRowsOverlay();
       },
 
       onColumnResized: function(params) {
