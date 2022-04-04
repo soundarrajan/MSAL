@@ -4,6 +4,10 @@ import * as Highcharts from 'highcharts';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import moment from 'moment';
+import { NgxSpinnerService } from 'ngx-spinner';
+import NoDataToDisplay from 'highcharts/modules/no-data-to-display';
+
+NoDataToDisplay(Highcharts)
 
 @Component({
   selector: 'app-marketpricehistorypopup',
@@ -16,11 +20,11 @@ export class MarketpricehistorypopupComponent implements OnInit {
   public RequestId: number;
   public tabledata = [];
   public priceHistoryData: any = {};
-  Highcharts: typeof Highcharts = Highcharts;
+  highcharts = Highcharts;
 
-  chartOptions: Highcharts.Options = {
+ public chartOptions: any = {
     chart: {
-      height: 500,
+      height: 550,
       width: 800
     },
     title: {
@@ -30,28 +34,16 @@ export class MarketpricehistorypopupComponent implements OnInit {
       lineWidth: 1,
       lineColor: '#364150',
       title: {
-        text: ''
+        text: 'Dates'
       },
-      categories: [
-        '20/5',
-        '21/05',
-        '24/05',
-        '25/05',
-        '26/05',
-        '27/05',
-        '02/06',
-        '03/06',
-        '05/06',
-        '07/06',
-        '08/06'
-      ]
+      categories: []
     },
     yAxis: {
       gridLineWidth: 0,
       lineWidth: 1,
       lineColor: '#364150',
       title: {
-        text: ''
+        text: 'Prices'
       },
       tickPixelInterval: 2
     },
@@ -59,19 +51,7 @@ export class MarketpricehistorypopupComponent implements OnInit {
       {
         showInLegend: false,
         type: 'line',
-        data: [
-          476.0,
-          473.0,
-          482.0,
-          485.0,
-          485.0,
-          487.0,
-          492.0,
-          496.0,
-          502.0,
-          506.0,
-          518.0
-        ]
+        data: []
       }
     ],
     credits: {
@@ -79,33 +59,51 @@ export class MarketpricehistorypopupComponent implements OnInit {
     }
   };
 
-  ngOnInit(): void {}
+
   constructor(
     public format: TenantFormattingService,
     private _spotNegotiationService: SpotNegotiationService,
+    private spinner: NgxSpinnerService,
     public dialogRef: MatDialogRef<MarketpricehistorypopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+  ) {}
+  ngOnInit() {
     let payload = {
       LocationId: this.data.LocationId,
       ProductId: this.data.ProductId,
       RequestId: this.data.RequestId
     };
+    this.spinner.show();
     const response = this._spotNegotiationService.getMarketPriceHistory(
       payload
     );
     response.subscribe((res: any) => {
+      this.spinner.hide();
       if (res?.message == 'Unauthorized') {
         return;
       }
-      // this.priceHistoryData =  {date : res.marketPriceHistory.map(item => item.date), price : res.marketPriceHistory.map(item => item.price)};
-      res.marketPriceHistory.forEach(item => {
-        this.tabledata.push({
-          price: item.price,
-          date: this.formatDate(item.date)
-        });
+      let dataSeries = [];
+      let categories = [];
+      res.marketPriceHistory.map(x=>{
+          //pushing data to data table
+            this.tabledata.push({
+              price: x.price,
+              date: this.formatDate(x.date)
+            });
+           dataSeries.push(x.price);  // pushing price data to dataseries
+           categories.push(this.formatDate(x.date));  // pushing date to categories
       });
+      if(dataSeries.length === 0){
+        this.highcharts.setOptions({ lang: {noData: "Market price data unavailable"}});
+        this.highcharts.chart('container', this.chartOptions);
+        return;
+       }
+     console.log(this.tabledata);
+     this.chartOptions.xAxis.categories = categories;
+     this.chartOptions.series[0].data = dataSeries;
+     this.highcharts.chart('container', this.chartOptions);
     });
+
   }
 
   closeDialog() {

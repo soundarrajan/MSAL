@@ -33,7 +33,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-12">
+    <div class="col-3">
       <div class="product-terms p-b-5 p-r-15 p-l-15" style="margin-top: 10px;">
         <div class="operations-details-block market-history" style="height:auto">
           <table>
@@ -61,10 +61,13 @@
         </div>
       </div>
     </div>
-    <!-- <div class="col-9" style="margin-left: -15px;">
-      <div class="market-graph" style="margin-top: 10px;">
-        <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"></highcharts-chart>
+    <div class="col-9" style="margin-left: -15px;">
+      <div id="container" class="market-graph" style="margin-top: 10px;">
+        <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions"></highcharts-chart>
       </div>
-    </div> -->
+    </div>
   </div>
 </div>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-spin-clockwise-fade">
+</ngx-spinner>
