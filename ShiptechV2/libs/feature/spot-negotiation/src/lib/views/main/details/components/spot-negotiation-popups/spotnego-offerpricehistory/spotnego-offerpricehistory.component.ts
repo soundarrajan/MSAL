@@ -225,7 +225,6 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
          for(var i = 1 ; i<=maxLength; i++){
            categories.push('Offer'+i)
          }
-         console.log(categories);
          this.chartOptions.yAxis.min = min - 1;
          this.chartOptions.yAxis.max = max + 1;
          this.chartOptions.xAxis.categories = categories;
