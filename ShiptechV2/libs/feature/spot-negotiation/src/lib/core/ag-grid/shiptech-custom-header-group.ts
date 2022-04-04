@@ -540,12 +540,14 @@ export class ShiptechCustomHeaderGroup {
 
   offerpricehistorypopup(params: any) {
     const dialogRef = this.dialog.open(SpotnegoOfferpricehistoryComponent, {
-      width: '40vw',
+      width: '600vw',
+      height: '90vh',
       panelClass: 'additional-cost-popup',
       data: {
         LocationName: this.currentRequestInfo.requestLocations.find(
           x => x.id == params.requestLocationId
         )?.locationName,
+        TargerPrice: params.product.requestGroupProducts.targetPrice ,
         ProductName: params.product.productName,
         RequestLocationId: params.requestLocationId,
         RequestProductId: params.product.id
@@ -833,7 +835,7 @@ export class ShiptechCustomHeaderGroup {
                       productDetails,
                       updatedRow1.requestProducts[index].id
                     );
-                    updatedLocRows.push(futureRow); 
+                    updatedLocRows.push(futureRow);
                   }
                 }
               });

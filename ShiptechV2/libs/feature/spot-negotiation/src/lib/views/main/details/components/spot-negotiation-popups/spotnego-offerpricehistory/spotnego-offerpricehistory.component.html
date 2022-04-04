@@ -6,7 +6,7 @@
   </div>
   <hr class="hr-line">
 <div class="row">
-  <div class="col-12">
+  <div class="col-6">
     <div class="row">
       <div class="p-l-15">
 
@@ -16,7 +16,7 @@
 
     <div class="product-terms p-b-5 p-l-15">
       <div class="operations-details-block offerprice-history" style="height: 75vh;">
-        <table >
+        <table>
           <thead>
             <tr  >
               <th class="text-left w-157">CounterParty</th>
@@ -25,7 +25,7 @@
               <th class="text-left "  >Past off</th>
             </tr>
           </thead>
-          <tbody style="height: 580px;  overflow: scroll;">
+          <tbody style="min-height: 580px; height: auto;">
             <tr id = "commentList" *ngFor="let items of locationData">
               <td class="text-left w-157" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
               <td class="text-left w-95">$ {{priceFormatValue(items.priceDiff) | number}}</td>
@@ -55,7 +55,7 @@
     </div>
   </div>
 
-  <div class="col-6" style="display: none;">
+  <div class="col-6" >
     <div class="row">
       <div class="col-4" style="margin-left: -15px;">
         <span class="location-main-heading">Graphical Representation</span>
@@ -69,8 +69,12 @@
         <span class="location-value-marketprice m-r-5">{{productName}}</span>
       </div>
     </div>
-    <div style="height: 75vh;border: 4px solid #E0E1E4;">
-    <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions"></highcharts-chart>
+    <div id="container" style="height: 75vh;border: 4px solid #E0E1E4;">
+    <highcharts-chart
+       [Highcharts]="highcharts"
+       [options]="chartOptions"
+       >
+    </highcharts-chart>
   </div>
   </div>
   </div>
