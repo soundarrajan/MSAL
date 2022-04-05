@@ -17,7 +17,7 @@
           [matAutocomplete]="auto"
           required
           placeholder="System instument"
-          [disabled]="!formValues.isEditable"
+          [disabled]="!formValues.isEditable || hasInvoicedOrder"
         />
         <mat-autocomplete
           #auto="matAutocomplete"
@@ -34,8 +34,8 @@
         </mat-autocomplete>
       </mat-form-field>
       <button
-        [disabled]="!formValues.isEditable"
-        [ngClass]="{ 'search-icon-disabled': !formValues.isEditable }"
+        [disabled]="!formValues.isEditable || hasInvoicedOrder"
+        [ngClass]="{ 'search-icon-disabled': !formValues.isEditable || hasInvoicedOrder }"
         class="search-icon"
         appMasterSelectorTrigger
         [masterSelector]="masterSelector"
@@ -73,7 +73,7 @@
         [compareWith]="compareUomObjects"
         required
         placeholder="Price Type"
-        [disabled]="!formValues.isEditable"
+        [disabled]="!formValues.isEditable || hasInvoicedOrder"
       >
         <mat-option *ngFor="let option of marketPriceList" [value]="option">
           {{ option.name }}
@@ -94,7 +94,7 @@
         [compareWith]="compareUomObjects"
         required
         placeholder="Premium/Discount"
-        [disabled]="!formValues.isEditable"
+        [disabled]="!formValues.isEditable || hasInvoicedOrder"
       >
         <mat-option
           *ngFor="let option of formulaPlusMinusList"
@@ -122,7 +122,7 @@
         amountFormat
         (keypress)="keyPressNumber($event)"
         [disabled]="
-          !formValues.isEditable ||
+          !formValues.isEditable || hasInvoicedOrder ||
           (formValues.simpleFormula.plusMinus &&
             formValues.simpleFormula.plusMinus.id == 3)
         "
@@ -142,7 +142,7 @@
         [compareWith]="compareUomObjects"
         placeholder="Flat/percentage"
         [disabled]="
-          !formValues.isEditable ||
+          !formValues.isEditable || hasInvoicedOrder ||
           (formValues.simpleFormula.plusMinus &&
             formValues.simpleFormula.plusMinus.id == 3)
         "
@@ -169,7 +169,7 @@
         [compareWith]="compareUomObjects"
         placeholder="Uom"
         [disabled]="
-          !formValues.isEditable ||
+          !formValues.isEditable || hasInvoicedOrder ||
           (formValues.simpleFormula.plusMinus &&
             formValues.simpleFormula.plusMinus.id == 3) ||
           (formValues.simpleFormula.flatPercentage &&
