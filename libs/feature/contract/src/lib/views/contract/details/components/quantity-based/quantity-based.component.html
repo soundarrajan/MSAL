@@ -16,7 +16,7 @@
         <td class="padding" style="width: 30px;">
           <a
             class="add-icon"
-            (click)="!formValues.isEditable ? '' : addNewQuantityBasedLine()"
+            (click)="!formValues.isEditable || hasInvoicedOrder ? '' : addNewQuantityBasedLine()"
           ></a>
         </td>
         <td class="padding" style="width:15%">
@@ -61,7 +61,7 @@
                 class="remove-icon"
                 style="margin-left: 10px;"
                 (click)="
-                  !formValues.isEditable
+                  !formValues.isEditable || hasInvoicedOrder
                     ? ''
                     : removeQuantityBasedLine(quantityDiscountRule.key)
                 "
@@ -81,7 +81,7 @@
                     [disableOptionCentering]="true"
                     panelClass="general-information-select-container"
                     [compareWith]="compareUomObjects"
-                    [disabled]="!formValues.isEditable"
+                    [disabled]="!formValues.isEditable || hasInvoicedOrder"
                   >
                     <mat-option
                       *ngFor="let option of quantityTypeList"
@@ -105,7 +105,7 @@
                     autocomplete="off"
                     required
                     quantityFormat
-                    [disabled]="!formValues.isEditable"
+                    [disabled]="!formValues.isEditable || hasInvoicedOrder"
                   />
                 </mat-form-field>
               </div>
@@ -122,7 +122,7 @@
                     autocomplete="off"
                     required
                     quantityFormat
-                    [disabled]="!formValues.isEditable"
+                    [disabled]="!formValues.isEditable || hasInvoicedOrder"
                   />
                 </mat-form-field>
               </div>
@@ -142,7 +142,7 @@
                     panelClass="general-information-select-container"
                     [compareWith]="compareUomObjects"
                     [disabled]="
-                      !formValues.isEditable ||
+                      !formValues.isEditable || hasInvoicedOrder ||
                       (quantityDiscountRule.value.plusMinus &&
                         quantityDiscountRule.value.plusMinus.id == 3)
                     "
@@ -168,7 +168,7 @@
                     [disableOptionCentering]="true"
                     panelClass="general-information-select-container"
                     [compareWith]="compareUomObjects"
-                    [disabled]="!formValues.isEditable"
+                    [disabled]="!formValues.isEditable || hasInvoicedOrder"
                   >
                     <mat-option
                       *ngFor="let option of formulaPlusMinusList"
@@ -194,7 +194,7 @@
                     required
                     amountFormat
                     [disabled]="
-                      !formValues.isEditable ||
+                      !formValues.isEditable || hasInvoicedOrder ||
                       (quantityDiscountRule.value.plusMinus &&
                         quantityDiscountRule.value.plusMinus.id == 3)
                     "
@@ -217,7 +217,7 @@
                     panelClass="general-information-select-container"
                     [compareWith]="compareUomObjects"
                     [disabled]="
-                      !formValues.isEditable ||
+                      !formValues.isEditable || hasInvoicedOrder ||
                       (quantityDiscountRule.value.plusMinus &&
                         quantityDiscountRule.value.plusMinus.id == 3)
                     "
@@ -249,7 +249,7 @@
       [(ngModel)]="formValues.comments"
       matInput
       autocomplete="off"
-      [disabled]="!formValues.isEditable"
+      [disabled]="!formValues.isEditable || hasInvoicedOrder"
     ></textarea>
   </mat-form-field>
 </div>
