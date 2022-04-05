@@ -14,7 +14,7 @@ import _, { cloneDeep } from 'lodash';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions,RowGroupOpenedEvent,GridApi} from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
 import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
@@ -64,6 +64,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   public totalOfferHeaderWidth;
   public fullHeaderWidth;
   public frameworkComponents;
+  private gridApi!: GridApi;
   interval: any = 0;
   rowData_aggrid: any = [];
   locationsRows: any = [];
@@ -353,6 +354,16 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       this.refreshGridDetails();
     });
   }
+
+  onRowGroupOpened(event: RowGroupOpenedEvent) {
+    var rowNodeIndex = event.node.rowIndex!;
+    var childCount = event.node.childrenAfterSort
+      ? event.node.childrenAfterSort.length
+      : 0;
+    var newIndex = rowNodeIndex + childCount;
+    this.gridApi.ensureIndexVisible(newIndex);
+  }
+
   identifyer = (index: number, item: any) => item.name;
   isselectedrowfun(row, isSelected) {
     if (isSelected) {

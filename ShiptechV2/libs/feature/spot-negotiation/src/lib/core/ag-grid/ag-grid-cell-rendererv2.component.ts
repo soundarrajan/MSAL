@@ -645,7 +645,7 @@ import { SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
       *ngIf="params.type == 'totalOffer'"
       class="addTpr defaultAddicon"
       [matTooltip]="
-        params.data.totalCost ? 'Includes additional costs' : params.value
+      params.value? params.value+' (Includes additional costs)' : ''
       "
       matTooltipClass="lightTooltip"
       [matMenuTriggerFor]="addAdditionalCostMenuPopUp"
