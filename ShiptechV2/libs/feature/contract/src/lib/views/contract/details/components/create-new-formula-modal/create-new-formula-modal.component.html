@@ -18,7 +18,7 @@
       </button>  
       <button  type="button" class="new-formula-button"
         (click)="saveFormula()"
-        [disabled]="!formValues.isEditable"
+        [disabled]="!formValues.isEditable || hasInvoicedOrder"
       >
         Save
       </button>
@@ -81,7 +81,7 @@
             [(ngModel)]="formValues.name"
             placeholder="Formula Name"
             autocomplete="off"
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
           />
         </mat-form-field>
       </div>
@@ -105,7 +105,7 @@
                   setFormulaTypeSelected(formValues.formulaType.id)
                 "
                 class="pricing-container-radio-group"
-                [disabled]="!formValues.isEditable"
+                [disabled]="!formValues.isEditable || hasInvoicedOrder"
               >
                 <mat-radio-button
                   class="pricing-container-radio-button"
@@ -165,7 +165,7 @@
                 [(ngModel)]="formValues.comments"
                 matInput
                 autocomplete="off"
-                [disabled]="!formValues.isEditable"
+                [disabled]="!formValues.isEditable || hasInvoicedOrder"
               ></textarea>
             </mat-form-field>
           </div>
@@ -284,7 +284,7 @@
                 [(ngModel)]="formValues.comments"
                 matInput
                 autocomplete="off"
-                [disabled]="!formValues.isEditable"
+                [disabled]="!formValues.isEditable || hasInvoicedOrder"
               ></textarea>
             </mat-form-field>
           </div>
