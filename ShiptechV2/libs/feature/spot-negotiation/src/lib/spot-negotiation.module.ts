@@ -77,6 +77,7 @@ import { MatTableModule } from '@angular/material/table';
 import { CustomHeader } from './core/ag-grid/custom-header.component';
 import { CustomHeaderSelectAll } from './core/ag-grid/custom-header-select-all.component';
 import { CKEditorModule } from 'ckeditor4-angular';
+import { SpotNegotiationPriceCalcService } from './services/spot-negotiation-price-calc.service';
 
 @NgModule({
   imports: [
@@ -199,7 +200,8 @@ import { CKEditorModule } from 'ckeditor4-angular';
     DatePipe,
     StaticListsRouteResolver,
     NavBarResolver,
-    UomsRouteResolver
+    UomsRouteResolver,
+    SpotNegotiationPriceCalcService
   ]
 })
 export class SpotNegotiationModule {}

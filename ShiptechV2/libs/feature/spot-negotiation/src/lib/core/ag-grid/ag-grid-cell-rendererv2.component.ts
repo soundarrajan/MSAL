@@ -36,6 +36,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AdditionalCostViewModel } from '../models/additional-costs-model';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
+import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation-price-calc.service';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -779,7 +780,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     private route: ActivatedRoute,
     private tenantSettingsService: TenantSettingsService,
     private spinner: NgxSpinnerService,
-    private legacyLookupsDatabase: LegacyLookupsDatabase
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService
   ) {
     this.legacyLookupsDatabase.getTableByName('costType').then(response => {
       this.costTypeList = response;
@@ -1122,16 +1124,19 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           const requestLocationSellerId = this.params.data.id;
           this._spotNegotiationService
             .getPriceDetailsById(groupId, requestLocationSellerId)
-            .subscribe((priceDetailsRes: any) => {
+            .subscribe(async (priceDetailsRes: any) => {
               let updatedRow = { ...this.params.data };
               updatedRow.totalOffer =
                 priceDetailsRes.sellerOffers[0].totalOffer;
               updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
               updatedRow.requestOffers =
                 priceDetailsRes.sellerOffers[0].requestOffers;
+                var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+                  updatedRow,
+                  updatedRow);
               // Update the store
-              this.store.dispatch(new EditLocationRow(updatedRow));
-              this.params.node.setData(updatedRow);
+              this.store.dispatch(new EditLocationRow(locRow));
+              this.params.node.setData(locRow);
             });
         } else {
           this.getPriceDetails();
@@ -1149,13 +1154,20 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let rows = _.cloneDeep(locationsRows);
     this._spotNegotiationService
       .getPriceDetails(groupId)
-      .subscribe((res: any) => {
+      .subscribe(async (res: any) => {
         if (res['sellerOffers']) {
           const futureLocationsRows = this.getLocationRowsWithPriceDetails(
             rows,
             res['sellerOffers']
           );
-          this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+          let reqLocationRows : any =[];
+          for (const locRow of futureLocationsRows) {
+            var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+              locRow,
+              locRow);
+              reqLocationRows.push(data);
+          }
+          this.store.dispatch(new SetLocationsRows(reqLocationRows));
         }
       });
   }
@@ -1828,7 +1840,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     );
   }
 
-  checkAdditionalCost(sellerOffers, currencyId, exchangeRateValue) {
+  async checkAdditionalCost(sellerOffers, currencyId, exchangeRateValue) {
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
     });
@@ -1850,9 +1862,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       };
 
       //this.spinner.show();
-      this._spotNegotiationService
+      let response = await this._spotNegotiationService
         .getAdditionalCosts(payload)
-        .subscribe((response: any) => {
+        //.subscribe((response: any) => {
+          if(response != null){
           if (typeof response === 'string') {
             //this.spinner.hide();
             return;
@@ -1877,7 +1890,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
               sellerOffers
             );
           }
-        });
+        //});
+      } 
     }
   }
 
@@ -1908,7 +1922,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     const requestLocationSellerId = sellerOffers.id;
     this._spotNegotiationService
       .getPriceDetailsById(groupId, requestLocationSellerId)
-      .subscribe((priceDetailsRes: any) => {
+      .subscribe(async (priceDetailsRes: any) => {
         this.spinner.hide();
         let updatedRow = { ...this.params.data };
         updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
@@ -1916,7 +1930,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         updatedRow.requestOffers =
           priceDetailsRes.sellerOffers[0].requestOffers;
         // Update the store
-        this.store.dispatch(new EditLocationRow(updatedRow));
+        var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+          updatedRow,
+          updatedRow);
+        this.store.dispatch(new EditLocationRow(locRow));
         this.params.node.setData(updatedRow);
       });
   }
@@ -2003,7 +2020,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     const requestLocationSellerId = this.params.data.id;
     this._spotNegotiationService
       .getPriceDetailsById(groupId, requestLocationSellerId)
-      .subscribe((priceDetailsRes: any) => {
+      .subscribe(async (priceDetailsRes: any) => {
         this.spinner.hide();
         let updatedRow = { ...this.params.data };
         updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
@@ -2011,7 +2028,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         updatedRow.requestOffers =
           priceDetailsRes.sellerOffers[0].requestOffers;
         // Update the store
-        this.store.dispatch(new EditLocationRow(updatedRow));
+        var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+          updatedRow,
+          updatedRow);
+        this.store.dispatch(new EditLocationRow(locRow));
         this.params.node.setData(updatedRow);
       });
   }

@@ -26,7 +26,8 @@ import {
   SetRequestList,
   SetLocationsRowsOriData,
   // SetLocationsRowsPriceDetails,
-  SetPhysicalSupplierCounterpartyList
+  SetPhysicalSupplierCounterpartyList,
+  UpdateAdditionalCostList
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -36,6 +37,8 @@ import {
 } from '../../../store/actions/ag-grid-row.action';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { isNumeric } from 'rxjs/internal-compatibility';
+import { SpotNegotiationPriceCalcService } from '../../../services/spot-negotiation-price-calc.service';
+import _ from 'lodash';
 
 @Component({
   selector: 'spot-negotiation-main-component',
@@ -58,6 +61,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   currentRequestData: any[];
   allRequest: any[];
   totalCounterpartyCount: number;
+  additionalCostList: any = [];
 
   constructor(
     private http: HttpClient,
@@ -68,7 +72,8 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     public format: TenantFormattingService,
     public dialog: MatDialog,
     private spinner: NgxSpinnerService,
-    private legacyLookupsDatabase: LegacyLookupsDatabase
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
+    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService
   ) {
     this.entityName = 'Spot negotiation';
   }
@@ -79,6 +84,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       localStorage.setItem('activeRequestId', requestIdFromUrl.toString());
     }
     this.spinner.show();
+    this.getAdditionalCosts();
     this.getRequestGroup();
     this.getGroupOfSellers();
     this.getCounterpartyList();
@@ -298,7 +304,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           groupRequestIdFromUrl
         );
 
-        responseGetPriceDetails.subscribe((priceDetailsRes: any) => {
+        responseGetPriceDetails.subscribe(async (priceDetailsRes: any) => {
           // this.store.dispatch(
           //   new SetLocationsRowsPriceDetails(priceDetailsRes['sellerOffers'])
           // );
@@ -310,8 +316,16 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             priceDetailsRes['sellerOffers']
           );
           // Demo format data
-          this.store.dispatch(new SetLocationsRowsOriData(futureLocationsRows));
-          this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+          let reqLocationRows : any =[];
+          for (const locRow of futureLocationsRows) {
+            var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+              locRow,
+              locRow);
+              reqLocationRows.push(data);
+          }
+                  
+          this.store.dispatch(new SetLocationsRowsOriData(reqLocationRows));
+          this.store.dispatch(new SetLocationsRows(reqLocationRows));
         });
 
         this.changeDetector.detectChanges();
@@ -418,6 +432,27 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetStaticLists(res));
       }
     });
+  }
+  getAdditionalCosts() {
+    this.spotNegotiationService
+      .getMasterAdditionalCosts({})
+      .subscribe((response: any) => {
+        if (response?.message == 'Unauthorized') {
+          return;
+        }
+        if (typeof response === 'string') {
+          this.spinner.hide();
+          //this.toastr.error(response);
+        } else {
+          this.additionalCostList = _.cloneDeep(
+            response.payload.filter(e => e.isDeleted == false)
+          );
+          this.store.dispatch(
+            new UpdateAdditionalCostList(this.additionalCostList)
+          );
+          //this.createAdditionalCostTypes();
+        }
+      });
   }
   ngOnDestroy(): void {}
 }

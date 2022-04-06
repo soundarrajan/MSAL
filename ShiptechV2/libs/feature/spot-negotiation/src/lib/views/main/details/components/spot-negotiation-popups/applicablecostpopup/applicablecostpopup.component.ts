@@ -136,7 +136,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     this.spinner.show();
     this.spotNegotiationService
       .getLocationCosts(this.requestLocation.locationId)
-      .subscribe((res: any) => {
+      .subscribe(async (res: any) => {
         // this.spinner.hide();
         if (res?.message == 'Unauthorized') {
           this.spinner.hide();
@@ -149,18 +149,20 @@ export class ApplicablecostpopupComponent implements OnInit {
           requestLocationId: this.requestLocation.id,
           isLocationBased: true
         };
-        this.spotNegotiationService
+        let response = await this.spotNegotiationService
           .getAdditionalCosts(payload)
-          .subscribe((response: any) => {
-            this.spinner.hide();
-            if (response?.message == 'Unauthorized') {
-              return;
-            }
-            this.locationBasedCosts = this.formatCostItemForDisplay(
-              response.locationAdditionalCosts
-            );
-            this.changeDetectorRef.detectChanges();
-          });
+          //.subscribe((response: any) => {
+            if(response != null){
+              this.spinner.hide();
+              if (response?.message == 'Unauthorized') {
+                return;
+              }
+              this.locationBasedCosts = this.formatCostItemForDisplay(
+                response.locationAdditionalCosts
+              );
+              this.changeDetectorRef.detectChanges();
+            }            
+          //});
       });
 
     this.spotNegotiationService
