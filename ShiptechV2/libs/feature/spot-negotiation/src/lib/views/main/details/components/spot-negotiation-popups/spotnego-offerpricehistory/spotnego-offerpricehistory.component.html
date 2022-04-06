@@ -25,14 +25,14 @@
               <th class="text-left "  >Past off</th>
             </tr>
           </thead>
-          <tbody style="min-height: 580px; height: auto;">
+          <tbody id="tableBody" style="min-height: 580px; height: auto;">
             <tr id = "commentList" *ngFor="let items of locationData">
-              <td class="text-left w-157" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
+              <td class="text-left w-157">{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
               <td class="text-left w-95">$ {{priceFormatValue(items.priceDiff) | number}}</td>
               <td class="text-left w-95" >$ {{priceFormatValue(items.price)| number}}</td>
                 <td  class="text-left ">
                   <table >
-                    <tbody  >
+                    <tbody>
                       <tr style="table-layout: auto; width: fit-content">
                         <td  class="text-left "*ngIf="items.oldPrices.length==0" >
                           ---
