@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Store } from '@ngxs/store';
 import { DecimalPipe } from '@angular/common';
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 NoDataToDisplay(Highcharts)
 
 @Component({
@@ -15,86 +16,6 @@ NoDataToDisplay(Highcharts)
   styleUrls: ['./spotnego-offerpricehistory.component.css']
 })
 export class SpotnegoOfferpricehistoryComponent implements OnInit {
-
-    // highcharts = Highcharts;
-    // chartOptions = {
-    //    chart: {
-    //       height: 600,
-    //       type: "spline"
-    //    },
-    //    title: {
-    //       text: ""
-    //    },
-    //    xAxis:{
-    //       lineWidth: 1,
-    //       lineColor: '#364150',
-    //       //categories:["Offer 1","Offer 2","Offer 3","Offer 4","Offer 5"]
-    //    },
-    //    yAxis: {
-    //       tickPixelInterval: 1,
-    //       title:{
-    //          text:""
-    //       },
-    //       gridLineWidth: 0,
-    //       lineWidth: 1,
-    //       lineColor: '#364150',
-    //       plotLines: [{
-    //         color: '#ED6161',
-    //         width: 1,
-    //         //value: 515.5,
-    //         label: {
-    //           text: 'Target Price',
-    //           align: 'right',
-    //           x: -10,
-    //           style: {
-    //             color: '#333333',
-    //             fontSize: '9px'
-    //           }
-    //         }
-    //       }],
-    //       //min: 514.0,
-    //       //max: 521.0,
-    //       plotBands: [{ // mark the weekend
-    //         color: 'rgba(237,97,97,0.2)',
-    //         //from: 513.0,
-    //         //to: 515.5
-    //       }],
-    //       //tickInterval: 1
-    //    },
-    //    series: [
-    //     {
-    //         name: 'Bominflot BV',
-    //         marker: {
-    //           symbol: 'circle'
-    //         },
-    //         data: [520.2,519.0,518.6]
-    //     },
-    //     {
-    //       name: '',
-    //       marker: {
-    //         symbol: 'circle'
-    //       },
-    //       data: []
-    //   }
-    // ],
-    // legend: {
-    //   symbolWidth: 1,
-    //   symbolPadding: 7,
-    //   itemDistance: 20
-    // },
-    // responsive: {
-    //   rules: [{
-    //       condition: {
-    //           maxWidth: 500,
-    //           maxHeight: 300
-    //       }
-    //   }]
-    // },
-    // credits: {
-    //   enabled: false
-    // }
-    // };
-
   disableScrollDown = false
   public showaddbtn=true;
   public priceFormat ='';
@@ -110,7 +31,6 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
   tenantService:any;
   targerPrice: any;
   highcharts = Highcharts;
-
   public chartOptions: any = {
     chart: {
             height: 600,
@@ -154,6 +74,41 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
           ],
             //tickInterval: 1
          },
+         plotOptions: {
+          series: {
+              cursor: 'pointer',
+              events: {
+                  click: function (event) {
+                    let rowNumber = event.point.series.index;
+                    let table2;
+                    let length;
+                    try{
+                      let table = document.getElementById('tableBody') as HTMLTableElement;
+                      for (let i in table.rows) {
+                        let row = table.rows[i];
+                        if(row.sectionRowIndex === rowNumber){
+                           table2 = row.getElementsByTagName('td');
+                           length = table2.length;
+                           for(let i =0; i<length; i++){
+                             table2[i].style.backgroundColor = "#CAE9FF";
+                           }
+                       }
+                       else{
+                          table2 = row.getElementsByTagName('td');
+                          length  = table2.length;
+                          for(let i =0; i<length; i++){
+                           table2[i].style.backgroundColor = "#FFFFFF";
+                         }
+                       }
+                     }
+                    }
+                   catch(e){
+                      //don't do anything
+                   }
+                  }
+              }
+          }
+      },
          series: [],
       legend: {
         symbolWidth: 1,
@@ -179,6 +134,7 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
      @Inject(MAT_DIALOG_DATA) public data: any,
      @Inject(DecimalPipe)
      private _decimalPipe,
+     private format: TenantFormattingService,
      private spotNegotiationService : SpotNegotiationService,
      private spinner: NgxSpinnerService,
      public store: Store,
@@ -203,13 +159,14 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
          let dataSeries = [];
          this.locationData.map(x=>{
             dataSeries.push({
-              name: x.sellerCounterpartyName,
+              name: this.format.htmlDecode(x.sellerCounterpartyName),
               marker: {
                  symbol: 'circle'
                 },
-              data: x.oldPrices
+              data: x.oldPrices.reverse()
             })
          })
+
          if(dataSeries.length === 0){
            this.highcharts.setOptions({ lang: {noData: "No past offers found"}});
            this.highcharts.chart('container', this.chartOptions);
