@@ -305,8 +305,8 @@ export class SpotNegotiationService extends BaseStoreService
    * @returns
    */
   @ObservableException()
-  getAdditionalCosts(payload: any): Observable<unknown> {
-    return this.spotNegotiationApi.getAdditionalCosts(payload);
+  getAdditionalCosts(payload: any): Promise<any> {
+    return this.spotNegotiationApi.getAdditionalCosts(payload).toPromise();
   }
 
   /**
