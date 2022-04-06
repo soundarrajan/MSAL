@@ -277,11 +277,12 @@ button:focus {
 .blue-button {
   @include button();
   font-weight: 400;
-  //margin: 0 5px !important;
+  margin: 0 5px !important;
   font-size: 1rem;
   overflow: hidden !important;
   text-overflow: ellipsis;
   white-space: nowrap !important;
+  padding: 0px 8px !important;
 }
 
 .blue-icon-button {
