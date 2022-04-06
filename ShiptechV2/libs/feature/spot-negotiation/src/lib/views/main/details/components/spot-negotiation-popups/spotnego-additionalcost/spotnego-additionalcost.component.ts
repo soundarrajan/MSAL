@@ -122,7 +122,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     this.spinner.show();
     this.spotNegotiationService
       .getMasterAdditionalCosts({})
-      .subscribe((response: any) => {
+      .subscribe(async (response: any) => {
         if (response?.message == 'Unauthorized') {
           return;
         }
@@ -147,9 +147,10 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
               requestLocationId: this.rowData.requestLocationId,
               isLocationBased: false
             };
-            this.spotNegotiationService
-              .getAdditionalCosts(payload)
-              .subscribe((response: any) => {
+            let response  =  await this.spotNegotiationService
+              .getAdditionalCosts(payload);
+              //.subscribe((response: any) => {
+                if(response != null){
                 if (response?.message == 'Unauthorized') {
                   return;
                 }
@@ -173,7 +174,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                     true
                   );
                 }
-              });
+              //});
+              }
           }
         }
       });
