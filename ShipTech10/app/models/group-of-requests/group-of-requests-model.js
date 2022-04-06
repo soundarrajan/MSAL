@@ -1,5 +1,5 @@
-angular.module('shiptech.models').factory('groupOfRequestsModel', [ 'groupOfRequestsResource', 'payloadDataModel', 'SELLER_SORT_ORDER', 'screenLoader',
-    function(groupOfRequestsResource, payloadDataModel, SELLER_SORT_ORDER, screenLoader) {
+angular.module('shiptech.models').factory('groupOfRequestsModel', [ 'groupOfRequestsResource', 'payloadDataModel', 'SELLER_SORT_ORDER', 'spotNegotiationResource',
+    function(groupOfRequestsResource, payloadDataModel, SELLER_SORT_ORDER, spotNegotiationResource) {
         let payload = {
             Order: null,
             Filters: [],
@@ -20,9 +20,9 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', [ 'groupOfRequ
          * @param {Array} -  An array of the request IDs to be grouped together.
          */
         function groupRequests(requestIds) {
-            let request_data = payloadDataModel.create(requestIds);
+            // let request_data = payloadDataModel.create(requestIds);
 
-            return groupOfRequestsResource.groupRequests(request_data)
+            return spotNegotiationResource.groupRequests(requestIds)
 
                 .$promise
                 .then((data) => {
@@ -342,10 +342,22 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', [ 'groupOfRequ
         }
 
         function amendRFQ(requirements) {
-            let request_data = payloadDataModel.create(requirements);
-            return groupOfRequestsResource.amend(request_data).$promise.then((data) => {
-                return data;
+            let request_data = [];    
+            let requirementsToAmend = _.groupBy(requirements, 'rfqId');
+            angular.forEach(requirementsToAmend, (seller) => {
+                let AmendRfq = {
+                SellerId: seller[0].sellerId,
+                RfqId:  seller[0].rfqId,
+                RequestProductIds: seller.map(pro => pro.requestProductId)
+                };
+                request_data.push(AmendRfq);
             });
+        
+            return spotNegotiationResource.amendRFQ(request_data)
+                .$promise
+                .then((data) => {
+                    return data;
+                });
         }
 
         function revokeRFQ(requirements) {
@@ -567,6 +579,7 @@ angular.module('shiptech.models').factory('groupOfRequestsModel', [ 'groupOfRequ
                 return data;
             });
         }
+
         function deleteSeller(data) {
             let request_data = payloadDataModel.create(data);
             return groupOfRequestsResource.deleteSeller(request_data).$promise.then((data) => {

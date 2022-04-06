@@ -1,5 +1,5 @@
-angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResource', 'payloadDataModel', 'newRequestResourceMasters', 'screenLoader',
-    function(newRequestResource, payloadDataModel, newRequestResourceMasters, screenLoader) {
+angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResource', 'payloadDataModel', 'newRequestResourceMasters', 'screenLoader', 'spotNegotiationResource',
+    function(newRequestResource, payloadDataModel, newRequestResourceMasters, screenLoader, spotNegotiationResource) {
         this.saved = false;
 
         function newRequestModel(data) {
@@ -56,6 +56,19 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
                 return new newRequestModel(data);
             });
         }
+
+        /**
+         * Update a PreferredSellers
+         * @param {Integer} data - group id and request Id
+         * @returns {boolean} pre-populated request objects.
+         */
+         function updatePreferredSellers(payload) {
+            return spotNegotiationResource.updatePreferredSellers(payload)
+                .$promise
+                .then((data) => {
+                    return data;
+                });
+        }       
 
         /**
          * Save a request
@@ -378,6 +391,7 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
             createRequest: createRequest,
             cancelProduct: cancelProduct,
             cancelRequest: cancelRequest,
+            updatePreferredSellers: updatePreferredSellers,
             completeRequest: completeRequest,
             contractPlanningAutoSave: contractPlanningAutoSave,
             cancelLocation: cancelLocation,

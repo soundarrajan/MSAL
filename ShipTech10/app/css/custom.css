@@ -4583,7 +4583,6 @@ table#new_order_products td {
     color: #325187;
     height: 32px;
     border-left: 1px solid #c2cad8;
-    background: #fff;
     border: 1px solid #c2cad8;
     border-bottom: none;
     border-top: none;
@@ -4603,7 +4602,6 @@ table#new_order_products td {
     height: 32px;
     border-left: 1px solid #c2cad8;
     cursor: pointer;
-    background: #fff;
     border: 1px solid #c2cad8;
     border-bottom: none;
     border-top: none;
@@ -5115,4 +5113,20 @@ table.energyCalculationBlade tr.border-green-jungle {
 .request-location-tag.cancelled a{
     color: red;
     text-decoration: line-through;	
+}
+.custom-hardcoded-table.benchmark-upload-log .table-body td {
+    padding: 8px 10px !important;
+}
+
+.col-sm-20 {
+    width: 20%;
+    float: left;
+}
+
+.order-comments-row {
+    padding-left: 15px !important;
+}
+
+.empty-container {
+    visibility: hidden;
 }

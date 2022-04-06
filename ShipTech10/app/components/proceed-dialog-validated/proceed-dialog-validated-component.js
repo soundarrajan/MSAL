@@ -1,7 +1,7 @@
 angular.module('shiptech.components')
-    .controller('ProceedDialogValidatedController', [ '$scope', '$state', '$window', '$element', '$attrs', '$timeout', '$tenantSettings',
+    .controller('ProceedDialogValidatedController', [ '$scope', '$state', '$window', '$element', '$attrs', '$timeout', '$tenantSettings', '$location',
     'tenantService','uiApiModel', 'MOCKUP_MAP', 'STATE', 'groupOfRequestsModel',
-        function($scope, $state, $window, $element, $attrs, $timeout,  $tenantSettings, tenantService, uiApiModel, MOCKUP_MAP, STATE, groupOfRequestsModel) {
+        function($scope, $state, $window, $element, $attrs, $timeout,  $tenantSettings, $location, tenantService, uiApiModel, MOCKUP_MAP, STATE, groupOfRequestsModel) {
             $scope.STATE = STATE;
 
             let ctrl = this;
@@ -16,17 +16,21 @@ angular.module('shiptech.components')
             ctrl.gotoGroupOfRequests = function(request) {
 
                 if (request.requestGroupId) {
-	                let href = $state.href(STATE.GROUP_OF_REQUESTS, { groupId: request.requestGroupId }, { absolute: false });
+	                // let href = $state.href(STATE.GROUP_OF_REQUESTS, { groupId: request.requestGroupId }, { absolute: false });
 	                $("proceed-dialog-validated").modal('hide');
-	                $window.open(href);
+	                // $window.open(href);
+                    window.open($location.$$absUrl.replace('#'+$location.$$path,
+                        'v2/group-of-requests/'+ request.requestGroupId +'/'+ request.requestId), '_self');
                 } else {
 	                groupOfRequestsModel.groupRequests([ request.requestId ]).then(
 	                    (data) => {
-	                        var requestGroup = data.payload;
-	                        $state.go(STATE.GROUP_OF_REQUESTS, {
-	                            groupId: requestGroup[0].requestGroup.id
-	                        });
-			                $("proceed-dialog-validated").modal('hide');
+	                        // var requestGroup = data.payload;
+	                        // $state.go(STATE.GROUP_OF_REQUESTS, {
+	                        //     groupId: requestGroup[0].requestGroup.id
+	                        // });
+                            $("proceed-dialog-validated").modal('hide');
+                            window.open($location.$$absUrl.replace('#'+$location.$$path,
+                                'v2/group-of-requests/'+ data.groupId +'/'+ request.requestId), '_self');
 	                    },
 	                    () => {
 	                    }

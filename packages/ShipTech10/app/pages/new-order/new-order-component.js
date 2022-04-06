@@ -2168,8 +2168,14 @@ angular.module('shiptech.pages').controller('NewOrderController', ['$scope', '$e
             return canReconfirm
         }
         ctrl.validateMinMaxQuantity = function (min, max) {
-            if(typeof min == "string") min = parseFloat(min);
-            if(typeof max == "string") max = parseFloat(max);
+            if(typeof min == 'string') {
+                let plainNumber = min.replace(/[^\d|\-+|\.+]/g, '');
+                min = parseFloat(plainNumber);
+            }
+            if(typeof max == 'string') {
+                let plainNumber = max.replace(/[^\d|\-+|\.+]/g, '');
+                max = parseFloat(plainNumber);
+            }
             response = {
                 minQuantity: min,
                 maxQuantity: max

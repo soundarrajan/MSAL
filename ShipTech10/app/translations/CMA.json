@@ -232,7 +232,6 @@
       "EXTRAS": "Extras (%)",
       "EXTRA_AMOUNT": "Extra Amount",
       "RATE": "Rate/MT",
-      "COMMENTS": "Comment",
       "VALIDITY": "Validity"
     },
     "SELLER_CARD": {
@@ -272,7 +271,6 @@
       "EXTRAS": "Extras (%)",
       "EXTRA_AMOUNT": "Extra Amount",
       "RATE": "Rate/MT",
-      "COMMENTS": "Comment",
       "VALIDITY": "Validity"
     },
     "NEW_ORDER": {
@@ -1178,6 +1176,9 @@
     "DEFAULT_DELIVERY_OPTION": "Default delivery option",
     "AGENT_DISPLAY": "Agent display",
     "IS_SELLER_PORTAL_NEEDED": "Is seller portal needed",
+    "DISPLAY_SELLER_RATING":"Display Seller Rating",
+    "SKIP_OFFER_CONFIRMATION":"Skip Offer Confirmation",
+    "PHYSICAL_SUPPLIER_MANDATORY_FOR_QUOTING":"Physical Supplier madatory for quoting",
     "NEED_ORDER_CONFIRMATION_EMAIL": "Need order confirmation email to seller",
     "IS_SELLER_CONFIRMATION_DOCUMENT_MANDATORY_?": "Is seller confirmation document mandatory ?",
     "NEED_TRANSACTION_LIMIT_APPROVAL": "Need transaction limit approval",

@@ -33,14 +33,13 @@ data-original-title="{{MODEL_COL_FIELD.name | decodeReadOnly}}">
     >
         <a   class=" btn default">
             <i class="fa fa-search"></i>
-        </a> 
+        </a>
     </span>
-    
-    <span class="input-group-addon"  
-    ng-click="triggerModal('formula', col.colDef.cellObject.clc_id, col.colDef.displayName , col.colDef.name,grid.options.data, rowRenderIndex);" 
-    ng-if="col.colDef.name == 'formula' && !$eval(col.colDef.cellCondition)"
-    ng-class="{'disabled': $eval(col.colDef.cellObject.Disabled)}"
-        >
+
+    <span class="input-group-addon"
+          ng-click="triggerModal('formula', col.colDef.cellObject.clc_id, col.colDef.displayName , col.colDef.name,grid.options.data, rowRenderIndex);"
+          ng-if="col.colDef.name == 'formula' && !$eval(col.colDef.cellCondition)"
+          ng-class="{'disabled': $eval(col.colDef.cellObject.Disabled)}">
         <a class=" btn default">
             <i class="fa fa-search"></i>
         </a>

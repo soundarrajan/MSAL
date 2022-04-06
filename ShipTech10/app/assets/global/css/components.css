@@ -6467,9 +6467,43 @@ Form Layouts
 .form-inline input {
     margin-bottom: 0px !important;
 }
-
-
+/* Comment type */
+.comments-type {
+    position: absolute;
+    right: 30px;
+}
+.circle {
+      height: 9px;
+      width: 9px;
+      border-radius: 50%;
+      display: inline-block;}
+.internal {
+        background: #ef8a4b ;
+        margin: 0px 5px;
+      }
+.external {
+        background: #56a4db;
+        margin: 0px 8px;
+      }
+.label {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 16px;}
+.label.internal {
+        color: #c5dae9;
+      }
+.label.external {
+        color: #f3dfc8;
+        border-right: 1px solid #c4c4c4;
+        padding-right: 12px;
+      }
 /* Control Label */
+.control-label1 {
+    margin-top: 1px;
+    font-weight: bold;
+}
 
 .control-label {
     margin-top: 1px;

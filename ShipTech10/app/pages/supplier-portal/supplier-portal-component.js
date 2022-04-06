@@ -11,6 +11,9 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
         // ctrl.packages = [];
         ctrl.lists = $listsCache;
         ctrl.FilterAdditionalCost = [];
+        ctrl.additionalCostsLocationBased = [];
+        ctrl.additionalCostLocationBasedApplicableFor = {};
+        ctrl.additionalCostLocationBasedTotalAmountSums = {};
         ctrl.reasons = ctrl.lists.NoQuoteReason;
         ctrl.lookupType = null;
         ctrl.sellerPortalModule = null;
@@ -100,14 +103,14 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                         ctrl.productFormFields = normalizeArrayToHash(ctrl.ui.product.fields, 'name');
                         ctrl.productColumns = normalizeArrayToHash(ctrl.ui.product.columns, 'name');
                         ctrl.additionalCostColumns = normalizeArrayToHash(ctrl.ui.additionalCost.columns, 'name');
-                        if (ctrl.tenantSettings) {
-                            if (ctrl.tenantSettings.fieldVisibility.isSupplyQuantityHidden) {
-                                delete ctrl.productColumns["supplyQuantity"];
-                            }
-                            if (ctrl.tenantSettings.fieldVisibility.isSupplyDeliveryDateHidden) {
-                                delete ctrl.productColumns["supplyDeliveryDate"];
-                            }
-                        }                        
+                        // if (ctrl.tenantSettings) {
+                        //     if (ctrl.tenantSettings.fieldVisibility.isSupplyQuantityHidden) {
+                        //         delete ctrl.productColumns["supplyQuantity"];
+                        //     }
+                        //     if (ctrl.tenantSettings.fieldVisibility.isSupplyDeliveryDateHidden) {
+                        //         delete ctrl.productColumns["supplyDeliveryDate"];
+                        //     }
+                        // }                        
                         listsModel.getForSupplierPortal(ctrl.token).then((data) => {
                             ctrl.lists = data;
                             console.log(ctrl.lists);
@@ -136,6 +139,44 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                                         request = v.request;
                                         request.location = v.requestLocation;
                                         request.vesselDetails = v.vesselDetails;
+                                        request.currency = v.products[0].sellers[0].offers[0].currency;
+                                        request.exchangeRateValue = 1;
+                                        request.exchangeRateValueConvertToBase = 1;
+                                        // request.locationBasedExchangeRateValue = 1;
+                                        // request.changeLocationCost = false;
+                                        // request.locationBasedBaseCurrency = request.currency;
+                                        // let breakProductloop = false;
+                                        $.each(v.products, (prodKey, prod) => {
+                                            $.each(prod.additionalCosts, (addKey, additionalCost) => {
+                                                additionalCost.locationBasedExchangeRateValue = 1;
+                                                additionalCost.changeLocationCost = false;
+                                                if(additionalCost?.currency?.id != request.currency.id){
+                                                    supplierPortalModel.getExchangeRateForSellerPortal(ctrl.token, additionalCost?.currency, request.currency).then((server_data) => {
+                                                        additionalCost.locationBasedExchangeRateValue = server_data.payload;
+                                                      });
+                                                      additionalCost.changeLocationCost = true;
+                                                }
+                                            });
+                                            // if(!breakProductloop && prod.additionalCosts.length >0){
+                                            //     request.locationBasedBaseCurrency = prod.additionalCosts[0]?.currency;
+                                            //     breakProductloop = true;
+                                            // }
+                                        });
+                                        
+
+                                        if(request.currency.id != 1 ){
+                                            let payloadForUSD = {
+                                                id: 1,
+                                                code: 'USD'
+                                              };
+                                              supplierPortalModel.getExchangeRateForSellerPortal(ctrl.token, payloadForUSD, request.currency).then((server_data) => {
+                                                request.exchangeRateValue = server_data.payload;
+                                              });
+                                              supplierPortalModel.getExchangeRateForSellerPortal(ctrl.token, request.currency, payloadForUSD).then((server_data) => {
+                                            request.exchangeRateValueConvertToBase = server_data.payload;
+                                            });
+                                        }                                        
+                                        
                                         if (v.physicalSupplier) {
                                             v.rand = `i_${ v.id }_${ v.physicalSupplier.id}`;
                                         } else {
@@ -160,6 +201,7 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                                             v.rand = `po_${ v.id }_null` + '_null';
                                         }
                                     });
+                                    
                                     ctrl.locations = getAllLocations();
                                     ctrl.vesselsNumber = getDistinctVessels();
                                     console.log(ctrl.locations);
@@ -202,8 +244,8 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                                     quoteByDateInUtc = parseFloat(moment(moment(ctrl.offer.quoteByDate)).format('x')) - parseFloat(ctrl.offer.utcOffset * 60 * 1000);
                                     timeNowUtc = new Date().getTime();
                                     quoteByDateExpired = quoteByDateInUtc < timeNowUtc;
-                                    ctrl.tenantQuoteDisabled = quoteByDateExpired && ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.HARD;
-                                    ctrl.tenantQuoteWarning = quoteByDateExpired && ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.SOFT;
+                                    ctrl.tenantQuoteDisabled = quoteByDateExpired && ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry?.id === VALIDATION_STOP_TYPE_IDS.HARD;
+                                    ctrl.tenantQuoteWarning = quoteByDateExpired && ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry?.id === VALIDATION_STOP_TYPE_IDS.SOFT;
                                     // ctrl.tenantQuoteWarning = moment(ctrl.offer.quoteByDate).isBefore() &&
                                     //                         ctrl.tenantSettings.offer.needValidationOnQuoteByDateExpiry.id === VALIDATION_STOP_TYPE_IDS.SOFT;
                                     // console.log(ctrl.offer);
@@ -268,14 +310,14 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                             ctrl.requests = [];
                             ctrl.activerequestid = null;
 
-                            if (ctrl.procurementSettings) {
-	                        	if (ctrl.procurementSettings.fieldVisibility.isSupplyQuantityHidden) {
-									delete ctrl.productColumns["supplyQuantity"];
-								}
-	                        	if (ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateHidden) {
-									delete ctrl.productColumns["supplyDeliveryDate"];
-								}
-                            }
+                            //if (ctrl.procurementSettings) {
+                            //if (ctrl.procurementSettings.fieldVisibility.isSupplyQuantityHidden) {
+                            //delete ctrl.productColumns["supplyQuantity"];
+                            //}
+                            //if (ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateHidden) {
+                            //delete ctrl.productColumns["supplyDeliveryDate"];
+                            //}
+                            //}
 
 
                             lookupModel.getAdditionalCostTypes().then((data) => {
@@ -843,6 +885,21 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
             return Number(currentConfirmedQtyPrice) * Number(product.maxQuantity) * Number(quotedPrice) || 0;
         }
 
+        function calculateProductTotalAmount(product, loc) {
+            var sellerKey = ctrl.getSellerKey(loc, product);
+            var currentConfirmedQtyPrice = 1;
+            let quotedPrice = 0;
+            if (typeof product.confirmedQtyPrice != 'undefined') {
+                currentConfirmedQtyPrice = product.confirmedQtyPrice;
+            }
+            if (product.sellers[sellerKey].offers['0'].hasNoQuote) {
+                quotedPrice = 0;
+            } else {
+                quotedPrice = product.sellers[sellerKey].offers[0].cost ? product.sellers[sellerKey].offers[0].price + product.sellers[sellerKey].offers[0].cost : product.sellers[sellerKey].offers[0].price;
+            }
+            return Number(currentConfirmedQtyPrice) * Number(product.maxQuantity) * Number(quotedPrice) || 0;
+        }
+
         function sumProductMaxQuantities(products, additionalCost) {
             let result = 0;
             for (let i = 0; i < products.length; i++) {
@@ -854,13 +911,55 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
             return result;
         }
 
+        function requestOfferIds(products, additionalCost) {
+            let result ='';
+            $.each(products, (ikey, ival) => {
+                $.each(ival.sellers, (akey, aval) => {
+                    if (additionalCost.isAllProductsCost || ival.id == additionalCost.parentProductId) {
+                        result = result.length == 0 ? aval.offers[0].id : result + ',' + aval.offers[0].id;
+                    }
+                });
+            });            
+            return result;
+        }
+
+        function sumProductAdditionCost(allProductOfferCosts, individualProductsOfferCosts, reqProduct) {
+            let result = 0;
+            if(allProductOfferCosts?.additionalCosts?.length > 0){
+                $.each(allProductOfferCosts.additionalCosts, (akey, aval) => {
+                    if (aval.isAllProductsCost || reqProduct.id == aval.parentProductId) {
+                        result = Number(result) + Number(aval.rate);
+                    }
+                });
+            }
+                
+            $.each(individualProductsOfferCosts, (ikey, ival) => {
+                $.each(ival.additionalCosts, (akey, aval) => {
+                    if (aval.isAllProductsCost || reqProduct.id == aval.parentProductId) {
+                        result = Number(result) + Number(aval.rate);
+                    }
+                });
+            });
+
+
+            $.each(reqProduct?.additionalCosts, (akey, aval) => {
+                if (aval.isAllProductsCost || reqProduct.id == aval.parentProductId) {
+                    result = Number(result) + Number(aval.rate);
+                }
+            });
+
+            return result;
+        }
+
         /**
          * Sum the Amount field of all products.
          */
         ctrl.sumProductAmounts = function(products) {
             let result = 0;
             for (let i = 0; i < products.length; i++) {
+                if(!products[i].isRfqskipped){
                 result = result + +Number(products[i].totalAmount);
+                }
             }
             return result;
         };
@@ -869,7 +968,7 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
          * Get the grand total for a given location, that is the sum of product total and additional costs total.
          */
         ctrl.getGrandTotal = function(location) {
-            return ctrl.sumProductAmounts(location.products) + Number(ctrl.additionalCostTotalAmountSums[location.rand] || 0);
+            return ctrl.sumProductAmounts(location.products) + Number(ctrl.additionalCostTotalAmountSums[location.rand]  || 0) + Number(ctrl.additionalCostLocationBasedTotalAmountSums[location.rand] || 0);
         };
 
         /**
@@ -915,8 +1014,8 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                 break;
             }
             additionalCost.extrasAmount = additionalCost.extras / 100 * additionalCost.amount;
-            additionalCost.totalAmount = additionalCost.amount + additionalCost.extrasAmount || 0;
-            additionalCost.rate = additionalCost.totalAmount / additionalCost.maxQuantity;
+            additionalCost.totalAmount = Number(additionalCost.amount) + Number(additionalCost.extrasAmount) || 0;
+            additionalCost.rate =  Number(additionalCost.totalAmount) /  Number(additionalCost.maxQuantity);
             return additionalCost;
         }
 
@@ -1068,16 +1167,16 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
             // which contains the "All Products" additional costs.
             var gasit = false;
             for (let a = 0; a < location.products.length; a++) {
-	            location.products[a].totalAdditionalCostPerProductAll = 0;
+                location.products[a].totalAdditionalCostPerProductAll = 0;
                 for (let b = 0; b < location.products[a].sellers.length; b++) {
                     if (offerForLocation.id == location.products[a].sellers[b].offers[0].offer.id &&
-                    	(
-                    		location.physicalSupplier == location.products[a].sellers[b].offers[0].physicalSupplierCounterparty ||
-                    		location.physicalSupplier &&
-                    			location.products[a].sellers[b].offers[0].physicalSupplierCounterparty &&
-                    			location.physicalSupplier.id == location.products[a].sellers[b].offers[0].physicalSupplierCounterparty.id
+                        (
+                            location.physicalSupplier == location.products[a].sellers[b].offers[0].physicalSupplierCounterparty ||
+                            location.physicalSupplier &&
+                                location.products[a].sellers[b].offers[0].physicalSupplierCounterparty &&
+                                location.physicalSupplier.id == location.products[a].sellers[b].offers[0].physicalSupplierCounterparty.id
 
-                		)) {
+                        )) {
                         result = offerForLocation.additionalCosts;
                         ctrl.additionalCostApplicableFor = {};
                         if (result) {
@@ -1093,12 +1192,20 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                                 // Save product model for "Applicable for", and calculate the confirmedQuantity
                                 // based on it:
                                 ctrl.additionalCostApplicableFor[additionalCost.fakeId] = null;
+                                additionalCost.isRfqskipped = location.products[a].sellers[b].offers[0].isRfqskipped;
                                 additionalCost.maxQuantity = sumProductMaxQuantities(location.products, additionalCost);
+                                additionalCost.maxQuantityUomId = location.products[a].uom.id;
                                 // TODO: Get the quantityUom of the first product? Or is there a different business logic for this?
-                                additionalCost.quantityUom = location.products[0].quantityUom;
+                                additionalCost.quantityUom = location.products[a].quantityUom;
                                 additionalCost.parentLocationId = location.rand;
+                                additionalCost.requestLocationId = location.id;
+                                additionalCost.currency = location.request.currency;
+                                if(!additionalCost.isAllProductsCost){
+                                    additionalCost.requestProductId = location.products[a].id;
+                                }
+                                additionalCost.requestOfferIds = requestOfferIds(location.products, additionalCost);
                                 additionalCost = calculateAdditionalCostAmounts(additionalCost, null, location);
-                                if (!additionalCost.isDeleted) {
+                                if (!additionalCost.isDeleted && !additionalCost.isRfqskipped) {
                                     ctrl.additionalCostTotalAmountSums[location.rand] += Number(additionalCost.totalAmount);
                                     location.products[a].totalAdditionalCostPerProductAll += Number(additionalCost.totalAmount);
                                 }
@@ -1115,8 +1222,8 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                     break;
                 }
             }
-            for (let i = 0; i < location.products.length; i++) {
-            	location.products[i].totalAdditionalCostPerProduct = 0;
+            for (let i = 0; i < location.products.length; i++) {            	
+                location.products[i].totalAdditionalCostPerProduct = 0;
                 for (let j = 0; j < location.products[i].sellers.length; j++) {
                     offer = ctrl.getSellerLatestOffer(location.products[i].sellers[j]);
                     // Save product model for "Applicable for."
@@ -1135,9 +1242,17 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                                     additionalCost.parentProductId = location.products[i].id;
                                     additionalCost.parentLocationId = location.rand;
                                     ctrl.additionalCostApplicableFor[additionalCost.fakeId] = location.products[i];
+                                    additionalCost.isRfqskipped = location.products[i].sellers[j].offers[0].isRfqskipped;
                                     additionalCost.maxQuantity = sumProductMaxQuantities(location.products, additionalCost);
+                                    additionalCost.maxQuantityUomId = location.products[i].uom.id;
+                                    additionalCost.requestLocationId = location.id;
+                                    additionalCost.currency = location.request.currency;
+                                    if(!additionalCost.isAllProductsCost){
+                                        additionalCost.requestProductId = location.products[i].id;
+                                    }
+                                    additionalCost.requestOfferIds = requestOfferIds(location.products, additionalCost);
                                     additionalCost = calculateAdditionalCostAmounts(additionalCost, location.products[i], location);
-                                    if (!additionalCost.isDeleted) {
+                                    if (!additionalCost.isDeleted && !additionalCost.isRfqskipped) {
                                         ctrl.additionalCostTotalAmountSums[location.rand] += additionalCost.totalAmount;
                                         location.products[i].totalAdditionalCostPerProduct += Number(additionalCost.totalAmount);
                                     }
@@ -1191,6 +1306,94 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                     }
                     result = $filter('orderBy')(result[0], 'fakeId', true);
                     ctrl.additionalCostsList = result[0];
+                    return result[0];
+                }
+            }
+            return [];
+        };
+
+
+        ctrl.getAdditionalCostsLocationBased = function (location) {
+            let offer,
+                additionalCostLocationBased,
+                result = [],
+                offers = [];
+            ctrl.additionalCostLocationBasedTotalAmountSums[location.rand] = 0;
+            ctrl.additionalCostLocationBasedApplicableFor = {};
+            for (let a = 0; a < location.products.length; a++) {
+                offer = location.products[a].additionalCosts;
+                if (offer) {
+                    for (let m = 0; m < offer.length; m++) {
+                        additionalCostLocationBased = offer[m];
+                        if (!additionalCostLocationBased.fakeId) {
+                            additionalCostLocationBased.fakeId = -Date.now();
+                            additionalCostLocationBased.fakeIdOrdering = Date.now();
+                        }
+                        if (additionalCostLocationBased.fakeId > 0) {
+                            additionalCostLocationBased.fakeIdOrdering = additionalCostLocationBased.additionalCost.id;
+                        }
+                        if(offers.filter(l => l.fakeId == additionalCostLocationBased.fakeId).length == 0){                            
+                            if(additionalCostLocationBased.isAllProductsCost){
+                                ctrl.additionalCostLocationBasedApplicableFor[additionalCostLocationBased.fakeId] = null;
+                            }
+                            else{
+                                ctrl.additionalCostLocationBasedApplicableFor[additionalCostLocationBased.fakeId] = location.products[a];
+                                additionalCostLocationBased.parentProductId = location.products[a].id;
+                                additionalCostLocationBased.parentLocationId = location.rand;
+                            }
+                            
+                            if(additionalCostLocationBased.locationBasedExchangeRateValue != 1 && additionalCostLocationBased.changeLocationCost == true){
+                                additionalCostLocationBased.price = Number(additionalCostLocationBased.price) * Number(additionalCostLocationBased.locationBasedExchangeRateValue);
+                                additionalCostLocationBased.totalAmount = Number(additionalCostLocationBased.totalAmount) * Number(additionalCostLocationBased.locationBasedExchangeRateValue);
+                                additionalCostLocationBased.extrasAmount = Number(additionalCostLocationBased.extrasAmount) * Number(additionalCostLocationBased.locationBasedExchangeRateValue);
+                                additionalCostLocationBased.changeLocationCost =  false;                            
+                            }
+                            additionalCostLocationBased.rate = Number(additionalCostLocationBased.totalAmount) /  Number(additionalCostLocationBased.maxQuantity);
+                            additionalCostLocationBased.currency = location.request.currency;
+                            additionalCostLocationBased.parentLocationId = location.rand;
+                            additionalCostLocationBased.amount = additionalCostLocationBased.totalAmount - additionalCostLocationBased.extrasAmount || 0;
+                            if (!additionalCostLocationBased.isDeleted) {
+                                ctrl.additionalCostLocationBasedTotalAmountSums[location.rand] += Number(additionalCostLocationBased.totalAmount);
+                            }
+                            //ctrl.addPriceUomChanged(additionalCostLocationBased, location);
+                            offers.push(additionalCostLocationBased);
+                        }
+                    }
+                }
+            }
+
+            if (!result) {
+                result = [];
+            }
+            if (result) {
+                result = offers;
+            }
+            
+            result = $filter('filter')(result, {
+                isDeleted: false
+            });
+            let ps = 0;
+            ps = location.rand.split('_')[2];
+            if (!ctrl.additionalCostsLocationBased[location.rand]) {
+                ctrl.additionalCostsLocationBased[location.rand] = [];
+            }
+            ctrl.additionalCostsLocationBased[location.rand] = result;
+
+            if (result) {
+                if (result.length > 0) {
+                    var strLog = '';
+                    $.each(result, (k, v) => {
+                        if (v.additionalCostLocationBased != null) {                            
+                            strLog = `${strLog}${v.additionalCostLocationBased.name};`;
+                        }
+                    });
+                    if (result[0].fakeId) {
+                        result = $filter('orderBy')(result, 'fakeId', true);
+                        ctrl.additionalCostsLocationBasedList = result;
+                        return result;
+                    }
+                    result = $filter('orderBy')(result[0], 'fakeId', true);
+                    ctrl.additionalCostsLocationBasedList = result[0];
                     return result[0];
                 }
             }
@@ -1271,7 +1474,10 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                     if (server_data) {
                         if (server_data.status == true) {
                             product.confirmedQtyPrice = server_data.data.payload;
+                            product.sellers[sellerKey].offers[0].totalPrice = product.sellers[sellerKey].offers[0].cost ? (Number(product.sellers[sellerKey].offers[0].price) + Number(product.sellers[sellerKey].offers[0].cost)) : Number(product.sellers[sellerKey].offers[0].price);
+                            product.amount = Number(product.confirmedQtyPrice) * Number(product.maxQuantity) * Number(product.sellers[sellerKey].offers[0].totalPrice);
                             product.totalAmount = Number(product.confirmedQtyPrice) * Number(product.maxQuantity) * Number(product.sellers[sellerKey].offers[0].price);
+                            product.isRfqskipped = product.sellers[sellerKey].offers[0].isRfqskipped;
                         } else {
                             toastr.error('An error has occured!');
                         }
@@ -1280,11 +1486,17 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
             } else if (product.sellers.length > 0) {
                 if (product.uom.id == product.sellers[sellerKey].offers[0].priceQuantityUom.id) {
                     product.confirmedQtyPrice = 1;
+                    product.sellers[sellerKey].offers[0].totalPrice = product.sellers[sellerKey].offers[0].cost ? (Number(product.sellers[sellerKey].offers[0].price) + Number(product.sellers[sellerKey].offers[0].cost)) : Number(product.sellers[sellerKey].offers[0].price);
+                    product.amount = Number(product.confirmedQtyPrice) * Number(product.maxQuantity) * Number(product.sellers[sellerKey].offers[0].totalPrice);
                     product.totalAmount = Number(product.confirmedQtyPrice) * Number(product.maxQuantity) * Number(product.sellers[sellerKey].offers[0].price);
+                    product.isRfqskipped = product.sellers[sellerKey].offers[0].isRfqskipped;
                 } else {
                     lookupModel.getConvertedUOMForSupplierPortal(ctrl.token, product.product.id, 1, product.uom.id, product.sellers[sellerKey].offers[0].priceQuantityUom.id).then((server_data) => {
                         product.confirmedQtyPrice = server_data.payload;
+                        product.sellers[sellerKey].offers[0].totalPrice = product.sellers[sellerKey].offers[0].cost ? (Number(product.sellers[sellerKey].offers[0].price) + Number(product.sellers[sellerKey].offers[0].cost)) : Number(product.sellers[sellerKey].offers[0].price);
+                        product.amount = Number(product.confirmedQtyPrice) * Number(product.maxQuantity) * Number(product.sellers[sellerKey].offers[0].totalPrice);
                         product.totalAmount = Number(product.confirmedQtyPrice) * Number(product.maxQuantity) * Number(product.sellers[sellerKey].offers[0].price);
+                        product.isRfqskipped = product.sellers[sellerKey].offers[0].isRfqskipped;
                     }).catch((e) => {
                         throw 'Unable to get the uom.';
                     });
@@ -1399,11 +1611,61 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
 
             /* VALIDATION FOR ADDITIONAL COSTS THAT ARE APPLICABLE FOR NO QUOTE PRODUCTS*/
 
+            /*update totalOffer,amount and Price given paylod*/
+            $.each(payload.individuals, (ikey, ival) => {
+                let totalOffer=0;
+                let totalCost = 0;
+                if(ival.offer.requestLocationSeller.sellerComments?.length > 0 ){
+                    ival.offer.requestLocationSeller.isSellerPortalComments = true;
+                }
+                $.each(ival.products, (pkey, pval) => {
+                    //totalOffer+=payload.individuals[ikey].products[pkey].totalAmount;
+                    $.each(pval.sellers, (selkey, selVal) => {
+                        $.each(selVal.offers, (offkey, offVal) => {
+                            var cost = sumProductAdditionCost(ival.offer, selVal.offers, pval);
+                            payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].cost = Number(cost); // + Number(payload.individuals[ikey].products[pkey].costPerProduct);
+                            payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].totalAmount = payload.individuals[ikey].products[pkey].totalAmount;
+                            payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].totalPrice = (Number(payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].price) + Number(cost)) * Number(ival.request.exchangeRateValueConvertToBase);
+                            if(payload.individuals[ikey].products[pkey].livePrice != null )
+                                payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].targetDifference = Number(payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].totalPrice) - Number(payload.individuals[ikey].products[pkey].livePrice)
+                            payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].amount = Number(payload.individuals[ikey].products[pkey].confirmedQtyPrice) * Number(payload.individuals[ikey].products[pkey].maxQuantity) * Number(payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].totalPrice);
+                            totalCost+= Number(cost);
+                            totalOffer += Number(payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].amount);
+                            payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].requestOfferPriceHistories = [];
+                            if(Number(payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].price) != Number(payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].priceInDb)){
+                                payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].requestOfferPriceHistories.push({
+                                    id: 0,
+                                    requestLocationSellerId: selVal.id,
+                                    requestOfferId: payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].id,
+                                    currencyId: payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].currency.id,
+                                    price: payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].price,
+                                });
+                            }
+                            // let totalPrice = payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].cost? payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].price + payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].cost : payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].price;
+                            // payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].totalPrice=totalPrice;
+                            //payload.individuals[ikey].products[pkey].sellers[selkey].offers[offkey].offer.totalOffer=totalOffer;
+                        });
+                    });
+                });
+                ival.offer.totalOffer = totalOffer;
+                ival.offer.totalCost = totalCost;
+            });
+            // $.each(payload.individuals, (ikey, ival) => {
+                
+            //     $.each(ival.products, (pkey, pval) => {
+            //         debugger;
+            //         totalOffer += payload.individuals[ikey].products[pkey].totalAmount;
+            //         totalCost += payload.individuals[ikey].products[pkey].costAllProduct + payload.individuals[ikey].products[pkey].costPerProduct;
+            //     });
+            //     ival.offer.totalOffer = totalCost ? totalOffer + totalCost : totalOffer;
+            //     ival.offer.totalCost = totalCost ?? 0;
+            // });
 
             if (payload) {
                 ctrl.buttonsDisabled = true;
                 if (ctrl.token) {
                     payload.validity = ctrl.validity;
+                    
                     supplierPortalModel.sendQuote(ctrl.token, payload).then((data) => {
                         setTimeout(() => {
                             location.reload();
@@ -1645,6 +1907,7 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
             // Add the copy to the new parent, be it a product or the "global" Additional Costs array.
             if (additionalCost.isAllProductsCost) {
                 additionalCost.parentProductId = -1;
+                additionalCost.requestProductId = null;
                 offerForLocation.additionalCosts.push(additionalCost);
             } else {
                 additionalCost.parentProductId = product.id;
@@ -1673,10 +1936,14 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
          * Change the cost type to the default for the respective additional cost.
          */
         ctrl.additionalCostNameChanged = function(additionalCost, theLocation, skipDefault) {
-            console.log("IOANA");
+
         	if (!skipDefault) {
 	            additionalCost.costType = getAdditionalCostDefaultCostType(additionalCost);
         	}
+
+            if (additionalCost.costType.name == "Unit" && !additionalCost.priceUom) {
+                additionalCost.priceUom = ctrl.tenantDefaultUom;
+            }
     		ctrl.addPriceUomChanged(additionalCost, theLocation);
         	// setTimeout(() => {
         		// $scope.$apply();
@@ -1762,13 +2029,17 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
         ctrl.addAdditionalCost = function(location) {
             let sellerKey = ctrl.getSellerKey(location, location.products[0]);
             let newAdditionalCost = createNewAdditionalCostObject();
-            if (location.products[0].sellers.length > 0) {
-                if (!location.products[0].sellers[sellerKey].offers[0].additionalCosts) {
-                    location.products[0].sellers[sellerKey].offers[0].additionalCosts = [];
+            for (let p = 0; p < location.products.length; p++) {
+                if (!location.products[p].isRfqskipped && location.products[p].sellers.length > 0) {
+                    if (!location.products[p].sellers[sellerKey].offers[0].additionalCosts) {
+                        location.products[p].sellers[sellerKey].offers[0].additionalCosts = [];
+                    }
+                    location.products[p].sellers[sellerKey].offers[0].additionalCosts.push(newAdditionalCost);
+                    console.log(location.products[0].sellers[sellerKey].offers[0].additionalCosts);
+                    break;
                 }
-                location.products[0].sellers[sellerKey].offers[0].additionalCosts.push(newAdditionalCost);
-                console.log(location.products[0].sellers[sellerKey].offers[0].additionalCosts);
             }
+            
             ctrl.getAdditionalCosts(location);
         };
         ctrl.deleteAdditionalCost = function(additionalCost, location) {
@@ -1794,6 +2065,7 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
         };
         ctrl.productPriceChanged = function(product, loc, oldPrice, newPrice) {
             product.totalAmount = calculateProductAmount(product, loc);
+            product.amount = calculateProductTotalAmount(product, loc);
         };
         ctrl.productTableNoQuoteCheckAllChanged = function(location, status) {
             if (ctrl.noQuoteReason) {
@@ -1843,7 +2115,7 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
          * It should only be enabled when the Additional Cost's costType is "Unit" (business rule).
          */
         ctrl.additionalCostPriceUomEnabled = function(additionalCost) {
-            return additionalCost.costType && additionalCost.costType.id === ctrl.COST_TYPE_UNIT_ID;
+            return additionalCost.costType && additionalCost.costType.name === 'Unit';
         };
 
         function generateOfferPopupRandomToken() {
@@ -1861,13 +2133,56 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
         ctrl.addSupplier = function(supplier, type) {
             error = 0;
             var location_supplier;
+            var newCounterparties = [];
+            var locationIds = []
             if (type == 'individual') {
                 if (typeof location_supplier == 'undefined') {
                     location_supplier = [];
                 }
+                newCounterparties = []
                 $.each(ctrl.individuals, (key, val) => {
                     location_supplier.push(val.rand);
+                    var newSeller= {
+                        RequestLocationId: val.requestLocation.id,
+                        SellerCounterpartyId: val.offer.sellerCounterpartyId,
+                        PhysicalSupplierCounterpartyId: supplier.id,
+                        locationId: 0,
+                        requestGroupId: val.requestGroupId,
+                        id: 0,
+                        name: '',
+                        counterpartytypeId: 0,
+                        counterpartyTypeName: '',
+                        genPrice: '',
+                        genRating: '',
+                        isDeleted: false,
+                        isSelected: true,
+                        mail: '',
+                        portPrice: '',
+                        portRating: '',
+                        prefferedProductIds: '',
+                        sellerComments: '',                            
+                        sellerCounterpartyName: '',
+                        senRating: ''
+                    }
+                    
+                    if(locationIds.indexOf(newSeller.RequestLocationId) == -1)                        
+                        newCounterparties.push(newSeller);
+
+                    locationIds.push(newSeller.RequestLocationId);
                 });
+
+                let payload = {
+                    requestGroupId: ctrl.individuals[0].requestGroupId,
+                    requestLocationId: ctrl.individuals[0].requestLocation.id,
+                    locationId: ctrl.individuals[0].requestLocation.location.id,
+                    sellerCounterpartyId: newCounterparties[0].SellerCounterpartyId,
+                    physicalSupplierCounterpartyId: newCounterparties[0].PhysicalSupplierCounterpartyId,
+                    sellerComments: null,
+                    isSellerPortalComments: false                    
+                  };
+                var resLocSell;
+                  
+
                 var newLocations = [], newLocation;
                 $.each(angular.copy(location_supplier), (key, val) => {
                     var loc = $.extend(true, {}, getLocationById(val));
@@ -1918,18 +2233,41 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                 });
                 if (!error > 0) {
                     console.log(newLocation);
-                    let result = [];
-                    for (let len = newLocations.length, i = 0; i < len; ++i) {
-                        let age = newLocations[i].rand;
-                        if (result.indexOf(age) > -1) {
-                            continue;
+                    supplierPortalModel.addSeller(ctrl.token, payload).then((data) => {                    
+                        if (!data.isSuccess) {
+                            toastr.error('Failed to add supplier!');
+                            return;
                         }
-                        result.push(age);
-                        ctrl.individuals.push(newLocations[i]);
-                    }
-                    console.log(result);
-                    ctrl.addAdditionalCost(newLocation);
-                    ctrl.locations = getAllLocations();
+                        else {
+                            resLocSell = data.payload;
+                            let result = [];
+                            for (let len = newLocations.length, i = 0; i < len; ++i) {
+                                let age = newLocations[i].rand;
+                                if (result.indexOf(age) > -1) {
+                                    continue;
+                                }
+                                result.push(age);
+                                newLocations[i].offer.requestLocationSellerId = resLocSell;
+                                newLocations[i].offer.requestLocationSeller.id = resLocSell;
+                                newLocations[i].offer.requestLocationSeller = payload;
+                                newLocations[i].offer.requestLocationSeller.id = resLocSell;
+                                newLocations[i].offer.physicalSupplierCounterpartyId = payload.physicalSupplierCounterpartyId;
+                                // newLocations[i].offer.requestLocationSeller.sellerComments = payload.sellerComments;
+                                // newLocations[i].offer.requestLocationSeller.isSellerPortalComments = payload.isSellerPortalComments;
+                                $.each(newLocations[i].products, (k, v) => {
+                                    v.sellers[0].id = resLocSell;
+                                    v.sellers[0].offers[0].requestSellerId = resLocSell;
+                                    v.sellers[0].offers[0].offer.requestLocationSellerId = resLocSell;
+                                });
+                                ctrl.individuals.push(newLocations[i]);
+                            }
+                            console.log(result);
+                            ctrl.addAdditionalCost(newLocation);
+                            ctrl.locations = getAllLocations();
+                        }
+                    }).catch((reason) => {
+                        console.log(reason);
+                    });                    
                 } else {
                     toastr.error('Selected physical supplier is already added!');
                 }

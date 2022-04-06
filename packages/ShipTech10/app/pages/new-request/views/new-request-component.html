@@ -980,14 +980,14 @@
                     </div>
                     <div class="col-md-8">
                         <div class="row">
-                            <div ng-if="$ctrl.footerSectionFields.Comments.visible" class="col-md-12">
+                            <div ng-if="$ctrl.footerSectionFields.GeneralComments.visible" class="col-md-12">
                                 <div class="row">
                                     <label class="control-label col-md-2">
-                                        {{ $ctrl.footerSectionFields.Comments.caption | translate }}
+                                        {{ $ctrl.footerSectionFields.GeneralComments.caption | translate }}
                                     </label>
                                     <div class="form-group-sm00">
                                         <div class="input-group col-md-10">
-                                            <textarea rows="5" class="form-control" name="{{ $ctrl.footerSectionFields.Comments.name }}" id="id_{{ $ctrl.footerSectionFields.Comments.name }}" ng-model="$ctrl.request.footerSection.comments" ng-disabled="$ctrl.disableAllFields"></textarea>
+                                            <textarea rows="5" class="form-control" name="{{ $ctrl.footerSectionFields.GeneralComments.name }}" id="id_{{ $ctrl.footerSectionFields.GeneralComments.name }}" ng-model="$ctrl.request.footerSection.generalComments" ng-disabled="$ctrl.disableAllFields"></textarea>
                                         </div>
                                     </div>
                                 </div>

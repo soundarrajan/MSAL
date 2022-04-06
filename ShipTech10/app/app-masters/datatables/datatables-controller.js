@@ -3099,19 +3099,21 @@ APP_MASTERS.controller('Controller_Datatables', [
                         cellObject: {
                             type: 'date',
                             unique: true
-                        }
+                        },
+                        required: true
                     },
                     {
                         name: 'name',
                         displayName: 'Holiday Name',
-                        cellTemplate: $scope.dataTableTemplates.text
+                        cellTemplate: $scope.dataTableTemplates.text,
+                        required: true
                     }
                 ],
                 onRegisterApi: function(api) {
                     setTimeout(() => {
                         api.core.handleWindowResize();
                         if (angular.equals($scope.formValues, {}) || !$scope.formValues.holidays || angular.equals($scope.formValues.holidays, [])) {
-                            $scope.formValues.holidays = [ {} ];
+                            $scope.formValues.holidays = [];
                         }
                     }, 10);
                 }

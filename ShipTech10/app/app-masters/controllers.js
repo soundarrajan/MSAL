@@ -40,7 +40,7 @@
         $scope.vm = this;
         $scope.preferredContacts = [];
         $rootScope.isSaveAction = false;
-
+        $scope.benchMarkErrorLogs = [];
 
         $controller('ScreenLayout_Controller', {
             $scope: $scope
@@ -1218,6 +1218,13 @@
 
                     if($scope.formValues.sellers){
                         angular.forEach($scope.formValues.sellers, (sellerContact) => {
+                            if($scope.formValues.id == 0 ){
+                                let location = {
+                                    'name': $scope.formValues.name,
+                                    'id': $scope.formValues.id
+                                };
+                                sellerContact.location = location;
+                            }                            
                             let savedContacts = $filter('filter')(sellerContact.sellerContacts, function(value){ return (value.id > 0);},true );
                             if(savedContacts && savedContacts.length > 0){
                                 angular.forEach(savedContacts, (contact) => {
@@ -1227,6 +1234,18 @@
                                         sellerContact.locationContacts.push(contact);
                                     }
                                 });
+                            }
+                        });
+                    }
+
+                    if($scope.formValues.terminals){
+                        angular.forEach($scope.formValues.terminals, (terminal) => {
+                            if($scope.formValues.id == 0 ){
+                                let location = {
+                                    'name': $scope.formValues.name,
+                                    'id': $scope.formValues.id
+                                };
+                                terminal.location = location;
                             }
                         });
                     }
@@ -1702,7 +1721,7 @@
                 if (vm.app_id == 'masters' && vm.screen_id == 'price') {
                 	var tempMarketPrices = [];
                     $.each($scope.filterFromData.marketPrices, (key, val) => {
-                    	if (!(val.id == 0 && !val.quotePrice)) {
+                    	if (val.quotePrice!=undefined || val.quotePrice!=null) {
 		                	tempMarketPrices.push(val);
                     	}
                     });
@@ -2112,8 +2131,6 @@
             console.log("returnresult", returnresult)
         }
         $scope.SaveAdditionalCostDetValidation = function () {
-
-
             var returnresult = false;
 
             if ($scope.formValues.additionalCosts != undefined && $scope.formValues.additionalCosts.length > 0) {
@@ -2168,55 +2185,41 @@
 
 
                 $.each($scope.formValues.additionalCosts, (k, v) => {
-                    if((v.additionalCost == undefined || v.additionalCost == "") || (v.costType == undefined || v.costType == ""))
-                    {
-
+                    if((v.additionalCost == undefined || v.additionalCost == "") || (v.costType == undefined || v.costType == "")) {
                         toastr.error('Please fill all required details');
                         return returnresult = false
-                    }
-                    else{
+                    } else {
                         if(v.costType.name == 'Range' || v.costType.name == 'Total'){
                             /* Additional Cost Details Validations start */
-                                    if (v.additionalCostDetails != undefined && v.additionalCostDetails.length != 0) {
-                                        var FormvalueLength = v.additionalCostDetails.length - 1;
-                                        $.each(v.additionalCostDetails, (i, j) => {
-                                            if (FormvalueLength != i) {
-                                                if (IsZeroOrHigher(j.qtyFrom) || IsZeroOrHigher(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
-                                                    toastr.error('Please fill all required details in Port Additional Cost Details');
-                                                    return returnresult = false
-                                                }
-                                                else if (parseInt(j.qtyFrom) >= parseInt(j.qtyTo)) {
-                                                    toastr.error('Quantity From Should be less than Quantity To');
-                                                    return returnresult = false
-                                                }
-                                                else {
-                                                    return returnresult = true
-                                                }
-                                            }
-                                            else {
-                                                if (IsZeroOrHigher(j.qtyFrom) || IsZeroOrHigher(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
-                                                    toastr.error('Please fill all required details in Port Additional Cost Details');
-                                                    return returnresult = false
-                                                }
-                                                else if (parseInt(j.qtyFrom) >= parseInt(j.qtyTo)) {
-                                                    toastr.error('Quantity From Should be less than Quantity To');
-                                                    return returnresult = false
-
-                                                }
-                                                else {
-                                                    return returnresult = true
-                                                }
-                                            }
-                                        });
+                            if (v.additionalCostDetails != undefined && v.additionalCostDetails.length != 0) {
+                                var FormvalueLength = v.additionalCostDetails.length - 1;
+                                $.each(v.additionalCostDetails, (i, j) => {
+                                    if (FormvalueLength != i) {
+                                        if (IsZeroOrHigher(j.qtyFrom) || IsZeroOrHigher(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
+                                            toastr.error('Please fill all required details in Port Additional Cost Details');
+                                            return returnresult = false
+                                        } else if (parseInt(j.qtyFrom) >= parseInt(j.qtyTo)) {
+                                            toastr.error('Quantity From Should be less than Quantity To');
+                                            return returnresult = false
+                                        } else {
+                                            return returnresult = true
+                                        }
+                                    } else {
+                                        if (IsZeroOrHigher(j.qtyFrom) || IsZeroOrHigher(j.qtyTo) || IsDataExists(j.priceUom) || IsDataExists(j.costType) || IsDataExists(j.amount) || IsDataExists(j.currency)) {
+                                            toastr.error('Please fill all required details in Port Additional Cost Details');
+                                            return returnresult = false
+                                        } else if (parseInt(j.qtyFrom) >= parseInt(j.qtyTo)) {
+                                            toastr.error('Quantity From Should be less than Quantity To');
+                                            return returnresult = false
+                                        } else {
+                                            return returnresult = true
+                                        }
                                     }
-                                    else {
-                                        toastr.error('Please fill all required details in Port Additional Cost Details');
-                                        return returnresult = false
-                                    }
+                                });
+                            } 
 
                             /* Additional Cost Details Validations End */
-                        }
-                        else{
+                        } else {
                             //AdditionalCostDetails should be empty
                             if(v.amount == undefined || v.amount == ""){
                                 $('#Amount').addClass('ng-invalid');
@@ -2225,27 +2228,21 @@
                                     }
                                 toastr.error('Please fill all required details');
                                 return returnresult = false
-                            }
-                            else if(v.currency == undefined || v.currency == ""){
+                            } else if(v.currency == undefined || v.currency == ""){
                                 $('#Currency').addClass('ng-invalid');
                                 toastr.error('Please fill all required details');
                                 return returnresult = false
-                            }
-                            else
-                            {
+                            } else {
                                 return returnresult = true
                             }
 
                         }
                     }
                 });
+            } else {
+                return returnresult = true;
             }
-            else
-            {
-                return returnresult = true
-            }
-            return returnresult
-            console.log("returnresult", returnresult)
+            return returnresult;
         };
 
 
@@ -5077,6 +5074,66 @@
                 angular.element('#FTPFileUpload').trigger('click');
             }, 1);
         };
+        $scope.getBenchmarkAuth = function () {
+            Factory_Master.get_benchmark_auth(
+                {
+                    "Screen": "UploadPerformanceBenchmark",
+                    "Action": "Edit"
+                }, (callback) => {
+                    if (callback) {
+                        $scope.benchmarkDisabledUpload = !(callback?.data);
+                    }
+                });
+        }
+        $scope.downloadBenchmarkTemplate = function() {
+            console.log("downloadBenchmarkTemplate");
+            let docName = "PerformanceBenchmarkTemplate.xlsx";
+            // var payload = "PerformanceBenchmarkTemplate.xlsx";
+            // Factory_Master.get_benchmark_auth(
+            //     {
+            //         Payload: {
+            //             "Screen": "UploadPerformanceBenchmark",
+            //             "Action": "FullAccess"
+            //         }
+                
+            //     }, (callback) => {
+            //         if (callback) {
+            //             toastr.success(callback);
+            //             $state.reload();
+            //         }
+            //     });
+
+
+
+            Factory_Master.get_benchmark_file(
+                {
+                    Payload: {}
+                },
+                (file, mime) => {
+                    if (file.data) {
+                        let blob = new Blob([ file.data ], {
+                            type: mime
+                        });
+                        if (blob.type == "application/pdf") {
+                            $scope.openPDFViewer(blob);
+                            return;
+                        }
+
+                        let a = document.createElement('a');
+                        a.style = 'display: none';
+                        document.body.appendChild(a);
+                        // Create a DOMString representing the blob and point the link element towards it
+                        let url = window.URL.createObjectURL(blob);
+                        a.href = url;
+                        a.download = docName;
+                        // programatically click the link to trigger the download
+                        a.click();
+                        // release the reference to the file by revoking the Object URL
+                        window.URL.revokeObjectURL(url);
+                    }
+                }
+            );
+        };
         $scope.uploadFiles = function(file) {
             if ($state.params.entity_id > 0) {
                 var file;
@@ -5122,7 +5179,7 @@
         $scope.dropDocument = function(file) {
             $rootScope.droppedDoc = file;
             $scope.droppedDoc = $rootScope.droppedDoc;
-            if (window.location.href.indexOf("masters/price") != -1 ) { return; }
+            if (window.location.href.indexOf("masters/price") != -1 || window.location.href.indexOf("masters/performance-benchmark-upload") != -1) { return; }
             if ($scope.formValues.documentType) {
                 if ($scope.formValues.documentType.name != '') {
                     $rootScope.formValues.documentType = $scope.formValues.documentType;
@@ -7712,7 +7769,7 @@
         		$rootScope.setDocumentTimeout = true;
 	            setTimeout(() => {
 	            	$(document).on('change', 'input.inputfile', function() {
-                        if (window.location.href.indexOf("masters/price") != -1 ) {
+                        if ((window.location.href.indexOf("masters/price") != -1) || (window.location.href.indexOf("masters/performance-benchmark-upload") != -1)) {
                             var fileScope = angular.element($('.dropzone-file-area')).scope();
                             var currentFile = this.files[0];
                             fileScope.$apply(() => {
@@ -8038,6 +8095,7 @@
         $scope.openBargeCostDetails = function(currentSellerKey, master,formvalues) {
             var objMapping;
             $scope.CurrentadditionalCostsdetails  = formvalues;
+            $scope.deleteOrAddAction = false;
             if($scope.formValues != undefined && $scope.formValues.additionalCosts != undefined)
             {
                 if($rootScope.RootTempadditionalCosts == undefined){
@@ -8199,6 +8257,13 @@
             }
         }
 
+        $scope.checkLastIndex = function(additionalCostsList) {
+            let findLastIndex = _.findLastIndex(additionalCostsList, function(obj) {
+                return !obj.isDeleted;
+            });
+            return findLastIndex;
+        }
+
         $scope.saveBargeCostDetails = function() {
             if($scope.formValues.additionalCosts)
             if($scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length > 0)
@@ -8210,6 +8275,9 @@
                 for(let k = 0; k < $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails.length; k++)
                 {
                     let v = $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].additionalCostDetails[k];
+                    if(v?.currency){
+                        $scope.formValues.additionalCosts[$scope.CurrentadditionalCostsdetails].currency = v.currency;
+                    }
                     if(FormvalueLength != k) {
                         if(IsZeroOrHigher(v.qtyFrom) || IsZeroOrHigher(v.qtyTo) || IsDataExists(v.priceUom) || IsDataExists(v.costType) || IsDataExists(v.amount)  || IsDataExists(v.currency)){
                             isvalidbargecostdetails = false;
@@ -8246,7 +8314,10 @@
                 }
 
             }
-
+            else{
+                toastr.error('Please fill all required details');
+                return;
+            }
         };
         $scope.preferredSellersSelectAllProducts = function(selectAll) {
             if (!selectAll) {
@@ -8940,6 +9011,128 @@
             }
         };
 
+        $scope.uploadBenchmarkImport = function() {
+            $scope.benchmarkDisabledUpload = true;
+
+            let availableFile = false;
+            let fileLocation = '';
+
+            // check if file is uploaded
+            if($('#fileUpload')[0].files.length > 0) {
+                availableFile = true;
+                fileLocation = 'input';
+            }else if($scope.droppedDoc) {
+                availableFile = true;
+                fileLocation = 'dropped';
+            }
+
+            if(availableFile) {
+                // form payload
+                let formData = new FormData();
+                let payload = {
+                    Payload: {
+                        name: 'File2',
+                        documentType: {
+                            transactionTypeId: 0,
+                            id: 0,
+                            name: '',
+                            displayName: null,
+                            code: '',
+                            collectionName: null,
+                            customNonMandatoryAttribute1: ''
+                        },
+                        size: 100,
+                        fileType: 'FileType',
+                        transactionType: {
+                            id: 0,
+                            name: '',
+                            code: '',
+                            collectionName: null
+                        },
+                        fileId: 1,
+                        uploadedBy: {
+                            id: 0,
+                            name: '',
+                            code: '',
+                            collectionName: null
+                        },
+                        uploadedOn: '2017-01-11T14:21:37.96',
+                        notes: '',
+                        isVerified: false,
+                        referenceNo: '314',
+                        createdBy: {
+                            id: 1,
+                            name: 'Admin',
+                            code: '',
+                            collectionName: null
+                        },
+                        createdOn: '2017-01-11T14:21:37.96',
+                        lastModifiedByUser: null,
+                        lastModifiedOn: null,
+                        id: 0,
+                        isDeleted: false
+                    }
+                };
+                formData.append('request', JSON.stringify(payload));
+
+                // append file
+                let invalidFile = false;
+                if(fileLocation == 'input') {
+                    if($('#fileUpload')[0].files) {
+                        $.each($('#fileUpload')[0].files, (i, file) => {
+                            if(file.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+                                formData.append('formFile', file);
+                            }else{
+                                invalidFile = true;
+                            }
+                        });
+                    }
+                }
+                if(fileLocation == 'dropped') {
+                    if($scope.droppedDoc.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+                        formData.append('formFile', $scope.droppedDoc);
+                    }else{
+                        invalidFile = true;
+                    }
+                }
+                if(invalidFile) {
+                    toastr.error('File type not supported. Please add xls/xlsx.');
+
+                    delete $scope.droppedDoc;
+                    delete $rootScope.droppedDoc;
+                    $('#fileUpload').val('');
+                    $('.fileUploadName span').text('');
+                    $scope.benchmarkDisabledUpload = false;
+                    return;
+                }
+
+                // make call to upload file
+                Factory_Master.uploadBenchmark(formData, (callback) => {
+                    if (callback && callback.status == 200 && (callback?.data?.status)) {
+                        toastr.success('Benchmark uploaded successfully.');
+                        $state.reload();
+                    } else {
+                        if((callback?.data?.status == false) && callback?.data?.benchmarkErrorLog?.length) {
+                            $scope.benchMarkErrorLogs = callback.data.benchmarkErrorLog;
+                            toastr.error('Invalid data found in performance benchmark.');
+                        }
+                        else{
+                            toastr.error('Invalid file. No performance benchmark data found.');
+                        }
+                        delete $scope.droppedDoc;
+                        delete $rootScope.droppedDoc;
+                        $('#fileUpload').val('');
+                        $('.fileUploadName span').text('');
+                        $scope.benchmarkDisabledUpload = false;
+                        $scope.apply();
+                    }
+                });
+            }else{
+                toastr.error('Please add file to import!');
+                $scope.benchmarkDisabledUpload = false;
+                return;
+            }
+        };
 
         vm.openEmailPreview = function(url, entity_id) {
             let previewUrl = `${url }/${ entity_id}`;
@@ -10342,14 +10535,24 @@
             }
         }
 
+        $scope.setDeleteOrAddAction = function() {
+            $scope.deleteOrAddAction = true;
+        }
+
         /*Additional Cost Details Popup Close Modal start*/
 
         $scope.PopupprettyCloseModal = function(){
-            $scope.showModalAdditionalCostDetailsConfirmation('Do you still want to Cancel Additional Cost Details?', true, (modalResponse) => {
-                if (modalResponse) {
-                    $scope.prettyCloseModal();
-                }
-            });
+            let detectChanges = $('form[name="forms.bargeCostDetails"]').find(".ng-dirty:not(.ng-untouched)").length > 0 || $scope.deleteOrAddAction;
+            if (detectChanges) {
+                $scope.showModalAdditionalCostDetailsConfirmation('Changes you made may not be saved?', true, (modalResponse) => {
+                    if (modalResponse) {
+                        $scope.prettyCloseModal();
+                    }
+                });
+            } else {
+                $scope.prettyCloseModal();
+            }
+          
         }
 
         $scope.showModalAdditionalCostDetailsConfirmation = function(message, additionalData, callback) {

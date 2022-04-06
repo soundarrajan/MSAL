@@ -567,7 +567,7 @@
                         <div class="pull-right" ng-if="$ctrl.request.requestGroup.id">
                             <b>
                                 View Negotiation details:
-                                <a href="#/group-of-requests/{{ $ctrl.request.requestGroup.id }}">
+                                <a href="v2/group-of-requests/{{ $ctrl.request.requestGroup.id }}/{{ $ctrl.request.id }}">
                                     {{ $ctrl.request.requestGroup.id }}
                                 </a>
                             </b>
@@ -978,7 +978,7 @@
                                             </thead>
                                             <tbody>
                                           
-                                                <tr ng-repeat="(productIdx,product) in location.products  " ng-if="!product.isDeleted" ng-mouseover="$ctrl.actveProductUniqueIdUi = product.uniqueIdUI">
+                                                <tr ng-repeat="(productIdx,product) in location.products" ng-if="!product.isDeleted" ng-mouseover="$ctrl.actveProductUniqueIdUi = product.uniqueIdUI">
 
                                                     <td>
                                                         <span class="st-btn-icon" ng-show="!$ctrl.isReadonlyForm">
@@ -1228,39 +1228,11 @@
                                 </div> -->
                             </div>
                         </div>
-                        <div class="col-md-7">
-                            <div class="row">
-                                <div ng-if="$ctrl.footerSectionFields.Comments.visible" class="col-md-12">
-                                    <div class="row">
-                                        <!-- <div class="col-12" >
-                                                <span>  Force Request on BOPS</span>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input name="{{ $ctrl.vesselDetailsFields.Chartered.name }}" id="id_{{ $ctrl.vesselDetailsFields.Chartered.name }}" placeholder="{{ $ctrl.vesselDetailsFields.Chartered.placeholder }}" type="checkbox" ng-checked="($ctrl.lists.VesselOwnership | filter: {id : $ctrl.request.vesselDetails.vesselOwnershipId})[0].name == 'Chartered'" disabled>
-
-                                                </label>
-
-                                        </div> -->
-                                        <div class="col-12">
-                                            <label class="control-label col-md-2">
-                                                {{ $ctrl.footerSectionFields.Comments.caption | translate }}
-                                            </label>
-                                            <div class="form-group-sm00">
-                                                <div class="input-group col-md-10">
-                                                    <textarea decode-input-format rows="5" class="form-control" name="{{ $ctrl.footerSectionFields.Comments.name }}" id="id_{{ $ctrl.footerSectionFields.Comments.name }}" ng-model="$ctrl.request.footerSection.comments" ng-disabled="$ctrl.disableAllFields"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </form>
                 </div>
             </div>
         </div>
         <div>
-
             <div class="row">
                 <!-- <clc-table-list id="'request_MinQunatityToReach'" style="max-width: calc(100vw - 50px);padding-left: 15px;" app="'procurement'"  screen="'request_MinQunatityToReach'" controls="'[entries, columns, info, pager]'"></clc-table-list> -->
                 <clc-table-list style="max-width: calc(100vw - 50px);padding-left: 15px;" id="'min_quantity_to_reach'" app="'procurement'" screen="'min_quantity_to_reach'" controls="'[entries, columns, info, pager]'"></clc-table-list>
@@ -1268,6 +1240,60 @@
         </div>
     </fieldset>
 </form>
+<div class="row">
+    <div class="portlet light" ng-if="$ctrl.request">
+        <div class="portlet-title">
+            <div class="tools">
+                <a class="{{$ctrl.commentsExpanded ? 'collapse' : 'expand' }}" ng-click="$ctrl.getComments()" data-original-title="" title=""></a>
+            </div>
+            <div class="comments-type" >
+                <span class="circle internal"></span>
+                <span class="label-internal">Internal Comments</span>
+                <span class="circle external"></span>
+                <span class="label-external">External Comments</span>
+              </div>
+            <div class="caption">
+                <span class="caption-subject">
+                    COMMENTS
+                </span>
+            </div>
+        </div>
+        <div class="notes-portlet-body" ng-if="$ctrl.commentsExpanded" >
+            <div class="row" >
+                <div class="col-md-3" >
+                    <label class="control-label1">
+                        <span class="circle internal"></span> General
+                    </label>
+                    <textarea decode-input-format rows="6" ng-change="$ctrl.txtChanged($ctrl.request.footerSection.generalComments,'g')" placeholder="Type your comments here..."  class="form-control" name="{{ $ctrl.footerSectionFields.GeneralComments.name }}" id="id_{{ $ctrl.footerSectionFields.GeneralComments.name }}" ng-model="$ctrl.request.footerSection.generalComments" ng-disabled="$ctrl.request.requestStatus.name == 'Stemmed' " style="resize: none;"></textarea>
+                    <label style="float: right;">{{$ctrl.generalCommentlength}} character left.</label>    
+                </div>
+                <div class="col-md-3" >
+                    <label class="control-label1">
+                        <span class="circle internal"></span> Strategy
+                    </label>
+                    <textarea decode-input-format rows="6" ng-change="$ctrl.txtChanged($ctrl.request.footerSection.strategyComments,'s')"placeholder="Type your comments here..." class="form-control" name="{{ $ctrl.footerSectionFields.StrategyComments.name }}" id="id_{{ $ctrl.footerSectionFields.StrategyComments.name }}" ng-model="$ctrl.request.footerSection.strategyComments" ng-disabled=" $ctrl.request.requestStatus.name == 'Stemmed' " style="resize: none;"></textarea>
+                    <label style="float: right;">{{$ctrl.strategyCommentlength}} character left.</label>    
+                </div>
+                <div class="col-md-3" >
+                    <label class="control-label1 ">
+                        <span class="circle external"></span>Supplier
+                    </label>
+                    <textarea decode-input-format rows="6" ng-change="$ctrl.txtChanged($ctrl.request.footerSection.supplierComments,'p')"placeholder="Type your comments here..." class="form-control" name="{{ $ctrl.footerSectionFields.SupplierComments.name }}" id="id_{{ $ctrl.footerSectionFields.SupplierComments.name }}" ng-model="$ctrl.request.footerSection.supplierComments" ng-disabled=" $ctrl.request.requestStatus.name == 'Stemmed' " style="resize: none;"></textarea>
+                    <label style="float: right;">{{$ctrl.supplierCommentlength}} character left.</label>    
+                </div>
+                <div class="col-md-3" >
+                    <label class="control-label1 ">
+                        <span class="circle external"></span>Vessel & Agent
+                    </label>
+                    <textarea decode-input-format rows="6" ng-change="$ctrl.txtChanged($ctrl.request.footerSection.vesselAgentComments,'v')"placeholder="Type your comments here..." class="form-control" name="{{ $ctrl.footerSectionFields.VesselAgentComments.name }}" id="id_{{ $ctrl.footerSectionFields.VesselAgentComments.name }}" ng-model="$ctrl.request.footerSection.vesselAgentComments" ng-disabled=" $ctrl.request.requestStatus.name == 'Stemmed' " style="resize: none;"></textarea>   
+                    <label style="float: right;">{{$ctrl.vesselAgentCommentlength}} character left.</label>           
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="portlet light" ng-if="$ctrl.request">
         <div class="portlet-title">
@@ -1293,6 +1319,8 @@
         </div>
     </div>
 </div>
+
+
 <div class="row">
     <div class="st-main-content-menu bottom-menu">
         <div class="pull-right buttons">

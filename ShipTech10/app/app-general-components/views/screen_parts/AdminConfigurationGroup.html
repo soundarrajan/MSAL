@@ -618,7 +618,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <div class="form-group  row">
                         <div class="form_input form_input_allowAddNewContact">
                             <div class="">
@@ -631,7 +631,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-4">
                     <div class="form-group row"
                         ng-init='CM.getOptions({"Name": "captureReasonToCancelRequest", "Type": "dropdown", "masterSource": "YesNoOptions"})'>
@@ -765,7 +765,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <div class="form-group row">
                         <label for="agentDisplay" class="simpleLookupLabel" style="max-height: initial;">
                             Request to Negotiation
@@ -777,8 +777,8 @@
                                 ng-model="formValues.procurement.request.populateNegotiationCommentsTo"></select>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
+                </div> -->
+                <!-- <div class="col-md-4">
                     <div class="form-group row">
                         <label for="agentDisplay" class="simpleLookupLabel" style="max-height: initial;">
                             Negotiation To Order
@@ -790,7 +790,7 @@
                                 ng-model="formValues.procurement.request.populateOrderCommentsFrom"></select>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
                     <div class="form-group  row">
                         <div class="form_input form_input_showOperationalReport">
@@ -1100,42 +1100,6 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4 ">
-                    <div class="form-group row"
-                        ng-init='CM.getOptions({"Name": "HardSoftStop", "Type": "dropdown", "masterSource": "HardSoftStop"})'>
-                        <label for="needValidationOnQuoteByDateExpiry" class="simpleLookupLabel"
-                            style="max-height: initial;">
-                            {{ CM.app_id + '.NEED_VALIDATION_ON_QUOTE_BY_DATE_EXPIRY' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_needValidationOnQuoteByDateExpiry">
-                            <select class="form-control bs-select changeIT"
-                                ng-options="item as item.name for item in options.HardSoftStop track by item.id"
-                                ng-required="true" id="needValidationOnQuoteByDateExpiry"
-                                ng-model="formValues.procurement.offer.needValidationOnQuoteByDateExpiry"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 ">
-                    <div class="form-group row"
-                        ng-init='CM.getOptions({"Name": "HardSoftStop", "Type": "dropdown", "masterSource": "HardSoftStop"})'>
-                        <label for="needSupplierQuoteValidityDateExpiry" class="simpleLookupLabel"
-                            style="max-height: initial;">
-                            {{ CM.app_id + '.NEED_SUPLIER_QUOTE_VALIDITY_DATE_EXPIRY_CHECK' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_needSupplierQuoteValidityDateExpiry">
-                            <select class="form-control bs-select changeIT"
-                                ng-options="item as item.name for item in options.HardSoftStop track by item.id"
-                                ng-required="true" id="needSupplierQuoteValidityDateExpiry"
-                                ng-model="formValues.procurement.offer.needSupplierQuoteValidityDateExpiry"></select>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
                     <div class="form-group  row">
                         <div class="form_input form_input_isSelerPortalNeeded">
@@ -1151,404 +1115,55 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
                     <div class="form-group  row">
-                        <div class="form_input form_input_isSkipRfqAllowed">
+                        <div class="form_input form_input_isDisplaySellerRating">
                             <div class="">
                                 <label class="mt-checkbox">
-                                    <input type="checkbox" name="inlineRadiosisSkipRfqAllowed" id="isSkipRfqAllowed"
-                                        ng-model="formValues.procurement.offer.isSkipRfqAllowed" /> {{ CM.app_id +
-                                    '.IS_SKIP_RFQ_ALLOWED' | translate }}
+                                    <input type="checkbox" name="inlineRadiosisDisplaySellerRating"
+                                        id="isDisplaySellerRating"
+                                        ng-model="formValues.procurement.offer.isDisplaySellerRating" /> {{ CM.app_id +
+                                    '.DISPLAY_SELLER_RATING' | translate }}
                                     <span></span>
                                 </label>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group  row">
-                        <div class="form_input form_input_isOfferReviewMandatory">
-                            <div class="">
-                                <label class="mt-checkbox">
-                                    <input type="checkbox" name="inlineRadiosisOfferReviewMandatory"
-                                        id="isOfferReviewMandatory"
-                                        ng-model="formValues.procurement.offer.isOfferReviewMandatory" /> {{ CM.app_id +
-                                    '.IS_OFFER_REVIEW_MANDATORY' | translate }}
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group  row">
-                        <div class="form_input form_input_isQuickAddCounterpartyEnabled">
-                            <div class="">
-                                <label class="mt-checkbox">
-                                    <input type="checkbox" name="inlineRadiosisQuickAddCounterpartyEnabled"
-                                        id="isQuickAddCounterpartyEnabled"
-                                        ng-model="formValues.procurement.offer.isQuickAddCounterpartyEnabled" /> {{
-                                    CM.app_id + '.IS_QUICK_ADD_COUNTERPARTY_ENABLED' | translate }}
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group  row">
-                        <div class="form_input form_input_isQuoteDateAutoPopulated">
-                            <div class="">
-                                <label class="mt-checkbox">
-                                    <input type="checkbox" name="inlineRadiosisQuoteDateAutoPopulated"
-                                        id="isQuoteDateAutoPopulated"
-                                        ng-model="formValues.procurement.offer.isQuoteDateAutoPopulated" /> {{ CM.app_id
-                                    + '.IS_QUOTE_DATE_AUTO_POPULATED' | translate }}
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group  row">
-                        <div class="form_input form_input_IsQuoteByEndDateValidated">
-                            <div class="">
-                                <label class="mt-checkbox">
-                                    <input type="checkbox" name="inlineRadiosIsQuoteByEndDateValidated"
-                                        id="IsQuoteByEndDateValidated"
-                                        ng-model="formValues.procurement.offer.isQuoteByEndDateValidated" /> {{
-                                    CM.app_id + '.IS_QUOTE_BY_END_DATE_VALIDATED' | translate }}
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group row">
-                        <label for="sellerHistoryVisibility" class="simpleLookupLabel" style="max-height: initial;">
-                            {{ CM.app_id + '.SELLER_HISTORY_VISIBILITY' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_sellerHistoryVisibility">
-                            <select class="form-control bs-select changeIT"
-                                ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id"
-                                ng-required="true" id="sellerHistoryVisibility"
-                                ng-model="formValues.procurement.offer.sellerHistoryVisibility"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group row">
-                        <label for="priceDetailsDefaultView" class="simpleLookupLabel" style="max-height: initial;">
-                            {{ CM.app_id + '.PRICE_DETAILS_DEFAULT_VIEW' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_priceDetailsDefaultView">
-                            <select class="form-control bs-select changeIT"
-                                ng-options="item as item.name for item in CM.listsCache.PanelViewMode track by item.id"
-                                ng-required="true" id="priceDetailsDefaultView"
-                                ng-model="formValues.procurement.offer.priceDetailsDefaultView"></select>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group row">
-                        <label for="counterpartyCommentsVisibility" class="simpleLookupLabel"
-                            style="max-height: initial;">
-                            {{ CM.app_id + '.COUNTERPARTY_COMMENTS_VISIBILITY' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_counterpartyCommentsVisibility">
-                            <select class="form-control bs-select changeIT"
-                                ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id"
-                                ng-required="true" id="counterpartyCommentsVisibility"
-                                ng-model="formValues.procurement.offer.counterpartyCommentsVisibility"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group row">
-                        <label for="commentsDefaultView" class="simpleLookupLabel" style="max-height: initial;">
-                            {{ CM.app_id + '.COMMENTS_DEFAULT_VIEW' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_commentsDefaultView">
-                            <select class="form-control bs-select changeIT"
-                                ng-options="item as item.name for item in CM.listsCache.ViewMode track by item.id"
-                                ng-required="true" id="commentsDefaultView"
-                                ng-model="formValues.procurement.offer.commentsDefaultView"></select>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
-                    <div class="form-group row">
-                        <label for="bestTcoDefaultView" class="simpleLookupLabel" style="max-height: initial;">
-                            {{ CM.app_id + '.BEST_TCO_DEFAULT_VIEW' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_bestTcoDefaultView">
-                            <select class="form-control bs-select changeIT"
-                                ng-options="item as item.name for item in CM.listsCache.PanelViewMode track by item.id"
-                                ng-required="true" id="bestTcoDefaultView"
-                                ng-model="formValues.procurement.offer.bestTcoDefaultView"></select>
+                    <div class="form-group  row">
+                        <div class="form_input form_input_isSkipOfferConfirmation">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosisSkipOfferConfirmation"
+                                        id="isSkipOfferConfirmation"
+                                        ng-model="formValues.procurement.offer.isSkipOfferConfirmation" /> {{ CM.app_id +
+                                    '.SKIP_OFFER_CONFIRMATION' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group row">
-                        <label for="noOfCounterpartiesToDisplay" class="simpleLookupLabel" style="max-height: initial;">
-                            {{ CM.app_id + '.NO_OF_COUNTERPARTIES_TO_DISPLAY' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_noOfCounterpartiesToDisplay"
-                            ng-init='CM.getOptions({"Name": "numberOfCounterpartiesToDisplay", "Type": "dropdown", "masterSource": "listsCache"}, true)'>
-                            <select class="form-control bs-select changeIT"
-                                ng-options="item for item in options.numberOfCounterpartiesToDisplay"
-                                id="noOfCounterpartiesToDisplay"
-                                ng-model="formValues.procurement.offer.numberOfCounterpartiesToDisplay"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group row">
-                        <label for="decimal" class="simpleLookupLabel" style="max-height: initial;">
-                            {{ CM.app_id + '.NEGOTIATION_DISPLAY_DECIMAL' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_decimal">
-                            <select class="form-control bs-select changeIT"
-                                ng-options="item as item.name for item in CM.listsCache.YesNoOptions track by item.id"
-                                ng-required="true" id="decimal"
-                                ng-model="formValues.procurement.request.negotiationDisplayDecimal"></select>
+                <div class="col-md-4" ng-if="tenantSetting.shiptechLite !== true">
+                    <div class="form-group  row">
+                        <div class="form_input form_input_isPhysicalSupplierMandatoryForQuoting">
+                            <div class="">
+                                <label class="mt-checkbox">
+                                    <input type="checkbox" name="inlineRadiosisPhysicalSupplierMandatoryForQuoting"
+                                        id="isPhysicalSupplierMandatoryForQuoting"
+                                        ng-model="formValues.procurement.offer.isPhysicalSupplierMandatoryForQuoting" /> {{ CM.app_id +
+                                    '.PHYSICAL_SUPPLIER_MANDATORY_FOR_QUOTING' | translate }}
+                                    <span></span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group row">
-                        <label for="display" class="simpleLookupLabel" style="max-height: initial;">
-                            {{ CM.app_id + '.COUNTERPARTY_TYPE_FILTER' | translate }}
-                            <span class="orange-txt">
-                                *
-                            </span>
-                        </label>
-                        <div class="input-group form_input form_input_display">
-                            <input ng-model="counterpartyTypeFilterItemsInput"
-                                uib-typeahead="item as item.name for item in getCounterpartyTypeFilterItems() | typeaheadCustomFilter:$viewValue:'name'"
-                                class="form-control" typeahead-show-hint="true" typeahead-min-length="1"
-                                typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100"
-                                name="counterpartyTypeFilterItemsInput" autocomplete="off" />
-
-                            <span class="input-group-addon bg-default"
-                                ng-click="addCounterpartyTypeFilterItem(counterpartyTypeFilterItemsInput) ? '' : counterpartyTypeFilterItemsInput = null"
-                                style="border: 1px solid #c5cdda; cursor: pointer">
-                                &nbsp;&nbsp;
-                                <i class="fa fa-plus"></i>
-                                &nbsp;&nbsp;
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-8">
-                    <div class="">
-                        <span class="tag label border-default" style="border: 1px solid; color: black"
-                            ng-repeat="(key, value) in formValues.procurement.request.counterpartyTypeFilters">
-                            <a ng-click="formValues.procurement.request.counterpartyTypeFilters.splice(key,1)">
-                                <i class="fa fa-close font-red-thunderbird"></i>
-                            </a>
-                            {{ value.name }}
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="portlet">
-                <div class="portlet-title">
-                    <span class="caption-subject ">
-                        Hide/Unhide Fields
-                    </span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="custom-hardcoded-table admin">
-                        <table class="table-body" style="width:100%">
-                            <thead class="table-head">
-                                <tr style="background-color: #fff">
-                                    <td>
-                                        Field
-                                    </td>
-                                    <td>
-                                        Hide
-                                    </td>
-                                    <td>
-                                        Mandatory
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="padding">
-                                        Physical Supplier
-                                    </td>
-                                    <td class="padding">
-                                        <label class="mt-checkbox">
-                                            <input type="checkbox"
-                                                ng-model="formValues.procurement.fieldVisibility.isPhysicalSupplierHidden"
-                                                ng-click="formValues.procurement.fieldVisibility.isPhysicalSupplierMandatory = false" />
-                                            <span></span>
-                                        </label>
-                                    </td>
-                                    <td class="padding">
-                                        <label class="mt-checkbox">
-                                            <input type="checkbox"
-                                                ng-model="formValues.procurement.fieldVisibility.isPhysicalSupplierMandatory"
-                                                ng-click="formValues.procurement.fieldVisibility.isPhysicalSupplierHidden = false" />
-                                            <span></span>
-                                        </label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="padding">
-                                        Contact
-                                    </td>
-                                    <td class="padding">
-                                        <label class="mt-checkbox">
-                                            <input type="checkbox"
-                                                ng-model="formValues.procurement.fieldVisibility.isSellerContactHidden"
-                                                ng-click="formValues.procurement.fieldVisibility.isSellerContactMandatory = false" />
-                                            <span></span>
-                                        </label>
-                                    </td>
-                                    <td class="padding">
-                                        <label class="mt-checkbox">
-                                            <input type="checkbox"
-                                                ng-model="formValues.procurement.fieldVisibility.isSellerContactMandatory"
-                                                ng-click="formValues.procurement.fieldVisibility.isSellerContactHidden = false" />
-                                            <span></span>
-                                        </label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="padding">
-                                        Broker
-                                    </td>
-                                    <td class="padding">
-                                        <label class="mt-checkbox">
-                                            <input type="checkbox"
-                                                ng-model="formValues.procurement.fieldVisibility.isBrokerHidden"
-                                                ng-click="formValues.procurement.fieldVisibility.isBrokerMandatory = false" />
-                                            <span></span>
-                                        </label>
-                                    </td>
-                                    <td class="padding">
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="padding">
-                                        Additional Cost
-                                    </td>
-                                    <td class="padding">
-                                        <label class="mt-checkbox">
-                                            <input type="checkbox"
-                                                ng-model="formValues.procurement.fieldVisibility.isAdditionalCostHidden" />
-                                            <span></span>
-                                        </label>
-                                    </td>
-                                    <td class="padding">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="padding">
-                                        Total
-                                    </td>
-                                    <td class="padding">
-                                        <label class="mt-checkbox">
-                                            <input type="checkbox"
-                                                ng-model="formValues.procurement.fieldVisibility.isNegotiationTotalHidden" />
-                                            <span></span>
-                                        </label>
-                                    </td>
-                                    <td class="padding">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="padding">
-                                        Supply Quantity
-                                    </td>
-                                    <td class="padding">
-                                        <label class="mt-checkbox">
-                                            <input type="checkbox"
-                                                ng-model="formValues.procurement.fieldVisibility.isSupplyQuantityHidden"
-                                                ng-click="formValues.procurement.fieldVisibility.isSupplyQuantityMandatory = false" />
-                                            <span></span>
-                                        </label>
-                                    </td>
-                                    <td class="padding">
-                                        <label class="mt-checkbox">
-                                            <input type="checkbox"
-                                                ng-model="formValues.procurement.fieldVisibility.isSupplyQuantityMandatory"
-                                                ng-click="formValues.procurement.fieldVisibility.isSupplyQuantityHidden = false" />
-                                            <span></span>
-                                        </label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="padding">
-                                        Supply Delivery Date
-                                    </td>
-                                    <td class="padding">
-                                        <label class="mt-checkbox">
-                                            <input type="checkbox"
-                                                ng-model="formValues.procurement.fieldVisibility.isSupplyDeliveryDateHidden"
-                                                ng-click="formValues.procurement.fieldVisibility.isSupplyDeliveryDateMandatory = false" />
-                                            <span></span>
-                                        </label>
-                                    </td>
-                                    <td class="padding">
-                                        <label class="mt-checkbox">
-                                            <input type="checkbox"
-                                                ng-model="formValues.procurement.fieldVisibility.isSupplyDeliveryDateMandatory"
-                                                ng-click="formValues.procurement.fieldVisibility.isSupplyDeliveryDateHidden = false" />
-                                            <span></span>
-                                        </label>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <br />
-                    <br />
-                </div>
-            </div>
+            <br />
             <div class="portlet">
                 <div class="portlet-title">
                     <span class="caption-subject ">
@@ -1587,7 +1202,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <div class="form-group row"
                         ng-init='CM.getOptions({"Name": "CaptureConfirmedQuantity", "Type": "dropdown", "masterSource": "CaptureConfirmedQuantity"})'>
                         <label for="captureConfirmedQuantity" class="simpleLookupLabel" style="max-height: initial;">
@@ -1603,7 +1218,7 @@
                                 ng-model="formValues.procurement.order.captureConfirmedQuantity"></select>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-4">
                     <div class="form-group row">
                         <label for="useOrderPhysicalSupplierFlow" class="simpleLookupLabel"
@@ -1993,7 +1608,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="portlet" ng-if="tenantSetting.shiptechLite !== true">
+                <!-- <div class="portlet" ng-if="tenantSetting.shiptechLite !== true">
                     <div class="portlet-title">
                         <span class="caption-subject ">
                             Energy Calculation
@@ -2100,7 +1715,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> -->
 
         </div>
         </div>

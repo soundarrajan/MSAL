@@ -44,6 +44,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             ctrl.shiptechLite = settings.payload.shiptechLite;
         });
 
+        ctrl.commentsExpanded = false;
+        ctrl.orderCommentsExpanded =  false;
+
         ctrl.disabledProduct = [];
         tenantService.emailSettings.then((settings) => {
         	ctrl.emailConfiguration = settings.payload;
@@ -1691,18 +1694,35 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
                     }
                     destroyDataTables();
-                    if (data.defaultFuelOilProduct !== null) {
-                        ctrl.addProductAndSpecGroupToList(data.defaultFuelOilProduct, data.fuelOilSpecGroup, data.defaultFuelOilProductTypeId, productList);
+
+                    productsToAdd = [];
+
+                    if (data.defaultFuelOilProduct != null) {
+                        productsToAdd.push({
+                            product : data.defaultFuelOilProduct,
+                            specGroup : data.fuelOilSpecGroup, 
+                            productTypeId : data.defaultFuelOilProductTypeId, 
+                        })
                     }
-                    if (data.defaultDistillateProduct !== null) {
-                        ctrl.addProductAndSpecGroupToList(data.defaultDistillateProduct, data.distillateSpecGroup, data.defaultDistillateProductProductTypeId, productList);
+                    if (data.defaultDistillateProduct != null) {
+                        productsToAdd.push({
+                            product : data.defaultDistillateProduct,
+                            specGroup : data.distillateSpecGroup, 
+                            productTypeId : data.defaultDistillateProductProductTypeId, 
+                        })                            
                     }
-                    if (data.defaultLsfoProduct !== null) {
-                        ctrl.addProductAndSpecGroupToList(data.defaultLsfoProduct, data.lsfoSpecGroup, data.defaultLsfoProductTypeId, productList);
+                    if (data.defaultLsfoProduct != null) {
+                        productsToAdd.push({
+                            product : data.defaultLsfoProduct,
+                            specGroup : data.lsfoSpecGroup, 
+                            productTypeId : data.defaultLsfoProductTypeId, 
+                        })                                
                     }
-                    if (ctrl.data.products.length > 0) {
-	                    ctrl.data.products = $filter('orderBy')(ctrl.data.products, 'productType.id');
-                    } 
+                    productsToAdd.sort( (a,b) => a.productTypeId - b.productTypeId);
+                    productsToAdd.forEach((e) => { 
+                        ctrl.addProductAndSpecGroupToList(e.product, e.specGroup, e.productTypeId, productList);
+                    })
+
                     $timeout(() => {
                         updatePageTitle();
                         updateOrderSummary();
@@ -5079,6 +5099,42 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         /* END Capture reason for change */
 
 
+        /*Check length of character limit in comments section */
+        ctrl.checkCommentsLimit = (strComments,val) => {
+            if(val == 'general'){
+                if(strComments.length > 1000){
+                    ///toastr.warning('Is exists the character limit of 1000');
+                    ctrl.data.generalComments = strComments.substr(0,1000);
+                    return;    
+                }
+            } else if(val == 'performance'){
+                 if(strComments.length > 1000){
+                    ///toastr.warning('Is exists the character limit of 1000');
+                    ctrl.data.performanceComments = strComments.substr(0,1000);
+                    return;    
+                }
+            } else if(val == 'strategy'){
+                 if(strComments.length > 1000){
+                    ///toastr.warning('Is exists the character limit of 1000');
+                    ctrl.data.strategyComments = strComments.substr(0,1000);
+                    return;    
+                }
+            } else if(val == 'supplier'){
+                if(strComments.length > 1000){
+                    ///toastr.warning('Is exists the character limit of 1000');
+                    ctrl.data.supplierComments = strComments.substr(0,1000);
+                    return;    
+                }
+            } else if(val == 'vesselAndAgent'){
+                if(strComments.length > 1000){
+                    ///toastr.warning('Is exists the character limit of 1000');
+                    ctrl.data.vesselAgentComments = strComments.substr(0,1000);
+                    return;    
+                }
+            }
+        }
+
+
         $(document).ready(function () {
             $('.page-container').css('display', 'revert');
             $('.page-content-wrapper').css('display', 'revert');
@@ -5086,6 +5142,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             console.log($('.page-container'));
             console.log($('.page-content-wrapper'));
         });
+
     }
 ]);
 angular.module('shiptech.pages').component('newOrder', {

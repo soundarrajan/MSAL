@@ -111,7 +111,7 @@
                     <div class="col-sm-9">
                         <div class="row">
 
-                            <div class="col-sm-4 mb" ng-repeat="(skey, svalue)  in location.products " >
+                            <div class="col-sm-4 mb" ng-repeat="(skey, svalue)  in location.products " ng-if="!svalue.isRfqskipped">
 
                                 <div class="small-card bg-grey-steel orange-border">
                                     <p>
@@ -145,7 +145,7 @@
                                 </b>
                             </p>
                             <p>
-                                Including Addl. Cost {{ location.products[0].sellers[0].offers[0].currency.code | decodeReadOnly }} {{ $ctrl.additionalCostTotalAmountSums[location.rand] | number:2 }}
+                                Including Addl. Cost {{ location.products[0].sellers[0].offers[0].currency.code | decodeReadOnly }} {{ $ctrl.additionalCostTotalAmountSums[location.rand] + $ctrl.additionalCostLocationBasedTotalAmountSums[location.rand] | number:2 }}
                             </p>
                             <h4>
                                 <b ng-if="$ctrl.negotiationDisplayDecimal">
@@ -187,7 +187,7 @@
                                     </thead>
                                     <tbody>
 
-                                        <tr ng-repeat="product in location.products">
+                                        <tr ng-repeat="product in location.products" ng-if="!product.isRfqskipped" >
                                             <td>
 
                                                 <label class="mt-checkbox mt-checkbox-outline">
@@ -240,7 +240,7 @@
                                                 </div>
                                             </td>
 
-                                            <td style="min-width: 220px" ng-if="!$ctrl.procurementSettings.fieldVisibility.isSupplyQuantityHidden">
+                                            <td style="min-width: 220px">
                                                 <div class="input-group">
                                                     <input class="form-control" name="product_{{$index}}_supplyQuantity" ng-model="product.sellers[0].offers[0].supplyQuantity" ng-required="$ctrl.procurementSettings.fieldVisibility.isSupplyQuantityMandatory"/>
 
@@ -253,7 +253,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td style="min-width: 220px" ng-if="!$ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateHidden">
+                                            <td style="min-width: 220px">
 	            	                            <div class="input-group form_input date form_meridian_datetime w100">
 					                                <input name="product_{{$index}}_supplyDeliveryDate" id="product_{{$index}}_supplyDeliveryDate" screen-type="{{$ctrl.token ? 'supplierPortal' : '' }}" ng-required="$ctrl.procurementSettings.fieldVisibility.isSupplyDeliveryDateMandatory" class="form-control date-mask new-date-picker" picker-type="date" new-date-picker ng-model="product.sellers[0].offers[0].supplyDeliveryDate" />
 					                            </div>
@@ -263,7 +263,7 @@
                                             <td style="min-width: 220px">
                                                 <div class="input-group">
                                                     <div class="input-group-btn">
-                                                        <span ng-if="!$ctrl.token" ng-init="product.sellers[0].offers[0].currency = $ctrl.currency"></span>
+                                                        <span ng-if="!$ctrl.token" ng-init="product.sellers[0].offers[0].currency = request.currency"></span>
                                                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
                                                             {{ product.sellers[0].offers[0].currency.name | decodeReadOnly}}
                                                             <span class="caret"></span>
@@ -284,8 +284,9 @@
                                                         ng-model="product.sellers[0].offers[0].priceQuantityUom"
                                                         ng-options="uom as uom.name for uom in $ctrl.lists.Uom | decodeReadOnly track by uom.id"
                                                         ng-change="$ctrl.productUomChanged(product, location)"
-                                                        ng-disabled="$ctrl.tenantQuoteDisabled || product.sellers[0].offers[0].hasNoQuote || product.productStatus.name == 'Stemmed'"
+                                                        ng-disabled="true"
                                                         style="min-width:60px"></select>
+                                                        <!-- $ctrl.tenantQuoteDisabled || product.sellers[0].offers[0].hasNoQuote || product.productStatus.name == 'Stemmed' -->
                                                     </div>
                                                 </div>
                                             </td>
@@ -325,7 +326,7 @@
                         </div>
                         <div class="caption">
                             <span class="caption-subject">
-                                ADDITIONAL COST
+                                OFFER BASED ADDITIONAL COST
                             </span>
                         </div>
                     </div>
@@ -350,7 +351,7 @@
                                 </thead>
                                 <tbody >
 
-                                    <tr ng-repeat="additionalCost in $ctrl.getAdditionalCosts(location)  track by $index" ng-if="!additionalCost.isDeleted">
+                                    <tr ng-repeat="additionalCost in $ctrl.getAdditionalCosts(location)  track by $index" ng-if="!additionalCost.isDeleted && !additionalCost.isRfqskipped">
 
                                         <td>
                                             <span class="st-btn-icon" ng-click="$ctrl.addAdditionalCost(location)">
@@ -374,7 +375,7 @@
                                             name="{{ $ctrl.additionalCostColumns.type.name }}"
                                             ng-required="additionalCost.additionalCost"
                                             ng-disabled="$ctrl.disableCostBasedOnApplicableProductStatus(additionalCost.parentProductId, location.products)"
-                                            ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]);"
+                                            ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.additionalCostNameChanged(additionalCost, location, true);"
                                             style="min-width: 80px">
                                             </select>
 
@@ -404,7 +405,7 @@
                                         	<span ng-if="$ctrl.tenantQuoteDisabled || !$ctrl.additionalCostPriceUomEnabled(additionalCost)" ng-init="additionalCost.priceUom = null"></span>
                                             <div class="input-group">
                                                 <div class="input-group-btn">
-                                                    <span ng-if="!$ctrl.token" ng-init="additionalCost.currency = $ctrl.currency"></span>
+                                                    <span ng-if="!$ctrl.token" ng-init="additionalCost.currency = request.currency"></span>
                                                     <select name="" id="" class="form-control no-padding"
                                                     ng-model="additionalCost.currency"
                                                     ng-options="currency as currency.code for currency in $ctrl.lists.Currency | decodeReadOnly track by currency.id"
@@ -419,8 +420,9 @@
                                                     ng-options="uom as uom.name for uom in $ctrl.lists.Uom | decodeReadOnly track by uom.id"
                                                     ng-change="$ctrl.addPriceUomChanged(additionalCost,location)"
                                                     ng-class="{'ng-invalid' : additionalCost.additionalCost && $ctrl.additionalCostPriceUomEnabled(additionalCost) && !additionalCost.priceUom.id}"
-                                                    ng-disabled="$ctrl.tenantQuoteDisabled || !$ctrl.additionalCostPriceUomEnabled(additionalCost)"
+                                                    ng-disabled="true" 
                                                     style="min-width:60px"></select>
+                                                    <!-- $ctrl.tenantQuoteDisabled || !$ctrl.additionalCostPriceUomEnabled(additionalCost) -->
                                                 </div>
                                             </div>
                                         </td>
@@ -432,7 +434,7 @@
 
 											<!-- | filterNoQuoteProducts -->
                                             <select ng-if="!($ctrl.additionalCostApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id) && !$ctrl.supplierPortalFlag"
-                                            ng-options="product as (product.product.name | decodeReadOnly) for product in location.products | filter: {productStatus:{name: '!Stemmed'}}"
+                                            ng-options="product as (product.product.name | decodeReadOnly) for product in location.products | filter: {productStatus:{name: '!Stemmed'}, isRfqskipped: false}"
                                             ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]"
                                             ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId], location); $ctrl.additionalCostNameChanged(additionalCost, location, true);"
                                             class="form-control"
@@ -443,7 +445,7 @@
                                                 </option>
                                             </select>
                                              <select ng-if="!($ctrl.additionalCostApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id) && $ctrl.supplierPortalFlag"
-                                                ng-options="product as (product.product.name | decodeReadOnly) for product in location.products"
+                                                ng-options="product as (product.product.name | decodeReadOnly) for product in location.products | filter: {isRfqskipped: false}"
                                                 ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]"
                                                 ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId]); $ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId], location); $ctrl.additionalCostNameChanged(additionalCost, location, true);"
                                                 class="form-control"
@@ -509,8 +511,175 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td style="min-width: 150px" class="restrict-width-20">
-                                            <input decode-input-format class="form-control" ng-model="additionalCost.comment"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+                <div class="portlet light stretch-vertical ">
+                    <div class="portlet-title">
+                        <div class="tools">
+                            <a data-toggle="collapse" href="#addCost{{ $index }}" class="collapse" aria-expanded="true"></a>
+                        </div>
+                        <div class="caption">
+                            <span class="caption-subject">
+                                LOCATION BASED ADDITIONAL COST
+                            </span>
+                        </div>
+                    </div>
+                    <div class="portlet-body overflowAuto" aria-expanded="true"  id="addCost{{ $index }}">
+                        <form id="additionalCostsLocationBased" name="forms[{{$index}}].additionalCostsLocationBased">
+
+							<span ng-init="$ctrl.getAdditionalCostsLocationBased(location)"></span>
+                            <table class="table table-striped table-hover table-bordered table-condensed st-product-info-table extraSpacedTable" id="product_add_cost_table_{{ $index + 1 }}">
+
+                                <thead>
+                                    <tr>
+                                        <th id="generatedThId261" ng-repeat="column in $ctrl.additionalCostColumns">
+                                            {{ column.caption | translate }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr ng-repeat="additionalCost in $ctrl.getAdditionalCostsLocationBased(location)  track by $index" ng-if="!additionalCost.isDeleted">
+
+                                        <td style="min-width: 150px">
+                                            <input decode-input-format class="form-control" ng-model="additionalCost.additionalCost.name" disabled readonly/>
+                                        </td>
+                                        <td style="min-width: 150px" >
+                                            <input decode-input-format class="form-control" ng-model="additionalCost.costType.name" disabled readonly/>
+                                        </td>
+                                        <td style="min-width: 150px">
+
+                                            <div class="input-group">
+                                                <input class="form-control" value="{{ additionalCost.maxQuantity | number: $ctrl.numberPrecision.quantityPrecision }}" readonly disabled/>
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                                                        {{ $ctrl.getAdditionalCostParentProductUom(additionalCost).name  | decodeReadOnly }}
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li ng-repeat="uom in $ctrl.lists.Uom | decodeReadOnly"  ng-click="$ctrl.updateModel(additionalCost.uom, uom); $ctrl.additionalCostNameChanged(additionalCost, location, true)">
+                                                            <a>
+                                                                {{ uom.name }}
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="min-width: 150px">
+                                        	<span ng-if="!($ctrl.tenantQuoteDisabled || !$ctrl.additionalCostPriceUomEnabled(additionalCost)) && additionalCost.costType && additionalCost.costType.name != 'Unit'" ng-init="!additionalCost.priceUom.id ? additionalCost.priceUom = $ctrl.tenantDefaultUom : '' "></span>
+                                        	<span ng-if="$ctrl.tenantQuoteDisabled || !$ctrl.additionalCostPriceUomEnabled(additionalCost)" ng-init="additionalCost.priceUom = null"></span>
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                    <span ng-if="!$ctrl.token" ng-init="additionalCost.currency = request.currency"></span>
+                                                    <select name="" id="" class="form-control no-padding"
+                                                    ng-model="additionalCost.currency"
+                                                    ng-options="currency as currency.code for currency in $ctrl.lists.Currency | decodeReadOnly track by currency.id"
+                                                    ng-class="{'ng-invalid' : additionalCost.additionalCost && !additionalCost.currency.id}"
+                                                    ng-disabled="true"
+                                                    style="min-width:60px"></select>
+                                                </div>
+                                                <input type="text" class="form-control" ng-focus="oldVal = additionalCost.price" ng-change="$ctrl.checkisNaN(oldVal, additionalCost.price) ? additionalCost.price = $ctrl.checkisNaN(oldVal, additionalCost.price) : return ; $ctrl.additionalCostNameChanged(additionalCost, location, true)" ng-model="additionalCost.price" format="number:{{ $ctrl.numberPrecision.pricePrecision }}" name="{{ $ctrl.additionalCostColumns.Price.name }}" ng-required="additionalCost.additionalCost" style="min-width:80px"  readonly disabled/>
+                                                <div class="input-group-btn">
+                                                    <select name="" id="" class="form-control no-padding"
+                                                    ng-model="additionalCost.priceUom"
+                                                    ng-options="uom as uom.name for uom in $ctrl.lists.Uom | decodeReadOnly track by uom.id"
+                                                    ng-change="$ctrl.addPriceUomChanged(additionalCost,location)"
+                                                    ng-class="{'ng-invalid' : additionalCost.additionalCost && $ctrl.additionalCostPriceUomEnabled(additionalCost) && !additionalCost.priceUom.id}"
+                                                    ng-disabled="true"
+                                                    style="min-width:60px"></select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="min-width: 150px">
+
+											<span ng-if="$ctrl.additionalCostLocationBasedApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id">
+												<input class="form-control" disabled ng-model="$ctrl.additionalCostLocationBasedApplicableFor[additionalCost.fakeId].product.name"/>
+											</span>
+
+											<!-- | filterNoQuoteProducts -->
+                                            <select ng-if="!($ctrl.additionalCostLocationBasedApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id) && !$ctrl.supplierPortalFlag"
+                                            ng-options="product as (product.product.name | decodeReadOnly) for product in location.products | filter: {productStatus:{name: '!Stemmed'}}"
+                                            ng-model="$ctrl.additionalCostLocationBasedApplicableFor[additionalCost.fakeId]"
+                                            ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostLocationBasedApplicableFor[additionalCost.fakeId]); $ctrl.applicableForChange(additionalCost, $ctrl.additionalCostLocationBasedApplicableFor[additionalCost.fakeId], location); $ctrl.additionalCostNameChanged(additionalCost, location, true);"
+                                            class="form-control"
+                                            ng-disabled="true">
+                                                <option value="" >
+                                                    All
+
+                                                </option>
+                                            </select>
+                                             <select ng-if="!($ctrl.additionalCostLocationBasedApplicableFor[additionalCost.fakeId].productStatus.name == 'Stemmed' && additionalCost.id) && $ctrl.supplierPortalFlag"
+                                                ng-options="product as (product.product.name | decodeReadOnly) for product in location.products"
+                                                ng-model="$ctrl.additionalCostLocationBasedApplicableFor[additionalCost.fakeId]"
+                                                ng-change="$ctrl.getDefaultUomForAdditionalCost(additionalCost, $ctrl.additionalCostLocationBasedApplicableFor[additionalCost.fakeId]); $ctrl.applicableForChange(additionalCost, $ctrl.additionalCostLocationBasedApplicableFor[additionalCost.fakeId], location); $ctrl.additionalCostNameChanged(additionalCost, location, true);"
+                                                class="form-control"
+                                                ng-disabled="true">
+                                                <option value="" >
+                                                    All
+
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td style="min-width: 150px">
+                                            <div class="input-group">
+                                                <input class="form-control" ng-model="additionalCost.amount" format="number:{{ $ctrl.numberPrecision.amountPrecision }}" readonly disabled/>
+                                                <div class="input-group-btn">
+                                                        <select name="" id="" class="form-control no-padding"
+                                                        ng-model="additionalCost.currency"
+                                                        ng-options="currency as currency.code for currency in $ctrl.lists.Currency | decodeReadOnly track by currency.id"
+                                                        ng-class="{'ng-invalid' : additionalCost.additionalCost && !additionalCost.currency.id}"
+                                                        ng-disabled="true"
+                                                        style="min-width:60px"></select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="min-width: 150px">
+                                            <input class="form-control" ng-focus="oldVal = additionalCost.extras" ng-change="$ctrl.checkisNaN(oldVal, additionalCost.extras) ? additionalCost.extras = $ctrl.checkisNaN(oldVal, additionalCost.extras) : '' ; $ctrl.additionalCostNameChanged(additionalCost, location, true)" type="text" max="100" ng-model="additionalCost.extras" format="number:{{ $ctrl.numberPrecision.pricePrecision }}"  readonly disabled/>
+                                        </td>
+                                        <td style="min-width: 150px">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" ng-model="additionalCost.extrasAmount" format="number:{{ $ctrl.numberPrecision.amountPrecision }}" readonly disabled/>
+                                                <div class="input-group-btn">
+                                                        <select name="" id="" class="form-control no-padding"
+                                                        ng-model="additionalCost.currency"
+                                                        ng-options="currency as currency.code for currency in $ctrl.lists.Currency  | decodeReadOnly track by currency.id"
+                                                        ng-class="{'ng-invalid' : additionalCost.additionalCost && !additionalCost.currency.id}"
+                                                        ng-disabled="true"
+                                                        style="min-width:60px"></select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="min-width: 150px">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" ng-model="additionalCost.totalAmount" format="number:{{ $ctrl.numberPrecision.amountPrecision }}" readonly disabled/>
+                                                <div class="input-group-btn">
+                                                        <select name="" id="" class="form-control no-padding"
+                                                        ng-model="additionalCost.currency"
+                                                        ng-options="currency as currency.code for currency in $ctrl.lists.Currency | decodeReadOnly track by currency.id"
+                                                        ng-class="{'ng-invalid' : additionalCost.additionalCost && !additionalCost.currency.id}"
+                                                        ng-disabled="true"
+                                                        style="min-width:60px"></select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="min-width: 150px">
+                                            <div class="input-group">
+                                                <input class="form-control" ng-model="additionalCost.rate" format="number:{{ $ctrl.numberPrecision.pricePrecision }}" readonly disabled/>
+                                                <div class="input-group-btn">
+                                                        <select name="" id="" class="form-control no-padding"
+                                                        ng-model="additionalCost.currency"
+                                                        ng-options="currency as currency.code for currency in $ctrl.lists.Currency | decodeReadOnly track by currency.id"
+                                                        ng-class="{'ng-invalid' : additionalCost.additionalCost && !additionalCost.currency.id}"
+                                                        ng-disabled="true"
+                                                        style="min-width:60px"></select>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -600,7 +769,7 @@
                         </div>
                     </div>
                     <div class="portlet-body collapse " aria-expanded="false"  id="comments{{ $index }}">
-                        <textarea decode-input-format class="form-control " rows="3" ng-model="location.offer.sellerComments"></textarea>
+                        <textarea decode-input-format class="form-control " rows="3" ng-model="location.offer.requestLocationSeller.sellerComments"></textarea>
                     </div>
                 </div>
             </div>

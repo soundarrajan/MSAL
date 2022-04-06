@@ -341,7 +341,7 @@
                                         id="vesselDetails" name="forms.vesselDetailsForm">
 
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <div>
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.sellerDetails.Trader.name }}_label"
@@ -577,7 +577,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <div ng-if="$ctrl.vesselDetailsFields.ServiceCode.visible">
                                                     <div class="form-group row">
                                                         <label class="{{ $ctrl.sellerDetails.ServiceCode.name }}_label"
@@ -847,7 +847,7 @@
 
                                             </div>
 
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <div>
                                                     <div class="form-group  row">
                                                         <label class="{{ $ctrl.sellerDetails.Seller.name }}_label"
@@ -1094,90 +1094,6 @@
                                                 </div>
                                             </div>
 
-
-                                            <div class="col-md-3">
-
-                                                <div ng-if="$ctrl.portFields.comments.visible">
-                                                    <div class="form-group row">
-                                                        <label class="{{ $ctrl.portFields.comments.name }}_label"
-                                                            for="{{ $ctrl.portFields.comments.name }}">
-                                                            <!-- Comment -->
-                                                            {{'PAGES.NEW_ORDER.COMMENTS' | translate}}
-
-                                                        </label>
-                                                        <div
-                                                            class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
-                                                            <textarea class="col-md-12 form-control" maxlength="500"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
-                                                                ng-model="$ctrl.data.comments"
-                                                                decode-input-format></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div ng-if="$ctrl.portFields.comments.visible">
-                                                    <div class="form-group row">
-                                                        <label class="{{ $ctrl.portFields.comments.name }}_label"
-                                                            for="{{ $ctrl.portFields.comments.name }}">
-                                                            <!-- Comment -->
-                                                            {{'PAGES.NEW_ORDER.COMMENTS_STRATEGY' | translate}}
-
-                                                        </label>
-                                                        <div
-                                                            class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
-                                                            <textarea class="col-md-12 form-control" maxlength="500"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
-                                                                ng-model="$ctrl.data.customNonMandatoryAttribute10"
-                                                                decode-input-format></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div ng-if="$ctrl.portFields.comments.visible">
-                                                    <div class="form-group row">
-                                                        <label class="{{ $ctrl.portFields.comments.name }}_label"
-                                                            for="{{ $ctrl.portFields.comments.name }}">
-                                                            <!-- Comment -->
-                                                            {{'PAGES.NEW_ORDER.COMMENTS_OFTHEPRICE' | translate}}
-
-                                                        </label>
-                                                        <div
-                                                            class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
-                                                            <textarea class="col-md-12 form-control" maxlength="500"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
-                                                                ng-model="$ctrl.data.customNonMandatoryAttribute11"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div ng-if="$ctrl.portFields.emailComments.visible">
-                                                    <div class="form-group row">
-                                                        <label class="{{ $ctrl.portFields.comments.name }}_label">
-                                                            {{ 'PAGES.NEW_ORDER.EMAIL_COMMENTS' | translate }}
-                                                        </label>
-                                                        <div class="input-group form_input">
-
-                                                            <textarea class="col-md-12 form-control" maxlength="500"
-                                                                ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
-                                                                ng-model="$ctrl.data.customNonMandatoryAttribute1"
-                                                                decode-input-format></textarea>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row"
-                                                    ng-if="$ctrl.portFields.comments.visible && $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id && $ctrl.procurementSettings.order.captureReasonToCancelTheOrder.name == 'Yes'">
-                                                    <label class="{{ $ctrl.portFields.comments.name }}_label"
-                                                        for="{{ $ctrl.portFields.comments.name }}">
-                                                        Cancellation Comments
-                                                    </label>
-                                                    <div
-                                                        class="input-group form_input form_input_{{ $ctrl.portFields.deliveryDate.name }}">
-                                                        <textarea class="col-md-12 form-control" maxlength="1000"
-                                                            ng-model="$ctrl.data.cancelOrderComments"
-                                                            decode-input-format
-                                                            ng-disabled="$ctrl.data.status != null && $ctrl.data.status.id === $ctrl.STATUS['Closed'].id"
-                                                            readonly></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
 
                                 </div>
@@ -1912,7 +1828,7 @@
                                             ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]"
                                             ng-options="product as ($ctrl.sumThose(idx,1) +' - '+ product.product.name) | decodeReadOnly for (idx, product) in $ctrl.data.products | aplicableCostForProduct | orderBy : 'productType.id' ">
 
-                                            <option ng-if="!(additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total')" selected value="">
+                                            <option ng-if="(!(additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total') || additionalCost.id)" selected value="">
                                                 All
                                             </option>
                                         </select>
@@ -2081,6 +1997,284 @@
                                     {{ $ctrl.grandTotal | number: $ctrl.numberPrecision.amountPrecision }}
                                 </span>
                                 <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="background-color: white; padding: 15px 15px 10px 7px;margin-bottom:5px;">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="tools">
+                    <a class="{{$ctrl.commentsExpanded ? 'collapse' : 'expand' }}" ng-click="$ctrl.commentsExpanded  = !$ctrl.commentsExpanded" data-original-title="" title=""></a>
+                </div>
+                <div class="caption">
+                    <span class="caption-subject">
+                        COMMENTS
+                    </span>
+                </div>
+            </div>
+            <div class="notes-portlet-body" ng-if="$ctrl.commentsExpanded">
+                <div class="row">
+                    <div class="portlet light">
+                        <div class="portlet-title">
+                            <div class="tools">
+                                <a class="collapse" data-original-title="" title=""></a>
+                            </div>
+                            <div class="caption">
+                                <span class="caption-subject">
+                                    ORDER COMMENTS
+                                </span>
+                            </div>
+                        </div>
+                        <div class="portlet-body row order-comments-row">
+                            <div class="col-sm-20" >
+                                <label class="control-label1">
+                                    <span class="circle internal"></span> General
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="order_general_comments_name" 
+                                    id="order_general_comments" 
+                                    ng-model="$ctrl.data.generalComments" 
+                                    ng-change="$ctrl.checkCommentsLimit($ctrl.data.generalComments, 'general')"
+                                    style="resize: none;">
+                                </textarea>
+                                <label style="float: right;">{{1000 - (!$ctrl.data.generalComments.length ? 0 : ($ctrl.data.generalComments | decodeReadOnly).length)}} character left.</label>    
+                            </div>
+                            <div class="col-sm-20" >
+                                <label class="control-label1">
+                                    <span class="circle internal"></span> Performance
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="order_performance_comments_name" 
+                                    id="order_performance_comments" 
+                                    ng-model="$ctrl.data.performanceComments" 
+                                    ng-change="$ctrl.checkCommentsLimit($ctrl.data.performanceComments, 'performance')"
+                                    style="resize: none;">
+                                </textarea>
+                                <label style="float: right;">{{1000 - (!$ctrl.data.performanceComments.length ? 0 : ($ctrl.data.performanceComments | decodeReadOnly).length)}} character left.</label>      
+                            </div>
+                            <div class="col-sm-20" >
+                                <label class="control-label1">
+                                    <span class="circle internal"></span> Strategy
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="order_strategy_comments_name" 
+                                    id="order_strategy_comments" 
+                                    ng-model="$ctrl.data.strategyComments" 
+                                    ng-change="$ctrl.checkCommentsLimit($ctrl.data.strategyComments, 'strategy')"
+                                    style="resize: none;">
+                                </textarea>
+                                <label style="float: right;">{{1000 - (!$ctrl.data.strategyComments.length ? 0 : ($ctrl.data.strategyComments | decodeReadOnly).length)}} character left.</label>      
+                            </div>
+                            <div class="col-sm-20" >
+                                <label class="control-label1 ">
+                                    <span class="circle external"></span>Supplier
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="order_supplier_comments_name" 
+                                    id="order_supplier_comments" 
+                                    ng-model="$ctrl.data.supplierComments"
+                                    ng-change="$ctrl.checkCommentsLimit($ctrl.data.supplierComments,'supplier')" 
+                                    style="resize: none;">
+                                </textarea>
+                                <label style="float: right;">{{1000 - (!$ctrl.data.supplierComments.length ? 0 : ($ctrl.data.supplierComments | decodeReadOnly).length)}} character left.</label>        
+                            </div>
+                            <div class="col-sm-20" >
+                                <label class="control-label1 ">
+                                    <span class="circle external"></span>Vessel & Agent
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="order_vessel_comments_name" 
+                                    id="order_vessel_comments" 
+                                    ng-model="$ctrl.data.vesselAgentComments" 
+                                    ng-change="$ctrl.checkCommentsLimit($ctrl.data.vesselAgentComments,'vesselAndAgent')" 
+                                    style="resize: none;">
+                                </textarea>
+                                <label style="float: right;">{{1000 - (!$ctrl.data.vesselAgentComments.length ? 0 : ($ctrl.data.vesselAgentComments | decodeReadOnly).length)}} character left.</label>             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="portlet light">
+                        <div class="portlet-title">
+                            <div class="tools">
+                                <a class="collapse" data-original-title="" title=""></a>
+                            </div>
+                            <div class="caption">
+                                <span class="caption-subject">
+                                    NEGOTIATION COMMENTS
+                                </span>
+                            </div>
+                        </div>
+                        <div class="portlet-body row order-comments-row">
+                            <div class="col-sm-20" >
+                                <label class="control-label1">
+                                    <span class="circle internal"></span> General
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    disabled="true" 
+                                    maxlength="1000"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="negotiation_general_comments_name" 
+                                    id="negotiation_general_comments" 
+                                    ng-model="$ctrl.data.negoGeneralComments" 
+                                    style="resize: none;">
+                                </textarea>
+                            </div>
+                            <div class="col-sm-20" >
+                                <label class="control-label1">
+                                    <span class="circle internal"></span> Performance
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    disabled="true" 
+                                    maxlength="1000"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="negotiation_performance_comments_name" 
+                                    id="negotiation_performance_comments" 
+                                    ng-model="$ctrl.data.negoPerformanceComments" 
+                                    style="resize: none;">
+                                </textarea>    
+                            </div>
+                            <div class="col-sm-20 empty-container">   
+                                <div>Strategy</div>
+                            </div>
+                            <div class="col-sm-20" >
+                                <label class="control-label1 ">
+                                    <span class="circle external"></span>Supplier
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    disabled="true"
+                                    maxlength="1000"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="negotiation_supplier_comments_name" 
+                                    id="negotiation_supplier_comments" 
+                                    ng-model="$ctrl.data.negoSupplierComments" 
+                                    style="resize: none;">
+                                </textarea>      
+                            </div>
+                            <div class="col-sm-20" >
+                                <label class="control-label1 ">
+                                    <span class="circle external"></span>Vessel & Agent
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    disabled="true"
+                                    maxlength="1000"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="negotiation_vessel_comments_name" 
+                                    id="negotiation_vessel_comments" 
+                                    ng-model="$ctrl.data.negoVesselAgentComments" 
+                                    style="resize: none;">
+                                </textarea>       
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="portlet light">
+                        <div class="portlet-title">
+                            <div class="tools">
+                                <a class="collapse" data-original-title="" title=""></a>
+                            </div>
+                            <div class="caption">
+                                <span class="caption-subject">
+                                    REQUEST COMMENTS
+                                </span>
+                            </div>
+                        </div>
+                        <div class="portlet-body row order-comments-row">
+                            <div class="col-sm-20" >
+                                <label class="control-label1">
+                                    <span class="circle internal"></span> General
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    disabled="true" 
+                                    maxlength="1000"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="request_general_comments_name" 
+                                    id="request_general_comments" 
+                                    ng-model="$ctrl.data.requestInternalComments" 
+                                    style="resize: none;">
+                                </textarea>
+                            </div>
+                            <div class="col-sm-20 empty-container">   
+                                <div>Performance</div>
+                            </div>
+                            <div class="col-sm-20" >
+                                <label class="control-label1">
+                                    <span class="circle internal"></span> Strategy
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    disabled="true" 
+                                    maxlength="1000"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="request_strategy_comments_name" 
+                                    id="request_strategy_comments" 
+                                    ng-model="$ctrl.data.requestStrategyComments" 
+                                    style="resize: none;">
+                                </textarea>
+                            </div>
+                            <div class="col-sm-20" >
+                                <label class="control-label1 ">
+                                    <span class="circle external"></span>Supplier
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    disabled="true"
+                                    maxlength="1000"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="request_supplier_comments_name" 
+                                    id="request_supplier_comments" 
+                                    ng-model="$ctrl.data.requestSupplierComments" 
+                                    style="resize: none;">
+                                </textarea>    
+                            </div>
+                            <div class="col-sm-20" >
+                                <label class="control-label1 ">
+                                    <span class="circle external"></span>Vessel & Agent
+                                </label>
+                                <textarea decode-input-format 
+                                    rows="6"
+                                    disabled="true"
+                                    maxlength="1000"
+                                    placeholder="Type your comments here..."  
+                                    class="form-control"
+                                    name="request_vessel_comments_name" 
+                                    id="request_vessel_comments" 
+                                    ng-model="$ctrl.data.requestVesselComments" 
+                                    style="resize: none;">
+                                </textarea>        
                             </div>
                         </div>
                     </div>

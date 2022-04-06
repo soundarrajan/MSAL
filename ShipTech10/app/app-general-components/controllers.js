@@ -1719,7 +1719,7 @@
                 var edit_request_link = function(cellValue, options, rowObject) {
                     var tpl = null;
                     if (rowObject.requestGroupId) {
-                        var tpl = ' <a href="#/group-of-requests/' + rowObject.requestGroupId + '" target="_blank" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + rowObject.request.id + "</span></a>";
+                        var tpl = ' <a href="v2/group-of-requests/' + rowObject.requestGroupId + '/'+ rowObject.requestId +'" target="_blank" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + rowObject.request.id + "</span></a>";
                     } else if (rowObject.request) {
                         var tpl = ' <a href="#/edit-request/' + rowObject.request.id + '" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + rowObject.request.id + "</span></a>";
                     } else {
@@ -1806,7 +1806,7 @@
                 var groupOfRequests = function(cellValue, options, rowObject) {
                     var tpl = "";
                     if (cellValue) {
-                        var tpl = ' <a href="#/group-of-requests/' + cellValue + '" target="_blank" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
+                        var tpl = ' <a href="v2/group-of-requests/' + cellValue + '/'+ rowObject.requestId +'" target="_blank" style="width: calc(100% + 30px);"> <span class="formatter edit_link" data-formatter-type="link" style="white-space:none">' + cellValue + "</span></a>";
                     }
                     var element = tpl;
                     return element;

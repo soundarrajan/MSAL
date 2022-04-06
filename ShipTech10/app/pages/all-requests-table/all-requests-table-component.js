@@ -1,5 +1,5 @@
-angular.module('shiptech.pages').controller('AllRequestsTableController', [ '$scope', '$element', '$attrs', '$timeout', '$filter', '$state', '$window', 'STATE', 'uiApiModel', 'groupOfRequestsModel', 'requestListTableModel', 'tenantService', 'scheduleDashboardStatusResource', 'tenantScheduleDashboardConfiguration', 'SCREEN_LAYOUTS', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'CUSTOM_EVENTS',
-    function($scope, $element, $attrs, $timeout, $filter, $state, $window, STATE, uiApiModel, groupOfRequestsModel, requestListTableModel, tenantService, scheduleDashboardStatusResource, tenantScheduleDashboardConfiguration, SCREEN_LAYOUTS, EXPORT_FILETYPE, EXPORT_FILETYPE_EXTENSION, CUSTOM_EVENTS) {
+angular.module('shiptech.pages').controller('AllRequestsTableController', [ '$scope', '$element', '$attrs', '$timeout', '$filter', '$state', '$window', '$location', 'STATE', 'uiApiModel', 'groupOfRequestsModel', 'requestListTableModel', 'tenantService', 'scheduleDashboardStatusResource', 'tenantScheduleDashboardConfiguration', 'SCREEN_LAYOUTS', 'EXPORT_FILETYPE', 'EXPORT_FILETYPE_EXTENSION', 'CUSTOM_EVENTS',
+    function($scope, $element, $attrs, $timeout, $filter, $state, $window, $location, STATE, uiApiModel, groupOfRequestsModel, requestListTableModel, tenantService, scheduleDashboardStatusResource, tenantScheduleDashboardConfiguration, SCREEN_LAYOUTS, EXPORT_FILETYPE, EXPORT_FILETYPE_EXTENSION, CUSTOM_EVENTS) {
         //      var tableSelector = '#all_requests_table';
         // $scope.Math = window.Math;
         $scope.STATE = STATE;
@@ -351,10 +351,12 @@ angular.module('shiptech.pages').controller('AllRequestsTableController', [ '$sc
             groupOfRequestsModel.groupRequests(selectedRequestIds).then((data) => {
                 ctrl.buttonsDisabled = false;
                 // TODO: change way we get groupID
-                var requestGroupId = data.payload[0].requestGroup.id;
-                $state.go(STATE.GROUP_OF_REQUESTS, {
-                    groupId: requestGroupId
-                });
+                // var requestGroupId = data.payload[0].requestGroup.id;
+                // $state.go(STATE.GROUP_OF_REQUESTS, {
+                //     groupId: requestGroupId
+                // });
+                window.open($location.$$absUrl.replace('#'+$location.$$path,
+                        'v2/group-of-requests/'+ data.groupId +'/'+ selectedRequestIds[0]), '_self');
             }, () => {
                 ctrl.buttonsDisabled = false;
             });

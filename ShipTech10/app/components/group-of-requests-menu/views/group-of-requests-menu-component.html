@@ -97,11 +97,11 @@
         <div class="st-main-content-menu st-displaceable-menu tabbable-line tabs_bar"  ng-show="moreInformations" ng-init="getData()">
         	<ul class="nav nav-tabs pull-left">
         		<li ng-class="{open: state.is(STATE.GROUP_OF_REQUESTS)}">
-        			<a href="/#/group-of-requests/{{ entity_id }}" ng-if="!$ctrl.groupId"  ng-init="$ctrl.groupId = entity_id">
+        			<a href="/v2/group-of-requests/{{ entity_id }}" ng-if="!$ctrl.groupId"  ng-init="$ctrl.groupId = entity_id">
         				Negotiation
 
         			</a>
-        			<a href="/#/group-of-requests/{{ $ctrl.groupId }}" ng-if="entity_id || $ctrl.groupId">
+        			<a href="/v2/group-of-requests/{{ $ctrl.groupId }}" ng-if="entity_id || $ctrl.groupId">
         				Negotiation
         			</a>
         		</li>

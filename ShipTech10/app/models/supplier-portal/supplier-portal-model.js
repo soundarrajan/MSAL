@@ -1,5 +1,5 @@
-angular.module('shiptech.models').factory('supplierPortalModel', [ 'supplierPortalResource', 'payloadDataModel',
-    function(supplierPortalResource, payloadDataModel) {
+angular.module('shiptech.models').factory('supplierPortalModel', [ 'supplierPortalResource', 'payloadDataModel', 'spotNegotiationResource', 'supplierPortalResourceForV2Nego',
+    function(supplierPortalResource, payloadDataModel, spotNegotiationResource, supplierPortalResourceForV2Nego) {
         this.saved = false;
 
         function newRequestModel(data) {
@@ -52,6 +52,7 @@ angular.module('shiptech.models').factory('supplierPortalModel', [ 'supplierPort
             });
         }
 
+
         function copyPackageOffer(token, package) {
             let request_data = {
                 Token: token,
@@ -69,6 +70,43 @@ angular.module('shiptech.models').factory('supplierPortalModel', [ 'supplierPort
                 RequestOfferIds: offerIds
             };
             return supplierPortalResource.changeOfferSupplier(request_data).$promise.then((data) => {
+                return data;
+            });
+        }
+
+        function getExchangeRateForSellerPortal(token, from, to) {
+            let payload = {
+                Order: null,
+                Filters: [ {
+                    ColumnName: 'FromCurrencyId',
+                    Value: from.id
+                }, {
+                    ColumnName: 'ToCurrencyId',
+                    Value: to.id
+                } ],
+                Pagination: {
+                    Skip: 0,
+                    Take: 25
+                }
+            };
+            let request_data = {
+                Token: token,
+                Payload: payload
+            };
+
+            return supplierPortalResourceForV2Nego.getExchangeRate(request_data)
+                .$promise
+                .then((data) => {
+                    return data;
+                });
+        }
+
+        function addSeller(token, payload) {
+            let request_data = {
+                Token: token,
+                Payload: payload
+            };
+            return supplierPortalResource.addSeller(request_data).$promise.then((data) => {
                 return data;
             });
         }
@@ -109,7 +147,9 @@ angular.module('shiptech.models').factory('supplierPortalModel', [ 'supplierPort
             getPriceHistory: getPriceHistory,
             addPhysicalSupplier: addPhysicalSupplier,
             changeOfferSupplier: changeOfferSupplier,
-            copyPackageOffer: copyPackageOffer
+            addSeller: addSeller,
+            copyPackageOffer: copyPackageOffer,
+            getExchangeRateForSellerPortal: getExchangeRateForSellerPortal
         };
     }
 ]);

@@ -10,6 +10,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
     '$filter',
     '$state',
     '$window',
+    '$location',
     'scheduleDashboardCalendarModel',
     'uiApiModel',
     'newRequestModel',
@@ -18,7 +19,7 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
     'STATE',
     'CUSTOM_EVENTS',
     'screenLoader',
-    function($rootScope, $scope, $listsCache, $tenantSettings, tenantService, $element, $attrs, $timeout, $filter, $state, $window, scheduleDashboardCalendarModel, uiApiModel, newRequestModel, SCREEN_LAYOUTS, groupOfRequestsModel, STATE, CUSTOM_EVENTS, screenLoader) {
+    function($rootScope, $scope, $listsCache, $tenantSettings, tenantService, $element, $attrs, $timeout, $filter, $state, $window, $location, scheduleDashboardCalendarModel, uiApiModel, newRequestModel, SCREEN_LAYOUTS, groupOfRequestsModel, STATE, CUSTOM_EVENTS, screenLoader) {
         let ctrl = this;
         let settings, statusList;
         ctrl.selectedRequests = {};
@@ -201,8 +202,12 @@ angular.module('shiptech.pages').controller('ScheduleTableController', [
                 (data) => {
                     ctrl.buttonsDisabled = false;
                     // TODO: change way we get groupID
-                    var requestGroupId = data.payload[0].requestGroup.id;
-                    $window.open(`/#/group-of-requests/${requestGroupId}`, '_blank');
+                    // var requestGroupId = data.payload[0].requestGroup.id;
+                    // $state.go(STATE.GROUP_OF_REQUESTS, {
+                    //     groupId: requestGroupId
+                    // });
+                    window.open($location.$$absUrl.replace('#'+$location.$$path, 
+                        'v2/group-of-requests/' + data.groupId + '/'+ selectedRequestIds[0]), '_blank');
                 },
                 () => {
                     ctrl.buttonsDisabled = false;

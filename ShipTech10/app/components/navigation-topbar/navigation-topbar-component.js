@@ -94,7 +94,7 @@ angular.module('shiptech').controller('NavigationTopBarController', [ '$rootScop
 	    		{
 	    			id: 'rfq',
 	    			displayName : typeof payload != 'undefined' && payload.hasQuote ? 'Offer' : 'RFQ',
-	    			url : typeof payload != 'undefined' && payload.requestGroupId ? `#/group-of-requests/${ payload.requestGroupId}` : '',
+	    			url : typeof payload != 'undefined' && payload.requestGroupId ? `v2/group-of-requests/${ payload.requestGroupId}/${payload.requestId}` : '',
 	    			entityId : typeof payload != 'undefined' && payload.requestGroupId ? payload.requestGroupId : '',
 	    			indexStatus : null,
 	    			hidden : false

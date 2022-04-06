@@ -203,11 +203,6 @@
         "name": "Rate",
         "caption": "PAGES.SELLER_CARD.RATE",
         "visible": true
-      },
-      {
-        "name": "Comments",
-        "caption": "PAGES.SELLER_CARD.COMMENTS",
-        "visible": true
       }
     ]
   }
