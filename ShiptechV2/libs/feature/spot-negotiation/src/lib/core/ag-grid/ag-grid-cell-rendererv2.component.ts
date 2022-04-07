@@ -1781,7 +1781,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       params.api.hideOverlay();
       if (res.status) {
         exchangeRateValue = res.exchangeRateValue;
-        this.store.dispatch(new EditLocationRow(newData));
+        //this.store.dispatch(new EditLocationRow(newData));
         this.params.node.setData(newData);
         let requestOffers = this.params.data.requestOffers.map(e => {
           return {
@@ -1805,15 +1805,15 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         const applyExchangeRate = this._spotNegotiationService.applyExchangeRate(
           payload
         );
-        let futureRowData = this.setNewRowData(
-          _.cloneDeep(newData),
-          res.exchangeRateValue
-        );
-        applyExchangeRate.subscribe((res: any) => {
-          params.api?.hideOverlay();
+        // let futureRowData = this.setNewRowData(
+        //   _.cloneDeep(newData),
+        //   res.exchangeRateValue
+        // );
+        applyExchangeRate.subscribe((res: any) => {          
+        params.api?.hideOverlay();
           if (res.status) {
             this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
-            this.store.dispatch(new EditLocationRow(futureRowData));
+            //this.store.dispatch(new EditLocationRow(futureRowData));
             this.changeCurrencyForAdditionalCost(
               this.paramsDataClone.currency,
               exchangeRateValue
@@ -1860,38 +1860,38 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         requestLocationId: sellerOffers.requestLocationId,
         isLocationBased: false
       };
-
+      this.getSellerLine(sellerOffers);
       //this.spinner.show();
-      let response = await this._spotNegotiationService
-        .getAdditionalCosts(payload)
-        //.subscribe((response: any) => {
-          if(response != null){
-          if (typeof response === 'string') {
-            //this.spinner.hide();
-            return;
-          } else {
-            let offerAdditionalCostList = _.cloneDeep(
-              response.offerAdditionalCosts
-            ) as AdditionalCostViewModel[];
-            for (let i = 0; i < offerAdditionalCostList.length; i++) {
-              if (offerAdditionalCostList[i].currencyId != currencyId) {
-                offerAdditionalCostList[i].currencyId = currencyId;
-                offerAdditionalCostList[i].extraAmount =
-                  offerAdditionalCostList[i].extraAmount; // / exchangeRateValue;
-                offerAdditionalCostList[i].amount =
-                  offerAdditionalCostList[i].amount; // / exchangeRateValue;
-                offerAdditionalCostList[i].ratePerUom =
-                  offerAdditionalCostList[i].ratePerUom; // / exchangeRateValue;
-              }
-            }
-            this.saveAdditionalCosts(
-              offerAdditionalCostList,
-              response.locationAdditionalCosts,
-              sellerOffers
-            );
-          }
-        //});
-      } 
+      // let response = await this._spotNegotiationService
+      //   .getAdditionalCosts(payload)
+      //   //.subscribe((response: any) => {
+      //     if(response != null){
+      //     if (typeof response === 'string') {
+      //       //this.spinner.hide();
+      //       return;
+      //     } else {
+      //       let offerAdditionalCostList = _.cloneDeep(
+      //         response.offerAdditionalCosts
+      //       ) as AdditionalCostViewModel[];
+      //       for (let i = 0; i < offerAdditionalCostList.length; i++) {
+      //         if (offerAdditionalCostList[i].currencyId != currencyId) {
+      //           offerAdditionalCostList[i].currencyId = currencyId;
+      //           offerAdditionalCostList[i].extraAmount =
+      //             offerAdditionalCostList[i].extraAmount; // / exchangeRateValue;
+      //           offerAdditionalCostList[i].amount =
+      //             offerAdditionalCostList[i].amount; // / exchangeRateValue;
+      //           offerAdditionalCostList[i].ratePerUom =
+      //             offerAdditionalCostList[i].ratePerUom; // / exchangeRateValue;
+      //         }
+      //       }
+      //       this.saveAdditionalCosts(
+      //         offerAdditionalCostList,
+      //         response.locationAdditionalCosts,
+      //         sellerOffers
+      //       );
+      //     }
+      //   //});
+      // } 
     }
   }
 
@@ -1900,21 +1900,22 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     locationAdditionalCostsList,
     sellerOffers
   ) {
-    let payload = {
-      additionalCosts: offerAdditionalCostList.concat(
-        locationAdditionalCostsList
-      )
-    };
-    this._spotNegotiationService
-      .saveOfferAdditionalCosts(payload)
-      .subscribe((res: any) => {
-        if (res.status) {
-          this.getSellerLine(sellerOffers);
-        } else {
-          this.spinner.hide();
-          this.toastr.error('Please try again later.');
-        }
-      });
+    this.getSellerLine(sellerOffers);
+    // let payload = {
+    //   additionalCosts: offerAdditionalCostList.concat(
+    //     locationAdditionalCostsList
+    //   )
+    // };
+    // this._spotNegotiationService
+    //   .saveOfferAdditionalCosts(payload)
+    //   .subscribe((res: any) => {
+    //     if (res.status) {
+    //       this.getSellerLine(sellerOffers);
+    //     } else {
+    //       this.spinner.hide();
+    //       this.toastr.error('Please try again later.');
+    //     }
+    //   });
   }
 
   getSellerLine(sellerOffers) {
