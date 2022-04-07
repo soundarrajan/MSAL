@@ -412,17 +412,16 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
             } else {
               let offerAdditionCostsList = response.offerAdditionalCosts;
               let locAdditionCostsList = response.locationAdditionalCosts;
-
+              let {
+                productList,
+                applicableForItems,
+                totalMaxQuantity,
+                maxQuantityUomId
+              } = this.buildApplicableForItems(requestLocation, sellerOffers);
               if (
                 offerAdditionCostsList.length > 0 ||
                 locAdditionCostsList.length > 0
-              ) {
-                let {
-                  productList,
-                  applicableForItems,
-                  totalMaxQuantity,
-                  maxQuantityUomId
-                } = this.buildApplicableForItems(requestLocation, sellerOffers);
+              ) {                
 
                 sellerOffers.requestOffers.forEach(reqOff => {
                   reqOff.cost = 0;
@@ -471,19 +470,19 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                     );
                   }
                 }
-                productList.forEach(pro => {
-                  updatedRow.requestOffers.forEach(reqOff => {
-                      if (reqOff.requestProductId == pro.id) {
-            
-                        reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
-                        reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
-                        reqOff.targetDifference = reqOff.totalPrice - (pro.requestGroupProducts
-                          ? pro.requestGroupProducts.targetPrice
-                          : 0);
-                      }
-                    });
-                  });
               }
+              productList.forEach(pro => {
+                updatedRow.requestOffers.forEach(reqOff => {
+                    if (reqOff.requestProductId == pro.id) {
+          
+                      reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
+                      reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
+                      reqOff.targetDifference = reqOff.totalPrice - (pro.requestGroupProducts
+                        ? pro.requestGroupProducts.targetPrice
+                        : 0);
+                    }
+                  });
+                });
             }
           }
           //});
