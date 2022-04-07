@@ -1421,7 +1421,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           });
           if (findProductIndex != -1) {
             let product = _.cloneDeep(rowData.requestOffers[findProductIndex]);
-            let currentPrice = Number(product.price);
+            let currentPrice = Number(product.price) * Number(product.exchangeRateToBaseCurrency);
             let findProduct = _.find(productList, function(item) {
               return item.id == product.requestProductId;
             });
@@ -1531,7 +1531,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     let result = 0;
     let newProducts = _.cloneDeep(products);
     for (let i = 0; i < newProducts.length; i++) {
-      let currentPrice = Number(newProducts[i].price);
+      let currentPrice = Number(newProducts[i].price) * Number(newProducts[i].exchangeRateToBaseCurrency);
       let findProduct = _.find(productList, function(item) {
         return item.id == newProducts[i].requestProductId;
       });
