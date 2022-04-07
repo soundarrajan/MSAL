@@ -28,11 +28,16 @@ $blue:#1CABE0;
     justify-content: center;
     transition: all 0.3s;
     position: absolute;
+    margin-left: 1px;
+  }
+
+   .mat-chip-list-wrapper{
+    margin-bottom: 3px !important;
   }
 
   &:hover, &:active, &:focus {
     background-color: $dark;
-    transition: all 0.3s;
+    transition: all 0.3s;   
 
     #dot1 {
       transition: all 0.2s;
