@@ -1274,9 +1274,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   openEmailPreview(params) {
-    let sellerData = this.locationRowsAcrossRequest.filter(
+    let sameSellerData=this.locationRowsAcrossRequest.filter(
       s =>
-        s.sellerCounterpartyId == params.data.sellerCounterpartyId &&
+        s.sellerCounterpartyId == params.data.sellerCounterpartyId 
+    );
+    let sellerData = sameSellerData.length>0?sameSellerData:this.locationRowsAcrossRequest.filter(
+      s =>
+        s.sellerCounterpartyId == params.data.sellerCounterpartyId && 
         s.requestId == params.data.requestId
     );
     // let products = this.currentRequestInfo.requestLocations.filter(loc => this.locationRowsAcrossRequest.some(s => s.sellerCounterpartyId == params.data.sellerCounterpartyId && s.requestId == params.data.requestId && s.requestLocationId ==  loc.id)).map(prod =>
