@@ -166,6 +166,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                   this.locationAdditionalCostsList = _.cloneDeep(
                     response.locationAdditionalCosts
                   );
+                  this.convertOfferAdditionalCostListToPriceCurrecny(this.offerAdditionalCostList, firstOffer);
                   this.formatAdditionalCostList(
                     this.locationAdditionalCostsList
                   );
@@ -181,6 +182,28 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       });
   }
 
+  convertOfferAdditionalCostListToPriceCurrecny(additionalCostList, reqOffer) {
+    for (let i = 0; i < additionalCostList.length; i++) {
+      if(additionalCostList[i].currencyId != reqOffer.currencyId &&  additionalCostList[i].currencyId == 1){
+        additionalCostList[i].price = additionalCostList[i].price / reqOffer.exchangeRateToBaseCurrency;
+        additionalCostList[i].amount = additionalCostList[i].amount / reqOffer.exchangeRateToBaseCurrency;
+        additionalCostList[i].currencyId = reqOffer.currencyId;
+        if(additionalCostList[i].extraAmount)
+        additionalCostList[i].extraAmount = additionalCostList[i].extraAmount / reqOffer.exchangeRateToBaseCurrency;
+        additionalCostList[i].totalAmount = additionalCostList[i].totalAmount / reqOffer.exchangeRateToBaseCurrency;
+        additionalCostList[i].ratePerUom = additionalCostList[i].ratePerUom / reqOffer.exchangeRateToBaseCurrency;
+      }
+      else if(additionalCostList[i].currencyId != reqOffer.currencyId &&  additionalCostList[i].currencyId != 1){
+        additionalCostList[i].price = additionalCostList[i].price / additionalCostList[i].exchangeRateToBaseCurrency;
+        additionalCostList[i].amount = additionalCostList[i].amount / additionalCostList[i].exchangeRateToBaseCurrency;
+        if(additionalCostList[i].extraAmount)
+        additionalCostList[i].extraAmount = additionalCostList[i].extraAmount / additionalCostList[i].exchangeRateToBaseCurrency;
+        additionalCostList[i].totalAmount = additionalCostList[i].totalAmount / additionalCostList[i].exchangeRateToBaseCurrency;
+        additionalCostList[i].ratePerUom = additionalCostList[i].ratePerUom / additionalCostList[i].exchangeRateToBaseCurrency;
+        additionalCostList[i].currencyId = reqOffer.currencyId;
+      }
+    }
+  }
   formatAdditionalCostList(additionalCostList) {
     for (let i = 0; i < additionalCostList.length; i++) {
       additionalCostList[i].selectedApplicableForId = additionalCostList[i]
