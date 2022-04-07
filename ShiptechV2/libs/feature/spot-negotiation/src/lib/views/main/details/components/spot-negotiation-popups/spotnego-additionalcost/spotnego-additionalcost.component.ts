@@ -660,7 +660,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
             let product = _.cloneDeep(
               this.rowData.requestOffers[findProductIndex]
             );
-            let currentPrice = Number(product.price);
+            let currentPrice = Number(product.price) * Number(product.exchangeRateToBaseCurrency);
             let findProduct = _.find(this.productList, function(item) {
               return item.id == product.requestProductId;
             });
@@ -729,7 +729,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     let result = 0;
     let newProducts = _.cloneDeep(products);
     for (let i = 0; i < newProducts.length; i++) {
-      let currentPrice = Number(newProducts[i].price);
+      let currentPrice = Number(newProducts[i].price) * Number(newProducts[i].exchangeRateToBaseCurrency);
       let findProduct = _.find(this.productList, function(item) {
         return item.id == newProducts[i].requestProductId;
       });
@@ -1630,7 +1630,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           });
           if (findProductIndex != -1) {
             let product = _.cloneDeep(rowData.requestOffers[findProductIndex]);
-            let currentPrice = Number(product.price);
+            let currentPrice = Number(product.price) * Number(product.exchangeRateToBaseCurrency);
             let findProduct = _.find(productList, function(item) {
               return item.id == product.requestProductId;
             });
@@ -1723,7 +1723,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           });
           if (findProductIndex != -1) {
             let product = _.cloneDeep(rowData.requestOffers[findProductIndex]);
-            let currentPrice = Number(product.price);
+            let currentPrice = Number(product.price) * Number(product.exchangeRateToBaseCurrency);
             let findProduct = _.find(productList, function(item) {
               return item.id == product.requestProductId;
             });
@@ -1777,7 +1777,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     let result = 0;
     let newRequestOffers = _.cloneDeep(requestOffers);
     for (let i = 0; i < newRequestOffers.length; i++) {
-      let currentPrice = Number(newRequestOffers[i].price);
+      let currentPrice = Number(newRequestOffers[i].price) * Number(newRequestOffers[i].exchangeRateToBaseCurrency);
       let findProduct = _.find(productList, function(item) {
         return item.id == newRequestOffers[i].requestProductId;
       });
