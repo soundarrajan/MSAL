@@ -375,117 +375,119 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     sellerOffers,
     updatedRow
   ) : Promise<any> {
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
-      this.locations = spotNegotiation.locations;
-    });
-    let requestLocationId = sellerOffers.requestLocationId;
-    let findRequestLocationIndex = _.findIndex(
-      this.currentRequestSmallInfo?.requestLocations,
-      function (object: any) {
-        return object.id == requestLocationId;
-      }
-    );
-    if (findRequestLocationIndex != -1) {
-      let requestLocation = this.currentRequestSmallInfo?.requestLocations[
-        findRequestLocationIndex
-      ];
-      const payload = {
-        offerId: sellerOffers.requestOffers[0].offerId,
-        requestLocationId: sellerOffers.requestLocationId,
-        isLocationBased: false
-      };
-      this.notPercentageLocationCostRows = [];
-      this.notAllSelectedCostRows = [];
-      this.createAdditionalCostTypes();
-      let response = await this.spotNegotiationService
-        .getAdditionalCosts(payload)
-        //.subscribe((response: any) => 
-        if(response!= null){
-          if (response?.message == 'Unauthorized') {
-            return;
-          }
-          if (typeof response === 'string') {
-            // this.getSellerLine(updatedRow, colDef, newValue, elementidValue);
-            return;
-          } else {
-            let offerAdditionCostsList = response.offerAdditionalCosts;
-            let locAdditionCostsList = response.locationAdditionalCosts;
+    if(sellerOffers.requestOffers){
+      this.store.subscribe(({ spotNegotiation, ...props }) => {
+        this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
+        this.locations = spotNegotiation.locations;
+      });
+      let requestLocationId = sellerOffers.requestLocationId;
+      let findRequestLocationIndex = _.findIndex(
+        this.currentRequestSmallInfo?.requestLocations,
+        function (object: any) {
+          return object.id == requestLocationId;
+        }
+      );
+      if (findRequestLocationIndex != -1) {
+        let requestLocation = this.currentRequestSmallInfo?.requestLocations[
+          findRequestLocationIndex
+        ];
+        const payload = {
+          offerId: sellerOffers.requestOffers[0].offerId,
+          requestLocationId: sellerOffers.requestLocationId,
+          isLocationBased: false
+        };
+        this.notPercentageLocationCostRows = [];
+        this.notAllSelectedCostRows = [];
+        this.createAdditionalCostTypes();
+        let response = await this.spotNegotiationService
+          .getAdditionalCosts(payload)
+          //.subscribe((response: any) => 
+          if(response!= null){
+            if (response?.message == 'Unauthorized') {
+              return;
+            }
+            if (typeof response === 'string') {
+              // this.getSellerLine(updatedRow, colDef, newValue, elementidValue);
+              return;
+            } else {
+              let offerAdditionCostsList = response.offerAdditionalCosts;
+              let locAdditionCostsList = response.locationAdditionalCosts;
 
-            if (
-              offerAdditionCostsList.length > 0 ||
-              locAdditionCostsList.length > 0
-            ) {
-              let {
-                productList,
-                applicableForItems,
-                totalMaxQuantity,
-                maxQuantityUomId
-              } = this.buildApplicableForItems(requestLocation, sellerOffers);
+              if (
+                offerAdditionCostsList.length > 0 ||
+                locAdditionCostsList.length > 0
+              ) {
+                let {
+                  productList,
+                  applicableForItems,
+                  totalMaxQuantity,
+                  maxQuantityUomId
+                } = this.buildApplicableForItems(requestLocation, sellerOffers);
 
-              sellerOffers.requestOffers.forEach(reqOff => {
-                reqOff.cost = 0;
-              });
-              this.recalculateLocationAdditionalCosts(
-                locAdditionCostsList,
-                true,
-                productList,
-                offerAdditionCostsList,
-                sellerOffers,
-                locAdditionCostsList,
-                totalMaxQuantity,
-                maxQuantityUomId
-              );
-
-
-              for (let i = 0; i < offerAdditionCostsList.length; i++) {
-                let cost = offerAdditionCostsList[i];
-                if (offerAdditionCostsList[i].isAllProductsCost) {
-                  this.onApplicableForChange(
-                    cost,
-                    sellerOffers,
-                    totalMaxQuantity,
-                    maxQuantityUomId
-                  );
-
-                  this.additionalCostNameChanged(
-                    cost,
-                    offerAdditionCostsList,
-                    productList,
-                    sellerOffers,
-                    locAdditionCostsList,
-                    i
-                  );
-                }
-                else {
-                  offerAdditionCostsList[i].totalAmount = 0;
-                  this.calculateAdditionalCostAmounts(
-                    offerAdditionCostsList[i],
-                    false,
-                    productList,
-                    offerAdditionCostsList,
-                    sellerOffers,
-                    locAdditionCostsList,
-                    i
-                  );
-                }
-              }
-              productList.forEach(pro => {
-                updatedRow.requestOffers.forEach(reqOff => {
-                    if (reqOff.requestProductId == pro.id) {
-          
-                      reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
-                      reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
-                      reqOff.targetDifference = reqOff.totalPrice - (pro.requestGroupProducts
-                        ? pro.requestGroupProducts.targetPrice
-                        : 0);
-                    }
-                  });
+                sellerOffers.requestOffers.forEach(reqOff => {
+                  reqOff.cost = 0;
                 });
+                this.recalculateLocationAdditionalCosts(
+                  locAdditionCostsList,
+                  true,
+                  productList,
+                  offerAdditionCostsList,
+                  sellerOffers,
+                  locAdditionCostsList,
+                  totalMaxQuantity,
+                  maxQuantityUomId
+                );
+
+
+                for (let i = 0; i < offerAdditionCostsList.length; i++) {
+                  let cost = offerAdditionCostsList[i];
+                  if (offerAdditionCostsList[i].isAllProductsCost) {
+                    this.onApplicableForChange(
+                      cost,
+                      sellerOffers,
+                      totalMaxQuantity,
+                      maxQuantityUomId
+                    );
+
+                    this.additionalCostNameChanged(
+                      cost,
+                      offerAdditionCostsList,
+                      productList,
+                      sellerOffers,
+                      locAdditionCostsList,
+                      i
+                    );
+                  }
+                  else {
+                    offerAdditionCostsList[i].totalAmount = 0;
+                    this.calculateAdditionalCostAmounts(
+                      offerAdditionCostsList[i],
+                      false,
+                      productList,
+                      offerAdditionCostsList,
+                      sellerOffers,
+                      locAdditionCostsList,
+                      i
+                    );
+                  }
+                }
+                productList.forEach(pro => {
+                  updatedRow.requestOffers.forEach(reqOff => {
+                      if (reqOff.requestProductId == pro.id) {
+            
+                        reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
+                        reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
+                        reqOff.targetDifference = reqOff.totalPrice - (pro.requestGroupProducts
+                          ? pro.requestGroupProducts.targetPrice
+                          : 0);
+                      }
+                    });
+                  });
+              }
             }
           }
-        }
-        //});
+          //});
+      }
     }
   return updatedRow;
   }
