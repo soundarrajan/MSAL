@@ -588,6 +588,12 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       }
       else{
         this.isOperatorAck = false;
+        // #39018 - Validation message when user unacknowledges a port with active request(s)
+        this.dialog.open(WarningoperatorpopupComponent, {
+          width: '350px',
+          panelClass: 'confirmation-popup-operator',
+          data : { message: 'Active request for the port.', okayButton: true }
+        });
       }
     }
 
