@@ -16,7 +16,7 @@
           [(ngModel)]="formValues.currency"
           [matAutocomplete]="auto"
           placeholder="Currency"
-          [disabled]="!formValues.isEditable"
+          [disabled]="!formValues.isEditable || hasInvoicedOrder"
         />
         <mat-autocomplete
           #auto="matAutocomplete"
@@ -33,8 +33,8 @@
         </mat-autocomplete>
       </mat-form-field>
       <button
-        [disabled]="!formValues.isEditable"
-        [ngClass]="{ 'search-icon-disabled': !formValues.isEditable }"
+        [disabled]="!formValues.isEditable || hasInvoicedOrder"
+        [ngClass]="{ 'search-icon-disabled': !formValues.isEditable || hasInvoicedOrder }"
         class="search-icon"
         appMasterSelectorTrigger
         [masterSelector]="masterSelector1"
@@ -60,7 +60,7 @@
     </div>
   </div>
   <mat-checkbox
-    [disabled]="!formValues.isEditable"
+    [disabled]="!formValues.isEditable || hasInvoicedOrder"
     [(ngModel)]="formValues.isMean"
     class="is-mean-checkbox"
     (change)="isMeanChange($event)"
@@ -77,7 +77,7 @@
         <td class="padding" style="width: 30px;">
           <a
             class="add-new-quote-line-icon"
-            (click)="!formValues.isEditable ? '' : addComplexFormulaQuoteLine()"
+            (click)="!formValues.isEditable || hasInvoicedOrder ? '' : addComplexFormulaQuoteLine()"
           ></a>
         </td>
         <td class="padding" style="width:10%">
@@ -133,7 +133,7 @@
             <a
               class="remove-new-quote-line-icon"
               (click)="
-                !formValues.isEditable
+                !formValues.isEditable || hasInvoicedOrder
                   ? ''
                   : removeComplexFormulaQuoteLine(complexFormulaQuoteLine.key)
               "
@@ -158,7 +158,7 @@
                   "
                   [disableOptionCentering]="true"
                   panelClass="general-information-select-container"
-                  [disabled]="formValues.isMean || !formValues.isEditable"
+                  [disabled]="formValues.isMean || !formValues.isEditable || hasInvoicedOrder"
                 >
                   <mat-option
                     *ngFor="let option of formulaOperationList"
@@ -178,7 +178,7 @@
               <mat-form-field class="without-search" appearance="legacy">
                 <input
                   [(ngModel)]="complexFormulaQuoteLine.value.weight"
-                  [disabled]="formValues.isMean || !formValues.isEditable"
+                  [disabled]="formValues.isMean || !formValues.isEditable || hasInvoicedOrder"
                   matInput
                   autocomplete="off"
                 />
@@ -199,7 +199,7 @@
                   [disableOptionCentering]="true"
                   panelClass="general-information-select-container"
                   [compareWith]="compareUomObjects"
-                  [disabled]="!formValues.isEditable"
+                  [disabled]="!formValues.isEditable || hasInvoicedOrder"
                 >
                   <mat-option
                     *ngFor="let option of formulaFunctionList"
@@ -226,7 +226,7 @@
                       .systemInstrument
                   "
                   [matAutocomplete]="auto"
-                  [disabled]="!formValues.isEditable"
+                  [disabled]="!formValues.isEditable || hasInvoicedOrder"
                 />
                 <mat-autocomplete
                   #auto="matAutocomplete"
@@ -278,7 +278,7 @@
                   [disableOptionCentering]="true"
                   panelClass="general-information-select-container"
                   [compareWith]="compareUomObjects"
-                  [disabled]="!formValues.isEditable"
+                  [disabled]="!formValues.isEditable || hasInvoicedOrder"
                 >
                   <mat-option
                     *ngFor="let option of marketPriceTypeList"
@@ -305,7 +305,7 @@
                       .systemInstrument
                   "
                   [matAutocomplete]="auto1"
-                  [disabled]="!formValues.isEditable"
+                  [disabled]="!formValues.isEditable || hasInvoicedOrder"
                 />
                 <mat-autocomplete
                   #auto1="matAutocomplete"
@@ -357,7 +357,7 @@
                   [disableOptionCentering]="true"
                   panelClass="general-information-select-container"
                   [compareWith]="compareUomObjects"
-                  [disabled]="!formValues.isEditable"
+                  [disabled]="!formValues.isEditable || hasInvoicedOrder"
                 >
                   <mat-option
                     *ngFor="let option of marketPriceTypeList"
@@ -384,7 +384,7 @@
                       .systemInstrument
                   "
                   [matAutocomplete]="auto2"
-                  [disabled]="!formValues.isEditable"
+                  [disabled]="!formValues.isEditable || hasInvoicedOrder"
                 />
                 <mat-autocomplete
                   #auto2="matAutocomplete"
@@ -436,7 +436,7 @@
                   [disableOptionCentering]="true"
                   panelClass="general-information-select-container"
                   [compareWith]="compareUomObjects"
-                  [disabled]="!formValues.isEditable"
+                  [disabled]="!formValues.isEditable || hasInvoicedOrder"
                 >
                   <mat-option
                     *ngFor="let option of marketPriceTypeList"
@@ -462,7 +462,7 @@
                   [disableOptionCentering]="true"
                   panelClass="general-information-select-container"
                   [compareWith]="compareUomObjects"
-                  [disabled]="!formValues.isEditable"
+                  [disabled]="!formValues.isEditable || hasInvoicedOrder"
                 >
                   <mat-option
                     *ngFor="let option of formulaPlusMinusList"
@@ -484,7 +484,7 @@
                   [(ngModel)]="complexFormulaQuoteLine.value.amount"
                   (keypress)="keyPressNumber($event)"
                   [disabled]="
-                    !formValues.isEditable ||
+                    !formValues.isEditable || hasInvoicedOrder ||
                     (complexFormulaQuoteLine.value.formulaPlusMinus &&
                       complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)
                   "
@@ -512,7 +512,7 @@
                   panelClass="general-information-select-container"
                   [compareWith]="compareUomObjects"
                   [disabled]="
-                    !formValues.isEditable ||
+                    !formValues.isEditable || hasInvoicedOrder ||
                     (complexFormulaQuoteLine.value.formulaPlusMinus &&
                       complexFormulaQuoteLine.value.formulaPlusMinus.id == 3)
                   "
@@ -542,7 +542,7 @@
                   panelClass="general-information-select-container"
                   [compareWith]="compareUomObjects"
                   [disabled]="
-                    !formValues.isEditable ||
+                    !formValues.isEditable || hasInvoicedOrder ||
                     (complexFormulaQuoteLine.value.formulaPlusMinus &&
                       complexFormulaQuoteLine.value.formulaPlusMinus.id == 3) ||
                     (complexFormulaQuoteLine.value.formulaFlatPercentage &&

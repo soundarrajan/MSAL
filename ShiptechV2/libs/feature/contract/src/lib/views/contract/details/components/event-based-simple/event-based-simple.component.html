@@ -14,7 +14,7 @@
         [(ngModel)]="formValues.pricingScheduleOptionEventBasedSimple.name"
         placeholder="Description"
         autocomplete="off"
-        [disabled]="!formValues.isEditable"
+        [disabled]="!formValues.isEditable || hasInvoicedOrder"
       />
     </mat-form-field>
   </div>
@@ -35,7 +35,7 @@
         placeholder="From"
         autocomplete="off"
         required
-        [disabled]="!formValues.isEditable"
+        [disabled]="!formValues.isEditable || hasInvoicedOrder"
       />
     </mat-form-field>
   </div>
@@ -53,7 +53,7 @@
         panelClass="general-information-select-container"
         [compareWith]="compareUomObjects"
         required
-        [disabled]="!formValues.isEditable"
+        [disabled]="!formValues.isEditable || hasInvoicedOrder"
       >
         <mat-option
           *ngFor="let option of businessCalendarList"
@@ -82,7 +82,7 @@
         placeholder="From"
         autocomplete="off"
         required
-        [disabled]="!formValues.isEditable"
+        [disabled]="!formValues.isEditable || hasInvoicedOrder"
       />
     </mat-form-field>
   </div>
@@ -99,7 +99,7 @@
         panelClass="general-information-select-container"
         [compareWith]="compareUomObjects"
         required
-        [disabled]="!formValues.isEditable"
+        [disabled]="!formValues.isEditable || hasInvoicedOrder"
       >
         <mat-option
           *ngFor="let option of businessCalendarList"
@@ -126,7 +126,7 @@
         [compareWith]="compareUomObjects"
         required
         placeholder="Event"
-        [disabled]="!formValues.isEditable"
+        [disabled]="!formValues.isEditable || hasInvoicedOrder"
       >
         <mat-option *ngFor="let option of eventList" [value]="option">
           {{ option.name }}
@@ -149,7 +149,7 @@
         [compareWith]="compareUomObjects"
         required
         placeholder="Where Event Date"
-        [disabled]="!formValues.isEditable"
+        [disabled]="!formValues.isEditable || hasInvoicedOrder"
       >
         <mat-option
           *ngFor="let option of formulaEventIncludeList"
@@ -168,7 +168,7 @@
   <div class="checkbox">
     <mat-checkbox
       [disabled]="
-        !formValues.isEditable ||
+        !formValues.isEditable || hasInvoicedOrder ||
         (formValues.formulaType && formValues.formulaType.id != 2)
       "
       [(ngModel)]="
@@ -229,7 +229,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -248,7 +248,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -267,7 +267,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -291,7 +291,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -310,7 +310,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -329,7 +329,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -353,7 +353,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -372,7 +372,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -391,7 +391,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -415,7 +415,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -434,7 +434,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -453,7 +453,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -477,7 +477,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -496,7 +496,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -515,7 +515,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -539,7 +539,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -558,7 +558,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -577,7 +577,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -601,7 +601,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -620,7 +620,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -639,7 +639,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionHolidayRuleChange(
                 $event,
@@ -709,7 +709,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -731,7 +731,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -753,7 +753,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -780,7 +780,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -802,7 +802,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -824,7 +824,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -851,7 +851,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -873,7 +873,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -895,7 +895,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -922,7 +922,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -944,7 +944,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -966,7 +966,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -993,7 +993,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -1015,7 +1015,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -1037,7 +1037,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -1064,7 +1064,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -1086,7 +1086,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -1108,7 +1108,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -1135,7 +1135,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -1157,7 +1157,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,
@@ -1179,7 +1179,7 @@
         </td>
         <td class="padding-left" style="width:25%">
           <mat-checkbox
-            [disabled]="!formValues.isEditable"
+            [disabled]="!formValues.isEditable || hasInvoicedOrder"
             (change)="
               calendarOptionChange(
                 $event,

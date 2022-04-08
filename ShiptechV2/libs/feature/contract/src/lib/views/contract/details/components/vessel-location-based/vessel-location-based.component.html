@@ -16,7 +16,7 @@
         <td class="padding" style="width: 30px;">
           <a
             class="add-icon"
-            (click)="!formValues.isEditable ? '' : addNewLocationBasedLine()"
+            (click)="!formValues.isEditable || hasInvoicedOrder ? '' : addNewLocationBasedLine()"
           ></a>
         </td>
         <td class="padding" style="width:20%">
@@ -55,7 +55,7 @@
                 class="remove-icon"
                 style="margin-left: 10px;"
                 (click)="
-                  !formValues.isEditable
+                  !formValues.isEditable || hasInvoicedOrder
                     ? ''
                     : removeLocationBasedLine(locationDiscountRule.key)
                 "
@@ -73,7 +73,7 @@
                     [(ngModel)]="locationDiscountRule.value.location"
                     matInput
                     [matAutocomplete]="auto"
-                    [disabled]="!formValues.isEditable"
+                    [disabled]="!formValues.isEditable || hasInvoicedOrder"
                   />
                   <mat-autocomplete
                     #auto="matAutocomplete"
@@ -117,7 +117,7 @@
                     [disableOptionCentering]="true"
                     panelClass="general-information-select-container"
                     [compareWith]="compareUomObjects"
-                    [disabled]="!formValues.isEditable"
+                    [disabled]="!formValues.isEditable || hasInvoicedOrder"
                   >
                     <mat-option
                       *ngFor="let option of formulaPlusMinusList"
@@ -143,7 +143,7 @@
                     required
                     amountFormat
                     [disabled]="
-                      !formValues.isEditable ||
+                      !formValues.isEditable || hasInvoicedOrder ||
                       (locationDiscountRule.value.plusMinus &&
                         locationDiscountRule.value.plusMinus.id == 3)
                     "
@@ -166,7 +166,7 @@
                     panelClass="general-information-select-container"
                     [compareWith]="compareUomObjects"
                     [disabled]="
-                      !formValues.isEditable ||
+                      !formValues.isEditable || hasInvoicedOrder ||
                       (locationDiscountRule.value.plusMinus &&
                         locationDiscountRule.value.plusMinus.id == 3)
                     "
@@ -196,7 +196,7 @@
                     panelClass="general-information-select-container"
                     [compareWith]="compareUomObjects"
                     [disabled]="
-                      !formValues.isEditable ||
+                      !formValues.isEditable || hasInvoicedOrder ||
                       (locationDiscountRule.value.plusMinus &&
                         locationDiscountRule.value.plusMinus.id == 3) ||
                       (locationDiscountRule.value.flatPercentage &&
@@ -227,7 +227,7 @@
       [(ngModel)]="formValues.comments"
       matInput
       autocomplete="off"
-      [disabled]="!formValues.isEditable"
+      [disabled]="!formValues.isEditable || hasInvoicedOrder"
     ></textarea>
   </mat-form-field>
 </div>
