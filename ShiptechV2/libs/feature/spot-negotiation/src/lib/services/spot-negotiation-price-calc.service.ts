@@ -376,19 +376,21 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     updatedRow
   ) : Promise<any> {
     if(sellerOffers.requestOffers){
+      let request : any;
       this.store.subscribe(({ spotNegotiation, ...props }) => {
         this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
         this.locations = spotNegotiation.locations;
+        request = spotNegotiation.requests?.find(r => r.id == sellerOffers.requestId);
       });
       let requestLocationId = sellerOffers.requestLocationId;
       let findRequestLocationIndex = _.findIndex(
-        this.currentRequestSmallInfo?.requestLocations,
+        request?.requestLocations,
         function (object: any) {
           return object.id == requestLocationId;
         }
       );
       if (findRequestLocationIndex != -1) {
-        let requestLocation = this.currentRequestSmallInfo?.requestLocations[
+        let requestLocation = request?.requestLocations[
           findRequestLocationIndex
         ];
         const payload = {
