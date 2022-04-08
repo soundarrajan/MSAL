@@ -859,16 +859,17 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     );
 
     //Do the calculation here
-    updatedRow = this.spotNegotiationService.formatRowData(
-      updatedRow,
-      colDef['product'],
-      colDef.field,
-      newValue,
-      currentLocation,
-      false,
-      null
-    );
+    // updatedRow = this.spotNegotiationService.formatRowData(
+    //   updatedRow,
+    //   colDef['product'],
+    //   colDef.field,
+    //   newValue,
+    //   currentLocation,
+    //   false,
+    //   null
+    // );
 
+    
     // Save to the cloud
     this.saveRowToCloud(updatedRow, colDef['product'], elementidValue);
   }
