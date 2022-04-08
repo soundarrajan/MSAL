@@ -18,6 +18,7 @@ import _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
+import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
 
 @Component({
   selector: 'app-spotnego-confirmorder',
@@ -51,6 +52,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     private toaster: ToastrService,
     private spinner: NgxSpinnerService,
     private spotNegotiationService: SpotNegotiationService,
+    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService,
     private urlService: UrlService,
     public appConfig: AppConfig,
     public format: TenantFormattingService,
@@ -576,13 +578,20 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     let rows = _.cloneDeep(locationsRows);
     this.spotNegotiationService
       .getPriceDetails(groupId)
-      .subscribe((res: any) => {
+      .subscribe(async (res: any) => {
         if (res['sellerOffers']) {
           const futureLocationsRows = this.getLocationRowsWithPriceDetails(
             rows,
             res['sellerOffers']
           );
-          this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+          let reqLocationRows : any =[];
+          for (const locRow of futureLocationsRows) {
+            var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+              locRow,
+              locRow);
+              reqLocationRows.push(data);
+          } 
+          this.store.dispatch(new SetLocationsRows(reqLocationRows));
         }
       });
   }

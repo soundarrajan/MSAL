@@ -19,6 +19,7 @@ import { MatRadioChange } from '@angular/material/radio';
 import { FileSaverService } from 'ngx-filesaver';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { ModuleError } from '../../negotiation-documents/error-handling/module-error';
+import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
 
 interface Items {
   value: string;
@@ -92,6 +93,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     private spotNegotiationService: SpotNegotiationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _FileSaverService: FileSaverService,
+    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService,
     private appErrorHandler: AppErrorHandler
   ) {
     this.SelectedSellerWithProds = data;
@@ -502,7 +504,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     const response = this.spotNegotiationService.SaveAndSendRFQ(
       saveAndSendRfqAPIPayload
     );
-    response.subscribe((res: any) => {
+    response.subscribe(async (res: any) => {
       this.spinner.hide();
       if (res?.message == 'Unauthorized') {
         return;
@@ -572,7 +574,14 @@ export class EmailPreviewPopupComponent implements OnInit {
           locationsRows,
           res['sellerOffers']
         );
-        this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        let reqLocationRows : any =[];
+        for (const locRow of futureLocationsRows) {
+          var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+            locRow,
+            locRow);
+            reqLocationRows.push(data);
+        } 
+        this.store.dispatch(new SetLocationsRows(reqLocationRows));
 
         this.changeDetector.detectChanges();
       }
