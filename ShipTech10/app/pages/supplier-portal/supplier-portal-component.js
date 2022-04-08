@@ -116,6 +116,7 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                             console.log(ctrl.lists);
                             lookupModel.getAdditionalCostTypesForSupplierPortal(ctrl.token).then((data) => {
                                 ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');
+                                ctrl.locationBasedAdditionalCostTypes = normalizeArrayToHash(data.payload, 'name');
                                 supplierPortalModel.getRfq(ctrl.token).then((data) => {
                                     ctrl.individuals = data.payload.individuals;
                                     ctrl.validity = data.payload.validity;
@@ -323,6 +324,7 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                             lookupModel.getAdditionalCostTypes().then((data) => {
                                 setTimeout(() => {
                                     ctrl.additionalCostTypes = normalizeArrayToHash(data.payload, 'id');
+                                    ctrl.locationBasedAdditionalCostTypes = normalizeArrayToHash(data.payload, 'name');
                                     if (!change.source.currentValue.payload) {
                                         return false;
                                     }
@@ -804,6 +806,27 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
             return null;
         }
 
+        function isLocationProductComponent(additionalCost) {
+            if (!additionalCost.additionalCost) {
+                return false;
+            }
+            additionalCost.isTaxComponent = false;
+            if (ctrl.locationBasedAdditionalCostTypes[additionalCost.additionalCost.name].componentType) {
+	                additionalCost.isTaxComponent = !(ctrl.locationBasedAdditionalCostTypes[additionalCost.additionalCost.name].componentType.id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT);
+	                if (additionalCost.isTaxComponent) {
+	                	// console.log("Tax:" + additionalCost.additionalCost.name)
+	                } else {
+		                additionalCost.isTaxComponent = false;
+	                }
+	                // $scope.$apply();
+	                return ctrl.locationBasedAdditionalCostTypes[additionalCost.additionalCost.name].componentType.id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT;
+            	// setTimeout(function(){
+            	// })
+            }
+
+            return null;
+        }
+
         /**
          * Get the corresponding component type ID for a given additional cost.
          */
@@ -964,6 +987,11 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
             return result;
         };
 
+          /**
+  * Sum the Amount field of all products.
+  */
+  
+
         /**
          * Get the grand total for a given location, that is the sum of product total and additional costs total.
          */
@@ -1000,6 +1028,51 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                 break;
             case COST_TYPE_IDS.PERCENT:
                 productComponent = isProductComponent(additionalCost);
+                if (additionalCost.isAllProductsCost || !productComponent) {
+                    totalAmount = ctrl.sumProductAmounts(location.products);
+                } else {
+                    totalAmount = product.totalAmount;
+                }
+                if (productComponent) {
+                    additionalCost.amount = totalAmount * parseFloat(additionalCost.price) / 100;
+                } else {
+                    totalAmount = totalAmount + sumProductComponentAdditionalCostAmounts(location);
+                    additionalCost.amount = totalAmount * parseFloat(additionalCost.price) / 100;
+                }
+                break;
+            }
+            additionalCost.extrasAmount = additionalCost.extras / 100 * additionalCost.amount;
+            additionalCost.totalAmount = Number(additionalCost.amount) + Number(additionalCost.extrasAmount) || 0;
+            additionalCost.rate =  Number(additionalCost.totalAmount) /  Number(additionalCost.maxQuantity);
+            return additionalCost;
+        }
+
+        function calculateLocationBasedAdditionalCostAmounts(additionalCost, product, location) {
+            let totalAmount,
+                productComponent;
+            if (!additionalCost.costType) {
+                return additionalCost;
+            }
+            switch (additionalCost.costType.name) {
+            case "Unit":
+                // additionalCost.amount = additionalCost.maxQuantity * additionalCost.price;
+                additionalCost.amount = 0;
+                productComponent = isLocationProductComponent(additionalCost);
+                if (additionalCost.priceUom && additionalCost.prodConv && additionalCost.prodConv.length == location.products.length) {
+                    for (let i = 0; i < location.products.length; i++) {
+                        product = location.products[i];
+                        if (additionalCost.isAllProductsCost || product.id == additionalCost.parentProductId) {
+                            additionalCost.amount = additionalCost.amount + product.maxQuantity * additionalCost.prodConv[i] * parseFloat(additionalCost.price);
+                        }
+                    }
+                }
+                break;
+            case "Flat":
+                additionalCost.amount = parseFloat(additionalCost.price);
+                productComponent = isLocationProductComponent(additionalCost);
+                break;
+            case "Percent":
+                productComponent = isLocationProductComponent(additionalCost);
                 if (additionalCost.isAllProductsCost || !productComponent) {
                     totalAmount = ctrl.sumProductAmounts(location.products);
                 } else {
@@ -1332,7 +1405,13 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                         if (additionalCostLocationBased.fakeId > 0) {
                             additionalCostLocationBased.fakeIdOrdering = additionalCostLocationBased.additionalCost.id;
                         }
-                        if(offers.filter(l => l.fakeId == additionalCostLocationBased.fakeId).length == 0){                            
+                        if(offers.filter(l => l.fakeId == additionalCostLocationBased.fakeId).length == 0){   
+                            additionalCostLocationBased.maxQuantity = sumProductMaxQuantities(location.products, additionalCostLocationBased);
+                            additionalCostLocationBased.maxQuantityUomId = location.products[i].uom.id;
+                            additionalCostLocationBased.requestLocationId = location.id;
+                            additionalCostLocationBased.currency = location.request.currency;
+
+                            additionalCostLocationBased = calculateLocationBasedAdditionalCostAmounts(additionalCostLocationBased, location.products[i], location);                    
                             if(additionalCostLocationBased.isAllProductsCost){
                                 ctrl.additionalCostLocationBasedApplicableFor[additionalCostLocationBased.fakeId] = null;
                             }
@@ -1341,15 +1420,15 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                                 additionalCostLocationBased.parentProductId = location.products[a].id;
                                 additionalCostLocationBased.parentLocationId = location.rand;
                             }
-                            
                             if(additionalCostLocationBased.locationBasedExchangeRateValue != 1 && additionalCostLocationBased.changeLocationCost == true){
                                 additionalCostLocationBased.price = Number(additionalCostLocationBased.price) * Number(additionalCostLocationBased.locationBasedExchangeRateValue);
                                 additionalCostLocationBased.totalAmount = Number(additionalCostLocationBased.totalAmount) * Number(additionalCostLocationBased.locationBasedExchangeRateValue);
                                 additionalCostLocationBased.extrasAmount = Number(additionalCostLocationBased.extrasAmount) * Number(additionalCostLocationBased.locationBasedExchangeRateValue);
+                                additionalCostLocationBased.rate = Number(additionalCostLocationBased.rate) * Number(additionalCostLocationBased.locationBasedExchangeRateValue);
                                 additionalCostLocationBased.changeLocationCost =  false;                            
                             }
-                            additionalCostLocationBased.rate = Number(additionalCostLocationBased.totalAmount) /  Number(additionalCostLocationBased.maxQuantity);
-                            additionalCostLocationBased.currency = location.request.currency;
+                            //additionalCostLocationBased.rate = Number(additionalCostLocationBased.totalAmount) /  Number(additionalCostLocationBased.maxQuantity);
+                            //additionalCostLocationBased.currency = location.request.currency;
                             additionalCostLocationBased.parentLocationId = location.rand;
                             additionalCostLocationBased.amount = additionalCostLocationBased.totalAmount - additionalCostLocationBased.extrasAmount || 0;
                             if (!additionalCostLocationBased.isDeleted) {

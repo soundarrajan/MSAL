@@ -1360,7 +1360,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 if(response) {
                     $rootScope.landingPage = angular.copy(response?.payload?.landingPage);
                     ctrl.getProductViewFromStaticLists(response?.payload?.landingPage);
-                    if ((response.payload.landingPage && [1, 2, 3].indexOf(response.payload.landingPage.id) != -1 ) || window.location.href.indexOf('schedule-dashboard-timeline') != -1) {
+                    if ((response.payload.landingPage && [1, 2, 3, 4].indexOf(response.payload.landingPage.id) != -1 ) || window.location.href.indexOf('schedule-dashboard-timeline') != -1) {
                         setTimeout(() => {
                             $("body > #app").css("opacity", 1);
                         });
