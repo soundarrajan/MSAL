@@ -339,8 +339,10 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     for (let i = 0; i < additionalCostList.length; i++) {
       if (!additionalCostList[i].isDeleted) {
         additionalCostList[i].totalAmount = 0;
+        let cost = additionalCostList[i];
+        
         if (additionalCostList[i].isAllProductsCost) {
-          let cost = additionalCostList[i];
+          
           this.onApplicableForChange(
             cost,
             rowData,
@@ -348,26 +350,27 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
             maxQuantityUomId
           );
 
-          this.additionalCostNameChanged(
-            cost,
-            additionalCostList,
-            productList,
-            rowData,
-            locationAdditionalCostsList,
-            i
-          );
+          
         }
-        else {
-          this.calculateAdditionalCostAmounts(
-            additionalCostList[i],
-            locationAdditionalCostFlag,
-            productList,
-            offerAdditionalCostList,
-            rowData,
-            locationAdditionalCostsList,
-            i
-          );
-        }
+        this.additionalCostNameChanged(
+          cost,
+          additionalCostList,
+          productList,
+          rowData,
+          locationAdditionalCostsList,
+          i
+        );
+        // else {
+        //   this.calculateAdditionalCostAmounts(
+        //     additionalCostList[i],
+        //     locationAdditionalCostFlag,
+        //     productList,
+        //     offerAdditionalCostList,
+        //     rowData,
+        //     locationAdditionalCostsList,
+        //     i
+        //   );
+        // }
 
       }
     }
@@ -443,7 +446,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
 
 
                 for (let i = 0; i < offerAdditionCostsList.length; i++) {
-                  let cost = offerAdditionCostsList[i];
+                  let cost = offerAdditionCostsList[i];                  
                   if (offerAdditionCostsList[i].isAllProductsCost) {
                     this.onApplicableForChange(
                       cost,
@@ -451,28 +454,28 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                       totalMaxQuantity,
                       maxQuantityUomId
                     );
-
-                    this.additionalCostNameChanged(
-                      cost,
-                      offerAdditionCostsList,
-                      productList,
-                      sellerOffers,
-                      locAdditionCostsList,
-                      i
-                    );
+                    
                   }
-                  else {
-                    offerAdditionCostsList[i].totalAmount = 0;
-                    this.calculateAdditionalCostAmounts(
-                      offerAdditionCostsList[i],
-                      false,
-                      productList,
-                      offerAdditionCostsList,
-                      sellerOffers,
-                      locAdditionCostsList,
-                      i
-                    );
-                  }
+                  this.additionalCostNameChanged(
+                    cost,
+                    offerAdditionCostsList,
+                    productList,
+                    sellerOffers,
+                    locAdditionCostsList,
+                    i
+                  );
+                  // else {
+                  //   offerAdditionCostsList[i].totalAmount = 0;
+                  //   this.calculateAdditionalCostAmounts(
+                  //     offerAdditionCostsList[i],
+                  //     false,
+                  //     productList,
+                  //     offerAdditionCostsList,
+                  //     sellerOffers,
+                  //     locAdditionCostsList,
+                  //     i
+                  //   );
+                  // }
                 }
               }
               productList.forEach(pro => {
