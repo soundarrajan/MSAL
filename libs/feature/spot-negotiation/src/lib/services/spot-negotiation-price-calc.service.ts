@@ -188,7 +188,9 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       (additionalCost.totalAmount * additionalCost.exchangeRateToBaseCurrency) / additionalCost.maxQuantity;
     if (additionalCost.isAllProductsCost || !productComponent) {
       rowData.requestOffers.forEach(reqOff => {
-        reqOff.cost = reqOff.cost + additionalCost.ratePerUom;
+        if(additionalCost.isAllProductsCost || reqOff.requestProductId == additionalCost.requestProductId){
+          reqOff.cost = reqOff.cost + additionalCost.ratePerUom; 
+        }
       });
     }
     else {
