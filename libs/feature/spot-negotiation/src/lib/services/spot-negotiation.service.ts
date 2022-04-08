@@ -590,7 +590,7 @@ export class SpotNegotiationService extends BaseStoreService
       : productDetails.exchangeRateToBaseCurrency ?? 1;
     // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
     productDetails.totalPrice =
-      (Number(productDetails.price) + productDetails.cost) /
+      (Number(productDetails.price) + productDetails.cost) *
       (productDetails.exchangeRateToBaseCurrency ?? 1); // Amount = Total Price * Max. Quantity
     productDetails.amount = productDetails.totalPrice * product.maxQuantity;
 
