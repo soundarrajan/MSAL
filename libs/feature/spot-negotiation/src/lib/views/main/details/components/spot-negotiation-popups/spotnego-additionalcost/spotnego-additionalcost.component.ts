@@ -122,7 +122,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     this.spinner.show();
     this.spotNegotiationService
       .getMasterAdditionalCosts({})
-      .subscribe((response: any) => {
+      .subscribe(async (response: any) => {
         if (response?.message == 'Unauthorized') {
           return;
         }
@@ -147,9 +147,10 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
               requestLocationId: this.rowData.requestLocationId,
               isLocationBased: false
             };
-            this.spotNegotiationService
-              .getAdditionalCosts(payload)
-              .subscribe((response: any) => {
+            let response  =  await this.spotNegotiationService
+              .getAdditionalCosts(payload);
+              //.subscribe((response: any) => {
+                if(response != null){
                 if (response?.message == 'Unauthorized') {
                   return;
                 }
@@ -165,6 +166,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                   this.locationAdditionalCostsList = _.cloneDeep(
                     response.locationAdditionalCosts
                   );
+                  this.convertOfferAdditionalCostListToPriceCurrecny(this.offerAdditionalCostList, firstOffer);
                   this.formatAdditionalCostList(
                     this.locationAdditionalCostsList
                   );
@@ -173,12 +175,35 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                     true
                   );
                 }
-              });
+              //});
+              }
           }
         }
       });
   }
 
+  convertOfferAdditionalCostListToPriceCurrecny(additionalCostList, reqOffer) {
+    for (let i = 0; i < additionalCostList.length; i++) {
+      if(additionalCostList[i].currencyId != reqOffer.currencyId &&  additionalCostList[i].currencyId == 1){
+        additionalCostList[i].price = additionalCostList[i].price / reqOffer.exchangeRateToBaseCurrency;
+        additionalCostList[i].amount = additionalCostList[i].amount / reqOffer.exchangeRateToBaseCurrency;
+        additionalCostList[i].currencyId = reqOffer.currencyId;
+        if(additionalCostList[i].extraAmount)
+        additionalCostList[i].extraAmount = additionalCostList[i].extraAmount / reqOffer.exchangeRateToBaseCurrency;
+        additionalCostList[i].totalAmount = additionalCostList[i].totalAmount / reqOffer.exchangeRateToBaseCurrency;
+        additionalCostList[i].ratePerUom = additionalCostList[i].ratePerUom / reqOffer.exchangeRateToBaseCurrency;
+      }
+      else if(additionalCostList[i].currencyId != reqOffer.currencyId &&  additionalCostList[i].currencyId != 1){
+        additionalCostList[i].price = additionalCostList[i].price / additionalCostList[i].exchangeRateToBaseCurrency;
+        additionalCostList[i].amount = additionalCostList[i].amount / additionalCostList[i].exchangeRateToBaseCurrency;
+        if(additionalCostList[i].extraAmount)
+        additionalCostList[i].extraAmount = additionalCostList[i].extraAmount / additionalCostList[i].exchangeRateToBaseCurrency;
+        additionalCostList[i].totalAmount = additionalCostList[i].totalAmount / additionalCostList[i].exchangeRateToBaseCurrency;
+        additionalCostList[i].ratePerUom = additionalCostList[i].ratePerUom / additionalCostList[i].exchangeRateToBaseCurrency;
+        additionalCostList[i].currencyId = reqOffer.currencyId;
+      }
+    }
+  }
   formatAdditionalCostList(additionalCostList) {
     for (let i = 0; i < additionalCostList.length; i++) {
       additionalCostList[i].selectedApplicableForId = additionalCostList[i]
@@ -658,7 +683,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
             let product = _.cloneDeep(
               this.rowData.requestOffers[findProductIndex]
             );
-            let currentPrice = Number(product.price);
+            let currentPrice = Number(product.price) * Number(product.exchangeRateToBaseCurrency);
             let findProduct = _.find(this.productList, function(item) {
               return item.id == product.requestProductId;
             });
@@ -727,7 +752,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     let result = 0;
     let newProducts = _.cloneDeep(products);
     for (let i = 0; i < newProducts.length; i++) {
-      let currentPrice = Number(newProducts[i].price);
+      let currentPrice = Number(newProducts[i].price) * Number(newProducts[i].exchangeRateToBaseCurrency);
       let findProduct = _.find(this.productList, function(item) {
         return item.id == newProducts[i].requestProductId;
       });
@@ -1628,7 +1653,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           });
           if (findProductIndex != -1) {
             let product = _.cloneDeep(rowData.requestOffers[findProductIndex]);
-            let currentPrice = Number(product.price);
+            let currentPrice = Number(product.price) * Number(product.exchangeRateToBaseCurrency);
             let findProduct = _.find(productList, function(item) {
               return item.id == product.requestProductId;
             });
@@ -1721,7 +1746,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           });
           if (findProductIndex != -1) {
             let product = _.cloneDeep(rowData.requestOffers[findProductIndex]);
-            let currentPrice = Number(product.price);
+            let currentPrice = Number(product.price) * Number(product.exchangeRateToBaseCurrency);
             let findProduct = _.find(productList, function(item) {
               return item.id == product.requestProductId;
             });
@@ -1775,7 +1800,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     let result = 0;
     let newRequestOffers = _.cloneDeep(requestOffers);
     for (let i = 0; i < newRequestOffers.length; i++) {
-      let currentPrice = Number(newRequestOffers[i].price);
+      let currentPrice = Number(newRequestOffers[i].price) * Number(newRequestOffers[i].exchangeRateToBaseCurrency);
       let findProduct = _.find(productList, function(item) {
         return item.id == newRequestOffers[i].requestProductId;
       });

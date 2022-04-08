@@ -27,6 +27,7 @@ import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib
 import _ from 'lodash';
 import { NegotiationDetailsToolbarComponent } from '../../../toolbar/spot-negotiation-details-toolbar.component';
 import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
+import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -72,6 +73,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private spotNegotiationService: SpotNegotiationService,
     private router: Router,
+    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService,
     private myMonitoringService: MyMonitoringService
   ) {
     this.baseOrigin = new URL(window.location.href).origin;
@@ -354,7 +356,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
     // Get response from server
     const response = this.spotNegotiationService.SendRFQ(FinalAPIdata);
-    response.subscribe((res: any) => {
+    response.subscribe(async (res: any) => {
       this.spinner.hide();
       if (res?.message == 'Unauthorized') {
         return;
@@ -400,8 +402,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           return { ...reqLoc, requestProducts };
         });
         return { ...e, requestLocations };
-      });
-      this.store.dispatch(new UpdateRequest(reqs));
+      });      
       // this.store.dispatch(
       //   new SetLocationsRowsPriceDetails(res['sellerOffers'])
       // );
@@ -410,7 +411,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
         JSON.parse(JSON.stringify(locationsRows)),
         res['sellerOffers']
       );
-      this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+      let reqLocationRows : any =[];
+        for (const locRow of futureLocationsRows) {
+          var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+            locRow,
+            locRow);
+            reqLocationRows.push(data);
+        }
+      this.store.dispatch(new UpdateRequest(reqs));
+      this.store.dispatch(new SetLocationsRows(reqLocationRows));
 
       this.changeDetector.detectChanges();
     });
@@ -894,7 +903,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       const response = this.spotNegotiationService.copyPriceDetails(
         copyPricePayload
       );
-      response.subscribe((res: any) => {
+      response.subscribe(async (res: any) => {
         this.spinner.hide();
         if (res?.message == 'Unauthorized') {
           return;
@@ -931,10 +940,16 @@ export class SpotNegotiationHomeComponent implements OnInit {
             JSON.parse(JSON.stringify(updatedLocationRows)),
             selectedSellerRows
           );
-
+          let reqLocationRows : any =[];
+          for (const locRow of futureLocationsRows) {
+            var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+              locRow,
+              locRow);
+              reqLocationRows.push(data);
+          }
           // Update the store
           this.store.dispatch(new UpdateRequest(this.requestOptions));
-          this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+          this.store.dispatch(new SetLocationsRows(reqLocationRows));
         } else {
           this.toaster.error(res);
           return;
@@ -1060,7 +1075,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
       // Get response from server
       const response = this.spotNegotiationService.SkipRFQ(FinalAPIPayload);
-      response.subscribe((res: any) => {
+      response.subscribe(async (res: any) => {
         this.spinner.hide();
         if (res?.message == 'Unauthorized') {
           return;
@@ -1103,7 +1118,13 @@ export class SpotNegotiationHomeComponent implements OnInit {
           JSON.parse(JSON.stringify(locationsRows)),
           res['sellerOffers']
         );
-        this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        let reqLocationRows : any =[];
+        for (const locRow of futureLocationsRows) {
+          var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+            locRow,
+            locRow);
+            reqLocationRows.push(data);
+        }        
 
         this.requestOptions = this.requestOptions.map(e => {
           let requestLocations = e.requestLocations.map(reqLoc => {
@@ -1119,6 +1140,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           });
           return { ...e, requestLocations };
         });
+        this.store.dispatch(new SetLocationsRows(reqLocationRows));
         this.store.dispatch(new UpdateRequest(this.requestOptions));
 
         this.changeDetector.detectChanges();
@@ -1179,7 +1201,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
       // Get response from server
       const response = this.spotNegotiationService.RevokeFQ(FinalAPIdata);
-      response.subscribe((res: any) => {
+      response.subscribe(async (res: any) => {
         this.spinner.hide();
 
         if (res?.message == 'Unauthorized') {
@@ -1221,7 +1243,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
           res['requestLocationSellers'],
           res['sellerOffers']
         );
-        this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        let reqLocationRows : any =[];
+        for (const locRow of futureLocationsRows) {
+          var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+            locRow,
+            locRow);
+            reqLocationRows.push(data);
+        } 
+        this.store.dispatch(new SetLocationsRows(reqLocationRows));
 
         this.changeDetector.detectChanges();
 
@@ -1422,7 +1451,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     const groupId = parseFloat(this.route.snapshot.params.spotNegotiationId);
     this.spotNegotiationService
       .getPriceDetails(groupId)
-      .subscribe((priceDetailsRes: any) => {
+      .subscribe(async (priceDetailsRes: any) => {
         this.spinner.hide();
         if (priceDetailsRes?.message == 'Unauthorized') {
           return;
@@ -1462,7 +1491,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
             }
           }
         });
-        this.store.dispatch(new SetLocationsRows(updatedRows));
+        let reqLocationRows : any =[];
+        for (const locRow of updatedRows) {
+          var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+            locRow,
+            locRow);
+            reqLocationRows.push(data);
+        } 
+        this.store.dispatch(new SetLocationsRows(reqLocationRows));
       });
   }
 

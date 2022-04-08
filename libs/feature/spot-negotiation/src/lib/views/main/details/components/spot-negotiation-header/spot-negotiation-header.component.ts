@@ -39,6 +39,7 @@ import { SpotnegoSearchCtpyComponent } from '../spot-negotiation-popups/spotnego
 import { ConfirmdialogComponent } from '../spot-negotiation-popups/confirmdialog/confirmdialog.component';
 import { cloneDeep } from 'lodash';
 import _ from 'lodash';
+import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
 @Component({
   selector: 'app-spot-negotiation-header',
   templateUrl: './spot-negotiation-header.component.html',
@@ -96,7 +97,8 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     private _spotNegotiationService: SpotNegotiationService,
     private renderer: Renderer2,
     public dialog: MatDialog,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService
   ) {
     // Set observable;
   }
@@ -605,7 +607,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 this.toastr.success(SuccessMessage);
               });
             }
-            setTimeout(() => {
+            setTimeout(async () => {
               if (
                 res['requestLocationSellers'] &&
                 res['requestLocationSellers'].length > 0
@@ -613,7 +615,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 const futureLocationsRows = this.getLocationRowsWithLinkRequest(
                   res['requestLocationSellers']
                 );
-                this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+                let reqLocationRows : any =[];
+                for (const locRow of futureLocationsRows) {
+                  var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+                    locRow,
+                    locRow);
+                    reqLocationRows.push(data);
+                }
+                this.store.dispatch(new SetLocationsRows(reqLocationRows));
               }
               const requests = this.store.selectSnapshot(
                 (state: SpotNegotiationStoreModel) => {
