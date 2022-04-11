@@ -219,7 +219,7 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
           plainNumber = Math.trunc(plainNumber);
         }
 
-        return this._decimalPipe.transform(plainNumber, this.priceFormat);
+        return this._decimalPipe.transform(plainNumber.replace(/,/g,''), this.priceFormat);
       }
     }
     roundDown(value, pricePrecision) {
