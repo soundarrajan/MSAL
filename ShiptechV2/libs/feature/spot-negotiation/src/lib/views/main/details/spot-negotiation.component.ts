@@ -95,6 +95,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.legacyLookupsDatabase.getTableByName('counterparty').then(response => {
       this.store.dispatch(new SetCounterparties(response));
     });
+    this.store.subscribe(({ spotNegotiation }) => {
+      this.currentRequestData = spotNegotiation.locations;
+      this.allRequest = spotNegotiation.requests;
+    });
   }
 
 
@@ -161,10 +165,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.currentRequestData = spotNegotiation.locations;
-      this.allRequest = spotNegotiation.requests;
-    });
+    // this.store.subscribe(({ spotNegotiation }) => {
+    //   this.currentRequestData = spotNegotiation.locations;
+    //   this.allRequest = spotNegotiation.requests;
+    // });
     rowsArray.forEach((row, index) => {
       let rowrelatedrequest = this.allRequest.filter(
         row1 => row1.id == row.requestId
