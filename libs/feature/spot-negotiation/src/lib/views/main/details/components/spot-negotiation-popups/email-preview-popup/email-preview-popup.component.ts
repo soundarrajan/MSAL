@@ -916,7 +916,4 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.expandDocumentPopUp = false;
   }
 
- // ngOnDestroy() {    
- //   this.changeDetector.detach();
- // }
 }
