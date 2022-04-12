@@ -72,7 +72,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     offerAdditionalCostList,
     rowData,
     locationAdditionalCostsList,
-    index
+    index,
+    requestLocation
   ) {
     let totalAmount, productComponent;
     if (!additionalCost.costTypeId) {
@@ -118,8 +119,9 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
         productComponent = this.isProductComponent(additionalCost);
         if (additionalCost.isAllProductsCost || !productComponent) {
           totalAmount = this.sumProductAmounts(
+            rowData,
             rowData.requestOffers,
-            productList
+            requestLocation
           );
         } else {
           let findProductIndex = _.findIndex(rowData.requestOffers, function (
@@ -290,9 +292,22 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
   /**
   * Sum the Amount field of all products.
   */
-  sumProductAmounts(products, productList) {
+  sumProductAmounts(rowData, products, requestLocation) {
     let result = 0;
     let newProducts = _.cloneDeep(products);
+    let productList = [];
+    requestLocation.requestProducts.forEach((product: any, index) => {
+      //if (product.status != 'Stemmed') {
+        let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function (
+          object: any
+        ) {
+          return object.requestProductId == product.id && object.price;
+        });
+        if (findRowDataOfferIndex != -1) {
+          productList.push(product);
+        }
+     // }
+    });
     for (let i = 0; i < newProducts.length; i++) {
       let currentPrice = Number(newProducts[i].price);
       let findProduct = _.find(productList, function (item) {
@@ -334,7 +349,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     rowData,
     locationAdditionalCostsList,
     totalMaxQuantity,
-    maxQuantityUomId
+    maxQuantityUomId,
+    requestLocation
   ) {
     for (let i = 0; i < additionalCostList.length; i++) {
       if (!additionalCostList[i].isDeleted) {
@@ -358,7 +374,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
           productList,
           rowData,
           locationAdditionalCostsList,
-          i
+          i,
+          requestLocation
         );
         // else {
         //   this.calculateAdditionalCostAmounts(
@@ -441,7 +458,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                   sellerOffers,
                   locAdditionCostsList,
                   totalMaxQuantity,
-                  maxQuantityUomId
+                  maxQuantityUomId,
+                  requestLocation
                 );
 
 
@@ -462,7 +480,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                     productList,
                     sellerOffers,
                     locAdditionCostsList,
-                    i
+                    i,
+                    requestLocation
                   );
                   // else {
                   //   offerAdditionCostsList[i].totalAmount = 0;
@@ -686,7 +705,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     productList,
     rowData,
     locationAdditionalCostsList,
-    index
+    index,
+    requestLocation
   ) {
     if (additionalCost.costTypeId == 2) {
       this.addPriceUomChanged(
@@ -695,7 +715,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
         offerAdditionalCostList,
         rowData,
         locationAdditionalCostsList,
-        index
+        index,
+        requestLocation
       );
     } else {
       this.calculateAdditionalCostAmounts(
@@ -705,7 +726,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
         offerAdditionalCostList,
         rowData,
         locationAdditionalCostsList,
-        index
+        index,
+        requestLocation
       );
     }
   }
@@ -736,7 +758,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     offerAdditionalCostList,
     rowData,
     locationAdditionalCostsList,
-    index
+    index,
+    requestLocation
   ) {
     if (!additionalCost.priceUomId) {
       return;
@@ -753,7 +776,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
         offerAdditionalCostList,
         rowData,
         locationAdditionalCostsList,
-        index
+        index,
+        requestLocation
       );
     }
   }
@@ -766,7 +790,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     offerAdditionalCostList,
     rowData,
     locationAdditionalCostsList,
-    index
+    index,
+    requestLocation
   ) {
     this.getConvertedUOM(
       prod.productId,
@@ -779,7 +804,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       offerAdditionalCostList,
       rowData,
       locationAdditionalCostsList,
-      index
+      index,
+      requestLocation
     );
   }
 
@@ -794,7 +820,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     offerAdditionalCostList,
     rowData,
     locationAdditionalCostsList,
-    index
+    index,
+    requestLocation
   ) {
     let payload = {
       Payload: {
@@ -819,7 +846,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
           offerAdditionalCostList,
           rowData,
           locationAdditionalCostsList,
-          index
+          index,
+          requestLocation
         );
       }
     } else {
@@ -848,7 +876,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                 offerAdditionalCostList,
                 rowData,
                 locationAdditionalCostsList,
-                index
+                index,
+                requestLocation
               );
             }
           }
