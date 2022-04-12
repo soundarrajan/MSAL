@@ -47,7 +47,6 @@ export const COST_TYPE_IDS = {
 export class SpotNegotiationPriceCalcService extends BaseStoreService
   implements OnDestroy {
   additionalCostTypes: any = [];
-  currentRequestSmallInfo: any;
   notPercentageLocationCostRows: any[];
   notAllSelectedCostRows: any[];
   applicableForItems: any[];
@@ -398,9 +397,10 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     updatedRow
   ) : Promise<any> {
     if(sellerOffers.requestOffers){
+      let offerAdditionCostsList = [];
+      let locAdditionCostsList = [];
       let request : any;
       this.store.subscribe(({ spotNegotiation, ...props }) => {
-        this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
         this.locations = spotNegotiation.locations;
         request = spotNegotiation.requests?.find(r => r.id == sellerOffers.requestId);
       });
@@ -415,27 +415,29 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
         let requestLocation = request?.requestLocations[
           findRequestLocationIndex
         ];
-        const payload = {
-          offerId: sellerOffers.requestOffers[0].offerId,
-          requestLocationId: sellerOffers.requestLocationId,
-          isLocationBased: false
-        };
+        locAdditionCostsList = _.cloneDeep(requestLocation?.requestAdditionalCosts);
+        offerAdditionCostsList = _.cloneDeep(sellerOffers?.requestAdditionalCosts);
+        // const payload = {
+        //   offerId: sellerOffers.requestOffers[0].offerId,
+        //   requestLocationId: sellerOffers.requestLocationId,
+        //   isLocationBased: false
+        // };
         this.notPercentageLocationCostRows = [];
         this.notAllSelectedCostRows = [];
         this.createAdditionalCostTypes();
-        let response = await this.spotNegotiationService
-          .getAdditionalCosts(payload)
-          //.subscribe((response: any) => 
-          if(response!= null){
-            if (response?.message == 'Unauthorized') {
-              return;
-            }
-            if (typeof response === 'string') {
-              // this.getSellerLine(updatedRow, colDef, newValue, elementidValue);
-              return;
-            } else {
-              let offerAdditionCostsList = response.offerAdditionalCosts;
-              let locAdditionCostsList = response.locationAdditionalCosts;
+        // let response = await this.spotNegotiationService
+        //   .getAdditionalCosts(payload)
+        //   //.subscribe((response: any) => 
+        //   if(response!= null){
+        //     if (response?.message == 'Unauthorized') {
+        //       return;
+        //     }
+        //     if (typeof response === 'string') {
+        //       // this.getSellerLine(updatedRow, colDef, newValue, elementidValue);
+        //       return;
+        //     } else {
+              // offerAdditionCostsList = response.offerAdditionalCosts;
+              // locAdditionCostsList = response.locationAdditionalCosts;
               let {
                 productList,
                 applicableForItems,
@@ -509,8 +511,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                     }
                   });
                 });
-            }
-          }
+          //   }
+          // }
           //});
       }
     }
