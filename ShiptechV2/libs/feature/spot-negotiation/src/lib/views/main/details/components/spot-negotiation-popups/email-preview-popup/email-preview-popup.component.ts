@@ -33,21 +33,22 @@ interface Items {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmailPreviewPopupComponent implements OnInit {
-  public configuration = {
-    height: '450px',
-    disableNativeSpellChecker: false,
-    // fullPage: true,
-    allowContent: true,
-    extraAllowedContent:
-      'div;h1;h2;h3;h4;h5;h6;p;textarea;text;script;template;span;ol;ul;li;table;td;style;*[id];*(*);*{*};<!--(*); -->(*)',
-    defaultLanguage: 'en',
-    language: 'en',
-    toolbar: 'MyToolbar',
-    removePlugins: 'elementspath',
-    ignoreEmptyParagraph: true,
-    removeButtons: 'Anchor'
-  };
-
+   public configuration = {
+     height: '450px',
+     disableNativeSpellChecker: false,
+     // fullPage: true,
+     allowContent: true,
+     extraAllowedContent:
+       'div;h1;h2;h3;h4;h5;h6;p;textarea;text;script;template;span;ol;ul;li;table;td;style;*[id];*(*);*{*};<!--(*); -->(*)',
+     defaultLanguage: 'en',
+     language: 'en',
+     toolbar: 'MyToolbar',
+     removePlugins: 'elementspath',
+     ignoreEmptyParagraph: true,
+     removeButtons: 'Anchor',
+     readOnly: false
+   };
+ 
   public SelectedSellerWithProds: any;
   currentRequestInfo: any;
   selected: any;
@@ -156,7 +157,9 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.requestOptions = spotNegotiation.requests;
       this.locationRowsAcrossRequest = spotNegotiation.locationsRows;
     });
-
+   if(this.readonly){
+    this.configuration.readOnly = true;
+   }
     if (
       !this.readonly &&
       this.prod1 == false &&
