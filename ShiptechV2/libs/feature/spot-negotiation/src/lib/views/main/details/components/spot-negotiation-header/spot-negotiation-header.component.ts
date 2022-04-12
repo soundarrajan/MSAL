@@ -489,6 +489,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
+        row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
 
         return row;
       }
@@ -546,6 +547,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
+          row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         }
       }
 
