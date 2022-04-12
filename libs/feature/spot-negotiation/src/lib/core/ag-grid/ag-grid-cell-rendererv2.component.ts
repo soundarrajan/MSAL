@@ -1432,6 +1432,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     if (pricePrecision === 4) {
       precisionFactor = 10000;
     }
+    if (pricePrecision === 5) {
+      precisionFactor = 100000;
+    }
     response = Math.floor(intvalue * precisionFactor) / precisionFactor;
     return response.toString();
   }
