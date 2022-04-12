@@ -300,7 +300,7 @@ export class EmailPreviewPopupComponent implements OnInit {
             this.filesList[i].isIncludedInMail = true;
           }
           setTimeout(() => {
-            this.changeDetector.detectChanges();
+            this.changeDetector.markForCheck();
             this.spinner.hide();
           }, 1000);
         } else {
@@ -571,7 +571,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         } 
         this.store.dispatch(new SetLocationsRows(reqLocationRows));
 
-        this.changeDetector.detectChanges();
+        this.changeDetector.markForCheck();
       }
 
       if (this.previewTemplate.comment.emailTemplate.id == 10) {
@@ -850,7 +850,7 @@ export class EmailPreviewPopupComponent implements OnInit {
           }
           this.documentsList = _.cloneDeep(response);
           this.documentListForSearch = _.cloneDeep(response);
-          this.changeDetector.detectChanges();
+          this.changeDetector.markForCheck();
         }
       });
   }
@@ -917,4 +917,5 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.documentListForSearch = _.cloneDeep(this.documentsList);
     this.expandDocumentPopUp = false;
   }
+
 }
