@@ -1872,9 +1872,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         ][0].headerGroupComponentParams.reqLocationId = reqLocation.id;
         this.columnDef_aggridObj[
           i
-        ][0].headerGroupComponentParams.selectedSellersCount = filterobj?.filter(
-          row => row.isSelected
-        ).length;
+        ][0].headerGroupComponentParams.selectedSellersCount = filterobj.length;
         this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts =
           reqLocation.requestProducts.length;
 
