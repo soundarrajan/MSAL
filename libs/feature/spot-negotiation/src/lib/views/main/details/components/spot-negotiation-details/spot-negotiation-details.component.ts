@@ -887,6 +887,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         let updatedRow = { ...sellerOffers };
         updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
         updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
+        updatedRow.requestAdditionalCosts = priceDetailsRes.sellerOffers[0].requestAdditionalCosts;
         for (
           let i = 0;
           i < priceDetailsRes.sellerOffers[0].requestOffers.length;

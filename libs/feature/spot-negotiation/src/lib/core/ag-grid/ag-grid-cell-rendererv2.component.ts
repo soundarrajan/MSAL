@@ -1131,6 +1131,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
               updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
               updatedRow.requestOffers =
                 priceDetailsRes.sellerOffers[0].requestOffers;
+              updatedRow.requestAdditionalCosts = priceDetailsRes.sellerOffers[0].requestAdditionalCosts;
                 var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
                   updatedRow,
                   updatedRow);
@@ -1935,6 +1936,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
         updatedRow.requestOffers =
           priceDetailsRes.sellerOffers[0].requestOffers;
+        updatedRow.requestAdditionalCosts = priceDetailsRes.sellerOffers[0].requestAdditionalCosts;
         // Update the store
         var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
           updatedRow,
@@ -2033,6 +2035,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
         updatedRow.requestOffers =
           priceDetailsRes.sellerOffers[0].requestOffers;
+        updatedRow.requestAdditionalCosts = priceDetailsRes.sellerOffers[0].requestAdditionalCosts;
         // Update the store
         var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
           updatedRow,
