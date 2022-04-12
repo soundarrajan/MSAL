@@ -500,16 +500,21 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                 }
               }
               productList.forEach(pro => {
+                let totalOffer = 0;
+                let totalCost = 0
                 updatedRow.requestOffers.forEach(reqOff => {
-                    if (reqOff.requestProductId == pro.id) {
-          
+                    if (reqOff.requestProductId == pro.id) {          
                       reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
                       reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
                       reqOff.targetDifference = reqOff.totalPrice - (pro.requestGroupProducts
                         ? pro.requestGroupProducts.targetPrice
                         : 0);
+                      totalOffer += reqOff.amount;
+                      totalCost += reqOff.cost;
                     }
-                  });
+                  }); 
+                  updatedRow.totalOffer = totalOffer;
+                  updatedRow.totalCost = totalCost;
                 });
           //   }
           // }
