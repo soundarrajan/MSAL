@@ -393,9 +393,10 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
   }
 
   async checkAdditionalCost(
-    sellerOffers,
+    sellOffs,
     updatedRow
   ) : Promise<any> {
+    let sellerOffers =  _.cloneDeep(sellOffs);
     if(sellerOffers.requestOffers){
       let offerAdditionCostsList = [];
       let locAdditionCostsList = [];
@@ -502,7 +503,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
               productList.forEach(pro => {
                 let totalOffer = 0;
                 let totalCost = 0
-                updatedRow.requestOffers.forEach(reqOff => {
+                sellerOffers.requestOffers.forEach(reqOff => {
                     if (reqOff.requestProductId == pro.id) {          
                       reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
                       reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
@@ -513,15 +514,15 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                       totalCost += reqOff.cost;
                     }
                   }); 
-                  updatedRow.totalOffer = totalOffer;
-                  updatedRow.totalCost = totalCost;
+                  sellerOffers.totalOffer = totalOffer;
+                  sellerOffers.totalCost = totalCost;
                 });
           //   }
           // }
           //});
       }
     }
-  return updatedRow;
+  return sellerOffers;
   }
 
   getSellerLine(sellerOffers, colDef, newValue, elementidValue) {
