@@ -3,6 +3,7 @@ import {
   ElementRef,
   ViewChild,
   ChangeDetectorRef,
+  ChangeDetectionStrategy,
   Inject
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -156,7 +157,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
           <span
             class="mail-icon-new mail-active"
             (click)="openEmailPreview(params)"
-            *ngIf="isRfqSendForAnyProduct()"
+            *ngIf="params | isRfqSendForAnyProduct:isRfqSendForAnyProduct1"
             matTooltip="View preview email"
             matTooltipClass="lightTooltip"
             >a</span
@@ -257,7 +258,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="no-quote-text aggrid-text-align-c"
       *ngIf="
         params.type == 'price-calc' &&
-        checkIfRequestOffersHasNoQuote(params.index)
+        (params.index | checkIfRequestOffersHasNoQuote : checkIfRequestOffersHasNoQuote1)
       "
     >
       <span>No quote</span>
@@ -269,14 +270,14 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
     <div
       *ngIf="
         params.type == 'price-calc' &&
-        !checkIfRequestOffersHasNoQuote(params.index)
+        !(params.index | checkIfRequestOffersHasNoQuote : checkIfRequestOffersHasNoQuote1)
       "
-      [ngClass]="!isOfferRequestAvailable() ? 'no-price-data' : ''"
+      [ngClass]="!('null' | isOfferRequestAvailable:isOfferRequestAvailable1) ? 'no-price-data' : ''"
     >
       <!-- TODO check this code... -->
-      <span *ngIf="!isOfferRequestAvailable()">-</span>
+      <span *ngIf="!('null' | isOfferRequestAvailable:isOfferRequestAvailable1)">-</span>
       <div
-        *ngIf="isOfferRequestAvailable()"
+        *ngIf="('null' | isOfferRequestAvailable:isOfferRequestAvailable1)"
         [ngClass]="
           params.product.status === 'Stemmed' ||
           params.product.status === 'Confirmed'
@@ -311,12 +312,6 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             <mat-form-field
               class="without-search currency-select-trigger"
               appearance="none"
-              *ngIf="
-                !(
-                  params.product.status === 'Stemmed' ||
-                  params.product.status === 'Confirmed'
-                )
-              "
             >
               <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
               <!-- ** {{params.currency}} --  -->
@@ -327,14 +322,11 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="
-                  checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated(
-                    paramsDataClone
-                  )
-                "
+                [disabled]="paramsDataClone | checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated : checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1"
               >
                 <mat-select-trigger overlayPanelClass="123class">
-                  {{ getCurrencyCode(paramsDataClone.currency) }}
+                  <!-- {{ getCurrencyCode(paramsDataClone.currency) }} -->
+                    {{ paramsDataClone.currency | getCurrencyCode:getCurrencyCode1 }}
                 </mat-select-trigger>
                 <mat-option [disabled]>Change Currency </mat-option>
                 <mat-option
@@ -360,11 +352,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
               appearance="none"
               *ngIf="
                 (params.product.status === 'Stemmed' ||
-                  params.product.status === 'Confirmed') &&
-                checkIfProductIsStemmedWithAnotherSeller(
-                  paramsDataClone,
-                  params.product
-                )
+                  params.product.status === 'Confirmed')
               "
             >
               <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
@@ -376,11 +364,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="
-                  checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated(
-                    paramsDataClone
-                  )
-                "
+                [disabled]="paramsDataClone | checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated : checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1"
               >
                 <mat-select-trigger overlayPanelClass="123class">
                   {{ getCurrencyCode(paramsDataClone.currency) }}
@@ -414,13 +398,13 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             (change)="onPriceChange($event, params)"
             autofocus
             #inputSection
-            value="{{ priceFormatValue(params.value) }}"
+            value="{{ params.value |  priceFormatValue : priceFormatValue1 }}"
             autocomplete="off"
             name="inputField"
             spellcheck="false"
             type="text"
             style="display:inline"
-            [matTooltip]="priceFormatValue(params.value)"
+            [matTooltip]="params.value |  priceFormatValue : priceFormatValue1"
             [disabled]="
               params.product.status === 'Stemmed' ||
               params.product.status === 'Confirmed'
@@ -606,7 +590,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
 
     <div
       *ngIf="
-        params.type == 'addTpr' && !checkIfRequestOffersHasNoQuote(params.index)
+        params.type == 'addTpr' && !(params.index | checkIfRequestOffersHasNoQuote : checkIfRequestOffersHasNoQuote1)
       "
       class="addTpr"
     >
@@ -619,7 +603,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
 
     <div
       *ngIf="
-        params.type == 'amt' && !checkIfRequestOffersHasNoQuote(params.index)
+        params.type == 'amt' && !(params.index | checkIfRequestOffersHasNoQuote : checkIfRequestOffersHasNoQuote1)
       "
       class="addTpr"
     >
@@ -631,7 +615,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
 
     <div
       *ngIf="
-        params.type == 'diff' && !checkIfRequestOffersHasNoQuote(params.index)
+        params.type == 'diff' && !(params.index | checkIfRequestOffersHasNoQuote : checkIfRequestOffersHasNoQuote1)
       "
       class="addTpr"
     >
@@ -721,9 +705,9 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
           <span class="search-icon-dark"></span>
         </span>
       </div>
-    </div>
-  `
-})
+    </div>`,
+    changeDetection: ChangeDetectionStrategy.OnPush
+  })
 export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   @ViewChild('inputSection') inputSection: ElementRef;
   @ViewChild('menuTriggerHover') menuTriggerHover: MatMenuTrigger;
@@ -743,7 +727,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   public editedSeller = '';
   public phySupplierId = 0;
   public priceFormat = '';
-
+  public stcount = 0;
   public docVal = 'Document Uploaded';
   counterpartyColumns: string[] = ['counterparty', 'blank'];
   counterpartyList = [];
@@ -767,6 +751,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   uomList: any[] = [];
   currencyListForAdditionalCost: any[] = [];
   priceChanged: boolean = false;
+  check_count = 0;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -870,7 +855,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
   }
-
+  public isRfqSendForAnyProduct1 = ()=> {
+    const { requestOffers } = this.params.data || {};
+    if (!requestOffers) {
+      return false;
+    }
+  }
   isRfqSendForAnyProduct(): boolean {
     const { requestOffers } = this.params.data || {};
 
@@ -917,7 +907,22 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
     this.editSeller = false;
   }
+  public isOfferRequestAvailable1 = () =>{
+    const { requestOffers } = this.params.data || {};
+    if (!requestOffers) {
+      return false;
+    }
+    const productId = this.params.product.id;
+    const offerExists = requestOffers.find(
+      e => e.requestProductId === productId && e.offerId
+    );
+    if (offerExists) {
+      return true;
+    }
+    return false;
+  }
   isOfferRequestAvailable(): boolean {
+    //console.log(this.stcount++ +" isOfferRequestAvailable...");
     // Array of requestoffers
     const { requestOffers } = this.params.data || {};
 
@@ -1280,6 +1285,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   sellerratingpopup() {
+    //console.log("sellerratingpopup");
     const dialogRef = this.dialog.open(SellerratingpopupComponent, {
       width: '1164px',
       height: '562px',
@@ -1441,7 +1447,32 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     response = Math.floor(intvalue * precisionFactor) / precisionFactor;
     return response.toString();
   }
-
+  public priceFormatValue1 = (value) => {
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    let productPricePrecision = this.tenantService.pricePrecision;
+    let num = plainNumber.split('.', 2);
+    //Offer Price to follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
+    if (plainNumber == num) {
+      this.priceFormat = '';
+    } else {
+      this.priceFormat = '1.' + 0 + '-' + productPricePrecision;
+    }
+    if (plainNumber) {
+      if (productPricePrecision) {
+        plainNumber = this.roundDown(plainNumber, productPricePrecision + 1);
+      } else {
+        plainNumber = Math.trunc(plainNumber);
+      }
+      return this._decimalPipe.transform(plainNumber, this.priceFormat);
+    }
+  }
   priceFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
       return null;
@@ -1594,7 +1625,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
                 requestLocation,
                 requestOffer
               );
-              if (!productAreStemmedOrConfirmed) {
+              if (!productAreStemmedOrConfirmed && !requestOffer.hasNoQuote) {
                 // console.log('Request Offer :', requestOffer);
 
                 let columnIndex = this.getColumnProductIndex(
@@ -1682,8 +1713,24 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       elementidValue: this.returnRowIndex(params)
     });
   }
-
+  public checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1 = (params) => {
+    const requestLocation = this.getCurrentRequestLocation();
+    for (let i = 0; i < params?.requestOffers.length; i++) {
+      if (
+        this.checkIfProductIsStemmedOrConfirmed(
+          requestLocation,
+          params.requestOffers[i]
+        ) &&
+        params.requestOffers[i].orderProducts &&
+        params.requestOffers[i].orderProducts.length > 0
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
   checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated(params) {
+    //console.log(this.stcount++ +" checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated...");
     const requestLocation = this.getCurrentRequestLocation();
     for (let i = 0; i < params.requestOffers.length; i++) {
       if (
@@ -1726,7 +1773,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   getCurrentRequestLocation() {
+ // console.log(this.stcount++ +" getCurrentRequestLocation...");
     this.store.subscribe(({ spotNegotiation, ...props }) => {
+      //console.log(this.stcount++ +" store calling...");
       this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
     });
     let requestLocationId = this.params.data.requestLocationId;
@@ -1945,9 +1994,16 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.params.node.setData(locRow);
       });
   }
+  public getCurrencyCode1 = (currencyId)  => {
+    //this._spotNegotiationService.callGridRefreshService();
+    let currency = this.currencyList?.filter(el => el.id == currencyId)[0];
+    return currency ? currency.code : false;
+  }
 
   getCurrencyCode(currencyId) {
+    //console.log( this.check_count++ + "getCurrencyCode...");
     let currency = this.currencyList?.filter(el => el.id == currencyId)[0];
+    //console.log(currency);
     return currency ? currency.code : false;
   }
 
@@ -1956,7 +2012,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let colId = this.params.column.colId;
     this.params.node.setDataValue(colId, checked);
   }
-  refresh(): boolean {
+  refresh() {
     return false;
   }
 
@@ -2002,13 +2058,24 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           type === 'enable-quote'
             ? 'Selected Offer Price has been enabled.'
             : "Selected Offers have been marked as 'No Quote' successfully.";
-        this.toastr.success(successMessage);
+        this.toastr.success(successMessage,'',{timeOut: 800});
         this.getSellerLineDetails();
       } else {
         this.spinner.hide();
         this.toastr.error('An error has occurred!');
       }
     });
+  }
+  public  checkIfRequestOffersHasNoQuote1 = (index) =>{
+    if (
+      this.paramsDataCloneForNoQuote &&
+      this.paramsDataCloneForNoQuote.requestOffers &&
+      this.paramsDataCloneForNoQuote.requestOffers[index] &&
+      this.paramsDataCloneForNoQuote.requestOffers[index].hasNoQuote
+    ) {
+      return true;
+    }
+    return false;
   }
 
   checkIfRequestOffersHasNoQuote(index) {
@@ -2158,7 +2225,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           }
         }
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
-        this.toastr.success('Phy. Supplier added successfully');
+        this.toastr.success('Phy. Supplier added successfully','',{timeOut: 800});
       } else {
         if (this.phySupplierId && this.params?.value) {
           const counterpartyList = this.store.selectSnapshot<any>(
