@@ -18,6 +18,7 @@ import { DecimalPipe } from '@angular/common';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { finalize } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
+import { UpdateRequest } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 
 export const COMPONENT_TYPE_IDS = {
   TAX_COMPONENT: 1,
@@ -269,7 +270,9 @@ export class ApplicablecostpopupComponent implements OnInit {
       const payload = {
         additionalCosts: this.locationBasedCosts.concat(this.deletedCosts)
       };
-
+    let reqs = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
       this.spotNegotiationService
         .saveOfferAdditionalCosts(payload)
         .subscribe((res: any) => {
@@ -278,9 +281,21 @@ export class ApplicablecostpopupComponent implements OnInit {
             return;
           }
           if (res.status) {
+            let locAddCosts = res?.costs?.locationAdditionalCosts;
             this.locationBasedCosts = this.formatCostItemForDisplay(
               res?.costs?.locationAdditionalCosts
             );
+            reqs = reqs.map(e => {
+              let requestLocations = e.requestLocations.map(reqLoc => {
+                if(locAddCosts?.filter(loc => reqLoc.id == loc.requestLocationId).length > 0){
+                  let requestAdditionalCosts = locAddCosts.filter(loc => reqLoc.id == loc.requestLocationId);    
+                  return { ...reqLoc, requestAdditionalCosts };
+                }
+                return reqLoc;            
+              });
+               return { ...e, requestLocations };
+            });            
+            this.store.dispatch(new UpdateRequest(reqs));
             this.toastr.success('Additional cost saved successfully.');
             this.closeDialog();
           } else this.toastr.error('Please try again later.');
@@ -1266,7 +1281,9 @@ export class ApplicablecostpopupComponent implements OnInit {
     const payload = {
       additionalCosts: this.locationBasedCosts.concat(this.copiedLocationCost)
     };
-
+    let reqs = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
     let requestLocationId = this.requestLocation.id;
     this.spotNegotiationService
       .saveOfferAdditionalCosts(payload)
@@ -1276,6 +1293,7 @@ export class ApplicablecostpopupComponent implements OnInit {
           return;
         }
         if (res.status) {
+          let locAddCosts = res?.costs?.locationAdditionalCosts;
           this.locationBasedCosts = this.formatCostItemForDisplay(
             _.filter(res?.costs?.locationAdditionalCosts, function(
               locationCost
@@ -1283,6 +1301,17 @@ export class ApplicablecostpopupComponent implements OnInit {
               return locationCost.requestLocationId == requestLocationId;
             })
           );
+          reqs = reqs.map(e => {
+            let requestLocations = e.requestLocations.map(reqLoc => {
+              if(locAddCosts?.filter(loc => reqLoc.id == loc.requestLocationId).length > 0){
+                let requestAdditionalCosts = locAddCosts.filter(loc => reqLoc.id == loc.requestLocationId);    
+                return { ...reqLoc, requestAdditionalCosts };
+              }
+              return reqLoc;            
+            });
+             return { ...e, requestLocations };
+          });
+          this.store.dispatch(new UpdateRequest(reqs));
           this.toastr.success('Additional cost copied successfully.');
 
           this.closeDialog();
