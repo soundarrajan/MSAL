@@ -145,7 +145,7 @@ export function MSALInterceptConfigFactory() {
       selectorOptions: { injectContainerState: false, suppressErrors: false }
     }),
     NgxsReduxDevtoolsPluginModule.forRoot({ name: 'General-Store' }),
-    NgxsLoggerPluginModule.forRoot({ disabled: true }),
+    NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,
