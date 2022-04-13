@@ -132,6 +132,7 @@ export function MSALInterceptConfigFactory() {
     MaterialModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    
     CoreModule,
     !environment.useAdal
       ? AuthenticationMsalModule.forRoot()
@@ -144,7 +145,7 @@ export function MSALInterceptConfigFactory() {
       selectorOptions: { injectContainerState: false, suppressErrors: false }
     }),
     NgxsReduxDevtoolsPluginModule.forRoot({ name: 'General-Store' }),
-    NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
+    NgxsLoggerPluginModule.forRoot({ disabled: true }),
     DeveloperToolbarModule,
     LoadingBarRouterModule,
     TitleModule,

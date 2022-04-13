@@ -439,8 +439,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         return;
       }
       if (res.status) {
-        this.toastr.success('Price update successful.');
-
+        this.toastr.success('Price update successful.','',{timeOut: 800});
         //var params = { force: true };
         setTimeout(() => {
           //this.gridOptions_counterparty.api?.refreshCells(params);
@@ -449,7 +448,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             if (element) {
               this.moveCursorToEnd(element);
             }
-          }, 1000);
+          }, 100);
         });
 
         reqs = reqs.map(e => {
@@ -489,15 +488,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
     element.parentNode.classList.add("focus-price-highlight");
   }
-
   refreshGridDetails() {
     if (this.interval) {
       clearInterval(this.interval);
     }
     this.interval = setTimeout(() => {
-      var params = { force: true };
+      var params = { };
       this.gridOptions_counterparty.api?.refreshCells(params);
-    }, 200);
+    }, 100);
   }
 
   formatRowDataPrice(row, product, field, newValue) {
@@ -525,7 +523,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   // Calculate row fields and return new row;
 
   selectAllRenderer(params) {}
+  
   getRowNodeId(data) {
+    const d = new Date();
+   let ms = d.valueOf();
     return data.id;
   }
 
@@ -2037,7 +2038,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           //gridApi.applyTransaction({ remove: dataRows });
           gridApi.updateRowData({ remove: dataRows });
           this.toastr.success(
-            'Counterparty has been removed from negotiation succesfully.'
+            'Counterparty has been removed from negotiation succesfully.','',{timeOut: 800}
           );
           this.store.dispatch(new RemoveCounterparty({ rowId: rowData.id }));
           this.store.dispatch(
