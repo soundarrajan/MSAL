@@ -78,6 +78,15 @@ import { CustomHeader } from './core/ag-grid/custom-header.component';
 import { CustomHeaderSelectAll } from './core/ag-grid/custom-header-select-all.component';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { SpotNegotiationPriceCalcService } from './services/spot-negotiation-price-calc.service';
+import { 
+  getCurrencyCode,
+  isRfqSendForAnyProduct,
+  checkIfRequestOffersHasNoQuote,
+  isOfferRequestAvailable,
+  checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated,
+  checkIfProductIsStemmedWithAnotherSeller,
+  priceFormatValue } from '../lib/core/pipes/ag.pipe';
+
 
 @NgModule({
   imports: [
@@ -114,6 +123,13 @@ import { SpotNegotiationPriceCalcService } from './services/spot-negotiation-pri
   ],
   declarations: [
     MainSpotNegotiationComponent,
+    getCurrencyCode,
+    isRfqSendForAnyProduct,
+    checkIfRequestOffersHasNoQuote,
+    isOfferRequestAvailable,
+    checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated,
+    checkIfProductIsStemmedWithAnotherSeller,
+    priceFormatValue,
     SpotNegotiationComponent,
     SpotNegotiationHomeComponent,
     SpotnegoAdditionalcostComponent,
