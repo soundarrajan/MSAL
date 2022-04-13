@@ -851,21 +851,21 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     $.each(ctrl.request.locations, (lk, lv) => {
                         $.each(lv.products, (pk, pv) => {
                             var isInList = false;
+                            if (!ctrl.request.locations[lk].products[pk].specGroups) {
+                                ctrl.request.locations[lk].products[pk].specGroups = [];
+                            }
                             $.each(server_data.data.payload, (k,v) => {
                                 if (v.reference == pv.product.id) {
-                                    if (!ctrl.request.locations[lk].products[pk].specGroups) {
-                                        ctrl.request.locations[lk].products[pk].specGroups = [];
-                                    }
                                     ctrl.request.locations[lk].products[pk].specGroups.push(v);
 
-                                        if (v.isDefault && !ctrl.request.locations[lk].products[pk].specGroup && !ctrl.request.locations[lk].products[pk].id) {
-                                            ctrl.request.locations[lk].products[pk].specGroup = v;
+                                    if (v.isDefault && !ctrl.request.locations[lk].products[pk].specGroup && !ctrl.request.locations[lk].products[pk].id) {
+                                        ctrl.request.locations[lk].products[pk].specGroup = v;
+                                    }
+                                    if (ctrl.request.locations[lk].products[pk].specGroup) {
+                                        if (v.id == ctrl.request.locations[lk].products[pk].specGroup.id) {
+                                            isInList = true;
                                         }
-                                        if (ctrl.request.locations[lk].products[pk].specGroup) {
-                                            if (v.id == ctrl.request.locations[lk].products[pk].specGroup.id) {
-                                                isInList = true;
-                                            }
-                                        }
+                                    }
                                 }
                             })
                             if (!isInList) {
