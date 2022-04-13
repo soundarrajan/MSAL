@@ -369,7 +369,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
 
         this.toaster.success('RFQ(s) sent successfully.');
-        this.spotNegotiationService.callGridRefreshService();
+        this.spotNegotiationService.callGridRefreshServiceAll();
         if (res['message'].length > 5) this.toaster.warning(res['message']);
       } else if (res instanceof Object) {
         this.toaster.warning(res.Message);
@@ -1033,6 +1033,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('Amend RFQ(s) sent successfully.');
+          this.spotNegotiationService.callGridRefreshServiceAll();
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
           this.toaster.warning(res.Message);
@@ -1091,7 +1092,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) skipped successfully.');
-          this.spotNegotiationService.callGridRefreshService();
+          this.spotNegotiationService.callGridRefreshServiceAll();
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
           this.toaster.warning(res.Message);
@@ -1217,7 +1218,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) revoked successfully.');
-          this.spotNegotiationService.callGridRefreshService();
+          this.spotNegotiationService.callGridRefreshServiceAll();
           if (res['message'].length > 3) this.toaster.warning(res['message']);
           // else
           //   this.toaster.success('RFQ(s) revoked successfully.');
@@ -1347,6 +1348,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('Requote RFQ(s) sent successfully.');
+          this.spotNegotiationService.callGridRefreshServiceAll();
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
           this.toaster.warning(res.Message);

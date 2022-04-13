@@ -67,6 +67,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   public frameworkComponents;
   private gridApi!: GridApi;
   interval: any = 0;
+  intervalAll: any = 0;
   rowData_aggrid: any = [];
   locationsRows: any = [];
   currentRequestSmallInfo: any;
@@ -355,6 +356,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.spotNegotiationService.gridRefreshService$.subscribe(() => {
       this.refreshGridDetails();
     });
+
+    this.spotNegotiationService.gridRefreshServiceAll$.subscribe(() => {
+      this.refreshGridDetailsAll();
+    });
+
   }
 
   onRowGroupOpened(event: RowGroupOpenedEvent) {
@@ -488,15 +494,27 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
     element.parentNode.classList.add("focus-price-highlight");
   }
+
   refreshGridDetails() {
     if (this.interval) {
       clearInterval(this.interval);
     }
     this.interval = setTimeout(() => {
-      var params = { };
+      var params = { force:false };
       this.gridOptions_counterparty.api?.refreshCells(params);
     }, 100);
   }
+
+  refreshGridDetailsAll() {
+    if (this.intervalAll) {
+      clearInterval(this.interval);
+    }
+    this.intervalAll = setTimeout(() => {
+      var params = { force:true };
+      this.gridOptions_counterparty.api?.refreshCells(params);
+    }, 100);
+  }
+
 
   formatRowDataPrice(row, product, field, newValue) {
     const productDetails = this.spotNegotiationService.getRowProductDetails(
