@@ -503,6 +503,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           QuoteByTimeZoneId: this.selectedOffers[0].QuoteByTimeZoneId, //this.requestOffers.Select(off => off.QuoteByTimeZoneId).FirstOrDefault()
           Comments: ''
         };
+        //add/modifiy market prices
+        var FreezeMarketPricesPayload = {
+          FreezePriceRequests: this.productPricePayload(
+            this.selectedOffers
+          )
+        };
         //this.toaster.info('Please wait while the offer is confirmed');
         this.spinner.show();
         setTimeout(() => {
@@ -521,12 +527,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                   Date.now() - (<any>window).startConfirmOfferTime,
                   (<any>window).location.href
                 );
-                //add/modifiy market prices
-                var FreezeMarketPricesPayload = {
-                  FreezePriceRequests: this.productPricePayload(
-                    this.selectedOffers
-                  )
-                };
+
                 let response = this.spotNegotiationService.UpdateProductPrices(
                   FreezeMarketPricesPayload
                 );
@@ -630,6 +631,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         // );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
+        row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
@@ -661,6 +663,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         // }
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
+        row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
@@ -786,19 +789,19 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   }
   productPricePayload(selectedOffers) {
     let selectedOffs = [];
-    selectedOffers.forEach((confirmOff, key) => {
+    for( let i = 0; i < selectedOffers.length ; i++){
       let selectOff = {
-        RequestGroupId: confirmOff.RequestGroupId,
-        RequestLocationId: confirmOff.RequestLocationId,
-        RequestProductId: confirmOff.RequestProductId,
-        ClosurePrice: confirmOff.ClosurePrice ? confirmOff.ClosurePrice : 0,
-        BestContract: confirmOff.BestContract ? confirmOff.BestContract : 0,
-        BestContractId: confirmOff.BestContractId,
-        BenchMark: confirmOff.BenchMark ? confirmOff.BenchMark : 0,
-        ClosureDate: confirmOff.ClosureDate ? confirmOff.ClosureDate : null
+        RequestGroupId: selectedOffers[i].RequestGroupId,
+        RequestLocationId: selectedOffers[i].RequestLocationId,
+        RequestProductId: selectedOffers[i].RequestProductId,
+        ClosurePrice: selectedOffers[i].ClosurePrice ? selectedOffers[i].ClosurePrice : 0,
+        BestContract: selectedOffers[i].BestContract ? selectedOffers[i].BestContract : 0,
+        BestContractId: selectedOffers[i].BestContractId,
+        BenchMark: selectedOffers[i].BenchMark ? selectedOffers[i].BenchMark : 0,
+        ClosureDate: selectedOffers[i].ClosureDate ? selectedOffers[i].ClosureDate : null
       };
       selectedOffs.push(selectOff);
-    });
+    }
     return selectedOffs;
   }
 }

@@ -1131,6 +1131,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
               updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
               updatedRow.requestOffers =
                 priceDetailsRes.sellerOffers[0].requestOffers;
+              updatedRow.requestAdditionalCosts = priceDetailsRes.sellerOffers[0].requestAdditionalCosts;
                 var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
                   updatedRow,
                   updatedRow);
@@ -1206,6 +1207,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         // );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
+        row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
@@ -1237,6 +1239,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         // }
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
+        row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
@@ -1435,6 +1438,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
     if (pricePrecision === 4) {
       precisionFactor = 10000;
+    }
+    if (pricePrecision === 5) {
+      precisionFactor = 100000;
     }
     response = Math.floor(intvalue * precisionFactor) / precisionFactor;
     return response.toString();
@@ -1934,6 +1940,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
         updatedRow.requestOffers =
           priceDetailsRes.sellerOffers[0].requestOffers;
+        updatedRow.requestAdditionalCosts = priceDetailsRes.sellerOffers[0].requestAdditionalCosts;
         // Update the store
         var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
           updatedRow,
@@ -2032,6 +2039,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
         updatedRow.requestOffers =
           priceDetailsRes.sellerOffers[0].requestOffers;
+        updatedRow.requestAdditionalCosts = priceDetailsRes.sellerOffers[0].requestAdditionalCosts;
         // Update the store
         var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
           updatedRow,

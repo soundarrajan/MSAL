@@ -27,9 +27,9 @@
           </thead>
           <tbody id="tableBody" style="min-height: 580px; height: auto;">
             <tr id = "commentList" *ngFor="let items of locationData">
-              <td class="text-left w-157">{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
-              <td class="text-left w-95">$ {{priceFormatValue(items.priceDiff) | number}}</td>
-              <td class="text-left w-95" >$ {{priceFormatValue(items.price)| number}}</td>
+              <td class="text-left w-157" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
+              <td class="text-left w-95">$ {{priceFormatValue(items.priceDiff)}}</td>
+              <td class="text-left w-95" >$ {{priceFormatValue(items.price)}}</td>
                 <td  class="text-left ">
                   <table >
                     <tbody>

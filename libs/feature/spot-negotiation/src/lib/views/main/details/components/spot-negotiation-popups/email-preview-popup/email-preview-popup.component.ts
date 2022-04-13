@@ -33,21 +33,22 @@ interface Items {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmailPreviewPopupComponent implements OnInit {
-  public configuration = {
-    height: '450px',
-    disableNativeSpellChecker: false,
-    // fullPage: true,
-    allowContent: true,
-    extraAllowedContent:
-      'div;h1;h2;h3;h4;h5;h6;p;textarea;text;script;template;span;ol;ul;li;table;td;style;*[id];*(*);*{*};<!--(*); -->(*)',
-    defaultLanguage: 'en',
-    language: 'en',
-    toolbar: 'MyToolbar',
-    removePlugins: 'elementspath',
-    ignoreEmptyParagraph: true,
-    removeButtons: 'Anchor'
-  };
-
+   public configuration = {
+     height: '450px',
+     disableNativeSpellChecker: false,
+     // fullPage: true,
+     allowContent: true,
+     extraAllowedContent:
+       'div;h1;h2;h3;h4;h5;h6;p;textarea;text;script;template;span;ol;ul;li;table;td;style;*[id];*(*);*{*};<!--(*); -->(*)',
+     defaultLanguage: 'en',
+     language: 'en',
+     toolbar: 'MyToolbar',
+     removePlugins: 'elementspath',
+     ignoreEmptyParagraph: true,
+     removeButtons: 'Anchor',
+     readOnly: false
+   };
+ 
   public SelectedSellerWithProds: any;
   currentRequestInfo: any;
   selected: any;
@@ -156,7 +157,9 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.requestOptions = spotNegotiation.requests;
       this.locationRowsAcrossRequest = spotNegotiation.locationsRows;
     });
-
+   if(this.readonly){
+    this.configuration.readOnly = true;
+   }
     if (
       !this.readonly &&
       this.prod1 == false &&
@@ -302,7 +305,7 @@ export class EmailPreviewPopupComponent implements OnInit {
             this.filesList[i].isIncludedInMail = true;
           }
           setTimeout(() => {
-            this.changeDetector.detectChanges();
+            this.changeDetector.markForCheck();
             this.spinner.hide();
           }, 1000);
         } else {
@@ -583,7 +586,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         } 
         this.store.dispatch(new SetLocationsRows(reqLocationRows));
 
-        this.changeDetector.detectChanges();
+        this.changeDetector.markForCheck();
       }
 
       if (this.previewTemplate.comment.emailTemplate.id == 10) {
@@ -696,6 +699,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         }
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
+        row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
@@ -727,6 +731,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         }
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
+        row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
@@ -860,7 +865,7 @@ export class EmailPreviewPopupComponent implements OnInit {
           }
           this.documentsList = _.cloneDeep(response);
           this.documentListForSearch = _.cloneDeep(response);
-          this.changeDetector.detectChanges();
+          this.changeDetector.markForCheck();
         }
       });
   }
@@ -927,4 +932,5 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.documentListForSearch = _.cloneDeep(this.documentsList);
     this.expandDocumentPopUp = false;
   }
+
 }

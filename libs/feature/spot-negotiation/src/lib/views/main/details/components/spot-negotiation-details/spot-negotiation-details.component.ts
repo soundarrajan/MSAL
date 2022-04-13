@@ -887,6 +887,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         let updatedRow = { ...sellerOffers };
         updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
         updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
+        updatedRow.requestAdditionalCosts = priceDetailsRes.sellerOffers[0].requestAdditionalCosts;
         for (
           let i = 0;
           i < priceDetailsRes.sellerOffers[0].requestOffers.length;
@@ -1871,9 +1872,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         ][0].headerGroupComponentParams.reqLocationId = reqLocation.id;
         this.columnDef_aggridObj[
           i
-        ][0].headerGroupComponentParams.selectedSellersCount = filterobj?.filter(
-          row => row.isSelected
-        ).length;
+        ][0].headerGroupComponentParams.selectedSellersCount = filterobj.length;
         this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts =
           reqLocation.requestProducts.length;
 
@@ -2248,6 +2247,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
+        row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
@@ -2279,6 +2279,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // }
         row.totalOffer = detailsForCurrentRow[0].totalOffer;
         row.totalCost = detailsForCurrentRow[0].totalCost;
+        row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId

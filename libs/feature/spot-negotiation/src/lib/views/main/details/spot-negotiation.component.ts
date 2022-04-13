@@ -95,6 +95,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.legacyLookupsDatabase.getTableByName('counterparty').then(response => {
       this.store.dispatch(new SetCounterparties(response));
     });
+    this.store.subscribe(({ spotNegotiation }) => {
+      this.currentRequestData = spotNegotiation.locations;
+      this.allRequest = spotNegotiation.requests;
+    });
   }
 
 
@@ -161,10 +165,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.currentRequestData = spotNegotiation.locations;
-      this.allRequest = spotNegotiation.requests;
-    });
+    // this.store.subscribe(({ spotNegotiation }) => {
+    //   this.currentRequestData = spotNegotiation.locations;
+    //   this.allRequest = spotNegotiation.requests;
+    // });
     rowsArray.forEach((row, index) => {
       let rowrelatedrequest = this.allRequest.filter(
         row1 => row1.id == row.requestId
@@ -225,6 +229,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
+        row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
 
         return row;
       }
@@ -268,6 +273,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
          );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
+          row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         }
       }
     }
