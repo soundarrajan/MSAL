@@ -500,19 +500,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       clearInterval(this.interval);
     }
     this.interval = setTimeout(() => {
-      var params = { force:false };
+      var params = { force:true  };
       this.gridOptions_counterparty.api?.refreshCells(params);
     }, 100);
   }
 
   refreshGridDetailsAll() {
-    if (this.intervalAll) {
-      clearInterval(this.interval);
-    }
-    this.intervalAll = setTimeout(() => {
       var params = { force:true };
       this.gridOptions_counterparty.api?.refreshCells(params);
-    }, 100);
   }
 
 

@@ -354,7 +354,9 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             <mat-form-field
               class="without-search currency-select-trigger"
               appearance="none"
-              *ngIf="false"
+              *ngIf="
+              (params.product.status === 'Stemmed' ||
+              params.product.status === 'Confirmed') &&  (params | checkIfProductIsStemmedWithAnotherSeller : checkIfProductIsStemmedWithAnotherSeller1)"
             >
               <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
               <!-- ** {{params.currency}} --  -->
@@ -1748,6 +1750,18 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return false;
   }
 
+  checkIfProductIsStemmedWithAnotherSeller1(params) {
+    let product = params.product;
+    let findOffer = _.find(params.requestOffers, function(requestOffer) {
+      return requestOffer.requestProductId === product.id;
+    });
+    if (findOffer) {
+      if (findOffer.orderProducts && findOffer.orderProducts.length > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
   checkIfProductIsStemmedWithAnotherSeller(params, product) {
     let findOffer = _.find(params.requestOffers, function(requestOffer) {
       return requestOffer.requestProductId === product.id;
@@ -1867,8 +1881,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         // );
         applyExchangeRate.subscribe((res: any) => {          
         params.api?.hideOverlay();
-        this._spotNegotiationService.callGridRefreshServiceAll;
-        
           if (res.status) {
             this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
             //this.store.dispatch(new EditLocationRow(futureRowData));
