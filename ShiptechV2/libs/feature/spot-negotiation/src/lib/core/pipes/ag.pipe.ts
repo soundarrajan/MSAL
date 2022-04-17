@@ -49,10 +49,11 @@ export class checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated implemen
 
 @Pipe({ name: 'checkIfProductIsStemmedWithAnotherSeller',pure:true})
 export class checkIfProductIsStemmedWithAnotherSeller implements PipeTransform {
-    transform(value): boolean {
-        //console.log(_count++ +"checkIfProductIsStemmedWithAnotherSeller...");
-      return true;
-    }
+  transform(templateValue : any, fnRefrence : Function, ...fnArguments : any[]): boolean {
+    fnArguments.unshift(templateValue);
+   // console.log(_count++ +"Calling...");
+    return (fnRefrence(templateValue,fnArguments));
+  }
 }
 
 @Pipe({ name: 'priceFormatValue',pure:true})
