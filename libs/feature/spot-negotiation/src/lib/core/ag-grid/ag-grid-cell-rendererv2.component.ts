@@ -1848,7 +1848,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.spinner.show();
     const response = this._spotNegotiationService.getExchangeRate(payload);
     response.subscribe((res: any) => {
-      this.spinner.hide();
       if (res.status) {
         exchangeRateValue = res.exchangeRateValue;
         //this.store.dispatch(new EditLocationRow(newData));
@@ -1899,6 +1898,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.toastr.warning(res.message);
         this.changeDetector.detectChanges();
       }
+      setTimeout(() => {this.spinner.hide()}, 1000);
     });
   }
 
