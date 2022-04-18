@@ -291,8 +291,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     const response = this.spotNegotiationService.getGroupOfSellers(
       groupRequestIdFromUrl
     );
-
-    response.subscribe((res: any) => {
+    response.subscribe(async (res: any) => {
       if(res?.message == 'Unauthorized'){
         return;
       }
@@ -303,23 +302,12 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
       // Populate store;
       if (res['requestLocationSellers']) {
-        // Demo manipulate location before entering store;
-        // TODO : get phySupplier, totalOffer, diff, amt, tPR from the endpoint directly.
-        // Get response from server and populate store
-        const responseGetPriceDetails = this.spotNegotiationService.getPriceDetails(
-          groupRequestIdFromUrl
-        );
+          // Demo manipulate location before entering store;
+          // TODO : get phySupplier, totalOffer, diff, amt, tPR from the endpoint directly.
 
-        responseGetPriceDetails.subscribe(async (priceDetailsRes: any) => {
-          // this.store.dispatch(
-          //   new SetLocationsRowsPriceDetails(priceDetailsRes['sellerOffers'])
-          // );
-          if(priceDetailsRes?.message == 'Unauthorized'){
-            return;
-          }
           const futureLocationsRows = this.getLocationRowsWithPriceDetails(
             res['requestLocationSellers'],
-            priceDetailsRes['sellerOffers']
+            res['sellerOffers']
           );
           // Demo format data
           let reqLocationRows : any =[];
@@ -332,11 +320,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
                   
           this.store.dispatch(new SetLocationsRowsOriData(reqLocationRows));
           this.store.dispatch(new SetLocationsRows(reqLocationRows));
-        });
-
-        this.changeDetector.detectChanges();
       }
     });
+    this.changeDetector.detectChanges();
   }
 
   getRequestList(): void {
