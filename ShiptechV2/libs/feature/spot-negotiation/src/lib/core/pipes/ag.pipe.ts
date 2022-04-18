@@ -43,7 +43,7 @@ export class checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated implemen
   transform(templateValue : any, fnRefrence : Function, ...fnArguments : any[]): boolean {
     fnArguments.unshift(templateValue);
    // console.log(_count++ +"Calling...");
-    return (fnRefrence(null,fnArguments));
+    return (fnRefrence(templateValue,fnArguments));
   }
 }
 

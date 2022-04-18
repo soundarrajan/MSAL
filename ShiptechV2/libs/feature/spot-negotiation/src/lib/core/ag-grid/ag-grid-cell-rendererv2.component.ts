@@ -326,7 +326,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
               >
                 <mat-select-trigger overlayPanelClass="123class">
                   <!-- {{ getCurrencyCode(paramsDataClone.currency) }} -->
-                    {{ paramsDataClone.currency | getCurrencyCode:getCurrencyCode1 }}
+                    {{ paramsDataClone.currency | getCurrencyCode:getCurrencyCode1 }} 
                 </mat-select-trigger>
                 <mat-option [disabled]>Change Currency </mat-option>
                 <mat-option
@@ -355,7 +355,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
               class="without-search currency-select-trigger"
               appearance="none"
               *ngIf="
-              (params.product.status === 'Stemmed' ||
+              !(params.product.status === 'Stemmed' ||
               params.product.status === 'Confirmed') &&  (params | checkIfProductIsStemmedWithAnotherSeller : checkIfProductIsStemmedWithAnotherSeller1)"
             >
               <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
@@ -384,7 +384,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                         [value]="currency.id"
                         [checked]="paramsDataClone.currency == currency.id"
                       >
-                        {{ currency.code }}
+                        {{ currency.code }} xxx
                       </mat-radio-button>
                     </mat-radio-group>
                   </span>
@@ -1845,10 +1845,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       toCurrencyCode: this.getCurrencyCode(toCurrency)
     };
     let exchangeRateValue = 1;
-    params.api?.showLoadingOverlay();
+    this.spinner.show();
     const response = this._spotNegotiationService.getExchangeRate(payload);
     response.subscribe((res: any) => {
-      params.api.hideOverlay();
+      this.spinner.hide();
       if (res.status) {
         exchangeRateValue = res.exchangeRateValue;
         //this.store.dispatch(new EditLocationRow(newData));
