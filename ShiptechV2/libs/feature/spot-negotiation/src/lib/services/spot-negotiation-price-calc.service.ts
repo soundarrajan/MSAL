@@ -500,9 +500,9 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                   // }
                 }
               }
+              let totalOffer = 0;
+              let totalCost = 0
               productList.forEach(pro => {
-                let totalOffer = 0;
-                let totalCost = 0
                 sellerOffers.requestOffers.forEach(reqOff => {
                     if (reqOff.requestProductId == pro.id) {          
                       reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
@@ -514,9 +514,9 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                       totalCost += reqOff.cost;
                     }
                   }); 
-                  sellerOffers.totalOffer = totalOffer;
-                  sellerOffers.totalCost = totalCost;
                 });
+                sellerOffers.totalOffer = totalOffer;
+                sellerOffers.totalCost = totalCost;
           //   }
           // }
           //});
