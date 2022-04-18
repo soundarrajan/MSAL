@@ -326,7 +326,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
               >
                 <mat-select-trigger overlayPanelClass="123class">
                   <!-- {{ getCurrencyCode(paramsDataClone.currency) }} -->
-                    {{ paramsDataClone.currency | getCurrencyCode:getCurrencyCode1 }} 
+                    {{ paramsDataClone.currency | getCurrencyCode:getCurrencyCode1 }}
                 </mat-select-trigger>
                 <mat-option [disabled]>Change Currency </mat-option>
                 <mat-option
@@ -355,7 +355,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
               class="without-search currency-select-trigger"
               appearance="none"
               *ngIf="
-              !(params.product.status === 'Stemmed' ||
+              (params.product.status === 'Stemmed' ||
               params.product.status === 'Confirmed') &&  (params | checkIfProductIsStemmedWithAnotherSeller : checkIfProductIsStemmedWithAnotherSeller1)"
             >
               <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
@@ -384,7 +384,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                         [value]="currency.id"
                         [checked]="paramsDataClone.currency == currency.id"
                       >
-                        {{ currency.code }} xxx
+                        {{ currency.code }}
                       </mat-radio-button>
                     </mat-radio-group>
                   </span>
@@ -1848,7 +1848,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.spinner.show();
     const response = this._spotNegotiationService.getExchangeRate(payload);
     response.subscribe((res: any) => {
-      this.spinner.hide();
       if (res.status) {
         exchangeRateValue = res.exchangeRateValue;
         //this.store.dispatch(new EditLocationRow(newData));
@@ -1899,6 +1898,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.toastr.warning(res.message);
         this.changeDetector.detectChanges();
       }
+      setTimeout(() => {this.spinner.hide()}, 1000);
     });
   }
 
