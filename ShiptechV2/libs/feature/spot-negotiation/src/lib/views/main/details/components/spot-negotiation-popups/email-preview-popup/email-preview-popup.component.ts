@@ -50,6 +50,7 @@ export class EmailPreviewPopupComponent implements OnInit {
    };
  
   public SelectedSellerWithProds: any;
+  isDisabled:boolean = false;
   currentRequestInfo: any;
   selected: any;
   toEmail = '';
@@ -168,15 +169,17 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.prod4 == false &&
       this.prod5 == false
     ) {
+      this.isDisabled= true;
+      this.configuration.readOnly = true;
       this.toaster.error('Please select products to preview email');
       return;
+
     }
     if (this.selected) {
       this.getPreviewTemplate();
       this.getDocumentsList();
     }
   }
-
   getPreviewTemplate() {
     if (this.selected != 'MultipleRfqNewRFQEmailTemplate') {
       if (
