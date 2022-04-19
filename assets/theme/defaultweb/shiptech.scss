@@ -13170,7 +13170,7 @@ tr.title {
     margin-top: 10px;
   }
   .expansion-popup {
-    .proceed-div {
+   .proceed-div {
       border-top: 1px solid;
       margin: 0px -14px;
       height: 35px;
@@ -13183,6 +13183,7 @@ tr.title {
         background: #1d9fff !important;
         height: 30px;
         float: right;
+        line-height: 0px !important;
       }
     }
     mat-checkbox {
@@ -13599,7 +13600,9 @@ tr.title {
     color: #ffffff;
     line-height: 26px;
     font-size: 14px;
+    font-family: Roboto,sans-serif;
     font-weight: 500;
+    border: none !important;
   }
   .title-divider {
     display: inline-block;
