@@ -11624,6 +11624,7 @@ tr.title {
       border-top: 1px solid;
       margin: 0px -14px;
       height: 35px;
+      border-top-color: #000 !important;
       .proceed-btn {
         // left: 205px;
         // top: 10px;
@@ -22624,8 +22625,9 @@ mat-form-field {
         cursor: pointer;
         width: 90px;
         border-radius: 3px;
-        background: #00aae2;
+        background: #1d9fff;
         height: 30px;
+        line-height: 0px;
       }
     }
   }
