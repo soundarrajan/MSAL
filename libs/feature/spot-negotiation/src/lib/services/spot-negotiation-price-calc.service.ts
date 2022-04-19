@@ -507,11 +507,15 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                     if (reqOff.requestProductId == pro.id) {          
                       reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
                       reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
-                      reqOff.targetDifference = reqOff.totalPrice - (pro.requestGroupProducts
+                      // Target Difference = Total Price - Target Price
+                      reqOff.targetDifference = reqOff.totalPrice ? reqOff.totalPrice - (pro.requestGroupProducts
                         ? pro.requestGroupProducts.targetPrice
-                        : 0);
+                        : 0): null;
                       totalOffer += reqOff.amount;
                       totalCost += reqOff.cost;
+                      reqOff.targetDifference = pro.requestGroupProducts.targetPrice == 0
+                          ? 0
+                          : reqOff.targetDifference;
                     }
                   }); 
                 });
