@@ -869,7 +869,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 }
                             })
                             if (!isInList) {
-                                ctrl.request.locations[lk].products[pk].specGroup.isDeleted = true;
                                 ctrl.request.locations[lk].products[pk].specGroups.push(ctrl.request.locations[lk].products[pk].specGroup);
                             }
                             ctrl.request.locations[lk].products[pk].specGroups = _.uniqBy(ctrl.request.locations[lk].products[pk].specGroups, 'id');
