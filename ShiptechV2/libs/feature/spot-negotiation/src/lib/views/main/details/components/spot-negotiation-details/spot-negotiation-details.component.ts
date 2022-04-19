@@ -606,7 +606,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           product: product,
           flex: 2,
           width: 200,
-          minWidth: 125,
+          minWidth: 150,
           cellClass: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
               params.data,
