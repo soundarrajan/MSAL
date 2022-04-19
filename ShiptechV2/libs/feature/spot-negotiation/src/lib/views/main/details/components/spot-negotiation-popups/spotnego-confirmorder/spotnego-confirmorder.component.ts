@@ -45,6 +45,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   uomList: any;
   errorMessages: string;
   staticLists: any;
+  FreezeMarketPricesPayload:any;
   constructor(
     public dialogRef: MatDialogRef<SpotnegoConfirmorderComponent>,
     private store: Store,
@@ -367,6 +368,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         this.selectedOffers.push(itemVal);
       }
     });
+    //add/modifiy market prices
+    this.FreezeMarketPricesPayload = {
+      FreezePriceRequests: this.productPricePayload(
+        this.selectedOffers
+      )
+    };
     if (RequestProductIds.length > 0) {
       filters = [
         {
@@ -503,12 +510,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           QuoteByTimeZoneId: this.selectedOffers[0].QuoteByTimeZoneId, //this.requestOffers.Select(off => off.QuoteByTimeZoneId).FirstOrDefault()
           Comments: ''
         };
-        //add/modifiy market prices
-        var FreezeMarketPricesPayload = {
-          FreezePriceRequests: this.productPricePayload(
-            this.selectedOffers
-          )
-        };
         //this.toaster.info('Please wait while the offer is confirmed');
         this.spinner.show();
         setTimeout(() => {
@@ -527,17 +528,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                   Date.now() - (<any>window).startConfirmOfferTime,
                   (<any>window).location.href
                 );
+                this.updateProdPrices();
 
-                let response = this.spotNegotiationService.UpdateProductPrices(
-                  FreezeMarketPricesPayload
-                );
-                response.subscribe((res: any) => {
-                  if (res?.message == 'Unauthorized') {
-                    return;
-                  }
-                  if (res.status) {
-                  }
-                });
                 //this.openEditOrder(receivedOffers.payload);
                 const baseOrigin = new URL(window.location.href).origin;
                 window.open(
@@ -569,7 +561,17 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       }
     );
   }
-
+///market price update/insert api call
+  async updateProdPrices(){
+    let response = await this.spotNegotiationService.UpdateProductPrices(
+      this.FreezeMarketPricesPayload
+    );
+    response.subscribe((res: any) => {
+      if (res?.message == 'Unauthorized') {
+        return;
+      }
+    });
+  }
   getPriceDetails() {
     // Get current id from url and make a request with that data.
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {

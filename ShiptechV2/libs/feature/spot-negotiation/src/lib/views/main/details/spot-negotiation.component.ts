@@ -86,7 +86,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.spinner.show();
     this.getAdditionalCosts();
     this.getRequestGroup();
-    this.getGroupOfSellers();
     this.getCounterpartyList();
     this.getPhysicalSupplierList();
     this.getRequestList();
@@ -125,6 +124,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       // Set all request inside store
       if (res['requests']) {
         this.store.dispatch(new SetRequests(res['requests']));
+        this.getGroupOfSellers();
       }
 
       if ((<any>window).activeRequest && res['requests'][(<any>window).activeRequest.i]) {
