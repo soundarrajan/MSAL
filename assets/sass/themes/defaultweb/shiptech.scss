@@ -10471,6 +10471,7 @@ tr.title {
       input[type='search'].light {
         background: #fff;
         color: #222;
+        text-overflow: ellipsis;
       }
 
       input[type='search']::-webkit-search-cancel-button {
