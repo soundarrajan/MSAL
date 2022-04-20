@@ -41,15 +41,6 @@ export class BestcontractpopupComponent implements OnInit {
     this.getBestContract();
   }
 
-  roundDown(value, pricePrecision) {
-    const intvalue = parseFloat(value);
-    const reg = new RegExp('^-?\\d+(?:\\.\\d{0,' + pricePrecision + '})?', 'g');
-    const a = intvalue.toString().match(reg)[0];
-    const dot = a.indexOf('.');
-    const b = pricePrecision - (a.length - dot) + 1;
-    return a;
-  }
-
   priceFormatValue(value, type?: any) {
     if (typeof value == 'undefined' || value == null) {
       return null;
@@ -70,14 +61,11 @@ export class BestcontractpopupComponent implements OnInit {
       '1.' + productPricePrecision + '-' + productPricePrecision;
 
     if (plainNumber) {
-      if (productPricePrecision) {
-        plainNumber = this.roundDown(plainNumber, productPricePrecision);
-      } else {
-        plainNumber = Math.trunc(plainNumber);
+        if (!productPricePrecision) {
+          plainNumber = Math.trunc(plainNumber);
+        }
+        return this._decimalPipe.transform(plainNumber, this.priceFormat);
       }
-
-      return plainNumber;
-    }
   }
 
   quantityFormatValue(value) {

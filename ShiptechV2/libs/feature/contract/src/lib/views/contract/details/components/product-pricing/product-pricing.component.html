@@ -27,7 +27,7 @@
             [disabled]="formValues.hasInvoicedOrder"
             (selectionChange)="recomputeProductPricePrecision(selectedTabIndex)"
         >
-            <mat-option *ngFor="let option of createRange(0, 4)" [value]="option">
+            <mat-option *ngFor="let option of createRange(0, generalTenantSettings.defaultValues.maxPricePrecision)" [value]="option">
             {{ option }}
             </mat-option>
         </mat-select>
