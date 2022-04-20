@@ -526,8 +526,8 @@ export class SpotNegotiationService extends BaseStoreService
   /**
    * @param payload
    */
-  UpdateProductPrices(payload: any): Promise<any> {
-    return this.spotNegotiationApi.UpdateProductPrices(payload).toPromise();
+  UpdateProductPrices(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.UpdateProductPrices(payload);
   }
 
   ngOnDestroy(): void {
