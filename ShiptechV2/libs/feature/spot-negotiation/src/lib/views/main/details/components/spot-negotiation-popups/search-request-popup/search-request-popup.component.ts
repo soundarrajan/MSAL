@@ -10,6 +10,7 @@ import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/se
 import { AddRequest } from '../../../../../../store/actions/request-group-actions';
 import { AddCounterpartyToLocations } from '../../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 @Component({
   selector: 'app-search-request-popup',
@@ -51,6 +52,7 @@ export class SearchRequestPopupComponent implements OnInit {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private store: Store,
+    private format: TenantFormattingService,
     private _spotNegotiationService: SpotNegotiationService,
     public dialogRef: MatDialogRef<SearchRequestPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -415,7 +417,8 @@ export class SearchRequestPopupComponent implements OnInit {
       headerName: 'Date',
       headerTooltip: 'Date',
       field: 'requestDate',
-      cellClass: ['aggridtextalign-center']
+      cellClass: ['aggridtextalign-center'],
+      valueFormatter: params => this.format.date(params.value)
     },
     {
       headerName: 'Service',
@@ -445,7 +448,8 @@ export class SearchRequestPopupComponent implements OnInit {
       headerName: 'ETA',
       headerTooltip: 'ETA',
       field: 'eta',
-      cellClass: ['aggridtextalign-center']
+      cellClass: ['aggridtextalign-center'],
+      valueFormatter: params => this.format.date(params.value)
     },
     {
       headerName: 'Location',
