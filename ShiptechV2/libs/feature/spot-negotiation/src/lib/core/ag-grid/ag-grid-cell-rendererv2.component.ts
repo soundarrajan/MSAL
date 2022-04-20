@@ -157,7 +157,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
           <span
             class="mail-icon-new mail-active"
             (click)="openEmailPreview(params)"
-            *ngIf="params | isRfqSendForAnyProduct:isRfqSendForAnyProduct1"
+            *ngIf="isRfqSendForAnyProduct()"
             matTooltip="View preview email"
             matTooltipClass="lightTooltip"
             >a</span
@@ -1303,14 +1303,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         s.sellerCounterpartyId == params.data.sellerCounterpartyId &&
         s.requestId == params.data.requestId
     );
-    // let products = this.currentRequestInfo.requestLocations.filter(loc => this.locationRowsAcrossRequest.some(s => s.sellerCounterpartyId == params.data.sellerCounterpartyId && s.requestId == params.data.requestId && s.requestLocationId ==  loc.id)).map(prod =>
-    //   prod.requestProducts.map((e, i) => params.data['checkProd' + (i + 1)] ? e.id : undefined).filter(x => x)
-    // )
+    let products = this.currentRequestInfo.requestLocations.filter(loc => this.locationRowsAcrossRequest.some(s => s.sellerCounterpartyId == params.data.sellerCounterpartyId && s.requestId == params.data.requestId && s.requestLocationId ==  loc.id)).map(prod =>
+      prod.requestProducts.map((e, i) => params.data['checkProd' + (i + 1)] ? e.id : undefined).filter(x => x)
+    )
 
-    // if (products.length == 0) {
-    //   this.toastr.error('Please select a product against the seller in order to preview email.');
-    //   return;
-    // }
+    if (products[0].length==0) {
+      this.toastr.error('Please select products to preview email.');
+      return;
+    }
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
       width: '80vw',
       height: '90vh',
