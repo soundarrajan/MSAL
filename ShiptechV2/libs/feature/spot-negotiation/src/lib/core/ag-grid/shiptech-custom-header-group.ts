@@ -709,15 +709,6 @@ export class ShiptechCustomHeaderGroup {
     }
   }
 
-  roundDown(value, pricePrecision) {
-    const intvalue = parseFloat(value);
-    const reg = new RegExp('^-?\\d+(?:\\.\\d{0,' + pricePrecision + '})?', 'g');
-    const a = intvalue.toString().match(reg)[0];
-    const dot = a.indexOf('.');
-    const b = pricePrecision - (a.length - dot) + 1;
-    return a;
-  }
-
   priceFormatValue(value, type?: any) {
     if (typeof value == 'undefined' || value == null) {
       return type == 'benchMark' ? '--' : null;
@@ -754,12 +745,10 @@ export class ShiptechCustomHeaderGroup {
     }
 
     if (plainNumber) {
-      if (productPricePrecision) {
-        plainNumber = this.roundDown(plainNumber, productPricePrecision);
-      } else {
+      if (!productPricePrecision) {
         plainNumber = Math.trunc(plainNumber);
       }
-
+      plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
       //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font
       if (type && type == 'benchMark') {
         plainNumber = Math.abs(plainNumber);
