@@ -528,15 +528,16 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                   Date.now() - (<any>window).startConfirmOfferTime,
                   (<any>window).location.href
                 );
-                this.updateProdPrices();
-
-                //this.openEditOrder(receivedOffers.payload);
-                const baseOrigin = new URL(window.location.href).origin;
-                window.open(
-                  `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
-                  '_self'
-                );
-                this.toaster.success('order created successfully.');
+                let result  = this.updateProdPrices();
+                if(result){
+                  //this.openEditOrder(receivedOffers.payload);
+                  const baseOrigin = new URL(window.location.href).origin;
+                  window.open(
+                    `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
+                    '_self'
+                  );
+                  this.toaster.success('order created successfully.');
+                }                
               } else if (res instanceof Object) {
                 this.toaster.warning(res.Message);
               } else {
@@ -566,11 +567,17 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     let response = await this.spotNegotiationService.UpdateProductPrices(
       this.FreezeMarketPricesPayload
     );
-    response.subscribe((res: any) => {
-      if (res?.message == 'Unauthorized') {
+    if(response!= null){
+     if (response?.message == 'Unauthorized') {
         return;
       }
-    });
+      return true;
+    }
+    // response.subscribe((res: any) => {
+    //   if (res?.message == 'Unauthorized') {
+    //     return;
+    //   }
+    // });
   }
   getPriceDetails() {
     // Get current id from url and make a request with that data.
