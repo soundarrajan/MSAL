@@ -11,7 +11,8 @@ import {
   AddCounterpartyToLocations,
   AppendLocationsRowsOriData,
   EditLocationRow,
-  EditLocations
+  EditLocations,
+  UpdateRequest
 } from '../../store/actions/ag-grid-row.action';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 
@@ -797,6 +798,25 @@ export class ShiptechCustomHeaderGroup {
           locations = spotNegotiation.locations;
           locationsRows = spotNegotiation.locationsRows;
         });
+        let reqs = this.store.selectSnapshot<any>((state: any) => {
+          return state.spotNegotiation.requests;
+        });
+
+        reqs = reqs.map(e => {
+          let requestLocations = e.requestLocations.map(reqLoc => {
+            let requestProducts = reqLoc.requestProducts.map(reqProd => {
+              if(reqProd.id == this.requestProductId){
+                let requestGroupProducts = _.cloneDeep(reqProd.requestGroupProducts);
+                  requestGroupProducts.targetPrice = this.targetValue;
+                  requestGroupProducts.livePrice = this.livePrice.toString().replace(',', '');
+                  return { ...reqProd, requestGroupProducts };
+              }
+              return reqProd;
+            });
+            return { ...reqLoc, requestProducts };           
+          });
+           return { ...e, requestLocations };
+        });
         if (locations.length > 0) {
           locations.forEach(element => {
             if (
@@ -806,7 +826,7 @@ export class ShiptechCustomHeaderGroup {
               let filterLocationsRows = _.filter(locationsRows, function(elem) {
                 return elem.requestLocationId == element.id;
               });
-              let updatedLocRows = [];
+              let updatedLocRows = [];                          
               element.requestProducts.forEach((element1, index) => {
                 if (
                   element1.id == this.requestProductId &&
@@ -818,6 +838,7 @@ export class ShiptechCustomHeaderGroup {
                     index
                   );
                   this.store.dispatch(new EditLocations(updatedRow1));
+                  this.store.dispatch(new UpdateRequest(reqs));
                   for (let i = 0; i < filterLocationsRows.length; i++) {
                     const productDetails = this.getRowProductDetails(
                       filterLocationsRows[i],
