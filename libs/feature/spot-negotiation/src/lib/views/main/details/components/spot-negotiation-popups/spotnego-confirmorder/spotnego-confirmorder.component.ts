@@ -100,10 +100,14 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   }
   //popup grid data fill the value's..
   getSelectedLocationRowsForLocation() {
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.currentRequestInfo[0] = spotNegotiation.currentRequestSmallInfo;
-      this.tenantConfiguration = spotNegotiation.tenantConfigurations;
-      this.staticLists = spotNegotiation.staticLists;
+    this.currentRequestInfo[0] = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
+    });
+    this.tenantConfiguration = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.tenantConfigurations;
+    });
+    this.staticLists = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists;
     });
     this.currencyList = this.staticLists['currency'];
     this.productList = this.staticLists['product'];
@@ -603,10 +607,14 @@ export class SpotnegoConfirmorderComponent implements OnInit {
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
-    //let counterpartyList: any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      currentRequestData = spotNegotiation.locations;
-      //counterpartyList = spotNegotiation.counterparties;
+    let currencyList: any;
+    currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists.filter(
+        el => el.name == 'Currency'
+      )[0]?.items;
     });
 
     rowsArray.forEach((row, index) => {
@@ -637,6 +645,14 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
+        row.requestOffers = row.requestOffers.map(e => {
+          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          {
+            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+            return { ...e, currencyCode:  currencyCode};
+          }
+           //return { ...e, requestLocations };
+        });
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -669,6 +685,14 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         row.totalCost = detailsForCurrentRow[0].totalCost;
         row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
+        row.requestOffers = row.requestOffers.map(e => {
+          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          {
+            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+            return { ...e, currencyCode:  currencyCode};
+          }
+           //return { ...e, requestLocations };
+        });
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId

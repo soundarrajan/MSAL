@@ -53,9 +53,10 @@ export class CustomHeader implements IHeaderAngularComp {
 
   detectIfColumnIsSelected() {
     let locationsRows = [];
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      locationsRows = spotNegotiation.locationsRows;
+    locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
     });
+
     if (locationsRows.length) {
       let requestLocationId = this.requestLocationId;
       let currentLocationsRows = _.cloneDeep(

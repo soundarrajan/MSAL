@@ -423,10 +423,20 @@ export class SpotNegotiationHomeComponent implements OnInit {
     let currentRequestData: any;
     let counterpartyList: any;
     let requestlist: any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      currentRequestData = spotNegotiation.locations;
-      requestlist = spotNegotiation.requests;
-      counterpartyList = spotNegotiation.counterparties;
+    let currencyList: any;
+    currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    requestlist = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
+    counterpartyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.counterparties;
+    });
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists.filter(
+        el => el.name == 'Currency'
+      )[0]?.items;
     });
 
     rowsArray.forEach((row, index) => {
@@ -468,6 +478,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(requestLocations, row);
+        row.requestOffers = row.requestOffers.map(e => {
+          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          {
+            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+            return { ...e, currencyCode:  currencyCode};
+          }
+           //return { ...e, requestLocations };
+        });
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -501,6 +519,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.totalCost = detailsForCurrentRow[0].totalCost;
         row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         this.UpdateProductsSelection(requestLocations, row);
+        row.requestOffers = row.requestOffers.map(e => {
+          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          {
+            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+            return { ...e, currencyCode:  currencyCode};
+          }
+           //return { ...e, requestLocations };
+        });
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -550,11 +576,18 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   FilterselectedRowForRFQ() {
-    this.store.subscribe(({ spotNegotiation }) => {
+    let requests = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
+    let locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+
+    //this.store.subscribe(({ spotNegotiation }) => {
       this.selectedSellerList = [];
-      spotNegotiation.requests.forEach(req => {
+      requests.forEach(req => {
         req.requestLocations.forEach(element => {
-          spotNegotiation.locationsRows.forEach(element1 => {
+          locationsRows.forEach(element1 => {
             if (element.id == element1.requestLocationId) {
               if (
                 element1['checkProd1'] ||
@@ -576,7 +609,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           });
         });
       });
-    });
+    //});
     return this.selectedSellerList;
   }
 
@@ -1499,12 +1532,22 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   FilterselectedRowForCurrentRequest() {
-    this.store.subscribe(({ spotNegotiation }) => {
-      spotNegotiation.locations.forEach(element => {
-        spotNegotiation.locationsRows.forEach(element1 => {
+    let locations = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    let locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    let currentRequestSmallInfo = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
+    });
+
+    //this.store.subscribe(({ spotNegotiation }) => {
+      locations.forEach(element => {
+        locationsRows.forEach(element1 => {
           if (
             element.id == element1.requestLocationId &&
-            spotNegotiation.currentRequestSmallInfo.id == element1.requestId
+            currentRequestSmallInfo.id == element1.requestId
           ) {
             if (
               element1['checkProd1'] ||
@@ -1516,7 +1559,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
               var Sellectedsellerdata = this.ConstuctSellerPayload(
                 element1,
                 element.requestProducts,
-                spotNegotiation.currentRequestSmallInfo
+                currentRequestSmallInfo
               );
               if (Sellectedsellerdata) {
                 this.selectedSellerList.push(Sellectedsellerdata);
@@ -1525,7 +1568,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           }
         });
       });
-    });
+    //});
     return this.selectedSellerList;
   }
 

@@ -69,8 +69,8 @@ export class LocPanDataComponent implements OnInit {
   }
 
   additionalcostpopup() {
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.locationsRows = spotNegotiation.locationsRows;
+    this.locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
     });
 
     let currentLocationId = this.reqLocation.id;
