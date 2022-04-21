@@ -666,9 +666,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       return state.spotNegotiation.counterparties;
     });
     currencyList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.staticLists.filter(
-        el => el.name == 'Currency'
-      )[0]?.items;
+      return state.spotNegotiation.staticLists['currency'];
     });
 
     rowsArray.forEach((row, index) => {
@@ -707,6 +705,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
+        row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
           if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
           {
@@ -747,6 +746,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         row.totalCost = detailsForCurrentRow[0].totalCost;
         row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
+        row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
           if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
           {
