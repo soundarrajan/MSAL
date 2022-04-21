@@ -438,6 +438,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
 
     rowsArray.forEach((row, index) => {
+      let requestProducts = requestlist?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
       let requestLocations = currentRequestData.filter(
         row1 => row1.id == row.requestLocationId
       );
@@ -485,6 +486,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
            //return { ...e, requestLocations };
         });
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -527,6 +534,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
            //return { ...e, requestLocations };
         });
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
