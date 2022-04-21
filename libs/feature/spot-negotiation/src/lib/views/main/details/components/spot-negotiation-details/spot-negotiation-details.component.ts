@@ -131,9 +131,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           // checkboxSelection: true,
           // headerCheckboxSelection: true,
           resizable: false,
-          // suppressMovable: true,
+          suppressMovableColumns: true,
           suppressNavigable: true,
-          lockPosition: true,
+          lockVisible: true,
           pinned: 'left',
           headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
 
@@ -158,7 +158,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerClass: 'm-l-7',
           suppressNavigable: true,
           suppressSizeToFit: true,
-          lockPosition: true,
+          lockVisible: true,
           cellStyle: { overflow: 'visible' },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: {
@@ -171,7 +171,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerName: 'Gen. Rating',
           headerTooltip: 'Gen. Rating',
           suppressNavigable: true,
-          lockPosition: true,
+          lockVisible: true,
           pinned: 'left',
           field: 'genRating',
           width: 95,
@@ -189,7 +189,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerName: 'Port Rating',
           headerTooltip: 'Port Rating',
           suppressNavigable: true,
-          lockPosition: true,
+          lockVisible: true,
           pinned: 'left',
           field: 'portRating',
           width: 95,
@@ -207,7 +207,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerName: 'Phy. Supplier',
           headerTooltip: 'Phy. Supplier',
           suppressNavigable: true,
-          lockPosition: true,
+          lockVisible: true,
           pinned: 'left',
           headerClass: 'border-right',
           field: 'physicalSupplierCounterpartyName',
@@ -254,7 +254,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' },
           suppressNavigable: true,
-          lockPosition: true,
+          lockVisible: true,
           valueGetter: params => {
             let totalOfferVal = null;
             params.data.requestOffers?.forEach(element => {
@@ -300,9 +300,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
       columnDefs: this.columnDef_aggrid,
       suppressCellSelection: true,
-      suppressMovable: true,
+      // suppressMovable: true,
+      suppressMovableColumns: true,
       suppressDragLeaveHidesColumns: true,
-      lockPosition: true,
+      // lockVisible: true,
       headerHeight: 30,
       groupHeaderHeight: 80,
       rowHeight: 35,
@@ -536,7 +537,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   // Calculate row fields and return new row;
 
   selectAllRenderer(params) {}
-  
+
   getRowNodeId(data) {
     const d = new Date();
    let ms = d.valueOf();
@@ -560,7 +561,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       resizable: false,
       groupId: 'grid1',
       suppressMovable: true,
-      lockPosition: true,
+      lockVisible: true,
 
       children: [
         {
@@ -595,7 +596,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             requestProductId: product.id,
             productData: productData
           },
-          lockPosition: true,
+          lockVisible: true,
           headerComponentFramework: CustomHeader
         },
         {
@@ -661,7 +662,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             return false;
           },
           valueGetter: params => {
-            
+
             const details = this.spotNegotiationService.getRowProductDetails(
               params.data,
               product.id
@@ -684,7 +685,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             };
           },
           suppressSizeToFit: true,
-          lockPosition: true
+          lockVisible: true
         },
         {
           headerName: 'T.Pr.($)',
@@ -724,7 +725,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'addTpr', cellClass: '', index: index },
-          lockPosition: true
+          lockVisible: true
         },
         {
           headerName: 'Amt ($)',
@@ -751,7 +752,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'amt', cellClass: '', index: index },
-          lockPosition: true
+          lockVisible: true
         },
         {
           headerName: 'Tar. diff',
@@ -765,7 +766,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               product.id
             );
             return !product.requestGroupProducts.targetPrice
-              ? 0
+              ? null
               : details.targetDifference;
           },
           headerClass: 'border-right',
@@ -781,7 +782,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'diff', cellClass: '', index: index },
-          lockPosition: true
+          lockVisible: true
         },
         {
           headerName: 'MJ/KJ',
@@ -798,7 +799,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             }
             return 'grey-opacity-cell pad-lr-0';
           },
-          lockPosition: true
+          lockVisible: true
         },
         {
           headerName: 'TCO ($)',
@@ -815,7 +816,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             }
             return 'grey-opacity-cell pad-lr-0';
           },
-          lockPosition: true
+          lockVisible: true
         },
         {
           headerName: 'E. diff',
@@ -833,7 +834,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             }
             return 'line-seperator grey-opacity-cell pad-lr-5';
           },
-          lockPosition: true
+          lockVisible: true
         }
       ]
     };
@@ -866,11 +867,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       });
   }
   updateSellerLine(sellerOffers, colDef, newValue, elementidValue) {
-    const requestLocationSellerId = sellerOffers.id;
+    // const requestLocationSellerId = sellerOffers.id;
     let updatedRow = { ...sellerOffers };
-    const currentLocation = this.locations.find(
-      e => e.locationId === updatedRow.locationId
-    );
+    // const currentLocation = this.locations.find(
+    //   e => e.locationId === updatedRow.locationId
+    // );
 
     //Do the calculation here
     // updatedRow = this.spotNegotiationService.formatRowData(
@@ -883,7 +884,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     //   null
     // );
 
-    
+
     // Save to the cloud
     this.saveRowToCloud(updatedRow, colDef['product'], elementidValue);
   }
@@ -942,7 +943,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
         // Save to the cloud
         this.saveRowToCloud(updatedRow, colDef['product'], elementidValue);
-        
+
       });
   }
 
@@ -1881,18 +1882,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         // Assign ColumnDef_aggrid with dynamic location id
         this.columnDef_aggridObj.push(_.cloneDeep(this.columnDef_aggrid)); //;
 
-        this.columnDef_aggridObj[
-          i
-        ][0].headerGroupComponentParams.reqLocationId = reqLocation.id;
-        this.columnDef_aggridObj[
-          i
-        ][0].headerGroupComponentParams.selectedSellersCount = filterobj.length;
-        this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts =
-          reqLocation.requestProducts.length;
-
-        this.columnDef_aggridObj[
-          i
-        ][0].children[0].cellRendererParams.requestLocationId = reqLocation.id;
+        this.columnDef_aggridObj[i][0].headerGroupComponentParams.reqLocationId = reqLocation.id;
+        this.columnDef_aggridObj[i][0].headerGroupComponentParams.selectedSellersCount = filterobj.length;
+        this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts = reqLocation.requestProducts.length;
+        this.columnDef_aggridObj[i][0].children[0].cellRendererParams.requestLocationId = reqLocation.id;
 
         // These are locations!!
         const requestProductsLength = reqLocation.requestProducts.length;

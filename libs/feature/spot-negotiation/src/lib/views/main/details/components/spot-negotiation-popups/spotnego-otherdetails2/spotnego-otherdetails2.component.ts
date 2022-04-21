@@ -36,7 +36,9 @@ import {
 } from '@angular-material-components/datetime-picker';
 import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-  MomentDateAdapter} from '@angular/material-moment-adapter';
+  MomentDateAdapter
+} from '@angular/material-moment-adapter';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -433,6 +435,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     private spotNegotiationService: SpotNegotiationService,
     private toastr: ToastrService,
     public tenantFormat: TenantFormattingService,
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
     @Inject(MAT_DATE_FORMATS) private dateFormats,
     @Inject(NGX_MAT_DATE_FORMATS) private dateTimeFormats,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -452,13 +455,16 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     // .replace('dd/', 'DD/')
     // .replace('dd-', 'DD-');
 
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.staticLists = spotNegotiation.staticLists;
+    this.legacyLookupsDatabase.getTableByName('product').then(response => {
+      this.productList = response;
     });
-    this.uomList = this.setListFromStaticLists('Uom');
-    this.productList = this.setListFromStaticLists('Product');
-    this.inactiveList = this.setListFromStaticLists('InactiveProducts');
-    this.productList = this.productList.concat(this.inactiveList);
+    // this.legacyLookupsDatabase.getTableByName('inactiveProducts').then(response => {
+    //   this.inactiveList = response;
+    //   this.productList = this.productList.concat(this.inactiveList);
+    // });
+    this.legacyLookupsDatabase.getTableByName('uom').then(response => {
+      this.uomList = response;
+    });
     this.getOtherDetailsLoad();
   }
 
@@ -501,7 +507,6 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   getOtherDetailsLoad() {
     this.store.subscribe(({ spotNegotiation }) => {
       this.locationsRows = spotNegotiation.locationsRows;
-      this.staticLists = spotNegotiation.staticLists;
       this.locations = spotNegotiation.locations;
       this.tenantConfiguration = spotNegotiation.tenantConfigurations;
     });

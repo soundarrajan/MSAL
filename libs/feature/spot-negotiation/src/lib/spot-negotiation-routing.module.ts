@@ -2,10 +2,7 @@ import { MainSpotNegotiationComponent } from './views/main-spot-negotiation.comp
 import { SpotNegotiationComponent } from './views/main/details/spot-negotiation.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule, Type } from '@angular/core';
-
 import { KnownSpotNegotiationRoutes } from './known-spot-negotiation.routes';
-import { StaticListsRouteResolver } from './static-lists-route.resolver';
-import { NavBarResolver } from './views/main/details/navbar-route.resolver';
 import { UomsRouteResolver } from './uoms-route.resolver';
 import { SpotnegoemaillogComponent } from './views/main/details/components/spotnegoemaillog/spotnegoemaillog.component';
 import { NegotiationDocumentsComponent } from './views/main/details/components/negotiation-documents/negotiation-documents.component';
@@ -32,7 +29,6 @@ const routes: Routes = [
                 path: KnownSpotNegotiationRoutes.details,
                 component: SpotNegotiationComponent,
                 resolve: {
-                  staticLists: StaticListsRouteResolver,
                   uoms: UomsRouteResolver
                 },
                 data: {
@@ -68,7 +64,6 @@ const routes: Routes = [
                 path: `:${KnownSpotNegotiationRoutes.reqId}`,
                 component: SpotNegotiationComponent,
                 resolve: {
-                  staticLists: StaticListsRouteResolver,
                   uoms: UomsRouteResolver
                 },
                 data: {

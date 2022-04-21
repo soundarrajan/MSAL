@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import * as Highcharts from "highcharts";
+// import * as Highcharts from "highcharts";
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Store } from '@ngxs/store';
@@ -13,7 +12,7 @@ import { DecimalPipe } from '@angular/common';
 })
 export class SpotnegoOfferpricehistoryComponent implements OnInit {
 
-    highcharts = Highcharts;
+    /* highcharts = Highcharts;
     chartOptions = {
        chart: {
           height: 600,
@@ -120,7 +119,7 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
       enabled: false
     }
     };
-
+    */
   disableScrollDown = false
   public showaddbtn=true;
   public priceFormat ='';
@@ -180,7 +179,7 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
         return null;
       }
       let productPricePrecision = this.tenantService.pricePrecision;
-  
+
       this.priceFormat =
         '1.' + productPricePrecision + '-' + productPricePrecision;
       if (plainNumber) {

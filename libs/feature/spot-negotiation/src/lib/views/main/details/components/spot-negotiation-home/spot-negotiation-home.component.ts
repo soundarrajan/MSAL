@@ -219,7 +219,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
     let selectedFinalData = this.FilterselectedRowForRFQ();
     let requestOffers = [];
     selectedFinalData.forEach(e => {
-      requestOffers.push([...e.RequestOffers.map(e => e)]);
+      if(e.RequestOffers){
+        requestOffers.push([...e.RequestOffers.map(e => e)]);
+      }
     });
     requestOffers = requestOffers.reduce((acc, val) => acc.concat(val), []); // flatten array
     let checkIfExistRequestOffersWithNoQuote = _.filter(requestOffers, function(
@@ -369,7 +371,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
 
         this.toaster.success('RFQ(s) sent successfully.');
-        this.spotNegotiationService.callGridRefreshServiceAll();
+
         if (res['message'].length > 5) this.toaster.warning(res['message']);
       } else if (res instanceof Object) {
         this.toaster.warning(res.Message);
@@ -385,27 +387,18 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return state.spotNegotiation.locationsRows;
       });
 
-      // const requestGroupID = this.store.selectSnapshot<string>((state: any) => {
-      //   return state.spotNegotiation.groupOfRequestsId;
-      // });
-
       reqs = reqs.map(e => {
         let requestLocations = e.requestLocations.map(reqLoc => {
           let requestProducts = reqLoc.requestProducts.map(reqPro =>
             requestProductIds.some(x => x.includes(reqPro.id)) &&
             (reqPro.status.toLowerCase() == 'validated' ||
               reqPro.status.toLowerCase() == 'reopen')
-              ? { ...reqPro, status: 'Inquired' }
-              : reqPro
+              ? { ...reqPro, status: 'Inquired' }: reqPro
           );
-
           return { ...reqLoc, requestProducts };
         });
         return { ...e, requestLocations };
-      });      
-      // this.store.dispatch(
-      //   new SetLocationsRowsPriceDetails(res['sellerOffers'])
-      // );
+      });
 
       const futureLocationsRows = this.getLocationRowsWithPriceDetails(
         JSON.parse(JSON.stringify(locationsRows)),
@@ -421,6 +414,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.store.dispatch(new UpdateRequest(reqs));
       this.store.dispatch(new SetLocationsRows(reqLocationRows));
 
+      this.spotNegotiationService.callGridRefreshServiceAll();
       this.changeDetector.detectChanges();
     });
   }
@@ -879,7 +873,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       //       reqIdwithSellerName
       //   );
       //   return;
-      // } 
+      // }
       if (isPhySupMandatoryForQuoting) {
         this.toaster.error(
           'Physical Supplier(s) should be provided to copy offer price');
@@ -891,7 +885,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
         return;
       }
-    
+
       let requestLocationIds = [];
       selectedSellerRows.forEach(sellerRow => {
         requestLocationIds.push(sellerRow.RequestLocationId);
@@ -935,7 +929,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
             let updatedRow =  reqLocationsRows?.find(x => x.id === row.id);
               if (updatedRow) {
                 return updatedRow;
-              }            
+              }
             return row;
           });
           let futureLocationsRows = this.getLocationRowsWithSelectedSeller(
@@ -1127,7 +1121,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
             locRow,
             locRow);
             reqLocationRows.push(data);
-        }        
+        }
 
         this.requestOptions = this.requestOptions.map(e => {
           let requestLocations = e.requestLocations.map(reqLoc => {
@@ -1218,7 +1212,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) revoked successfully.');
-          this.spotNegotiationService.callGridRefreshServiceAll();
           if (res['message'].length > 3) this.toaster.warning(res['message']);
           // else
           //   this.toaster.success('RFQ(s) revoked successfully.');
@@ -1252,11 +1245,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
             locRow,
             locRow);
             reqLocationRows.push(data);
-        } 
+        }
         this.store.dispatch(new SetLocationsRows(reqLocationRows));
-
-        this.changeDetector.detectChanges();
-
         if (res.isGroupDeleted) {
           const baseOrigin = new URL(window.location.href).origin;
           window.open(
@@ -1290,6 +1280,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
             return requestLocations ? { ...e, requestLocations } : e;
           });
           this.store.dispatch(new UpdateRequest(this.requestOptions));
+          this.changeDetector.detectChanges();
+          this.spotNegotiationService.callGridRefreshServiceAll();
         }
       });
     }
@@ -1501,7 +1493,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
             locRow,
             locRow);
             reqLocationRows.push(data);
-        } 
+        }
         this.store.dispatch(new SetLocationsRows(reqLocationRows));
       });
   }

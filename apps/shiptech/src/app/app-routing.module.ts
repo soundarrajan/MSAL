@@ -279,7 +279,7 @@ const routes: Routes = environment.useAdal
         path: '',
         data: {
           breadcrumb: 'Spot Negotiation',
-          breadcrumbUrl: '/#/group-of-requests',
+          breadcrumbUrl: '/v2/group-of-requests',
           breadcrumbIcon: 'fa fa-home'
         },
         children: [

@@ -35,6 +35,9 @@
     "feature-smart": {
       "tags": []
     },
+    "feature-control-tower": {
+      "tags": []
+    },
     "feature-spot-negotiation": {
       "tags": []
     }
