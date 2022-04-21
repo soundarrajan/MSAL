@@ -19,6 +19,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
 import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 
 @Component({
   selector: 'app-spotnego-confirmorder',
@@ -59,10 +60,10 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     public format: TenantFormattingService,
     private myMonitoringService: MyMonitoringService,
     private route: ActivatedRoute,
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.getRequests();
-    this.getSelectedLocationRowsForLocation();
+
   }
 
   @ViewChild(AgGridDatetimePickerToggleComponent)
@@ -75,6 +76,21 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   }
   ngOnInit(): void {
     // this.scrollToBottom();
+    this.legacyLookupsDatabase.getTableByName('currency').then(response => {
+      this.currencyList = response;
+    });
+    this.legacyLookupsDatabase.getTableByName('product').then(response => {
+      this.productList = response;
+    });
+    // this.legacyLookupsDatabase.getTableByName('inactiveProducts').then(response => {
+    //   this.inactiveList = response;
+    //   this.productList = this.productList.concat(this.inactiveList);
+    // });
+    this.legacyLookupsDatabase.getTableByName('uom').then(response => {
+      this.uomList = response;
+    });
+    this.getRequests();
+    this.getSelectedLocationRowsForLocation();
   }
   openEditOrder(orderId: number): void {
     window.open(
@@ -89,11 +105,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       this.tenantConfiguration = spotNegotiation.tenantConfigurations;
       this.staticLists = spotNegotiation.staticLists;
     });
-    this.currencyList = this.setListFromStaticLists('Currency');
-    this.productList = this.setListFromStaticLists('Product');
-    this.inactiveList = this.setListFromStaticLists('InactiveProducts');
+    this.currencyList = this.staticLists['currency'];
+    this.productList = this.staticLists['product'];
+    // this.inactiveList = this.staticLists['inactiveProducts'];
     this.productList = this.productList.concat(this.inactiveList);
-    this.uomList = this.setListFromStaticLists('Uom');
+    this.uomList = this.staticLists['uom'];
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
@@ -301,14 +317,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     b: KeyValue<number, any>
   ): number => 0;
 
-  setListFromStaticLists(name) {
-    const findList = _.find(this.staticLists, function(object) {
-      return object.name == name;
-    });
-    if (findList != -1) {
-      return findList?.items;
-    }
-  }
   //Calculate TatalPrice - Not used onblur method confirm qty
   totalprice(rowIndex) {
     const currentRowIndex = rowIndex;
@@ -587,7 +595,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               locRow,
               locRow);
               reqLocationRows.push(data);
-          } 
+          }
           this.store.dispatch(new SetLocationsRows(reqLocationRows));
         }
       });

@@ -41,53 +41,6 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
-    <div *ngIf="params.type == 'singlerow'">
-      <div
-        [ngClass]="params.cellClass"
-        matTooltip="{{ params.value }}"
-        style="margin:0px"
-      >
-        <div class="truncate-125">{{ params.value }}</div>
-      </div>
-    </div>
-    <div *ngIf="params.type == 'searchbox-parent'">
-      <div [ngClass]="params.cellClass">
-        <div class="truncate-125">
-          {{ this.format.htmlDecode(params.value) }}
-        </div>
-      </div>
-    </div>
-    <div *ngIf="params.type == 'multirow'">
-      <div *ngIf="params.data.data">
-        <div
-          *ngFor="let item of params.data.data"
-          class="aggrid-multirow"
-          [ngClass]="params.classes"
-        >
-          <span class="aggrid-text-resizable">{{ item[params.label] }}</span>
-        </div>
-        <div
-          *ngIf="!params.data.data"
-          style="line-height: 15px"
-          [ngClass]="params.classes"
-        >
-          <span style="line-height: 15px" class="aggrid-text-resizable">{{
-            params.data
-          }}</span>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="params.type == 'roundchip'">
-      <div *ngFor="let item of params.data.data" class="aggrid-multirow">
-        <div [ngClass]="params.cellClass" title="{{ item[params.label] }}">
-          {{
-            params.letter != null
-              ? item[params.label].charAt(params.letter).toUpperCase()
-              : item[params.label]
-          }}
-        </div>
-      </div>
-    </div>
     <div *ngIf="params.type == 'rating-chip'">
       <div
         [ngClass]="params.cellClass"
@@ -190,8 +143,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
           ></span>
         </span>
       </div>
-    </div>
-    <mat-menu #clickmenupopup="matMenu" class="small-menu darkPanel">
+      <mat-menu #clickmenupopup="matMenu" class="small-menu darkPanel">
       <div
         class="p-tb-5"
         style="display:flex;align-items:center;"
@@ -208,23 +160,6 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         <span><div class="blue-comments-icon"></div></span>
         <span class="fs-12">Supplier Comments</span>
       </div>
-
-      <!-- <div class="p-tb-5" style="display:flex;align-items:center;">
-      <span><div class="quote-icon"></div></span>
-      <span class="fs-12">Quote</span>
-    </div>-->
-      <!-- <div class="p-tb-5" style="display:flex;align-items:center;">
-      <span><div class="requote-icon"></div></span>
-      <span class="fs-12">Requote</span>
-    </div> -->
-      <!--<div class="p-tb-5" style="display:flex;align-items:center;">
-      <span><div class="share-icon"></div></span>
-      <span class="fs-12">Share Best Quote</span>
-    </div>
-    <div class="p-tb-5" style="display:flex;align-items:center;">
-      <span><div class="archive-icon"></div></span>
-      <span class="fs-12">Archive Quote</span>
-    </div>-->
       <hr class="menu-divider-line" />
       <div class="p-tb-5" style="display:flex;align-items:center;">
         <span><div class="view-rfq-icon"></div></span>
@@ -253,44 +188,30 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
           >Remove counterparty</span
         >
       </div>
-    </mat-menu>
-    <div
-      class="no-quote-text aggrid-text-align-c"
-      *ngIf="
-        params.type == 'price-calc' &&
-        (params.index | checkIfRequestOffersHasNoQuote : checkIfRequestOffersHasNoQuote1)
-      "
-    >
-      <span>No quote</span>
+      </mat-menu>
     </div>
 
+    <div class="no-quote-text aggrid-text-align-c"
+      *ngIf="params.type == 'price-calc' &&
+        (params.index | checkIfRequestOffersHasNoQuote : checkIfRequestOffersHasNoQuote1)">
+      <span>No quote</span>
+    </div>
     <!-- Offer price cell -->
     <!-- [ngClass]="!isOfferRequestAvailable() ? 'input-disabled' : '' " -->
-
-    <div
-      *ngIf="
-        params.type == 'price-calc' &&
-        !(params.index | checkIfRequestOffersHasNoQuote : checkIfRequestOffersHasNoQuote1)
-      "
-      [ngClass]="!('null' | isOfferRequestAvailable:isOfferRequestAvailable1) ? 'no-price-data' : ''"
-    >
+    <div *ngIf="params.type == 'price-calc' && !(params.index | checkIfRequestOffersHasNoQuote : checkIfRequestOffersHasNoQuote1)"
+      [ngClass]="!('null' | isOfferRequestAvailable:isOfferRequestAvailable1) ? 'no-price-data' : ''">
       <!-- TODO check this code... -->
       <span *ngIf="!('null' | isOfferRequestAvailable:isOfferRequestAvailable1)">-</span>
       <div
         *ngIf="('null' | isOfferRequestAvailable:isOfferRequestAvailable1)"
-        [ngClass]="
-          params.product.status === 'Stemmed' ||
-          params.product.status === 'Confirmed'
+        [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed'
             ? 'input-disabled-new'
-            : ''
-        "
-      >
-        <div class="price-calc static-data" *ngIf="params.value === '100.00'">
+            : ''">
+        <!-- <div class="price-calc static-data" *ngIf="params.value === '100.00'">
           <span class="duplicate-icon"></span>
           $ {{ params.value }}
-        </div>
-        <div
-          class="price-calc active"
+        </div> -->
+        <div class="price-calc active"
           [matMenuTriggerFor]="priceMenupopup"
           #pricePopupTrigger="matMenuTrigger"
           (click)="pricePopupTrigger.closeMenu()"
@@ -298,21 +219,12 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             $event.preventDefault();
             $event.stopPropagation();
             onRightClickMenuOpened($event);
-            pricePopupTrigger.openMenu()
-          "
-        >
-          <span
-            class="duplicate-icon"
-            *ngIf="params.data.requestOffers[params.index]?.isOfferPriceCopied"
-          ></span>
-          <div
-            id="custom-form-field"
-            [ngClass]="ispriceCalculated ? '' : 'priceCalculated'"
-          >
+            pricePopupTrigger.openMenu()">
+          <span class="duplicate-icon" *ngIf="params.data.requestOffers[params.index]?.isOfferPriceCopied"></span>
+          <div id="custom-form-field" [ngClass]="ispriceCalculated ? '' : 'priceCalculated'">
             <mat-form-field
               class="without-search currency-select-trigger"
-              appearance="none"
-            >
+              appearance="none">
               <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
               <!-- ** {{params.currency}} --  -->
               <!-- ** {{ paramsDataClone.currency  --  -->
@@ -325,42 +237,30 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 [disabled]="paramsDataClone | checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated : checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1"
               >
                 <mat-select-trigger overlayPanelClass="123class">
-                  <!-- {{ getCurrencyCode(paramsDataClone.currency) }} -->
                     {{ paramsDataClone.currency | getCurrencyCode:getCurrencyCode1 }}
                 </mat-select-trigger>
                 <mat-option [disabled]>Change Currency </mat-option>
                 <mat-option
                   class="currency-mat-select"
                   *ngFor="let currency of currencyList"
-                  [value]="currency.id"
-                >
+                  [value]="currency.id">
                   <span>
                     <mat-radio-group>
                       <mat-radio-button
                         [value]="currency.id"
-                        [checked]="paramsDataClone.currency == currency.id"
-                      >
-                        {{ currency.code }} 
+                        [checked]="paramsDataClone.currency == currency.id">
+                        {{ currency.code }}
                       </mat-radio-button>
                     </mat-radio-group>
                   </span>
                 </mat-option>
               </mat-select>
             </mat-form-field>
-                <!-- *ngIf="
-                (params.product.status === 'Stemmed' ||
-                  params.product.status === 'Confirmed') && checkIfProductIsStemmedWithAnotherSeller(params.product,params)
-              " -->
             <mat-form-field
               class="without-search currency-select-trigger"
               appearance="none"
-              *ngIf="
-              (params.product.status === 'Stemmed' ||
-              params.product.status === 'Confirmed') &&  (params | checkIfProductIsStemmedWithAnotherSeller : checkIfProductIsStemmedWithAnotherSeller1)"
-            >
-              <!-- ** {{params.data.requestOffers[0].currencyId}} --  -->
-              <!-- ** {{params.currency}} --  -->
-              <!-- ** {{ paramsDataClone.currency  --  -->
+              *ngIf="(params.product.status === 'Stemmed' || params.product.status === 'Confirmed')
+                  && (params | checkIfProductIsStemmedWithAnotherSeller : checkIfProductIsStemmedWithAnotherSeller1)">
               <mat-label>Select Field</mat-label>
               <mat-select
                 disableOptionCentering
@@ -370,7 +270,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 [disabled]="paramsDataClone | checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated : checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1"
               >
                 <mat-select-trigger overlayPanelClass="123class">
-                  {{ getCurrencyCode(paramsDataClone.currency) }}
+                  {{ paramsDataClone.currency | getCurrencyCode:getCurrencyCode1 }}
                 </mat-select-trigger>
                 <mat-option [disabled]>Change Currency </mat-option>
                 <mat-option
@@ -408,10 +308,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             type="text"
             style="display:inline"
             [matTooltip]="params.value |  priceFormatValue : priceFormatValue1"
-            [disabled]="
-              params.product.status === 'Stemmed' ||
-              params.product.status === 'Confirmed'
-            "
+            [disabled]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed'"
           />
 
           <div
@@ -779,6 +676,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
 
     this.legacyLookupsDatabase.getTableByName('currency').then(response => {
+      this.currencyList = response;
       this.currencyListForAdditionalCost = response;
     });
 
@@ -788,6 +686,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   ngOnInit() {
     let requestOffers = this.params.data.requestOffers;
+
+    this.legacyLookupsDatabase.getTableByName('currency').then(response => {
+      this.currencyList = response;
+      this.currencyListForAdditionalCost = response;
+    });
 
     this.myFormGroup = new FormGroup({
       currency: new FormControl('')
@@ -805,10 +708,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       this.tenantService = spotNegotiation.tenantConfigurations;
       this.locationRowsAcrossRequest = spotNegotiation.locationsRows;
+
       if (spotNegotiation.staticLists)
-        this.currencyList = spotNegotiation.staticLists.filter(
-          el => el.name == 'Currency'
-        )[0]?.items;
+        this.currencyList = spotNegotiation.staticLists['currency'];
       // Fetching counterparty list
       if (spotNegotiation.counterpartyList) {
         this.counterpartyList = spotNegotiation.counterpartyList;
@@ -1687,12 +1589,15 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
   public checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1 = (params) => {
     const requestLocation = this.getCurrentRequestLocation();
+    console.log('request location : '+ requestLocation);
+    console.log('req offer length : '+ params?.requestOffers.length);
     for (let i = 0; i < params?.requestOffers.length; i++) {
       if (
         this.checkIfProductIsStemmedOrConfirmed(
           requestLocation,
           params.requestOffers[i]
-        ) &&
+        )
+        &&
         params.requestOffers[i].orderProducts &&
         params.requestOffers[i].orderProducts.length > 0
       ) {
@@ -1847,7 +1752,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         //   _.cloneDeep(newData),
         //   res.exchangeRateValue
         // );
-        applyExchangeRate.subscribe((res: any) => {          
+        applyExchangeRate.subscribe((res: any) => {
         params.api?.hideOverlay();
           if (res.status) {
             this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
@@ -1930,7 +1835,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       //       );
       //     }
       //   //});
-      // } 
+      // }
     }
   }
 

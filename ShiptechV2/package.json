@@ -8,7 +8,7 @@
     "start": "ng serve --port 9015",
     "build": "ng build",
     "build:stats": "ng build --prod --stats-json",
-    "webpack:analyzer": "webpack-bundle-analyzer dist/apps/shiptech/stats-es2015.json",
+    "webpack:analyzer": "webpack-bundle-analyzer dist/apps/shiptech/stats.json",
     "test": "ng test",
     "lint": "nx lint && ng lint",
     "eslint": "eslint --ext .ts .",

@@ -12,7 +12,6 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 export class UomsRouteResolver implements Resolve<any> {
   constructor(
     private router: Router,
-    private appErrorHandler: AppErrorHandler,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
 
   ) {}

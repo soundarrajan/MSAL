@@ -1,4 +1,3 @@
-import { StaticListsRouteResolver } from './static-lists-route.resolver';
 import { MessageBoxModule } from './../../../../core/src/lib/ui/components/message-box/message-box.module';
 import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
 import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
@@ -78,7 +77,7 @@ import { CustomHeader } from './core/ag-grid/custom-header.component';
 import { CustomHeaderSelectAll } from './core/ag-grid/custom-header-select-all.component';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { SpotNegotiationPriceCalcService } from './services/spot-negotiation-price-calc.service';
-import { 
+import {
   getCurrencyCode,
   isRfqSendForAnyProduct,
   checkIfRequestOffersHasNoQuote,
@@ -86,8 +85,6 @@ import {
   checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated,
   checkIfProductIsStemmedWithAnotherSeller,
   priceFormatValue } from '../lib/core/pipes/ag.pipe';
-
-
 @NgModule({
   imports: [
     CommonModule,
@@ -109,7 +106,6 @@ import {
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     UIModule,
-    NgxMatNativeDateModule,
     NgxMatDatetimePickerModule,
     MessageBoxModule,
     DynamicDialogModule,
@@ -182,7 +178,6 @@ import {
     ShiptechCustomHeaderGroup,
     CustomHeader,
     CustomHeaderSelectAll,
-
     SellerratingpopupComponent,
     ApplicablecostpopupComponent,
     BestcontractpopupComponent,
@@ -214,7 +209,6 @@ import {
     ConfirmationService,
     DecimalPipe,
     DatePipe,
-    StaticListsRouteResolver,
     NavBarResolver,
     UomsRouteResolver,
     SpotNegotiationPriceCalcService

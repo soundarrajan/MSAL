@@ -39,6 +39,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { isNumeric } from 'rxjs/internal-compatibility';
 import { SpotNegotiationPriceCalcService } from '../../../services/spot-negotiation-price-calc.service';
 import _ from 'lodash';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'spot-negotiation-main-component',
@@ -317,7 +318,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               locRow);
               reqLocationRows.push(data);
           }
-                  
+
           this.store.dispatch(new SetLocationsRowsOriData(reqLocationRows));
           this.store.dispatch(new SetLocationsRows(reqLocationRows));
       }
@@ -410,19 +411,19 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
   getStaticLists(): void {
-    let request = ['currency', 'product', 'uom']; //only currency add ,if required add here
-    const response = this.spotNegotiationService.getStaticLists(request);
-    response.subscribe((res: any) => {
-      if(res?.message == 'Unauthorized'){
-        return;
+    let staticLists = {};
+    forkJoin(
+      { currencies: this.legacyLookupsDatabase.getTableByName('currency'),
+        products: this.legacyLookupsDatabase.getTableByName('product'),
+        // inactiveProducts: this.legacyLookupsDatabase.getTableByName('inactiveProducts'),
+        uoms: this.legacyLookupsDatabase.getTableByName('uom')
       }
-      if (res.error) {
-        alert('Handle Error');
-        return;
-      } else {
-        // Populate Store
-        this.store.dispatch(new SetStaticLists(res));
-      }
+    ).subscribe((res: any)=>{
+      staticLists = {'currency': res.currencies };
+      staticLists = { ...staticLists, 'product': res.products};
+      // staticLists = { ...staticLists, 'inactiveProducts': res.inactiveProducts};
+      staticLists = { ...staticLists, 'uom': res.uoms};
+      this.store.dispatch(new SetStaticLists(staticLists));
     });
   }
   getAdditionalCosts() {

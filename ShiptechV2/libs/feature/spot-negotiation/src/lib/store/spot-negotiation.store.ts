@@ -387,7 +387,7 @@ EditLocationRow(
     let payRows: any;
     if(currentLocRows instanceof Object && row.id === currentLocRows.id)
       return currentLocRows;
-    else if(currentLocRows instanceof Array){     
+    else if(currentLocRows instanceof Array){
       payRows =  currentLocRows?.find(x => x.id === row.id);
       if (payRows) {
         return payRows;
@@ -400,7 +400,7 @@ EditLocationRow(
     locationsRows: upaLocations
   });
 }
- 
+
 
   @Action(SelectSeller)
   addUser(
@@ -460,7 +460,9 @@ EditLocationRow(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: UpdateRequest
   ) {
+    const state = getState();
     patchState({
+      //currentRequestSmallInfo: payload.filter(e=> e.id === state.currentRequestSmallInfo['id'])[0],
       requests: payload
     });
   }
