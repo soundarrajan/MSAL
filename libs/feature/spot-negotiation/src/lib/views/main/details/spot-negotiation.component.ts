@@ -177,9 +177,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       return state.spotNegotiation.requests;
     });
     currencyList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.staticLists.filter(
-        el => el.name == 'Currency'
-      )[0]?.items;
+      return state.spotNegotiation.staticLists['currency'];
     });
     
     rowsArray.forEach((row, index) => {
@@ -251,6 +249,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           }
            //return { ...e, requestLocations };
         });
+        row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         return row;
       }
 
@@ -294,6 +293,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
+          row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
           row.requestOffers = row.requestOffers.map(e => {
             if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
             {
