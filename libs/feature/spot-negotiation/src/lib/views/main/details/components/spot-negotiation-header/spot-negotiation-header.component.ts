@@ -424,9 +424,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let counterpartyList: any;
+    let currencyList: any;
+
     this.store.subscribe(({ spotNegotiation, ...props }) => {
       this.currentRequestData = spotNegotiation.locations;
       counterpartyList = spotNegotiation.counterparties;
+      currencyList = spotNegotiation.staticLists.filter(
+        el => el.name == 'Currency'
+      )[0]?.items;
     });
 
     rowsArray.forEach((row, index) => {
@@ -490,7 +495,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
-
+        row.requestOffers = row.requestOffers.map(e => {
+          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          {
+            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+            return { ...e, currencyCode:  currencyCode};
+          }
+           //return { ...e, requestLocations };
+        });
         return row;
       }
 
@@ -548,6 +560,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
+          row.requestOffers = row.requestOffers.map(e => {
+            if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+            {
+              let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+              return { ...e, currencyCode:  currencyCode};
+            }
+             //return { ...e, requestLocations };
+          });
         }
       }
 
