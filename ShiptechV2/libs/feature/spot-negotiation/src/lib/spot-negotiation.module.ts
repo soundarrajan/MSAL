@@ -62,7 +62,7 @@ import { UomsRouteResolver } from './uoms-route.resolver';
 import { RemoveCounterpartyComponent } from './views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
 import { PortalModule } from '@angular/cdk/portal';
-import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 import { PriceTenantFormatDirective } from './views/main/details/directives/price-tenant-format.directive';
 import { NegotiationToolbarComponent } from './views/main/details/components/toolbar/negotiation-toolbar.component';
 import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.module';
@@ -109,7 +109,7 @@ import {
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     UIModule,
-
+    NgxMatNativeDateModule,
     NgxMatDatetimePickerModule,
     MessageBoxModule,
     DynamicDialogModule,
