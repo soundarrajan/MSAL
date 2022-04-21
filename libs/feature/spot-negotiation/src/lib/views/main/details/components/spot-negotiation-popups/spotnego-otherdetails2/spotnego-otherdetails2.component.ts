@@ -34,11 +34,9 @@ import {
   NgxMatDateFormats,
   NGX_MAT_DATE_FORMATS
 } from '@angular-material-components/datetime-picker';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-  PickDateAdapter
-} from 'libs/feature/delivery/src/lib/views/delivery/details/components/notes-log/notes-log.component';
+  MomentDateAdapter} from '@angular/material-moment-adapter';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -371,7 +369,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   styleUrls: ['./spotnego-otherdetails2.component.css'],
   providers: [
     OrderListGridViewModel,
-    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     {
       provide: NgxMatDateAdapter,
