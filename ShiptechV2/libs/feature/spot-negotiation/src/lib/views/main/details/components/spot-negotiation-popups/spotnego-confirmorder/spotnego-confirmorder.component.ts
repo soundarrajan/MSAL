@@ -614,8 +614,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     currencyList = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.staticLists['currency'];
     });
+    let requestlist = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
 
     rowsArray.forEach((row, index) => {
+      let requestProducts = requestlist?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
       let currentLocProd = currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
@@ -652,6 +656,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           }
            //return { ...e, requestLocations };
         });
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -685,6 +695,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers.map(e => {
           if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
           {

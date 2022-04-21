@@ -425,7 +425,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let counterpartyList: any;
     let currencyList: any;
-
+    let requests = this.store.selectSnapshot<any>((state: any) => {
+      return state['spotNegotiation'].requests;
+    });
     this.currentRequestData = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locations;
     });
@@ -441,6 +443,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       let currentLocProd = this.currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
+      let requestProducts = requests?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
       let reqLocations = this.requestOptions.filter(req=>req.requestLocations.some(reqloc=>reqloc.id==row.requestLocationId));
       let reqProducts = reqLocations[0].requestLocations.filter(
         row1 => row1.id == row.requestLocationId
@@ -506,6 +509,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           }
            //return { ...e, requestLocations };
         });
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         return row;
       }
 
@@ -572,6 +581,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             }
              //return { ...e, requestLocations };
           });
+          row.requestOffers = row.requestOffers.map(e => {
+            let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+             return { ...e, reqProdStatus: isStemmed };
+          });
+          row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+          row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         }
       }
 

@@ -234,7 +234,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="paramsDataClone | checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated : checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1"
+                [disabled]="paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed"
               >
                 <mat-option [disabled]>Change Currency </mat-option>
                 <mat-option
@@ -264,7 +264,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="paramsDataClone | checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated : checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1"
+                [disabled]="paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed"
               >
                 <mat-select-trigger overlayPanelClass="123class">
                   {{ paramsDataClone.currency | getCurrencyCode:getCurrencyCode1 }}
@@ -1091,11 +1091,17 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return state.spotNegotiation.staticLists['currency'];
     });
 
+    let requests = _.cloneDeep(
+      this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+        return state['spotNegotiation'].requests;
+      })
+    );
+
     rowsArray.forEach((row, index) => {
       let currentLocProd = currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
-
+      let requestProducts = requests.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
         index < priceDetailsArray.length &&
@@ -1115,6 +1121,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         // ].requestOffers?.sort((a, b) =>
         //   a.requestProductId > b.requestProductId ? 1 : -1
         // );
+        
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
@@ -1129,7 +1136,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           }
            //return { ...e, requestLocations };
         });
-
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);      
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -1171,6 +1183,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
            //return { ...e, requestLocations };
         });
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -1886,6 +1904,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     currencyList = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.staticLists['currency'];
     });
+    let requests = _.cloneDeep(
+      this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+        return state['spotNegotiation'].requests;
+      })
+    );
 
     const requestLocationSellerId = sellerOffers.id;
     this._spotNegotiationService
@@ -1897,6 +1920,22 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
         updatedRow.requestOffers =
           priceDetailsRes.sellerOffers[0].requestOffers;
+        updatedRow.isRfqSend = updatedRow.requestOffers?.some(off => off.isRfqskipped === false);
+        let requestProducts = requests.find(x => x.id == updatedRow.requestId)?.requestLocations?.find(l => l.id ==updatedRow.requestLocationId)?.requestProducts;
+        updatedRow.requestOffers = updatedRow.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        updatedRow.hasAnyProductStemmed = updatedRow.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        updatedRow.isOfferConfirmed = updatedRow.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+        updatedRow.requestOffers = updatedRow.requestOffers.map(e => {
+          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          {
+            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+            return { ...e, currencyCode:  currencyCode};
+          }
+           //return { ...e, requestLocations };
+        });
         updatedRow.requestOffers = updatedRow.requestOffers.map(e => {
             if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
             {
