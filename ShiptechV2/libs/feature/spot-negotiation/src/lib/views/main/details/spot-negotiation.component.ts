@@ -94,9 +94,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.legacyLookupsDatabase.getTableByName('counterparty').then(response => {
       this.store.dispatch(new SetCounterparties(response));
     });
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.currentRequestData = spotNegotiation.locations;
-      this.allRequest = spotNegotiation.requests;
+    this.currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    this.allRequest = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
     });
   }
 
@@ -170,11 +172,15 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     //   this.currentRequestData = spotNegotiation.locations;
     //   this.allRequest = spotNegotiation.requests;
     // });
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      currencyList = spotNegotiation.staticLists.filter(
+    this.allRequest = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists.filter(
         el => el.name == 'Currency'
       )[0]?.items;
     });
+    
     rowsArray.forEach((row, index) => {
       let rowrelatedrequest = this.allRequest.filter(
         row1 => row1.id == row.requestId

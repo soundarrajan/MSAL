@@ -1092,9 +1092,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   additionalcostpopup() {
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
+    this.currentRequestSmallInfo = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
     });
+
     let requestLocationId = this.params.data.requestLocationId;
     let findRequestLocationIndex = _.findIndex(
       this.currentRequestSmallInfo?.requestLocations,
@@ -1179,13 +1180,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
     let currencyList: any
-    //let counterpartyList: any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      currentRequestData = spotNegotiation.locations;
-      currencyList = spotNegotiation.staticLists.filter(
+    currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists.filter(
         el => el.name == 'Currency'
       )[0]?.items;
-      //counterpartyList = spotNegotiation.counterparties;
     });
 
     rowsArray.forEach((row, index) => {
@@ -1775,10 +1777,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   getCurrentRequestLocation() {
  // console.log(this.stcount++ +" getCurrentRequestLocation...");
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      //console.log(this.stcount++ +" store calling...");
-      this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
+    this.currentRequestSmallInfo = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
     });
+
     let requestLocationId = this.params.data.requestLocationId;
     let findRequestLocationIndex = _.findIndex(
       this.currentRequestSmallInfo?.requestLocations,
@@ -1897,9 +1899,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   async checkAdditionalCost(sellerOffers, currencyId, exchangeRateValue) {
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
+    this.currentRequestSmallInfo = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
     });
+
     let requestLocationId = sellerOffers.requestLocationId;
     let findRequestLocationIndex = _.findIndex(
       this.currentRequestSmallInfo?.requestLocations,
@@ -1977,11 +1980,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   getSellerLine(sellerOffers) {
     const groupId = parseFloat(this.route.snapshot.params.spotNegotiationId);
     let currencyList : any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      currencyList = spotNegotiation.staticLists.filter(
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists.filter(
         el => el.name == 'Currency'
       )[0]?.items;
     });
+
     const requestLocationSellerId = sellerOffers.id;
     this._spotNegotiationService
       .getPriceDetailsById(groupId, requestLocationSellerId)

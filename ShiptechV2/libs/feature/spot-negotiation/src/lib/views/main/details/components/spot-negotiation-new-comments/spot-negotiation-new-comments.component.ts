@@ -104,11 +104,11 @@ export class SpotNegotiationNewCommentsComponent
     private spotNegotiationService: SpotNegotiationService,
     private toastr: ToastrService
   ) {
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.currentRequestInfo = _.cloneDeep(
-        spotNegotiation.currentRequestSmallInfo
-      );
-      this.requestList = _.cloneDeep(spotNegotiation.requests);
+    this.currentRequestInfo = this.store.selectSnapshot<any>((state: any) => {
+      return _.cloneDeep(state.spotNegotiation.currentRequestSmallInfo);
+    });
+    this.requestList = this.store.selectSnapshot<any>((state: any) => {
+      return _.cloneDeep(state.spotNegotiation.requests);
     });
   }
 

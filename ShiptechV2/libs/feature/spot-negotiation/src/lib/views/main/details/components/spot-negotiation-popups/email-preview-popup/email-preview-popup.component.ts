@@ -152,12 +152,19 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
-      this.entityId = spotNegotiation.groupOfRequestsId;
-      this.requestOptions = spotNegotiation.requests;
-      this.locationRowsAcrossRequest = spotNegotiation.locationsRows;
+    this.currentRequestInfo = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
     });
+    this.entityId = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.groupOfRequestsId;
+    });
+    this.requestOptions = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
+    this.locationRowsAcrossRequest = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+
    if(this.readonly){
     this.configuration.readOnly = true;
    }
@@ -648,11 +655,18 @@ export class EmailPreviewPopupComponent implements OnInit {
     let counterpartyList: any;
     let requestlist: any;
     let currencyList: any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      requestlist = spotNegotiation.requests;
-      currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterparties;
-      currencyList = spotNegotiation.staticLists.filter(
+    
+    currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    requestlist = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
+    counterpartyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.counterparties;
+    });
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists.filter(
         el => el.name == 'Currency'
       )[0]?.items;
     });
