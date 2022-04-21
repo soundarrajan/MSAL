@@ -783,10 +783,13 @@ export class ShiptechCustomHeaderGroup {
       if (res.status) {
         let locations = [];
         let locationsRows = [];
-        this.store.subscribe(({ spotNegotiation, ...props }) => {
-          locations = spotNegotiation.locations;
-          locationsRows = spotNegotiation.locationsRows;
+        locations = this.store.selectSnapshot<any>((state: any) => {
+          return state.spotNegotiation.locations;
         });
+        locationsRows = this.store.selectSnapshot<any>((state: any) => {
+          return state.spotNegotiation.locationsRows;
+        });
+
         let reqs = this.store.selectSnapshot<any>((state: any) => {
           return state.spotNegotiation.requests;
         });
@@ -998,10 +1001,14 @@ export class ShiptechCustomHeaderGroup {
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let counterpartyList: any;
     let currencyList: any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterparties;
-      currencyList = spotNegotiation.staticLists.filter(
+    this.currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    counterpartyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.counterparties;
+    });
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists.filter(
         el => el.name == 'Currency'
       )[0]?.items;
     });

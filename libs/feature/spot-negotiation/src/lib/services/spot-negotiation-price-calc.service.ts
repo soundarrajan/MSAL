@@ -401,10 +401,13 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       let offerAdditionCostsList = [];
       let locAdditionCostsList = [];
       let request : any;
-      this.store.subscribe(({ spotNegotiation, ...props }) => {
-        this.locations = spotNegotiation.locations;
-        request = spotNegotiation.requests?.find(r => r.id == sellerOffers.requestId);
+      this.locations = this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.locations;
       });
+      request = this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.requests?.find(r => r.id == sellerOffers.requestId);;
+      });
+
       let requestLocationId = sellerOffers.requestLocationId;
       let findRequestLocationIndex = _.findIndex(
         request?.requestLocations,

@@ -2233,12 +2233,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
     let currencyList: any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      currentRequestData = spotNegotiation.locations;
-      currencyList = spotNegotiation.staticLists.filter(
+    currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists.filter(
         el => el.name == 'Currency'
       )[0]?.items;
-      //counterpartyList = spotNegotiation.counterparties;
     });
 
     rowsArray.forEach((row, index) => {
