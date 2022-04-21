@@ -434,9 +434,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       return state.spotNegotiation.counterparties;
     });
     currencyList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.staticLists.filter(
-        el => el.name == 'Currency'
-      )[0]?.items;
+      return state.spotNegotiation.staticLists['currency'];
     });
 
     rowsArray.forEach((row, index) => {
@@ -486,6 +484,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           }
            //return { ...e, requestLocations };
         });
+        row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -527,6 +526,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           }
            //return { ...e, requestLocations };
         });
+        row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
