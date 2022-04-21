@@ -783,10 +783,13 @@ export class ShiptechCustomHeaderGroup {
       if (res.status) {
         let locations = [];
         let locationsRows = [];
-        this.store.subscribe(({ spotNegotiation, ...props }) => {
-          locations = spotNegotiation.locations;
-          locationsRows = spotNegotiation.locationsRows;
+        locations = this.store.selectSnapshot<any>((state: any) => {
+          return state.spotNegotiation.locations;
         });
+        locationsRows = this.store.selectSnapshot<any>((state: any) => {
+          return state.spotNegotiation.locationsRows;
+        });
+
         let reqs = this.store.selectSnapshot<any>((state: any) => {
           return state.spotNegotiation.requests;
         });
@@ -997,9 +1000,17 @@ export class ShiptechCustomHeaderGroup {
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let counterpartyList: any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterparties;
+    let currencyList: any;
+    this.currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    counterpartyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.counterparties;
+    });
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists.filter(
+        el => el.name == 'Currency'
+      )[0]?.items;
     });
 
     rowsArray.forEach((row, index) => {
@@ -1059,6 +1070,14 @@ export class ShiptechCustomHeaderGroup {
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
+        row.requestOffers = row.requestOffers.map(e => {
+          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          {
+            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+            return { ...e, currencyCode:  currencyCode};
+          }
+           //return { ...e, requestLocations };
+        });
 
         return row;
       }
@@ -1117,6 +1136,14 @@ export class ShiptechCustomHeaderGroup {
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
+          row.requestOffers = row.requestOffers.map(e => {
+            if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+            {
+              let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+              return { ...e, currencyCode:  currencyCode};
+            }
+             //return { ...e, requestLocations };
+          });
         }
       }
 

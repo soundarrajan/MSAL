@@ -94,9 +94,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.legacyLookupsDatabase.getTableByName('counterparty').then(response => {
       this.store.dispatch(new SetCounterparties(response));
     });
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.currentRequestData = spotNegotiation.locations;
-      this.allRequest = spotNegotiation.requests;
+    this.currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    this.allRequest = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
     });
   }
 
@@ -165,10 +167,20 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
+    let currencyList : any;
     // this.store.subscribe(({ spotNegotiation }) => {
     //   this.currentRequestData = spotNegotiation.locations;
     //   this.allRequest = spotNegotiation.requests;
     // });
+    this.allRequest = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists.filter(
+        el => el.name == 'Currency'
+      )[0]?.items;
+    });
+    
     rowsArray.forEach((row, index) => {
       let rowrelatedrequest = this.allRequest.filter(
         row1 => row1.id == row.requestId
@@ -230,7 +242,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
-
+        row.requestOffers = row.requestOffers.map(e => {
+          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          {
+            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+            return { ...e, currencyCode:  currencyCode};
+          }
+           //return { ...e, requestLocations };
+        });
         return row;
       }
 
@@ -274,6 +293,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
+          row.requestOffers = row.requestOffers.map(e => {
+            if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+            {
+              let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+              return { ...e, currencyCode:  currencyCode};
+            }
+             //return { ...e, requestLocations };
+          });
         }
       }
     }

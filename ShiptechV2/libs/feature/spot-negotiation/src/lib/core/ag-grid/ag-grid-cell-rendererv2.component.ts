@@ -323,11 +323,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
                 [disabled]="paramsDataClone | checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated : checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1"
-              >
-                <mat-select-trigger overlayPanelClass="123class">
-                  <!-- {{ getCurrencyCode(paramsDataClone.currency) }} -->
-                    {{ paramsDataClone.currency | getCurrencyCode:getCurrencyCode1 }}
-                </mat-select-trigger>
+              >               
                 <mat-option [disabled]>Change Currency </mat-option>
                 <mat-option
                   class="currency-mat-select"
@@ -799,6 +795,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       this.params.type === 'price-calc'
     ) {
       this.paramsDataClone.currency = this.paramsDataClone.requestOffers[0].currencyId;
+      this.paramsDataClone.currencyCode = this.paramsDataClone.requestOffers[0].currencyCode;
       this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
     }
     return this.store.subscribe(({ spotNegotiation }) => {
@@ -1053,16 +1050,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     //   }
     // }
     updatedRow = this.formatRowData(updatedRow, params);
-
     // Update the store
     this.store.dispatch(new EditLocationRow(updatedRow));
-
     params.node.setData(updatedRow);
   }
 
   formatRowData(row, params) {
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.currentRequestData = spotNegotiation.locations;
+    this.currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
     });
     let currentLocProd = this.currentRequestData.filter(
       loc => loc.id == row.requestLocationId
@@ -1097,9 +1092,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   additionalcostpopup() {
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
+    this.currentRequestSmallInfo = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
     });
+
     let requestLocationId = this.params.data.requestLocationId;
     let findRequestLocationIndex = _.findIndex(
       this.currentRequestSmallInfo?.requestLocations,
@@ -1183,10 +1179,15 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
-    //let counterpartyList: any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      currentRequestData = spotNegotiation.locations;
-      //counterpartyList = spotNegotiation.counterparties;
+    let currencyList: any
+    currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists.filter(
+        el => el.name == 'Currency'
+      )[0]?.items;
     });
 
     rowsArray.forEach((row, index) => {
@@ -1217,6 +1218,16 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
+        
+        row.requestOffers = row.requestOffers.map(e => {
+          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          {
+            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+            return { ...e, currencyCode:  currencyCode};
+          }
+           //return { ...e, requestLocations };
+        });
+
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -1249,6 +1260,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         row.totalCost = detailsForCurrentRow[0].totalCost;
         row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
+        row.requestOffers = row.requestOffers.map(e => {
+          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          {
+            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+            return { ...e, currencyCode:  currencyCode};
+          }
+           //return { ...e, requestLocations };
+        });
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -1758,10 +1777,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   getCurrentRequestLocation() {
  // console.log(this.stcount++ +" getCurrentRequestLocation...");
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      //console.log(this.stcount++ +" store calling...");
-      this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
+    this.currentRequestSmallInfo = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
     });
+
     let requestLocationId = this.params.data.requestLocationId;
     let findRequestLocationIndex = _.findIndex(
       this.currentRequestSmallInfo?.requestLocations,
@@ -1880,9 +1899,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   async checkAdditionalCost(sellerOffers, currencyId, exchangeRateValue) {
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
+    this.currentRequestSmallInfo = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
     });
+
     let requestLocationId = sellerOffers.requestLocationId;
     let findRequestLocationIndex = _.findIndex(
       this.currentRequestSmallInfo?.requestLocations,
@@ -1959,6 +1979,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   getSellerLine(sellerOffers) {
     const groupId = parseFloat(this.route.snapshot.params.spotNegotiationId);
+    let currencyList : any;
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists.filter(
+        el => el.name == 'Currency'
+      )[0]?.items;
+    });
+
     const requestLocationSellerId = sellerOffers.id;
     this._spotNegotiationService
       .getPriceDetailsById(groupId, requestLocationSellerId)
@@ -1969,6 +1996,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
         updatedRow.requestOffers =
           priceDetailsRes.sellerOffers[0].requestOffers;
+        updatedRow.requestOffers = updatedRow.requestOffers.map(e => {
+            if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+            {
+              let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+              return { ...e, currencyCode:  currencyCode};
+            }
+             //return { ...e, requestLocations };
+          });
         updatedRow.requestAdditionalCosts = priceDetailsRes.sellerOffers[0].requestAdditionalCosts;
         // Update the store
         var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
