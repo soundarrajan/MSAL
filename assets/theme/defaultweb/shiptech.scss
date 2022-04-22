@@ -24114,13 +24114,13 @@ mat-form-field {
     tr {
       display: table;
       width: 100%;
-      height: 25px;
+      height: 30px;
       table-layout: fixed;
       th {
         font-size: 17px;
         font-weight: 300;
         color: $black;
-        padding: 4px;
+        padding: 4px 4px 4px 10px;
         // border: 2px solid #E9EAEC;
         // padding-left: 10px;
         &:last-child {
