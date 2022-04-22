@@ -217,8 +217,11 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   formatRowData(row, params) {
     //  alert(4);
     let row1;
-    this.store.subscribe(({ spotNegotiation }) => {
-      let Currentproduct = spotNegotiation.locations;
+    let Currentproduct = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    // this.store.subscribe(({ spotNegotiation }) => {
+    //   let Currentproduct = spotNegotiation.locations;
       let currentLocProd = Currentproduct.filter(
         row2 => row2.locationId == row.locationId
       );
@@ -240,7 +243,7 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
           );
         }
       }
-    });
+    //});
     return row1;
   }
   viewFigma() {

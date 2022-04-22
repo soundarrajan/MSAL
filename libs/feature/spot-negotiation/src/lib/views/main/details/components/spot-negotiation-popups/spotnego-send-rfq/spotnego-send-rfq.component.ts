@@ -18,9 +18,9 @@ export class SpotnegoSendRfqComponent implements OnInit {
     private store: Store,
     public changeDetector: ChangeDetectorRef
   ) {
-    this.store.subscribe(({ spotNegotiation }) => {
-      if (spotNegotiation.requests.length > 0) {
-        this.requests = [...spotNegotiation.requests];
+    this.store.selectSnapshot<any>((state: any) => {
+      if (state.spotNegotiation.requests.length > 0) {
+        this.requests = [...state.spotNegotiation.requests];
       }
     });
     this.requests = this.requests.map(item => ({
