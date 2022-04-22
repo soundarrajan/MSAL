@@ -199,11 +199,11 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
     <!-- Offer price cell -->
     <!-- [ngClass]="!isOfferRequestAvailable() ? 'input-disabled' : '' " -->
     <div *ngIf="params.type == 'price-calc' && !(this.params.data?.requestOffers && this.params.data?.requestOffers[params.index]?.hasNoQuote)"
-      [ngClass]="!('null' | isOfferRequestAvailable:isOfferRequestAvailable1) ? 'no-price-data' : ''">
+      [ngClass]="!this.isOfferAvaialble ? 'no-price-data' : ''">
       <!-- TODO check this code... -->
-      <span *ngIf="!('null' | isOfferRequestAvailable:isOfferRequestAvailable1)">-</span>
+      <span *ngIf="!this.isOfferAvaialble">-</span>
       <div
-        *ngIf="('null' | isOfferRequestAvailable:isOfferRequestAvailable1)"
+        *ngIf="this.isOfferAvaialble"
         [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed'
             ? 'input-disabled-new'
             : ''">
@@ -614,6 +614,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   public showDollar: boolean = false;
   locations: any;
   public params: any;
+  isOfferAvaialble: boolean = false
   public select = '$';
   public inputValue = '';
   public ispriceCalculated: boolean = true;
@@ -832,7 +833,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     if (!requestOffers) {
       return false;
     }
-
     const productId = this.params.product.id;
 
     const offerExists = requestOffers.find(
@@ -854,6 +854,26 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   agInit(params: any): void {
     this.params = params;
+    if(this.params.product){
+      const { requestOffers } = this.params.data || {};
+
+    if (!requestOffers) {
+      this.isOfferAvaialble = false;
+      return;
+    }
+    const productId = this.params.product.id;
+
+    const offerExists = requestOffers.find(
+      e => e.requestProductId === productId && e.offerId
+    );
+
+    if (offerExists) {
+      this.isOfferAvaialble =  true;
+    }
+
+//    this.isOfferAvaialble = false;
+    }
+    //this.params.data.isOfferAvaialble = this.isOfferRequestAvailable();
   }
 
   search(userInput: string, params: any): void {
