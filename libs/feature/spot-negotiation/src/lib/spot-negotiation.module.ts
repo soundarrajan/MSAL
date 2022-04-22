@@ -106,6 +106,7 @@ import {
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     UIModule,
+    NgxMatNativeDateModule,
     NgxMatDatetimePickerModule,
     MessageBoxModule,
     DynamicDialogModule,
