@@ -418,7 +418,7 @@ export class SearchRequestPopupComponent implements OnInit {
       headerTooltip: 'Date',
       field: 'requestDate',
       cellClass: ['aggridtextalign-center'],
-      valueFormatter: params => this.format.date(params.value)
+      valueFormatter: params => this.format.dateUtc(params.value)
     },
     {
       headerName: 'Service',
