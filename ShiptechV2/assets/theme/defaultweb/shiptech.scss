@@ -10608,6 +10608,15 @@ tr.title {
   .input-disabled-new {
     pointer-events: none;
     background-color: #eee;
+    #custom-form-field{
+      .mat-form-field{
+        .mat-select{
+          .mat-select-arrow-wrapper{
+            display:none;
+          }
+        }
+      }
+    }
   }
   .disabled-new-events {
     pointer-events: none;
