@@ -389,7 +389,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       headerTooltip: 'Created On',
       field: 'createdOn',
       cellClass: ['aggridtextalign-center'],
-      valueFormatter: params => this.format.date(params.value)
+      valueFormatter: params => this.format.dateUtc(params.value)
     },
     {
       headerName: 'Last Modified By',
@@ -402,7 +402,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       headerTooltip: 'Last Modified On',
       field: 'lastModifiedOn',
       cellClass: ['aggridtextalign-center'],
-      valueFormatter: params => this.format.date(params.value)
+      valueFormatter: params => this.format.dateUtc(params.value)
     }
   ];
 
