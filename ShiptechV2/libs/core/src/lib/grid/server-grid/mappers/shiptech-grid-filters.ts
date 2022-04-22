@@ -1,5 +1,5 @@
 import { GridApi, IServerSideGetRowsParams } from '@ag-grid-community/core';
-import * as _ from 'lodash';
+import { mapValues, values } from 'lodash';
 import { nameof, Omit } from '@shiptech/core/utils/type-definitions';
 import { ServerGridFilter } from '@shiptech/core/grid/server-grid/server-grid.filter';
 import { IServerGridDateFilter } from '@shiptech/core/grid/server-grid/server-grid-date.filter';
@@ -120,11 +120,11 @@ export function getShiptechFormatFilters(
   params: IServerSideGetRowsParams,
   serverColumnKeyMap: Record<string, string>
 ): ServerGridFilter[] {
-  const filtersWithKeys = _.mapValues(
+  const filtersWithKeys = mapValues(
     params.request.filterModel,
     (value, key) => <AgGridFilterModelWithKey>{ ...value, key }
   );
-  const filters = flattenFilters(_.values(filtersWithKeys)).map(f =>
+  const filters = flattenFilters(values(filtersWithKeys)).map(f =>
     getShiptechFormatFilter(gridApi, f, params, serverColumnKeyMap)
   );
   return filters || [];

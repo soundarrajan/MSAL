@@ -30,7 +30,6 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
           style="cursor:pointer;width:65px;float:left;height: 17px !important;text-align:left;"
           matInput
           class="date-trigger"
-          [formControl]="initialDate"
           [ngModel]="initialDate.value"
           [matDatepicker]="picker"
           (dateChange)="dateChanged($event)"
@@ -230,9 +229,9 @@ export class AgGridDatetimePickerToggleComponent
     // current year
     let year = this.valueField.year();
     if (this.timeValue) {
-      return moment.utc(month + '/' + date + '/' + year + ' ' + this.timeValue);
+      return moment.utc(month + '/' + date + '/' + year + ' ' + this.timeValue, 'MM/DD/YYYY HH:mm:ss')
       //return( month + "/" + date+ "/" + year);
-    } else return moment.utc(month + '/' + date + '/' + year);
+    } else return moment.utc(month + '/' + date + '/' + year, 'MM/DD/YYYY')
     //return(this.valueField.getMonth()+'/'+this.valueField.getDate()+'/'+this.valueField.getFullYear()+" "+this.timeValue.getHours()+":"+this.timeValue.getMinutes())
     // .format(this.appContext.tenantSettingsContext.dateTimeFormat)
     // .substring(0, 19);

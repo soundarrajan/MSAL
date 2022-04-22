@@ -424,16 +424,26 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let counterpartyList: any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterparties;
+    let currencyList: any;
+    let requests = this.store.selectSnapshot<any>((state: any) => {
+      return state['spotNegotiation'].requests;
     });
-
+    this.currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    counterpartyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.counterparties;
+    });
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists['currency'];
+    });
+    
     rowsArray.forEach((row, index) => {
       //let row = { ... reqLocSeller };
       let currentLocProd = this.currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
+      let requestProducts = requests?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
       let reqLocations = this.requestOptions.filter(req=>req.requestLocations.some(reqloc=>reqloc.id==row.requestLocationId));
       let reqProducts = reqLocations[0].requestLocations.filter(
         row1 => row1.id == row.requestLocationId
@@ -490,7 +500,21 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
-
+        row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
+        row.requestOffers = row.requestOffers.map(e => {
+          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          {
+            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+            return { ...e, currencyCode:  currencyCode};
+          }
+           //return { ...e, requestLocations };
+        });
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         return row;
       }
 
@@ -548,6 +572,21 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
+          row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
+          row.requestOffers = row.requestOffers.map(e => {
+            if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+            {
+              let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+              return { ...e, currencyCode:  currencyCode};
+            }
+             //return { ...e, requestLocations };
+          });
+          row.requestOffers = row.requestOffers.map(e => {
+            let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+             return { ...e, reqProdStatus: isStemmed };
+          });
+          row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+          row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         }
       }
 

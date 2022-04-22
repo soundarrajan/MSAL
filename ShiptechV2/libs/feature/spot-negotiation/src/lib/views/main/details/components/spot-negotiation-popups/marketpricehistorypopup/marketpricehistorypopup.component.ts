@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import * as Highcharts from 'highcharts';
+// import * as Highcharts from 'highcharts';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import moment from 'moment';
@@ -16,7 +16,7 @@ export class MarketpricehistorypopupComponent implements OnInit {
   public RequestId: number;
   public tabledata = [];
   public priceHistoryData: any = {};
-  Highcharts: typeof Highcharts = Highcharts;
+  /* Highcharts: typeof Highcharts = Highcharts;
 
   chartOptions: Highcharts.Options = {
     chart: {
@@ -77,7 +77,7 @@ export class MarketpricehistorypopupComponent implements OnInit {
     credits: {
       enabled: false
     }
-  };
+  }; */
 
   ngOnInit(): void {}
   constructor(
