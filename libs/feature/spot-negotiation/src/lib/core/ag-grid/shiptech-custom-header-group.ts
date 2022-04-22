@@ -709,15 +709,6 @@ export class ShiptechCustomHeaderGroup {
     }
   }
 
-  roundDown(value, pricePrecision) {
-    const intvalue = parseFloat(value);
-    const reg = new RegExp('^-?\\d+(?:\\.\\d{0,' + pricePrecision + '})?', 'g');
-    const a = intvalue.toString().match(reg)[0];
-    const dot = a.indexOf('.');
-    const b = pricePrecision - (a.length - dot) + 1;
-    return a;
-  }
-
   priceFormatValue(value, type?: any) {
     if (typeof value == 'undefined' || value == null) {
       return type == 'benchMark' ? '--' : null;
@@ -754,12 +745,10 @@ export class ShiptechCustomHeaderGroup {
     }
 
     if (plainNumber) {
-      if (productPricePrecision) {
-        plainNumber = this.roundDown(plainNumber, productPricePrecision);
-      } else {
+      if (!productPricePrecision) {
         plainNumber = Math.trunc(plainNumber);
       }
-
+      plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
       //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font
       if (type && type == 'benchMark') {
         plainNumber = Math.abs(plainNumber);
@@ -794,10 +783,13 @@ export class ShiptechCustomHeaderGroup {
       if (res.status) {
         let locations = [];
         let locationsRows = [];
-        this.store.subscribe(({ spotNegotiation, ...props }) => {
-          locations = spotNegotiation.locations;
-          locationsRows = spotNegotiation.locationsRows;
+        locations = this.store.selectSnapshot<any>((state: any) => {
+          return state.spotNegotiation.locations;
         });
+        locationsRows = this.store.selectSnapshot<any>((state: any) => {
+          return state.spotNegotiation.locationsRows;
+        });
+
         let reqs = this.store.selectSnapshot<any>((state: any) => {
           return state.spotNegotiation.requests;
         });
@@ -1008,16 +1000,27 @@ export class ShiptechCustomHeaderGroup {
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let counterpartyList: any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      this.currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterparties;
+    let currencyList: any;
+    this.currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
     });
+    counterpartyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.counterparties;
+    });
+    currencyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists['currency'];
+    });
+
+    let requests = this.store.selectSnapshot<any>((state: any) => {
+        return state['spotNegotiation'].requests;
+      });
 
     rowsArray.forEach((row, index) => {
       //let row = { ... reqLocSeller };
       let currentLocProd = this.currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
+      let requestProducts = requests.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
       this.UpdateProductsSelection(currentLocProd, row);
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
@@ -1070,7 +1073,21 @@ export class ShiptechCustomHeaderGroup {
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
-
+        row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
+        row.requestOffers = row.requestOffers.map(e => {
+          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          {
+            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+            return { ...e, currencyCode:  currencyCode};
+          }
+           //return { ...e, requestLocations };
+        });
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         return row;
       }
 
@@ -1125,9 +1142,24 @@ export class ShiptechCustomHeaderGroup {
                 ? 1
                 : -1
           );
+          row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
+          row.requestOffers = row.requestOffers.map(e => {
+            if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+            {
+              let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+              return { ...e, currencyCode:  currencyCode};
+            }
+             //return { ...e, requestLocations };
+          });
+          row.requestOffers = row.requestOffers.map(e => {
+            let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+             return { ...e, reqProdStatus: isStemmed };
+          });
+          row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+          row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         }
       }
 

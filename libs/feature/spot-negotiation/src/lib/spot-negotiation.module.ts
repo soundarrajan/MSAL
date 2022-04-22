@@ -1,4 +1,3 @@
-import { StaticListsRouteResolver } from './static-lists-route.resolver';
 import { MessageBoxModule } from './../../../../core/src/lib/ui/components/message-box/message-box.module';
 import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
 import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
@@ -62,7 +61,7 @@ import { UomsRouteResolver } from './uoms-route.resolver';
 import { RemoveCounterpartyComponent } from './views/main/details/components/remove-counterparty-confirmation/remove-counterparty-confirmation';
 import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
 import { PortalModule } from '@angular/cdk/portal';
-import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 import { PriceTenantFormatDirective } from './views/main/details/directives/price-tenant-format.directive';
 import { NegotiationToolbarComponent } from './views/main/details/components/toolbar/negotiation-toolbar.component';
 import { WunderBarModule } from '@shiptech/core/ui/components/wonder-bar/wunder-bar.module';
@@ -78,7 +77,7 @@ import { CustomHeader } from './core/ag-grid/custom-header.component';
 import { CustomHeaderSelectAll } from './core/ag-grid/custom-header-select-all.component';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { SpotNegotiationPriceCalcService } from './services/spot-negotiation-price-calc.service';
-import { 
+import {
   getCurrencyCode,
   isRfqSendForAnyProduct,
   checkIfRequestOffersHasNoQuote,
@@ -86,8 +85,6 @@ import {
   checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated,
   checkIfProductIsStemmedWithAnotherSeller,
   priceFormatValue } from '../lib/core/pipes/ag.pipe';
-
-
 @NgModule({
   imports: [
     CommonModule,
@@ -109,7 +106,6 @@ import {
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
     UIModule,
-
     NgxMatDatetimePickerModule,
     MessageBoxModule,
     DynamicDialogModule,
@@ -182,7 +178,6 @@ import {
     ShiptechCustomHeaderGroup,
     CustomHeader,
     CustomHeaderSelectAll,
-
     SellerratingpopupComponent,
     ApplicablecostpopupComponent,
     BestcontractpopupComponent,
@@ -214,7 +209,6 @@ import {
     ConfirmationService,
     DecimalPipe,
     DatePipe,
-    StaticListsRouteResolver,
     NavBarResolver,
     UomsRouteResolver,
     SpotNegotiationPriceCalcService
