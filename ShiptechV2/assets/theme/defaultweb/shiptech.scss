@@ -10608,6 +10608,15 @@ tr.title {
   .input-disabled-new {
     pointer-events: none;
     background-color: #eee;
+    #custom-form-field{
+      .mat-form-field{
+        .mat-select{
+          .mat-select-arrow-wrapper{
+            display:none;
+          }
+        }
+      }
+    }
   }
   .disabled-new-events {
     pointer-events: none;
@@ -11612,8 +11621,9 @@ tr.title {
         margin-top: 5px;
         justify-content: flex-start;
       }
+      .inputFieldHighlightOff{border: 0px dashed #000!important;}
       .inputField {
-        border: 1px dashed #000!important;
+        border: 1px dashed #000;
         caret-color: #000 !important;
         width: 65%;
         height: 19px;
