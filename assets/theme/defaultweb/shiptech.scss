@@ -11342,7 +11342,7 @@ tr.title {
                       align-items: center;
                       position: relative;
                       min-width: 40px;
-                      max-width: 115px;
+                      max-width: 85px;
                       span {
                         width: fit-content;
                         overflow: hidden;
@@ -13169,7 +13169,10 @@ tr.title {
   &.mat-menu-panel {
     cursor: pointer;
     min-height: unset !important;
-    margin: -5px -165px !important;
+    margin: 10px -230px !important;
+    overflow: hidden;
+    min-width: 250px;
+    text-align: left;
   }
 }
 
