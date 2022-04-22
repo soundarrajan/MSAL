@@ -11674,7 +11674,6 @@ tr.title {
   &.mat-menu-panel {
     cursor: pointer;
     background: #364150;
-    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
     min-height: 65px !important;
     margin: -16px 0px !important;
@@ -11770,10 +11769,9 @@ tr.title {
   &.mat-menu-panel {
     cursor: pointer;
     background: #364150;
-    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    min-height: 62px !important;
-    margin: 10px -125px !important;
+    min-height: 62px!important;
+    margin: 10px -125px!important;
     width: 205px;
     min-width: 205px;
     overflow: initial;
@@ -11801,13 +11799,12 @@ tr.title {
     margin: 0px !important;
   }
   &.mat-menu-panel {
-    cursor: pointer;
+   cursor: pointer;
     background: #364150;
-    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    min-height: 62px !important;
-    margin: 10px -125px !important;
-    width: 230px;
+    min-height: 62px!important;
+    margin: 10px -125px!important;
+    width: 220px;
     min-width: 220px;
     overflow: initial;
   }
@@ -22580,7 +22577,7 @@ mat-form-field {
   &.mat-menu-panel {
     cursor: pointer;
     background: #364150;
-    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
+    // box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
     // min-height: 62px !important;
     width: 230px;
