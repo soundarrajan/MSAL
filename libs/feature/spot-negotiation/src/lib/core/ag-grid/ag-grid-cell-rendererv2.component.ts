@@ -320,7 +320,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
           ></div>
           <div
             class="formulaButton"
-            style="display:inline; position:absolute; left:78px;"
+            style="display:inline; position:absolute; left:112px;"
             (mouseenter)="hoverMenu($event)"
             [matMenuTriggerFor]="formulamenu"
             #menuTriggerHover="matMenuTrigger"
