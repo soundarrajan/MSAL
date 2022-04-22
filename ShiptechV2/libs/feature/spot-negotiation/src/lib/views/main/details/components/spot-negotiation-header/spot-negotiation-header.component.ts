@@ -177,8 +177,8 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       return;
     }
     const dialogRef = this.dialog.open(ConfirmdialogComponent, {
-      width: '400px',
-      maxWidth: '500px',
+      width: '368px',
+      maxWidth: '80vw',
       panelClass: 'confirm-dialog',
       data: {
         message: 'Are you sure you want de-link the request?'

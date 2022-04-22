@@ -13323,10 +13323,9 @@ tr.title {
   &.mat-menu-panel {
     cursor: pointer;
     background: #364150;
-    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    min-height: 65px !important;
-    margin: -16px 0px !important;
+    min-height: 65px!important;
+    margin: -16px 0!important;
     width: 190px;
     min-width: 190px;
     overflow: initial;
@@ -13419,10 +13418,9 @@ tr.title {
   &.mat-menu-panel {
     cursor: pointer;
     background: #364150;
-    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    min-height: 62px !important;
-    margin: 10px -125px !important;
+    min-height: 62px!important;
+    margin: 10px -125px!important;
     width: 205px;
     min-width: 205px;
     overflow: initial;
@@ -13452,11 +13450,10 @@ tr.title {
   &.mat-menu-panel {
     cursor: pointer;
     background: #364150;
-    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    // min-height: 62px !important;
-    margin: 10px -125px !important;
-    width: 230px;
+    min-height: 62px!important;
+    margin: 10px -125px!important;
+    width: 220px;
     min-width: 220px;
     overflow: initial;
   }
@@ -24170,4 +24167,72 @@ mat-form-field {
 
 .mat-menu-panel {
   max-width: fit-content !important;
+}
+.remove-terminal-section{
+  position: relative;
+  height: 100%;
+  .close-btn{
+    position: relative;
+    left: 16px;
+    bottom: 16px;
+    cursor: pointer;
+    img{
+      width: 10px;
+      float: right;
+    }
+  }
+  .warning-title{
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 12px;
+    img{
+      float: left;
+    }
+    span{
+      font-size: 16px;
+      display: inline-block;
+    }
+  }
+  p{
+    text-align: center;
+    padding-top: 27px;
+  }
+  .yes-no{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    padding-top: 25px;
+    button{
+      width: 125px;
+      height: 32px;
+      border-radius: 3px;
+      text-transform: capitalize;
+      box-shadow: none !important;
+      line-height: 25px;
+      &.red-button{
+        background-color: $red;
+      }
+      &.blue-button{
+        float: right;
+        background-color: $blue;
+      }
+    }
+  }
+}
+.blue-button-o{
+  background-color: #1d9fff!important;
+    border: none;
+    color: #fff!important;
+}
+.blue-outline-button {
+  padding: 0 8px!important;
+  text-align: center;
+  overflow: hidden!important;
+  text-overflow: ellipsis;
+  white-space: nowrap!important;
+  font-weight: 400;
+  font-size: 14px;
+  margin: 0 5px!important;
+}
+.p-l-10 {
+  padding-left: 10px;
 }
