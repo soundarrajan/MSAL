@@ -230,6 +230,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
               <!-- ** {{ paramsDataClone.currency  --  -->
               <mat-label>Select Field</mat-label>
               <mat-select
+              style="font-size: 9px;"
                 disableOptionCentering
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
@@ -258,7 +259,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
               appearance="none"
               *ngIf="(params.product.status === 'Stemmed' || params.product.status === 'Confirmed')
                   && (params | checkIfProductIsStemmedWithAnotherSeller : checkIfProductIsStemmedWithAnotherSeller1)">
-              <mat-label>Select Field</mat-label>
+              <mat-label >Select Field</mat-label>
               <mat-select
                 disableOptionCentering
                 [(ngModel)]="paramsDataClone.currency"
@@ -306,6 +307,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             style="display:inline"
             [matTooltip]="params.value |  priceFormatValue : priceFormatValue1"
             [disabled]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed'"
+            [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' ? 'inputFieldHighlightOff' : ''"
           />
 
           <div
