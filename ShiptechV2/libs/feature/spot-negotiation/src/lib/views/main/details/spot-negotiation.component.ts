@@ -128,7 +128,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       // Set all request inside store
       if (res['requests']) {
         this.store.dispatch(new SetRequests(res['requests']));
-        this.getGroupOfSellers();
       }
 
       if ((<any>window).activeRequest && res['requests'][(<any>window).activeRequest.i]) {
@@ -468,6 +467,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       // staticLists = { ...staticLists, 'inactiveProducts': res.inactiveProducts};
       staticLists = { ...staticLists, 'uom': res.uoms};
       this.store.dispatch(new SetStaticLists(staticLists));
+      this.getGroupOfSellers(); 
     });
   }
   getAdditionalCosts() {

@@ -454,17 +454,24 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     // .replace('DDD', 'ddd')
     // .replace('dd/', 'DD/')
     // .replace('dd-', 'DD-');
+    this.store.selectSnapshot<any>((state: any) => {
+      this.staticLists =  state.spotNegotiation.staticLists;
+    });
+    this.uomList = this.staticLists.uom;
+    this.productList = this.staticLists.product;
+    //this.productList = this.productList.concat(this.setListFromStaticLists('inactiveProducts'));
 
-    this.legacyLookupsDatabase.getTableByName('product').then(response => {
-      this.productList = response;
-    });
-    // this.legacyLookupsDatabase.getTableByName('inactiveProducts').then(response => {
-    //   this.inactiveList = response;
-    //   this.productList = this.productList.concat(this.inactiveList);
+
+    // this.legacyLookupsDatabase.getTableByName('product').then(response => {
+    //   this.productList = response;
     // });
-    this.legacyLookupsDatabase.getTableByName('uom').then(response => {
-      this.uomList = response;
-    });
+    // // this.legacyLookupsDatabase.getTableByName('inactiveProducts').then(response => {
+    // //   this.inactiveList = response;
+    // //   this.productList = this.productList.concat(this.inactiveList);
+    // // });
+    // this.legacyLookupsDatabase.getTableByName('uom').then(response => {
+    //   this.uomList = response;
+    // });
     this.getOtherDetailsLoad();
   }
 
@@ -508,6 +515,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     this.store.selectSnapshot<any>((state: any) => {
       this.locationsRows = state.spotNegotiation.locationsRows;
       this.locations = state.spotNegotiation.locations;
+      //this.staticLists =state.spotNegotiation.staticLists;
       this.tenantConfiguration = state.spotNegotiation.tenantConfigurations;
     });
     var otherDetailsPayload = [];
