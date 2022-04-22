@@ -102,7 +102,7 @@
           </th>
           <th class="text-left">Cost Name</th>
           <th class="text-left">Cost Type</th>
-          <th class="text-left ">Max Qty</th>
+          <th class="text-left">Max Qty</th>
           <th class="text-left">Price</th>
           <th class="text-left">Applicable for</th>
           <th class="text-left">Extra(%)</th>
@@ -177,8 +177,8 @@
                         : ' '
                     }}
                   </div>
-                  <div class="non-editable-container-text-right">
-                    {{
+                  <div class="non-editable-container-text-left">
+                    &nbsp;{{
                       locationCost.maxQuantityUomId
                         ? getUomName(locationCost.maxQuantityUomId)
                         : ''
@@ -195,8 +195,8 @@
                         : ' '
                     }}
                   </div>
-                  <div class="non-editable-container-text-right">
-                    {{
+                  <div class="non-editable-container-text-left">
+                    &nbsp;{{
                       locationCost.costTypeId == 2 && locationCost.priceUomId
                         ? getUomName(locationCost.priceUomId)
                         : ''
@@ -263,8 +263,8 @@
                         : ' '
                     }}
                   </div>
-                  <div class="non-editable-container-text-right">
-                    {{
+                  <div class="non-editable-container-text-left">
+                    &nbsp;{{
                       locationCost.currencyId
                         ? getCurrencyCode(locationCost.currencyId)
                         : ''
@@ -282,8 +282,8 @@
                         : ' '
                     }}
                   </div>
-                  <div class="non-editable-container-text-right">
-                    {{
+                  <div class="non-editable-container-text-left">
+                    &nbsp;{{
                       locationCost.currencyId
                         ? getCurrencyCode(locationCost.currencyId)
                         : ''

@@ -505,10 +505,10 @@ export class SpotnegoOtherdetails2Component implements OnInit {
 
   //popup initial load data..
   getOtherDetailsLoad() {
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.locationsRows = spotNegotiation.locationsRows;
-      this.locations = spotNegotiation.locations;
-      this.tenantConfiguration = spotNegotiation.tenantConfigurations;
+    this.store.selectSnapshot<any>((state: any) => {
+      this.locationsRows = state.spotNegotiation.locationsRows;
+      this.locations = state.spotNegotiation.locations;
+      this.tenantConfiguration = state.spotNegotiation.tenantConfigurations;
     });
     var otherDetailsPayload = [];
     this.locations.forEach(ele => {

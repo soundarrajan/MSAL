@@ -13037,7 +13037,6 @@ mat-form-field {
     .header-checkbox {
       margin-right: 10px;
       position: relative;
-      top: 2px;
       .mat-checkbox-frame {
         border-color: #ffffff;
       }
@@ -22472,11 +22471,11 @@ mat-form-field {
 .spot-dropdown-component .mat-select-value-text {
   font-family: Roboto;
   font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 16px;
   color: #252a32;
   margin-right: 20px;
+  padding-left: 10px;
 }
 
 .additional-cost-popup .increment-circle-button .increment-circle .plus {
