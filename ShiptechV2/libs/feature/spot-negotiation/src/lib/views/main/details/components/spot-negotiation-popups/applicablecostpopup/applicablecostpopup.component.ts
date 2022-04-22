@@ -122,11 +122,12 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.subscribe(({ spotNegotiation }) => {
+    
+    this.store.selectSnapshot<any>((state: any) => {
       this.currentRequestInfo = _.cloneDeep(
-        spotNegotiation.currentRequestSmallInfo
+        state.spotNegotiation.currentRequestSmallInfo
       );
-      this.requestList = _.cloneDeep(spotNegotiation.requests);
+      this.requestList = _.cloneDeep(state.spotNegotiation.requests);
       this.getRequestsList();
     });
     this.buildApplicableForItems();
