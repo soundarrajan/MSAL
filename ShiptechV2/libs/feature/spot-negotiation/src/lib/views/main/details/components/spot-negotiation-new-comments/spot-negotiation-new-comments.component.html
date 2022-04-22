@@ -83,7 +83,7 @@
             class="col-md-3 spot-comments-section"
             style="padding: unset !important;"
           >
-            <div class="new-comments" [ngClass]="currentRequestInfo.status === 'Stemmed' ? 'input-disabled-comments' : 'new-comments'">
+            <div class="new-comments" [ngClass]="currentRequestInfo?.status === 'Stemmed' ? 'input-disabled-comments' : 'new-comments'">
               <div style="padding: 15px;">
                 <span class="circle internal"></span
                 ><span class="label">Internal</span>
@@ -104,6 +104,8 @@
                   [(ngModel)]="requestInfo.negoGeneralComments"
                   placeholder="Type notes here.."
                   (blur)="saveComment('general')"
+                  (focusin)="generalComment.inputFocussed = true"
+                  (focusout)="generalComment.inputFocussed = false"
                   (ngModelChange)="
                     checkCommentsLimit(
                       requestInfo.negoGeneralComments,
@@ -111,7 +113,7 @@
                     )
                   "
                 ></textarea>
-                <div class="char-left">
+                <div class="char-left" *ngIf="generalComment.inputFocussed">
                   {{ 1000 - requestInfo?.negoGeneralComments?.length }}
                   characters left
                 </div>
@@ -122,7 +124,7 @@
             class="col-md-3 spot-comments-section"
             style="padding: unset !important;border-right: 5px solid #364150;"
           >
-            <div class="new-comments" [ngClass]="currentRequestInfo.status === 'Stemmed' ? 'input-disabled-comments' : ''">
+            <div class="new-comments" [ngClass]="currentRequestInfo?.status === 'Stemmed' ? 'input-disabled-comments' : ''">
               <div style="padding: 15px;">
                 <span class="circle internal"></span
                 ><span class="label">Performance</span>
@@ -143,6 +145,8 @@
                   [(ngModel)]="requestInfo.negoPerformanceComments"
                   placeholder="Type notes here.."
                   (blur)="saveComment('performance')"
+                  (focusin)="performanceComment.inputFocussed = true"
+                  (focusout)="performanceComment.inputFocussed = false"
                   (ngModelChange)="
                     checkCommentsLimit(
                       requestInfo.negoPerformanceComments,
@@ -150,7 +154,7 @@
                     )
                   "
                 ></textarea>
-                <div class="char-left">
+                <div class="char-left" *ngIf="performanceComment.inputFocussed">
                   {{ 1000 - requestInfo?.negoPerformanceComments?.length }}
                   characters left
                 </div>
@@ -161,7 +165,7 @@
             class="col-md-3 spot-comments-section"
             style="padding: unset !important;"
           >
-            <div class="new-comments" [ngClass]="currentRequestInfo.status === 'Stemmed' ? 'input-disabled-comments' : ''">
+            <div class="new-comments" [ngClass]="currentRequestInfo?.status === 'Stemmed' ? 'input-disabled-comments' : ''">
               <div style="padding: 15px;">
                 <span class="circle external"></span
                 ><span class="label">Supplier</span>
@@ -182,6 +186,8 @@
                   [(ngModel)]="requestInfo.negoSupplierComments"
                   placeholder="Type notes here.."
                   (blur)="saveComment('supplier')"
+                  (focusin)="supplyComment.inputFocussed = true"
+                  (focusout)="supplyComment.inputFocussed = false"
                   (ngModelChange)="
                     checkCommentsLimit(
                       requestInfo.negoSupplierComments,
@@ -189,7 +195,7 @@
                     )
                   "
                 ></textarea>
-                <div class="char-left">
+                <div class="char-left" *ngIf="supplyComment.inputFocussed">
                   {{ 1000 - requestInfo?.negoSupplierComments?.length }}
                   characters left
                 </div>
@@ -200,7 +206,7 @@
             class="col-md-3 spot-comments-section"
             style="padding: unset !important;"
           >
-            <div class="new-comments" [ngClass]="currentRequestInfo.status === 'Stemmed' ? 'input-disabled-comments' : ''">
+            <div class="new-comments" [ngClass]="currentRequestInfo?.status === 'Stemmed' ? 'input-disabled-comments' : ''">
               <div style="padding: 15px;">
                 <span class="circle external"></span
                 ><span class="label">Vessel & Agents</span>
@@ -221,6 +227,8 @@
                   [(ngModel)]="requestInfo.negoVesselAgentComments"
                   placeholder="Type notes here.."
                   (blur)="saveComment('vesselAndAgent')"
+                  (focusin)="vesselAndAgentComment.inputFocussed = true"
+                  (focusout)="vesselAndAgentComment.inputFocussed = false"
                   (ngModelChange)="
                     checkCommentsLimit(
                       requestInfo.negoVesselAgentComments,
@@ -228,7 +236,7 @@
                     )
                   "
                 ></textarea>
-                <div class="char-left">
+                <div class="char-left" *ngIf="vesselAndAgentComment.inputFocussed">
                   {{ 1000 - requestInfo?.negoVesselAgentComments?.length }}
                   characters left
                 </div>
@@ -277,7 +285,7 @@
                 </div>
                 <div
                   class="col-md-3 spot-comments-section2"
-                  style="padding: unset !important;  border-right: 5px solid #BEBEBE;"
+                  style="padding: unset !important;  border-right: 5px solid #364150;"
                 >
                   <div class="new-comments" style="margin: 0px 14px;">
                     <div style="padding: 15px;">
