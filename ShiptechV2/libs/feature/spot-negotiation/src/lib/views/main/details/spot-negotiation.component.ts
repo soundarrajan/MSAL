@@ -85,13 +85,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       localStorage.setItem('activeRequestId', requestIdFromUrl.toString());
     }
     this.spinner.show();
+    this.getStaticLists();
     this.getAdditionalCosts();
     this.getRequestGroup();
     this.getCounterpartyList();
     this.getPhysicalSupplierList();
     this.getRequestList();
     this.getTenantConfugurations();
-    this.getStaticLists();
+    
     this.legacyLookupsDatabase.getTableByName('counterparty').then(response => {
       this.store.dispatch(new SetCounterparties(response));
     });

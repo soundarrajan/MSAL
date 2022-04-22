@@ -703,16 +703,17 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       this.paramsDataClone.currencyCode = this.paramsDataClone.requestOffers[0].currencyCode;
       this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
     }
-    return this.store.subscribe(({ spotNegotiation }) => {
-      this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
-      this.tenantService = spotNegotiation.tenantConfigurations;
-      this.locationRowsAcrossRequest = spotNegotiation.locationsRows;
 
-      if (spotNegotiation.staticLists)
-        this.currencyList = spotNegotiation.staticLists['currency'];
+    return this.store.selectSnapshot<any>((state: any) => {
+      this.currentRequestInfo = state.spotNegotiation.currentRequestSmallInfo;
+      this.tenantService = state.spotNegotiation.tenantConfigurations;
+      this.locationRowsAcrossRequest = state.spotNegotiation.locationsRows;
+
+      if (state.spotNegotiation.staticLists)
+        this.currencyList = state.spotNegotiation.staticLists['currency'];
       // Fetching counterparty list
-      if (spotNegotiation.counterpartyList) {
-        this.counterpartyList = spotNegotiation.counterpartyList;
+      if (state.spotNegotiation.counterpartyList) {
+        this.counterpartyList = state.spotNegotiation.counterpartyList;
         this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
       }
 
@@ -752,9 +753,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         }
       }
 
-      if (spotNegotiation.additionalCostList) {
+      if (state.spotNegotiation.additionalCostList) {
         this.additionalCostList = _.cloneDeep(
-          spotNegotiation.additionalCostList
+          state.spotNegotiation.additionalCostList
         );
       }
     });

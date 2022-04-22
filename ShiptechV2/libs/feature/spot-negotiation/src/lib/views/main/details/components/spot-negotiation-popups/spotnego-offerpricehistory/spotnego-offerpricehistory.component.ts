@@ -160,8 +160,8 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
       this.spinner.hide();
          this.locationData = res.marketPriceHistory;
     });
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.tenantService = spotNegotiation.tenantConfigurations;
+    this.store.selectSnapshot<any>((state: any) => {
+      this.tenantService = state.spotNegotiation.tenantConfigurations;
     })
 }
 

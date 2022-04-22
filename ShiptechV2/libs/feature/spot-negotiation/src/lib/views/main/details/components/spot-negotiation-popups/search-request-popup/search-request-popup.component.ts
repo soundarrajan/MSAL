@@ -79,8 +79,8 @@ export class SearchRequestPopupComponent implements OnInit {
         this.dialog_gridOptions.api.sizeColumnsToFit();
         //params.api.setDatasource(this.dataSource);
 
-        this.store.subscribe(({ spotNegotiation }) => {
-          this.requestList = spotNegotiation.requestList;
+        this.store.selectSnapshot<any>((state: any) => {
+          this.requestList = state.spotNegotiation.requestList;
           var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
           this.page = currentPage + 1;
           this.pageSize = 25;
@@ -366,9 +366,9 @@ export class SearchRequestPopupComponent implements OnInit {
     }
   }
   search1(userInput: string): void {
-    this.store.subscribe(({ spotNegotiation }) => {
-      if (spotNegotiation.requestList) {
-        this.rowData = spotNegotiation.requestList.filter(e => {
+    this.store.selectSnapshot<any>((state: any) => {
+      if (state.spotNegotiation.requestList) {
+        this.rowData = state.spotNegotiation.requestList.filter(e => {
           if (
             e.requestName.toLowerCase().includes(userInput.toLowerCase()) ||
             e.vesselName.toLowerCase().includes(userInput.toLowerCase())
