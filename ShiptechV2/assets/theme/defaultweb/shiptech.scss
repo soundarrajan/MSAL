@@ -12526,14 +12526,14 @@ tr.title {
         }
         &.mat-expanded {
           .open-close-arrow {
-            transform: rotate(0deg);
+            transform: rotate(180deg);
             content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTkiIHZpZXdCb3g9IjAgMCAyMCAxOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE5Ljk5NTEgOS40MzQwOEMxOS45OTUxIDE0LjQ5OTQgMTUuODg4OCAxOC42MDU3IDEwLjgyMzUgMTguNjA1N0gxMC4wNzM3QzUuMDA4MzQgMTguNjA1NyAwLjkwMjA1NCAxNC40OTk0IDAuOTAyMDU0IDkuNDM0MDhDMC45MDIwNTQgNC4zNjg3MyA1LjAwODMzIDAuMjYyNDU1IDEwLjA3MzcgMC4yNjI0NTVIMTAuODIzNUMxNS44ODg4IDAuMjYyNDU1IDE5Ljk5NTEgNC4zNjg3MyAxOS45OTUxIDkuNDM0MDhaIiBmaWxsPSIjRkFGQUZCIi8+CjxyZWN0IHdpZHRoPSIyLjg5MTExIiBoZWlnaHQ9IjcuNDU4OTgiIHJ4PSIxLjQ0NTU2IiB0cmFuc2Zvcm09Im1hdHJpeCgtMC42OTk0OCAwLjcxNDY1MiAtMC43MDI0MzIgLTAuNzExNzUxIDEyLjQ4MDUgMTEuNjI1MikiIGZpbGw9IiMzNjQxNTAiLz4KPHJlY3Qgd2lkdGg9IjIuODkxMDEiIGhlaWdodD0iNy40NTkyNSIgcng9IjEuNDQ1NTEiIHRyYW5zZm9ybT0ibWF0cml4KC0wLjcwMDkyNiAtMC43MTMyMzQgMC43MDA5MjcgLTAuNzEzMjMzIDEwLjQ0NzMgMTMuNjk1NikiIGZpbGw9IiMzNjQxNTAiLz4KPC9zdmc+Cg==');
           }
         }
         .open-close-arrow {
           position: absolute;
           right: 10px;
-          transform: rotate(180deg);
+          transform: rotate(0deg);
           content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMTkiIHZpZXdCb3g9IjAgMCAyMCAxOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE5Ljk5NTEgOS40MzQwOEMxOS45OTUxIDE0LjQ5OTQgMTUuODg4OCAxOC42MDU3IDEwLjgyMzUgMTguNjA1N0gxMC4wNzM3QzUuMDA4MzQgMTguNjA1NyAwLjkwMjA1NCAxNC40OTk0IDAuOTAyMDU0IDkuNDM0MDhDMC45MDIwNTQgNC4zNjg3MyA1LjAwODMzIDAuMjYyNDU1IDEwLjA3MzcgMC4yNjI0NTVIMTAuODIzNUMxNS44ODg4IDAuMjYyNDU1IDE5Ljk5NTEgNC4zNjg3MyAxOS45OTUxIDkuNDM0MDhaIiBmaWxsPSIjRkFGQUZCIi8+CjxyZWN0IHdpZHRoPSIyLjg5MTExIiBoZWlnaHQ9IjcuNDU4OTgiIHJ4PSIxLjQ0NTU2IiB0cmFuc2Zvcm09Im1hdHJpeCgtMC42OTk0OCAwLjcxNDY1MiAtMC43MDI0MzIgLTAuNzExNzUxIDEyLjQ4MDUgMTEuNjI1MikiIGZpbGw9IiMzNjQxNTAiLz4KPHJlY3Qgd2lkdGg9IjIuODkxMDEiIGhlaWdodD0iNy40NTkyNSIgcng9IjEuNDQ1NTEiIHRyYW5zZm9ybT0ibWF0cml4KC0wLjcwMDkyNiAtMC43MTMyMzQgMC43MDA5MjcgLTAuNzEzMjMzIDEwLjQ0NzMgMTMuNjk1NikiIGZpbGw9IiMzNjQxNTAiLz4KPC9zdmc+Cg==');
         }
       }
@@ -14684,7 +14684,7 @@ mat-form-field {
     .header-checkbox {
       margin-right: 10px;
       position: relative;
-      top: 2px;
+      top: -1px;
       .mat-checkbox-frame {
         border-color: #ffffff;
       }
