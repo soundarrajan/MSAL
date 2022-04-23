@@ -445,7 +445,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         }
       ]
     };
-    this.gridOptions_counterparty.api.showLoadingOverlay();
+    //this.gridOptions_counterparty.api.showLoadingOverlay();
     reqs = reqs.map(e => {
       let requestLocations = e.requestLocations.map(reqLoc => {
         let requestProducts = reqLoc.requestProducts.map(reqPro =>
@@ -459,27 +459,34 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       });
       return { ...e, requestLocations };
     });
+    let element = document.getElementById(elementidValue);
+            if (element) {
+              this.moveCursorToEnd(element);
+            }
+    // Update the store
+    this.store.dispatch(new EditLocationRow(updatedRow));
+    this.store.dispatch(new UpdateRequest(reqs));
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
-      this.gridOptions_counterparty.api.hideOverlay();
+      //this.gridOptions_counterparty.api.hideOverlay();
       if (res?.message == 'Unauthorized') {
         return;
       }
       if (res.status) {
-        this.toastr.success('Price update successful.','',{timeOut: 800});
-        //var params = { force: true };
-        setTimeout(() => {
-          //this.gridOptions_counterparty.api?.refreshCells(params);
-          setTimeout(() => {
-            let element = document.getElementById(elementidValue);
-            if (element) {
-              this.moveCursorToEnd(element);
-            }
-          }, 100);
-        });        
-        // Update the store
-        this.store.dispatch(new EditLocationRow(updatedRow));
-        this.store.dispatch(new UpdateRequest(reqs));
+        // this.toastr.success('Price update successful.','',{timeOut: 800});
+        // //var params = { force: true };
+        // setTimeout(() => {
+        //   //this.gridOptions_counterparty.api?.refreshCells(params);
+        //   setTimeout(() => {
+        //     let element = document.getElementById(elementidValue);
+        //     if (element) {
+        //       this.moveCursorToEnd(element);
+        //     }
+        //   }, 100);
+        // });        
+        // // Update the store
+        // this.store.dispatch(new EditLocationRow(updatedRow));
+        // this.store.dispatch(new UpdateRequest(reqs));
       } else {
         this.toastr.error(res.message);
         return;
