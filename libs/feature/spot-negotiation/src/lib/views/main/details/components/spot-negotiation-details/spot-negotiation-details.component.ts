@@ -689,7 +689,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         },
         {
           headerName: 'T.Pr.($)',
-          headerTooltip: 'T.Pr.($)',
+          headerTooltip: 'Total Price($)',
           field: `tPr`,
           valueGetter: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
@@ -729,7 +729,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         },
         {
           headerName: 'Amt ($)',
-          headerTooltip: 'Amt ($)',
+          headerTooltip: 'Amount ($)',
           field: `amt`,
           valueGetter: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
@@ -756,7 +756,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         },
         {
           headerName: 'Tar. diff',
-          headerTooltip: 'Tar. diff',
+          headerTooltip: 'Target difference',
           field: `diff`,
           flex: 5,
           minWidth: 94,
