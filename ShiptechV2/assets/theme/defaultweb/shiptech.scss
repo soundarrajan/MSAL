@@ -11506,6 +11506,10 @@ tr.title {
         margin-right: 12px;
       }
 
+      .w-p-85 {
+        width: 85%;
+      }
+
       .counterpartytype-icon {
         display: inline-table;
         position: relative;
@@ -24167,7 +24171,6 @@ mat-form-field {
   }
 }
 
-
 .mat-menu-panel {
   max-width: fit-content !important;
 }
@@ -24238,4 +24241,10 @@ mat-form-field {
 }
 .p-l-10 {
   padding-left: 10px;
+}
+
+.spot-negotiation-details {
+  .mat-checkbox-inner-container{
+    top: -2px;
+  }
 }
