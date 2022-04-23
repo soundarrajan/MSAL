@@ -654,7 +654,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     let currentRequestData: any;
     let counterpartyList: any;
     let requestlist: any;
-    let currencyList: any;
+    //let currencyList: any;
     
     currentRequestData = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locations;
@@ -665,9 +665,9 @@ export class EmailPreviewPopupComponent implements OnInit {
     counterpartyList = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.counterparties;
     });
-    currencyList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.staticLists['currency'];
-    });
+    // currencyList = this.store.selectSnapshot<any>((state: any) => {
+    //   return state.spotNegotiation.staticLists['currency'];
+    // });
 
     rowsArray.forEach((row, index) => {
       let requestProducts = requestlist?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
@@ -713,14 +713,14 @@ export class EmailPreviewPopupComponent implements OnInit {
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
-        row.requestOffers = row.requestOffers.map(e => {
-          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-          {
-            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-            return { ...e, currencyCode:  currencyCode};
-          }
-           //return { ...e, requestLocations };
-        });
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -760,14 +760,14 @@ export class EmailPreviewPopupComponent implements OnInit {
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
-        row.requestOffers = row.requestOffers.map(e => {
-          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-          {
-            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-            return { ...e, currencyCode:  currencyCode};
-          }
-           //return { ...e, requestLocations };
-        });
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId

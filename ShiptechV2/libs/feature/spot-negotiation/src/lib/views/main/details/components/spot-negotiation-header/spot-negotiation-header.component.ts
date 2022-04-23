@@ -214,6 +214,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             }
             /* update store requests */
             this.store.dispatch(new DelinkRequest(item.id));
+            this._spotNegotiationService.callGridRefreshService();
           }
         });
       }
@@ -424,7 +425,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let counterpartyList: any;
-    let currencyList: any;
+    //let currencyList: any;
     let requests = this.store.selectSnapshot<any>((state: any) => {
       return state['spotNegotiation'].requests;
     });
@@ -434,9 +435,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     counterpartyList = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.counterparties;
     });
-    currencyList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.staticLists['currency'];
-    });
+    // currencyList = this.store.selectSnapshot<any>((state: any) => {
+    //   return state.spotNegotiation.staticLists['currency'];
+    // });
     
     rowsArray.forEach((row, index) => {
       //let row = { ... reqLocSeller };
@@ -501,14 +502,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
-        row.requestOffers = row.requestOffers.map(e => {
-          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-          {
-            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-            return { ...e, currencyCode:  currencyCode};
-          }
-           //return { ...e, requestLocations };
-        });
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
@@ -573,14 +574,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
           row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
-          row.requestOffers = row.requestOffers.map(e => {
-            if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-            {
-              let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-              return { ...e, currencyCode:  currencyCode};
-            }
-             //return { ...e, requestLocations };
-          });
+          // row.requestOffers = row.requestOffers.map(e => {
+          //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          //   {
+          //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+          //     return { ...e, currencyCode:  currencyCode};
+          //   }
+          //    //return { ...e, requestLocations };
+          // });
           row.requestOffers = row.requestOffers.map(e => {
             let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
              return { ...e, reqProdStatus: isStemmed };
@@ -773,7 +774,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => {
+      this._spotNegotiationService.callGridRefreshService();
+    });
   }
 
   openCounterpartyPopup() {
@@ -789,7 +792,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => {
+      this._spotNegotiationService.callGridRefreshService();
+    });
   }
 
   search(userInput: string): void {

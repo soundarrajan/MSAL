@@ -458,7 +458,9 @@ export class ShiptechCustomHeaderGroup {
         LocationId: currentRequestLocation[0].locationId
       }
     });
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => {
+      this._spotNegotiationService.callGridRefreshService();
+    });
   }
 
   limitStrLength = (text, max_length) => {
@@ -1000,16 +1002,16 @@ export class ShiptechCustomHeaderGroup {
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let counterpartyList: any;
-    let currencyList: any;
+    //let currencyList: any;
     this.currentRequestData = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locations;
     });
     counterpartyList = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.counterparties;
     });
-    currencyList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.staticLists['currency'];
-    });
+    // currencyList = this.store.selectSnapshot<any>((state: any) => {
+    //   return state.spotNegotiation.staticLists['currency'];
+    // });
 
     let requests = this.store.selectSnapshot<any>((state: any) => {
         return state['spotNegotiation'].requests;
@@ -1074,14 +1076,14 @@ export class ShiptechCustomHeaderGroup {
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
-        row.requestOffers = row.requestOffers.map(e => {
-          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-          {
-            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-            return { ...e, currencyCode:  currencyCode};
-          }
-           //return { ...e, requestLocations };
-        });
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
@@ -1146,14 +1148,14 @@ export class ShiptechCustomHeaderGroup {
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
-          row.requestOffers = row.requestOffers.map(e => {
-            if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-            {
-              let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-              return { ...e, currencyCode:  currencyCode};
-            }
-             //return { ...e, requestLocations };
-          });
+          // row.requestOffers = row.requestOffers.map(e => {
+          //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          //   {
+          //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+          //     return { ...e, currencyCode:  currencyCode};
+          //   }
+          //    //return { ...e, requestLocations };
+          // });
           row.requestOffers = row.requestOffers.map(e => {
             let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
              return { ...e, reqProdStatus: isStemmed };

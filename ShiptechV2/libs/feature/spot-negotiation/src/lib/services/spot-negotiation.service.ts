@@ -33,6 +33,7 @@ export class SpotNegotiationService extends BaseStoreService
   private futureSetTabIndex = new Subject<any>();
   private gridRefreshService = new Subject<any>();
   private gridRefreshServiceAll = new Subject<any>();
+  private gridRedrawService = new Subject<any>();
   QuoteByDate: any;
   counterpartyTotalCount: any;
   physicalSupplierTotalCount: any;
@@ -52,6 +53,13 @@ export class SpotNegotiationService extends BaseStoreService
     // Grid Refrsh Service invoke commands
     callGridRefreshService() {
       this.gridRefreshService.next();
+    }
+
+        // Observable string streams
+    gridRedrawService$ = this.gridRedrawService.asObservable();
+    // Grid Redraw Service invoke commands
+    callGridRedrawService() {
+      this.gridRedrawService.next();
     }
 
     gridRefreshServiceAll$ = this.gridRefreshServiceAll.asObservable();
