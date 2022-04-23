@@ -1267,9 +1267,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   openEmailPreview(params) {
+    this.store.selectSnapshot<any>((state: any) => {
+      this.locationRowsAcrossRequest = state.spotNegotiation.locationsRows;
+    });
     let locRow = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows?.find(lr => lr.id == params.data.id);
     });
+
     let sellerData = this.locationRowsAcrossRequest.filter(
       s =>
         s.sellerCounterpartyId == locRow.sellerCounterpartyId &&
