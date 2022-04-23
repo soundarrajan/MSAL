@@ -168,7 +168,10 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   }
 
   selectCounterParties(params) {
-    let updatedRow = { ...Object.assign({}, params.data) };
+    //let updatedRow = { ...Object.assign({}, params.data) };
+    let updatedRow = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows?.find(lr => lr.id == params.data.id);
+    });
     updatedRow = this.formatRowData(updatedRow, params);
     var FinalAPIdata = {
       reqLocSellers: [
@@ -198,6 +201,7 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   }
 
   setProductSelection(row, currentLocProducts, paramsvalue) {
+    //debugger;
     for (let index = 0; index < currentLocProducts.length; index++) {
       if (paramsvalue) {
         let indx = index + 1;

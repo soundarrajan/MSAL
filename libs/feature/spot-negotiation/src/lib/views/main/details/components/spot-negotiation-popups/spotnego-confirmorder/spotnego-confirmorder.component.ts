@@ -607,13 +607,13 @@ export class SpotnegoConfirmorderComponent implements OnInit {
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
-    let currencyList: any;
+    //let currencyList: any;
     currentRequestData = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locations;
     });
-    currencyList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.staticLists['currency'];
-    });
+    // currencyList = this.store.selectSnapshot<any>((state: any) => {
+    //   return state.spotNegotiation.staticLists['currency'];
+    // });
     let requestlist = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.requests;
     });
@@ -648,14 +648,14 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
-        row.requestOffers = row.requestOffers.map(e => {
-          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-          {
-            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-            return { ...e, currencyCode:  currencyCode};
-          }
-           //return { ...e, requestLocations };
-        });
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
@@ -701,14 +701,14 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
-        row.requestOffers = row.requestOffers.map(e => {
-          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-          {
-            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-            return { ...e, currencyCode:  currencyCode};
-          }
-           //return { ...e, requestLocations };
-        });
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId

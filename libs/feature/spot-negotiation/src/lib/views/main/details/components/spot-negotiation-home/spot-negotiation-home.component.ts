@@ -92,7 +92,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
     });
     this.store.subscribe(({ spotNegotiation }) => {
-      this.spotNegotiationService.callGridRefreshService();
+      //this.spotNegotiationService.callGridRefreshService();
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
       if (
         this.currentRequestInfo &&
@@ -293,6 +293,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe(result => {});
+      this.spotNegotiationService.callGridRefreshService();
     } else {
       this.toaster.warning('Cannot confirm offer as no offer price available');
       return;
@@ -371,7 +372,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
 
         this.toaster.success('RFQ(s) sent successfully.');
-
+        
         if (res['message'].length > 5) this.toaster.warning(res['message']);
       } else if (res instanceof Object) {
         this.toaster.warning(res.Message);
@@ -414,7 +415,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.store.dispatch(new UpdateRequest(reqs));
       this.store.dispatch(new SetLocationsRows(reqLocationRows));
 
-      this.spotNegotiationService.callGridRefreshServiceAll();
+      //this.spotNegotiationService.callGridRefreshServiceAll();
+      this.spotNegotiationService.callGridRefreshService();
       this.changeDetector.detectChanges();
     });
   }
@@ -423,7 +425,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     let currentRequestData: any;
     let counterpartyList: any;
     let requestlist: any;
-    let currencyList: any;
+    //let currencyList: any;
     currentRequestData = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locations;
     });
@@ -433,9 +435,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
     counterpartyList = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.counterparties;
     });
-    currencyList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.staticLists['currency'];
-    });
+    // currencyList = this.store.selectSnapshot<any>((state: any) => {
+    //   return state.spotNegotiation.staticLists['currency'];
+    // });
 
     rowsArray.forEach((row, index) => {
       let requestProducts = requestlist?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
@@ -477,14 +479,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(requestLocations, row);
-        row.requestOffers = row.requestOffers.map(e => {
-          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-          {
-            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-            return { ...e, currencyCode:  currencyCode};
-          }
-           //return { ...e, requestLocations };
-        });
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
@@ -525,14 +527,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.totalCost = detailsForCurrentRow[0].totalCost;
         row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         this.UpdateProductsSelection(requestLocations, row);
-        row.requestOffers = row.requestOffers.map(e => {
-          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-          {
-            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-            return { ...e, currencyCode:  currencyCode};
-          }
-           //return { ...e, requestLocations };
-        });
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
@@ -992,6 +994,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           // Update the store
           this.store.dispatch(new UpdateRequest(this.requestOptions));
           this.store.dispatch(new SetLocationsRows(reqLocationRows));
+          this.spotNegotiationService.callGridRefreshService();
         } else {
           this.toaster.error(res);
           return;
@@ -1073,7 +1076,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('Amend RFQ(s) sent successfully.');
-          this.spotNegotiationService.callGridRefreshServiceAll();
+          //this.spotNegotiationService.callGridRefreshServiceAll();
+          this.spotNegotiationService.callGridRefreshService();
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
           this.toaster.warning(res.Message);
@@ -1132,7 +1136,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) skipped successfully.');
-          this.spotNegotiationService.callGridRefreshServiceAll();
+          //this.spotNegotiationService.callGridRefreshServiceAll();
+          this.spotNegotiationService.callGridRefreshService();
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
           this.toaster.warning(res.Message);
@@ -1258,6 +1263,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) revoked successfully.');
+          this.spotNegotiationService.callGridRefreshService();
           if (res['message'].length > 3) this.toaster.warning(res['message']);
           // else
           //   this.toaster.success('RFQ(s) revoked successfully.');
@@ -1386,7 +1392,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('Requote RFQ(s) sent successfully.');
-          this.spotNegotiationService.callGridRefreshServiceAll();
+          //this.spotNegotiationService.callGridRefreshServiceAll();
+          this.spotNegotiationService.callGridRefreshService();
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
           this.toaster.warning(res.Message);
@@ -1481,7 +1488,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
             ? 'Selected Offer Price has been enabled.'
             : "Selected Offers have been marked as 'No Quote' successfully.";
         this.toaster.success(successMessage);
-        this.spotNegotiationService.callGridRefreshService();
       } else {
         this.toaster.error('An error has occurred!');
         this.spinner.hide();
@@ -1512,7 +1518,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
               );
               updatedRows[findElementIndex].totalOffer = e.totalOffer;
               updatedRows[findElementIndex].totalCost = e.totalCost;
-
               //Deselect rows
               updatedRows[findElementIndex].isSelected = false;
               if (updatedRows[findElementIndex].checkProd1) {
@@ -1541,6 +1546,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
             reqLocationRows.push(data);
         }
         this.store.dispatch(new SetLocationsRows(reqLocationRows));
+        this.spotNegotiationService.callGridRedrawService();
       });
   }
 

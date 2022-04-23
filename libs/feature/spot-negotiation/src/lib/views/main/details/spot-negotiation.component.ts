@@ -128,6 +128,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       // Set all request inside store
       if (res['requests']) {
         this.store.dispatch(new SetRequests(res['requests']));
+        this.getGroupOfSellers(); 
       }
 
       if ((<any>window).activeRequest && res['requests'][(<any>window).activeRequest.i]) {
@@ -168,7 +169,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
-    let currencyList : any;
+    //let currencyList : any;
     // this.store.subscribe(({ spotNegotiation }) => {
     //   this.currentRequestData = spotNegotiation.locations;
     //   this.allRequest = spotNegotiation.requests;
@@ -176,9 +177,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.allRequest = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.requests;
     });
-    currencyList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.staticLists['currency'];
-    });
+    // currencyList = this.store.selectSnapshot<any>((state: any) => {
+    //   return state.spotNegotiation.staticLists['currency'];
+    // });
     let requests = this.store.selectSnapshot<any>((state: any) => {
       return state['spotNegotiation'].requests;
     });
@@ -245,14 +246,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
-        row.requestOffers = row.requestOffers.map(e => {
-          if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-          {
-            let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-            return { ...e, currencyCode:  currencyCode};
-          }
-           //return { ...e, requestLocations };
-        });
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
@@ -304,14 +305,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
           row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
-          row.requestOffers = row.requestOffers.map(e => {
-            if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-            {
-              let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-              return { ...e, currencyCode:  currencyCode};
-            }
-             //return { ...e, requestLocations };
-          });
+          // row.requestOffers = row.requestOffers.map(e => {
+          //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+          //   {
+          //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+          //     return { ...e, currencyCode:  currencyCode};
+          //   }
+          //    //return { ...e, requestLocations };
+          // });
           row.requestOffers = row.requestOffers.map(e => {
             let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
              return { ...e, reqProdStatus: isStemmed };
@@ -467,7 +468,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       // staticLists = { ...staticLists, 'inactiveProducts': res.inactiveProducts};
       staticLists = { ...staticLists, 'uom': res.uoms};
       this.store.dispatch(new SetStaticLists(staticLists));
-      this.getGroupOfSellers(); 
     });
   }
   getAdditionalCosts() {
