@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import _ from 'lodash';
 import moment from 'moment';
 import { TenantFormattingService } from '../../../../../../../../../core/src/lib/services/formatting/tenant-formatting.service';
@@ -34,7 +35,8 @@ export class LocPanDataComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private format: TenantFormattingService,
-    public store: Store
+    public store: Store,
+    private _spotNegotiationService: SpotNegotiationService,
   ) {}
 
   ngOnInit(): void {
@@ -91,6 +93,7 @@ export class LocPanDataComponent implements OnInit {
       if (result) {
         this.costChanged.emit(filterLocationRows);
       }
+      this._spotNegotiationService.callGridRefreshService();
     });
   }
 

@@ -736,6 +736,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
           otherDetails_data
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        this.spotNegotiationService.callGridRefreshService();
       } else {
         this.toastr.error(res.message);
         return;
