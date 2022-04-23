@@ -101,7 +101,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
           matTooltipClass="lightTooltip"
         ></span>
         <span
-          class="m-l-7"
+          [ngClass]="{ 'm-l-7': true , 'w-p-85': this.params.data.sellerComments?.length > 0 }"
           matTooltip="{{ this.format.htmlDecode(params.value) }}"
           >{{ this.format.htmlDecode(params.value) }}</span
         >
