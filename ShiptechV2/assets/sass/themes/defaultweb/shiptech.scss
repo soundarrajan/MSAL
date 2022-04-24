@@ -10049,9 +10049,9 @@ tr.title {
         visibility: visible !important;
         //border: none;
         //  border: 1px dashed #000000 !important;
-        &:hover {
-          border: 1px dashed #000000 !important;
-        }
+        // &:hover {
+        //   border: 1px dashed #000000 !important;
+        // }
         border-radius: 2px;
         height: 25px;
         width: 100%;
@@ -10070,12 +10070,15 @@ tr.title {
         justify-content: flex-start;
       }
       .inputField {
-        border: none;
+        border: 1px dashed #000!important;
+        caret-color: #000 !important;
         width: 65%;
         height: 19px;
         background: none;
         &:focus-visible {
           outline: none;
+          border: 2px solid #1f96ff!important;
+          border-radius: 2px;
         }
       }
       .addButton {
@@ -10171,7 +10174,7 @@ tr.title {
       margin-right: 3px;
     }
     .text {
-      font-size: 10px;
+      font-size: 12px !important;
       font-weight: bold;
       color: #ffffff;
     }
@@ -10473,6 +10476,7 @@ tr.title {
       input[type='search'].light {
         background: #fff;
         color: #222;
+        text-overflow: ellipsis;
       }
 
       input[type='search']::-webkit-search-cancel-button {
@@ -11626,6 +11630,7 @@ tr.title {
       border-top: 1px solid;
       margin: 0px -14px;
       height: 35px;
+      border-top-color: #333 !important;
       .proceed-btn {
         // left: 205px;
         // top: 10px;
@@ -11671,7 +11676,6 @@ tr.title {
   &.mat-menu-panel {
     cursor: pointer;
     background: #364150;
-    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
     min-height: 65px !important;
     margin: -16px 0px !important;
@@ -11767,10 +11771,9 @@ tr.title {
   &.mat-menu-panel {
     cursor: pointer;
     background: #364150;
-    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    min-height: 62px !important;
-    margin: 10px -125px !important;
+    min-height: 62px!important;
+    margin: 10px -125px!important;
     width: 205px;
     min-width: 205px;
     overflow: initial;
@@ -11798,13 +11801,12 @@ tr.title {
     margin: 0px !important;
   }
   &.mat-menu-panel {
-    cursor: pointer;
+   cursor: pointer;
     background: #364150;
-    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    min-height: 62px !important;
-    margin: 10px -125px !important;
-    width: 230px;
+    min-height: 62px!important;
+    margin: 10px -125px!important;
+    width: 220px;
     min-width: 220px;
     overflow: initial;
   }
@@ -13034,7 +13036,6 @@ mat-form-field {
     .header-checkbox {
       margin-right: 10px;
       position: relative;
-      top: 2px;
       .mat-checkbox-frame {
         border-color: #ffffff;
       }
@@ -22295,6 +22296,7 @@ mat-form-field {
         height: 18px;
       }
       span {
+        min-width:173px;
         width: 100%;
       }
     }
@@ -22468,11 +22470,11 @@ mat-form-field {
 .spot-dropdown-component .mat-select-value-text {
   font-family: Roboto;
   font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 16px;
   color: #252a32;
   margin-right: 20px;
+  padding-left: 10px;
 }
 
 .additional-cost-popup .increment-circle-button .increment-circle .plus {
@@ -22577,7 +22579,7 @@ mat-form-field {
   &.mat-menu-panel {
     cursor: pointer;
     background: #364150;
-    box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
+    // box-shadow: 1px 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
     // min-height: 62px !important;
     width: 230px;
@@ -22626,8 +22628,9 @@ mat-form-field {
         cursor: pointer;
         width: 90px;
         border-radius: 3px;
-        background: #00aae2;
+        background: #1d9fff;
         height: 30px;
+        line-height: 0px;
       }
     }
   }

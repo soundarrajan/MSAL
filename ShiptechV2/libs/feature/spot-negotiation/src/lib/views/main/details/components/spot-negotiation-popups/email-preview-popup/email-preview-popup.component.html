@@ -2,7 +2,7 @@
   <div class="header">
     <div class="title">Email Preview</div>
     <div style="display: flex; margin: 7px -10px 0px -10px;">
-      <span [hidden]="readonly" style="margin-top: 16px; color: #c4c4c4;"
+      <span [hidden]="readonly" style="margin-top: 18px; color: #c4c4c4;"
         >Template:</span
       >
       <div
@@ -16,6 +16,7 @@
         >
           <mat-select
             [(value)]="selected"
+            [disabled]="isDisabled"
             disableOptionCentering
             (selectionChange)="getPreviewTemplate()"
           >
@@ -34,6 +35,7 @@
         <span [hidden]="readonly" class="seperator-line"></span>
         <button
           [hidden]="readonly"
+          [disabled]="isDisabled"
           style="border: none; border-radius: 5px; width: 165px !important;"
           class="blue-button h-25"
           (click)="revertChanges()"
@@ -42,6 +44,7 @@
         </button>
         <button
           [hidden]="readonly"
+          [disabled]="isDisabled"
           style="border: none; border-radius: 5px;"
           class="blue-button h-25"
           (click)="saveAndSendRFQ(false)"
@@ -50,6 +53,7 @@
         </button>
         <button
           [hidden]="readonly"
+          [disabled]="isDisabled"
           style="border: none; border-radius: 5px;"
           class="blue-button h-25"
           (click)="saveAndSendRFQ(true)"
@@ -107,6 +111,7 @@
                 matInput
                 placeholder="+Add New"
                 [hidden]="readonly"
+                [disabled]="isDisabled"
                 [(ngModel)]="toEmail"
                 (keyup)="searchTO(toemail.value)"
                 [matAutocomplete]="autoCompleteTO"
@@ -152,6 +157,7 @@
                 #ccemail
                 matInput
                 placeholder="+Add New"
+                [disabled]="isDisabled"
                 [(ngModel)]="ccEmail"
                 (keyup)="searchCC(ccemail.value)"
                 [matAutocomplete]="autoCompleteCC"
@@ -168,6 +174,7 @@
             <!-- <span class="subject">{{subject}}</span> -->
             <input
               [readonly]="readonly"
+              [disabled]="isDisabled"
               matInput
               class="subject"
               [(ngModel)]="subject"
@@ -181,7 +188,7 @@
           style="display: flex; margin: 15px; align-items: center;"
         >
           <span class="text">Attachments:</span>
-          <label
+          <label *ngIf="!isDisabled"
             class="add-doc"
             [matMenuTriggerFor]="menu"
             (click)="resetDocumentData()"
@@ -206,6 +213,7 @@
                     class="search-input"
                     autocomplete="off"
                     [(ngModel)]="searchDocumentModel"
+                    [disabled]="isDisabled"
                     (click)="$event.stopPropagation(); $event.preventDefault()"
                     (input)="searchDocumentList($event.target.value)"
                   />
@@ -255,12 +263,14 @@
                     <mat-radio-group
                       class="document-type-container"
                       [(ngModel)]="documentPopUp"
+                      [disabled]="isDisabled"
                       name="selected-document-type"
                       (change)="
                         addFilesList($event); searchDocumentModel = null
                       "
                     >
                       <mat-radio-button
+                      [disabled]="isDisabled"
                         class="document-type-container-radio-button"
                         [value]="element"
                       >

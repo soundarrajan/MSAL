@@ -11247,12 +11247,15 @@ tr.title {
         justify-content: flex-start;
       }
       .inputField {
-        border: none;
+        border: 1px dashed #000!important;
+        caret-color: #000 !important;
         width: 65%;
         height: 19px;
         background: none;
         &:focus-visible {
           outline: none;
+          border: 2px solid #1f96ff!important;
+          border-radius: 2px;
         }
       }
       .addButton {

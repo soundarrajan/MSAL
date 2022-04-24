@@ -10,6 +10,7 @@ import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/se
 import { AddRequest } from '../../../../../../store/actions/request-group-actions';
 import { AddCounterpartyToLocations } from '../../../../../../store/actions/ag-grid-row.action';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 @Component({
   selector: 'app-search-request-popup',
@@ -51,6 +52,7 @@ export class SearchRequestPopupComponent implements OnInit {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private store: Store,
+    private format: TenantFormattingService,
     private _spotNegotiationService: SpotNegotiationService,
     public dialogRef: MatDialogRef<SearchRequestPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -77,8 +79,8 @@ export class SearchRequestPopupComponent implements OnInit {
         this.dialog_gridOptions.api.sizeColumnsToFit();
         //params.api.setDatasource(this.dataSource);
 
-        this.store.subscribe(({ spotNegotiation }) => {
-          this.requestList = spotNegotiation.requestList;
+        this.store.selectSnapshot<any>((state: any) => {
+          this.requestList = state.spotNegotiation.requestList;
           var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
           this.page = currentPage + 1;
           this.pageSize = 25;
@@ -364,9 +366,9 @@ export class SearchRequestPopupComponent implements OnInit {
     }
   }
   search1(userInput: string): void {
-    this.store.subscribe(({ spotNegotiation }) => {
-      if (spotNegotiation.requestList) {
-        this.rowData = spotNegotiation.requestList.filter(e => {
+    this.store.selectSnapshot<any>((state: any) => {
+      if (state.spotNegotiation.requestList) {
+        this.rowData = state.spotNegotiation.requestList.filter(e => {
           if (
             e.requestName.toLowerCase().includes(userInput.toLowerCase()) ||
             e.vesselName.toLowerCase().includes(userInput.toLowerCase())
@@ -415,7 +417,8 @@ export class SearchRequestPopupComponent implements OnInit {
       headerName: 'Date',
       headerTooltip: 'Date',
       field: 'requestDate',
-      cellClass: ['aggridtextalign-center']
+      cellClass: ['aggridtextalign-center'],
+      valueFormatter: params => this.format.dateUtc(params.value)
     },
     {
       headerName: 'Service',
@@ -445,7 +448,8 @@ export class SearchRequestPopupComponent implements OnInit {
       headerName: 'ETA',
       headerTooltip: 'ETA',
       field: 'eta',
-      cellClass: ['aggridtextalign-center']
+      cellClass: ['aggridtextalign-center'],
+      valueFormatter: params => this.format.date(params.value)
     },
     {
       headerName: 'Location',

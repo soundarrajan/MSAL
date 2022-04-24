@@ -19,6 +19,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
 import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 
 @Component({
   selector: 'app-spotnego-confirmorder',
@@ -45,6 +46,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   uomList: any;
   errorMessages: string;
   staticLists: any;
+  FreezeMarketPricesPayload:any;
   constructor(
     public dialogRef: MatDialogRef<SpotnegoConfirmorderComponent>,
     private store: Store,
@@ -58,10 +60,10 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     public format: TenantFormattingService,
     private myMonitoringService: MyMonitoringService,
     private route: ActivatedRoute,
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.getRequests();
-    this.getSelectedLocationRowsForLocation();
+
   }
 
   @ViewChild(AgGridDatetimePickerToggleComponent)
@@ -74,6 +76,21 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   }
   ngOnInit(): void {
     // this.scrollToBottom();
+    this.legacyLookupsDatabase.getTableByName('currency').then(response => {
+      this.currencyList = response;
+    });
+    this.legacyLookupsDatabase.getTableByName('product').then(response => {
+      this.productList = response;
+    });
+    // this.legacyLookupsDatabase.getTableByName('inactiveProducts').then(response => {
+    //   this.inactiveList = response;
+    //   this.productList = this.productList.concat(this.inactiveList);
+    // });
+    this.legacyLookupsDatabase.getTableByName('uom').then(response => {
+      this.uomList = response;
+    });
+    this.getRequests();
+    this.getSelectedLocationRowsForLocation();
   }
   openEditOrder(orderId: number): void {
     window.open(
@@ -83,16 +100,20 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   }
   //popup grid data fill the value's..
   getSelectedLocationRowsForLocation() {
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.currentRequestInfo[0] = spotNegotiation.currentRequestSmallInfo;
-      this.tenantConfiguration = spotNegotiation.tenantConfigurations;
-      this.staticLists = spotNegotiation.staticLists;
+    this.currentRequestInfo[0] = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
     });
-    this.currencyList = this.setListFromStaticLists('Currency');
-    this.productList = this.setListFromStaticLists('Product');
-    this.inactiveList = this.setListFromStaticLists('InactiveProducts');
+    this.tenantConfiguration = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.tenantConfigurations;
+    });
+    this.staticLists = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists;
+    });
+    this.currencyList = this.staticLists['currency'];
+    this.productList = this.staticLists['product'];
+    // this.inactiveList = this.staticLists['inactiveProducts'];
     this.productList = this.productList.concat(this.inactiveList);
-    this.uomList = this.setListFromStaticLists('Uom');
+    this.uomList = this.staticLists['uom'];
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
@@ -300,14 +321,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     b: KeyValue<number, any>
   ): number => 0;
 
-  setListFromStaticLists(name) {
-    const findList = _.find(this.staticLists, function(object) {
-      return object.name == name;
-    });
-    if (findList != -1) {
-      return findList?.items;
-    }
-  }
   //Calculate TatalPrice - Not used onblur method confirm qty
   totalprice(rowIndex) {
     const currentRowIndex = rowIndex;
@@ -367,6 +380,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         this.selectedOffers.push(itemVal);
       }
     });
+    //add/modifiy market prices
+    this.FreezeMarketPricesPayload = {
+      FreezePriceRequests: this.productPricePayload(
+        this.selectedOffers
+      )
+    };
     if (RequestProductIds.length > 0) {
       filters = [
         {
@@ -503,12 +522,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           QuoteByTimeZoneId: this.selectedOffers[0].QuoteByTimeZoneId, //this.requestOffers.Select(off => off.QuoteByTimeZoneId).FirstOrDefault()
           Comments: ''
         };
-        //add/modifiy market prices
-        var FreezeMarketPricesPayload = {
-          FreezePriceRequests: this.productPricePayload(
-            this.selectedOffers
-          )
-        };
         //this.toaster.info('Please wait while the offer is confirmed');
         this.spinner.show();
         setTimeout(() => {
@@ -527,24 +540,20 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                   Date.now() - (<any>window).startConfirmOfferTime,
                   (<any>window).location.href
                 );
-
-                let response = this.spotNegotiationService.UpdateProductPrices(
-                  FreezeMarketPricesPayload
+                let resp =  this.spotNegotiationService.UpdateProductPrices(
+                  this.FreezeMarketPricesPayload
                 );
-                response.subscribe((res: any) => {
-                  if (res?.message == 'Unauthorized') {
-                    return;
-                  }
-                  if (res.status) {
+                resp.subscribe((result: any) => {
+                  if(result.status ) {
+                    //this.openEditOrder(receivedOffers.payload);
+                    const baseOrigin = new URL(window.location.href).origin;
+                    window.open(
+                      `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
+                      '_self'
+                    );
+                    this.toaster.success('order created successfully.');
                   }
                 });
-                //this.openEditOrder(receivedOffers.payload);
-                const baseOrigin = new URL(window.location.href).origin;
-                window.open(
-                  `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
-                  '_self'
-                );
-                this.toaster.success('order created successfully.');
               } else if (res instanceof Object) {
                 this.toaster.warning(res.Message);
               } else {
@@ -569,7 +578,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
       }
     );
   }
-
   getPriceDetails() {
     // Get current id from url and make a request with that data.
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
@@ -591,7 +599,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               locRow,
               locRow);
               reqLocationRows.push(data);
-          } 
+          }
           this.store.dispatch(new SetLocationsRows(reqLocationRows));
         }
       });
@@ -599,13 +607,19 @@ export class SpotnegoConfirmorderComponent implements OnInit {
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
-    //let counterpartyList: any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      currentRequestData = spotNegotiation.locations;
-      //counterpartyList = spotNegotiation.counterparties;
+    //let currencyList: any;
+    currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    // currencyList = this.store.selectSnapshot<any>((state: any) => {
+    //   return state.spotNegotiation.staticLists['currency'];
+    // });
+    let requestlist = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
     });
 
     rowsArray.forEach((row, index) => {
+      let requestProducts = requestlist?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
       let currentLocProd = currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
@@ -633,6 +647,21 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
+        row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -665,6 +694,21 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         row.totalCost = detailsForCurrentRow[0].totalCost;
         row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
+        row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId

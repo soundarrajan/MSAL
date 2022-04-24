@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import * as Highcharts from "highcharts";
+// import * as Highcharts from "highcharts";
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Store } from '@ngxs/store';
@@ -190,8 +189,8 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
          this.chartOptions.series = dataSeries;
          this.highcharts.chart('container', this.chartOptions);
     });
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.tenantService = spotNegotiation.tenantConfigurations;
+    this.store.selectSnapshot<any>((state: any) => {
+      this.tenantService = state.spotNegotiation.tenantConfigurations;
     })
 }
 
@@ -213,33 +212,12 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
       this.priceFormat =
         '1.' + productPricePrecision + '-' + productPricePrecision;
       if (plainNumber) {
-        if (productPricePrecision) {
-          plainNumber = this.roundDown(plainNumber, productPricePrecision + 1);
-        } else {
+        if (!productPricePrecision) {
           plainNumber = Math.trunc(plainNumber);
         }
 
         return this._decimalPipe.transform(plainNumber.replace(/,/g,''), this.priceFormat);
       }
-    }
-    roundDown(value, pricePrecision) {
-      let precisionFactor = 1;
-      let response = 0;
-      const intvalue = parseFloat(value);
-      if (pricePrecision === 1) {
-        precisionFactor = 10;
-      }
-      if (pricePrecision === 2) {
-        precisionFactor = 100;
-      }
-      if (pricePrecision === 3) {
-        precisionFactor = 1000;
-      }
-      if (pricePrecision === 4) {
-        precisionFactor = 10000;
-      }
-      response = Math.floor(intvalue * precisionFactor) / precisionFactor;
-      return response.toString();
     }
 
   tabledatas2=[ ];

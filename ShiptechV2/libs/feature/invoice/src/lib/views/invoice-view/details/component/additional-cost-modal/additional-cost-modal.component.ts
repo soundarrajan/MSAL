@@ -1018,29 +1018,6 @@ export class AdditionalCostModalComponent implements OnInit {
     }
   }
 
-  roundDown(value, pricePrecision) {
-    let precisionFactor = 1;
-    let response = 0;
-    const intvalue = parseFloat(value);
-    if (pricePrecision == 1) {
-      precisionFactor = 10;
-    }
-    if (pricePrecision == 2) {
-      precisionFactor = 100;
-    }
-    if (pricePrecision == 3) {
-      precisionFactor = 1000;
-    }
-    if (pricePrecision == 4) {
-      precisionFactor = 10000;
-    }
-    if (pricePrecision == 5) {
-      precisionFactor = 100000;
-    }
-    response = Math.floor(intvalue * precisionFactor) / precisionFactor;
-    return response.toString();
-  }
-
   priceFormatValue(value) {
     if (typeof value == 'undefined' || value == null) {
       return null;
@@ -1052,10 +1029,7 @@ export class AdditionalCostModalComponent implements OnInit {
     }
     if (plainNumber) {
       if (this.tenantService.pricePrecision) {
-        plainNumber = this.roundDown(
-          plainNumber,
-          this.tenantService.pricePrecision + 1
-        );
+        plainNumber = this.roundDownValue(plainNumber, 'price');
       } else {
         plainNumber = Math.trunc(plainNumber);
       }

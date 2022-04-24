@@ -34,11 +34,11 @@ import {
   NgxMatDateFormats,
   NGX_MAT_DATE_FORMATS
 } from '@angular-material-components/datetime-picker';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-  PickDateAdapter
-} from 'libs/feature/delivery/src/lib/views/delivery/details/components/notes-log/notes-log.component';
+  MomentDateAdapter
+} from '@angular/material-moment-adapter';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
@@ -371,7 +371,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
   styleUrls: ['./spotnego-otherdetails2.component.css'],
   providers: [
     OrderListGridViewModel,
-    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
     {
       provide: NgxMatDateAdapter,
@@ -435,6 +435,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     private spotNegotiationService: SpotNegotiationService,
     private toastr: ToastrService,
     public tenantFormat: TenantFormattingService,
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
     @Inject(MAT_DATE_FORMATS) private dateFormats,
     @Inject(NGX_MAT_DATE_FORMATS) private dateTimeFormats,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -453,14 +454,24 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     // .replace('DDD', 'ddd')
     // .replace('dd/', 'DD/')
     // .replace('dd-', 'DD-');
-
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.staticLists = spotNegotiation.staticLists;
+    this.store.selectSnapshot<any>((state: any) => {
+      this.staticLists =  state.spotNegotiation.staticLists;
     });
-    this.uomList = this.setListFromStaticLists('Uom');
-    this.productList = this.setListFromStaticLists('Product');
-    this.inactiveList = this.setListFromStaticLists('InactiveProducts');
-    this.productList = this.productList.concat(this.inactiveList);
+    this.uomList = this.staticLists.uom;
+    this.productList = this.staticLists.product;
+    //this.productList = this.productList.concat(this.setListFromStaticLists('inactiveProducts'));
+
+
+    // this.legacyLookupsDatabase.getTableByName('product').then(response => {
+    //   this.productList = response;
+    // });
+    // // this.legacyLookupsDatabase.getTableByName('inactiveProducts').then(response => {
+    // //   this.inactiveList = response;
+    // //   this.productList = this.productList.concat(this.inactiveList);
+    // // });
+    // this.legacyLookupsDatabase.getTableByName('uom').then(response => {
+    //   this.uomList = response;
+    // });
     this.getOtherDetailsLoad();
   }
 
@@ -501,11 +512,11 @@ export class SpotnegoOtherdetails2Component implements OnInit {
 
   //popup initial load data..
   getOtherDetailsLoad() {
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.locationsRows = spotNegotiation.locationsRows;
-      this.staticLists = spotNegotiation.staticLists;
-      this.locations = spotNegotiation.locations;
-      this.tenantConfiguration = spotNegotiation.tenantConfigurations;
+    this.store.selectSnapshot<any>((state: any) => {
+      this.locationsRows = state.spotNegotiation.locationsRows;
+      this.locations = state.spotNegotiation.locations;
+      //this.staticLists =state.spotNegotiation.staticLists;
+      this.tenantConfiguration = state.spotNegotiation.tenantConfigurations;
     });
     var otherDetailsPayload = [];
     this.locations.forEach(ele => {
@@ -725,6 +736,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
           otherDetails_data
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        this.spotNegotiationService.callGridRefreshService();
       } else {
         this.toastr.error(res.message);
         return;

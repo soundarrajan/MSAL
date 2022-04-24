@@ -401,10 +401,13 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       let offerAdditionCostsList = [];
       let locAdditionCostsList = [];
       let request : any;
-      this.store.subscribe(({ spotNegotiation, ...props }) => {
-        this.locations = spotNegotiation.locations;
-        request = spotNegotiation.requests?.find(r => r.id == sellerOffers.requestId);
+      this.locations = this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.locations;
       });
+      request = this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.requests?.find(r => r.id == sellerOffers.requestId);;
+      });
+
       let requestLocationId = sellerOffers.requestLocationId;
       let findRequestLocationIndex = _.findIndex(
         request?.requestLocations,
@@ -500,23 +503,27 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                   // }
                 }
               }
+              let totalOffer = 0;
+              let totalCost = 0
               productList.forEach(pro => {
-                let totalOffer = 0;
-                let totalCost = 0
                 sellerOffers.requestOffers.forEach(reqOff => {
                     if (reqOff.requestProductId == pro.id) {          
                       reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
                       reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
-                      reqOff.targetDifference = reqOff.totalPrice - (pro.requestGroupProducts
+                      // Target Difference = Total Price - Target Price
+                      reqOff.targetDifference = reqOff.totalPrice ? reqOff.totalPrice - (pro.requestGroupProducts
                         ? pro.requestGroupProducts.targetPrice
-                        : 0);
+                        : 0): null;
                       totalOffer += reqOff.amount;
                       totalCost += reqOff.cost;
+                      reqOff.targetDifference = pro.requestGroupProducts.targetPrice == 0
+                          ? 0
+                          : reqOff.targetDifference;
                     }
                   }); 
-                  sellerOffers.totalOffer = totalOffer;
-                  sellerOffers.totalCost = totalCost;
                 });
+                sellerOffers.totalOffer = totalOffer;
+                sellerOffers.totalCost = totalCost;
           //   }
           // }
           //});

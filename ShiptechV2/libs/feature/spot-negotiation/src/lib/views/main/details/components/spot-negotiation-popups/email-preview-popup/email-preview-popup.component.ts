@@ -50,6 +50,7 @@ export class EmailPreviewPopupComponent implements OnInit {
    };
  
   public SelectedSellerWithProds: any;
+  isDisabled:boolean = false;
   currentRequestInfo: any;
   selected: any;
   toEmail = '';
@@ -151,12 +152,19 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
-      this.entityId = spotNegotiation.groupOfRequestsId;
-      this.requestOptions = spotNegotiation.requests;
-      this.locationRowsAcrossRequest = spotNegotiation.locationsRows;
+    this.currentRequestInfo = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
     });
+    this.entityId = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.groupOfRequestsId;
+    });
+    this.requestOptions = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
+    this.locationRowsAcrossRequest = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+
    if(this.readonly){
     this.configuration.readOnly = true;
    }
@@ -168,15 +176,17 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.prod4 == false &&
       this.prod5 == false
     ) {
+      this.isDisabled= true;
+      this.configuration.readOnly = true;
       this.toaster.error('Please select products to preview email');
       return;
+
     }
     if (this.selected) {
       this.getPreviewTemplate();
       this.getDocumentsList();
     }
   }
-
   getPreviewTemplate() {
     if (this.selected != 'MultipleRfqNewRFQEmailTemplate') {
       if (
@@ -659,13 +669,23 @@ export class EmailPreviewPopupComponent implements OnInit {
     let currentRequestData: any;
     let counterpartyList: any;
     let requestlist: any;
-    this.store.subscribe(({ spotNegotiation, ...props }) => {
-      requestlist = spotNegotiation.requests;
-      currentRequestData = spotNegotiation.locations;
-      counterpartyList = spotNegotiation.counterparties;
+    //let currencyList: any;
+    
+    currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
     });
+    requestlist = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
+    counterpartyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.counterparties;
+    });
+    // currencyList = this.store.selectSnapshot<any>((state: any) => {
+    //   return state.spotNegotiation.staticLists['currency'];
+    // });
 
     rowsArray.forEach((row, index) => {
+      let requestProducts = requestlist?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
       let currentLocProd = currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
@@ -701,6 +721,21 @@ export class EmailPreviewPopupComponent implements OnInit {
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
+        row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -733,6 +768,21 @@ export class EmailPreviewPopupComponent implements OnInit {
         row.totalCost = detailsForCurrentRow[0].totalCost;
         row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
+        row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
+        row.requestOffers = row.requestOffers.map(e => {
+          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+           return { ...e, reqProdStatus: isStemmed };
+        });
+        row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+        // row.requestOffers = row.requestOffers.map(e => {
+        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
+        //   {
+        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
+        //     return { ...e, currencyCode:  currencyCode};
+        //   }
+        //    //return { ...e, requestLocations };
+        // });
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId

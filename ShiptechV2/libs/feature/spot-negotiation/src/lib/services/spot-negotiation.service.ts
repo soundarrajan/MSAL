@@ -32,6 +32,8 @@ export class SpotNegotiationService extends BaseStoreService
   implements OnDestroy {
   private futureSetTabIndex = new Subject<any>();
   private gridRefreshService = new Subject<any>();
+  private gridRefreshServiceAll = new Subject<any>();
+  private gridRedrawService = new Subject<any>();
   QuoteByDate: any;
   counterpartyTotalCount: any;
   physicalSupplierTotalCount: any;
@@ -52,6 +54,20 @@ export class SpotNegotiationService extends BaseStoreService
     callGridRefreshService() {
       this.gridRefreshService.next();
     }
+
+        // Observable string streams
+    gridRedrawService$ = this.gridRedrawService.asObservable();
+    // Grid Redraw Service invoke commands
+    callGridRedrawService() {
+      this.gridRedrawService.next();
+    }
+
+    gridRefreshServiceAll$ = this.gridRefreshServiceAll.asObservable();
+    // Grid Refrsh Service invoke commands
+    callGridRefreshServiceAll() {
+      this.gridRefreshServiceAll.next();
+    }
+
   /* Gets the list of Email Logs
    * @param payload =
    */
