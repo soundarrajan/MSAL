@@ -34,8 +34,8 @@
                         <span></span>
                     </label>
                 </td>
-                <td>{{row.counterparty.name ? row.counterparty.name : row.name}}</td>
-                <td>{{row.parent.name}}</td>
+                <td>{{(row.counterparty.name ? row.counterparty.name: row.name) | decodeReadOnly }}</td>
+                <td>{{row.parent.name | decodeReadOnly}}</td>
                 <td>{{row.createdBy.name}}</td>
                 <td>{{row.createdOn | utcToLocal | stDateFormat}}</td>
                 <td>{{row.lastModifiedBy.name}}</td>

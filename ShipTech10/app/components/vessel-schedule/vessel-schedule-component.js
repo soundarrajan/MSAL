@@ -39,7 +39,6 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                 ctrl.tableOptions.totalRows = data.matchedCount;
                 ctrl.data1 = angular.copy(data.payload);
                 $timeout(() => {
-                debugger;
                     ctrl.table = initDatatable(true);
                     // set flag to true if init comes from search
                     if(ctrl.table) {
@@ -149,8 +148,6 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                     Value: value
                 }
             }
-            console.log('PORT CALL');
-            console.log(ctrl.portCallVoyageId);
             if(!ctrl.islocationPortEnabled){
                  lookupModel.getList(LOOKUP_TYPE.VESSEL_SCHEDULE, null, null, filterPayload).then((data) => {
                     ctrl.data = angular.copy(data.payload);
@@ -166,18 +163,12 @@ angular.module('shiptech').controller('VesselScheduleController', [ '$scope','$r
                         ctrl.data.map(location=> location.isSelectedPortCall = false);
                         ctrl.selectedLocationsSingle[ctrl?.indexVoyage] = true;
                     }
-                    destroyDataT();
-                    $timeout(() => {
-                        
-                        ctrl.table = SimpleDatatable.init({
-                            selector: '.simple-datatable',
-                            order: [
-                                [ 0, 'asc' ]
-                            ]
-                        });
-                        // $timeout(() => {
-                        //     $('.table').dataTable();
-                        // },1000);
+                    destroyDataT();        
+                    ctrl.table = SimpleDatatable.init({
+                        selector: '.lookup_table',
+                        order: [
+                            [ 0, 'asc' ]
+                        ]
                     });
                 });
             }

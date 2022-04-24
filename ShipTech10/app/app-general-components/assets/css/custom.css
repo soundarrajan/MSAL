@@ -4816,3 +4816,8 @@ select option {
     font-size: 11px;
     color: #757575;
 }
+.ui-widget.ui-widget-content
+{
+    border:none;
+
+}

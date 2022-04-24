@@ -268,7 +268,7 @@
                         </label>
                         <div class="input-group form_input form_input_pricePrecision">
                             <select name="pricePrecision" class="form-control bs-select changeIT" ng-required="true"
-                                id="pricePrecision" ng-options="item as item for item in createRange(0,4) track by item"
+                                id="pricePrecision" ng-options="item as item for item in createRange(0,formValues.general.defaultValues.maxPricePrecision) track by item"
                                 ng-model="formValues.general.defaultValues.pricePrecision"></select>
                         </div>
                     </div>

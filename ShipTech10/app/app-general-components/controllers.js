@@ -742,18 +742,6 @@
             return canReconfirm;
         };
 
-        $scope.roundDown = (value, pricePrecision) => {
-            var precisionFactor = 1;
-            var response = 0;
-            var intvalue = parseFloat(value);
-            if(pricePrecision == 1) {precisionFactor = 10}
-            if(pricePrecision == 2) {precisionFactor = 100}
-            if(pricePrecision == 3) {precisionFactor = 1000}
-            if(pricePrecision == 4) {precisionFactor = 10000}
-            response = Math.floor(intvalue * precisionFactor) / precisionFactor;
-            return response.toString();
-        }
-
         // Get jQgrid Formatter
         vm.get_formatter = function(name) {
             // ====== SETTINGS ======
@@ -2098,8 +2086,7 @@
 	                    pricePrecision = rowObject.pricePrecision !== null ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
                     }
                     if (cellValue != null) {
-                        plainNumber = $scope.roundDown(cellValue, pricePrecision);
-                        element = $filter("number")(plainNumber, pricePrecision);
+                        element = $filter("number")(cellValue, pricePrecision);
                     }
                     return element;
                 };
@@ -2233,8 +2220,7 @@
 
                             var currency = rowObject.currency.name;
                             pricePrecision = rowObject.pricePrecision != null ? rowObject.pricePrecision : $scope.tenantSettings.defaultValues.pricePrecision;
-                            plainNumber = $scope.roundDown(rowObject.fixedPrice, pricePrecision);
-                            var price =  $filter('number')(plainNumber, pricePrecision);
+                            var price =  $filter('number')(rowObject.fixedPrice, pricePrecision);
 
                             tpl = '<span class="">' + currency + ' ' + price + '</span>';
                         }
