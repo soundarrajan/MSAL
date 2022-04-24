@@ -466,6 +466,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     // Update the store
     this.store.dispatch(new EditLocationRow(updatedRow));
     this.store.dispatch(new UpdateRequest(reqs));
+    
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
       //this.gridOptions_counterparty.api.hideOverlay();
@@ -549,6 +550,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       default:
         break;
     }
+    productDetails.isOfferPriceCopied = false;
     let futureRow = this.spotNegotiationService.setRowProductDetails(
       row,
       productDetails,
