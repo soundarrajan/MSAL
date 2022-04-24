@@ -265,7 +265,7 @@
         }
       }
     },
-    "control-tower": {
+    "feature-control-tower": {
       "projectType": "library",
       "root": "libs/feature/control-tower",
       "sourceRoot": "libs/feature/control-tower/src",
@@ -403,7 +403,7 @@
         }
       }
     },
-    "smart": {
+    "feature-smart": {
       "projectType": "library",
       "root": "libs/feature/smart",
       "sourceRoot": "libs/feature/smart/src",

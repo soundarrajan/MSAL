@@ -168,7 +168,10 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   }
 
   selectCounterParties(params) {
-    let updatedRow = { ...Object.assign({}, params.data) };
+    //let updatedRow = { ...Object.assign({}, params.data) };
+    let updatedRow = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows?.find(lr => lr.id == params.data.id);
+    });
     updatedRow = this.formatRowData(updatedRow, params);
     var FinalAPIdata = {
       reqLocSellers: [
@@ -198,6 +201,7 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   }
 
   setProductSelection(row, currentLocProducts, paramsvalue) {
+    //debugger;
     for (let index = 0; index < currentLocProducts.length; index++) {
       if (paramsvalue) {
         let indx = index + 1;
@@ -217,8 +221,11 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   formatRowData(row, params) {
     //  alert(4);
     let row1;
-    this.store.subscribe(({ spotNegotiation }) => {
-      let Currentproduct = spotNegotiation.locations;
+    let Currentproduct = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+    // this.store.subscribe(({ spotNegotiation }) => {
+    //   let Currentproduct = spotNegotiation.locations;
       let currentLocProd = Currentproduct.filter(
         row2 => row2.locationId == row.locationId
       );
@@ -240,7 +247,7 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
           );
         }
       }
-    });
+    //});
     return row1;
   }
   viewFigma() {

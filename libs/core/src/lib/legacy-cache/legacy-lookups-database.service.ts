@@ -44,9 +44,9 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly paymentStatus: Dexie.Table<IStatusLookupDto, number>;
   readonly invoiceType: Dexie.Table<IStatusLookupDto, number>;
   readonly additionalCost: Dexie.Table<IStatusLookupDto, number>;
-  readonly portRemarks: Dexie.Table<IDisplayLookupDto, number>;
-  readonly portSeverities: Dexie.Table<IDisplayLookupDto, number>;
-  readonly portStatuses: Dexie.Table<IDisplayLookupDto, number>;
+  readonly portRemark: Dexie.Table<IDisplayLookupDto, number>;
+  readonly portSeveritie: Dexie.Table<IDisplayLookupDto, number>;
+  readonly portStatus: Dexie.Table<IDisplayLookupDto, number>;
   readonly portType: Dexie.Table<IDisplayLookupDto, number>;
   readonly orderedStatus: Dexie.Table<IStatusLookupDto, number>;
   readonly barge: Dexie.Table<IDisplayLookupDto, number>;
@@ -102,12 +102,12 @@ export class LegacyLookupsDatabase extends Dexie {
     [nameof<LegacyLookupsDatabase>('additionalCost')]: (
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
-    [nameof<LegacyLookupsDatabase>('portRemarks')]: (dto: ColorDisplayLookup) =>
+    [nameof<LegacyLookupsDatabase>('portRemark')]: (dto: ColorDisplayLookup) =>
       <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
-    [nameof<LegacyLookupsDatabase>('portSeverities')]: (
+    [nameof<LegacyLookupsDatabase>('portSeveritie')]: (
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
-    [nameof<LegacyLookupsDatabase>('portStatuses')]: (
+    [nameof<LegacyLookupsDatabase>('portStatus')]: (
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
     [nameof<LegacyLookupsDatabase>('portType')]: (dto: ColorDisplayLookup) =>
@@ -166,9 +166,9 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('invoiceType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('orderedStatus')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('additionalCost')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('portRemarks')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('portSeverities')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('portStatuses')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('portRemark')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('portSeveritie')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('portStatus')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('portType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('robDifferenceType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('controlTowerActionStatus')]: lookupSchema,
@@ -316,17 +316,17 @@ export class LegacyLookupsDatabase extends Dexie {
     return AdditionalCost;
   }
   async getPortRemarks() {
-    const db = this.table('portRemarks');
+    const db = this.table('portRemark');
     let PortRemarks = await db.toArray();
     return PortRemarks;
   }
   async getPortSeverities() {
-    const db = this.table('portSeverities');
+    const db = this.table('portSeveritie');
     let portSeverities = await db.toArray();
     return portSeverities;
   }
   async getPortStatuses() {
-    const db = this.table('portStatuses');
+    const db = this.table('portStatus');
     let PortStatuses = await db.toArray();
     return PortStatuses;
   }

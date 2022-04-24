@@ -132,6 +132,7 @@ export function MSALInterceptConfigFactory() {
     MaterialModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    
     CoreModule,
     !environment.useAdal
       ? AuthenticationMsalModule.forRoot()

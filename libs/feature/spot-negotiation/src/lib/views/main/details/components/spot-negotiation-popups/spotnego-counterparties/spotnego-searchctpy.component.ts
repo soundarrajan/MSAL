@@ -91,16 +91,16 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         this.dialog_gridOptions.columnApi = params.columnApi;
         this.dialog_gridOptions.api.sizeColumnsToFit();
 
-        this.store.subscribe(({ spotNegotiation }) => {
+        this.store.selectSnapshot<any>((state: any) => {
           if (data.isPhysicalSupplier != undefined && data.isPhysicalSupplier) {
             this.pageSize = 25;
             this.totalItems = this.physicalSupplierRowCount;
-            this.rowData = spotNegotiation.physicalSupplierCounterpartyList;
+            this.rowData = state.spotNegotiation.physicalSupplierCounterpartyList;
             this.dialog_gridOptions.api?.setRowData(this.rowData);
           } else {
             this.pageSize = 25;
             this.totalItems = this.counterpartyListRowCount;
-            this.rowData = spotNegotiation.counterpartyList;
+            this.rowData = state.spotNegotiation.counterpartyList;
             this.dialog_gridOptions.api?.setRowData(this.rowData);
           }
         });
@@ -388,7 +388,8 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       headerName: 'Created On',
       headerTooltip: 'Created On',
       field: 'createdOn',
-      cellClass: ['aggridtextalign-center']
+      cellClass: ['aggridtextalign-center'],
+      valueFormatter: params => this.format.dateUtc(params.value)
     },
     {
       headerName: 'Last Modified By',
@@ -400,7 +401,8 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       headerName: 'Last Modified On',
       headerTooltip: 'Last Modified On',
       field: 'lastModifiedOn',
-      cellClass: ['aggridtextalign-center']
+      cellClass: ['aggridtextalign-center'],
+      valueFormatter: params => this.format.dateUtc(params.value)
     }
   ];
 
@@ -412,8 +414,8 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   public rowData: any[];
 
   ngOnInit() {
-    this.store.subscribe(({ spotNegotiation }) => {
-      this.currentRequest = spotNegotiation.currentRequestSmallInfo;
+    this.store.selectSnapshot<any>((state: any) => {
+      this.currentRequest = state.spotNegotiation.currentRequestSmallInfo;
     });
   }
 
@@ -495,9 +497,9 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   }
 
   search(userInput: string): void {
-    this.store.subscribe(({ spotNegotiation }) => {
-      if (spotNegotiation.counterpartyList) {
-        this.rowData = spotNegotiation.counterpartyList.filter(e => {
+    this.store.selectSnapshot<any>((state: any) => {
+      if (state.spotNegotiation.counterpartyList) {
+        this.rowData = state.spotNegotiation.counterpartyList.filter(e => {
           if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
             return true;
           } else {
