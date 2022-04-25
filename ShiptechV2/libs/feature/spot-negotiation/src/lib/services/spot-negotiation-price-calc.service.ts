@@ -624,8 +624,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
           return { ...e, requestLocations };
         });
         // Update the store
-        this.store.dispatch(new EditLocationRow(updatedRow));
-        this.store.dispatch(new UpdateRequest(reqs));
+        this.store.dispatch([new EditLocationRow(updatedRow), new UpdateRequest(reqs)]);
       } else {
         //this.toastr.error(res.message);
         return;
