@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-// import * as Highcharts from "highcharts";
+import * as Highcharts from "highcharts";
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Store } from '@ngxs/store';
