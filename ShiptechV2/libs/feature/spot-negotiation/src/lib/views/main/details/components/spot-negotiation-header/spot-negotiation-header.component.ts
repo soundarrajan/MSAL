@@ -369,10 +369,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         // else
 
         this.store.dispatch(
-          new AddCounterpartyToLocations(futureLocationsRows)
-        );
-        this.store.dispatch(
-          new AppendLocationsRowsOriData(futureLocationsRows)
+          [new AddCounterpartyToLocations(futureLocationsRows), new AppendLocationsRowsOriData(futureLocationsRows)]
         );
       } else {
         this.toastr.error(res.message);
@@ -695,8 +692,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       return null;
     }
     // Set current request
-    this.store.dispatch(new SetCurrentRequestSmallInfo(selected));
-    this.store.dispatch(new SetLocations(selected.requestLocations));
+    this.store.dispatch([new SetCurrentRequestSmallInfo(selected), new SetLocations(selected.requestLocations)]);
     var obj = {
       selReqIndex: i
     };
@@ -714,8 +710,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           return;
         }
         if (res.payload) {
-          this.availableContracts[`request_${selectedRequestId}`] = res.payload;
-          this.store.dispatch(new SetAvailableContracts(res.payload));
+          this.availableContracts[`request_${selectedRequestId}`] = res.payload;          
 
           if (res.payload.length > 0) {
             const futurerequestContract = this.getRequestAddContract(
@@ -723,7 +718,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
               res.payload
             );
 
-            this.store.dispatch(new SetRequests(futurerequestContract));
+            this.store.dispatch([new SetAvailableContracts(res.payload), new SetRequests(futurerequestContract)]);
+          }
+          else{
+            this.store.dispatch(new SetAvailableContracts(res.payload));
           }
         } else {
           this.toastr.error(res.message);
