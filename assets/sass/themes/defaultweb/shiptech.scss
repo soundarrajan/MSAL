@@ -4260,6 +4260,7 @@ tr.title {
     color: $grey2 !important;
   }
 }
+
 .datepicker-darktheme {
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
   background-color: $dark4;
@@ -4270,65 +4271,297 @@ tr.title {
     width: 290px !important;
     height: 280px !important;
   }
+
   .mat-calendar-period-button {
     font-weight: normal !important;
   }
 
   .mat-calendar-header {
+
     color: $white;
     font-size: 14px;
   }
+
   .mat-calendar-table-header {
     color: $grey2;
 
     font-size: 14px;
+
     th {
       font-size: 14px;
     }
   }
+
   .mat-calendar-body-label {
     color: $white;
     font-weight: normal !important;
   }
+
   .mat-calendar-body-cell-content {
     color: $white;
     width: 65%;
     height: 65%;
     font-size: 14px;
   }
+
   .mat-calendar-arrow {
-    color: #bdbdbd;
-    border-top-color: #bdbdbd;
+    color: #BDBDBD;
+    border-top-color: #BDBDBD;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
     border-top-width: 6px;
     margin-left: 5px;
   }
+
   .mat-calendar-table-header-divider::after {
-    color: #bdbdbd;
-    background: #434c58;
+    color: #BDBDBD;
+    background: #434C58;
+
   }
 
   .mat-calendar-next-button {
     filter: brightness(2.5) !important;
   }
+
   .mat-calendar-previous-button {
     filter: brightness(2.5) !important;
   }
+
   .mat-calendar-body-selected {
     background-color: $denim !important;
     color: $white;
   }
+
   .mat-calendar-body-today:not(.mat-calendar-body-selected) {
     border-color: $grey2;
   }
+
   &.new-datepicker {
     .mat-calendar-body-selected {
-      background-color: #1d9fff !important;
+      background-color: #1D9FFF !important;
       color: $white;
     }
   }
 }
+
+/* new date-time picker*/
+.mat-datepicker-content {
+  &.darktheme {
+    background-color: #2F3845;
+
+    .mat-calendar {
+      box-shadow: none !important;
+    }
+
+    .time-picker-toggle-container {
+      border-top: 0.75px solid rgba(189, 189, 189, 0.3);
+    }
+  }
+}
+
+.time-picker-toggle {
+  content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNSAxNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTcuNSAwQzMuMzY0NDggMCAwIDMuMzY0NDggMCA3LjVDMCAxMS42MzU1IDMuMzY0NDggMTUgNy41IDE1QzExLjYzNTUgMTUgMTUgMTEuNjM1NSAxNSA3LjVDMTUgMy4zNjQ0OCAxMS42MzU1IDAgNy41IDBaTTcuNSAxMy43MzI0QzQuMDYzNDUgMTMuNzMyNCAxLjI2NzYyIDEwLjkzNjYgMS4yNjc2MiA3LjVDMS4yNjc2MiA0LjA2MzQ1IDQuMDYzNDUgMS4yNjc2MiA3LjUgMS4yNjc2MkMxMC45MzY2IDEuMjY3NjIgMTMuNzMyNCA0LjA2MzQ1IDEzLjczMjQgNy41QzEzLjczMjQgMTAuOTM2NiAxMC45MzY2IDEzLjczMjQgNy41IDEzLjczMjRaIiBmaWxsPSIjMUQ5RkZGIi8+CjxwYXRoIGQ9Ik0xMC45MDE0IDcuMjY3NjFINy45NDM2NFYyLjg0Njk0QzcuOTQzNjQgMi40OTY5IDcuNjU5ODcgMi4yMTMxMyA3LjMwOTgzIDIuMjEzMTNDNi45NTk3OSAyLjIxMzEzIDYuNjc2MDMgMi40OTY5IDYuNjc2MDMgMi44NDY5NFY3LjkwMTM5QzYuNjc2MDMgOC4yNTE0MyA2Ljk1OTc5IDguNTM1MiA3LjMwOTgzIDguNTM1MkM3LjMxNjk4IDguNTM1MiA3LjMyMzkgOC41MzQzNSA3LjMzMDk2IDguNTM0MTRDNy4zMzgwMiA4LjUzNDQxIDcuMzQ0OTMgOC41MzUyIDcuMzUyMDggOC41MzUySDEwLjkwMTRDMTEuMjUxNCA4LjUzNTIgMTEuNTM1MiA4LjI1MTQzIDExLjUzNTIgNy45MDEzOUMxMS41MzUyIDcuNTUxMzUgMTEuMjUxNCA3LjI2NzYxIDEwLjkwMTQgNy4yNjc2MVoiIGZpbGw9IiMxRDlGRkYiLz4KPC9zdmc+Cg==);
+  width: 15px;
+  height: 15px;
+  margin: 0px auto;
+  cursor: pointer;
+  position: relative;
+  top: 3px;
+}
+
+.calendar-picker-toggle {
+  background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjYiIGhlaWdodD0iMjYiIHZpZXdCb3g9IjAgMCAyNiAyNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgMTNDMCA1LjgyMDMgNS44MjAzIDAgMTMgMEMyMC4xNzk3IDAgMjYgNS44MjAzIDI2IDEzQzI2IDIwLjE3OTcgMjAuMTc5NyAyNiAxMyAyNkM1LjgyMDMgMjYgMCAyMC4xNzk3IDAgMTNaIiBmaWxsPSIjRkFGQUZCIi8+CjxwYXRoIGQ9Ik0xNy41IDcuNUgxN1Y2LjQ5OTk3QzE3IDYuMjI0MDMgMTYuNzc2IDYgMTYuNSA2SDE2QzE1LjcyNCA2IDE1LjUgNi4yMjQwMyAxNS41IDYuNDk5OTdWNy41SDEwLjVWNi40OTk5N0MxMC41IDYuMjI0MDMgMTAuMjc2IDYgMTAgNkg5LjUwMDAzQzkuMjI0IDYgOC45OTk5NyA2LjIyNDAzIDguOTk5OTcgNi40OTk5N1Y3LjVIOC41QzcuNjczIDcuNSA3IDguMTczIDcgOVYxNi41QzcgMTcuMzI3IDcuNjczIDE4IDguNSAxOEgxNy41QzE4LjMyNyAxOCAxOSAxNy4zMjcgMTkgMTYuNVY5QzE5IDguMTczIDE4LjMyNyA3LjUgMTcuNSA3LjVaTTE4IDE2LjVDMTggMTYuNzc1NSAxNy43NzU1IDE3IDE3LjUgMTdIOC41QzguMjI0NTIgMTcgOC4wMDAwMyAxNi43NzU1IDguMDAwMDMgMTYuNVYxMS4wMkgxOFYxNi41WiIgZmlsbD0iIzFEOUZGRiIvPgo8L3N2Zz4K);
+  width: 100%;
+  height: 30px;
+  margin: 0px auto;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  border-bottom: 0.75px solid #BDBDBD;
+  font-size: 8px;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: -3px;
+}
+
+.time-picker-toggle-container {
+  border-top: 0.75px solid rgba(0, 0, 0, 0.30);
+  position: relative;
+  bottom: 16px;
+  padding-top: 10px;
+}
+
+.date-trigger {
+  text-align: center;
+}
+
+.time-trigger {
+  position: absolute !important;
+  left: 77px !important;
+  border: none !important;
+  height: 15px !important;
+  top: 5px !important;
+}
+
+.new-timepicker {
+  position: relative;
+  left: 11px;
+  bottom: 15px;
+
+  .owl-dt-inline-container {
+    opacity: 1 !important;
+    transform: scale(1, 1) !important;
+    box-shadow: none;
+
+    .owl-dt-container-inner {
+      opacity: 1 !important;
+
+    }
+  }
+
+  .owl-dt-control-arrow-button {
+    color: #1D9FFF;
+    font-size: 20px;
+  }
+
+  .owl-dt-timer-input {
+    border: none;
+    font-size: 14px;
+  }
+
+  .owl-dt-timer-divider {
+    display: none;
+  }
+}
+
+.shadow-input {
+  position: absolute;
+  top: 22px;
+  width: 0px;
+  height: 0px;
+  border: none;
+}
+
+.mat-calendar-body-cell-content {
+  width: 65% !important;
+  height: 65% !important;
+}
+
+
+.mat-calendar-body-selected {
+  background-color: #1D9FFF !important;
+}
+
+.timepickerMenu {
+  width: 290px;
+  height: 190px;
+  position: relative;
+  right: 23px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
+
+  .mat-menu-content {
+    position: relative;
+    top: 20px;
+    border-bottom: 0.75px solid rgba(0, 0, 0, 0.30);
+  }
+}
+
+/*Angular 9 - date and time picker*/
+.timer-picker .owl-dt-popup-container {
+  width: 300px;
+  top: 315px;
+  //left: -300px;
+  box-shadow: none;
+
+  .owl-dt-container-buttons {
+    display: none;
+  }
+}
+
+.timerPanelClass {
+  &.darktheme {
+    .owl-dt-popup-container {
+      background-color: #2F3845;
+
+      .owl-dt-timer-input {
+        background: none;
+        color: #ffffff;
+        border: 1px solid #8F9BAB;
+      }
+
+      .owl-dt-control-button {
+        color: #bdbdbd;
+      }
+
+      .owl-dt-control-content {
+        color: #1D9FFF;
+      }
+
+      .owl-dt-container-row {
+        border-bottom: 0.75px solid rgba(189, 189, 189, 0.3) !important;
+      }
+    }
+
+    .calendar-picker-toggle {
+      border-bottom: 0.75px solid rgba(189, 189, 189, 0.3) !important;
+      background-size: 15px 20px;
+      background-repeat: no-repeat !important;
+      background-position-x: center !important;
+      background-position-y: 3px !important;
+      background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwLjUgMS41SDEwVjAuNDk5OTY5QzEwIDAuMjI0MDMgOS43NzYgMCA5LjQ5OTk3IDBIOUM4LjcyMzk3IDAgOC41MDAwMyAwLjIyNDAzIDguNTAwMDMgMC40OTk5NjlWMS41SDMuNDk5OTdWMC40OTk5NjlDMy40OTk5NyAwLjIyNDAzIDMuMjc2MDMgMCAzIDBIMi41MDAwM0MyLjIyNCAwIDEuOTk5OTcgMC4yMjQwMyAxLjk5OTk3IDAuNDk5OTY5VjEuNUgxLjVDMC42NzMwMDQgMS41IDAgMi4xNzMgMCAzVjEwLjVDMCAxMS4zMjcgMC42NzMwMDQgMTIgMS41IDEySDEwLjVDMTEuMzI3IDEyIDEyIDExLjMyNyAxMiAxMC41VjNDMTIgMi4xNzMgMTEuMzI3IDEuNSAxMC41IDEuNVpNMTEgMTAuNUMxMSAxMC43NzU1IDEwLjc3NTUgMTEgMTAuNSAxMUgxLjVDMS4yMjQ1MiAxMSAxLjAwMDAzIDEwLjc3NTUgMS4wMDAwMyAxMC41VjUuMDIwMDJIMTFWMTAuNVoiIGZpbGw9IiMxRDlGRkYiLz4KPC9zdmc+Cg==);
+    }
+  }
+
+  .owl-dt-container-buttons {
+    //display: none;
+    padding-top: 4px !important;
+
+    button {
+      &:hover {
+        span {
+          background: none !important;
+        }
+      }
+    }
+  }
+
+  .owl-dt-popup-container {
+    width: 290px;
+    height: 190px;
+
+    .owl-dt-timer-content {
+      input {
+        background-color: #FAFAFB;
+        border-radius: 32px;
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+
+  .owl-dt-container-row {
+    padding-top: 45px;
+    padding-bottom: 13px;
+    height: auto;
+    border-bottom: 0.75px solid #BDBDBD;
+  }
+
+  .owl-dt-control-arrow-button {
+    color: #1D9FFF;
+    font-size: 20px;
+  }
+
+  .owl-dt-timer-input {
+    border: none;
+    font-size: 14px;
+  }
+
+  .owl-dt-timer-divider {
+    display: none;
+  }
+}
+
 
 // .onhover-popup{
 //   display: none;

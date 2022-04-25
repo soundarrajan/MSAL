@@ -59,15 +59,16 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
       (dateTimeChange)="onChange($event)"
       [owlDateTimeTrigger]="dt"
       [owlDateTime]="dt"
-      style="position: absolute;top: -19px;
+      style="position: relative;top: -19px;
                width: 100px;visibility:hidden;border: none"
     />
 
-    <span
+    <!-- <span
       [owlDateTimeTrigger]="dt"
       style="position: absolute;top: 7px;left: 116px;"
       ><i class="fa">&#xf017;</i></span
-    >
+    > -->
+    <div class="time-pick-container">
     <owl-date-time
       [pickerType]="'timer'"
       #dt
@@ -75,6 +76,7 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
       (afterPickerClosed)="timepickerClosed()"
       (afterPickerOpen)="timepickerOpened()"
     ></owl-date-time>
+        </div>
   `
 })
 export class AgGridDatetimePickerToggleComponent
