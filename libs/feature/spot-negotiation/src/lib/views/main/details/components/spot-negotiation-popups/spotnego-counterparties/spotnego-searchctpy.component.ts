@@ -587,10 +587,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
           this.toastr.success(res.message);
           // Add in Store
           this.store.dispatch(
-            new AddCounterpartyToLocations(res.counterparties)
-          );
-          this.store.dispatch(
-            new AppendLocationsRowsOriData(res.counterparties)
+            [new AddCounterpartyToLocations(res.counterparties), new AppendLocationsRowsOriData(res.counterparties)]
           );
         } else {
           this.toastr.error(res.message);

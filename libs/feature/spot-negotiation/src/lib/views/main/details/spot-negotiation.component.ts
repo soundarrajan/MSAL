@@ -134,14 +134,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if ((<any>window).activeRequest && res['requests'][(<any>window).activeRequest.i]) {
         // Set first request default;
         this.store.dispatch(
-          new SetCurrentRequestSmallInfo(
+          [new SetCurrentRequestSmallInfo(
             res['requests'][(<any>window).activeRequest.i]
-          )
-        );
-        this.store.dispatch(
-          new SetLocations(
+          ), new SetLocations(
             res['requests'][(<any>window).activeRequest.i].requestLocations
-          )
+          )]
         );
         if ((<any>window).location.href.includes('v2/group-of-requests')) {
           (<any>window).activeRequest = false;
@@ -160,8 +157,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
               localStorage.removeItem('activeRequestId');
           }
-          this.store.dispatch(new SetCurrentRequestSmallInfo(activeRequest));
-          this.store.dispatch(new SetLocations(activeRequest.requestLocations));
+          this.store.dispatch([new SetCurrentRequestSmallInfo(activeRequest), new SetLocations(activeRequest.requestLocations)]);
           this.changeDetector.detectChanges();
         }
       }
@@ -363,8 +359,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               reqLocationRows.push(data);
           }
 
-          this.store.dispatch(new SetLocationsRowsOriData(reqLocationRows));
-          this.store.dispatch(new SetLocationsRows(reqLocationRows));
+          this.store.dispatch([new SetLocationsRowsOriData(reqLocationRows), new SetLocationsRows(reqLocationRows)]);
       }
     });
     this.changeDetector.detectChanges();

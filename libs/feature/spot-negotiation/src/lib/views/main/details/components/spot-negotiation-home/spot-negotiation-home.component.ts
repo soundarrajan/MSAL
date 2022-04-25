@@ -412,8 +412,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
             locRow);
             reqLocationRows.push(data);
         }
-      this.store.dispatch(new UpdateRequest(reqs));
-      this.store.dispatch(new SetLocationsRows(reqLocationRows));
+      this.store.dispatch([new UpdateRequest(reqs), new SetLocationsRows(reqLocationRows)]);
 
       //this.spotNegotiationService.callGridRefreshServiceAll();
       this.spotNegotiationService.callGridRefreshService();
@@ -992,8 +991,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
               reqLocationRows.push(data);
           }
           // Update the store
-          this.store.dispatch(new UpdateRequest(this.requestOptions));
-          this.store.dispatch(new SetLocationsRows(reqLocationRows));
+          this.store.dispatch([new UpdateRequest(this.requestOptions), new SetLocationsRows(reqLocationRows)]);
           this.spotNegotiationService.callGridRefreshService();
         } else {
           this.toaster.error(res);
@@ -1188,8 +1186,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           });
           return { ...e, requestLocations };
         });
-        this.store.dispatch(new SetLocationsRows(reqLocationRows));
-        this.store.dispatch(new UpdateRequest(this.requestOptions));
+        this.store.dispatch([new SetLocationsRows(reqLocationRows), new UpdateRequest(this.requestOptions)]);
 
         this.changeDetector.detectChanges();
       });
@@ -1298,13 +1295,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
             locRow);
             reqLocationRows.push(data);
         }
-        this.store.dispatch(new SetLocationsRows(reqLocationRows));
+        //this.store.dispatch(new SetLocationsRows(reqLocationRows));
         if (res.isGroupDeleted) {
           const baseOrigin = new URL(window.location.href).origin;
           window.open(
             `${baseOrigin}/#/edit-request/${this.currentRequestInfo.id}`,
             '_self'
           );
+          this.store.dispatch(new SetLocationsRows(reqLocationRows));
           //window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
         } else {
           this.requestOptions = this.requestOptions.map(e => {
@@ -1331,7 +1329,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
             });
             return requestLocations ? { ...e, requestLocations } : e;
           });
-          this.store.dispatch(new UpdateRequest(this.requestOptions));
+          this.store.dispatch([new SetLocationsRows(reqLocationRows), new UpdateRequest(this.requestOptions)]);
           this.changeDetector.detectChanges();
           this.spotNegotiationService.callGridRefreshServiceAll();
         }

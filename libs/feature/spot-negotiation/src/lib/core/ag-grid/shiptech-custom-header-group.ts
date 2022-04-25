@@ -831,8 +831,7 @@ export class ShiptechCustomHeaderGroup {
                     JSON.parse(JSON.stringify(updatedRow1)),
                     index
                   );
-                  this.store.dispatch(new EditLocations(updatedRow1));
-                  this.store.dispatch(new UpdateRequest(reqs));
+                  this.store.dispatch([new EditLocations(updatedRow1), new UpdateRequest(reqs)]);
                   for (let i = 0; i < filterLocationsRows.length; i++) {
                     const productDetails = this.getRowProductDetails(
                       filterLocationsRows[i],
@@ -971,10 +970,7 @@ export class ShiptechCustomHeaderGroup {
         // }
         // else
         this.store.dispatch(
-          new AddCounterpartyToLocations(futureLocationsRows)
-        );
-        this.store.dispatch(
-          new AppendLocationsRowsOriData(futureLocationsRows)
+          [new AddCounterpartyToLocations(futureLocationsRows), new AppendLocationsRowsOriData(futureLocationsRows)]
         );
         this.changeDetector.markForCheck();
       } else {

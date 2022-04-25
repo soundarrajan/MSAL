@@ -464,8 +464,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               this.moveCursorToEnd(element);
             }
     // Update the store
-    this.store.dispatch(new EditLocationRow(updatedRow));
-    this.store.dispatch(new UpdateRequest(reqs));
+    this.store.dispatch([new EditLocationRow(updatedRow), new UpdateRequest(reqs)]);
     
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
@@ -2079,10 +2078,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           this.toastr.success(
             'Counterparty has been removed from negotiation succesfully.','',{timeOut: 800}
           );
-          this.store.dispatch(new RemoveCounterparty({ rowId: rowData.id }));
-          this.store.dispatch(
-            new RemoveLocationsRowsOriData({ rowId: rowData.id })
-          );
+          this.store.dispatch([new RemoveCounterparty({ rowId: rowData.id }), new RemoveLocationsRowsOriData({ rowId: rowData.id })]);
+
           if (res['requestLocationSellers'] && res['sellerOffers']) {
             const futureLocationsRows = this.getLocationRowsWithPriceDetails(
               res['requestLocationSellers'],
