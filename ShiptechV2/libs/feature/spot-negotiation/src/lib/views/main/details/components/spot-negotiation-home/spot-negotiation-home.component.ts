@@ -414,8 +414,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       this.store.dispatch([new UpdateRequest(reqs), new SetLocationsRows(reqLocationRows)]);
 
-      //this.spotNegotiationService.callGridRefreshServiceAll();
-      this.spotNegotiationService.callGridRefreshService();
+      // this.spotNegotiationService.callGridRefreshServiceAll();
+      this.spotNegotiationService.callGridRedrawService();
       this.changeDetector.detectChanges();
     });
   }
@@ -1074,7 +1074,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('Amend RFQ(s) sent successfully.');
-          //this.spotNegotiationService.callGridRefreshServiceAll();
           this.spotNegotiationService.callGridRefreshService();
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
@@ -1134,8 +1133,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) skipped successfully.');
-          //this.spotNegotiationService.callGridRefreshServiceAll();
-          this.spotNegotiationService.callGridRefreshService();
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
           this.toaster.warning(res.Message);
@@ -1187,7 +1184,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           return { ...e, requestLocations };
         });
         this.store.dispatch([new SetLocationsRows(reqLocationRows), new UpdateRequest(this.requestOptions)]);
-
+        this.spotNegotiationService.callGridRedrawService();
         this.changeDetector.detectChanges();
       });
     }
@@ -1260,7 +1257,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) revoked successfully.');
-          this.spotNegotiationService.callGridRefreshService();
+
           if (res['message'].length > 3) this.toaster.warning(res['message']);
           // else
           //   this.toaster.success('RFQ(s) revoked successfully.');
@@ -1330,8 +1327,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
             return requestLocations ? { ...e, requestLocations } : e;
           });
           this.store.dispatch([new SetLocationsRows(reqLocationRows), new UpdateRequest(this.requestOptions)]);
-          this.changeDetector.detectChanges();
-          this.spotNegotiationService.callGridRefreshServiceAll();
+          //this.spotNegotiationService.callGridRefreshService();
+          this.spotNegotiationService.callGridRedrawService();
+          this.changeDetector.detectChanges();          
         }
       });
     }
