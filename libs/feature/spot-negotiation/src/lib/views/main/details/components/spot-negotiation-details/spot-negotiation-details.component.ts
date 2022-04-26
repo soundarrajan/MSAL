@@ -370,16 +370,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
 
   }
-
-  onRowGroupOpened(event: RowGroupOpenedEvent) {
-    var rowNodeIndex = event.node.rowIndex!;
-    var childCount = event.node.childrenAfterSort
-      ? event.node.childrenAfterSort.length
-      : 0;
-    var newIndex = rowNodeIndex + childCount;
-    this.gridApi.ensureIndexVisible(newIndex);
-  }
-
+  
   identifyer = (index: number, item: any) => item.name;
   isselectedrowfun(row, isSelected) {
     if (isSelected) {
