@@ -132,6 +132,7 @@ export class AgGridDatetimePickerToggleComponent
     this.spotNegotiationService.QuoteByDate = this.getValue();
   }
   dateChanged(event) {
+    this.initialDate = new FormControl(moment(event.value));
     const closeFn = this.picker.close;
     this.picker.close = () => {};
     this.picker[
