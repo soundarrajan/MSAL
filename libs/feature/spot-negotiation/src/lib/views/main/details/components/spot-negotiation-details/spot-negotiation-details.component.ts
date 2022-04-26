@@ -459,12 +459,24 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       });
       return { ...e, requestLocations };
     });
-    let element = document.getElementById(elementidValue);
+    // let element = document.getElementById(elementidValue);
+    //         if (element) {
+    //           this.moveCursorToEnd(element);
+    //         }
+    var params = { force: true };
+    this.store.dispatch([new EditLocationRow(updatedRow), new UpdateRequest(reqs)]);
+        //setTimeout(() => {
+//          this.gridOptions_counterparty.api?.refreshCells(params);
+          setTimeout(() => {
+            let element = document.getElementById(elementidValue);
             if (element) {
               this.moveCursorToEnd(element);
             }
+          }, 100);
+         //});   
+         this.gridOptions_counterparty.api?.refreshCells(params);
     // Update the store
-    this.store.dispatch([new EditLocationRow(updatedRow), new UpdateRequest(reqs)]);
+    
     
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
