@@ -302,13 +302,14 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   // };
 
   SearchCounterparty(userInput: string): void {
+    let inputValue = userInput.trim();
     this.dialog_gridOptions.api.showLoadingOverlay();
     const response = this.spotNegotiationService.getResponse(
       null,
       { Filters: [] },
       { SortList: [] },
       [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
-      userInput.toLowerCase(),
+      inputValue.toLowerCase(),
       { Skip: 0, Take: this.pageSize }
     );
     response.subscribe((res: any) => {
@@ -325,13 +326,14 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   }
 
   SearchPhysicalSupplier(userInput: string): void {
+    let inputValue = userInput.trim();
     this.dialog_gridOptions.api.showLoadingOverlay();
     const response = this.spotNegotiationService.getResponse(
       null,
       { Filters: [] },
       { SortList: [] },
       [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
-      userInput.toLowerCase(),
+      inputValue.toLowerCase(),
       { Skip: 0, Take: this.pageSize }
     );
     response.subscribe((res: any) => {
