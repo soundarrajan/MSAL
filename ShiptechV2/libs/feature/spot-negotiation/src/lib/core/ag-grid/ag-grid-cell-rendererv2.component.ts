@@ -401,7 +401,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         <div class="select-product-container">
           <div
             class="col-md-12 header-container-product"
-            (click)="$event.preventDefault()"
+            (click)="$event.stopPropagation(); $event.preventDefault()"
           >
             <div class="search-product-container col-md-10">
               <span class="search-product-lookup"> </span>
