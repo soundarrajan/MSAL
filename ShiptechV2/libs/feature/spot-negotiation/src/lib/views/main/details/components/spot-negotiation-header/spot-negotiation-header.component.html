@@ -13,7 +13,7 @@
           <div class="select-product-container">
             <div
               class="col-md-12 header-container-product"
-              (click)="$event.stopPropagation(); $event.preventDefault()"
+              (click)="$event.preventDefault()"
             >
               <div class="search-product-container col-md-10">
                 <span class="search-product-lookup"> </span>
@@ -120,7 +120,7 @@
               <div class="select-product-container">
                 <div
                   class="col-md-12 header-container-product"
-                  (click)="$event.stopPropagation(); $event.preventDefault()"
+                  (click)="$event.preventDefault()"
                 >
                   <div class="search-product-container col-md-10">
                     <span class="search-product-lookup"> </span>
@@ -130,10 +130,11 @@
                       (input)="searchRequest($event.target.value)"
                       placeholder="Search and select Request"
                       class="search-product-input"
+                      
                     />
                   </div>
                   <div class="col-md-2" (click)="openRequestPopup()">
-                    <span class="expand-img"></span>
+                    <span class="expand-img" ></span>
                   </div>
                 </div>
                 <table
