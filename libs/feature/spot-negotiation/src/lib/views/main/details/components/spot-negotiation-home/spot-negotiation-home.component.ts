@@ -708,7 +708,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       } else if (
         selectedRows.filter(
-          x => !x.RequestOffers || x.RequestOffers.find(r => r.price == null)
+          x => !x.RequestOffers
         ).length != 0
       ) {
         this.toaster.error(
