@@ -42,7 +42,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
             <div class="select-product-container">
               <div
                 class="col-md-12 header-container-product"
-                (click)="$event.stopPropagation(); $event.preventDefault()"
+                (click)="$event.preventDefault()"
               >
                 <div class="search-product-container col-md-10">
                   <span class="search-product-lookup"> </span>
@@ -50,6 +50,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
                     matInput
                     placeholder="Search and select counterparty"
                     class="search-product-input"
+                    (click)="$event.stopPropagation()"
                     (input)="search($event.target.value)"
                   />
                 </div>

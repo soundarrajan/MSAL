@@ -401,7 +401,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         <div class="select-product-container">
           <div
             class="col-md-12 header-container-product"
-            (click)="$event.stopPropagation(); $event.preventDefault()"
+            (click)="$event.preventDefault()"
           >
             <div class="search-product-container col-md-10">
               <span class="search-product-lookup"> </span>
@@ -410,6 +410,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 placeholder="Search and select counterparty"
                 class="search-product-input"
                 (input)="search($event.target.value, params)"
+                (click)="$event.stopPropagation()"
               />
             </div>
             <div class="col-md-2">
