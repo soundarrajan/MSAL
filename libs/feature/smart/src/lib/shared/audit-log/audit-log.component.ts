@@ -56,7 +56,7 @@ export class AuditLogComponent implements OnInit {
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
         this.gridOptions.api.setRowData(this.rowData);
-        this.gridOptions.api.sizeColumnsToFit(); 
+        this.gridOptions.api.sizeColumnsToFit();
         this.rowCount = this.gridOptions.api.getDisplayedRowCount();
 
       },
@@ -76,15 +76,15 @@ export class AuditLogComponent implements OnInit {
   }
 
   ngOnInit() {
-    
-    this.loadAuditLog();   
+
+    this.loadAuditLog();
   }
 
   public loadAuditLog(){
     let businessId = "1102"; //smart module or screen ID
     let planID = this.vesselRef?.planId;
-      
-    let requestPayload = {"Filters":[{ColumnName: "BusinessId", Value: businessId}, {ColumnName: "Transaction", Value: planID}],"Pagination":{"Take":25,"Skip":0},"PageFilters":{"Filters":[{"columnValue":"Date","ColumnType":"Date","isComputedColumn":false,"ConditionValue":">=","Values":[this.defaultFromDate],dateType: "server","FilterOperator":0},{"columnValue":"Date","ColumnType":"Date","isComputedColumn":false,"ConditionValue":"<=","Values":[this.selectedToDate],dateType: "server","FilterOperator":1}]},"SortList":{"SortList":[]}};
+
+    let requestPayload = {"Filters":[{ColumnName: "BusinessId", Value: businessId}, {ColumnName: "Transaction", Value: planID}],"Pagination":{"Take":100,"Skip":0},"PageFilters":{"Filters":[{"columnValue":"Date","ColumnType":"Date","isComputedColumn":false,"ConditionValue":">=","Values":[this.defaultFromDate],dateType: "server","FilterOperator":0},{"columnValue":"Date","ColumnType":"Date","isComputedColumn":false,"ConditionValue":"<=","Values":[this.selectedToDate],dateType: "server","FilterOperator":1}]},"SortList":{"SortList":[]}};
      this.localService.getAuditLog(requestPayload).subscribe((data: any) => {
      this.rowData = data.payload;
      this.rowData.forEach((item: any) => {
@@ -99,7 +99,7 @@ export class AuditLogComponent implements OnInit {
   onFromToDateChange(event) {
     console.log('selected date', event);
     this.defaultFromDate = event.fromDate;
-    this.selectedToDate = event.toDate;  
+    this.selectedToDate = event.toDate;
     this.loadAuditLog();
   }
 
