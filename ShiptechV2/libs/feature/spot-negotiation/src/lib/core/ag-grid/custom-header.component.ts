@@ -139,24 +139,24 @@ export class CustomHeader implements IHeaderAngularComp {
     }
   }
 
-  selectCounterparty(locationRow) {
-    let payload = {
-      reqLocSellers: [
-        {
-          requestLocationSellerId: locationRow.id,
-          isSelected: locationRow.isSelected
-        }
-      ]
-    };
-    const response = this.spotNegotiationService.UpdateSelectSeller(payload);
-    response.subscribe((res: any) => {
-      if (res?.message == 'Unauthorized') {
-        return;
-      }
-      if (res['isUpdated']) {
-      } else {
-        this.toastr.error('An error has occurred!');
-      }
-    });
-  }
+  // selectCounterparty(locationRow) {
+  //   let payload = {
+  //     reqLocSellers: [
+  //       {
+  //         requestLocationSellerId: locationRow.id,
+  //         isSelected: locationRow.isSelected
+  //       }
+  //     ]
+  //   };
+  //   const response = this.spotNegotiationService.UpdateSelectSeller(payload);
+  //   response.subscribe((res: any) => {
+  //     if (res?.message == 'Unauthorized') {
+  //       return;
+  //     }
+  //     if (res['isUpdated']) {
+  //     } else {
+  //       this.toastr.error('An error has occurred!');
+  //     }
+  //   });
+  // }
 }
