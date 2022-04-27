@@ -62,8 +62,8 @@ export class SmartOperatorComponent implements OnInit {
   // public paginationPageSize : number = 20;
   // public currentPage : number = 1;
   // public lastPage : number = 99;
-  // public activePage : boolean = true; 
-  
+  // public activePage : boolean = true;
+
   constructor(private localService: LocalService,private vesselService : VesselPopupService, private _FileSaverService: FileSaverService,
     @Inject(DOCUMENTS_API_SERVICE) private mastersApi: IDocumentsApiService,
     private appErrorHandler: AppErrorHandler,
@@ -71,7 +71,7 @@ export class SmartOperatorComponent implements OnInit {
     iconRegistry.addSvgIcon(
       'data-picker',
       sanitizer.bypassSecurityTrustResourceUrl('../assets/customicons/datepicker.svg'));
-    
+
     this.shiptechUrl =  new URL(window.location.href).origin;
     this.defaultColDef = {
       sortable: true,
@@ -99,7 +99,7 @@ export class SmartOperatorComponent implements OnInit {
        overlayNoRowsTemplate:
        `<span>Rows are loading...</span>`,
       onGridReady: (params) => {
-       
+
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
         this.gridOptions.api.setRowData(this.rowData1);
@@ -120,7 +120,7 @@ export class SmartOperatorComponent implements OnInit {
       onRowClicked: (event) =>{
         let req = { vesselView: 'standard-view', name: event.data.vesselName,  id: event.data.vesselId, vesselId: event.data.vesselId, vesselCode: event.data.vesselCode }
          this.localService.setVesselPopupData(req);
-         
+
          if(this.coldefOnClick != 'vesselName' && this.coldefOnClick != 'newrequest'){
          this.showBPlan.emit(true);
          this.clickEvent.emit();
@@ -169,7 +169,7 @@ export class SmartOperatorComponent implements OnInit {
         params.api.sizeColumnsToFit();
       },
       onRowClicked: (event) =>{
-        
+
        },
       //  onPaginationChanged:(event) =>{
       //   this.gridOptions.api.paginationSetPageSize(Number(this.paginationPageSize));
@@ -215,7 +215,7 @@ export class SmartOperatorComponent implements OnInit {
         params.api.sizeColumnsToFit();
       },
       onRowClicked: (event) =>{
-        
+
        },
       //  onPaginationChanged:(event) =>{
       //   this.gridOptions.api.paginationSetPageSize(Number(this.paginationPageSize));
@@ -236,7 +236,7 @@ export class SmartOperatorComponent implements OnInit {
         sortable: true,
         resizable: true
       },
-      
+
       rowSelection: 'single',
       overlayLoadingTemplate:
       '<span class="ag-overlay-loading-center">Rows are loading...</span>',
@@ -253,7 +253,7 @@ export class SmartOperatorComponent implements OnInit {
         this.gridOptions1.api.showLoadingOverlay();
 
       },
-      onCellClicked: (params) => { 
+      onCellClicked: (params) => {
         this.coldefOnClick = params.colDef.field;
       },
       onColumnResized: function (params) {
@@ -268,7 +268,7 @@ export class SmartOperatorComponent implements OnInit {
       onRowClicked: (event) =>{
         let req = { vesselView: 'standard-view', name: event.data.vesselName,  id: event.data.vesselId, vesselId: event.data.vesselId, vesselCode: event.data.vesselCode }
          this.localService.setVesselPopupData(req);
-         
+
          if(this.coldefOnClick != 'vesselName'){
          this.showBPlan.emit(true);
          this.clickEvent.emit();
@@ -288,7 +288,7 @@ export class SmartOperatorComponent implements OnInit {
         sortable: true,
         resizable: true
       },
-      
+
       rowSelection: 'single',
       onGridReady: (params) => {
         this.gridOptions2.api = params.api;
@@ -316,13 +316,13 @@ export class SmartOperatorComponent implements OnInit {
     this.tab1 = true;
     this.loadAllMyVessels();
   }
-  
+
   private columnDefs_OrderDetails = [
     { headerName: 'Order Number', headerTooltip: 'Order Number', field: 'orderId', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
-    cellRendererFramework: AGGridCellRendererComponent, 
+    cellRendererFramework: AGGridCellRendererComponent,
     cellRendererParams: { cellClass: ['cell-ellipsis']},
     },
-    { headerName: 'Order Date', headerTooltip: 'Order Date', field: 'orderDate', cellRendererFramework: AGGridCellRendererComponent, 
+    { headerName: 'Order Date', headerTooltip: 'Order Date', field: 'orderDate', cellRendererFramework: AGGridCellRendererComponent,
       cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], filter: 'date', width: 140 },
     {
       headerName: 'Vessel Name', headerTooltip: 'Vessel Name', field: 'vesselName', width: 150,
@@ -337,6 +337,8 @@ export class SmartOperatorComponent implements OnInit {
       },
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams: (params)=>{return  {type: 'vesselName', cellClass: ['cell-ellipsis'] }}
     },
+    { headerName: 'Vessel Code', headerTooltip: 'Port', field: 'vesselCode', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c']},
+
     { headerName: 'Port', headerTooltip: 'Port', field: 'portName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c']},
     { headerName: 'Delivery Date', headerTooltip: 'Delivery Date', field: 'deliveryDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], filter: 'date', width: 140 },
     // { headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'fuelGrade', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
@@ -347,7 +349,7 @@ export class SmartOperatorComponent implements OnInit {
       }
     },
     { headerName: 'Quantity', headerTooltip: 'Quantity', field: 'confirmedQuantity', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
-    cellRendererFramework: AGGridCellRendererComponent, 
+    cellRendererFramework: AGGridCellRendererComponent,
     cellRendererParams: { cellClass: ['cell-ellipsis']}
     },
     { headerName: 'Price', headerTooltip: 'Price', field: 'price', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
@@ -355,7 +357,7 @@ export class SmartOperatorComponent implements OnInit {
     cellRendererParams: { cellClass: ['cell-ellipsis']}
     },
     { headerName: 'Order Value', headerTooltip: 'Order Value', field: 'orderValue', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
-    cellRendererFramework: AGGridCellRendererComponent, 
+    cellRendererFramework: AGGridCellRendererComponent,
     cellRendererParams: { cellClass: ['cell-ellipsis']}
     },
     {
@@ -387,10 +389,10 @@ export class SmartOperatorComponent implements OnInit {
 
   private columnDefs_BdnReport = [
     {
-     headerName: '', 
+     headerName: '',
      headerCheckboxSelection: true,
      headerCheckboxSelectionFilteredOnly: true,
-    field: 'fileSelect', 
+    field: 'fileSelect',
     width: 30,
     checkboxSelection: true,
     suppressMenu: true,
@@ -403,8 +405,8 @@ export class SmartOperatorComponent implements OnInit {
     { headerName: 'Order Date', headerTooltip: 'Order Date', field: 'orderDate', filter: 'date', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
     { headerName: 'Delivery Date', headerTooltip: 'Delivery Date', field: 'deliveryDate', filter: 'date', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], width: 140 },
     { headerName: 'Quantity', headerTooltip: 'Quantity', field: 'deliveredQuantity', width: 100, headerClass: ['aggrid-text-align-r'], cellClass: ' aggrid-vertical-right'},
-    { headerName: 'File Name', headerTooltip: 'File Name', field: 'bdnFileName', 
-    cellRendererFramework: AGGridDownloadFileComponent, 
+    { headerName: 'File Name', headerTooltip: 'File Name', field: 'bdnFileName',
+    cellRendererFramework: AGGridDownloadFileComponent,
     cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }},
     width: 100, cellClass: 'aggridlink aggrid-vertical-center'},
   ];
@@ -421,7 +423,7 @@ export class SmartOperatorComponent implements OnInit {
   }
 
   onBtExport() {
-     
+
     console.log("sssssss", this.gridBdnReportOptions);
     this.getSelectedbdnreport = [];
     this.getSelectedbdnreport = this.gridBdnReportOptions.api.getSelectedRows();
@@ -429,9 +431,9 @@ export class SmartOperatorComponent implements OnInit {
       if(item.bdnFileName !=null){
         this.downloadDocument(item);
       }
-      
+
      });
-   
+
   }
 
   onPageChange(page: number): void {
@@ -439,7 +441,7 @@ export class SmartOperatorComponent implements OnInit {
   }
 
   ExcelReportsdownload(val: any): void {
-     
+
     if(val == 'bdnReports'){
       this.gridBdnReportOptions.api.exportDataAsExcel({
         onlySelected: false
@@ -452,7 +454,7 @@ export class SmartOperatorComponent implements OnInit {
       });
 
     }
-    
+
 
   }
 
@@ -491,18 +493,18 @@ export class SmartOperatorComponent implements OnInit {
     { headerName: 'Ownership', headerTooltip: 'Ownership', field: 'ownership', width: 100, cellClass: 'aggrid-columgroup-splitter-right aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'Destination', headerTooltip: 'Destination', field: 'destination', width: 130, cellClass: ' aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'ETA', headerTooltip: 'ETA', field: 'destinationEta', width: 140,
-      cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }}, 
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }},
       headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
       filter: 'agDateColumnFilter', filterParams:{
-        suppressAndOrCondition: true , 
+        suppressAndOrCondition: true ,
         comparator: function (filterLocalDateAtMidnight: Date, cellValue: string) :number {
           var dateAsString = cellValue;
           if (!dateAsString) {
               return 0;
           }
           let dateTimeArr = cellValue.split('T');
-          let dateFormat = dateTimeArr.slice(0,1); // date formatted to yyyy/mm/dd format 
-          let cellDate = new Date(dateFormat[0]); // string 
+          let dateFormat = dateTimeArr.slice(0,1); // date formatted to yyyy/mm/dd format
+          let cellDate = new Date(dateFormat[0]); // string
           cellDate.setHours(0,0,0);
           // Now that both parameters are Date objects, we can compare
           if (cellDate < filterLocalDateAtMidnight) {
@@ -513,22 +515,22 @@ export class SmartOperatorComponent implements OnInit {
             return 0;
           }
         }
-      } 
+      }
     },
     { headerName: 'Next desitination', headerTooltip: 'Next destination', field: 'nextDestination', width: 150, cellClass: ' aggrid-vertical-center',cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'ETA', headerTooltip: 'ETA', field: 'nextDestinationEta', width: 140,
-      cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }}, 
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }},
       headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center aggrid-columgroup-splitter-right'],
       filter: 'agDateColumnFilter', filterParams:{
-        suppressAndOrCondition: true , 
+        suppressAndOrCondition: true ,
         comparator: function (filterLocalDateAtMidnight: Date, cellValue: string) :number {
           var dateAsString = cellValue;
           if (!dateAsString) {
               return 0;
           }
           let dateTimeArr = cellValue.split('T');
-          let dateFormat = dateTimeArr.slice(0,1); // date formatted to yyyy/mm/dd format 
-          let cellDate = new Date(dateFormat[0]); // string 
+          let dateFormat = dateTimeArr.slice(0,1); // date formatted to yyyy/mm/dd format
+          let cellDate = new Date(dateFormat[0]); // string
           cellDate.setHours(0,0,0);
           // Now that both parameters are Date objects, we can compare
           if (cellDate < filterLocalDateAtMidnight) {
@@ -539,7 +541,7 @@ export class SmartOperatorComponent implements OnInit {
             return 0;
           }
         }
-      } 
+      }
     },
     {
       headerName: 'HSFO', headerTooltip: 'HSFO', field: 'hsfo_current_stock', width: 100,
@@ -614,7 +616,7 @@ export class SmartOperatorComponent implements OnInit {
       }
     },
     { headerName: 'New Request', headerTooltip: 'New Request', field: 'newrequest', cellClass: 'aggridlink aggrid-vertical-center', width: 120,
-      cellRendererFramework: AGGridCellDataComponent, 
+      cellRendererFramework: AGGridCellDataComponent,
       cellRendererParams: { type: 'newRequest', redirectUrl: `${this.shiptechUrl}/#/new-request` },
     }
   ];
@@ -625,7 +627,7 @@ export class SmartOperatorComponent implements OnInit {
       cellClass: function (params) {
         var classArray: string[] = ['aggridlink aggrid-vertical-center aggrid-left-ribbon mediumred1'];
         return classArray.length > 0 ? classArray : null
-    
+
       } ,
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams: (params)=>{return  {type: 'vesselName' }}
     },
@@ -636,18 +638,18 @@ export class SmartOperatorComponent implements OnInit {
     { headerName: 'Data Source', headerTooltip: 'Data Source', field: 'dataSource', cellClass: 'aggrid-vertical-center', width: 120, },
     {
       headerName: 'Data Date', headerTooltip: 'Data Date', field: 'datadate',
-      cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }}, 
+      cellRendererFramework: AGGridCellDataComponent, cellRendererParams:(params)=> {return{ type : 'Data-date',cellClass: ['custom-chip dark aggrid-space'] }},
       headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center aggrid-columgroup-splitter-right'],
       filter: 'agDateColumnFilter', filterParams:{
-        suppressAndOrCondition: true , 
+        suppressAndOrCondition: true ,
         comparator: function (filterLocalDateAtMidnight: Date, cellValue: string) :number {
           var dateAsString = cellValue;
           if (!dateAsString) {
               return 0;
           }
           let dateTimeArr = cellValue.split('T');
-          let dateFormat = dateTimeArr.slice(0,1); // date formatted to yyyy/mm/dd format 
-          let cellDate = new Date(dateFormat[0]); // string 
+          let dateFormat = dateTimeArr.slice(0,1); // date formatted to yyyy/mm/dd format
+          let cellDate = new Date(dateFormat[0]); // string
           cellDate.setHours(0,0,0);
           // Now that both parameters are Date objects, we can compare
           if (cellDate < filterLocalDateAtMidnight) {
@@ -658,14 +660,14 @@ export class SmartOperatorComponent implements OnInit {
             return 0;
           }
         }
-      } 
+      }
     },
     { headerName: 'Details', headerTooltip: 'Details', field: 'detail', width: 350, cellClass: 'aggrid-vertical-center' },
     { headerName: 'No of Days Unmanageable', headerTooltip: 'No of Days Unmanageable', field: 'unmanagedDays', width: 150, cellClass: 'aggrid-vertical-center' },
   ];
 
   private columnDefs_outstandingrequest = [
-    
+
     {
       headerName: 'Request ID', headerTooltip: 'Request ID', field: 'requestid', width: 120,
       cellClass: function (params) {
@@ -715,8 +717,8 @@ export class SmartOperatorComponent implements OnInit {
   public rowData1 = [
     // {
     //   requestid: '12819ED', severity: '1', service: 'IA4', VesselName: 'Maersk Borneo', VesselIMONO: '90284727', newrequest: 'New Request', newreq: 'Physical', port: 'Seattle', eta: '10/10/2019 10:00', etd: '10/10/2019 10:00', fuelgrade: ['RMK850'], trader: 'Europe Trader', operator: 'Macheal Chris', status: 'Stemmed', serviceid: '271', deptid: 'MLAS', ownership: 'Chartered', destination: 'Marseile', nextdestination: 'Catania', hsfo: '220 MT', vlsfo: '320 MT', dogo: ' 450 MT', ulsfo: '200 MT', datasource: 'Pre Process', details: 'Fatal error generated by model', noofdays: '3 days', retype: 'Trader'
-    // },  
- 
+    // },
+
   ];
   public rowData2 = [
     //{
@@ -768,10 +770,10 @@ export class SmartOperatorComponent implements OnInit {
 
   columnDefs = [
     {
-      headerName: 'Request ID', headerTooltip: 'Request ID', 
+      headerName: 'Request ID', headerTooltip: 'Request ID',
       field: 'requestId', width: 100, headerClass: ['aggrid-text-align-c'],
       filter: 'text',
-      cellRendererFramework: AGGridCellDataComponent, 
+      cellRendererFramework: AGGridCellDataComponent,
       cellRendererParams: { type: 'request-link', redirectUrl: `${this.shiptechUrl}/#/edit-request` },
       cellStyle: params => {
         let colorCode = params?.data?.requestStatus?.colorCode;
@@ -788,15 +790,15 @@ export class SmartOperatorComponent implements OnInit {
     },
     { headerName: 'Service', field: 'serviceName', filter: 'text', headerTooltip: 'Service', headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c'], width: 100 },
     { headerName: 'Vessel ID', field: 'vesselId', filter: 'text', headerTooltip: 'Vessel ID', headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c'], width: 100 },
-    { headerName: 'Vessel Name', field: 'vesselName', filter: 'text', headerTooltip: 'Vessel Name', 
-      headerClass: ['aggrid-text-align-c'], 
+    { headerName: 'Vessel Name', field: 'vesselName', filter: 'text', headerTooltip: 'Vessel Name',
+      headerClass: ['aggrid-text-align-c'],
       cellClass: ['aggrid-content-c'], width: 100,
-      cellRendererFramework: AGGridCellDataComponent, 
+      cellRendererFramework: AGGridCellDataComponent,
       cellRendererParams: { type: 'vesselName', redirectUrl: `${this.shiptechUrl}/#/new-request` }
     },
-    { 
+    {
       headerName: 'New Request', headerTooltip: 'New Request', field: 'newrequest', cellClass: 'aggridlink aggrid-vertical-center', width: 100,
-      cellRendererFramework: AGGridCellDataComponent, 
+      cellRendererFramework: AGGridCellDataComponent,
       cellRendererParams: { type: 'newRequest', redirectUrl: `${this.shiptechUrl}/#/new-request` },
     },
     { headerName: 'Port', headerTooltip: 'Port', field: 'locationName', filter: 'text', width: 100, cellClass: ['aggrid-content-c aggrid-column-splitter-left'] },
@@ -825,9 +827,9 @@ export class SmartOperatorComponent implements OnInit {
     { headerName: 'Trader', field: 'buyerName', filter: 'text', headerTooltip: 'Trader', width: 100, cellClass: ['aggrid-content-c aggrid-column-splitter-left'] },
     { headerName: 'Operator', field: 'operatorByName', filter: 'text', headerTooltip: 'Operator', width: 100, cellClass: ['aggrid-content-c'] },
     {
-      headerName: 'Status', field: 'requestStatus.displayName', filter: 'text', 
-      headerTooltip: 'Status', 
-      cellRendererFramework: AGGridCellRendererComponent, headerClass: ['aggrid-text-align-c'], 
+      headerName: 'Status', field: 'requestStatus.displayName', filter: 'text',
+      headerTooltip: 'Status',
+      cellRendererFramework: AGGridCellRendererComponent, headerClass: ['aggrid-text-align-c'],
       cellClass: ['aggrid-content-center'],
       cellRendererParams: function (params) {
         var classArray: string[] = [];
@@ -846,7 +848,7 @@ export class SmartOperatorComponent implements OnInit {
     // { headerName: 'Request Type', headerTooltip: 'Request Type', field: 'requestTypeName', width: 110, cellClass: ['aggrid-content-c'] },
     { headerName: 'Created by', headerTooltip: 'Created by', field: 'createdByName', filter: 'text', width: 110, cellClass: ['aggrid-content-c'] },
   ];
-  
+
   toggle1() {
     this.isValue = 1;
     this.gridOptions.api.setColumnDefs(this.columnDefs_myvessels);
@@ -865,7 +867,7 @@ export class SmartOperatorComponent implements OnInit {
   }
   toggle3() {
     this.isValue = 3;
-    // this.gridOptions.api.setRowData(this.rowData); 
+    // this.gridOptions.api.setRowData(this.rowData);
     this.gridOptions.api.setColumnDefs(this.columnDefs_outstandingrequest);
     this.gridOptions.api.setRowData(this.rowData3);
     this.gridOptions.api.sizeColumnsToFit();
@@ -909,7 +911,7 @@ export class SmartOperatorComponent implements OnInit {
       this.getOrderDetails(1, 25, this.selectedFromDate, this.selectedToDate);
     }
   }
-  
+
   activeSubTabChange(tabIndex){
     this.tab1 = false;
     this.tab2 = false;
@@ -939,7 +941,7 @@ export class SmartOperatorComponent implements OnInit {
       this.loadAllMyVessels();
       this.Enabledbdnreports = false;
       this.EnableReportDate = false;
-      
+
     }
 
   }
@@ -958,7 +960,7 @@ export class SmartOperatorComponent implements OnInit {
     this.gridOrderDetailsOptions.api.setRowData(this.OrderDetailsData);
     this.gridOrderDetailsOptions.api.sizeColumnsToFit();
     this.rowCount = this.gridOrderDetailsOptions.api.getDisplayedRowCount();
-     
+
     })
   }
 
@@ -979,7 +981,7 @@ export class SmartOperatorComponent implements OnInit {
     this.gridBdnReportOptions.api.sizeColumnsToFit();
     this.rowCount = this.gridBdnReportOptions.api.getDisplayedRowCount();
     // this.gridBdnReportOptions.api.paginationSetPageSize(Number(10));
-     
+
     })
   }
 
@@ -1001,7 +1003,7 @@ export class SmartOperatorComponent implements OnInit {
       this.triggerUpdateEvent();
     }
     );
-    
+
   }
 
   public triggerUpdateEvent(){
@@ -1015,13 +1017,13 @@ export class SmartOperatorComponent implements OnInit {
   }
 
   // public onPageChange(input){
-  //   this.gridOptions.api.paginationGoToPage(parseInt(input));  
+  //   this.gridOptions.api.paginationGoToPage(parseInt(input));
   //   this.currentPage = this.gridOptions.api.paginationGetCurrentPage();
   // }
 
   // public onPaginationChange(event){
   //   this.gridOptions.api.paginationSetPageSize(event.value);
-    
+
   // }
 
   // public onPaginationChangedEvent(event){
