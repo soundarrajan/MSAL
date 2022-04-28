@@ -41,6 +41,53 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
+    <div *ngIf="params.type == 'singlerow'">
+      <div
+        [ngClass]="params.cellClass" matTooltipClass="lightTooltip"
+        matTooltip="{{ params.value }}"
+        style="margin:0px"
+      >
+        <div class="truncate-125">{{ params.value }}</div>
+      </div>
+    </div>
+    <div *ngIf="params.type == 'searchbox-parent'">
+      <div [ngClass]="params.cellClass">
+        <div class="truncate-125">
+          {{ this.format.htmlDecode(params.value) }}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="params.type == 'multirow'">
+      <div *ngIf="params.data.data">
+        <div
+          *ngFor="let item of params.data.data"
+          class="aggrid-multirow"
+          [ngClass]="params.classes"
+        >
+          <span class="aggrid-text-resizable">{{ item[params.label] }}</span>
+        </div>
+        <div
+          *ngIf="!params.data.data"
+          style="line-height: 15px"
+          [ngClass]="params.classes"
+        >
+          <span style="line-height: 15px" class="aggrid-text-resizable">{{
+            params.data
+          }}</span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="params.type == 'roundchip'">
+      <div *ngFor="let item of params.data.data" class="aggrid-multirow">
+        <div [ngClass]="params.cellClass" title="{{ item[params.label] }}">
+          {{
+            params.letter != null
+              ? item[params.label].charAt(params.letter).toUpperCase()
+              : item[params.label]
+          }}
+        </div>
+      </div>
+    </div>
     <div *ngIf="params.type == 'rating-chip'">
       <div
         [ngClass]="params.cellClass"
@@ -101,7 +148,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
           matTooltipClass="lightTooltip"
         ></span>
         <span
-          [ngClass]="{ 'm-l-7': true , 'w-p-85': this.params.data.sellerComments?.length > 0 }"
+          class="m-l-7"
+          matTooltipClass="lightTooltip"
           matTooltip="{{ this.format.htmlDecode(params.value) }}"
           >{{ this.format.htmlDecode(params.value) }}</span
         >
@@ -305,6 +353,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             spellcheck="false"
             type="text"
             style="display:inline"
+            matTooltipClass="lightTooltip"
             [matTooltip]="params.value |  priceFormatValue : priceFormatValue1"
             [disabled]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed'"
             [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' ? 'inputFieldHighlightOff' : ''"
@@ -495,7 +544,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="addTpr"
     >
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value">{{
+      <span [matTooltip]="params.value" matTooltipClass="lightTooltip">{{
         priceCalFormatValue(params.value)
       }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
@@ -508,7 +557,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="addTpr"
     >
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value">{{
+      <span [matTooltip]="params.value" matTooltipClass="lightTooltip">{{
         priceCalFormatValue(params.value)
       }}</span>
     </div>
@@ -520,7 +569,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="addTpr"
     >
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value">{{
+      <span [matTooltip]="params.value" matTooltipClass="lightTooltip">{{
         priceCalFormatValue(params.value)
       }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
@@ -573,7 +622,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="dashed-border-note"
     >
       <div class="dashed-border-notes">
-        <input matInput [(ngModel)]="docVal" matTooltip="{{ docVal }}" />
+        <input matInput [(ngModel)]="docVal" matTooltipClass="lightTooltip" matTooltip="{{ docVal }}" />
       </div>
     </div>
     <div
