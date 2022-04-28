@@ -2,16 +2,16 @@
     <div class="header">
         <div class="title">Search Counterparties</div>
         <div style="display:flex"  *ngIf="data.isPhysicalSupplier != undefined && data.isPhysicalSupplier" >
-            <input type="text" [(ngModel)]="searchingCounterparty"  placeholder="Search Counterparty here" class="search-box" (keydown.enter)="SearchPhysicalSupplier($event.target.value)" (ngModelChange)="onPhysicalSuppilierChange($event)">
-            <button class="searchButton" type="submit">
-              <i class="fa fa-search"></i>
+            <input #physicalcounteparty type="text" [(ngModel)]="searchingCounterparty"  placeholder="Search Counterparty here" class="search-box" (keydown.enter)="SearchPhysicalSupplier($event.target.value)" (ngModelChange)="onPhysicalSuppilierChange($event)">
+            <button class="searchButton" type="submit" (click)="SearchPhysicalSupplier(physicalcounteparty.value)">
+              <i class="fa fa-search" (click)="SearchPhysicalSupplier(physicalcounteparty.value)"></i>
           </button>
         </div>
         <div style="display:flex"  *ngIf="data.isPhysicalSupplier == undefined && !data.isPhysicalSupplier" >
-          <input type="text" [(ngModel)]="searchingPhysicalSuppilier" placeholder="Search Counterparty here" class="search-box" (keydown.enter)="SearchCounterparty($event.target.value)" (ngModelChange)="onCounterpartyChange($event)"
+          <input #counteparty type="text" [(ngModel)]="searchingPhysicalSuppilier" placeholder="Search Counterparty here" class="search-box" (keydown.enter)="SearchCounterparty($event.target.value)" (ngModelChange)="onCounterpartyChange($event)"
           >
-          <button class="searchButton" type="submit">
-            <i class="fa fa-search"></i>
+          <button class="searchButton" type="submit" (click)="SearchCounterparty(counteparty.value)">
+            <i class="fa fa-search" (click)="SearchCounterparty(counteparty.value)"></i>
         </button>
       </div>
 

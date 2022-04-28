@@ -13,12 +13,13 @@
           <div class="select-product-container">
             <div
               class="col-md-12 header-container-product"
-              (click)="$event.stopPropagation(); $event.preventDefault()"
+              (click)="$event.preventDefault()"
             >
               <div class="search-product-container col-md-10">
                 <span class="search-product-lookup"> </span>
                 <input
                   matInput
+                  (click)="$event.stopPropagation()"
                   (input)="search($event.target.value)"
                   placeholder="Search and select counterparty"
                   [(ngModel)]="couterpartyValue"
@@ -120,12 +121,13 @@
               <div class="select-product-container">
                 <div
                   class="col-md-12 header-container-product"
-                  (click)="$event.stopPropagation(); $event.preventDefault()"
+                  (click)=" $event.preventDefault()"
                 >
                   <div class="search-product-container col-md-10">
                     <span class="search-product-lookup"> </span>
                     <input
                       matInput
+                      (click)="$event.stopPropagation()"
                       (paste)="searchRequest($event.target.value)"
                       (input)="searchRequest($event.target.value)"
                       placeholder="Search and select Request"

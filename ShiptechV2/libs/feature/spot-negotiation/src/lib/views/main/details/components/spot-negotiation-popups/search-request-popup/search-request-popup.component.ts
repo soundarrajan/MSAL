@@ -160,13 +160,14 @@ export class SearchRequestPopupComponent implements OnInit {
   }
 
   search(userInput: string) {
+    let requestInput=userInput.trim();
     this.dialog_gridOptions.api.showLoadingOverlay();
     const response = this._spotNegotiationService.getRequestresponse(
       null,
       { Filters: [] },
-      { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }] },
-      [],
-      userInput.toLowerCase(),
+      { SortList:[] },
+      [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }] ,
+      requestInput.toLowerCase(),
       { Skip: 0, Take: this.pageSize }
     );
     response.subscribe((res: any) => {
