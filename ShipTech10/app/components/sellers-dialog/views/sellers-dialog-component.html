@@ -4,11 +4,11 @@
             <h4 class="modal-title caption-subject"><b>{{$ctrl.ui.sellersDialog.title}}</b></h4>
         </div>
         <div class="col-md-6 form-group text-right">
-            <div class="input-group st-content-search-box">
-                <div id="search_box_dummy_sellers"></div>
-                <span class="input-group-addon">
+            <div>
+                <input type="text" ng-model="searchText" placeholder="Search" class="search-box" >
+                <button class="searchButton" type="submit">
                     <i class="fa fa-search"></i>
-                </span>
+                </button>
             </div>
             <a class="btn btn-sm btn-outline orange" ng-click="$ctrl.confirmSellersSelection()" data-dismiss="modal">Select</a>
         </div>
@@ -27,7 +27,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="row in $ctrl.tableData track by $index">
+            <tr ng-repeat="row in $ctrl.tableData | filter : searchText track by $index ">
                 <td>
                     <label class="mt-checkbox mt-checkbox-outline">
                         <input type="checkbox" ng-change="$ctrl.toggleSelection($index, row)" ng-model="$ctrl.checkboxes[$index]" />

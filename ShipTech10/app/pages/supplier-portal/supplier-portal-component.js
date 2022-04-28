@@ -1407,11 +1407,11 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                         }
                         if(offers.filter(l => l.fakeId == additionalCostLocationBased.fakeId).length == 0){   
                             additionalCostLocationBased.maxQuantity = sumProductMaxQuantities(location.products, additionalCostLocationBased);
-                            additionalCostLocationBased.maxQuantityUomId = location.products[i].uom.id;
+                            additionalCostLocationBased.maxQuantityUomId = location.products[a].uom.id;
                             additionalCostLocationBased.requestLocationId = location.id;
                             additionalCostLocationBased.currency = location.request.currency;
 
-                            additionalCostLocationBased = calculateLocationBasedAdditionalCostAmounts(additionalCostLocationBased, location.products[i], location);                    
+                            additionalCostLocationBased = calculateLocationBasedAdditionalCostAmounts(additionalCostLocationBased, location.products[a], location);                    
                             if(additionalCostLocationBased.isAllProductsCost){
                                 ctrl.additionalCostLocationBasedApplicableFor[additionalCostLocationBased.fakeId] = null;
                             }

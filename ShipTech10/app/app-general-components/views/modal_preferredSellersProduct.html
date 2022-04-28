@@ -19,7 +19,7 @@
 				    </a>            		
 					<div class="input-group st-content-search-box pull-right" style="width: 200px;">
 					    <input type="search" class="form-control" ng-model="locationMasterPreferredSellerProductsTableConfig.searchText" placeholder="Search" ng-keydown="$event.keyCode === 13 ? createLocationPreferredSellerProductsPayload(true) : ''">
-					    <span class="input-group-addon" ng-click="createLocationPreferredSellerProductsPayload(true)">
+					    <span class="input-group-addon" ng-click="locationMasterPreferredSellerProductsTableConfig.currentPage = 1 ; createLocationPreferredSellerProductsPayload(true)">
 					        <i class="fa fa-search"></i>
 					    </span>
 					</div>    
@@ -101,7 +101,7 @@
 		<div class="notification-pagination ng-binding" ng-init="currentPage = 1">
 			Page
 			<span class="prevPage" ng-disabled="locationMasterPreferredSellerProductsTableConfig.currentPage <= 1" ng-click="locationMasterPreferredSellerProductsTableConfig.currentPage = locationMasterPreferredSellerProductsTableConfig.currentPage-1; createLocationPreferredSellerProductsPayload(true)"> &lt; </span>
-			<span class="currentPage ng-binding">{{locationMasterPreferredSellerProductsTableConfig.currentPage}}</span>
+			<input class="currentPage ng-binding" type="text" ng-model="locationMasterPreferredSellerProductsTableConfig.currentPage" ng-change="createLocationPreferredSellerProductsPayload(true)" ng-model-options='{ debounce: 1000 }' />
 			<span class="nextPage" ng-disabled="locationMasterPreferredSellerProductsTableConfig.currentPage >= locationPreferredSellerProductsDataLength/locationMasterPreferredSellerProductsTableConfig.take" ng-click="locationMasterPreferredSellerProductsTableConfig.currentPage = locationMasterPreferredSellerProductsTableConfig.currentPage+1; createLocationPreferredSellerProductsPayload(true)"> &gt; </span>
 			of {{locationPreferredSellerProductsDataPages}}
 		</div>

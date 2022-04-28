@@ -8120,11 +8120,14 @@
 
 
         $scope.createLocationPreferredSellerProductsPayload = function(reloadTable) {
-            if (!$scope.locationMasterPreferredSellerProductsTableConfig.currentPage) {
+            if (!$scope.locationMasterPreferredSellerProductsTableConfig.currentPage || $scope.locationMasterPreferredSellerProductsTableConfig.currentPage == '0' || $scope.locationPreferredSellerProductsDataPages == 0) {
                 $scope.locationMasterPreferredSellerProductsTableConfig.currentPage = 1;
             }
             if (!$scope.locationMasterPreferredSellerProductsTableConfig.take) {
                 $scope.locationMasterPreferredSellerProductsTableConfig.take = 25;
+            }
+            if($scope.locationPreferredSellerProductsDataPages != 0 && Number($scope.locationMasterPreferredSellerProductsTableConfig.currentPage) > $scope.locationPreferredSellerProductsDataPages){
+                $scope.locationMasterPreferredSellerProductsTableConfig.currentPage = $scope.locationPreferredSellerProductsDataPages;
             }
             var sortList;
             if (!$scope.locationMasterPreferredSellerProductsTableConfig.order) {
@@ -8142,6 +8145,11 @@
 	            		sortParameter : $scope.locationMasterPreferredSellerProductsTableConfig.order.sortOrder == 'asc' ? 1 : 2
 	            	}
             	];
+            }
+            if($scope.locationMasterPreferredSellerProductsTableConfig.searchText){
+                if(Number($scope.locationMasterPreferredSellerProductsTableConfig.currentPage) > $scope.locationPreferredSellerProductsDataPages){
+                    $scope.locationMasterPreferredSellerProductsTableConfig.currentPage = 1;
+                }
             }
             $scope.locationMasterPreferredSellerProductsTableConfig.skip = ($scope.locationMasterPreferredSellerProductsTableConfig.currentPage - 1) * $scope.locationMasterPreferredSellerProductsTableConfig.take;
             var payload = {
