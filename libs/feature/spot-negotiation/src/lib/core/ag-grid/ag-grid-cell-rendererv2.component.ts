@@ -579,7 +579,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       *ngIf="params.type == 'totalOffer'"
       class="addTpr defaultAddicon"
       [matTooltip]="
-      params.value? priceCalFormatValue(params.value)+' (Includes additional costs)' : ''
+      params.value? format.amount(params.value)+' (Includes additional costs)' : ''
       "
       matTooltipClass="lightTooltip"
       [matMenuTriggerFor]="addAdditionalCostMenuPopUp"
