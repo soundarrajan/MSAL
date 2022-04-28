@@ -494,7 +494,7 @@ export class ShiptechCustomHeaderGroup {
             updatedProdLivePrice.requestGroupProducts.livePrice,
             'livePrice'
           );
-          this.livePrice = formattedLivePrice;
+          this.livePrice = this.tenantService.liveformat(formattedLivePrice);
           this.targetValue =
             updatedProdLivePrice.requestGroupProducts.targetPrice;
           this.closureValue =
