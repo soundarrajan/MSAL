@@ -10631,6 +10631,9 @@ tr.title {
     margin-right: 3px;
     content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOSIgaGVpZ2h0PSI5IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSI5IiBoZWlnaHQ9IjkiIHJ4PSIxIiBmaWxsPSIjRThBQzU1Ii8+PHBhdGggZD0iTTMuOTAyIDQuNWMuMTM2IDAgLjI0Ni4xMjYuMjQ2LjI4MXYxLjEyNWMwIC4xNTYtLjExLjI4Mi0uMjQ2LjI4MmgtLjI0NnYuNTYyaDEuOTY5di0uNTYzSDUuMzhjLS4xMzYgMC0uMjQ2LS4xMjUtLjI0Ni0uMjhsLS4wMDEtMS45N0gzLjY1NlY0LjVoLjI0NnpNNC42NCAzLjM3NWMuMjcyIDAgLjQ5My0uMjUyLjQ5My0uNTYzIDAtLjMxLS4yMi0uNTYyLS40OTItLjU2MnMtLjQ5My4yNTItLjQ5My41NjNjMCAuMzEuMjIuNTYyLjQ5My41NjJ6IiBmaWxsPSIjZmZmIi8+PC9zdmc+);
   }
+  .outdated-tooltip {
+    max-width: unset !important;
+  }
   .no-price-data {
     text-align: center;
   }
