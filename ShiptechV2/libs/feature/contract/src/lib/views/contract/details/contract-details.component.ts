@@ -1192,13 +1192,15 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         this.formValues = _.cloneDeep(result);
         this.formatAdditionalCostIds();
         this.formValues.hasBeenExtended = true;
-        this.formValues.hasInvoicedOrder = false;
         if (typeof this.formValues.status != 'undefined') {
           if (this.formValues.status.name) {
             this.statusColorCode = this.getColorCodeFromLabels(
               this.formValues.status,
               this.scheduleDashboardLabelConfiguration
             );
+            if (this.formValues.status.name == 'Amend' || this.formValues.status.name == 'AmendExtended') {
+              this.formValues.hasInvoicedOrder = false;
+            }
           }
         }
 
