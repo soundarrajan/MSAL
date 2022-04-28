@@ -1,6 +1,6 @@
 import { SpotNegotiationStoreModel } from './../../../../../store/spot-negotiation.store';
 import { finalize } from 'rxjs/operators';
-import { DatePipe, DecimalPipe, DOCUMENT } from '@angular/common';
+import { DatePipe, DOCUMENT } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {
   ChangeDetectionStrategy,
@@ -289,9 +289,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService,
-    private tenantService: TenantFormattingService,
-    @Inject(DecimalPipe)
-    private _decimalPipe,
+    private tenantService: TenantFormattingService
   ) {
     this.context = { componentParent: this };
     this.gridOptions_counterparty = <GridOptions>{
