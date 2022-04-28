@@ -2,8 +2,8 @@
     <div class="header">
         <div class="title">Search Request</div>
         <div style="display:flex">
-            <input type="text" placeholder="Search request here" [(ngModel)]="searchingRequest" (keydown.enter)="search($event.target.value)" class="search-box" (ngModelChange)="onCounterpartyChange($event)" >
-            <button class="searchButton" type="submit">
+            <input #requestInput type="text" placeholder="Search request here" [(ngModel)]="searchingRequest" (keydown.enter)="search($event.target.value)" class="search-box" (ngModelChange)="onCounterpartyChange($event)" >
+            <button class="searchButton" type="submit" (click)="search(requestInput.value)">
                 <i class="fa fa-search"></i>
             </button>
         </div>

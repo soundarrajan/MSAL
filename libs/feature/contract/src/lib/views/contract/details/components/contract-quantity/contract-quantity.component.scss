@@ -1142,7 +1142,8 @@
 } */
 
 .mat-select-search-inner {
-  height: 38px !important;
+  max-height: 33px !important;
+  border-bottom-width: 0px!important
 }
 
 .mininputFocussed,
