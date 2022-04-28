@@ -719,7 +719,7 @@ export class ShiptechCustomHeaderGroup {
 
   priceFormatValue(value, type?: any) {
     if (typeof value == 'undefined' || value == null) {
-      return type == 'benchMark' ? '--' : null;
+      return type == 'benchMark' || 'closure' ? '--' : null;
     }
 
     if (value == 0) {
