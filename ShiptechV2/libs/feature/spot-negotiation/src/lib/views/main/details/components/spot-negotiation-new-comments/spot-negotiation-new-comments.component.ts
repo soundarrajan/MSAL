@@ -241,6 +241,12 @@ export class SpotNegotiationNewCommentsComponent
   }
 
   getRequestsList() {
+    this.currentRequestInfo = this.store.selectSnapshot<any>((state: any) => {
+      return _.cloneDeep(state.spotNegotiation.currentRequestSmallInfo);
+    });
+    this.requestList = this.store.selectSnapshot<any>((state: any) => {
+      return _.cloneDeep(state.spotNegotiation.requests);
+    });
     if (this.requestList && this.currentRequestInfo) {
       this.requestListToDuplicateComments = _.cloneDeep(
         this.requestList
