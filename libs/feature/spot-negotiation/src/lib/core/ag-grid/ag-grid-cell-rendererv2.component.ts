@@ -384,12 +384,12 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
     <!-- End offer price cell -->
 
     <mat-menu #priceMenupopup="matMenu" class="darkPanel-add big">
-      <div class="add-block" (click)="pricingdetailspopup($event, params)">
+      <!-- <div class="add-block" (click)="pricingdetailspopup($event, params)">
         <div></div>
         <span>Add/View Formula pricing</span>
-      </div>
+      </div> -->
       <div class="divider-line"></div>
-      <div class="add-block" (click)="requestChange($event, params)">
+      <div class="add-block" (click)="otherdetailspopup($event, params)">
         <div></div>
         <span>Add/View Request changes</span>
       </div>
