@@ -195,7 +195,8 @@ import {
     SpotnegoSendRfqComponent,
     SearchRequestPopupComponent,
     SpotnegoSearchCtpyComponent,
-    RemoveCounterpartyComponent
+    RemoveCounterpartyComponent,
+    SpotnegoRequestChangesComponent
   ],
   exports: [],
   providers: [
