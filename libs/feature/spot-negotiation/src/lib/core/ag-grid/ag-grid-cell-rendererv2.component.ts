@@ -508,7 +508,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
     >
       <span *ngIf="!params.value && params.value != 0">-</span>
       <span [matTooltip]="params.value">{{
-        priceCalFormatValue(params.value)
+        format.amount(params.value)
       }}</span>
     </div>
 
@@ -537,7 +537,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       (click)="addAdditionalCostPopUpTrigger.closeMenu()"
       (contextmenu)="openCostMenu($event, params.value)"
     >
-      <span *ngIf="params.value">{{ priceCalFormatValue(params.value) }} </span>
+      <span *ngIf="params.value">{{ format.amount(params.value) }} </span>
       <span *ngIf="!params.value">-</span>
       <div class="dollarButton" *ngIf="params.data.totalCost"></div>
     </div>

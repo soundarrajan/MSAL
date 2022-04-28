@@ -1,6 +1,6 @@
 import { SpotNegotiationStoreModel } from './../../../../../store/spot-negotiation.store';
 import { finalize } from 'rxjs/operators';
-import { DatePipe, DOCUMENT } from '@angular/common';
+import { DatePipe, DecimalPipe, DOCUMENT } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {
   ChangeDetectionStrategy,
@@ -35,6 +35,7 @@ import { AdditionalCostViewModel } from 'libs/feature/spot-negotiation/src/lib/c
 import { CustomHeader } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/custom-header.component';
 import { CustomHeaderSelectAll } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/custom-header-select-all.component';
 import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 export const COMPONENT_TYPE_IDS = {
   TAX_COMPONENT: 1,
@@ -263,7 +264,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             params.data.requestOffers?.forEach(element => {
               totalOfferVal += element.amount;
             });
-            return totalOfferVal;
+            return this.tenantService.amount(totalOfferVal);
           }
         }
       ]
@@ -287,7 +288,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     private changeDetector: ChangeDetectorRef,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
-    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService
+    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService,
+    private tenantService: TenantFormattingService,
+    @Inject(DecimalPipe)
+    private _decimalPipe,
   ) {
     this.context = { componentParent: this };
     this.gridOptions_counterparty = <GridOptions>{
@@ -760,7 +764,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               params.data,
               product.id
             );
-            return details.amount;
+            return  this.tenantService.amount(details.amount);
           },
           flex: 4,
           minWidth: 95,
