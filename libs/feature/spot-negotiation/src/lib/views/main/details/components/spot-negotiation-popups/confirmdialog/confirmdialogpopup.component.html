@@ -1,14 +1,15 @@
 
 <div class="remove-terminal-section"  >
   <div class="close-btn" style="position: absolute !important;top: -12px !important;right: -8px;" (click)="close()"><img id="close-icon" src="./assets/customicons/close_o.svg" alt="list"></div>
-  <div class="warning-title"><img id="warning-icon" src="./assets/customicons/warning_o.svg" alt="list"><span class="p-l-10">Warning</span></div>
-  <p>{{message}}</p>
+  <div class="warning-title"><img id="warning-icon" src="./assets/customicons/warning_o.svg" alt="list">
+    <span class="p-l-10" style="margin-top: 4px;">Warning</span></div>
+  <p style="font-size: 15px;">{{message}}</p>
   <div class="yes-no">
      
       <button  class="blue-button-o" style="float:left;" [mat-dialog-close]="false">    
         <span>CANCEL</span>
       </button>
-      <button mat-raised-button class="red-button" style="float:right;"  [mat-dialog-close]="true">    
+      <button mat-raised-button class="red-button" style="float:right;  margin:0px 0px 0px !important;"  [mat-dialog-close]="true">    
         <span>PROCEED</span>
       </button>
   </div>

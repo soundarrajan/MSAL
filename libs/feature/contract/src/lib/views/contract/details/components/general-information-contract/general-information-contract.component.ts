@@ -539,12 +539,20 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     if (!agreementTypeList) {
       return;
     }
+    if(agreementTypeList && this.formValues && this.formValues.agreementType && !agreementTypeList.find(aggtype=>aggtype.id == this.formValues.agreementType.id))
+    {
+      agreementTypeList.push(this.formValues.agreementType);
+    }
     this.agreementTypeList = agreementTypeList;
   }
 
   @Input('paymentTermList') set _setPaymentTermList(paymentTermList) {
     if (!paymentTermList) {
       return;
+    }
+    if(paymentTermList && this.formValues && this.formValues.paymentTerm && !paymentTermList.find(payterm=>payterm.id == this.formValues.paymentTerm.id))
+    {
+      paymentTermList.push(this.formValues.paymentTerm);
     }
     this.paymentTermList = paymentTermList;
   }

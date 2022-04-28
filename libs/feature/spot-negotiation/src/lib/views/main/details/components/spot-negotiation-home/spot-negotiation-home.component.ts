@@ -412,11 +412,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
             locRow);
             reqLocationRows.push(data);
         }
-      this.store.dispatch(new UpdateRequest(reqs));
-      this.store.dispatch(new SetLocationsRows(reqLocationRows));
+      this.store.dispatch([new UpdateRequest(reqs), new SetLocationsRows(reqLocationRows)]);
 
-      //this.spotNegotiationService.callGridRefreshServiceAll();
-      this.spotNegotiationService.callGridRefreshService();
+      // this.spotNegotiationService.callGridRefreshServiceAll();
+      this.spotNegotiationService.callGridRedrawService();
       this.changeDetector.detectChanges();
     });
   }
@@ -709,7 +708,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       } else if (
         selectedRows.filter(
-          x => !x.RequestOffers || x.RequestOffers.find(r => r.price == null)
+          x => !x.RequestOffers
         ).length != 0
       ) {
         this.toaster.error(
@@ -851,7 +850,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
                         p => proOff.productId === p.productId
                       ),
                       'offPrice',
-                      proOff.price,
+                      proOff.price == null ? 0 : proOff.price,
                       reqLoc,
                       true,
                       proOff
@@ -992,8 +991,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
               reqLocationRows.push(data);
           }
           // Update the store
-          this.store.dispatch(new UpdateRequest(this.requestOptions));
-          this.store.dispatch(new SetLocationsRows(reqLocationRows));
+          this.store.dispatch([new UpdateRequest(this.requestOptions), new SetLocationsRows(reqLocationRows)]);
           this.spotNegotiationService.callGridRefreshService();
         } else {
           this.toaster.error(res);
@@ -1076,7 +1074,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('Amend RFQ(s) sent successfully.');
-          //this.spotNegotiationService.callGridRefreshServiceAll();
           this.spotNegotiationService.callGridRefreshService();
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
@@ -1136,8 +1133,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) skipped successfully.');
-          //this.spotNegotiationService.callGridRefreshServiceAll();
-          this.spotNegotiationService.callGridRefreshService();
           if (res['message'].length > 5) this.toaster.warning(res['message']);
         } else if (res instanceof Object) {
           this.toaster.warning(res.Message);
@@ -1188,9 +1183,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
           });
           return { ...e, requestLocations };
         });
-        this.store.dispatch(new SetLocationsRows(reqLocationRows));
-        this.store.dispatch(new UpdateRequest(this.requestOptions));
-
+        this.store.dispatch([new SetLocationsRows(reqLocationRows), new UpdateRequest(this.requestOptions)]);
+        this.spotNegotiationService.callGridRedrawService();
         this.changeDetector.detectChanges();
       });
     }
@@ -1263,7 +1257,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) revoked successfully.');
-          this.spotNegotiationService.callGridRefreshService();
+
           if (res['message'].length > 3) this.toaster.warning(res['message']);
           // else
           //   this.toaster.success('RFQ(s) revoked successfully.');
@@ -1298,13 +1292,14 @@ export class SpotNegotiationHomeComponent implements OnInit {
             locRow);
             reqLocationRows.push(data);
         }
-        this.store.dispatch(new SetLocationsRows(reqLocationRows));
+        //this.store.dispatch(new SetLocationsRows(reqLocationRows));
         if (res.isGroupDeleted) {
           const baseOrigin = new URL(window.location.href).origin;
           window.open(
             `${baseOrigin}/#/edit-request/${this.currentRequestInfo.id}`,
             '_self'
           );
+          this.store.dispatch(new SetLocationsRows(reqLocationRows));
           //window.open(`${baseOrigin}/#/edit-request/${request.id}`, '_blank');
         } else {
           this.requestOptions = this.requestOptions.map(e => {
@@ -1331,9 +1326,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
             });
             return requestLocations ? { ...e, requestLocations } : e;
           });
-          this.store.dispatch(new UpdateRequest(this.requestOptions));
-          this.changeDetector.detectChanges();
-          this.spotNegotiationService.callGridRefreshServiceAll();
+          this.store.dispatch([new SetLocationsRows(reqLocationRows), new UpdateRequest(this.requestOptions)]);
+          //this.spotNegotiationService.callGridRefreshService();
+          this.spotNegotiationService.callGridRedrawService();
+          this.changeDetector.detectChanges();          
         }
       });
     }
@@ -1601,7 +1597,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         pro.id
       );
 
-      if (productDetails.id == null || productDetails.price == null) {
+      if (productDetails.id == null) {
         return;
       }
       offerId = productDetails.offerId;
@@ -1613,7 +1609,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
         price: productDetails.price,
         cost: productDetails.cost,
         currencyId: productDetails.currencyId,
-        isOfferPriceCopied: productDetails.isOfferPriceCopied
+        isOfferPriceCopied: productDetails.isOfferPriceCopied,
+        hasNoQuote : productDetails.price == null || 0 ? true : false
       };
       requestOffers.push(requOffer);
     });

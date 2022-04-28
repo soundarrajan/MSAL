@@ -42,7 +42,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
             <div class="select-product-container">
               <div
                 class="col-md-12 header-container-product"
-                (click)="$event.stopPropagation(); $event.preventDefault()"
+                (click)="$event.preventDefault()"
               >
                 <div class="search-product-container col-md-10">
                   <span class="search-product-lookup"> </span>
@@ -50,6 +50,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
                     matInput
                     placeholder="Search and select counterparty"
                     class="search-product-input"
+                    (click)="$event.stopPropagation()"
                     (input)="search($event.target.value)"
                   />
                 </div>
@@ -141,12 +142,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
       *ngIf="params.type == 'single-bg-header'"
     >
       <div class="border-line"></div>
-      <div class="options">
-        <div class="checkBox w-100" style="padding-top:0px;">
+      <div class="options" style="padding-top: 5px;padding-bottom:10px; ">
+        <div class="checkBox w-100" matTooltip="Total offer" matTooltipClass="lightTooltip" style="padding-top:0px;">
           Total Offer
         </div>
       </div>
-      <div class="label" matTooltip="No. of Products">
+      <div class="label" matTooltipClass="lightTooltip" matTooltip="No. of Products">
         <div class="label-content" style="width:95%;">
           <div class="label-element w-100" style="width:100%;">
             <div class="title">No. of Products</div>
@@ -157,7 +158,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
     </div>
     <div class="resize-grid-header" *ngIf="params.type == 'bg-header'">
       <div class="options">
-        <div class="checkBox" matTooltip="{{ params.product.productName }}">
+        <div class="checkBox" matTooltipClass="lightTooltip" matTooltip="{{ params.product.productName }}">
           <!-- <mat-checkbox class="noborder" [checked]="true">{{
             params.product.productName
           }}</mat-checkbox> -->
@@ -166,7 +167,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
           </span>
         </div>
         <div class="optionsText">
-          <div class="qty">
+          <div class="qty" matTooltipClass="lightTooltip" matTooltip="Min - Max quantities">
             <span class="title">Qty:</span>
             <span
               class="value"
@@ -190,7 +191,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
             }}</span>
             <span class="image"></span>
           </div>
-          <div class="offer" (click)="offerpricehistorypopup(params)">
+          <div class="offer" (click)="offerpricehistorypopup(params)" matTooltipClass="lightTooltip" matTooltip="Offer price history">
             <span class="title">Offer</span>
             <span class="image"></span>
           </div>
@@ -199,7 +200,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
       <div class="label">
         <div class="label-content">
           <div
-            class="label-element"
+            class="label-element" matTooltipClass="lightTooltip"
             [matTooltip]="
               (params.product.status.toLowerCase() != 'stemmed' &&
               !isLatestClosurePrice
@@ -207,6 +208,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
                 : 'Pricing published on: ') +
               (this.closureDate == 'Invalid date' ? '--' : this.closureDate)
             "
+            matTooltipClass="outdated-tooltip"
           >
             <div class="title">
               <span
@@ -226,7 +228,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
               contenteditable="false"
               (keydown)="editQty($event)"
             >
-              $ {{ priceFormatValue(closureValue) }}
+              {{ '$'+priceFormatValue(closureValue) }}
             </div>
           </div>
           <div
@@ -238,26 +240,30 @@ import { NgxSpinnerService } from 'ngx-spinner';
             }"
           >
             <div class="title">Perf/BM</div>
-            <div
-              class="value"
+            <div 
+              class="value" matTooltip="{{perfBM.innerText}}"
+              matTooltipClass="lightTooltip"
               contenteditable="false"
               [ngClass]="
                 params.product.status === 'Stemmed' ? 'input-disabled-new' : ''
               "
+              #perfBM
             >
-              $
-              {{
+            <span>
+            {{ '$' +
                 priceFormatValue(
                   params.product.requestGroupProducts.benchMark,
                   'benchMark'
                 )
               }}
+            </span>
             </div>
           </div>
           <div class="label-element dashed">
             <div class="title">Manual Live price</div>
             $<input
-              class="value"
+              class="value"matTooltip="{{'$'+livePrice}}"
+              matTooltipClass="lightTooltip"
               contenteditable="true"
               [(ngModel)]="livePrice"
               (change)="calculateTargetPrice()"
@@ -270,7 +276,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
           <div class="label-element green">
             <div class="title">Target</div>
             <div
-              class="value"
+              class="value" matTooltip="{{'$'+targetValue}}"
+              matTooltipClass="lightTooltip"
               contenteditable="false"
               (keydown)="editQty($event)"
             >
@@ -292,7 +299,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
             </div>
             <div
               class="value"
-              (keydown)="editQty($event)"
+              (keydown)="editQty($event)" matTooltipClass="lightTooltip"
               [matTooltip]="
                 'Contract Id: ' +
                 (this.bestContractId ? this.bestContractId : '--')
@@ -715,7 +722,7 @@ export class ShiptechCustomHeaderGroup {
 
   priceFormatValue(value, type?: any) {
     if (typeof value == 'undefined' || value == null) {
-      return type == 'benchMark' ? '--' : null;
+      return type == 'benchMark' || 'closure' ? '--' : null;
     }
 
     if (value == 0) {
@@ -833,8 +840,7 @@ export class ShiptechCustomHeaderGroup {
                     JSON.parse(JSON.stringify(updatedRow1)),
                     index
                   );
-                  this.store.dispatch(new EditLocations(updatedRow1));
-                  this.store.dispatch(new UpdateRequest(reqs));
+                  this.store.dispatch([new EditLocations(updatedRow1), new UpdateRequest(reqs)]);
                   for (let i = 0; i < filterLocationsRows.length; i++) {
                     const productDetails = this.getRowProductDetails(
                       filterLocationsRows[i],
@@ -973,10 +979,7 @@ export class ShiptechCustomHeaderGroup {
         // }
         // else
         this.store.dispatch(
-          new AddCounterpartyToLocations(futureLocationsRows)
-        );
-        this.store.dispatch(
-          new AppendLocationsRowsOriData(futureLocationsRows)
+          [new AddCounterpartyToLocations(futureLocationsRows), new AppendLocationsRowsOriData(futureLocationsRows)]
         );
         this.changeDetector.markForCheck();
       } else {
