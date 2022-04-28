@@ -1189,9 +1189,19 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('close extend pop-up');
-        this.formValues = result;
+        this.formValues = _.cloneDeep(result);
         this.formatAdditionalCostIds();
         this.formValues.hasBeenExtended = true;
+        this.formValues.hasInvoicedOrder = false;
+        if (typeof this.formValues.status != 'undefined') {
+          if (this.formValues.status.name) {
+            this.statusColorCode = this.getColorCodeFromLabels(
+              this.formValues.status,
+              this.scheduleDashboardLabelConfiguration
+            );
+          }
+        }
+
         this.changeDetectorRef.detectChanges();
       }
     });
