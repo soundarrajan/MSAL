@@ -465,7 +465,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             }
           }, 100);
          //});   
-         this.gridOptions_counterparty.api?.refreshCells(params);
+         this.spotNegotiationService.callGridRefreshServiceAll();
+         //this.gridOptions_counterparty.api?.refreshCells(params);
     // Update the store
     
     
