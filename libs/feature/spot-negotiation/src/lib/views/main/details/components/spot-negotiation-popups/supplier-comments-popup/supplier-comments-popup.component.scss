@@ -55,6 +55,7 @@
         line-height: 26px;
         font-size: 14px;
         font-weight: 500;
+        border: none;
       }
       .title-divider {
         display: inline-block;
@@ -85,12 +86,20 @@
         font-size: 14px;
         line-height: 16px;
         color: #364150;
-      }
+        }
       .spot-seller-comments {
         background: #fff;
         height: 160px;
         border-radius: 5px;
         padding: 10px;
+        .label{
+          font-family: Roboto;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 16px;
+          color: #364150;
+          }
         .spot-seller-comments-section {
           margin: -5px 15px !important;
         }
