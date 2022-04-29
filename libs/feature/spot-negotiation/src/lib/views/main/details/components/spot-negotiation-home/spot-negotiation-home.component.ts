@@ -1610,7 +1610,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         cost: productDetails.cost,
         currencyId: productDetails.currencyId,
         isOfferPriceCopied: productDetails.isOfferPriceCopied,
-        hasNoQuote : productDetails.price == null || 0 ? true : false
+        hasNoQuote : productDetails.price == null || productDetails.price == 0 ? true : false
       };
       requestOffers.push(requOffer);
     });
