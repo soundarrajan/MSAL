@@ -204,12 +204,11 @@ ag-grid-angular .ag-body-horizontal-scroll-viewport{
   color: #ffffff;
   background: #364150 !important;
   overflow: auto !important;
-  float: right;
   .mat-option-text {
     color: #ffffff;
   }
   .mat-radio-outer-circle {
-    //padding-right: 5px !important;
+    padding-right: 5px !important;
     border-color: #ffffff;
   }
   .mat-radio-inner-circle {
@@ -217,7 +216,7 @@ ag-grid-angular .ag-body-horizontal-scroll-viewport{
   }
   .mat-radio-checked {
     .mat-radio-outer-circle {
-      //padding-right: 5px !important;
+      padding-right: 5px !important;
       border-color: #ffffff !important;
     }
   }
