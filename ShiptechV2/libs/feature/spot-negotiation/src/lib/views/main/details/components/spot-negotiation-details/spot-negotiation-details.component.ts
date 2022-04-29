@@ -219,7 +219,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'phy-supplier' },
           valueGetter: params => {
-            return params.data.physicalSupplierCounterpartyName;
+            return this.tenantService.htmlDecode(params.data.physicalSupplierCounterpartyName);
           }
         }
       ]
