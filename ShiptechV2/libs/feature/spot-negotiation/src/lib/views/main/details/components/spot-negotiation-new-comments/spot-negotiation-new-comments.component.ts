@@ -64,6 +64,7 @@ export class SpotNegotiationNewCommentsComponent
       );
       this.checkEditableFields();
       this.uncheckedComments();
+      this.matExpansionPanelElement.open();
     }
   }
 
@@ -109,7 +110,7 @@ export class SpotNegotiationNewCommentsComponent
     });
     this.requestList = this.store.selectSnapshot<any>((state: any) => {
       return _.cloneDeep(state.spotNegotiation.requests);
-    });
+    }); 
   }
 
   ngOnInit(): void {}

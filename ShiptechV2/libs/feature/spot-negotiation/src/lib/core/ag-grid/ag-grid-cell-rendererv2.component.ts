@@ -415,21 +415,23 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
           >
           <!--  <span *ngIf="!editSeller">{{ this.editedSeller }}</span> -->
         </span>
-
+        <ng-container *ngIf="paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed;
+         then second else first">
+            
+        </ng-container>
+        <ng-template #first>
         <span
-          *ngIf="!params.data.isEditable"
-          [matMenuTriggerFor]="clickmenu"
-          #menuTrigger="matMenuTrigger"
-          (click)="setValuefun(params.data)"
-        >
-          <span
+           *ngIf="!params.data.isEditable"
+            [matMenuTriggerFor]="clickmenu"
+            #menuTrigger="matMenuTrigger"
+            (click)="setValuefun(params.data)">
+            <span
             *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
             >{{
               this.format.htmlDecode(
                 params.data.physicalSupplierCounterpartyName
               )
-            }}</span
-          >
+            }}</span>
           <span
             *ngIf="
               editSeller && params.data.physicalSupplierCounterpartyName == null
@@ -438,6 +440,16 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
           >
           <span *ngIf="!editSeller">{{ this.editedSeller }}</span>
         </span>
+        </ng-template>
+        <ng-template #second>
+        <span
+            *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
+            >{{
+              this.format.htmlDecode(
+                params.data.physicalSupplierCounterpartyName
+              )
+            }}</span>
+        </ng-template>
         <!--<div class="addButton"></div>-->
       </div>
     </div>
