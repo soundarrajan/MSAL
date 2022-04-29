@@ -206,7 +206,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         },
         {
           headerName: 'Phy. Supplier',
-          headerTooltip: 'Phy. Supplier',
+          headerTooltip: 'Physical Supplier',
           suppressNavigable: true,
           lockVisible: true,
           pinned: 'left',

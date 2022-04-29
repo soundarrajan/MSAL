@@ -14651,6 +14651,7 @@ mat-form-field {
       height: 160px;
       margin: 15px 10px;
       border-radius: 5px;
+      flex-grow: 1;
       .circle {
         height: 9px;
         width: 9px;
@@ -15191,6 +15192,21 @@ mat-form-field {
         line-height: 22px;
         color: #364150;
       }
+    }
+  }
+  .splitter-band {
+    background-color: #FFFFFF;
+    height: 100%;
+    width: 15px;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    div {
+      background: #364150;
+      width: 4px;
+      height: 100%;
     }
   }
 }
@@ -22782,6 +22798,7 @@ mat-form-field {
   color: #b3b4b7;
   font-size: 10px;
   float: right;
+  margin-bottom: 10px;
 }
 
 .currencyselecttrigger.mat-select-panel {
