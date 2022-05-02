@@ -538,6 +538,10 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.UpdateProductPrices(payload);
   }
 
+  @ObservableException()
+  updateGroupComments(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.updateGroupComments(payload);
+  }
   ngOnDestroy(): void {
     super.onDestroy();
   }
