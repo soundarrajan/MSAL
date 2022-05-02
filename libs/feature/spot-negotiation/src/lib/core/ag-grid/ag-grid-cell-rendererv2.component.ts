@@ -90,20 +90,43 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
     </div>
     <div *ngIf="params.type == 'rating-chip'">
       <div
-        [ngClass]="params.cellClass"
+      [ngClass]="params.cellClass"
         matTooltip=""
         style=""
-        (click)="sellerratingpopup()"
+        *ngIf="params.data.genRating && params.data.genPrice"
+        (click)="sellerratingpopup(params.data, 'genRating')"
       >
         <div *ngIf="params.label == 'gen-rating'" class="truncate-125 chip">
-          <div>{{ params.data.genRating }}<span class="star"></span></div>
-          <div>{{ params.data.genPrice }}</div>
-        </div>
-        <div *ngIf="params.label == 'port-rating'" class="truncate-125 chip">
-          <div>{{ params.data.portRating }}<span class="star"></span></div>
-          <div>{{ params.data.portPrice }}</div>
+          <div *ngIf="params.data.genRating">
+              {{ params.data.genRating}}
+              <span class="star"></span>
+          </div>
+          <div *ngIf="params.data.genPrice">{{ params.data.genPrice }}</div>
         </div>
       </div>
+      <div *ngIf="params.data.genRating== null || params.data.genPrice == null">
+              <span>NA</span>
+      </div>
+    </div>
+    <div *ngIf="params.type == 'rating-chip'">
+      <div
+        [ngClass]="params.cellClass"
+        matTooltip=""
+        *ngIf="params.data.portRating && params.data.portPrice"
+        style=""
+        (click)="sellerratingpopup(params.data, 'portRating')"
+      >
+        <div *ngIf="params.label == 'port-rating'" class="truncate-125 chip">
+          <div *ngIf="params.data.portRating">
+              {{ params.data.portRating}}
+              <span class="star"></span>
+          </div>
+          <div *ngIf="params.data.portPrice">{{ params.data.portPrice }}</div>
+        </div>
+      </div>
+      <div *ngIf="params.data.portPrice == null || params.data.portRating == null">
+              <span>NA</span>
+          </div>
     </div>
     <div *ngIf="params.type == 'hover-cell-lookup'" class="fly-away">
       <div>
@@ -824,7 +847,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     if (!requestOffers) {
       return false;
     }
-    
+
     const isRfqSend = requestOffers?.find(off => off.isRfqskipped === false);
 
     if (isRfqSend) {
@@ -1198,11 +1221,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         // ].requestOffers?.sort((a, b) =>
         //   a.requestProductId > b.requestProductId ? 1 : -1
         // );
-        
+
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
-        
+
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         // row.requestOffers = row.requestOffers.map(e => {
@@ -1218,7 +1241,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
            return { ...e, reqProdStatus: isStemmed };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
-        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);      
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
@@ -1304,12 +1327,16 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
 
-  sellerratingpopup() {
-    //console.log("sellerratingpopup");
+  sellerratingpopup(data : any, popupType:string) {
     const dialogRef = this.dialog.open(SellerratingpopupComponent, {
       width: '1164px',
       height: '562px',
-      panelClass: 'additional-cost-popup'
+      panelClass: 'additional-cost-popup',
+      data: {
+        sellerId: data.sellerCounterpartyId,
+        locationId : data.locationId,
+        popupType : popupType
+      }
     });
     dialogRef.afterClosed().subscribe(result => {
       this._spotNegotiationService.callGridRefreshService();
@@ -1847,12 +1874,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     newData.requestOffers.map(el => {
       return (el.currencyId = toCurrency);
     });
-    
+
     let payload = {
       fromCurrencyId: fromCurrency,
       toCurrencyId: toCurrency,
       toCurrencyCode: this.getCurrencyCode(toCurrency)
-    };   
+    };
     let exchangeRateValue = 1;
     this.spinner.show();
     const response = this._spotNegotiationService.getExchangeRate(payload);
