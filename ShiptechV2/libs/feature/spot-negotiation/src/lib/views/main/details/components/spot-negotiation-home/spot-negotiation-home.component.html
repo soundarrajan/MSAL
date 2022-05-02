@@ -51,7 +51,7 @@
                       style="margin: 7px 5px;"
                     >
                       <div
-                        class="checkboxOptions"
+                        class="checkboxOptions" matTooltip=" {{ item.name }} - {{ item.vesselName }}" matTooltipClass="lightTooltip"
                         *ngFor="let item of requestOptionsToDuplicatePrice"
                       >
                         <mat-checkbox
