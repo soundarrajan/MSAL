@@ -384,12 +384,12 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
     <!-- End offer price cell -->
 
     <mat-menu #priceMenupopup="matMenu" class="darkPanel-add big">
-      <div class="add-block" (click)="pricingdetailspopup($event, params)">
+      <!-- <div class="add-block" (click)="pricingdetailspopup($event, params)">
         <div></div>
         <span>Add/View Formula pricing</span>
-      </div>
+      </div> -->
       <div class="divider-line"></div>
-      <div class="add-block" (click)="requestChange($event, params)">
+      <div class="add-block" (click)="otherdetailspopup($event, params)">
         <div></div>
         <span>Add/View Request changes</span>
       </div>
@@ -415,21 +415,23 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
           >
           <!--  <span *ngIf="!editSeller">{{ this.editedSeller }}</span> -->
         </span>
-
+        <ng-container *ngIf="paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed;
+         then second else first">
+            
+        </ng-container>
+        <ng-template #first>
         <span
-          *ngIf="!params.data.isEditable"
-          [matMenuTriggerFor]="clickmenu"
-          #menuTrigger="matMenuTrigger"
-          (click)="setValuefun(params.data)"
-        >
-          <span
+           *ngIf="!params.data.isEditable"
+            [matMenuTriggerFor]="clickmenu"
+            #menuTrigger="matMenuTrigger"
+            (click)="setValuefun(params.data)">
+            <span
             *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
             >{{
               this.format.htmlDecode(
                 params.data.physicalSupplierCounterpartyName
               )
-            }}</span
-          >
+            }}</span>
           <span
             *ngIf="
               editSeller && params.data.physicalSupplierCounterpartyName == null
@@ -438,6 +440,16 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
           >
           <span *ngIf="!editSeller">{{ this.editedSeller }}</span>
         </span>
+        </ng-template>
+        <ng-template #second>
+        <span
+            *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
+            >{{
+              this.format.htmlDecode(
+                params.data.physicalSupplierCounterpartyName
+              )
+            }}</span>
+        </ng-template>
         <!--<div class="addButton"></div>-->
       </div>
     </div>
@@ -557,8 +569,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="addTpr"
     >
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value" matTooltipClass="lightTooltip">{{
-        priceCalFormatValue(params.value)
+      <span [matTooltip]="params.value">{{
+        format.amount(params.value)
       }}</span>
     </div>
 
@@ -579,7 +591,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       *ngIf="params.type == 'totalOffer'"
       class="addTpr defaultAddicon"
       [matTooltip]="
-      params.value? priceCalFormatValue(params.value)+' (Includes additional costs)' : ''
+      params.value? format.amount(params.value)+' (Includes additional costs)' : ''
       "
       matTooltipClass="lightTooltip"
       [matMenuTriggerFor]="addAdditionalCostMenuPopUp"
@@ -587,7 +599,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       (click)="addAdditionalCostPopUpTrigger.closeMenu()"
       (contextmenu)="openCostMenu($event, params.value)"
     >
-      <span *ngIf="params.value">{{ priceCalFormatValue(params.value) }} </span>
+      <span *ngIf="params.value">{{ format.amount(params.value) }} </span>
       <span *ngIf="!params.value">-</span>
       <div class="dollarButton" *ngIf="params.data.totalCost"></div>
     </div>

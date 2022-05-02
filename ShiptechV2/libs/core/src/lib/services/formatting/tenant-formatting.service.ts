@@ -79,6 +79,19 @@ export class TenantFormattingService {
     return this.priceFormatter.format(actualValue);
   }
 
+  public liveformat(value: number | string): string | undefined {
+    if (value === null || value === undefined) return undefined;
+
+    const actualValue =
+      typeof value !== 'number'
+        ? parseFloat(value.toString().replace(',', ''))
+        : value;
+
+    if (isNaN(actualValue)) return undefined;
+
+    return actualValue.toString();
+  }
+
   public date(value: string): string | undefined {
     if (value === null || value === undefined) return undefined;
 
