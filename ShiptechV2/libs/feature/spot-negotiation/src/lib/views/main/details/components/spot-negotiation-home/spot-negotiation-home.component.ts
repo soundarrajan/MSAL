@@ -152,13 +152,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       },
       {
-        label: 'Report' //,
-          ? //routerLink: disabled
-            null
-          : [
-              ...routeLinkToNegotiationDetails,
-              KnownSpotNegotiationRoutes.reportPath
-            ],
+        label: 'Report',
+        //  //,
+        //   ? //routerLink: disabled
+        //     null
+        //   : 
+        routerLink: [
+          ...routeLinkToNegotiationDetails,
+          KnownSpotNegotiationRoutes.reportPath
+        ],
         routerLinkActiveOptions: { exact: true },
         //disabled,
         visible:
