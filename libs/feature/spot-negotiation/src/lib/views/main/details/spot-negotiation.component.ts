@@ -109,7 +109,16 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     // Get current id from url and make a request with that data.
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
     this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
+    // Get response from server and populate store
+    const responseGroupComment = this.spotNegotiationService.updateGroupComments(
+      groupRequestIdFromUrl
+    );
 
+    responseGroupComment.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
+    });
     // Get response from server and populate store
     const responseGetRequestGroup = this.spotNegotiationService.getRequestGroup(
       groupRequestIdFromUrl
@@ -124,7 +133,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         alert('Handle Error');
         return;
       }
-
       // Set all request inside store
       if (res['requests']) {
         this.store.dispatch(new SetRequests(res['requests']));
