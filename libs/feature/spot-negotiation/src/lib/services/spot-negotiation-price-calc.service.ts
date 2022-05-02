@@ -444,6 +444,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
               // locAdditionCostsList = response.locationAdditionalCosts;
               let {
                 productList,
+                reqProList,
                 applicableForItems,
                 totalMaxQuantity,
                 maxQuantityUomId
@@ -505,7 +506,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
               }
               let totalOffer = 0;
               let totalCost = 0
-              productList.forEach(pro => {
+              reqProList.forEach(pro => {
                 sellerOffers.requestOffers.forEach(reqOff => {
                     if (reqOff.requestProductId == pro.id) {          
                       reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
@@ -655,11 +656,11 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
   buildApplicableForItems(requestLocation, rowData) {
     let applicableForItems = [];
     let productList = [];
+    let reqProList = [];
     let applicableForItemsArray = [];
     let totalMaxQuantity = 0;
     let maxQuantityUomId = null;
-    requestLocation.requestProducts.forEach((product: any, index) => {
-      if (product.status != 'Stemmed') {
+    requestLocation.requestProducts.forEach((product: any, index) => {      
         let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function (
           object: any
         ) {
@@ -674,10 +675,11 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
 
           totalMaxQuantity = totalMaxQuantity + product.maxQuantity;
           maxQuantityUomId = product.uomId;
-
+        if (product.status != 'Stemmed') {
           productList.push(product);
         }
-      }
+          reqProList.push(product);
+        }
     });
     if (applicableForItemsArray.length > 1) {
       const allElement = { id: 0, name: 'All' };
@@ -690,6 +692,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
 
     return {
       productList: productList,
+      reqProList: reqProList,
       applicableForItems: applicableForItems,
       totalMaxQuantity,
       maxQuantityUomId

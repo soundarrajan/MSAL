@@ -208,6 +208,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
                 : 'Pricing published on: ') +
               (this.closureDate == 'Invalid date' ? '--' : this.closureDate)
             "
+            matTooltipClass="outdated-tooltip"
           >
             <div class="title">
               <span
@@ -500,7 +501,7 @@ export class ShiptechCustomHeaderGroup {
             updatedProdLivePrice.requestGroupProducts.livePrice,
             'livePrice'
           );
-          this.livePrice = formattedLivePrice;
+          this.livePrice = this.tenantService.liveformat(formattedLivePrice);
           this.targetValue =
             updatedProdLivePrice.requestGroupProducts.targetPrice;
           this.closureValue =
@@ -719,7 +720,7 @@ export class ShiptechCustomHeaderGroup {
 
   priceFormatValue(value, type?: any) {
     if (typeof value == 'undefined' || value == null) {
-      return type == 'benchMark' ? '--' : null;
+      return type == 'benchMark' || 'closure' ? '--' : null;
     }
 
     if (value == 0) {
