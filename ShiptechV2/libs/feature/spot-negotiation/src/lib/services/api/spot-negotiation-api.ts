@@ -80,7 +80,8 @@ export const SpotNegotiationApiPaths = {
   updateSellerComment: `RFQ/UpdateSellerComments`,
   getOfferPriceHistory: `Price/getOfferPriceHistory`,
   updateProductPrice: `RFQ/FreezeMarketPrices`,
-  isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`
+  isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`,
+  getSellerRatingsforNegotiation: `api/sellerrating/sellerratingreview/getForNegotiation`
 };
 
 @Injectable({
@@ -99,6 +100,9 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
 
   @ApiCallUrl()
   private _masterApiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
+
+  @ApiCallUrl()
+  private _sellerApiUrl = this.appConfig.v1.API.BASE_URL_DATA_SELLERRATING;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -868,11 +872,24 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   CheckWhetherUserIsAuthorizedForReportsTab(): Observable<any> {
     return this.http
       .post<any>(
-        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.isAuthorizedForReportsTab}`, 
+        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.isAuthorizedForReportsTab}`,
         { Payload: null }
       )
       .pipe(
         map((body: any) => body.payload),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  getSellerRatingforNegotiation(payload:any) : Observable<any>{
+    return this.http
+      .post<any>(
+        `${this._sellerApiUrl}/${SpotNegotiationApiPaths.getSellerRatingsforNegotiation}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
         catchError((body: any) => this.handleErrorMessage(body))
       );
   }

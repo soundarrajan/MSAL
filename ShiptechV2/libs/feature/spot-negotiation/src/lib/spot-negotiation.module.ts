@@ -85,6 +85,7 @@ import {
   checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated,
   checkIfProductIsStemmedWithAnotherSeller,
   priceFormatValue } from '../lib/core/pipes/ag.pipe';
+  import{RatingModule} from 'ng-starrating';
 @NgModule({
   imports: [
     CommonModule,
@@ -116,7 +117,8 @@ import {
     NgxSpinnerModule,
     CKEditorModule,
     WunderBarModule,
-    SharedModule
+    SharedModule,
+    RatingModule
   ],
   declarations: [
     MainSpotNegotiationComponent,
