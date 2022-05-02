@@ -1,3 +1,4 @@
+import { isNumeric } from 'rxjs/internal-compatibility';
 import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { defer, Observable, of, Subject, throwError } from 'rxjs';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
@@ -190,7 +191,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     if (additionalCost.isAllProductsCost || !productComponent) {
       rowData.requestOffers.forEach(reqOff => {
         if(additionalCost.isAllProductsCost || reqOff.requestProductId == additionalCost.requestProductId){
-          reqOff.cost = reqOff.cost + additionalCost.ratePerUom; 
+          reqOff.cost = reqOff.cost + additionalCost.ratePerUom;
         }
       });
     }
@@ -229,7 +230,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     //   locationAdditionalCostsList,
     //   function (obj: any) {
     //     return (
-    //       !obj.amountIsCalculated 
+    //       !obj.amountIsCalculated
     //       );
     //   }
     // );
@@ -355,9 +356,9 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       if (!additionalCostList[i].isDeleted) {
         additionalCostList[i].totalAmount = 0;
         let cost = additionalCostList[i];
-        
+
         if (additionalCostList[i].isAllProductsCost) {
-          
+
           this.onApplicableForChange(
             cost,
             rowData,
@@ -365,7 +366,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
             maxQuantityUomId
           );
 
-          
+
         }
         this.additionalCostNameChanged(
           cost,
@@ -431,7 +432,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
         this.createAdditionalCostTypes();
         // let response = await this.spotNegotiationService
         //   .getAdditionalCosts(payload)
-        //   //.subscribe((response: any) => 
+        //   //.subscribe((response: any) =>
         //   if(response!= null){
         //     if (response?.message == 'Unauthorized') {
         //       return;
@@ -452,7 +453,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
               if (
                 offerAdditionCostsList.length > 0 ||
                 locAdditionCostsList.length > 0
-              ) {                
+              ) {
 
                 sellerOffers.requestOffers.forEach(reqOff => {
                   reqOff.cost = 0;
@@ -471,7 +472,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
 
 
                 for (let i = 0; i < offerAdditionCostsList.length; i++) {
-                  let cost = offerAdditionCostsList[i];                  
+                  let cost = offerAdditionCostsList[i];
                   if (offerAdditionCostsList[i].isAllProductsCost) {
                     this.onApplicableForChange(
                       cost,
@@ -479,7 +480,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                       totalMaxQuantity,
                       maxQuantityUomId
                     );
-                    
+
                   }
                   this.additionalCostNameChanged(
                     cost,
@@ -508,7 +509,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
               let totalCost = 0
               reqProList.forEach(pro => {
                 sellerOffers.requestOffers.forEach(reqOff => {
-                    if (reqOff.requestProductId == pro.id) {          
+                    if (reqOff.requestProductId == pro.id) {
                       reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
                       reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
                       // Target Difference = Total Price - Target Price
@@ -521,7 +522,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                           ? 0
                           : reqOff.targetDifference;
                     }
-                  }); 
+                  });
                 });
                 sellerOffers.totalOffer = totalOffer;
                 sellerOffers.totalCost = totalCost;
@@ -660,11 +661,11 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     let applicableForItemsArray = [];
     let totalMaxQuantity = 0;
     let maxQuantityUomId = null;
-    requestLocation.requestProducts.forEach((product: any, index) => {      
+    requestLocation.requestProducts.forEach((product: any, index) => {
         let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function (
           object: any
         ) {
-          return object.requestProductId == product.id && object.price;
+          return object.requestProductId == product.id && isNumeric(object.price);
         });
         if (findRowDataOfferIndex != -1) {
           applicableForItemsArray.push({
