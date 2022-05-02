@@ -11351,6 +11351,9 @@ tr.title {
                         overflow: hidden;
                         text-overflow: ellipsis;
                       }
+                      &.total-offer span {
+                        overflow: initial;
+                      }
                       .dollarButton {
                         position: absolute;
                         top: 0;

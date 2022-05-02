@@ -242,7 +242,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           field: 'totalOffer',
           flex: 1,
           width: 100,
-          minWidth: 90,
+          minWidth: 125,
           headerClass: 'border-right',
           cellClass: 'line-seperator',
           cellStyle: params => {
