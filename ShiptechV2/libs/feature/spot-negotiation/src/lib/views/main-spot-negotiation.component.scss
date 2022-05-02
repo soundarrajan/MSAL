@@ -1,4 +1,3 @@
-@import '../../../../../../assets/theme/defaultweb/shiptech.scss';
 
 ag-grid-angular {
   height: 60vh;
@@ -59,3 +58,595 @@ ag-grid-angular {
 ag-grid-angular .ag-body-horizontal-scroll-viewport{
   top: -8px !important;
 }
+
+/** Shiptech - UI PD fixes - Start **/
+
+.sticky-icon {
+  position: absolute;
+  right: 0px;
+  top: 18%;
+  margin-left: 5px;
+  display: inline-flex;
+  align-items: center;
+
+  .info-comment {
+    cursor: pointer;
+    position: relative;
+    margin: 2px;
+    top: 3px;
+
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 13 13' fill='none'%3E%3Crect width='13' height='9.5' rx='2' fill='%23364150'/%3E%3Cpath d='M7.91009 8.96585L2.0999 11.5919L2.04927 6.45486L7.91009 8.96585Z' fill='%23364150'/%3E%3Ccircle cx='2.85' cy='4.79995' r='1.1' fill='white'/%3E%3Ccircle cx='6.51699' cy='4.79995' r='1.1' fill='white'/%3E%3Ccircle cx='10.184' cy='4.79995' r='1.1' fill='white'/%3E%3C/svg%3E");
+  }
+  .info-comment-inactive {
+    cursor: pointer;
+    position: relative;
+    margin: 2px;
+    top: 2px;
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 13 13' fill='none'%3E%3Crect y='0.5' width='13' height='9.5' rx='2' fill='%23C4C4C4'/%3E%3Cpath d='M7.91009 9.46585L2.0999 12.0919L2.04927 6.95486L7.91009 9.46585Z' fill='%23C4C4C4'/%3E%3Ccircle cx='2.85' cy='5.3002' r='1.1' fill='white'/%3E%3Ccircle cx='6.51699' cy='5.3002' r='1.1' fill='white'/%3E%3Ccircle cx='10.184' cy='5.3002' r='1.1' fill='white'/%3E%3C/svg%3E");
+  }
+  .mail-icon-new {
+    cursor: pointer;
+    top: 2px;
+    margin: 2px;
+    position: relative;
+    &.mail-inactive {
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='11' viewBox='0 0 13 11' fill='none'%3E%3Cpath d='M11.7 0.5H1.3C0.585 0.5 0.00649999 1.0625 0.00649999 1.75L0 9.25C0 9.9375 0.585 10.5 1.3 10.5H11.7C12.415 10.5 13 9.9375 13 9.25V1.75C13 1.0625 12.415 0.5 11.7 0.5ZM11.7 3L6.5 6.125L1.3 3V1.75L6.5 4.875L11.7 1.75V3Z' fill='%23C4C4C4'/%3E%3C/svg%3E");
+    }
+    &.mail-active {
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='11' viewBox='0 0 13 11' fill='none'%3E%3Cpath d='M11.7 0.5H1.3C0.585 0.5 0.00649999 1.0625 0.00649999 1.75L0 9.25C0 9.9375 0.585 10.5 1.3 10.5H11.7C12.415 10.5 13 9.9375 13 9.25V1.75C13 1.0625 12.415 0.5 11.7 0.5ZM11.7 3L6.5 6.125L1.3 3V1.75L6.5 4.875L11.7 1.75V3Z' fill='%23364150'/%3E%3C/svg%3E");
+    }
+    &.mail-none {
+      content: url();
+    }
+  }
+}
+
+.operations-details-block {
+  height: 222px;
+  .mat-form-field-type-mat-native-select .mat-form-field-infix::after {
+    margin-right: 12px;
+    color: black !important;
+  }
+  .mat-input-element {
+    caret-color: black;
+  }
+
+  border: 6px solid #E9EAEC;
+  border-radius: 3px;
+  hr {
+    height: 10px !important;
+  }
+  .add-new-button {
+    float: right;
+    border-radius: 2px;
+    width: 90px;
+    margin-right: 16px !important;
+    margin-bottom: 10px !important;
+    padding-right: 0px !important;
+    position: relative;
+    bottom: 41px;
+    right: 7px;
+  }
+  .cell-dashed-border {
+    border: 0px;
+    outline: #C4C4C4 dashed 1px;
+    outline-offset: -8px;
+    height: 41px;
+  }
+
+  table {
+    width: 100%;
+    .w-150 {
+      width: 150px;
+    }
+    .w-125 {
+      width: 125px;
+    }
+    tbody {
+      display: block;
+      height: 160px;
+      overflow: auto;
+    }
+    thead {
+      tr {
+        background-color: white;
+        width: calc(100% - 0.4em);
+      }
+    }
+    tr {
+      display: table;
+      width: 100%;
+      height: 30px;
+      table-layout: fixed;
+      th {
+        font-size: 17px;
+        font-weight: 300;
+        color: black;
+        padding: 4px 4px 4px 10px;
+        // border: 2px solid #E9EAEC;
+        // padding-left: 10px;
+        &:last-child {
+          text-align: right;
+          padding-right: 15px;
+        }
+      }
+      td {
+        font-size: 12px;
+        color: #37414f;
+        //padding: 10px;
+        padding-left: 10px;
+        // border: 2px solid #E9EAEC;
+        // outline: #c4c4c4 dashed 1px;
+        // outline-offset: -8px;
+        &:last-child {
+          text-align: right;
+          padding-right: 15px;
+        }
+        .mat-form-field-wrapper {
+          padding: 0px;
+        }
+        .mat-form-field-infix {
+          border: none;
+        }
+        .mat-form-field-underline {
+          top: 20px;
+        }
+        input[type='radio'] {
+          color: #74CDEA;
+        }
+      }
+    }
+  }
+}
+
+.currencyselecttrigger {
+  height: 138px;
+  width: 148px;
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  color: #ffffff;
+  background: #364150 !important;
+  overflow: auto !important;
+  float: right;
+  .mat-option-text {
+    color: #ffffff;
+  }
+  .mat-radio-outer-circle {
+    //padding-right: 5px !important;
+    border-color: #ffffff;
+  }
+  .mat-radio-inner-circle {
+    background: #1d9fff !important;
+  }
+  .mat-radio-checked {
+    .mat-radio-outer-circle {
+      //padding-right: 5px !important;
+      border-color: #ffffff !important;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: transparent;
+}
+
+.spot-nego-content .input-disabled-new {
+  pointer-events: none;
+  background-color: #eee;
+}
+
+.ag-cell.hoverCell .price-calc #custom-form-field {
+  height: 21px;
+  display: flex;
+  width: 50px !important;
+  margin: 0;
+}
+
+.ag-cell.hoverCell .price-calc .inputFieldHighlightOff {
+  border: 0 dashed #000!important;
+}
+
+.spot-nego-content .input-disabled-new #custom-form-field .mat-form-field .mat-select .mat-select-arrow-wrapper {
+  display: none;
+}
+
+.additional-cost-popup .border-bottom {
+  border-bottom: none;
+}
+
+.operations-details-block .mat-form-field-type-mat-native-select .mat-form-field-infix:after {
+  margin-right: 12px;
+  color: #000!important;
+}
+
+
+.spot-dropdown-component .mat-select-arrow {
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid;
+  margin: 0 10px;
+  color: #364150 !important;
+}
+
+.additional-cost-popup {
+  .additional-cost-subheading1 {
+    font-size: 14px;
+
+    font-weight: 500;
+    color: #333333;
+  }
+  .fz-13 {
+    font-size: 13px;
+    font-weight: 400px;
+  }
+  .w-95 {
+    width: 95px;
+  }
+  .w-147 {
+    width: 147px;
+  }
+  .w-31 {
+    width: 31px;
+  }
+
+  .w-116 {
+    width: 116px;
+  }
+  .w-158 {
+    width: 158px;
+  }
+  .w-400 {
+    width: 400px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .w-100 {
+    width: 100px;
+  }
+  .w-160 {
+    width: 160px;
+  }
+  .w-120 {
+    width: 120px;
+  }
+  .w-104 {
+    width: 104px;
+  }
+  .w-108 {
+    width: 108px;
+  }
+  .w-92 {
+    width: 92px;
+  }
+  .w-117 {
+    width: 117px;
+  }
+  .w-122 {
+    width: 122px;
+  }
+  .check-box {
+    padding: 0px;
+    text-align: center;
+    line-height: 29px;
+    padding-top: 5px;
+  }
+  .status-valid {
+    padding: 5px 10px;
+    .status-code {
+      background-color: #4fa876;
+      color: #ffffff;
+      height: 95%;
+      align-items: center;
+      line-height: 27px;
+    }
+  }
+  .status-intermediate {
+    padding: 5px 10px;
+    .status-code {
+      background-color: #bc823f;
+
+      color: #ffffff;
+      height: 95%;
+      align-items: center;
+      line-height: 27px;
+    }
+  }
+
+  .border-bottom-1 {
+    border-bottom: 1px solid #e0e1e4;
+  }
+  .location-title {
+    font-size: 10px;
+    font-weight: 400;
+    color: #364150;
+    padding: 5px;
+  }
+  .location-value {
+    font-size: 10px;
+    font-weight: 700;
+    color: #364150;
+  }
+  .location-main-heading {
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+  }
+  .location-value-marketprice {
+    font-size: 12px;
+    font-weight: 700;
+    color: #364150;
+  }
+  .location-title-marketprice {
+    font-size: 12px;
+    font-weight: 400;
+    color: #364150;
+  }
+  .decrement-circle-button {
+    width: 20px;
+    cursor: pointer;
+
+    .decrement-circle {
+      height: 11px;
+      width: 11px;
+      border-radius: 11px;
+      background-color: #364150;
+      color: #ffffff;
+      position: relative;
+      .minus {
+        position: absolute;
+        top: 39%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 26px;
+        font-weight: 300;
+      }
+    }
+  }
+  .border-left-none {
+    border-left: none !important;
+  }
+  .border-bottom {
+    border-bottom: 1px solid #e0e1e4;
+  }
+  .increment-circle-button {
+    width: 20px;
+    cursor: pointer;
+
+    .increment-circle {
+      height: 12px;
+      width: 12px;
+      border-radius: 12px;
+      background-color: #ffffff;
+      color: #364150;
+      position: relative;
+      .plus {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 15px;
+        font-weight: 500;
+      }
+    }
+  }
+  .mat-dialog-container {
+    padding: 0px;
+    overflow: hidden;
+    .operations-details-block {
+      height: 142px;
+      background: #e0e1e4;
+      border-radius: 4px;
+
+      .w-80 {
+        width: 80px;
+      }
+
+      .w-125 {
+        width: 125px;
+        text-align: left !important;
+      }
+
+      &.offerprice-history {
+        background: none !important;
+        tbody tr td {
+          border-bottom: 1px solid #e0e1e4;
+        }
+      }
+
+      &.market-history {
+        background: none !important;
+        height: 75vh !important;
+      }
+
+      thead {
+        tr {
+          background: #364150;
+          border-radius: 3px 3px 0px 0px;
+          width: 100%;
+          th {
+            color: #ffffff;
+            font-size: 12px;
+          }
+        }
+      }
+      & table tr th.increment-circle-button {
+        width: 20px;
+        cursor: pointer;
+        padding-left: 10px;
+      }
+      tbody {
+        border-spacing: 0px !important;
+        border-collapse: collapse;
+        height: fit-content;
+        overflow: hidden;
+        .cell-dashed-border {
+          outline: 1px dashed #333333;
+          height: 35px;
+        }
+        tr {
+          background-color: #ffffff;
+          td {
+            border-left: 1px solid #e0e1e4;
+            border-bottom: 1px solid #e0e1e4;
+            font-size: 13px;
+            overflow: hidden;
+          }
+        }
+      }
+    }
+  }
+}
+
+.supplier-contact-popup {
+  .operations-details-block {
+    height: 286px !important;
+    border-style: solid;
+    border-color: #364150;
+    border-width: 1px;
+    background-color: #ffffff !important;
+    margin-top: -1px;
+  }
+  .dashed-border-overlay {
+    &.operations-details-block {
+      border-style: dashed !important;
+    }
+  }
+
+  .contact-editable-header {
+    &.col-6 {
+      padding-left: 0px;
+    }
+    &.col-4 {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    .mat-select-arrow {
+      color: #ffffff;
+    }
+    .mat-focused .mat-form-field-underline .mat-form-field-ripple {
+      background-color: #ffffff !important;
+    }
+    .mat-form-field-appearance-fill .mat-form-field-underline::before {
+      background: #ffffff;
+    }
+
+    .mat-input-element {
+      caret-color: #ffffff !important;
+    }
+    .mat-select:focus .mat-select-trigger .mat-select-arrow {
+      color: #ffffff;
+    }
+    .mat-select.mat-focused .mat-select-trigger .mat-select-arrow {
+      color: #ffffff;
+    }
+    .mat-select-value {
+      color: #ffffff;
+    }
+    .mat-primary {
+      color: #ffffff;
+    }
+    .mat-form-field-appearance-legacy .mat-form-field-underline {
+      background-color: #ffffff;
+    }
+
+    .mat-input-element {
+      font-weight: 500;
+    }
+  }
+  .mat-form-field {
+    height: 20px;
+  }
+  .w-75 {
+    width: 75px;
+  }
+  .operations-details-block table tr th:last-child {
+    text-align: right;
+    padding-right: 5px;
+  }
+  .company-title {
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    text-align: left;
+    color: #333333;
+    width: 6%;
+  }
+  .company-details {
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: left;
+    color: #333333;
+    margin-left: 15px;
+  }
+  .tabledata-fieldname {
+    font-family: Roboto;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    color: #333333;
+  }
+  .tabledata-value {
+    font-family: Roboto;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    color: #333333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .submit-icon {
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='16' viewBox='0 0 17 16' fill='none'%3E%3Cpath d='M16.7955 5.79251C16.6189 5.57283 16.3528 5.44459 16.071 5.44459H15.1417C15.1417 4.93125 14.7258 4.5153 14.2124 4.5153H13.2831V3.58601C13.2831 3.07267 12.8672 2.65672 12.3538 2.65672H11.8892V0.798141C11.8892 0.541657 11.6807 0.333496 11.4245 0.333496H2.13165C1.87479 0.333496 1.66701 0.541657 1.66701 0.798141V2.65672H1.20236C0.689021 2.65672 0.273071 3.07267 0.273071 3.58601V14.7375C0.273071 15.2508 0.689021 15.6668 1.20236 15.6668H3.06094H12.3538H14.2124C14.6481 15.6668 15.0257 15.3642 15.119 14.939L16.9776 6.57535C17.0393 6.30028 16.972 6.0122 16.7955 5.79251ZM1.66701 14.7375H1.20236V3.58601H1.66701V14.7375ZM11.9702 10.2189L8.71771 13.471C8.53631 13.6524 8.24229 13.6524 8.06052 13.471L4.808 10.2185C4.6753 10.0862 4.63516 9.88585 4.70727 9.71226C4.77901 9.53867 4.94814 9.42566 5.13623 9.42566H6.29784V5.44496H4.91952C4.48387 5.44496 4.1062 5.74754 4.01216 6.17278C4.01216 6.17278 2.13239 14.6706 2.13239 14.7379H2.13165V0.798513H11.4245V4.51567C10.9112 4.51567 10.4953 4.93162 10.4953 5.44496H10.4796V9.42604H11.6413C11.8293 9.42604 11.9985 9.53941 12.0706 9.71263C12.1434 9.88622 12.1029 10.0858 11.9702 10.2189ZM12.3538 4.5153H11.8892V3.58601H12.3538V4.5153ZM3.49473 2.39355C3.49473 2.13706 3.70289 1.9289 3.95938 1.9289H9.50389C9.76037 1.9289 9.96853 2.13706 9.96853 2.39355C9.96853 2.65003 9.76037 2.85819 9.50389 2.85819H3.95938C3.70326 2.85819 3.49473 2.65003 3.49473 2.39355ZM9.50389 4.74762H3.95938C3.70289 4.74762 3.49473 4.53946 3.49473 4.28298C3.49473 4.02649 3.70289 3.81833 3.95938 3.81833H9.50389C9.76037 3.81833 9.96853 4.02649 9.96853 4.28298C9.96853 4.53946 9.76037 4.74762 9.50389 4.74762Z' fill='white'/%3E%3C/svg%3E");
+    position: relative;
+    top: 4px;
+  }
+  .edit-icon {
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 15 15' fill='none'%3E%3Cpath d='M12.3215 7.50016C12.0256 7.50016 11.7858 7.74001 11.7858 8.03589V13.3931C11.7858 13.6889 11.5459 13.9288 11.2501 13.9288H1.60716C1.31128 13.9288 1.07143 13.6889 1.07143 13.3931V2.67869C1.07143 2.38281 1.31128 2.14296 1.60716 2.14296H8.03578C8.33166 2.14296 8.57151 1.90311 8.57151 1.60723C8.57151 1.31135 8.33166 1.07153 8.03578 1.07153H1.60716C0.719547 1.07153 0 1.79108 0 2.67869V13.3931C0 14.2807 0.719547 15.0002 1.60716 15.0002H11.2501C12.1377 15.0002 12.8572 14.2807 12.8572 13.3931V8.03585C12.8572 7.74001 12.6174 7.50016 12.3215 7.50016Z' fill='white'/%3E%3Cpath d='M14.3995 0.600746C14.0148 0.216033 13.4931 -5.43039e-05 12.9491 8.47559e-06C12.4047 -0.00156101 11.8825 0.214903 11.4989 0.601091L4.44237 7.65701C4.38383 7.71599 4.33966 7.78768 4.31326 7.86647L3.24184 11.0808C3.14833 11.3615 3.3001 11.6649 3.58081 11.7583C3.63528 11.7765 3.69231 11.7857 3.74969 11.7858C3.8072 11.7857 3.86436 11.7765 3.91898 11.7585L7.13329 10.6871C7.21223 10.6607 7.28396 10.6163 7.34275 10.5574L14.3992 3.50094C15.2001 2.70012 15.2002 1.40166 14.3995 0.600746Z' fill='white'/%3E%3C/svg%3E");
+    position: relative;
+    top: 2px;
+  }
+  .editable-header {
+    .mat-form-field-flex {
+      height: 20px;
+      padding: 0px;
+    }
+  }
+  &.additional-cost-popup
+    .mat-dialog-container
+    .operations-details-block
+    tbody
+    tr
+    td {
+    border-left: 0px !important;
+    border-bottom: none;
+  }
+  &.additional-cost-popup
+    .mat-dialog-container
+    .operations-details-block
+    thead
+    tr {
+    height: 40px;
+    vertical-align: middle;
+  }
+}
+
+.p-l-15 {
+  padding-left: 15px;
+}
+
+.additional-cost-popup .location-main-heading {
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  padding-left: 15px !important;
+}
+
+/** Shiptech - UI PD fixes - End **/
