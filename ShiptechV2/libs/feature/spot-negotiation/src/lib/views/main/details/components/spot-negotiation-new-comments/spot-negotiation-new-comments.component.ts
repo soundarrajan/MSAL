@@ -64,7 +64,6 @@ export class SpotNegotiationNewCommentsComponent
       );
       this.checkEditableFields();
       this.uncheckedComments();
-      this.matExpansionPanelElement.open();
     }
   }
 

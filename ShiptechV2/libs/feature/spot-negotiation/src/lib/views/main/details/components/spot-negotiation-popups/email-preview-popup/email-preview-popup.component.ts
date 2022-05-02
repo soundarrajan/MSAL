@@ -34,7 +34,7 @@ interface Items {
 })
 export class EmailPreviewPopupComponent implements OnInit {
    public configuration = {
-     height: '450px',
+     height: '250px',
      disableNativeSpellChecker: false,
      // fullPage: true,
      allowContent: true,
