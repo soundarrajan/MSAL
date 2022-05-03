@@ -1,17 +1,9 @@
-import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
-import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { SpotNegotiationService } from '../../../../../../services/spot-negotiation.service';
 import {
   Component,
   OnInit,
-  Inject,
-  ElementRef,
-  ViewChild
+  Inject
 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Store } from '@ngxs/store';
-import { MatIconModule } from '@angular/material/icon';
 import _ from 'lodash';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { DecimalPipe } from '@angular/common';
