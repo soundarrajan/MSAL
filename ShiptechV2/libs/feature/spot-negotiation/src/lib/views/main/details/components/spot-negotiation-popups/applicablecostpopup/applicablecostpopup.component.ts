@@ -288,11 +288,12 @@ export class ApplicablecostpopupComponent implements OnInit {
             );
             reqs = reqs.map(e => {
               let requestLocations = e.requestLocations.map(reqLoc => {
+                let requestAdditionalCosts : any = [];
                 if(locAddCosts?.filter(loc => reqLoc.id == loc.requestLocationId).length > 0){
-                  let requestAdditionalCosts = locAddCosts.filter(loc => reqLoc.id == loc.requestLocationId);    
-                  return { ...reqLoc, requestAdditionalCosts };
+                  requestAdditionalCosts = locAddCosts.filter(loc => reqLoc.id == loc.requestLocationId);    
+                  //return { ...reqLoc, requestAdditionalCosts };
                 }
-                return reqLoc;            
+                return { ...reqLoc, requestAdditionalCosts };        
               });
                return { ...e, requestLocations };
             });            
@@ -1304,11 +1305,12 @@ export class ApplicablecostpopupComponent implements OnInit {
           );
           reqs = reqs.map(e => {
             let requestLocations = e.requestLocations.map(reqLoc => {
+              let requestAdditionalCosts : any = [];
               if(locAddCosts?.filter(loc => reqLoc.id == loc.requestLocationId).length > 0){
-                let requestAdditionalCosts = locAddCosts.filter(loc => reqLoc.id == loc.requestLocationId);    
-                return { ...reqLoc, requestAdditionalCosts };
+                requestAdditionalCosts = locAddCosts.filter(loc => reqLoc.id == loc.requestLocationId);    
+                //return { ...reqLoc, requestAdditionalCosts };
               }
-              return reqLoc;            
+              return { ...reqLoc, requestAdditionalCosts };          
             });
              return { ...e, requestLocations };
           });

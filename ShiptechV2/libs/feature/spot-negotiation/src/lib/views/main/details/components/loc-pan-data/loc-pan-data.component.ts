@@ -75,8 +75,6 @@ export class LocPanDataComponent implements OnInit {
       return state.spotNegotiation.locationsRows;
     });
 
-    let currentLocationId = this.reqLocation.id;
-
     let filterLocationRows = _.filter(this.locationsRows);
     const dialogRef = this.dialog.open(ApplicablecostpopupComponent, {
       width: '1170px',
@@ -93,7 +91,6 @@ export class LocPanDataComponent implements OnInit {
       if (result) {
         this.costChanged.emit(filterLocationRows);
       }
-      this._spotNegotiationService.callGridRefreshService();
     });
   }
 
