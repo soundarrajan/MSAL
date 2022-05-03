@@ -45,7 +45,7 @@
                       [checked]="element.selected"
                       (change)="onCounterpartyCheckboxChange($event, element)"
                     >
-                      {{ element.name }}
+                    {{ limitStrLength(element.name, 25) }}
                     </mat-checkbox>
                   </mat-option>
                 </td>
