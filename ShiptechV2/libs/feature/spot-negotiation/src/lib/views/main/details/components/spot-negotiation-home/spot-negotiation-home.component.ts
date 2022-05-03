@@ -15,7 +15,6 @@ import { SpotnegoConfirmorderComponent } from '../spot-negotiation-popups/spotne
 import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from '../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
-  EditLocationRow,
   SetLocationsRows,
   UpdateRequest
 } from '../../../../../store/actions/ag-grid-row.action';
