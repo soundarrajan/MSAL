@@ -1462,6 +1462,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 reqLocationRows.push(data);
             }
           this.store.dispatch(new SetLocationsRows(reqLocationRows));
+          this.spotNegotiationService.callGridRefreshService();
         }
       });
   }
