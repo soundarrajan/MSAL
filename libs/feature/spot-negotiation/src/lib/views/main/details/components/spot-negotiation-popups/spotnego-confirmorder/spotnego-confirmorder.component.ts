@@ -648,14 +648,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
-        // row.requestOffers = row.requestOffers.map(e => {
-        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-        //   {
-        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-        //     return { ...e, currencyCode:  currencyCode};
-        //   }
-        //    //return { ...e, requestLocations };
-        // });
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
@@ -701,14 +693,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
-        // row.requestOffers = row.requestOffers.map(e => {
-        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-        //   {
-        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-        //     return { ...e, currencyCode:  currencyCode};
-        //   }
-        //    //return { ...e, requestLocations };
-        // });
+
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId
