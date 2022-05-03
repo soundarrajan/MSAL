@@ -107,10 +107,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     );
 
     responseGroupComment.subscribe((res: any) => {
-      if(res?.message == 'Unauthorized'){
-        return;
-      }
-    });
+    if(res.status){
     // Get response from server and populate store
     const responseGetRequestGroup = this.spotNegotiationService.getRequestGroup(
       groupRequestIdFromUrl
@@ -161,7 +158,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           this.changeDetector.detectChanges();
         }
       }
-
+    });}
     });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
