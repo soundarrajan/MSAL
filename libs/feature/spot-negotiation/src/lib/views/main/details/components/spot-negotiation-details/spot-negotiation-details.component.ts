@@ -1,6 +1,5 @@
 import { SpotNegotiationStoreModel } from './../../../../../store/spot-negotiation.store';
 import { finalize } from 'rxjs/operators';
-import { DatePipe, DOCUMENT } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {
   ChangeDetectionStrategy,
@@ -14,7 +13,7 @@ import _, { cloneDeep } from 'lodash';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { GridOptions,RowGroupOpenedEvent,GridApi} from 'ag-grid-community';
+import { GridOptions,GridApi} from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
 import { AGGridCellActionsComponent } from '../../../../../core/ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellRendererV2Component } from '../../../../../core/ag-grid/ag-grid-cell-rendererv2.component';
@@ -31,7 +30,6 @@ import {
 import { SpotNegotiationStore } from '../../../../../store/spot-negotiation.store';
 import { Observable } from 'rxjs';
 import { RemoveCounterpartyComponent } from '../remove-counterparty-confirmation/remove-counterparty-confirmation';
-import { AdditionalCostViewModel } from 'libs/feature/spot-negotiation/src/lib/core/models/additional-costs-model';
 import { CustomHeader } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/custom-header.component';
 import { CustomHeaderSelectAll } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/custom-header-select-all.component';
 import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';

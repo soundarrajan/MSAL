@@ -34,7 +34,6 @@ import { SpotnegoOtherdetails2Component } from '../../views/main/details/compone
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AdditionalCostViewModel } from '../models/additional-costs-model';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
 import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation-price-calc.service';
