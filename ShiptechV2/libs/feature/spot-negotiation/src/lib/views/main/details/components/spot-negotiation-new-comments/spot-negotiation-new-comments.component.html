@@ -81,7 +81,7 @@
         <div class="row" style="padding: 0px 4px;">
           <div
             class="col-md-3 spot-comments-section"
-            style="padding: unset !important; display: flex; align-items: center; justify-content: space-between;"
+            style=" display: flex; align-items: center; justify-content: space-between;"
           >
             <div class="new-comments" [ngClass]="currentRequestInfo?.status === 'Stemmed' ? 'input-disabled-comments' : 'new-comments'">
               <div style="padding: 15px;">
@@ -286,9 +286,8 @@
                 </div>
                 <div
                   class="col-md-3 spot-comments-section2"
-                  style="padding: unset !important;  border-right: 5px solid #364150;"
-                >
-                  <div class="new-comments" style="margin: 0px 14px;">
+                  style="padding: unset !important;display:flex">
+                  <div class="new-comments" style="margin: 0px 14px;flex:1">                    
                     <div style="padding: 15px;">
                       <span class="circle internal"></span
                       ><span class="label">Strategy</span>
@@ -308,6 +307,7 @@
                       </span>
                     </div>
                   </div>
+                  <div class="splitter-band"><div></div></div>
                 </div>
                 <div
                   class="col-md-3 spot-comments-section2"

@@ -1,5 +1,6 @@
 .search-request-popup .header .close {
     opacity: .5;
+    top: 7px;
   }
   .search-request-popup .header .close:hover {
     opacity: 100;
