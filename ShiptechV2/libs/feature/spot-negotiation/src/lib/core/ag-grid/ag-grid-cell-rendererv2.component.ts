@@ -869,7 +869,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       params.physicalSupplierCounterpartyName != undefined &&
       params.physicalSupplierCounterpartyName != null
     ) {
-      this.editedSeller = params.physicalSupplierCounterpartyName;
+      this.editedSeller = this.format.htmlDecode(params.physicalSupplierCounterpartyName);
     } else {
       this.editedSeller = 'Add P. Supplier';
     }
