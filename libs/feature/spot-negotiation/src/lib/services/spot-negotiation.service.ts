@@ -632,7 +632,8 @@ export class SpotNegotiationService extends BaseStoreService
 
     if (isPriceCopied)
       productDetails.offerPriceCopiedFrom = sourceReqProOff?.id;
-    const currentLocationAllProductsIds = currentLocation.requestProducts.map(
+      productDetails.hasNoQuote = sourceReqProOff?.hasNoQuote;
+      const currentLocationAllProductsIds = currentLocation.requestProducts.map(
       e => e.id
     );
 
