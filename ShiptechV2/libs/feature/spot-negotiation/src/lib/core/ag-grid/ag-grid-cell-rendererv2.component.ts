@@ -142,9 +142,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         <span
           class="info-flag"
           *ngIf="params.data.isSellerSuspended"
-          matTooltipClass="darkTooltip"
-          matTooltip="Temporary suspended counterparty"
           matTooltipClass="lightTooltip"
+          matTooltip="Temporary suspended counterparty"
         ></span>
         <span
           class="m-l-7"
@@ -568,7 +567,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="addTpr"
     >
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value">{{
+      <span [matTooltip]="params.value" matTooltipClass="lightTooltip">{{
         format.amount(params.value)
       }}</span>
     </div>
