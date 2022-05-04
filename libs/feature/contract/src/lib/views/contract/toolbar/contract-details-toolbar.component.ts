@@ -296,7 +296,7 @@ export class ContractDetailsToolbarComponent
           typeof payload != 'undefined' && payload.hasQuote ? 'Offer' : 'RFQ',
         url:
           typeof payload != 'undefined' && payload.requestGroupId
-            ? `${this.baseOrigin}/#/group-of-requests/${payload.requestGroupId}`
+            ? `${this.baseOrigin}/v2/group-of-requests/${payload.requestGroupId}/details`
             : '',
         entityId:
           typeof payload != 'undefined' && payload.requestGroupId

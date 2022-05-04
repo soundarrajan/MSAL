@@ -142,7 +142,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
       *ngIf="params.type == 'single-bg-header'"
     >
       <div class="border-line"></div>
-      <div class="options" style="padding-top: 5px;padding-bottom:10px; ">
+      <div class="options">
         <div class="checkBox w-100" matTooltip="Total offer" matTooltipClass="lightTooltip" style="padding-top:0px;">
           Total Offer
         </div>
@@ -1079,14 +1079,6 @@ export class ShiptechCustomHeaderGroup {
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
-        // row.requestOffers = row.requestOffers.map(e => {
-        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-        //   {
-        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-        //     return { ...e, currencyCode:  currencyCode};
-        //   }
-        //    //return { ...e, requestLocations };
-        // });
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
@@ -1151,14 +1143,6 @@ export class ShiptechCustomHeaderGroup {
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
-          // row.requestOffers = row.requestOffers.map(e => {
-          //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-          //   {
-          //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-          //     return { ...e, currencyCode:  currencyCode};
-          //   }
-          //    //return { ...e, requestLocations };
-          // });
           row.requestOffers = row.requestOffers.map(e => {
             let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
              return { ...e, reqProdStatus: isStemmed };

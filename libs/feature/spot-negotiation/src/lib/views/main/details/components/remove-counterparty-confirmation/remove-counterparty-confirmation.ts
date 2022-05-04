@@ -1,8 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
-  ViewEncapsulation,
   Inject
 } from '@angular/core';
 import _ from 'lodash';

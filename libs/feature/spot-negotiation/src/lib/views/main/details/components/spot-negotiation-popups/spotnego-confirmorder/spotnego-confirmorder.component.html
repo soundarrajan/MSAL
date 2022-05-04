@@ -32,7 +32,7 @@
 
          <!-- Expansion for each location in this current request -->
         <ng-template matExpansionPanelContent>
-          <div *ngFor="let location of request.requestLocations" style="height: auto; overflow-y: scroll;">
+          <div *ngFor="let location of request.requestLocations" style="height: auto; overflow-y: scroll; padding:18px;">
 
           <div class="row second-header" style="padding: 0px 4px; justify-content: space-between;">
             <div class="col-12 bold-text">{{location.locationName}}</div>
