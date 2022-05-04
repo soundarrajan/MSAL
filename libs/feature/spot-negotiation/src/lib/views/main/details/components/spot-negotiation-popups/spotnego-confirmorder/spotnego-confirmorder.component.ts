@@ -35,6 +35,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   isButtonVisible = true;
   iscontentEditable = false;
   requests: any = [];
+  requestByLocation:any=[];
   requestOfferItems: any = [];
   selectedOffers: any = [];
   currentRequestInfo: any = [];
@@ -228,8 +229,22 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         }
       });
     });
+    this.requests.map(e => {
+      let requestLocations=[];
+      let reqs;
+      this.requestOfferItems.forEach(row => {
+        if(e.requestLocations.filter(reqLoc =>reqLoc.id==row.RequestLocationId && e.id==row.RequestId).length>0  && requestLocations?.filter(reqLoc =>reqLoc.id==row.RequestLocationId && e.id==row.RequestId).length==0){          
+          requestLocations.push(e.requestLocations.find(reqLoc =>reqLoc.id==row.RequestLocationId ));
+          reqs=e;           
+        }
+      });
+      if(reqs!=undefined && requestLocations.length>0){
+        this.requestByLocation.push({...reqs, requestLocations});
+      }  
+    });     
     return this.requestOfferItems;
   }
+
   //Construct UI Value's to bind the popup grid
   ConstructRequestOfferItemPayload(
     seller,
