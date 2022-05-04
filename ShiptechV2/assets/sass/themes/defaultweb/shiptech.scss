@@ -10341,9 +10341,8 @@ tr.title {
                       max-width: 73px;
                       span {
                         width: fit-content;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                      }
+                        overflow: initial;
+                        }
                       .dollarButton {
                         position: absolute;
                         top: 0;
