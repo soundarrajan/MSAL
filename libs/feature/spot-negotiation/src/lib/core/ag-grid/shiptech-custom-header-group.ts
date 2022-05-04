@@ -208,7 +208,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
                 : 'Pricing published on: ') +
               (this.closureDate == 'Invalid date' ? '--' : this.closureDate)
             "
-            matTooltipClass="outdated-tooltip"
+            matTooltipClass="lightTooltip"
           >
             <div class="title">
               <span
