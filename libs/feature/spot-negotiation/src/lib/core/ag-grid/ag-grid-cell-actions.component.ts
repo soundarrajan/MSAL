@@ -168,38 +168,43 @@ export class AGGridCellActionsComponent implements ICellRendererAngularComp {
   }
 
   selectCounterParties(params) {
+    let locRows;
     //let updatedRow = { ...Object.assign({}, params.data) };
     let updatedRow = this.store.selectSnapshot<any>((state: any) => {
+      locRows=state.spotNegotiation.locationsRows;
       return state.spotNegotiation.locationsRows?.find(lr => lr.id == params.data.id);
     });
     updatedRow = this.formatRowData(updatedRow, params);
     this.store.dispatch(new EditLocationRow(updatedRow));
     params.node.setData(updatedRow);
-    // var FinalAPIdata = {
-    //   reqLocSellers: [
-    //     {
-    //       requestLocationSellerId: updatedRow.id,
-    //       isSelected: params.value === false ? true : false
-    //     }
-    //   ]
-    // };
-    // const response = this.spotNegotiationService.UpdateSelectSeller(
-    //   FinalAPIdata
-    // );
-    // response.subscribe((res: any) => {
-    //   this.spinner.hide();
-    //   if (res?.message == 'Unauthorized') {
-    //     return;
-    //   }
-    //   if (res['isUpdated']) {
-    //     // this.toaster.success('Updated successfully.');
-    //     // Update the store
-    //     this.store.dispatch(new EditLocationRow(updatedRow));
-    //     params.node.setData(updatedRow);
-    //   } else {
-    //     this.toaster.error('Something went wrong');
-    //   }
-    // });
+    if(!locRows.find(x=>x.requestOffers)){
+      var FinalAPIdata = {
+        reqLocSellers: [
+          {
+            requestLocationSellerId: updatedRow.id,
+            isSelected: params.value === false ? true : false
+          }
+        ]
+      };
+      const response = this.spotNegotiationService.UpdateSelectSeller(
+        FinalAPIdata
+      );
+      response.subscribe((res: any) => {
+        this.spinner.hide();
+        if (res?.message == 'Unauthorized') {
+          return;
+        }
+        if (res['isUpdated']) {
+          // this.toaster.success('Updated successfully.');
+          // Update the store
+          this.store.dispatch(new EditLocationRow(updatedRow));
+          params.node.setData(updatedRow);
+        } else {
+          this.toaster.error('Something went wrong');
+        }
+      });   
+    }
+
   }
 
   setProductSelection(row, currentLocProducts, paramsvalue) {
