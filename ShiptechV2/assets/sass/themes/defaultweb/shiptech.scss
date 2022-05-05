@@ -10420,6 +10420,16 @@ tr.title {
   }
 }
 
+  .hyperlink-value{
+    color: #4a71c2 !important;
+    cursor: pointer;
+    text-decoration: none !important;
+
+    &:hover{
+      text-decoration: underline !important;
+    }
+  }
+
 .customRowClass {
   .grey-opacity-cell {
     &.ag-cell {
