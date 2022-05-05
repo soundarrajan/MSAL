@@ -1412,7 +1412,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   suppliercommentspopup(params) {
     const dialogRef = this.dialog.open(SupplierCommentsPopupComponent, {
       width: '513px',
-      minHeight: '280px',
+      minHeight: '260px',
       panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
       data: params,
       disableClose: true
