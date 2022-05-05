@@ -15918,6 +15918,9 @@ mat-form-field {
         font-size: 14px;
         line-height: 22px;
         color: #364150;
+        height: 130px;
+        overflow: auto;
+        display: inline-block;
       }
     }
   }
