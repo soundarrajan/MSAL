@@ -595,8 +595,7 @@ export class SpotNegotiationService extends BaseStoreService
     sourceReqProOff
   ) {
     const productDetails = this.getRowProductDetails(row, product.id);
-  if(newValue != null){
-      //Change with new value
+        //Change with new value
       switch (field) {
         case 'offPrice':
           productDetails.price = Number(newValue.toString().replace(/,/g, ''));
@@ -628,7 +627,7 @@ export class SpotNegotiationService extends BaseStoreService
       productDetails.currencyId = isPriceCopied
         ? sourceReqProOff?.currencyId
         : productDetails.currencyId;
-  }
+  
     
     // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
 
