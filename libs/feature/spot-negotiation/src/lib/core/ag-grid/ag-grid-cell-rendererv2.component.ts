@@ -2141,7 +2141,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         requestOfferIds.push([...e.RequestOffers.map(e => e)]);
     });
     requestOfferIds = requestOfferIds.reduce((acc, val) => acc.concat(val), []); // flatten array
-    if (!params.data.requestOffers) {
+    if (requestOfferIds.length == 0) {
       this.toastr.warning(
         "Offer Price cannot be marked as 'No Quote' as RFQ has neither been skipped or sent."
       );
