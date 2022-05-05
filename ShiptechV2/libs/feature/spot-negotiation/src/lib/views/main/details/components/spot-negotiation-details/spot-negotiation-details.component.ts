@@ -101,7 +101,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       return offPrice == 100;
     },
     'display-no-quote': function(params) {
-      const offPrice = params.data.isQuote;
+      const offPrice = params.data.hasNoQuote;
       return offPrice == 'No quote';
     }
   };
