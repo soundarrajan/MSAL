@@ -835,7 +835,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
                         p => proOff.productId === p.productId
                       ),
                       'offPrice',
-                      proOff.price == null ? 0 : proOff.price,
+                      proOff.price,
                       reqLoc,
                       true,
                       proOff
@@ -1604,7 +1604,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         cost: productDetails.cost,
         currencyId: productDetails.currencyId,
         isOfferPriceCopied: productDetails.isOfferPriceCopied,
-        hasNoQuote : productDetails.price == null || productDetails.price == 0 ? true : false
+        hasNoQuote : productDetails.hasNoQuote
       };
       requestOffers.push(requOffer);
     });
