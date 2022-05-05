@@ -607,57 +607,63 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           groupId: parseInt(RequestGroupId),
           requestIds: selectedreqId
         };
-        const response = this._spotNegotiationService.addRequesttoGroup(
-          payload
-        );
-        this.selectedRequestList = [];
-        response.subscribe((res: any) => {
-          if (res?.message == 'Unauthorized') {
-            return;
-          }
-          if (res.error) {
-            alert('Handle Error');
-            return;
-          } else {
-            if (res['requests'] && res['requests'].length > 0) {
-              this.store.dispatch(new AddRequest(res['requests']));
-              res['requests'].forEach(element => {
-                let SuccessMessage =
-                  element.name +
-                  ' - ' +
-                  element.vesselName +
-                  ' has been linked successfully.';
-                this.toastr.success(SuccessMessage);
-              });
+        const responseGroupComment = this._spotNegotiationService.updateGroupComments(
+          parseInt(RequestGroupId)
+        );  
+        responseGroupComment.subscribe((res: any) => {
+        if(res.status){
+          const response = this._spotNegotiationService.addRequesttoGroup(
+            payload
+          );
+          this.selectedRequestList = [];
+          response.subscribe((res: any) => {
+            if (res?.message == 'Unauthorized') {
+              return;
             }
-            setTimeout(async () => {
-              if (
-                res['requestLocationSellers'] &&
-                res['requestLocationSellers'].length > 0
-              ) {
-                const futureLocationsRows = this.getLocationRowsWithLinkRequest(
-                  res['requestLocationSellers']
+            if (res.error) {
+              alert('Handle Error');
+              return;
+            } else {
+              if (res['requests'] && res['requests'].length > 0) {
+                this.store.dispatch(new AddRequest(res['requests']));
+                res['requests'].forEach(element => {
+                  let SuccessMessage =
+                    element.name +
+                    ' - ' +
+                    element.vesselName +
+                    ' has been linked successfully.';
+                  this.toastr.success(SuccessMessage);
+                });
+              }
+              setTimeout(async () => {
+                if (
+                  res['requestLocationSellers'] &&
+                  res['requestLocationSellers'].length > 0
+                ) {
+                  const futureLocationsRows = this.getLocationRowsWithLinkRequest(
+                    res['requestLocationSellers']
+                  );
+                  let reqLocationRows : any =[];
+                  for (const locRow of futureLocationsRows) {
+                    var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+                      locRow,
+                      locRow);
+                      reqLocationRows.push(data);
+                  }
+                  this.store.dispatch(new SetLocationsRows(reqLocationRows));
+                }
+                const requests = this.store.selectSnapshot(
+                  (state: SpotNegotiationStoreModel) => {
+                    return state['spotNegotiation'].requests;
+                  }
                 );
-                let reqLocationRows : any =[];
-                for (const locRow of futureLocationsRows) {
-                  var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
-                    locRow,
-                    locRow);
-                    reqLocationRows.push(data);
+                if (requests.length > 6) {
+                  this.displayVessel = true;
                 }
-                this.store.dispatch(new SetLocationsRows(reqLocationRows));
-              }
-              const requests = this.store.selectSnapshot(
-                (state: SpotNegotiationStoreModel) => {
-                  return state['spotNegotiation'].requests;
-                }
-              );
-              if (requests.length > 6) {
-                this.displayVessel = true;
-              }
-            }, 500);
-          }
-        });
+              }, 500);
+            }
+          });
+        }});
       }
     }
     //   this.toastr.error("Select atlease one Request");
