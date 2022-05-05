@@ -595,6 +595,11 @@ export class SpotNegotiationService extends BaseStoreService
     sourceReqProOff
   ) {
     const productDetails = this.getRowProductDetails(row, product.id);
+
+    if(sourceReqProOff?.hasNoQuote){
+      productDetails.price = null;
+    }
+    else{
         //Change with new value
       switch (field) {
         case 'offPrice':
@@ -604,6 +609,7 @@ export class SpotNegotiationService extends BaseStoreService
         default:
           break;
       }
+    }
       productDetails.exchangeRateToBaseCurrency = isPriceCopied
         ? sourceReqProOff?.exchangeRateToBaseCurrency ?? 1
         : productDetails.exchangeRateToBaseCurrency ?? 1;
