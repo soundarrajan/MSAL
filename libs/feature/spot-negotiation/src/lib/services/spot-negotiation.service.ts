@@ -595,39 +595,41 @@ export class SpotNegotiationService extends BaseStoreService
     sourceReqProOff
   ) {
     const productDetails = this.getRowProductDetails(row, product.id);
+  if(newValue != null){
+      //Change with new value
+      switch (field) {
+        case 'offPrice':
+          productDetails.price = Number(newValue.toString().replace(/,/g, ''));
+          break;
 
-    //Change with new value
-    switch (field) {
-      case 'offPrice':
-        productDetails.price = Number(newValue.toString().replace(/,/g, ''));
-        break;
+        default:
+          break;
+      }
+      productDetails.exchangeRateToBaseCurrency = isPriceCopied
+        ? sourceReqProOff?.exchangeRateToBaseCurrency ?? 1
+        : productDetails.exchangeRateToBaseCurrency ?? 1;
+      // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
+      productDetails.totalPrice =
+        (Number(productDetails.price) + productDetails.cost) *
+        (productDetails.exchangeRateToBaseCurrency ?? 1); // Amount = Total Price * Max. Quantity
+      productDetails.amount = productDetails.totalPrice * product.maxQuantity;
 
-      default:
-        break;
-    }
-    productDetails.exchangeRateToBaseCurrency = isPriceCopied
-      ? sourceReqProOff?.exchangeRateToBaseCurrency ?? 1
-      : productDetails.exchangeRateToBaseCurrency ?? 1;
-    // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
-    productDetails.totalPrice =
-      (Number(productDetails.price) + productDetails.cost) *
-      (productDetails.exchangeRateToBaseCurrency ?? 1); // Amount = Total Price * Max. Quantity
-    productDetails.amount = productDetails.totalPrice * product.maxQuantity;
-
-    // Target Difference = Total Price - Target Price
-    productDetails.targetDifference =
-      productDetails.totalPrice -
-      (product.requestGroupProducts
-        ? product.requestGroupProducts.targetPrice
-        : 0);
-    productDetails.targetDifference =
-      product.requestGroupProducts.targetPrice == 0
-        ? 0
-        : productDetails.targetDifference;
-    productDetails.isOfferPriceCopied = isPriceCopied;
-    productDetails.currencyId = isPriceCopied
-      ? sourceReqProOff?.currencyId
-      : productDetails.currencyId;
+      // Target Difference = Total Price - Target Price
+      productDetails.targetDifference =
+        productDetails.totalPrice -
+        (product.requestGroupProducts
+          ? product.requestGroupProducts.targetPrice
+          : 0);
+      productDetails.targetDifference =
+        product.requestGroupProducts.targetPrice == 0
+          ? 0
+          : productDetails.targetDifference;
+      productDetails.isOfferPriceCopied = isPriceCopied;
+      productDetails.currencyId = isPriceCopied
+        ? sourceReqProOff?.currencyId
+        : productDetails.currencyId;
+  }
+    
     // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
 
     if (isPriceCopied)
