@@ -168,7 +168,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
         </div>
         <div class="optionsText">
           <div class="qty" matTooltipClass="lightTooltip" matTooltip="Min - Max quantities">
-            <span class="title">Qty:</span>
+            <span class="title"style="font-size:12px">Qty:</span>
             <span
               class="value"
               contenteditable="true"

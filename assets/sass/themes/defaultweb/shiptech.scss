@@ -23752,3 +23752,14 @@ mat-form-field {
   border:0px;
   border-top: 1px solid rgba(0,0,0,.1);
 }
+.quoteByContainer{
+  cursor:pointer;width: 95px;height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+.quoteByMatField{
+  .mat-form-field-underline {
+    display: none;
+  }
+}
+}
