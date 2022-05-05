@@ -2140,6 +2140,15 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
           updatedRow,
           updatedRow);
+          locRow.requestOffers = locRow.requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
+        );
         this.store.dispatch(new EditLocationRow(locRow));
         this._spotNegotiationService.callGridRedrawService();
         this.params.node.setData(updatedRow);
