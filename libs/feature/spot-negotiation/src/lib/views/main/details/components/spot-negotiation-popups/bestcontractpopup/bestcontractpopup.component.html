@@ -16,6 +16,7 @@
     <table class="">
       <thead>
         <tr>
+          <th style="width: 10%" class="text-left">Contract ID</th>
           <th style="width: 20%" class="text-left">Seller</th>
           <th style="width: 18%" class="text-left">Contract Name</th>
           <th style="width: 14%" class=" text-left">Contract Formula</th>
@@ -33,6 +34,8 @@
       <tbody>     
         
         <tr id="contractsList" *ngFor="let contract of bestContracts ;let i = index">
+          <!-- <td style="width: 10%" class="border-bottom-1"><a href="/v2/contracts/contract/{{contract.contract.id}}/details" target="_blank" class="hyperlink-value">{{contract.contract.id}}</a></td> -->
+          <td style="width: 10%" class="border-bottom-1">{{contract.contract.id}}</td>
           <td style="width: 20%" class="border-bottom-1">{{contract.seller.name}}</td>
           <td style="width: 18%" class="border-bottom-1">{{contract.contract.name}}</td>
           <td style="width: 14%" class="border-bottom-1">{{contract.formulaDescription}}</td>
@@ -54,4 +57,3 @@
 
   
   <!-- </mat-dialog-content> -->
-  
