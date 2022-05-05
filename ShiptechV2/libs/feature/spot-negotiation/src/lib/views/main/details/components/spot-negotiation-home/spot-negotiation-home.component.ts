@@ -693,7 +693,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       } else if (
         selectedRows.filter(
-          x => !x.RequestOffers || x.RequestOffers.find(r => r.price == null)
+          x => !x.RequestOffers || (x.RequestOffers.find(r => !r.hasNoQuote) && x.RequestOffers.find(r => r.price == null))
         ).length != 0
       ) {
         this.toaster.error(
@@ -964,7 +964,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
               }
             return row;
           });
-          debugger;
           let futureLocationsRows = this.getLocationRowsWithSelectedSeller(
             JSON.parse(JSON.stringify(updatedLocationRows)),
             selectedSellerRows
