@@ -100,10 +100,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       const offPrice = params.data.offPrice;
       return offPrice == 100;
     },
-    'display-no-quote': function(params) {
-      const offPrice = params.data.isQuote;
-      return offPrice == 'No quote';
-    }
+    // 'display-no-quote': function(params) {
+    //   const offPrice = params.data.isQuote;
+    //   return offPrice == 'No quote';
+    // }
   };
 
   public columnDef_aggrid: any = [
