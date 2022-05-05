@@ -693,6 +693,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   counterpartyList = [];
   physicalSupplierList = [];
   visibleCounterpartyList = [];
+  selectedSellerList=[];
   currencyList = [];
   currentRequestInfo: any;
   tenantService: any;
@@ -2048,8 +2049,98 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   refresh() {
     return false;
   }
+  FilterselectedRowForRFQ() {
+    let requests = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.requests;
+    });
+    let locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+
+    //this.store.subscribe(({ spotNegotiation }) => {
+      this.selectedSellerList = [];
+      requests.forEach(req => {
+        req.requestLocations.forEach(element => {
+          locationsRows.forEach(element1 => {
+            if (element.id == element1.requestLocationId) {
+              if (
+                element1['checkProd1'] ||
+                element1['checkProd2'] ||
+                element1['checkProd3'] ||
+                element1['checkProd4'] ||
+                element1['checkProd5']
+              ) {
+                var Sellectedsellerdata = this.ConstuctSellerPayload(
+                  element1,
+                  element.requestProducts,
+                  req
+                );
+                if (Sellectedsellerdata) {
+                  this.selectedSellerList.push(Sellectedsellerdata);
+                }
+              }
+            }
+          });
+        });
+      });
+    //});
+    return this.selectedSellerList;
+  }
+
+  ConstuctSellerPayload(Seller, requestProducts, Request) {
+    let selectedproductIds = [];
+    let selectedproduct = [];
+    let rfqId = 0;
+
+    if (Seller['checkProd1']) {
+      selectedproductIds.push(requestProducts[0].id);
+      selectedproduct.push(requestProducts[0]);
+    }
+    if (Seller['checkProd2']) {
+      selectedproductIds.push(requestProducts[1].id);
+      selectedproduct.push(requestProducts[1]);
+    }
+    if (Seller['checkProd3']) {
+      selectedproductIds.push(requestProducts[2].id);
+      selectedproduct.push(requestProducts[2]);
+    }
+    if (Seller['checkProd4']) {
+      selectedproductIds.push(requestProducts[3].id);
+      selectedproduct.push(requestProducts[3]);
+    }
+    if (Seller['checkProd5']) {
+      selectedproductIds.push(requestProducts[4].id);
+      selectedproduct.push(requestProducts[4]);
+    }
+    if (Seller.requestOffers !== undefined && Seller.requestOffers.length > 0) {
+      rfqId = Seller.requestOffers[0].rfqId;
+      //isRfqSkipped = Seller.requestOffers[0].isRfqskipped;
+    }
+    return {
+      RequestLocationSellerId: Seller.id,
+      SellerId: Seller.sellerCounterpartyId,
+      RequestLocationId: Seller.requestLocationId,
+      LocationID: Seller.locationId,
+      RequestId: Request.id,
+      physicalSupplierCounterpartyId: Seller.physicalSupplierCounterpartyId,
+      RequestProductIds: selectedproductIds,
+      RequestProducts: selectedproduct,
+      RfqId: rfqId,
+      RequestOffers: Seller.requestOffers?.filter(row =>
+        selectedproductIds.includes(row.requestProductId)
+      )
+    };
+  }
 
   noQuoteAction(params, type) {
+
+    this.FilterselectedRowForRFQ();
+    let requestOfferIds = [];
+    this.selectedSellerList.forEach(e => {
+      if (e.RequestOffers && e.RequestOffers.length > 0)
+        requestOfferIds.push([...e.RequestOffers.map(e => e)]);
+    });
+    requestOfferIds = requestOfferIds.reduce((acc, val) => acc.concat(val), []); // flatten array
     if (!params.data.requestOffers) {
       this.toastr.warning(
         "Offer Price cannot be marked as 'No Quote' as RFQ has neither been skipped or sent."
@@ -2057,7 +2148,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return;
     }
     if (type == 'enable-quote') {
-      let quotedElements = _.filter(params.data.requestOffers, e => {
+      let quotedElements = _.filter(requestOfferIds, e => {
         return !e.hasNoQuote;
       });
       if (quotedElements && quotedElements.length) {
@@ -2067,7 +2158,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         return;
       }
     } else if (type == 'no-quote') {
-      let quotedElements = _.filter(params.data.requestOffers, e => {
+      let quotedElements = _.filter(requestOfferIds, e => {
         return e.hasNoQuote;
       });
       if (quotedElements && quotedElements.length) {
@@ -2078,7 +2169,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     }
     let noQuotePayload = {
-      requestOfferIds: params.data.requestOffers.map(e => e.id),
+      requestOfferIds: requestOfferIds.map(e => e.id),
       noQuote: type === 'no-quote' ? true : false
     };
     let response = this._spotNegotiationService.switchReqOffBasedOnQuote(
