@@ -240,12 +240,12 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
 
     <div class="no-quote-text aggrid-text-align-c"
       *ngIf="params.type == 'price-calc' &&
-      (this.params.data?.requestOffers && this.params.data?.requestOffers[params.index]?.hasNoQuote)">
+      (this.paramsDataCloneForNoQuote?.requestOffers && this.paramsDataCloneForNoQuote?.requestOffers[params.index]?.hasNoQuote)">
       <span>No quote</span>
     </div>
     <!-- Offer price cell -->
     <!-- [ngClass]="!isOfferRequestAvailable() ? 'input-disabled' : '' " -->
-    <div *ngIf="params.type == 'price-calc' && !(this.params.data?.requestOffers && this.params.data?.requestOffers[params.index]?.hasNoQuote)"
+    <div *ngIf="params.type == 'price-calc' && !(this.paramsDataCloneForNoQuote?.requestOffers && this.paramsDataCloneForNoQuote?.requestOffers[params.index]?.hasNoQuote)"
       [ngClass]="!this.isOfferAvaialble ? 'no-price-data' : ''">
       <!-- TODO check this code... -->
       <span *ngIf="!this.isOfferAvaialble">-</span>
