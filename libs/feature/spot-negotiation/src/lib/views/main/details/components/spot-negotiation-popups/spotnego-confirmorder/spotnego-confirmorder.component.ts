@@ -135,77 +135,87 @@ export class SpotnegoConfirmorderComponent implements OnInit {
             //&& element1.locationId==locationId
             if (element1.checkProd1) {
               var reqProdId = element.requestProducts[0].id;
-              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-                element1,
-                element1.requestOffers?.find(
-                  ro => ro.requestProductId == reqProdId
-                ),
-                element.requestProducts[0],
-                element.eta,
-                req
-              );
-              if (requestOfferItemPayload.length > 0) {
-                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              if(element1.requestOffers?.filter(ro => ro.requestProductId == reqProdId).length > 0) {
+                requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                  element1,
+                  element1.requestOffers?.find(
+                    ro => ro.requestProductId == reqProdId
+                  ),
+                  element.requestProducts[0],
+                  element.eta,
+                  req
+                );
+                if (requestOfferItemPayload.length > 0) {
+                  this.requestOfferItems.push(requestOfferItemPayload[0]);
+                }
               }
             }
             if (element1.checkProd2) {
               var reqProdId = element.requestProducts[1].id;
-              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-                element1,
-                element1.requestOffers?.find(
-                  ro => ro.requestProductId == reqProdId
-                ),
-                element.requestProducts[1],
-                element.eta,
-                req
-              );
-              if (requestOfferItemPayload.length > 0) {
-                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              if(element1.requestOffers?.filter(ro => ro.requestProductId == reqProdId).length > 0) {
+                requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                  element1,
+                  element1.requestOffers?.find(
+                    ro => ro.requestProductId == reqProdId
+                  ),
+                  element.requestProducts[1],
+                  element.eta,
+                  req
+                );
+                if (requestOfferItemPayload.length > 0) {
+                  this.requestOfferItems.push(requestOfferItemPayload[0]);
+                }
               }
             }
-            if (element1.checkProd3) {
+            if (element1.checkProd3) {              
               var reqProdId = element.requestProducts[2].id;
-              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-                element1,
-                element1.requestOffers?.find(
-                  ro => ro.requestProductId == reqProdId
-                ),
-                element.requestProducts[2],
-                element.eta,
-                req
-              );
-              if (requestOfferItemPayload.length > 0) {
-                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              if(element1.requestOffers?.filter(ro => ro.requestProductId == reqProdId).length > 0) {
+                requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                  element1,
+                  element1.requestOffers?.find(
+                    ro => ro.requestProductId == reqProdId
+                  ),
+                  element.requestProducts[2],
+                  element.eta,
+                  req
+                );
+                if (requestOfferItemPayload.length > 0) {
+                  this.requestOfferItems.push(requestOfferItemPayload[0]);
+                }
               }
             }
             if (element1.checkProd4) {
               var reqProdId = element.requestProducts[3].id;
-              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-                element1,
-                element1.requestOffers?.find(
-                  ro => ro.requestProductId == reqProdId
-                ),
-                element.requestProducts[3],
-                element.eta,
-                req
-              );
-              if (requestOfferItemPayload.length > 0) {
-                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              if(element1.requestOffers?.filter(ro => ro.requestProductId == reqProdId).length > 0) {
+                requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                  element1,
+                  element1.requestOffers?.find(
+                    ro => ro.requestProductId == reqProdId
+                  ),
+                  element.requestProducts[3],
+                  element.eta,
+                  req
+                );
+                if (requestOfferItemPayload.length > 0) {
+                  this.requestOfferItems.push(requestOfferItemPayload[0]);
+                }
               }
             }
             if (element1.checkProd5) {
               var reqProdId = element.requestProducts[4].id;
-              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-                element1,
-                element1.requestOffers?.find(
-                  ro => ro.requestProductId == reqProdId
-                ),
-                element.requestProducts[4],
-                element.eta,
-                req
-              );
-              if (requestOfferItemPayload.length > 0) {
-                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              if(element1.requestOffers?.filter(ro => ro.requestProductId == reqProdId).length > 0) { 
+                requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                  element1,
+                  element1.requestOffers?.find(
+                    ro => ro.requestProductId == reqProdId
+                  ),
+                  element.requestProducts[4],
+                  element.eta,
+                  req
+                );
+                if (requestOfferItemPayload.length > 0) {
+                  this.requestOfferItems.push(requestOfferItemPayload[0]);
+                }
               }
             }
           }

@@ -1524,6 +1524,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
           var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
             locRow,
             locRow);
+            data.requestOffers = data.requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
+        );
             reqLocationRows.push(data);
         }
         this.store.dispatch(new SetLocationsRows(reqLocationRows));
