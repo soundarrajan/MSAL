@@ -114,12 +114,11 @@ export class NegotiationToolbarComponent
         routerLinkActiveOptions: { exact: true }
       },
       {
-        label: 'Report'
-          ? null
-          : [
-              ...routeLinkToNegotiationDetails,
-              KnownSpotNegotiationRoutes.reportPath
-            ],
+        label: 'Report',
+        routerLink: [
+          ...routeLinkToNegotiationDetails,
+          KnownSpotNegotiationRoutes.reportPath
+        ],
         routerLinkActiveOptions: { exact: true },
         visible:
           this.isAuthorizedForReportsTab &&

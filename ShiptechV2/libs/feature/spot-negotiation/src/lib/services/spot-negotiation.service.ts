@@ -538,6 +538,10 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.UpdateProductPrices(payload);
   }
 
+  @ObservableException()
+  updateGroupComments(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.updateGroupComments(payload);
+  }
   ngOnDestroy(): void {
     super.onDestroy();
   }
@@ -592,43 +596,51 @@ export class SpotNegotiationService extends BaseStoreService
   ) {
     const productDetails = this.getRowProductDetails(row, product.id);
 
-    //Change with new value
-    switch (field) {
-      case 'offPrice':
-        productDetails.price = Number(newValue.toString().replace(/,/g, ''));
-        break;
-
-      default:
-        break;
+    if(sourceReqProOff?.hasNoQuote){
+      productDetails.price = null;
     }
-    productDetails.exchangeRateToBaseCurrency = isPriceCopied
-      ? sourceReqProOff?.exchangeRateToBaseCurrency ?? 1
-      : productDetails.exchangeRateToBaseCurrency ?? 1;
-    // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
-    productDetails.totalPrice =
-      (Number(productDetails.price) + productDetails.cost) *
-      (productDetails.exchangeRateToBaseCurrency ?? 1); // Amount = Total Price * Max. Quantity
-    productDetails.amount = productDetails.totalPrice * product.maxQuantity;
+    else{
+        //Change with new value
+      switch (field) {
+        case 'offPrice':
+          productDetails.price = Number(newValue.toString().replace(/,/g, ''));
+          break;
 
-    // Target Difference = Total Price - Target Price
-    productDetails.targetDifference =
-      productDetails.totalPrice -
-      (product.requestGroupProducts
-        ? product.requestGroupProducts.targetPrice
-        : 0);
-    productDetails.targetDifference =
-      product.requestGroupProducts.targetPrice == 0
-        ? 0
-        : productDetails.targetDifference;
-    productDetails.isOfferPriceCopied = isPriceCopied;
-    productDetails.currencyId = isPriceCopied
-      ? sourceReqProOff?.currencyId
-      : productDetails.currencyId;
+        default:
+          break;
+      }
+    }
+      productDetails.exchangeRateToBaseCurrency = isPriceCopied
+        ? sourceReqProOff?.exchangeRateToBaseCurrency ?? 1
+        : productDetails.exchangeRateToBaseCurrency ?? 1;
+      // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
+      productDetails.totalPrice =
+        (Number(productDetails.price) + productDetails.cost) *
+        (productDetails.exchangeRateToBaseCurrency ?? 1); // Amount = Total Price * Max. Quantity
+      productDetails.amount = productDetails.totalPrice * product.maxQuantity;
+
+      // Target Difference = Total Price - Target Price
+      productDetails.targetDifference =
+        productDetails.totalPrice -
+        (product.requestGroupProducts
+          ? product.requestGroupProducts.targetPrice
+          : 0);
+      productDetails.targetDifference =
+        product.requestGroupProducts.targetPrice == 0
+          ? 0
+          : productDetails.targetDifference;
+      productDetails.isOfferPriceCopied = isPriceCopied;
+      productDetails.currencyId = isPriceCopied
+        ? sourceReqProOff?.currencyId
+        : productDetails.currencyId;
+  
+    
     // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
 
     if (isPriceCopied)
       productDetails.offerPriceCopiedFrom = sourceReqProOff?.id;
-    const currentLocationAllProductsIds = currentLocation.requestProducts.map(
+      productDetails.hasNoQuote = sourceReqProOff?.hasNoQuote;
+      const currentLocationAllProductsIds = currentLocation.requestProducts.map(
       e => e.id
     );
 

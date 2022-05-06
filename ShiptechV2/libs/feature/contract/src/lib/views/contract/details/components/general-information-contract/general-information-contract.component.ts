@@ -539,7 +539,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     if (!agreementTypeList) {
       return;
     }
-    if(agreementTypeList && this.formValues && this.formValues.agreementType && !agreementTypeList.find(aggtype=>aggtype.id == this.formValues.agreementType.id))
+    if(agreementTypeList && this.formValues && this.formValues.agreementType && !agreementTypeList.find(aggtype=>aggtype.id == this.formValues.agreementType.id) && this.entityId > 0)
     {
       agreementTypeList.push(this.formValues.agreementType);
     }
@@ -550,7 +550,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     if (!paymentTermList) {
       return;
     }
-    if(paymentTermList && this.formValues && this.formValues.paymentTerm && !paymentTermList.find(payterm=>payterm.id == this.formValues.paymentTerm.id))
+    if(paymentTermList && this.formValues && this.formValues.paymentTerm && !paymentTermList.find(payterm=>payterm.id == this.formValues.paymentTerm.id) && this.entityId > 0)
     {
       paymentTermList.push(this.formValues.paymentTerm);
     }

@@ -13,7 +13,6 @@ import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { UpdateSpecificRequests } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 import _ from 'lodash';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -109,7 +108,7 @@ export class SpotNegotiationNewCommentsComponent
     });
     this.requestList = this.store.selectSnapshot<any>((state: any) => {
       return _.cloneDeep(state.spotNegotiation.requests);
-    });
+    }); 
   }
 
   ngOnInit(): void {}
@@ -241,6 +240,12 @@ export class SpotNegotiationNewCommentsComponent
   }
 
   getRequestsList() {
+    this.currentRequestInfo = this.store.selectSnapshot<any>((state: any) => {
+      return _.cloneDeep(state.spotNegotiation.currentRequestSmallInfo);
+    });
+    this.requestList = this.store.selectSnapshot<any>((state: any) => {
+      return _.cloneDeep(state.spotNegotiation.requests);
+    });
     if (this.requestList && this.currentRequestInfo) {
       this.requestListToDuplicateComments = _.cloneDeep(
         this.requestList

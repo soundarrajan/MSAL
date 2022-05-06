@@ -142,7 +142,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
       *ngIf="params.type == 'single-bg-header'"
     >
       <div class="border-line"></div>
-      <div class="options" style="padding-top: 5px;padding-bottom:10px; ">
+      <div class="options">
         <div class="checkBox w-100" matTooltip="Total offer" matTooltipClass="lightTooltip" style="padding-top:0px;">
           Total Offer
         </div>
@@ -168,7 +168,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
         </div>
         <div class="optionsText">
           <div class="qty" matTooltipClass="lightTooltip" matTooltip="Min - Max quantities">
-            <span class="title">Qty:</span>
+            <span class="title"style="font-size:12px">Qty:</span>
             <span
               class="value"
               contenteditable="true"
@@ -208,7 +208,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
                 : 'Pricing published on: ') +
               (this.closureDate == 'Invalid date' ? '--' : this.closureDate)
             "
-            matTooltipClass="outdated-tooltip"
+            matTooltipClass="lightTooltip"
           >
             <div class="title">
               <span
@@ -501,7 +501,7 @@ export class ShiptechCustomHeaderGroup {
             updatedProdLivePrice.requestGroupProducts.livePrice,
             'livePrice'
           );
-          this.livePrice = formattedLivePrice;
+          this.livePrice = this.tenantService.liveformat(formattedLivePrice);
           this.targetValue =
             updatedProdLivePrice.requestGroupProducts.targetPrice;
           this.closureValue =
@@ -759,11 +759,11 @@ export class ShiptechCustomHeaderGroup {
       if (!productPricePrecision) {
         plainNumber = Math.trunc(plainNumber);
       }
-      plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
-      //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font
       if (type && type == 'benchMark') {
-        plainNumber = Math.abs(plainNumber);
+        plainNumber = Math.abs(parseFloat(plainNumber));
       }
+      plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
+      //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font      
       return plainNumber;
     }
   }
@@ -1081,14 +1081,6 @@ export class ShiptechCustomHeaderGroup {
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
-        // row.requestOffers = row.requestOffers.map(e => {
-        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-        //   {
-        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-        //     return { ...e, currencyCode:  currencyCode};
-        //   }
-        //    //return { ...e, requestLocations };
-        // });
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
@@ -1153,14 +1145,6 @@ export class ShiptechCustomHeaderGroup {
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
-          // row.requestOffers = row.requestOffers.map(e => {
-          //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-          //   {
-          //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-          //     return { ...e, currencyCode:  currencyCode};
-          //   }
-          //    //return { ...e, requestLocations };
-          // });
           row.requestOffers = row.requestOffers.map(e => {
             let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
              return { ...e, reqProdStatus: isStemmed };
