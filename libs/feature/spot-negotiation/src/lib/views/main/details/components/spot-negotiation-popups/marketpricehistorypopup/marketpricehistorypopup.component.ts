@@ -6,6 +6,8 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display';
+import { Store } from '@ngxs/store';
+import { DecimalPipe } from '@angular/common';
 
 NoDataToDisplay(Highcharts)
 
@@ -19,8 +21,10 @@ export class MarketpricehistorypopupComponent implements OnInit {
   public LocationId: number;
   public RequestId: number;
   public tabledata = [];
+  public priceFormat ='';
   public priceHistoryData: any = {};
   highcharts = Highcharts;
+  tenantService:any;
 
  public chartOptions: any = {
     chart: {
@@ -65,9 +69,14 @@ export class MarketpricehistorypopupComponent implements OnInit {
     private _spotNegotiationService: SpotNegotiationService,
     private spinner: NgxSpinnerService,
     public dialogRef: MatDialogRef<MarketpricehistorypopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(DecimalPipe) private _decimalPipe,
+    public store : Store
   ) {}
   ngOnInit() {
+    this.store.selectSnapshot<any>((state: any) => {
+      this.tenantService = state.spotNegotiation.tenantConfigurations;
+    })
     let payload = {
       LocationId: this.data.LocationId,
       ProductId: this.data.ProductId,
@@ -134,6 +143,28 @@ export class MarketpricehistorypopupComponent implements OnInit {
       }
 
       return formattedDate;
+    }
+  }
+
+  priceFormatValue(value) {
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    let productPricePrecision = this.tenantService.pricePrecision;
+
+    this.priceFormat =
+      '1.' + productPricePrecision + '-' + productPricePrecision;
+    if (plainNumber) {
+      if (!productPricePrecision) {
+        plainNumber = Math.trunc(plainNumber);
+      }
+
+      return this._decimalPipe.transform(plainNumber.replace(/,/g,''), this.priceFormat);
     }
   }
 }

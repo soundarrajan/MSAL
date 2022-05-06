@@ -52,7 +52,7 @@
                     {{ tabledata.date }}
                   </td>
                   <td class="border-bottom-1 text-left fz-13 w-95">
-                    {{ tabledata.price == 0 ? '--' : tabledata.price }}
+                    {{ tabledata.price == 0 ? '--' : priceFormatValue(tabledata.price) }}
                   </td>
                 </tr>
               </tbody>

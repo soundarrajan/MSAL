@@ -47,6 +47,9 @@
                           <div class="rate l-h-46" *ngIf="item.rating == null">
                           <span  >{{item.comments}}</span>
                         </div>
+                        <div class="rate l-h-46" *ngIf="item.rating == null && item.comments == null">
+                          <span  >NIL</span>
+                        </div>
                       </span>
 
                   </div>
@@ -89,6 +92,9 @@
                           </div>
                           <div class="rate l-h-46" *ngIf="item.rating == null">
                           <span  >{{item.comments}}</span>
+                        </div>
+                        <div class="rate l-h-46" *ngIf="item.rating == null && item.comments == null">
+                          <span  >NIL</span>
                         </div>
                       </span>
 
