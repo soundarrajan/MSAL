@@ -688,7 +688,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       );
       var selectedRows = this.FilterselectedRowForCurrentRequest();
-      debugger;
       if (selectedRows.length == 0) {
         this.toaster.error('Atleast 1 product should be selected');
         return;
