@@ -616,6 +616,7 @@ export class ShiptechCustomHeaderGroup {
   }
 
   getBestContractPrice(params): any {
+    debugger;
     if (this.availableContracts && params.product.status !== 'Stemmed') {
       let currentCellContracts = this.availableContracts.filter(el => {
         return (
@@ -757,11 +758,11 @@ export class ShiptechCustomHeaderGroup {
       if (!productPricePrecision) {
         plainNumber = Math.trunc(plainNumber);
       }
-      plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
-      //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font
       if (type && type == 'benchMark') {
-        plainNumber = Math.abs(plainNumber);
+        plainNumber = Math.abs(parseFloat(plainNumber));
       }
+      plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
+      //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font      
       return plainNumber;
     }
   }
