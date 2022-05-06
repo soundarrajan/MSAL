@@ -44,7 +44,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             ctrl.shiptechLite = settings.payload.shiptechLite;
         });
 
-        ctrl.commentsExpanded = false;
+        ctrl.commentsExpanded = true;
         ctrl.orderCommentsExpanded =  false;
 
         ctrl.disabledProduct = [];
