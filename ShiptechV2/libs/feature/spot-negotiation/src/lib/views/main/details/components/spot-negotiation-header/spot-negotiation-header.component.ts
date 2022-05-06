@@ -73,6 +73,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   requestsAndVessels: any = [];
   visibleRequestList: any = [];
   couterpartyValue: any;
+  clrRequest: any = 0;
   // requestsAndVessels = [
   //   { request: 'Demo Req 100001', vessel: 'MerinLion', selected: false },
   //   { request: 'Demo Req 100002', vessel: 'Afif', selected: false },
@@ -786,38 +787,29 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   search(userInput: string): void {
-    this.expandedSearch = false;
-    this.visibleCounterpartyList = _.cloneDeep(
-      this.counterpartyList
-        .filter(e => {
-          if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
-            return true;
+     this.expandedSearch = false;
+     clearInterval(this.clrRequest);
+     this.clrRequest = setTimeout(() => {
+        this._spotNegotiationService.getResponse(
+          null,
+          { Filters: [] },
+          { SortList: [] },
+          [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
+          userInput.toLowerCase(),
+          { Skip: 0, Take: 25 }
+        ).subscribe((res: any) => {
+          if (res?.message == 'Unauthorized')return;
+          if (res?.payload?.length > 0) {
+            let SelectedCounterpartyList = cloneDeep(res.payload);
+            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
+          }else{
+            this.visibleCounterpartyList = [];
           }
-          return false;
-        })
-        .slice(0, 7)
-    );
-    if (this.visibleCounterpartyList.length === 0) {
-      const response = this._spotNegotiationService.getResponse(
-        null,
-        { Filters: [] },
-        { SortList: [] },
-        [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
-        userInput.toLowerCase(),
-        { Skip: 0, Take: 25 }
-      );
-      response.subscribe((res: any) => {
-        if (res?.message == 'Unauthorized') {
-          return;
-        }
-        if (res?.payload?.length > 0) {
-          let SelectedCounterpartyList = cloneDeep(res.payload);
-          this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
           this.changeDetector.detectChanges();
-        }
-      });
-    }
+        });
+      }, 1200);
   }
+
   searchRequest(userInput: string): void {
     this.expandedSearch = false;
     this.visibleRequestList = _.cloneDeep(
