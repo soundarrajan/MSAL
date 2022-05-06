@@ -616,7 +616,6 @@ export class ShiptechCustomHeaderGroup {
   }
 
   getBestContractPrice(params): any {
-    debugger;
     if (this.availableContracts && params.product.status !== 'Stemmed') {
       let currentCellContracts = this.availableContracts.filter(el => {
         return (
