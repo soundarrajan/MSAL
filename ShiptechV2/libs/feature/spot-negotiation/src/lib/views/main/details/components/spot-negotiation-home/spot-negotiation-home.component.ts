@@ -693,7 +693,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       } else if (
         selectedRows.filter(
-          x => !x.RequestOffers
+          x => !x.RequestOffers || (x.RequestOffers.find(r => !r.hasNoQuote && r.price == null))
         ).length != 0
       ) {
         this.toaster.error(
@@ -835,7 +835,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
                         p => proOff.productId === p.productId
                       ),
                       'offPrice',
-                      proOff.price == null ? 0 : proOff.price,
+                      proOff.price,
                       reqLoc,
                       true,
                       proOff
@@ -1524,6 +1524,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
           var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
             locRow,
             locRow);
+            data.requestOffers = data.requestOffers?.sort((a, b) =>
+          a.requestProductTypeId === b.requestProductTypeId
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeId > b.requestProductTypeId
+            ? 1
+            : -1
+        );
             reqLocationRows.push(data);
         }
         this.store.dispatch(new SetLocationsRows(reqLocationRows));
@@ -1595,7 +1604,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         cost: productDetails.cost,
         currencyId: productDetails.currencyId,
         isOfferPriceCopied: productDetails.isOfferPriceCopied,
-        hasNoQuote : productDetails.price == null || productDetails.price == 0 ? true : false
+        hasNoQuote : productDetails.hasNoQuote
       };
       requestOffers.push(requOffer);
     });

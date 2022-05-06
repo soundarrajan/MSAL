@@ -168,7 +168,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
         </div>
         <div class="optionsText">
           <div class="qty" matTooltipClass="lightTooltip" matTooltip="Min - Max quantities">
-            <span class="title">Qty:</span>
+            <span class="title"style="font-size:12px">Qty:</span>
             <span
               class="value"
               contenteditable="true"
@@ -757,11 +757,11 @@ export class ShiptechCustomHeaderGroup {
       if (!productPricePrecision) {
         plainNumber = Math.trunc(plainNumber);
       }
-      plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
-      //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font
       if (type && type == 'benchMark') {
-        plainNumber = Math.abs(plainNumber);
+        plainNumber = Math.abs(parseFloat(plainNumber));
       }
+      plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
+      //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font      
       return plainNumber;
     }
   }

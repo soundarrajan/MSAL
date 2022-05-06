@@ -19,8 +19,9 @@
                 <span class="search-product-lookup"> </span>
                 <input
                   matInput
+                  #searchCounterparty
                   (click)="$event.stopPropagation()"
-                  (input)="search($event.target.value)"
+                  (input)="search(searchCounterparty.value)"
                   placeholder="Search and select counterparty"
                   [(ngModel)]="couterpartyValue"
                   class="search-product-input"
