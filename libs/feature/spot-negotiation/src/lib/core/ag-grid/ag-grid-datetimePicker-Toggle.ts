@@ -25,9 +25,10 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
       style="cursor:pointer;float: left;position:relative;font-size: 12px;color: #ffffff;
   font-weight: 500;"
     >
-      <div style="cursor:pointer;float: left;width: 90px;margin-top: 8px;">
+      <div class="quoteByContainer">
+      <mat-form-field class="quoteByMatfield">
         <input
-          style="cursor:pointer;width:65px;float:left;height: 17px !important;text-align:left;"
+          style="cursor:pointer;width:65px;float:left;height: 17px !important;text-align:left;color:white"
           matInput
           class="date-trigger"
           [ngModel]="initialDate.value"
@@ -35,8 +36,9 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
           (dateChange)="dateChanged($event)"
           #datetrigger
         />
+       </mat-form-field>
         <div
-          style="height:15px;float:right;line-height:15px;width:30px;position: absolute;
+          style="height:24px;float:right;line-height:15px;width:30px;position: absolute;
     right: -6px;"
         >
           {{ timeValue }}

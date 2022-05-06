@@ -416,6 +416,9 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.formValues.customNonMandatoryAttribute8 = null;
           this.formValues.customNonMandatoryAttribute9 = null;
           this.formValues.id = 0;
+          if(this.formValues.agreementType && this.formValues.agreementType.isDeleted){
+            this.formValues.agreementType = null;
+          }
           if (typeof this.formValues.name != 'undefined') {
             this.formValues.name = null;
           }

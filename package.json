@@ -31,6 +31,7 @@
     "help": "nx help",
     "azure-build-debug": "ng build --output-path=dist/debug",
     "azure-build-release": "ng build --prod --output-path=dist/release",
+    "azure-build-release-staging": "ng build --configuration=staging --output-path=dist/release",
     "azure-pull-request-validatation": "ng build --aot --optimization=false --build-optimizer=false --vendorChunk=false --sourceMap=false --commonChunk=false",
     "update-sass-layout": "sass --update assets/layout/css/layout-shiptech.scss:assets/layout/css/layout-shiptech.css",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"

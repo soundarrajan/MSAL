@@ -35,6 +35,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   isButtonVisible = true;
   iscontentEditable = false;
   requests: any = [];
+  requestByLocation:any=[];
   requestOfferItems: any = [];
   selectedOffers: any = [];
   currentRequestInfo: any = [];
@@ -135,77 +136,87 @@ export class SpotnegoConfirmorderComponent implements OnInit {
             //&& element1.locationId==locationId
             if (element1.checkProd1) {
               var reqProdId = element.requestProducts[0].id;
-              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-                element1,
-                element1.requestOffers?.find(
-                  ro => ro.requestProductId == reqProdId
-                ),
-                element.requestProducts[0],
-                element.eta,
-                req
-              );
-              if (requestOfferItemPayload.length > 0) {
-                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              if(element1.requestOffers?.filter(ro => ro.requestProductId == reqProdId).length > 0) {
+                requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                  element1,
+                  element1.requestOffers?.find(
+                    ro => ro.requestProductId == reqProdId
+                  ),
+                  element.requestProducts[0],
+                  element.eta,
+                  req
+                );
+                if (requestOfferItemPayload.length > 0) {
+                  this.requestOfferItems.push(requestOfferItemPayload[0]);
+                }
               }
             }
             if (element1.checkProd2) {
               var reqProdId = element.requestProducts[1].id;
-              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-                element1,
-                element1.requestOffers?.find(
-                  ro => ro.requestProductId == reqProdId
-                ),
-                element.requestProducts[1],
-                element.eta,
-                req
-              );
-              if (requestOfferItemPayload.length > 0) {
-                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              if(element1.requestOffers?.filter(ro => ro.requestProductId == reqProdId).length > 0) {
+                requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                  element1,
+                  element1.requestOffers?.find(
+                    ro => ro.requestProductId == reqProdId
+                  ),
+                  element.requestProducts[1],
+                  element.eta,
+                  req
+                );
+                if (requestOfferItemPayload.length > 0) {
+                  this.requestOfferItems.push(requestOfferItemPayload[0]);
+                }
               }
             }
-            if (element1.checkProd3) {
+            if (element1.checkProd3) {              
               var reqProdId = element.requestProducts[2].id;
-              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-                element1,
-                element1.requestOffers?.find(
-                  ro => ro.requestProductId == reqProdId
-                ),
-                element.requestProducts[2],
-                element.eta,
-                req
-              );
-              if (requestOfferItemPayload.length > 0) {
-                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              if(element1.requestOffers?.filter(ro => ro.requestProductId == reqProdId).length > 0) {
+                requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                  element1,
+                  element1.requestOffers?.find(
+                    ro => ro.requestProductId == reqProdId
+                  ),
+                  element.requestProducts[2],
+                  element.eta,
+                  req
+                );
+                if (requestOfferItemPayload.length > 0) {
+                  this.requestOfferItems.push(requestOfferItemPayload[0]);
+                }
               }
             }
             if (element1.checkProd4) {
               var reqProdId = element.requestProducts[3].id;
-              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-                element1,
-                element1.requestOffers?.find(
-                  ro => ro.requestProductId == reqProdId
-                ),
-                element.requestProducts[3],
-                element.eta,
-                req
-              );
-              if (requestOfferItemPayload.length > 0) {
-                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              if(element1.requestOffers?.filter(ro => ro.requestProductId == reqProdId).length > 0) {
+                requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                  element1,
+                  element1.requestOffers?.find(
+                    ro => ro.requestProductId == reqProdId
+                  ),
+                  element.requestProducts[3],
+                  element.eta,
+                  req
+                );
+                if (requestOfferItemPayload.length > 0) {
+                  this.requestOfferItems.push(requestOfferItemPayload[0]);
+                }
               }
             }
             if (element1.checkProd5) {
               var reqProdId = element.requestProducts[4].id;
-              requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
-                element1,
-                element1.requestOffers?.find(
-                  ro => ro.requestProductId == reqProdId
-                ),
-                element.requestProducts[4],
-                element.eta,
-                req
-              );
-              if (requestOfferItemPayload.length > 0) {
-                this.requestOfferItems.push(requestOfferItemPayload[0]);
+              if(element1.requestOffers?.filter(ro => ro.requestProductId == reqProdId).length > 0) { 
+                requestOfferItemPayload = this.ConstructRequestOfferItemPayload(
+                  element1,
+                  element1.requestOffers?.find(
+                    ro => ro.requestProductId == reqProdId
+                  ),
+                  element.requestProducts[4],
+                  element.eta,
+                  req
+                );
+                if (requestOfferItemPayload.length > 0) {
+                  this.requestOfferItems.push(requestOfferItemPayload[0]);
+                }
               }
             }
           }
@@ -228,8 +239,22 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         }
       });
     });
+    this.requests.map(e => {
+      let requestLocations=[];
+      let reqs;
+      this.requestOfferItems.forEach(row => {
+        if(e.requestLocations.filter(reqLoc =>reqLoc.id==row.RequestLocationId && e.id==row.RequestId).length>0  && requestLocations?.filter(reqLoc =>reqLoc.id==row.RequestLocationId && e.id==row.RequestId).length==0){          
+          requestLocations.push(e.requestLocations.find(reqLoc =>reqLoc.id==row.RequestLocationId ));
+          reqs=e;           
+        }
+      });
+      if(reqs!=undefined && requestLocations.length>0){
+        this.requestByLocation.push({...reqs, requestLocations});
+      }  
+    });     
     return this.requestOfferItems;
   }
+
   //Construct UI Value's to bind the popup grid
   ConstructRequestOfferItemPayload(
     seller,
@@ -648,14 +673,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
-        // row.requestOffers = row.requestOffers.map(e => {
-        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-        //   {
-        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-        //     return { ...e, currencyCode:  currencyCode};
-        //   }
-        //    //return { ...e, requestLocations };
-        // });
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
@@ -701,14 +718,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
-        // row.requestOffers = row.requestOffers.map(e => {
-        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-        //   {
-        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-        //     return { ...e, currencyCode:  currencyCode};
-        //   }
-        //    //return { ...e, requestLocations };
-        // });
+
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeId === b.requestProductTypeId
             ? a.requestProductId > b.requestProductId

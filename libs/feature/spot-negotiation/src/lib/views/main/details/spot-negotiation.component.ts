@@ -7,10 +7,8 @@ import {
   OnDestroy,
   OnInit
 } from '@angular/core';
-import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
-import { HttpClient } from '@angular/common/http';
 import {
   SetCurrentRequestSmallInfo,
   SetRequestGroupId,
@@ -31,10 +29,6 @@ import {
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import {
-  SelectSeller,
-  EditLocationRow
-} from '../../../store/actions/ag-grid-row.action';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { isNumeric } from 'rxjs/internal-compatibility';
 import { SpotNegotiationPriceCalcService } from '../../../services/spot-negotiation-price-calc.service';
@@ -56,7 +50,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   adminConfiguration: any;
   tenantConfiguration: any;
   staticLists: any;
-  private _destroy$ = new Subject();
   CurrentProductLength: any;
   CurrentLocationprduct: any[];
   currentRequestData: any[];
@@ -65,7 +58,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   additionalCostList: any = [];
 
   constructor(
-    private http: HttpClient,
     private store: Store,
     private route: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
@@ -109,7 +101,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     // Get current id from url and make a request with that data.
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
     this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
+    // Get response from server and populate store
+    const responseGroupComment = this.spotNegotiationService.updateGroupComments(
+      groupRequestIdFromUrl
+    );
 
+    responseGroupComment.subscribe((res: any) => {
+    if(res.status){
     // Get response from server and populate store
     const responseGetRequestGroup = this.spotNegotiationService.getRequestGroup(
       groupRequestIdFromUrl
@@ -124,7 +122,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         alert('Handle Error');
         return;
       }
-
       // Set all request inside store
       if (res['requests']) {
         this.store.dispatch(new SetRequests(res['requests']));
@@ -161,21 +158,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           this.changeDetector.detectChanges();
         }
       }
-
+    });}
     });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
-    //let currencyList : any;
-    // this.store.subscribe(({ spotNegotiation }) => {
-    //   this.currentRequestData = spotNegotiation.locations;
-    //   this.allRequest = spotNegotiation.requests;
-    // });
     this.allRequest = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.requests;
     });
-    // currencyList = this.store.selectSnapshot<any>((state: any) => {
-    //   return state.spotNegotiation.staticLists['currency'];
-    // });
     let requests = this.store.selectSnapshot<any>((state: any) => {
       return state['spotNegotiation'].requests;
     });
@@ -242,14 +231,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
-        // row.requestOffers = row.requestOffers.map(e => {
-        //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-        //   {
-        //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-        //     return { ...e, currencyCode:  currencyCode};
-        //   }
-        //    //return { ...e, requestLocations };
-        // });
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
@@ -301,14 +282,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
           row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
-          // row.requestOffers = row.requestOffers.map(e => {
-          //   if(currencyList?.filter(c => c.id == e.currencyId).length > 0)
-          //   {
-          //     let currencyCode = currencyList?.find(c => c.id == e.currencyId)?.code;
-          //     return { ...e, currencyCode:  currencyCode};
-          //   }
-          //    //return { ...e, requestLocations };
-          // });
           row.requestOffers = row.requestOffers.map(e => {
             let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
              return { ...e, reqProdStatus: isStemmed };

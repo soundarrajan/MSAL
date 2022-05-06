@@ -2,12 +2,9 @@
     <div class="spot-nego-title">Counterparty Request changes</div>
     <div class="spot-dialog-title-right">
       <button class="cancel-btn w-104" mat-button [mat-dialog-close]="true">Cancel</button>
-      <button class="proceed-btn w-104" mat-button [mat-dialog-close]="true" (click)="saveOtherDetails()">Save</button>
+      <button class="proceed-btn w-104"  mat-button [mat-dialog-close]="true" (click)="saveOtherDetails()">Save</button>
       <div class="title-divider">|</div>
-      <div class="close-circle">
-        <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() "
-          style="font-size: 14px; display: inline; position:relative; top:-1px; ">close</mat-icon>
-      </div>
+    <span class="close" style="cursor: pointer;" (click)="closeDialog()" type="button"  ></span>
     </div>
   
   </div>

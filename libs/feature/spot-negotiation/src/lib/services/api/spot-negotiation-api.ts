@@ -880,6 +880,15 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         catchError((body: any) => this.handleErrorMessage(body))
       );
   }
+  @ObservableException()
+  updateGroupComments(request: any): Observable<any> {
+    return this.http
+      .put<any>(`${this._negotiationApiUrl}/groups/${request}/updateGroupComments`, {})
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
 
   @ObservableException()
   getSellerRatingforNegotiation(payload:any) : Observable<any>{

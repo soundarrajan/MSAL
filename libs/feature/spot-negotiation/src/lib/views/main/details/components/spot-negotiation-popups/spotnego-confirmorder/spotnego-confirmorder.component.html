@@ -12,7 +12,7 @@
   <div class="spot-nego-comments pl15 pr15" style="height: 450px; overflow-y: scroll;">
     <div class="grid-in-accordion">
        <!-- Expansion for each request -->
-      <mat-expansion-panel [expanded]="true" *ngFor="let request of requests; let i = index" class="sellerrating-expansion-panel">
+      <mat-expansion-panel [expanded]="true" *ngFor="let request of requestByLocation; let i = index" class="sellerrating-expansion-panel">
         <mat-expansion-panel-header>
           <mat-panel-title>
             <div class="accordion-detail confirmorder-checkbox">
@@ -32,7 +32,7 @@
 
          <!-- Expansion for each location in this current request -->
         <ng-template matExpansionPanelContent>
-          <div *ngFor="let location of request.requestLocations" style="height: auto; overflow-y: scroll;">
+          <div *ngFor="let location of request.requestLocations" style="height: auto; overflow-y: scroll; padding:18px;">
 
           <div class="row second-header" style="padding: 0px 4px; justify-content: space-between;">
             <div class="col-12 bold-text">{{location.locationName}}</div>
