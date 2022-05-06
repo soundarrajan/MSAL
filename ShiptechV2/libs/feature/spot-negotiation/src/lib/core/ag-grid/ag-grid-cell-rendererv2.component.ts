@@ -92,40 +92,55 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       [ngClass]="params.cellClass"
         matTooltip=""
         style=""
-        *ngIf="params.data.genRating && params.data.genPrice"
+        *ngIf="params.data.genRating != null"
         (click)="sellerratingpopup(params.data, 'genRating')"
       >
-        <div *ngIf="params.label == 'gen-rating'" class="truncate-125 chip">
-          <div *ngIf="params.data.genRating">
+        <div *ngIf="params.label == 'gen-rating'" style="align-items: center; justify-content: center; width: 60px !important;  max-width: 80px!important" class="truncate-125 chip">
+          <div>
               {{ params.data.genRating}}
               <span class="star"></span>
           </div>
-          <div *ngIf="params.data.genPrice">{{ params.data.genPrice }}</div>
         </div>
       </div>
-      <div *ngIf="params.data.genRating== null || params.data.genPrice == null">
-              <span>NA</span>
+
+      <div
+      [ngClass]="params.cellClass"
+        matTooltip=""
+        style=""
+        *ngIf="params.data.genRating == null"
+      >
+        <div *ngIf="params.label == 'gen-rating'" style="align-items: center; justify-content: center; width: 60px !important;  max-width: 80px!important; background-color: rgb(196, 196, 196);"class="truncate-125 chip">
+          <span>NA</span>
+        </div>
       </div>
     </div>
+
     <div *ngIf="params.type == 'rating-chip'">
       <div
         [ngClass]="params.cellClass"
         matTooltip=""
-        *ngIf="params.data.portRating && params.data.portPrice"
         style=""
+        *ngIf="params.data.portRating != null"
         (click)="sellerratingpopup(params.data, 'portRating')"
       >
-        <div *ngIf="params.label == 'port-rating'" class="truncate-125 chip">
+        <div *ngIf="params.label == 'port-rating'" style="align-items: center; justify-content: center; width: 60px !important;  max-width: 80px!important" class="truncate-125 chip">
           <div *ngIf="params.data.portRating">
               {{ params.data.portRating}}
               <span class="star"></span>
           </div>
-          <div *ngIf="params.data.portPrice">{{ params.data.portPrice }}</div>
         </div>
       </div>
-      <div *ngIf="params.data.portPrice == null || params.data.portRating == null">
-              <span>NA</span>
-          </div>
+       
+      <div
+        [ngClass]="params.cellClass"
+        matTooltip=""
+        style=""
+        *ngIf="params.data.portRating == null"
+      >
+        <div *ngIf="params.label == 'port-rating'" style="align-items: center; justify-content: center; width: 60px !important;  max-width: 80px!important; background-color: rgb(196, 196, 196);"class="truncate-125 chip">
+          <span>NA</span>
+        </div>
+      </div>
     </div>
     <div *ngIf="params.type == 'hover-cell-lookup'" class="fly-away">
       <div>
