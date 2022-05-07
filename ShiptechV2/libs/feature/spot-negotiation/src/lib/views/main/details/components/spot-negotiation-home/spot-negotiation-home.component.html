@@ -23,11 +23,9 @@
             ></p-tabMenu>
           </div>
           <div>
+            
             <div class="header-buttons">
-              <div style="position: fixed;right: 495px;">
-              </div>
-              <div style="position: fixed;right: 295px;">
-                <span class="seperator-line left-line"></span>
+            <div class="header-btn-icons"> 
                 <span  matTooltip="No Quote" matTooltipClass="lightTooltip"  (click)="noQuoteAction('no-quote')" class="no-quote-header-icon"></span>
                 <span
                   class="duplicate-price"
@@ -35,11 +33,11 @@
                   #menuTrigger="matMenuTrigger"
                   matTooltip="Duplicate Price"
                   matTooltipClass="lightTooltip"
+                  *ngIf="requestOptionsToDuplicatePrice?.length"
                 ></span>
                 <mat-menu
                   #clickmenu="matMenu"
-                  class="more-options-menu-panel menu-panel-requestOptionsDuplicate"
-                >
+                  class="more-options-menu-panel menu-panel-requestOptionsDuplicate">
                   <div
                     class="duplicate-price-menu"
                     *ngIf="requestOptionsToDuplicatePrice?.length"
@@ -86,9 +84,7 @@
                   </div>
                 </mat-menu>
                 <!-- <span class="duplicate-cost" matTooltip="Duplicate Cost" matTooltipClass="blueTooltip"></span>-->
-                
-                <span class="seperator-line"></span>
-              </div>
+             </div>
               <div style="position: fixed;right: 35px;">
                 <button
                   matTooltip="Send RFQ"
