@@ -9589,7 +9589,7 @@ tr.title {
 
 /* Spot Negotiation - Details- Start */
 .spot-nego-content {
-  padding-top: 10px;
+  padding-top: 0px;
   .input-disabled {
     pointer-events: none;
     opacity: 0.4;
@@ -12230,7 +12230,7 @@ tr.title {
         cursor: pointer;
         width: 90px;
         // border-radius: 3px;
-        background: #00aae2;
+        background: #1d9fff!important;
         height: 30px;
         float: right;
         line-height: 0px !important;
@@ -12371,7 +12371,8 @@ tr.title {
     width: 190px;
     min-width: 190px;
     overflow: initial;
-    box-shadow: 0px 4px 4px rgba(0, 0 ,0 , 0.25%);
+    box-shadow: 1px 0px 4px 4px rgba(0, 0 ,0 , 0.25%);
+    border-radius: 3px !important;
   }
   .date {
     padding: 15px 5px;
@@ -23650,6 +23651,10 @@ mat-form-field {
     }
     .mat-checkbox-layout .mat-checkbox-label {
       color: #ffffff;
+     white-space: nowrap;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     width: 160px;
     }
   }
   .duplicate-comments-menu {

@@ -367,14 +367,16 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       headerTooltip: 'Counterparty',
       field: 'name',
       width: 175,
-      cellClass: ['aggridtextalign-left']
+      cellClass: ['aggridtextalign-left'],
+      valueFormatter: params => this.format.htmlDecode(params.value)
     },
     {
       headerName: 'Parent',
       headerTooltip: 'Parent',
       field: 'parent.name',
       width: 175,
-      cellClass: ['aggridtextalign-left']
+      cellClass: ['aggridtextalign-left'],
+      valueFormatter: params => this.format.htmlDecode(params.value)
       //cellRendererFramework: AGGridCellRendererV2Component,
       // cellRendererParams: {
       //   type: 'searchbox-parent',
