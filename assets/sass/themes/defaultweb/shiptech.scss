@@ -23651,6 +23651,10 @@ mat-form-field {
     }
     .mat-checkbox-layout .mat-checkbox-label {
       color: #ffffff;
+     white-space: nowrap;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     width: 160px;
     }
   }
   .duplicate-comments-menu {
