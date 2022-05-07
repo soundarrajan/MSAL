@@ -115,8 +115,10 @@ export class SmartOperatorComponent implements OnInit {
         resizable: true
       },
       rowSelection: 'single',
-      overlayNoRowsTemplate: `<span>Rows are loading...</span>`,
-      onGridReady: params => {
+       overlayNoRowsTemplate:
+       `<span>Rows are loading...</span>`,
+      onGridReady: (params) => {
+
         this.gridOptions.api = params.api;
         this.gridOptions.columnApi = params.columnApi;
         this.gridOptions.api.setRowData(this.rowData1);
@@ -361,17 +363,6 @@ export class SmartOperatorComponent implements OnInit {
       headerClass: ['aggrid-text-align-c'],
       cellClass: ['aggrid-content-c']
     },
-    {
-      headerName: 'Delivery Date',
-      headerTooltip: 'Delivery Date',
-      field: 'deliveryDate',
-      cellRendererFramework: AGGridCellRendererComponent,
-      cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] },
-      headerClass: ['aggrid-text-align-c'],
-      cellClass: ['aggrid-content-center'],
-      filter: 'date',
-      width: 140
-    },
     { headerName: 'Vessel Code', headerTooltip: 'Port', field: 'vesselCode', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c']},
 
     { headerName: 'Port', headerTooltip: 'Port', field: 'portName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c']},
@@ -389,6 +380,10 @@ export class SmartOperatorComponent implements OnInit {
       }
     },
     { headerName: 'Quantity', headerTooltip: 'Quantity', field: 'confirmedQuantity', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
+    cellRendererFramework: AGGridCellRendererComponent,
+    cellRendererParams: { cellClass: ['cell-ellipsis']}
+    },
+    { headerName: 'Price', headerTooltip: 'Price', field: 'price', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
     cellRendererFramework: AGGridCellRendererComponent,
     cellRendererParams: { cellClass: ['cell-ellipsis']}
     },
