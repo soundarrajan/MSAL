@@ -492,12 +492,12 @@
     width: fit-content;
     max-width: unset !important;
     max-height: fit-content;
-    position: absolute;
+    position: relative;
     top: -25px;
     border-radius: 4px;
     box-shadow: 0px 6px 7px rgba(0, 0, 0, 0.25);
   }
-
+  
   .select-product-container .mat-option {
     padding: unset !important;
     display: block;
@@ -506,6 +506,7 @@
   .select-product-container .mat-option-text {
     font-size: 14px !important;
     color: white !important;
+    max-width: 170px;
   }
 
   .select-product-container .mat-radio-outer-circle {
