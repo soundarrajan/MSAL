@@ -12563,9 +12563,9 @@ tr.title {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
 
   .spot-nego-title {
     font-size: 14px;
@@ -12666,28 +12666,37 @@ tr.title {
   .title-divider {
     display: inline-block;
     color: #c4c4c4;
-    margin-left: 10px;
+    margin-left: 15px;
     margin-right: 10px;
     border-left: 2px solid #c4c4c4;
     color: transparent;
-    height: 35px;
+    line-height: 1.5;
     border-left: 1px solid rgb(229, 229, 229);
     margin: -7px 10px 0px;
   }
   .close-circle {
     cursor: pointer;
     display: inline-block;
-    width: 15px;
-    height: 15px;
-    border-radius: 15px;
+    width: 20px;
+    height: 20px;
+     border-radius: 15px;
     align-content: center;
     text-align: center;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px inset;
     margin-bottom: 3px;
     margin-right: 3px;
-    border-radius: 15px;
     background: rgb(250, 250, 251);
     padding: 1px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    float: right;
+    position: relative;
+    top: 1px;
+
   }
 
   &.applicable-cost-popup-header {
@@ -23762,6 +23771,7 @@ mat-form-field {
   margin-top: 1rem;
   border:0px;
   border-top: 1px solid rgba(0,0,0,.1);
+  margin: 7px;
 }
 .quoteByContainer{
   cursor:pointer;width: 95px;height: 40px;
