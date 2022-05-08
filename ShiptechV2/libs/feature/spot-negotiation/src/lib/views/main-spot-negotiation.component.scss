@@ -43,18 +43,6 @@ ag-grid-angular {
   }
 }
 
-            span.title {
-              display: inline-block;
-              float: left;
-              font-size: 11px;
-              line-height: 13px;
-              color: #ffffff;
-              opacity: 0.7;
-              margin-right: 3px;
-            }
-            .by-datePicker {
-              float: left;
-              height: 30px;
 
 /** Shiptech - UI PD fixes - Start **/
 
@@ -952,6 +940,6 @@ ag-grid-angular {
   }
 }
 
-ag-grid-angular .ag-body-horizontal-scroll-viewport{
+.ag-grid-angular .ag-body-horizontal-scroll-viewport{
   top: -8px !important;
 }
