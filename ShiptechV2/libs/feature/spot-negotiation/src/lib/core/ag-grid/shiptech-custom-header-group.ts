@@ -719,6 +719,7 @@ export class ShiptechCustomHeaderGroup {
   }
 
   priceFormatValue(value, type?: any) {
+
     if (typeof value == 'undefined' || value == null) {
       return type == 'benchMark' || 'closure' ? '--' : null;
     }
@@ -728,7 +729,7 @@ export class ShiptechCustomHeaderGroup {
     }
     let format = /[^\d|\-+|\.+]/g;
     let plainNumber;
-
+    value = value.toString().replace(',', '');
     if (format.test(value.toString()) && type == 'livePrice') {
       this.toastr.warning('Live price should be a numeric value ');
       plainNumber = '';
