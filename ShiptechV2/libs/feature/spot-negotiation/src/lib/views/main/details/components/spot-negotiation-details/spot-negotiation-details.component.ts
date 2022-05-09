@@ -75,6 +75,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   Index: number;
   reqLocId: number;
 
+
+
   @Input('location') set _setlocation(location) {
     this.reqLocId = location.id;
   }
@@ -299,7 +301,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         sortable: false,
         suppressMenu: true
       },
-
+      tooltipShowDelay:0,
       columnDefs: this.columnDef_aggrid,
       suppressCellSelection: true,
       // suppressMovable: true,
