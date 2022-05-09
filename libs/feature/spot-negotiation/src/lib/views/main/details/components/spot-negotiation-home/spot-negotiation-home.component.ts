@@ -58,6 +58,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   tenantConfiguration: any;
   RequestGroupID: number;
   negotiationId: any;
+  requestId: any;
   emailLogUrl: string;
   baseOrigin: string;
   isAuthorizedForReportsTab: boolean = false;
@@ -124,6 +125,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
     this.route.params.pipe().subscribe(params => {
       this.negotiationId = params.spotNegotiationId;
+      if(params.requestId)
+        this.requestId = params.requestId;
     });
   }
 
@@ -143,7 +146,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         label: 'Main Page',
         routerLink: [
           ...routeLinkToNegotiationDetails,
-          KnownSpotNegotiationRoutes.details
+          this.requestId ?? KnownSpotNegotiationRoutes.details
         ],
         routerLinkActiveOptions: { exact: true },
         command: () => {
