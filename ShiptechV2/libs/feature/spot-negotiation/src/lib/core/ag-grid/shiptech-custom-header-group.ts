@@ -276,7 +276,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
           <div class="label-element green">
             <div class="title">Target</div>
             <div
-              class="value" matTooltip="{{targetValue  != 0 ? '$'+targetValue : '$--'}}"
+              class="value" matTooltip="{{(targetValue  != null && targetValue  != 0) ? '$'+targetValue : '$--'}}"
               matTooltipClass="lightTooltip"
               contenteditable="false"
               (keydown)="editQty($event)"
