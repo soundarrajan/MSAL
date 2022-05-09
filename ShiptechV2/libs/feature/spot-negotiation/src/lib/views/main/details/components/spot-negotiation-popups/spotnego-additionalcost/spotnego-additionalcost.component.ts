@@ -638,7 +638,10 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (!additionalCost.costTypeId) {
       return additionalCost;
     }
-    additionalCost.price = additionalCost.price.toString().replace(',','');
+    if(additionalCost.price != null)
+      additionalCost.price = additionalCost.price.toString().replace(',','');
+    if(additionalCost.extras != null)
+      additionalCost.extras = additionalCost.extras.toString().replace(',','');
     switch (additionalCost.costTypeId) {
       case COST_TYPE_IDS.FLAT:
         additionalCost.amount = parseFloat(additionalCost.price);
@@ -1147,15 +1150,17 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
 
   checkIfItsEmptyString(index, type) {
     if (type == 'extras') {
-      this.offerAdditionalCostList[index].extras.toString().replace(',','');
       if (this.offerAdditionalCostList[index].extras === '') {
         this.offerAdditionalCostList[index].extras = null;
       }
+      if(this.offerAdditionalCostList[index].extras != null)
+        this.offerAdditionalCostList[index].extras.toString().replace(',','');
     } else if (type == 'price') {
-      this.offerAdditionalCostList[index].price.toString().replace(',','');
       if (this.offerAdditionalCostList[index].price === '') {
         this.offerAdditionalCostList[index].price = null;
       }
+      if(this.offerAdditionalCostList[index].price != null)
+        this.offerAdditionalCostList[index].price.toString().replace(',','');
     }
   }
 
@@ -1611,7 +1616,10 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (!additionalCost.costTypeId) {
       return additionalCost;
     }
-    additionalCost.price = additionalCost.price.toString().replace(',','');
+    if(additionalCost.price != null)
+      additionalCost.price = additionalCost.price.toString().replace(',','');
+    if(additionalCost.extras != null)
+      additionalCost.extras = additionalCost.extras.toString().replace(',','');
     switch (additionalCost.costTypeId) {
       case COST_TYPE_IDS.FLAT:
         additionalCost.amount = parseFloat(additionalCost.price);
