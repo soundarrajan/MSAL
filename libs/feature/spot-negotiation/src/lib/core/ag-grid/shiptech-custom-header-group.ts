@@ -259,11 +259,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
             </span>
             </div>
           </div>
-          <div class="label-element dashed">
+          <div class="label-element dashed" matTooltipClass="lightTooltip" matTooltip="{{ livePrice != undefined ? '$'+livePrice : '$--'}}">
             <div class="title">Manual Live price</div>
             $<input
-              class="value"matTooltip="{{'$'+livePrice}}"
-              matTooltipClass="lightTooltip"
+              class="value"
+              
               contenteditable="true"
               [(ngModel)]="livePrice"
               (change)="calculateTargetPrice()"
@@ -276,7 +276,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
           <div class="label-element green">
             <div class="title">Target</div>
             <div
-              class="value" matTooltip="{{'$'+targetValue}}"
+              class="value" matTooltip="{{targetValue  != 0 ? '$'+targetValue : '$--'}}"
               matTooltipClass="lightTooltip"
               contenteditable="false"
               (keydown)="editQty($event)"
