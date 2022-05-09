@@ -10201,6 +10201,16 @@ tr.title {
                 .ag-header-container {
                   width: 100% !important;
                 }
+                .ag-tooltip {
+                  height: 27px !important;
+                  background: #FFFFFF !important;
+                  line-height: 10px;
+                  border-radius: 3px;
+                  font-size: 13px;
+                  color: #364150 !important;
+                  border: 1px solid #B3B4B7;
+                  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                }
                 .ag-row-hover {
                   .remove-option {
                     .remove-icon {
@@ -13579,6 +13589,7 @@ mat-form-field {
     margin-top: 4px;
     margin-bottom: 4px;
     border-top: 1px solid #c4c4c4;
+    border-bottom: 0px;
   }
   .menu-divider-line2 {
     margin-top: 0.5px;
@@ -23774,14 +23785,13 @@ mat-form-field {
   border-top: 1px solid rgba(0,0,0,.1);
   margin: 7px;
 }
+
 .quoteByContainer{
-  cursor:pointer;width: 95px;height: 40px;
+  cursor:pointer;width: 85px;height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-.quoteByMatField{
-  .mat-form-field-underline {
+  .mat-form-field .mat-form-field-underline {
     display: none;
   }
-}
 }
