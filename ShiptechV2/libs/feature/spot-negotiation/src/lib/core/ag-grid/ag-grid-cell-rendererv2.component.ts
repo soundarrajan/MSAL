@@ -108,6 +108,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         matTooltip=""
         style=""
         *ngIf="params.data.genRating == null"
+        (click) = "params.data.portRating != null ? sellerratingpopup(params.data, 'portRating') : '' "
       >
         <div *ngIf="params.label == 'gen-rating'" style="align-items: center; justify-content: center; width: 60px !important;  max-width: 80px!important; background-color: rgb(196, 196, 196);"class="truncate-125 chip">
           <span>NA</span>
@@ -136,6 +137,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         matTooltip=""
         style=""
         *ngIf="params.data.portRating == null"
+        (click) = "params.data.genRating != null ? sellerratingpopup(params.data, 'genRating') : ''"
       >
         <div *ngIf="params.label == 'port-rating'" style="align-items: center; justify-content: center; width: 60px !important;  max-width: 80px!important; background-color: rgb(196, 196, 196);"class="truncate-125 chip">
           <span>NA</span>

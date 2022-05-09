@@ -30,7 +30,7 @@
               <ng-template matExpansionPanelContent>
                 <div *ngFor="let items of specificPortRatingData">
                   <div class="row second-header"  style="padding: 0px 4px; justify-content: space-between;">
-                      <div class="col-1 bold-text">{{items.categoriesName}}</div>
+                      <div class="col-1 bold-text">{{items.categoriesName | htmlDecodeReadonly}}</div>
                       <div class="col-6 text-right">
                           <span class="unbold-text">Rated by </span>
                           <span class="bold-text">{{items.ratedBy}}</span>
@@ -40,7 +40,7 @@
                      </div>
                   <div class="row" *ngFor="let item of items.details">
                       <span class="rating-star align-center" style="display: inline-flex; width: 100%;">
-                          <span class="w-50" >{{item.name}}</span>
+                          <span class="w-50" >{{item.name | htmlDecodeReadonly}}</span>
                           <div class="rate l-h-46" *ngIf="item.rating != null">
                             <star-rating value="{{item.rating}}" totalstars="5" checkedcolor="#364150" uncheckedcolor="#EAEAEA" size="3em" readonly="true"></star-rating>
                           </div>
@@ -51,7 +51,6 @@
                           <span  >NIL</span>
                         </div>
                       </span>
-
                   </div>
                 </div>
               </ng-template>
@@ -75,7 +74,7 @@
               <ng-template matExpansionPanelContent >
                   <div *ngFor="let items of allLocationRatingData">
                   <div class="row second-header" style="padding: 0px 4px; justify-content: space-between;">
-                      <div class="col-1 bold-text">{{items.categoriesName}}</div>
+                      <div class="col-1 bold-text">{{items.categoriesName | htmlDecodeReadonly}}</div>
                       <div class="col-6 text-right">
                           <span class="unbold-text">Rated by </span>
                           <span class="bold-text">{{items.ratedBy}}</span>
@@ -86,7 +85,7 @@
                   <div class="row"  *ngFor="let item of items.details">
 
                       <span class="rating-star align-center" style="display: inline-flex; width: 100%;">
-                          <span class="w-50" >{{item.name}}</span>
+                          <span class="w-50" >{{item.name | htmlDecodeReadonly}}</span>
                           <div class="rate l-h-46" *ngIf="item.rating != null">
                             <star-rating value="{{item.rating}}" totalstars="5" checkedcolor="#364150" uncheckedcolor="#EAEAEA" size="3em" readonly="true"></star-rating>
                           </div>
