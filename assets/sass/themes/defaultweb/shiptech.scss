@@ -10255,12 +10255,13 @@ tr.title {
                             }
                           }
                           .mat-checkbox-inner-container {
-                            width: 12px;
+                            width: 11px;
                             height: 11px;
                             line-height: 11px;
+                            top: -2px;
                             .mat-checkbox-frame {
-                              border: 2px solid #c4c4c4;
-                              border-radius: 1px;
+                              border: 1.5px solid #c4c4c4;
+                              border-radius: 2px;
                             }
                           }
                           &.mat-checkbox-checked {
@@ -23725,7 +23726,7 @@ mat-form-field {
       &.darkBorder {
         .mat-checkbox-inner-container {
           .mat-checkbox-frame {
-            border: 2px solid #364150;
+            border: 2px solid #c4c4c4;
             background: #ecf4ff;
             border-radius: 1px;
           }
