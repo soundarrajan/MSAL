@@ -23799,3 +23799,58 @@ mat-form-field {
     display: none;
   }
 }
+.remove-terminal-section{
+  position: relative;
+  height: 100%;
+  .close-btn{
+    position: relative;
+    left: 16px;
+    bottom: 16px;
+    cursor: pointer;
+    img{
+      width: 10px;
+      float: right;
+    }
+  }
+  .warning-title{
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 12px;
+    img{
+      float: left;
+    }
+    span{
+      font-size: 16px;
+      display: inline-block;
+    }
+  }
+  p{
+    text-align: center;
+    padding-top: 27px;
+  }
+  .yes-no{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    padding-top: 25px;
+    button{
+      width: 125px;
+      height: 32px;
+      border-radius: 3px;
+      text-transform: capitalize;
+      box-shadow: none !important;
+      line-height: 25px;
+      &.red-button{
+        background-color: $red;
+      }
+      &.blue-button{
+        float: right;
+        background-color: $blue;
+      }
+    }
+  }
+}
+.blue-button-o{
+  background-color: #1d9fff!important;
+    border: none;
+    color: #fff!important;
+}
