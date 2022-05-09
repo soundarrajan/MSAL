@@ -12533,6 +12533,10 @@ tr.title {
     }
     .mat-checkbox-layout .mat-checkbox-label {
       color: #ffffff;
+      white-space: nowrap;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     width: 160px;
     }
   }
   .duplicate-price-menu {
@@ -12560,7 +12564,7 @@ tr.title {
         cursor: pointer;
         width: 90px;
         border-radius: 3px;
-        background: #00aae2;
+        background: #1D9FFF;
         height: 30px;
       }
     }
