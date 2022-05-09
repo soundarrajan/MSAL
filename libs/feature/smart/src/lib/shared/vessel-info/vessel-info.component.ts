@@ -704,7 +704,7 @@ export class VesselInfoComponent implements OnInit {
         ** only on gen plan completion. So we don't need to handle this dialog for this plan completed case 
         */
         this.disableCurrentBPlan = false;
-
+        this.isChecked = false;
         // const dialogRef = this.dialog.open(SuccesspopupComponent, {
         //   panelClass: ['success-popup-panel'],
         //   data: {message : 'Please wait, a new plan is getting generated for vessel ', id: req.ship_id}
@@ -781,7 +781,7 @@ export class VesselInfoComponent implements OnInit {
         this.loadBunkerPlanDetails(vesseldata.vesselRef);
         //Enable Import GSIS checkbox and generate button after gen plan success
         this.disableCurrentBPlan = false;
-        
+        this.isChecked = false;
         //unsubscribe next exec after 15 sec, if plan generate get completed
         this.observableRef$.unsubscribe();
 
