@@ -639,9 +639,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       return additionalCost;
     }
     if(additionalCost.price != null)
-      additionalCost.price = additionalCost.price.toString().replace(',','');
+      additionalCost.price = additionalCost.price.toString().replace(/,/g, '');
     if(additionalCost.extras != null)
-      additionalCost.extras = additionalCost.extras.toString().replace(',','');
+      additionalCost.extras = additionalCost.extras.toString().replace(/,/g, '');
     switch (additionalCost.costTypeId) {
       case COST_TYPE_IDS.FLAT:
         additionalCost.amount = parseFloat(additionalCost.price);
@@ -1154,13 +1154,13 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         this.offerAdditionalCostList[index].extras = null;
       }
       if(this.offerAdditionalCostList[index].extras != null)
-        this.offerAdditionalCostList[index].extras.toString().replace(',','');
+        this.offerAdditionalCostList[index].extras.toString().replace(/,/g, '');
     } else if (type == 'price') {
       if (this.offerAdditionalCostList[index].price === '') {
         this.offerAdditionalCostList[index].price = null;
       }
       if(this.offerAdditionalCostList[index].price != null)
-        this.offerAdditionalCostList[index].price.toString().replace(',','');
+        this.offerAdditionalCostList[index].price.toString().replace(/,/g, '');
     }
   }
 
@@ -1617,9 +1617,9 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       return additionalCost;
     }
     if(additionalCost.price != null)
-      additionalCost.price = additionalCost.price.toString().replace(',','');
+      additionalCost.price = additionalCost.price.toString().replace(/,/g, '');
     if(additionalCost.extras != null)
-      additionalCost.extras = additionalCost.extras.toString().replace(',','');
+      additionalCost.extras = additionalCost.extras.toString().replace(/,/g, '');
     switch (additionalCost.costTypeId) {
       case COST_TYPE_IDS.FLAT:
         additionalCost.amount = parseFloat(additionalCost.price);

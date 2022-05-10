@@ -41,11 +41,12 @@ export class TenantFormattingService {
   }
 
   public amount(value: number | string): string | undefined {
+    debugger;
     if (value === null || value === undefined) return undefined;
 
     const actualValue =
       typeof value !== 'number'
-        ? parseFloat(value.toString().replace(',', ''))
+        ? parseFloat(value.toString().replace(/,/g, ''))
         : value;
 
     if (isNaN(actualValue)) return undefined;
@@ -58,7 +59,7 @@ export class TenantFormattingService {
 
     const actualValue =
       typeof value !== 'number'
-        ? parseFloat(value.toString().replace(',', ''))
+        ? parseFloat(value.toString().replace(/,/g, ''))
         : value;
 
     if (isNaN(actualValue)) return undefined;
@@ -71,7 +72,7 @@ export class TenantFormattingService {
 
     const actualValue =
       typeof value !== 'number'
-        ? parseFloat(value.toString().replace(',', ''))
+        ? parseFloat(value.toString().replace(/,/g, ''))
         : value;
 
     if (isNaN(actualValue)) return undefined;
@@ -84,7 +85,7 @@ export class TenantFormattingService {
 
     const actualValue =
       typeof value !== 'number'
-        ? parseFloat(value.toString().replace(',', ''))
+        ? parseFloat(value.toString().replace(/,/g, ''))
         : value;
 
     if (isNaN(actualValue)) return undefined;
