@@ -95,6 +95,7 @@ export class VesselInfoComponent implements OnInit {
   public ulsfoRobClasses: any;
   public lsdisRobClasses: any;
   public hsdisRobClasses: any;
+  offset:number;
 
   constructor(private store: Store, iconRegistry: MatIconRegistry,public vesselService: VesselPopupService, sanitizer: DomSanitizer, private localService: LocalService, public dialog: MatDialog, private bunkerPlanService : BunkeringPlanService, public BPService: BunkeringPlanCommentsService) {
     iconRegistry.addSvgIcon(
@@ -124,7 +125,7 @@ export class VesselInfoComponent implements OnInit {
 
   ngOnInit() {
     this.getDefaultView();
-    
+    this.offset = (new Date().getTimezoneOffset());
     // console.log('Vessel Data11111111111111 ',this.vesselData)
     this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan? this.currentBplan.triggerRefreshGrid(this.selectedUserRole):'');
     
@@ -341,7 +342,7 @@ export class VesselInfoComponent implements OnInit {
   //   })
   // }
   public loadBunkerPlanHeader(event) {
-    let vesselId = event.id? event.id: 348;
+    let vesselId = event.id? event.id: 348; 
     this.localService.getBunkerPlanHeader(vesselId).subscribe((data)=> {
       console.log('bunker plan header',data);
       this.bunkerPlanHeaderDetail = (data?.payload && data?.payload.length)? data.payload[0]: {};
