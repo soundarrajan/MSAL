@@ -1,35 +1,14 @@
 import { isNumeric } from 'rxjs/internal-compatibility';
-import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { defer, Observable, of, Subject, throwError } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
 import { Store } from '@ngxs/store';
-import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { Router } from '@angular/router';
-import { SpotNegotiationApi } from './api/spot-negotiation-api';
-import {
-  IDocumentsCreateUploadRequest,
-  IDocumentsCreateUploadResponse
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
-import {
-  IDocumentsDeleteRequest,
-  IDocumentsDeleteResponse
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
-import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
-import {
-  IDocumentsUpdateIsVerifiedRequest,
-  IDocumentsUpdateIsVerifiedResponse
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
-import {
-  IDocumentsUpdateNotesRequest,
-  IDocumentsUpdateNotesResponse
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
-import { catchError, finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import _ from 'lodash';
 import { SpotNegotiationService } from './spot-negotiation.service';
 import { EditLocationRow, UpdateRequest } from '../store/actions/ag-grid-row.action';
-//import { promises } from 'dns';
 
 export const COMPONENT_TYPE_IDS = {
   TAX_COMPONENT: 1,
@@ -210,60 +189,6 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       additionalCost.ratePerUom = null;
     }
 
-    // let checkAdditionalCostRowIndex = _.findIndex(
-    //   offerAdditionalCostList,
-    //   function (obj: any) {
-    //     return !obj.amountIsCalculated && obj.isAllProductsCost;
-    //   }
-    // );
-
-    // let checkAdditionalPercentCostRowIndex = _.findIndex(
-    //   offerAdditionalCostList,
-    //   function (obj: any) {
-    //     return (
-    //       !obj.amountIsCalculated &&
-    //       !obj.isAllProductsCost
-    //     );
-    //   }
-    // );
-    // let checkLocationCostRowIndex = _.findIndex(
-    //   locationAdditionalCostsList,
-    //   function (obj: any) {
-    //     return (
-    //       !obj.amountIsCalculated
-    //       );
-    //   }
-    // );
-
-    // if (
-    //   this.endpointCount == 0 &&
-    //   checkAdditionalCostRowIndex == -1 &&
-    //   checkAdditionalPercentCostRowIndex == -1 &&
-    //   checkLocationCostRowIndex == -1
-    // ) {
-    //   debugger;
-    //   productList.forEach(pro => {
-    //     updatedRow.requestOffers.forEach(reqOff => {
-    //       if (reqOff.requestProductId == pro.id) {
-
-    //         reqOff.totalPrice = reqOff.price + reqOff.cost;
-    //         reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
-    //         reqOff.targetDifference = reqOff.totalPrice - (pro.requestGroupProducts
-    //           ? pro.requestGroupProducts.targetPrice
-    //           : 0);
-    //       }
-    //     });
-    //   });
-    //   this.getSellerLine(updatedRow, colDef, newValue, elementidValue);
-    //   // this.getSellerLine(
-    //   //   offerAdditionalCostList,
-    //   //   locationAdditionalCostsList,
-    //   //   updatedRow,
-    //   //   colDef,
-    //   //   newValue,
-    //   //   elementidValue
-    //   // );
-    // }
   }
   isProductComponent(additionalCost) {
     if (!additionalCost.additionalCostId) {
