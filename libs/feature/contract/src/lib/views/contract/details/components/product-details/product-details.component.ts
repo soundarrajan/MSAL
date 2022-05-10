@@ -712,7 +712,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
     return this.selectedLocationList.filter(
       option => option.name.toLowerCase().indexOf(filterValue) === 0
-    );
+    ).slice(0, 200); // #40093 - Take top 200 result for render performance
   }
 
   private _filter1(value: string): string[] {
@@ -720,7 +720,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
     return this.selectedProductList.filter(
       option => option.name.toLowerCase().indexOf(filterValue) === 0
-    );
+    ).slice(0, 200);
   }
 
   setProductSpecGroup(data) {
