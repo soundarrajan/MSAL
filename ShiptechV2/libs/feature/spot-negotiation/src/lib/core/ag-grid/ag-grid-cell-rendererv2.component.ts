@@ -344,6 +344,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             (keyup.enter)="onGetFocus($event, params)"
             (keydown.Tab)="onPriceChange($event, params)"
             (focus)="getCurrentOfferValue($event)"
+            (change)="onPriceChange($event, params)"
             autofocus
             #inputSection
             value="{{ params.value |  priceFormatValue : priceFormatValue1 }}"
@@ -1701,6 +1702,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   onPriceChange(e, params) {
+    debugger;
     this.priceChanged = false;
     if((e.target.value !='' && this.offerOldValue != e.target.value) || (e.target.value == '' && this.offerOldValue > 0) ){
       params.colDef.valueSetter({
