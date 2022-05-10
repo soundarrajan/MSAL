@@ -729,7 +729,7 @@ export class ShiptechCustomHeaderGroup {
     }
     let format = /[^\d|\-+|\.+]/g;
     let plainNumber;
-    value = value.toString().replace(',', '');
+    value = value.toString().replace(/,/g, '');
     if (format.test(value.toString()) && type == 'livePrice') {
       this.toastr.warning('Live price should be a numeric value ');
       plainNumber = '';
@@ -775,7 +775,7 @@ export class ShiptechCustomHeaderGroup {
     this.benchMark =
       this.benchMark == null || this.benchMark == '--' ? 0 : this.benchMark;
     const targetval =
-      parseFloat(this.livePrice.toString().replace(',', '')) + this.benchMark;
+      parseFloat(this.livePrice.toString().replace(/,/g, '')) + this.benchMark;
     this.targetValue = parseFloat(targetval.toString());
     //this.closureValue=parseInt(this.livePrice);
     let payload = {
@@ -783,7 +783,7 @@ export class ShiptechCustomHeaderGroup {
         requestGroupId: parseInt(RequestGroupId),
         requestLocationId: this.requestLocationId,
         requestProductId: this.requestProductId,
-        livePrice: this.livePrice.toString().replace(',', ''),
+        livePrice: this.livePrice.toString().replace(/,/g, ''),
         targetPrice: this.targetValue
       }
     };
@@ -810,7 +810,7 @@ export class ShiptechCustomHeaderGroup {
               if(reqProd.id == this.requestProductId){
                 let requestGroupProducts = _.cloneDeep(reqProd.requestGroupProducts);
                   requestGroupProducts.targetPrice = this.targetValue;
-                  requestGroupProducts.livePrice = this.livePrice.toString().replace(',', '');
+                  requestGroupProducts.livePrice = this.livePrice.toString().replace(/,/g, '');
                   return { ...reqProd, requestGroupProducts };
               }
               return reqProd;
