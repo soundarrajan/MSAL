@@ -38,7 +38,7 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
         />
        </mat-form-field>
         <div
-          style="height:24px;float:right;line-height:15px;width:30px;position: absolute;
+          style="height:24px;float:right;line-height:15px;width:25px;position: absolute;
     right: -6px;"
         >
           {{ timeValue }}
