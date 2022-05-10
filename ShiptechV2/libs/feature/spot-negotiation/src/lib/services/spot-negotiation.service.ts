@@ -1,13 +1,7 @@
-import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { defer, Observable, of, Subject, throwError } from 'rxjs';
-import { BaseStoreService } from '@shiptech/core/services/base-store.service';
-import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
-import { Store } from '@ngxs/store';
-import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
-
-import { UrlService } from '@shiptech/core/services/url/url.service';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { SpotNegotiationApi } from './api/spot-negotiation-api';
+import { Store } from '@ngxs/store';
+import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import {
   IDocumentsCreateUploadRequest,
   IDocumentsCreateUploadResponse
@@ -18,14 +12,19 @@ import {
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
 import {
-  IDocumentsUpdateIsVerifiedRequest,
-  IDocumentsUpdateIsVerifiedResponse
+  IDocumentsUpdateIsVerifiedRequest
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
 import {
   IDocumentsUpdateNotesRequest,
   IDocumentsUpdateNotesResponse
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
+import { UrlService } from '@shiptech/core/services/url/url.service';
+import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
+import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
+import { SpotNegotiationApi } from './api/spot-negotiation-api';
+
 
 @Injectable()
 export class SpotNegotiationService extends BaseStoreService
@@ -41,8 +40,6 @@ export class SpotNegotiationService extends BaseStoreService
 
   constructor(
     protected store: Store,
-    private urlService: UrlService,
-    private router: Router,
     loggerFactory: ModuleLoggerFactory,
     private spotNegotiationApi: SpotNegotiationApi
   ) {
@@ -633,8 +630,8 @@ export class SpotNegotiationService extends BaseStoreService
       productDetails.currencyId = isPriceCopied
         ? sourceReqProOff?.currencyId
         : productDetails.currencyId;
-  
-    
+
+
     // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
 
     if (isPriceCopied)
