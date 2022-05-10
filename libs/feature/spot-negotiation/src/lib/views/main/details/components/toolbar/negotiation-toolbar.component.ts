@@ -67,14 +67,16 @@ export class NegotiationToolbarComponent
       if (res?.message == 'Unauthorized') {
         this.isAuthorizedForReportsTab = false;
       } else this.isAuthorizedForReportsTab = true;
+
+      this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
+        this.negotiationId = params.spotNegotiationId;
+        this.disabled = this.negotiationId === '0';
+        //this.createMenuItems();
+      });
+      this.getTenantConfiguration();
     });
 
-    this.route.params.pipe(takeUntil(this._destroy$)).subscribe(params => {
-      this.negotiationId = params.spotNegotiationId;
-      this.disabled = this.negotiationId === '0';
-      this.createMenuItems();
-    });
-    this.getTenantConfiguration();
+    
   }
 
   getTenantConfiguration(): void {
