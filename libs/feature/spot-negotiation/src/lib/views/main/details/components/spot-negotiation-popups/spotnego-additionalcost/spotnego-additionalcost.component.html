@@ -107,7 +107,7 @@
               <div class="plus">+</div>
             </div>
           </th>
-          <th class="text-left">Cost Name</th>
+          <th class="text-left" style="width: 120px;">Cost Name</th>
           <th class="text-left">Cost Type</th>
           <th class="text-left ">Max Qty</th>
           <th class="text-left" style="width: 215px;">
@@ -145,6 +145,7 @@
               </td>
 
               <td
+              style="width: 120px"
                 class="text-left cell-dashed-border"
                 [ngClass]="{
                   'required-field':
@@ -238,7 +239,10 @@
                   </div>
                 </div>
               </td>
-              <td style="width: 215px" class="text-left cell-dashed-border ">
+              <td style="width: 215px" class="text-left cell-dashed-border"
+              [matTooltip]= "_price"
+              matTooltipClass="lightTooltip"
+              >
                 <div class="dotted-container">
                   <div style="width: 200px;">
                     <div class="split-field">
@@ -322,7 +326,7 @@
                   appearance="none"
                   class="without-search spot-dropdown-component"
                   *ngIf="!offerAdditionalCost.hasStemmedProduct"
-                >
+                 >
                   <mat-select
                     [(ngModel)]="offerAdditionalCost.selectedApplicableForId"
                     (ngModelChange)="
@@ -360,7 +364,10 @@
                   {{ offerAdditionalCost.product?.name }}
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left cell-dashed-border"
+              [matTooltip]= "offerAdditionalCost.extras"
+              matTooltipClass="lightTooltip"
+              >
                 <div class="custom-form-field">
                   <mat-form-field class="without-search" appearance="none">
                     <input
@@ -387,7 +394,10 @@
                   </mat-form-field>
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left cell-dashed-border"
+              matTooltip= "{{amountFormatValue(offerAdditionalCost.extraAmount)}}"
+              matTooltipClass="lightTooltip"
+              >
                 <div class="non-editable-container-text-left">
                   {{ amountFormatValue(offerAdditionalCost.extraAmount) }}
                 </div>
@@ -399,7 +409,10 @@
                   }}
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left cell-dashed-border"
+              matTooltip= "{{amountFormatValue(offerAdditionalCost.totalAmount)}}"
+              matTooltipClass="lightTooltip"
+              >
                 <div class="non-editable-container-text-left">
                   {{ amountFormatValue(offerAdditionalCost.totalAmount) }}
                 </div>
@@ -411,7 +424,15 @@
                   }}
                 </div>
               </td>
-              <td class="text-left cell-dashed-border">
+              <td class="text-left cell-dashed-border"
+              matTooltip= "{{
+                priceFormatValue(
+                  offerAdditionalCost.totalAmount /
+                    offerAdditionalCost.maxQuantity
+                )
+              }}"
+              matTooltipClass="lightTooltip"
+              >
                 <div class="non-editable-container-text-left">
                   {{
                     priceFormatValue(
