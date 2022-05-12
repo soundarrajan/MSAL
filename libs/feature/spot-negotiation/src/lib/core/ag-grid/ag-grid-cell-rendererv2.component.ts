@@ -1101,8 +1101,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         findRequestLocationIndex
       ];
       const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
-        width: '1170px',
+        width: '95%',
         height: 'auto',
+        maxWidth : '100vw',
         panelClass: 'additional-cost-popup',
         data: {
           requestLocation: requestLocation,
