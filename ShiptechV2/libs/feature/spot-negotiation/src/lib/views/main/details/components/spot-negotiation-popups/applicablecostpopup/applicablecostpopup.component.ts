@@ -573,7 +573,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     );
   }
 
-  getConvertedUOM(productId, quantity, fromUomId, toUomId, additionalCost, i) {
+  async getConvertedUOM(productId, quantity, fromUomId, toUomId, additionalCost, i) {
     let payload = {
       Payload: {
         ProductId: productId,
@@ -594,17 +594,15 @@ export class ApplicablecostpopupComponent implements OnInit {
         this.recalculatePercentAdditionalCosts(this.locationBasedCosts);
       }
     } else {
-      this.spotNegotiationService
-        .getUomConversionFactor(payload)
-        .pipe(finalize(() => {}))
-        .subscribe((result: any) => {
-          if (result?.message == 'Unauthorized') {
+      let response= await this.spotNegotiationService.getUomConversionFactor(payload);
+      if(response != null){
+          if (response?.message == 'Unauthorized') {
             return;
           }
-          if (typeof result == 'string') {
-            this.toastr.error(result);
+          if (typeof response == 'string') {
+            this.toastr.error(response);
           } else {
-            additionalCost.prodConv[i] = _.cloneDeep(result);
+            additionalCost.prodConv[i] = _.cloneDeep(response);
             if (
               additionalCost.priceUomId &&
               additionalCost.prodConv &&
@@ -614,7 +612,7 @@ export class ApplicablecostpopupComponent implements OnInit {
               this.recalculatePercentAdditionalCosts(this.locationBasedCosts);
             }
           }
-        });
+        };
     }
   }
 
@@ -998,10 +996,10 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.toastr.error('Selected products(s) : ' + reqIdForLocation);
       return;
     }
-    this.copiedLocationCost.forEach(cost => {
+    this.copiedLocationCost.forEach(async cost => {
       // Check if selected cost type is equal with Unit
       if (cost?.costTypeId == 2) {
-        this.addPriceUomChangedForCopiedLocationCost(
+        await this.addPriceUomChangedForCopiedLocationCost(
           cost,
           cost.productList,
           cost.selectedRequestLocation
@@ -1040,7 +1038,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     );
   }
 
-  addPriceUomChangedForCopiedLocationCost(
+  async addPriceUomChangedForCopiedLocationCost(
     additionalCost,
     productList,
     selectedRequestLocation
@@ -1052,7 +1050,7 @@ export class ApplicablecostpopupComponent implements OnInit {
 
     for (let i = 0; i < productList.length; i++) {
       let prod = productList[i];
-      this.setConvertedAddCostForCopiedLocationCost(
+      await this.setConvertedAddCostForCopiedLocationCost(
         prod,
         additionalCost,
         i,
@@ -1062,14 +1060,14 @@ export class ApplicablecostpopupComponent implements OnInit {
     }
   }
 
-  setConvertedAddCostForCopiedLocationCost(
+  async setConvertedAddCostForCopiedLocationCost(
     prod,
     additionalCost,
     i,
     productList,
     selectedRequestLocation
   ) {
-    this.getConvertedUOMForCopiedLocationCost(
+   await this.getConvertedUOMForCopiedLocationCost(
       prod.productId,
       1,
       prod.uomId,
@@ -1081,7 +1079,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     );
   }
 
-  getConvertedUOMForCopiedLocationCost(
+  async getConvertedUOMForCopiedLocationCost(
     productId,
     quantity,
     fromUomId,
@@ -1115,18 +1113,16 @@ export class ApplicablecostpopupComponent implements OnInit {
       }
     } else {
       this.endpointCount += 1;
-      this.spotNegotiationService
-        .getUomConversionFactor(payload)
-        .pipe(finalize(() => {}))
-        .subscribe((result: any) => {
+      let response= await this.spotNegotiationService.getUomConversionFactor(payload)
+      if(response != null){
           this.endpointCount -= 1;
-          if (result?.message == 'Unauthorized') {
+          if (response?.message == 'Unauthorized') {
             return;
           }
-          if (typeof result == 'string') {
-            this.toastr.error(result);
+          if (typeof response == 'string') {
+            this.toastr.error(response);
           } else {
-            additionalCost.prodConv[i] = _.cloneDeep(result);
+            additionalCost.prodConv[i] = _.cloneDeep(response);
             if (
               additionalCost.priceUomId &&
               additionalCost.prodConv &&
@@ -1139,7 +1135,7 @@ export class ApplicablecostpopupComponent implements OnInit {
               );
             }
           }
-        });
+        };
     }
   }
 

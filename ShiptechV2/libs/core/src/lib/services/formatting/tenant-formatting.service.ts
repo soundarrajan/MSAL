@@ -41,7 +41,6 @@ export class TenantFormattingService {
   }
 
   public amount(value: number | string): string | undefined {
-    debugger;
     if (value === null || value === undefined) return undefined;
 
     const actualValue =
