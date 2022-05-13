@@ -445,7 +445,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   /**
    * Change the cost type to the default for the respective additional cost.
    */
-  additionalCostNameChanged(additionalCost, skipDefault, skipDefaultPriceUom) {
+  async additionalCostNameChanged(additionalCost, skipDefault, skipDefaultPriceUom) {
     this.enableSave = true;
     if (!skipDefault) {
       additionalCost.costTypeId = this.getAdditionalCostDefaultCostType(
@@ -465,7 +465,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
 
     if (additionalCost.costTypeId == 2) {
-      this.addPriceUomChanged(additionalCost);
+      await this.addPriceUomChanged(additionalCost);
     } else {
       this.calculateAdditionalCostAmounts(additionalCost, false);
       this.recalculatePercentAdditionalCosts(
@@ -502,7 +502,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
   }
 
-  addPriceUomChanged(additionalCost) {
+  async addPriceUomChanged(additionalCost) {
     if (!additionalCost.priceUomId) {
       return;
     }
@@ -510,12 +510,12 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
 
     for (let i = 0; i < this.productList.length; i++) {
       let prod = this.productList[i];
-      this.setConvertedAddCost(prod, additionalCost, i);
+      await this.setConvertedAddCost(prod, additionalCost, i);
     }
   }
 
-  setConvertedAddCost(prod, additionalCost, i) {
-    this.getConvertedUOM(
+  async setConvertedAddCost(prod, additionalCost, i) {
+    await this.getConvertedUOM(
       prod.productId,
       1,
       prod.uomId,
@@ -525,7 +525,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     );
   }
 
-  getConvertedUOM(productId, quantity, fromUomId, toUomId, additionalCost, i) {
+  async getConvertedUOM(productId, quantity, fromUomId, toUomId, additionalCost, i) {
     let payload = {
       Payload: {
         ProductId: productId,
@@ -549,17 +549,15 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         );
       }
     } else {
-      this.spotNegotiationService
-        .getUomConversionFactor(payload)
-        .pipe(finalize(() => {}))
-        .subscribe((result: any) => {
-          if (result?.message == 'Unauthorized') {
+      let response= await this.spotNegotiationService.getUomConversionFactor(payload)
+      if(response != null){
+          if (response?.message == 'Unauthorized') {
             return;
           }
-          if (typeof result == 'string') {
-            this.toastr.error(result);
+          if (typeof response == 'string') {
+            this.toastr.error(response);
           } else {
-            additionalCost.prodConv[i] = _.cloneDeep(result);
+            additionalCost.prodConv[i] = _.cloneDeep(response);
             if (
               additionalCost.priceUomId &&
               additionalCost.prodConv &&
@@ -572,7 +570,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
               );
             }
           }
-        });
+        };
     }
   }
 
@@ -1445,10 +1443,10 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
 
     if (this.copiedAdditionalCost.length) {
-      this.copiedAdditionalCost.forEach(cost => {
+      this.copiedAdditionalCost.forEach(async cost => {
         // Check if selected cost type is equal with Unit
         if (cost?.costTypeId == 2) {
-          this.addPriceUomChangedForCopiedAdditionalCost(
+          await this.addPriceUomChangedForCopiedAdditionalCost(
             cost,
             cost.productList
           );
@@ -1514,7 +1512,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
   }
 
-  addPriceUomChangedForCopiedAdditionalCost(additionalCost, productList) {
+  async addPriceUomChangedForCopiedAdditionalCost(additionalCost, productList) {
     if (!additionalCost.priceUomId) {
       return;
     }
@@ -1522,7 +1520,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
 
     for (let i = 0; i < productList.length; i++) {
       let prod = productList[i];
-      this.setConvertedAddCostForCopiedAdditionalCost(
+      await this.setConvertedAddCostForCopiedAdditionalCost(
         prod,
         additionalCost,
         i,
@@ -1531,13 +1529,13 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
   }
 
-  setConvertedAddCostForCopiedAdditionalCost(
+  async setConvertedAddCostForCopiedAdditionalCost(
     prod,
     additionalCost,
     i,
     productList
   ) {
-    this.getConvertedUOMForCopiedAdditionalCost(
+   await this.getConvertedUOMForCopiedAdditionalCost(
       prod.productId,
       1,
       prod.uomId,
@@ -1548,7 +1546,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     );
   }
 
-  getConvertedUOMForCopiedAdditionalCost(
+  async getConvertedUOMForCopiedAdditionalCost(
     productId,
     quantity,
     fromUomId,
@@ -1580,15 +1578,13 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       }
     } else {
       this.endpointCount += 1;
-      this.spotNegotiationService
-        .getUomConversionFactor(payload)
-        .pipe(finalize(() => {}))
-        .subscribe((result: any) => {
+      let response= await this.spotNegotiationService.getUomConversionFactor(payload)
+      if(response != null){
           this.endpointCount -= 1;
-          if (typeof result == 'string') {
-            this.toastr.error(result);
+          if (typeof response == 'string') {
+            this.toastr.error(response);
           } else {
-            additionalCost.prodConv[i] = _.cloneDeep(result);
+            additionalCost.prodConv[i] = _.cloneDeep(response);
             if (
               additionalCost.priceUomId &&
               additionalCost.prodConv &&
@@ -1600,7 +1596,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
               );
             }
           }
-        });
+        };
     }
   }
 
