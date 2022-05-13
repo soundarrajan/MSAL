@@ -266,7 +266,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     return result;
   }
 
-  recalculateLocationAdditionalCosts(
+  async recalculateLocationAdditionalCosts(
     additionalCostList,
     locationAdditionalCostFlag,
     productList,
@@ -293,7 +293,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
 
 
         }
-        this.additionalCostNameChanged(
+        await this.additionalCostNameChanged(
           cost,
           additionalCostList,
           productList,
@@ -407,7 +407,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                     );
 
                   }
-                  this.additionalCostNameChanged(
+                  await this.additionalCostNameChanged(
                     cost,
                     offerAdditionCostsList,
                     productList,
@@ -642,7 +642,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
   getCurrencyId(rowData) {
     return rowData.requestOffers[0].currencyId;
   }
-  additionalCostNameChanged(
+  async additionalCostNameChanged(
     additionalCost,
     offerAdditionalCostList,
     productList,
@@ -652,7 +652,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     requestLocation
   ) {
     if (additionalCost.costTypeId == 2) {
-      this.addPriceUomChanged(
+      await this.addPriceUomChanged(
         additionalCost,
         productList,
         offerAdditionalCostList,
@@ -695,7 +695,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
   //         // Save to the cloud
   //         this.saveRowToCloud(updatedRow, colDef['product'], elementidValue);
   //   }
-  addPriceUomChanged(
+  async addPriceUomChanged(
     additionalCost,
     productList,
     offerAdditionalCostList,
@@ -711,7 +711,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
 
     for (let i = 0; i < productList.length; i++) {
       let prod = productList[i];
-      this.setConvertedAddCost(
+      await this.setConvertedAddCost(
         prod,
         additionalCost,
         i,
@@ -725,7 +725,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     }
   }
 
-  setConvertedAddCost(
+  async setConvertedAddCost(
     prod,
     additionalCost,
     i,
@@ -736,7 +736,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     index,
     requestLocation
   ) {
-    this.getConvertedUOM(
+    await this.getConvertedUOM(
       prod.productId,
       1,
       prod.uomId,
@@ -752,7 +752,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     );
   }
 
-  getConvertedUOM(
+  async getConvertedUOM(
     productId,
     quantity,
     fromUomId,
@@ -795,36 +795,34 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       }
     } else {
       this.endpointCount += 1;
-      this.spotNegotiationService
-        .getUomConversionFactor(payload)
-        .pipe(finalize(() => { }))
-        .subscribe((result: any) => {
-          this.endpointCount -= 1;
-          if (result?.message == 'Unauthorized') {
-            return;
+      let response= await this.spotNegotiationService.getUomConversionFactor(payload);
+      if(response != null){
+        this.endpointCount -= 1;
+        if (response?.message == 'Unauthorized') {
+          return;
+        }
+        if (typeof response == 'string') {
+          //this.toastr.error(result);
+        } else {
+          additionalCost.prodConv[i] = _.cloneDeep(response);
+          if (
+            additionalCost.priceUomId &&
+            additionalCost.prodConv &&
+            additionalCost.prodConv.length == productList.length
+          ) {
+            this.calculateAdditionalCostAmounts(
+              additionalCost,
+              false,
+              productList,
+              offerAdditionalCostList,
+              rowData,
+              locationAdditionalCostsList,
+              index,
+              requestLocation
+            );
           }
-          if (typeof result == 'string') {
-            //this.toastr.error(result);
-          } else {
-            additionalCost.prodConv[i] = _.cloneDeep(result);
-            if (
-              additionalCost.priceUomId &&
-              additionalCost.prodConv &&
-              additionalCost.prodConv.length == productList.length
-            ) {
-              this.calculateAdditionalCostAmounts(
-                additionalCost,
-                false,
-                productList,
-                offerAdditionalCostList,
-                rowData,
-                locationAdditionalCostsList,
-                index,
-                requestLocation
-              );
-            }
-          }
-        });
+        }
+      }
     }
   }
 

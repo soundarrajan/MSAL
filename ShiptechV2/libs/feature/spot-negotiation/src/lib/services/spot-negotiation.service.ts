@@ -379,8 +379,8 @@ export class SpotNegotiationService extends BaseStoreService
    * @param payload
    */
   @ObservableException()
-  getUomConversionFactor(payload: any): Observable<unknown> {
-    return this.spotNegotiationApi.getUomConversionFactor(payload);
+  getUomConversionFactor(payload: any):  Promise<any> {
+    return this.spotNegotiationApi.getUomConversionFactor(payload).toPromise();;
   }
 
   /**
