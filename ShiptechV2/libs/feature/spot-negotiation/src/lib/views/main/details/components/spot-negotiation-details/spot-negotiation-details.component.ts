@@ -825,7 +825,33 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       ]
     };
   }
-
+  storeExpansionState(data){
+    let requestList = [];
+    let requestId : number;
+    this.store.selectSnapshot<any>((state: any) => {
+      requestId = state.spotNegotiation.currentRequestSmallInfo.id;
+      requestList = state.spotNegotiation.requests;
+    });
+    let expandArray = requestList.map(e => {
+      if(e.id == requestId){
+        var requestLocations = e.requestLocations.map(innerArray =>{
+          if(innerArray.id == data.id){
+            if(innerArray.expand != undefined){
+              return {...innerArray, expand : !innerArray.expand}
+            }else{
+              return {...innerArray, expand : 1}
+            }
+          }else{
+            return innerArray;
+          }
+        });
+        return {...e, requestLocations};
+      }else{
+        return e;
+      }      
+    });
+    this.store.dispatch(new UpdateRequest(expandArray));
+  }
   saveAdditionalCosts(
     offerAdditionalCostList,
     locationAdditionalCostsList,
