@@ -903,9 +903,10 @@ export class VesselInfoComponent implements OnInit {
         if(this.BPlanGenTrigger.indexOf(this.vesselData?.vesselId)!=-1) {
           this.BPlanGenTrigger.splice(this.BPlanGenTrigger.indexOf(this.vesselData?.vesselId), 1);
         }
-        //Check if auto-plan generation is happening at the backend. (Usually happens once in a day)
-        if (this.checkAutoPlanGenInProgress == true)
-          this.checkAutoPlanGenerationInProgress(data.auto_gen_possible_time);
+      }
+      //Check if auto-plan generation is happening at the backend. (Usually happens once in a day)
+      if (this.checkAutoPlanGenInProgress == true)
+        this.checkAutoPlanGenerationInProgress(data.auto_gen_possible_time);
       });
   }
 
