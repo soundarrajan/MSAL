@@ -556,8 +556,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="addTpr"
     >
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value" matTooltipClass="lightTooltip">{{
-        priceCalFormatValue(params.value)
+      <span [matTooltip]="priceCalFormatValue(params.value)" matTooltipClass="lightTooltip"> {{
+        params.value | priceFormatValue : priceFormatValue1
       }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
@@ -569,8 +569,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="addTpr"
     >
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value" matTooltipClass="lightTooltip">{{
-        format.amount(params.value)
+      <span [matTooltip]="priceCalFormatValue(params.value)" matTooltipClass="lightTooltip"> {{
+        params.value | priceFormatValue : priceFormatValue1
       }}</span>
     </div>
 
@@ -581,8 +581,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="addTpr"
     >
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value" matTooltipClass="lightTooltip">{{
-        priceCalFormatValue(params.value)
+      <span [matTooltip]="priceCalFormatValue(params.value)" matTooltipClass="lightTooltip">{{
+        params.value | priceFormatValue : priceFormatValue1
       }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
