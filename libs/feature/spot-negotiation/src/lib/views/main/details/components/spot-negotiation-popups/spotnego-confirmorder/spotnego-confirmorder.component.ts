@@ -12,7 +12,7 @@ import { ServerQueryFilter } from '@shiptech/core/grid/server-grid/server-query.
 import { AgGridDatetimePickerToggleComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-datetimePicker-Toggle';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { AppConfig } from '@shiptech/core/config/app-config';
-import { KeyValue } from '@angular/common';
+import { DecimalPipe, KeyValue } from '@angular/common';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
@@ -48,8 +48,12 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   errorMessages: string;
   staticLists: any;
   FreezeMarketPricesPayload:any;
+  priceFormat: string;
   constructor(
+    @Inject(DecimalPipe)
+    private _decimalPipe,
     public dialogRef: MatDialogRef<SpotnegoConfirmorderComponent>,
+    private tenantService: TenantFormattingService,
     private store: Store,
     public dialog: MatDialog,
     private toaster: ToastrService,
@@ -858,4 +862,54 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     }
     return selectedOffs;
   }
+  priceFormatTrailingZero(value, type?: any) {
+        if (typeof value == 'undefined' || value == null) {
+          return type == 'benchMark' || 'closure' ? '--' : null;
+        }
+    
+        if (value == 0) {
+          return type == 'benchMark' ? value : '--';
+        }
+        let format = /[^\d|\-+|\.+]/g;
+        let plainNumber;
+        value = value.toString().replace(/,/g, '');
+        if (format.test(value.toString()) && type == 'livePrice') {
+          this.toaster.warning('Live price should be a numeric value ');
+          plainNumber = '';
+        } else {
+          plainNumber = value.toString().replace(format, '');
+        }
+    
+        const number = parseFloat(plainNumber);
+    
+        if (isNaN(number)) {
+          return null;
+        }
+    
+        let productPricePrecision = this.tenantService.pricePrecision;
+    
+        let num = plainNumber.split('.', 2);
+        debugger;
+        //To follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
+        if (plainNumber == num ) {
+          this.priceFormat = '';
+        } else {
+          this.priceFormat =
+            '1.' + productPricePrecision + '-' + productPricePrecision;
+        }
+    
+        if (plainNumber) {
+          if (!productPricePrecision) {
+            plainNumber = Math.trunc(plainNumber);
+          }
+          if (type && type == 'benchMark') {
+            plainNumber = Math.abs(parseFloat(plainNumber));
+          }
+          this.priceFormat = '';
+          plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
+          
+          return plainNumber;
+        }
+      }
+    
 }
