@@ -825,7 +825,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       ]
     };
   }
-  storeExpansionState(data){
+  storeExpansionState(data,index){
     let requestList = [];
     let requestId : number;
     this.store.selectSnapshot<any>((state: any) => {
@@ -839,7 +839,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             if(innerArray.expand != undefined){
               return {...innerArray, expand : !innerArray.expand}
             }else{
-              return {...innerArray, expand : 1}
+              return {...innerArray, expand : index == 0 ? false : true}
             }
           }else{
             return innerArray;

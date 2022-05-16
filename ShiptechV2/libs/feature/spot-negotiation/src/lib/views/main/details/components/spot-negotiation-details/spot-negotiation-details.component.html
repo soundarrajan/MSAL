@@ -3,10 +3,10 @@
       <mat-expansion-panel *ngFor="let loc of locations; let i = index; trackBy: identifyer"
         [expanded]="Index == 0 ? ((loc.expand != undefined &&  loc.expand == 0)? false : true) : (loc.expand != undefined ? (loc.expand == 1 ? true : false) : false)"
         style="margin-top: 1px;"
-        (click)="storeExpansionState(loc)"
+        
       >
-        <mat-expansion-panel-header>
-          <mat-panel-title>
+        <mat-expansion-panel-header (click)="storeExpansionState(loc,Index)">
+          <mat-panel-title> 
             <app-loc-pan-data
               [reqLocation]="loc"
               (costChanged)="onCostChanged($event)"
