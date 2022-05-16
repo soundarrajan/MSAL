@@ -228,7 +228,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
               contenteditable="false"
               (keydown)="editQty($event)"
             >
-              {{ '$'+priceFormatValue(closureValue) }}
+              {{ '$'+priceFormatTrailingZero(closureValue,'closure') }}
             </div>
           </div>
           <div
@@ -251,7 +251,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
             >
             <span>
             {{ '$' +
-                priceFormatValue(
+                priceFormatTrailingZero(
                   params.product.requestGroupProducts.benchMark,
                   'benchMark'
                 )
@@ -281,7 +281,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
               contenteditable="false"
               (keydown)="editQty($event)"
             >
-              $ {{ priceFormatValue(targetValue) }}
+              $ {{ priceFormatTrailingZero(targetValue,'target') }}
             </div>
           </div>
           <div
@@ -497,7 +497,7 @@ export class ShiptechCustomHeaderGroup {
           let updatedProdLivePrice = requestLoc.requestProducts.find(
             p => p.id == this.requestProductId
           );
-          let formattedLivePrice = this.priceFormatValue(
+          let formattedLivePrice = this.priceFormatTrailingZero(
             updatedProdLivePrice.requestGroupProducts.livePrice,
             'livePrice'
           );
@@ -634,7 +634,7 @@ export class ShiptechCustomHeaderGroup {
           : [];
       this.bestContractId = contractIds[0]?.contract.id;
       if (min !== null && min != 'Infinity') {
-        return `$ ${this.priceFormatValue(min, 'benchMark')}`;
+        return `$ ${this.priceFormatTrailingZero(min, 'benchMark')}`;
       }
     } else if (params.product.status === 'Stemmed') {
       let requestGroup, prices;
@@ -663,7 +663,7 @@ export class ShiptechCustomHeaderGroup {
       });
       let min = Math.min.apply(null, prices);
       if (min !== null && min != 'Infinity') {
-        return `$ ${this.priceFormatValue(min, 'benchMark')}`;
+        return `$ ${this.priceFormatTrailingZero(min, 'benchMark')}`;
       }
     }
     return '--';
@@ -717,7 +717,56 @@ export class ShiptechCustomHeaderGroup {
       return Array<SpnegoAddCounterpartyModel>();
     }
   }
+  priceFormatTrailingZero(value, type?: any) {
 
+    if (typeof value == 'undefined' || value == null) {
+      return type == 'benchMark' || 'closure' ? '--' : null;
+    }
+
+    if (value == 0) {
+      return type == 'benchMark' ? value : '--';
+    }
+    let format = /[^\d|\-+|\.+]/g;
+    let plainNumber;
+    value = value.toString().replace(/,/g, '');
+    if (format.test(value.toString()) && type == 'livePrice') {
+      this.toastr.warning('Live price should be a numeric value ');
+      plainNumber = '';
+    } else {
+      plainNumber = value.toString().replace(format, '');
+    }
+
+    const number = parseFloat(plainNumber);
+
+    if (isNaN(number)) {
+      return null;
+    }
+
+    let productPricePrecision = this.tenantService.pricePrecision;
+
+    let num = plainNumber.split('.', 2);
+    debugger;
+    //To follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
+    if (plainNumber == num ) {
+      this.priceFormat = '';
+    } else {
+      this.priceFormat =
+        '1.' + productPricePrecision + '-' + productPricePrecision;
+    }
+
+    if (plainNumber) {
+      if (!productPricePrecision) {
+        plainNumber = Math.trunc(plainNumber);
+      }
+      if (type && type == 'benchMark') {
+        plainNumber = Math.abs(parseFloat(plainNumber));
+      }
+      this.priceFormat = '';
+      plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
+      
+      return plainNumber;
+    }
+  }
   priceFormatValue(value, type?: any) {
 
     if (typeof value == 'undefined' || value == null) {
@@ -746,8 +795,9 @@ export class ShiptechCustomHeaderGroup {
     let productPricePrecision = this.tenantService.pricePrecision;
 
     let num = plainNumber.split('.', 2);
+    debugger;
     //Live Price to follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
-    if (plainNumber == num) {
+    if (plainNumber == num && type == 'livePrice' ) {
       this.priceFormat = '';
     } else {
       this.priceFormat =
@@ -762,14 +812,18 @@ export class ShiptechCustomHeaderGroup {
         plainNumber = Math.abs(parseFloat(plainNumber));
       }
       plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
-      //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font      
       return plainNumber;
+      //Need to show perf/BM like if discount, just display the value in green font. incase of premium it will be red font    
+      // // var numVal = plainNumber.toString().replace(/[^\d\.\-]/, "");
+      // // var valWithoutZero = parseFloat(numVal);
+      // // var valWithCommas= valWithoutZero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");  
+      // // return valWithCommas;
     }
   }
   calculateTargetPrice() {
     this.spinner.show();
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
-    this.livePrice = this.priceFormatValue(this.livePrice, 'livePrice');
+    this.livePrice = this.priceFormatTrailingZero(this.livePrice, 'livePrice');
     this.livePrice =
       this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice;
     this.benchMark =
