@@ -708,7 +708,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
-          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+          let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
@@ -747,7 +747,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
-          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+          let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
