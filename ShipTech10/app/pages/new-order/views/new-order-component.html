@@ -1826,7 +1826,7 @@
                                             ng-change="$ctrl.applicableForChange(additionalCost, $ctrl.additionalCostApplicableFor[additionalCost.fakeId], 'input')"
                                             ng-disabled="!additionalCost.additionalCost || additionalCost.isContract || ($ctrl.data.status != null && ( $ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id || additionalCost.disabledApplicableFor || (additionalCost.isTaxComponent && additionalCost.costType.name == 'Percent') || ['Invoiced', 'PartiallyInvoiced'].indexOf($ctrl.data.status.name) != -1))"
                                             ng-model="$ctrl.additionalCostApplicableFor[additionalCost.fakeId]"
-                                            ng-options="product as ($ctrl.sumThose(idx,1) +' - '+ product.product.name) | decodeReadOnly for (idx, product) in $ctrl.data.products | aplicableCostForProduct | orderBy : 'productType.id' ">
+                                            ng-options="product as ($ctrl.sumThose(idx,1) +' - '+ product.product.name) | decodeReadOnly for (idx, product) in $ctrl.data.products | aplicableCostForProduct | orderBy : 'productType.orderBy' ">
 
                                             <option ng-if="(!(additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total') || additionalCost.id)" selected value="">
                                                 All
