@@ -47,7 +47,8 @@
           <div style="background-color: #ffffff;">
             <table>
               <tbody>
-                <tr id="commentList" *ngFor="let tabledata of tabledata; let i = index">
+                <ng-container  *ngFor="let tabledata of tabledata; let i = index">
+                <tr id="commentList" *ngIf="tabledata.price != 0">
                   <td class="border-bottom-1 fz-13">
                     {{ tabledata.date }}
                   </td>
@@ -55,6 +56,7 @@
                     {{ tabledata.price == 0 ? '--' : priceFormatValue(tabledata.price) }}
                   </td>
                 </tr>
+              </ng-container>
               </tbody>
             </table>
           </div>

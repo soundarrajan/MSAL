@@ -1,35 +1,14 @@
 import { isNumeric } from 'rxjs/internal-compatibility';
-import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { defer, Observable, of, Subject, throwError } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
 import { Store } from '@ngxs/store';
-import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { Router } from '@angular/router';
-import { SpotNegotiationApi } from './api/spot-negotiation-api';
-import {
-  IDocumentsCreateUploadRequest,
-  IDocumentsCreateUploadResponse
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
-import {
-  IDocumentsDeleteRequest,
-  IDocumentsDeleteResponse
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
-import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
-import {
-  IDocumentsUpdateIsVerifiedRequest,
-  IDocumentsUpdateIsVerifiedResponse
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
-import {
-  IDocumentsUpdateNotesRequest,
-  IDocumentsUpdateNotesResponse
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
-import { catchError, finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import _ from 'lodash';
 import { SpotNegotiationService } from './spot-negotiation.service';
 import { EditLocationRow, UpdateRequest } from '../store/actions/ag-grid-row.action';
-//import { promises } from 'dns';
 
 export const COMPONENT_TYPE_IDS = {
   TAX_COMPONENT: 1,
@@ -96,6 +75,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
           additionalCost.prodConv &&
           additionalCost.prodConv.length == productList.length
         ) {
+          additionalCost.reqProdIdWithDiffUom = []
           for (let i = 0; i < productList.length; i++) {
             let product = productList[i];
             if (
@@ -107,6 +87,14 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                 product.maxQuantity *
                 additionalCost.prodConv[i] *
                 parseFloat(additionalCost.price);
+                if(additionalCost.priceUomId != product.uomId){
+                  
+                  additionalCost.reqProdId = {
+                    id: product.id,
+                    ratePerMTUom: additionalCost.prodConv[i] * parseFloat(additionalCost.price)
+                  }
+                  additionalCost.reqProdIdWithDiffUom.push(additionalCost.reqProdId);
+                }
             }
           }
           if (!locationAdditionalCostFlag) {
@@ -190,7 +178,11 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       (additionalCost.totalAmount * additionalCost.exchangeRateToBaseCurrency) / additionalCost.maxQuantity;
     if (additionalCost.isAllProductsCost || !productComponent) {
       rowData.requestOffers.forEach(reqOff => {
-        if(additionalCost.isAllProductsCost || reqOff.requestProductId == additionalCost.requestProductId){
+        if(additionalCost?.reqProdIdWithDiffUom?.length > 0 && additionalCost.reqProdIdWithDiffUom?.filter(x => x.id ==reqOff.requestProductId).length > 0 ){
+          let reqProdDetailsWithDiffUom = additionalCost.reqProdIdWithDiffUom.find(x => x.id ==reqOff.requestProductId);
+          reqOff.cost = reqProdDetailsWithDiffUom.ratePerMTUom;
+        }
+        else if(additionalCost.isAllProductsCost || reqOff.requestProductId == additionalCost.requestProductId){
           reqOff.cost = reqOff.cost + additionalCost.ratePerUom;
         }
       });
@@ -201,7 +193,11 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       ) {
         return object.requestProductId == additionalCost.requestProductId;
       });
-      if (findProductIndex != -1) {
+      if(findProductIndex != -1 && additionalCost?.reqProdIdWithDiffUom?.length > 0 && additionalCost.reqProdIdWithDiffUom?.filter(x => x.id == rowData.requestOffers[findProductIndex].requestProductId).length > 0 ){
+        let reqProdDetailsWithDiffUom = additionalCost.reqProdIdWithDiffUom.find(x => x.id == rowData.requestOffers[findProductIndex].requestProductId);
+        rowData.requestOffers[findProductIndex].cost = reqProdDetailsWithDiffUom.ratePerMTUom;
+      }
+      else if (findProductIndex != -1) {
         rowData.requestOffers[findProductIndex].cost = rowData.requestOffers[findProductIndex].cost + additionalCost.ratePerUom;
       }
     }
@@ -210,60 +206,6 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       additionalCost.ratePerUom = null;
     }
 
-    // let checkAdditionalCostRowIndex = _.findIndex(
-    //   offerAdditionalCostList,
-    //   function (obj: any) {
-    //     return !obj.amountIsCalculated && obj.isAllProductsCost;
-    //   }
-    // );
-
-    // let checkAdditionalPercentCostRowIndex = _.findIndex(
-    //   offerAdditionalCostList,
-    //   function (obj: any) {
-    //     return (
-    //       !obj.amountIsCalculated &&
-    //       !obj.isAllProductsCost
-    //     );
-    //   }
-    // );
-    // let checkLocationCostRowIndex = _.findIndex(
-    //   locationAdditionalCostsList,
-    //   function (obj: any) {
-    //     return (
-    //       !obj.amountIsCalculated
-    //       );
-    //   }
-    // );
-
-    // if (
-    //   this.endpointCount == 0 &&
-    //   checkAdditionalCostRowIndex == -1 &&
-    //   checkAdditionalPercentCostRowIndex == -1 &&
-    //   checkLocationCostRowIndex == -1
-    // ) {
-    //   debugger;
-    //   productList.forEach(pro => {
-    //     updatedRow.requestOffers.forEach(reqOff => {
-    //       if (reqOff.requestProductId == pro.id) {
-
-    //         reqOff.totalPrice = reqOff.price + reqOff.cost;
-    //         reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
-    //         reqOff.targetDifference = reqOff.totalPrice - (pro.requestGroupProducts
-    //           ? pro.requestGroupProducts.targetPrice
-    //           : 0);
-    //       }
-    //     });
-    //   });
-    //   this.getSellerLine(updatedRow, colDef, newValue, elementidValue);
-    //   // this.getSellerLine(
-    //   //   offerAdditionalCostList,
-    //   //   locationAdditionalCostsList,
-    //   //   updatedRow,
-    //   //   colDef,
-    //   //   newValue,
-    //   //   elementidValue
-    //   // );
-    // }
   }
   isProductComponent(additionalCost) {
     if (!additionalCost.additionalCostId) {
@@ -341,7 +283,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     return result;
   }
 
-  recalculateLocationAdditionalCosts(
+  async recalculateLocationAdditionalCosts(
     additionalCostList,
     locationAdditionalCostFlag,
     productList,
@@ -368,7 +310,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
 
 
         }
-        this.additionalCostNameChanged(
+        await this.additionalCostNameChanged(
           cost,
           additionalCostList,
           productList,
@@ -482,7 +424,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                     );
 
                   }
-                  this.additionalCostNameChanged(
+                  await this.additionalCostNameChanged(
                     cost,
                     offerAdditionCostsList,
                     productList,
@@ -717,7 +659,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
   getCurrencyId(rowData) {
     return rowData.requestOffers[0].currencyId;
   }
-  additionalCostNameChanged(
+  async additionalCostNameChanged(
     additionalCost,
     offerAdditionalCostList,
     productList,
@@ -727,7 +669,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     requestLocation
   ) {
     if (additionalCost.costTypeId == 2) {
-      this.addPriceUomChanged(
+      await this.addPriceUomChanged(
         additionalCost,
         productList,
         offerAdditionalCostList,
@@ -770,7 +712,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
   //         // Save to the cloud
   //         this.saveRowToCloud(updatedRow, colDef['product'], elementidValue);
   //   }
-  addPriceUomChanged(
+  async addPriceUomChanged(
     additionalCost,
     productList,
     offerAdditionalCostList,
@@ -786,7 +728,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
 
     for (let i = 0; i < productList.length; i++) {
       let prod = productList[i];
-      this.setConvertedAddCost(
+      await this.setConvertedAddCost(
         prod,
         additionalCost,
         i,
@@ -800,7 +742,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     }
   }
 
-  setConvertedAddCost(
+  async setConvertedAddCost(
     prod,
     additionalCost,
     i,
@@ -811,7 +753,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     index,
     requestLocation
   ) {
-    this.getConvertedUOM(
+    await this.getConvertedUOM(
       prod.productId,
       1,
       prod.uomId,
@@ -827,7 +769,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     );
   }
 
-  getConvertedUOM(
+  async getConvertedUOM(
     productId,
     quantity,
     fromUomId,
@@ -870,36 +812,34 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       }
     } else {
       this.endpointCount += 1;
-      this.spotNegotiationService
-        .getUomConversionFactor(payload)
-        .pipe(finalize(() => { }))
-        .subscribe((result: any) => {
-          this.endpointCount -= 1;
-          if (result?.message == 'Unauthorized') {
-            return;
+      let response= await this.spotNegotiationService.getUomConversionFactor(payload);
+      if(response != null){
+        this.endpointCount -= 1;
+        if (response?.message == 'Unauthorized') {
+          return;
+        }
+        if (typeof response == 'string') {
+          //this.toastr.error(result);
+        } else {
+          additionalCost.prodConv[i] = _.cloneDeep(response);
+          if (
+            additionalCost.priceUomId &&
+            additionalCost.prodConv &&
+            additionalCost.prodConv.length == productList.length
+          ) {
+            this.calculateAdditionalCostAmounts(
+              additionalCost,
+              false,
+              productList,
+              offerAdditionalCostList,
+              rowData,
+              locationAdditionalCostsList,
+              index,
+              requestLocation
+            );
           }
-          if (typeof result == 'string') {
-            //this.toastr.error(result);
-          } else {
-            additionalCost.prodConv[i] = _.cloneDeep(result);
-            if (
-              additionalCost.priceUomId &&
-              additionalCost.prodConv &&
-              additionalCost.prodConv.length == productList.length
-            ) {
-              this.calculateAdditionalCostAmounts(
-                additionalCost,
-                false,
-                productList,
-                offerAdditionalCostList,
-                rowData,
-                locationAdditionalCostsList,
-                index,
-                requestLocation
-              );
-            }
-          }
-        });
+        }
+      }
     }
   }
 

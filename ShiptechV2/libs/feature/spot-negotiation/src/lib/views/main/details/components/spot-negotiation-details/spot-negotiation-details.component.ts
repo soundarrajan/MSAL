@@ -1,11 +1,9 @@
 import { SpotNegotiationStoreModel } from './../../../../../store/spot-negotiation.store';
-import { finalize } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
   Input,
   OnInit
 } from '@angular/core';
@@ -74,6 +72,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   requestOptions: any;
   Index: number;
   reqLocId: number;
+
+
 
   @Input('location') set _setlocation(location) {
     this.reqLocId = location.id;
@@ -299,7 +299,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         sortable: false,
         suppressMenu: true
       },
-
+      tooltipShowDelay:0,
       columnDefs: this.columnDef_aggrid,
       suppressCellSelection: true,
       // suppressMovable: true,
@@ -344,7 +344,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     this.spotNegotiationService.gridRedrawService$.subscribe(() => {
       this.redrawGridDetails();
     });
-    
+
     this.spotNegotiationService.gridRefreshService$.subscribe(() => {
       this.refreshGridDetails();
     });
@@ -354,7 +354,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
 
   }
-  
+
   identifyer = (index: number, item: any) => item.name;
   isselectedrowfun(row, isSelected) {
     if (isSelected) {
@@ -444,14 +444,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           }, 100);
          this.spotNegotiationService.callGridRefreshServiceAll();
     // Update the store
-    
-    
+
+
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
       if (res?.message == 'Unauthorized') {
         return;
       }
-      if (res.status) {        
+      if (res.status) {
       } else {
         this.toastr.error(res.message);
         return;
@@ -498,7 +498,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       this.gridOptions_counterparty.api?.refreshCells(params);
   }
 
-
   formatRowDataPrice(row, product, field, newValue) {
     const productDetails = this.spotNegotiationService.getRowProductDetails(
       row,
@@ -522,10 +521,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     );
     return futureRow;
   }
+
   // Calculate row fields and return new row;
-
-  selectAllRenderer(params) {}
-
   getRowNodeId(data) {
     const d = new Date();
    let ms = d.valueOf();
@@ -828,7 +825,33 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       ]
     };
   }
-
+  storeExpansionState(data,index){
+    let requestList = [];
+    let requestId : number;
+    this.store.selectSnapshot<any>((state: any) => {
+      requestId = state.spotNegotiation.currentRequestSmallInfo.id;
+      requestList = state.spotNegotiation.requests;
+    });
+    let expandArray = requestList.map(e => {
+      if(e.id == requestId){
+        var requestLocations = e.requestLocations.map(innerArray =>{
+          if(innerArray.id == data.id){
+            if(innerArray.expand != undefined){
+              return {...innerArray, expand : !innerArray.expand}
+            }else{
+              return {...innerArray, expand : index == 0 ? false : true}
+            }
+          }else{
+            return innerArray;
+          }
+        });
+        return {...e, requestLocations};
+      }else{
+        return e;
+      }      
+    });
+    this.store.dispatch(new UpdateRequest(expandArray));
+  }
   saveAdditionalCosts(
     offerAdditionalCostList,
     locationAdditionalCostsList,
@@ -944,7 +967,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return rowData.requestOffers[0].currencyId;
   }
 
-  
+
   checkHighlight({ product }, requestProductsLength, requestId) {
     var smallestTotalPrice = Infinity;
     var smallestOffer = Infinity;
@@ -1060,6 +1083,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
     return true;
   }
+
   ngOnInit(): void {
     const self = this;
 
@@ -1072,11 +1096,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       if (!this.shouldUpdate({ spotNegotiation })) {
         return null;
       }
-  
+
         if (spotNegotiation.currentRequestSmallInfo) {
           this.currentRequestSmallInfo = spotNegotiation.currentRequestSmallInfo;
         }
-
         if (!spotNegotiation.locations.length && spotNegotiation.staticLists) {
           return null;
         }
@@ -1094,16 +1117,16 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           return { ...e, requestOffers: reqProdOffers };
         });
         this.requestOptions = spotNegotiation.requests;
-  
+
         // Set rows inside ag grid
         this.rowData_aggrid = spotNegotiation.locationsRows;
         // this.currentRequestData = spotNegotiation.locations;
-  
+
         // Spot function if we don't have any requests available
         if (!this.locations || this.locations.length <= 0) {
           return null;
         }
-  
+
         if (
           spotNegotiation.tenantConfigurations &&
           spotNegotiation.tenantConfigurations['isDisplaySellerRating'] === false
@@ -1112,28 +1135,28 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             col => col.field != 'genRating' && col.field != 'portRating'
           );
         }
-  
+
         // Set headers of products;
         this.columnDef_aggridObj = [];
         this.highlightedCells = {};
-  
+
         this.locations.forEach((reqLocation, i) => {
           // Separate rows for each location;
           // Sord data
-  
+
           const filterobj = this.rowData_aggrid?.filter(
             row => row.requestLocationId === reqLocation.id
           );
           this.rowData_aggridObj[i] = filterobj;
-  
+
           // Assign ColumnDef_aggrid with dynamic location id
           this.columnDef_aggridObj.push(_.cloneDeep(this.columnDef_aggrid)); //;
-  
+
           this.columnDef_aggridObj[i][0].headerGroupComponentParams.reqLocationId = reqLocation.id;
           this.columnDef_aggridObj[i][0].headerGroupComponentParams.selectedSellersCount = filterobj.length;
           this.columnDef_aggridObj[i][1].headerGroupComponentParams.noOfProducts = reqLocation.requestProducts.length;
           this.columnDef_aggridObj[i][0].children[0].cellRendererParams.requestLocationId = reqLocation.id;
-  
+
           // These are locations!!
           const requestProductsLength = reqLocation.requestProducts.length;
           reqLocation.requestProducts.map((reqProduct, index) => {
@@ -1147,11 +1170,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             );
           });
         });
-  
+
         // Detect change and update the ui
         if (!this.changeDetector['destroyed']) {
           this.changeDetector.detectChanges();
-        }      
+        }
     });
     this.isEnabledView = true;
   }
@@ -1191,8 +1214,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       ] = this.additionalCostList[i];
     }
   }
-
-  dataManupulation() {}
 
   resizeGrid() {
     this.gridOptions_counterparty.columnApi.setColumnVisible('mj', true);
@@ -1390,6 +1411,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
     return false;
   }
+
   removeCounterpartyRowClicked(rowData: any, rowIndex: number, gridApi: any) {
     if (rowData.requestOffers != undefined) {
       if (this.isStemmedproduct(rowData)) {
@@ -1510,7 +1532,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
-          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+          let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
@@ -1549,7 +1571,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
-          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+          let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');

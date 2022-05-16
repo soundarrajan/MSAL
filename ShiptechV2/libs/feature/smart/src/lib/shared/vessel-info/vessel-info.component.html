@@ -35,7 +35,7 @@
   <div class="border-l-r" style="flex:0 0 24%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;">
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan received</div><span class="label-text">:</span>
-      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.lastPlanReceivedDate | date: 'dd/MM/yyyy'}} <div class="m-l-r-5">|</div>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.lastPlanReceivedDate | date: 'dd/MM/yyyy' :'UTC' + offset }} <div class="m-l-r-5">|</div>
         ID:{{bunkerPlanHeaderDetail?.lastPlanReceivedId}}</div>
       <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')>-1">N/A <div class="m-l-r-5">|</div>
         ID:N/A</div>
@@ -43,7 +43,7 @@
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan sent
       </div><span class="label-text">:</span>
-      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')==-1"> {{bunkerPlanHeaderDetail.lastPlanSentDate | date: 'dd/MM/yyyy'}} <div class="m-l-r-5">|</div>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')==-1"> {{bunkerPlanHeaderDetail.lastPlanSentDate | date: 'dd/MM/yyyy' :'UTC' + offset }} <div class="m-l-r-5">|</div>
         ID:{{bunkerPlanHeaderDetail.lastPlanSentId}}</div>
       <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')>-1"> N/A <div class="m-l-r-5">|</div>
         ID:N/A</div>
@@ -99,7 +99,7 @@
                               <td><div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" [textContent]="ROBArbitrageData?.hsdisCurrentStock" (input)="ROBOnChange($event,$event.target.textContent, 'HSDIS');ROBArbitrageData.hsdisCurrentStock=$event.target.textContent" [ngClass]="hsdisRobClasses">{{ROBArbitrageData?.hsdisCurrentStock? (ROBArbitrageData?.hsdisCurrentStock): 0}}</div></td>
                             </tr>
                           <tr>
-                            <th scope="row">MSPS</th>
+                            <th scope="row">MSPS <span>(dt: {{ROBArbitrageData?.mspsestdate | date: 'dd/MM/yyyy'}})</span></th>
                             <td colspan=2>{{ROBArbitrageData?.mspshsfo? (ROBArbitrageData?.mspshsfo): 0}}</td>
                             <td>{{ROBArbitrageData?.mspsulsfo? (ROBArbitrageData?.mspsulsfo): 0}}</td>
                             <td>{{ROBArbitrageData?.mspslsdis? (ROBArbitrageData?.mspslsdis): 0}}</td>
@@ -111,7 +111,7 @@
                             <td>{{ROBArbitrageData?.upulsfo? (ROBArbitrageData?.upulsfo): 0}}</td>
                             <td>{{ROBArbitrageData?.uplsdis? (ROBArbitrageData?.uplsdis): 0}}</td>
                             <td>{{ROBArbitrageData?.uphsdis? (ROBArbitrageData?.uphsdis): 0}}</td>
-                            
+
                           </tr>
                         </table>
                       </div>
@@ -220,11 +220,11 @@
 
     </mat-expansion-panel>
     <!-- <mat-expansion-panel *ngIf="!expandComments && !expandPrevBPlan" [ngClass]="{'fullheight':expandBplan}" #panel
-      id="current-bunker-plan" hideToggle="true" 
+      id="current-bunker-plan" hideToggle="true"
        [expanded]="vesselService.currentBunkeringPlan" (closed)="currentBplan?.gridChanged && togglecurrentBPlan(panel);changeDefault('currentBunkeringPlanClose')"
       (opened)="changeDefault('currentBunkeringPlanOpen')"> -->
     <mat-expansion-panel *ngIf="!expandComments && !expandPrevBPlan" [ngClass]="{'fullheight':expandBplan}" #panel
-      id="current-bunker-plan" hideToggle="true" 
+      id="current-bunker-plan" hideToggle="true"
        [expanded]="'true'" (closed)="currentBplan?.gridChanged && togglecurrentBPlan(panel);"
       (opened)="changeDefault('currentBunkeringPlanOpen')">
       <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
@@ -248,11 +248,11 @@
               <div *ngIf="isLatestPlanInvalid == true" style="flex:0 0 13%;display: flex;align-items: center;">
                 <div id="plan-date" class="border-l-rightside" style="flex:0 0 96%;text-align: center;"
                       [ngClass]="{'createReqEnable':enableCreateReq,'createReqDisable':!enableCreateReq}"
-                      (click)="$event.stopPropagation()"> 
+                      (click)="$event.stopPropagation()">
                       <a style="padding-left:20px"(click)="createRequest()">Create Request </a>
                 </div>
               </div>
-             
+
 
               <ng-container *ngIf="panel.expanded">
                 <div class="border-rightside"
@@ -265,10 +265,10 @@
                   </button> -->
                   <div *ngIf="isLatestPlanInvalid == false" class="border-rightside" style="padding-right: 5px;"
                     [ngClass]="{'createReqEnable':enableCreateReq,'createReqDisable':!enableCreateReq}"
-                    (click)="$event.stopPropagation()"> 
+                    (click)="$event.stopPropagation()">
                     <a (click)="createRequest()">Create Request </a>
                   </div>
-                  <div *ngIf="isLatestPlanInvalid == true" style="padding-right: 5px;"> 
+                  <div *ngIf="isLatestPlanInvalid == true" style="padding-right: 5px;">
                     <div class="newplan-notification" style="width: 180px;margin-top: 8px !important;"><span class="newplan-notification-icon"></span>Latest Bunkering Plan is invalid</div>
                   </div>
                   <!-- <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn" (click)="setImportGSIS()">Import
@@ -361,7 +361,7 @@
       </mat-expansion-panel-header>
       <div class="panel-body">
         <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded && loadBplan"
-          [planId]="prevPlanId" [bPlanType]="bPlanType.prev" 
+          [planId]="prevPlanId" [bPlanType]="bPlanType.prev"
           [selectedUserRole]="selectedUserRole"
           [vesselRef]="vesselData">
         </app-bunkering-plan>
