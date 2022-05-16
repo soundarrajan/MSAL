@@ -58,6 +58,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   tenantConfiguration: any;
   RequestGroupID: number;
   negotiationId: any;
+  requestId: any;
   emailLogUrl: string;
   baseOrigin: string;
   isAuthorizedForReportsTab: boolean = false;
@@ -82,6 +83,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
     // this.route.data.subscribe(data => {
     //   this.navBar = data.navBar;
     // });
+    this.tenantConfiguration = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.tenantConfigurations;
+    });
     const response = this.spotNegotiationService.CheckWhetherUserIsAuthorizedForReportsTab();
     response.subscribe((res: any) => {
       if (res?.message == 'Unauthorized') {
@@ -89,42 +93,46 @@ export class SpotNegotiationHomeComponent implements OnInit {
       } else {
         this.isAuthorizedForReportsTab = true;
       }
-    });
-    this.store.subscribe(({ spotNegotiation }) => {
-      //this.spotNegotiationService.callGridRefreshService();
-      this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
-      if (
-        this.currentRequestInfo &&
-        this.negoNavBarChild &&
-        this.navBar != this.currentRequestInfo.id
-      ) {
-        this.navBar = this.currentRequestInfo.id;
-        this.negoNavBarChild.createNavBarIds(this.currentRequestInfo.id);
-      }
-      this.requestOptions = spotNegotiation.requests;
-      if (this.requestOptions && this.currentRequestInfo) {
-        this.requestOptionsToDuplicatePrice = this.requestOptions
-          .filter(
-            r =>
-              r.id != this.currentRequestInfo.id &&
-              r.requestLocations.some(l =>
-                l.requestProducts.some(
-                  pr =>
-                    pr.status.toLowerCase().includes('inquired') ||
-                    pr.status.toLowerCase().includes('quoted')
+      
+      this.store.subscribe(({ spotNegotiation }) => {
+        //this.spotNegotiationService.callGridRefreshService();
+        this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
+        if (
+          this.currentRequestInfo &&
+          this.negoNavBarChild &&
+          this.navBar != this.currentRequestInfo.id
+        ) {
+          this.navBar = this.currentRequestInfo.id;
+          this.negoNavBarChild.createNavBarIds(this.currentRequestInfo.id);
+        }
+        this.requestOptions = spotNegotiation.requests;
+        if (this.requestOptions && this.currentRequestInfo) {
+          this.requestOptionsToDuplicatePrice = this.requestOptions
+            .filter(
+              r =>
+                r.id != this.currentRequestInfo.id &&
+                r.requestLocations.some(l =>
+                  l.requestProducts.some(
+                    pr =>
+                      pr.status.toLowerCase().includes('inquired') ||
+                      pr.status.toLowerCase().includes('quoted')
+                  )
                 )
-              )
-          )
-          .map(req => ({ ...req, selected: true }));
-        this.selectedRequestList = this.requestOptionsToDuplicatePrice;
-      }
-      this.tenantConfiguration = spotNegotiation.tenantConfigurations;
-      this.setTabItems();
+            )
+            .map(req => ({ ...req, selected: true }));
+          this.selectedRequestList = this.requestOptionsToDuplicatePrice;
+        }
+//        this.tenantConfiguration = spotNegotiation.tenantConfigurations;
+        this.setTabItems();
+      });
+  
+      this.route.params.pipe().subscribe(params => {
+        this.negotiationId = params.spotNegotiationId;
+        if(params.requestId)
+          this.requestId = params.requestId;
+      });
     });
-
-    this.route.params.pipe().subscribe(params => {
-      this.negotiationId = params.spotNegotiationId;
-    });
+    
   }
 
   ngAfterViewInit(): void {
@@ -143,7 +151,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         label: 'Main Page',
         routerLink: [
           ...routeLinkToNegotiationDetails,
-          KnownSpotNegotiationRoutes.details
+          this.requestId ?? KnownSpotNegotiationRoutes.details
         ],
         routerLinkActiveOptions: { exact: true },
         command: () => {
@@ -481,7 +489,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         this.UpdateProductsSelection(requestLocations, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
-          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+          let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
@@ -521,7 +529,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         this.UpdateProductsSelection(requestLocations, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
-          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+          let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');

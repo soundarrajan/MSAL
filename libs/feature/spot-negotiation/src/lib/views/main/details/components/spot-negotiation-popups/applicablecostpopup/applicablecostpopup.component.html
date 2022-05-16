@@ -191,7 +191,7 @@
                   <div class="non-editable-container-text-left">
                     {{
                       locationCost.price
-                        ? priceFormatValue(locationCost.price)
+                        ? priceFormatTrailingZero(locationCost.price)
                         : ' '
                     }}
                   </div>
@@ -249,7 +249,7 @@
               <td class="text-left">
                 {{
                   locationCost.extras
-                    ? priceFormatValue(locationCost.extras)
+                    ? priceFormatTrailingZero(locationCost.extras)
                     : ' '
                 }}
               </td>
@@ -294,7 +294,7 @@
               <td class="text-left">
                 {{
                   locationCost.ratePerUom && locationCost.costType !== 'Percent'
-                    ? priceFormatValue(locationCost.ratePerUom)
+                    ? priceFormatTrailingZero(locationCost.ratePerUom)
                     : ''
                 }}
               </td>

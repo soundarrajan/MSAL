@@ -382,6 +382,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
               params.index
             }}"
             (keyup.enter)="onGetFocus($event, params)"
+            (keydown.Tab)="onPriceChange($event, params)"
+            (focus)="getCurrentOfferValue($event)"
             (change)="onPriceChange($event, params)"
             autofocus
             #inputSection
@@ -594,8 +596,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="addTpr"
     >
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value" matTooltipClass="lightTooltip">{{
-        priceCalFormatValue(params.value)
+      <span [matTooltip]="priceCalFormatValue(params.value)" matTooltipClass="lightTooltip"> {{
+        params.value | priceFormatValue : priceFormatValue1
       }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
@@ -607,8 +609,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="addTpr"
     >
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value" matTooltipClass="lightTooltip">{{
-        format.amount(params.value)
+      <span [matTooltip]="priceCalFormatValue(params.value)" matTooltipClass="lightTooltip"> {{
+        params.value | priceFormatValue : priceFormatValue1
       }}</span>
     </div>
 
@@ -619,8 +621,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       class="addTpr"
     >
       <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="params.value" matTooltipClass="lightTooltip">{{
-        priceCalFormatValue(params.value)
+      <span [matTooltip]="priceCalFormatValue(params.value)" matTooltipClass="lightTooltip">{{
+        params.value | priceFormatValue : priceFormatValue1
       }}</span>
       <!--<div class="addButton" *ngIf="params.value !='-'" (click)="additionalcostpopup()"></div> -->
     </div>
@@ -753,6 +755,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   currencyListForAdditionalCost: any[] = [];
   priceChanged: boolean = false;
   check_count = 0;
+  offerOldValue : number;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -1138,8 +1141,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         findRequestLocationIndex
       ];
       const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
-        width: '1170px',
+        width: '95%',
         height: 'auto',
+        maxWidth : '100vw',
         panelClass: 'additional-cost-popup',
         data: {
           requestLocation: requestLocation,
@@ -1257,7 +1261,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
-          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+          let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
@@ -1296,7 +1300,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
-          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+          let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
@@ -1733,8 +1737,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   moveCursorToEnd(element) {
     var len = element.value.length;
     if (element.setSelectionRange) {
-      element.focus();
-      element.setSelectionRange(len, len);
+      setTimeout(() => {
+        element.focus();
+        element.setSelectionRange(len, len);
+      }, 500);
+      
     } else if (element.createTextRange) {
       var t = element.createTextRange();
       t.collapse(true);
@@ -1745,23 +1752,21 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   onPriceChange(e, params) {
-    this.priceChanged = true;
-    // const futureValue = e.target.value;
-
-    // if (!futureValue) {
-    //   return null;
-    // }
-
-    // if ((document.getElementsByClassName("Enabledconfirm") as any).length > 0) {
-    //   (document.getElementsByClassName("Enabledconfirm") as any).disabled = false;
-    // }
-    params.colDef.valueSetter({
-      colDef: params.colDef,
-      data: params.data,
-      newValue: e.target.value,
-      event: e,
-      elementidValue: this.returnRowIndex(params)
-    });
+    this.priceChanged = false;
+    if((e.target.value !='' && this.offerOldValue != e.target.value) || (e.target.value == '' && this.offerOldValue > 0) ){
+      params.colDef.valueSetter({
+        colDef: params.colDef,
+        data: params.data,
+        newValue: e.target.value,
+        event: e,
+        elementidValue: this.returnRowIndex(params)
+      });
+    }else{
+      this.onGetFocus(e, params);
+    }
+  }
+  public getCurrentOfferValue(e){
+    this.offerOldValue = e.target.value;
   }
   public checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1 = (params) => {
     const requestLocation = this.getCurrentRequestLocation();
@@ -2063,7 +2068,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         updatedRow.isRfqSend = updatedRow.requestOffers?.some(off => off.isRfqskipped === false);
         let requestProducts = requests.find(x => x.id == updatedRow.requestId)?.requestLocations?.find(l => l.id ==updatedRow.requestLocationId)?.requestProducts;
         updatedRow.requestOffers = updatedRow.requestOffers.map(e => {
-          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+          let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
         });
         updatedRow.hasAnyProductStemmed = updatedRow.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');

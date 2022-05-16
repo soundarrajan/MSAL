@@ -469,7 +469,7 @@ export class DeliveryProductsGroupComponent
             this.conversionInfoData[this.selectedProduct] = response;
             this.calculateVarianceAndReconStatus(productIndex);
             // this.orderProductsByProductType('deliveryProducts');
-            this.orderProductsByProductType('summaryProducts');
+            // this.orderProductsByProductType('summaryProducts');
             this.changeDetectorRef.detectChanges();
             this.deliveryFormSubject.next(this.formValues);
             //this.conversionDataInfoSubject.next(this.conversionInfoData);

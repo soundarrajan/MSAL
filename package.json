@@ -32,7 +32,7 @@
     "azure-build-debug": "ng build --output-path=dist/debug",
     "azure-build-release": "ng build --prod --output-path=dist/release",
     "azure-build-release-staging": "ng build --configuration=staging --output-path=dist/release",
-    "azure-pull-request-validatation": "ng build --aot --optimization=false --build-optimizer=false --vendorChunk=false --sourceMap=false --commonChunk=false",
+    "azure-pull-request-validation": "ng build --aot --optimization=false --build-optimizer=false --vendorChunk=false --sourceMap=false --commonChunk=false",
     "update-sass-layout": "sass --update assets/layout/css/layout-shiptech.scss:assets/layout/css/layout-shiptech.css",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
   },
@@ -91,7 +91,7 @@
     "core-js": "^2.6.11",
     "decimal.js": "^10.2.1",
     "dexie": "^2.0.4",
-    "email-template-editor-ckeditor": "1.11.2",
+    "email-template-editor-ckeditor": "1.11.3",
     "file-saver": "^2.0.2",
     "hammerjs": "^2.0.8",
     "highcharts": "^9.1.2",

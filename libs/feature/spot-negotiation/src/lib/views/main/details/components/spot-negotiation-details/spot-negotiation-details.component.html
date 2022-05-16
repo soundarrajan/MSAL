@@ -1,11 +1,12 @@
 <div class="spot-nego-content">
   <div class="grid-in-accordion">
-      <mat-expansion-panel *ngFor="let loc of locations; let i = index; trackBy: identifyer" 
-        [expanded]="Index == 0 ? true : false"
+      <mat-expansion-panel *ngFor="let loc of locations; let i = index; trackBy: identifyer"
+        [expanded]="Index == 0 ? ((loc.expand != undefined &&  loc.expand == 0)? false : true) : (loc.expand != undefined ? (loc.expand == 1 ? true : false) : false)"
         style="margin-top: 1px;"
+        
       >
-        <mat-expansion-panel-header>
-          <mat-panel-title>
+        <mat-expansion-panel-header (click)="storeExpansionState(loc,Index)">
+          <mat-panel-title> 
             <app-loc-pan-data
               [reqLocation]="loc"
               (costChanged)="onCostChanged($event)"
@@ -26,7 +27,6 @@
                         class="ag-theme-material ag-grid-v2 angular-v9 spot-negotiation-details"
                         style="width: 100%;height: 100%;"
                         domLayout="autoHeight"
-                        [enableBrowserTooltips]="true"
                         [rowData]="rowData_aggridObj[i]"
                         [columnDefs]="columnDef_aggridObj[i]"
                         [gridOptions]="gridOptions_counterparty"

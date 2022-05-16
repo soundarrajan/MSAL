@@ -4,6 +4,7 @@ import * as Highcharts from "highcharts";
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Store } from '@ngxs/store';
+import { ToastrService } from 'ngx-toastr';
 import { DecimalPipe } from '@angular/common';
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
@@ -137,6 +138,7 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
      private spotNegotiationService : SpotNegotiationService,
      private spinner: NgxSpinnerService,
      public store: Store,
+     private toastr: ToastrService,
      ) {
         this.requestProductId = data.RequestProductId;
         this.requestLocationId = data.RequestLocationId;
@@ -234,6 +236,56 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
 
     this.isShown = ! this.isShown;
 
+    }
+    priceFormatTrailingZero(value, type?: any) {
+
+      if (typeof value == 'undefined' || value == null) {
+        return type == 'benchMark' || 'closure' ? '--' : null;
+      }
+  
+      if (value == 0) {
+        return type == 'benchMark' ? value : '--';
+      }
+      let format = /[^\d|\-+|\.+]/g;
+      let plainNumber;
+      value = value.toString().replace(/,/g, '');
+      if (format.test(value.toString()) && type == 'livePrice') {
+        this.toastr.warning('Live price should be a numeric value ');
+        plainNumber = '';
+      } else {
+        plainNumber = value.toString().replace(format, '');
+      }
+  
+      const number = parseFloat(plainNumber);
+  
+      if (isNaN(number)) {
+        return null;
+      }
+  
+      let productPricePrecision = this.tenantService.pricePrecision;
+  
+      let num = plainNumber.split('.', 2);
+      debugger;
+      //To follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
+      if (plainNumber == num ) {
+        this.priceFormat = '';
+      } else {
+        this.priceFormat =
+          '1.' + productPricePrecision + '-' + productPricePrecision;
+      }
+  
+      if (plainNumber) {
+        if (!productPricePrecision) {
+          plainNumber = Math.trunc(plainNumber);
+        }
+        if (type && type == 'benchMark') {
+          plainNumber = Math.abs(parseFloat(plainNumber));
+        }
+        this.priceFormat = '';
+        plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
+        
+        return plainNumber;
+      }
     }
 
 

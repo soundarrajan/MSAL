@@ -1036,6 +1036,7 @@ export class AdditionalCostModalComponent implements OnInit {
       if (this.tenantService.pricePrecision == 0) {
         return plainNumber;
       } else {
+        plainNumber = plainNumber.toString().replace(/,/g, '');
         return this._decimalPipe.transform(plainNumber, this.priceFormat);
       }
     }
