@@ -75,6 +75,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
           additionalCost.prodConv &&
           additionalCost.prodConv.length == productList.length
         ) {
+          additionalCost.reqProdIdWithDiffUom = []
           for (let i = 0; i < productList.length; i++) {
             let product = productList[i];
             if (
@@ -86,6 +87,14 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                 product.maxQuantity *
                 additionalCost.prodConv[i] *
                 parseFloat(additionalCost.price);
+                if(additionalCost.priceUomId != product.uomId){
+                  
+                  additionalCost.reqProdId = {
+                    id: product.id,
+                    ratePerMTUom: additionalCost.prodConv[i] * parseFloat(additionalCost.price)
+                  }
+                  additionalCost.reqProdIdWithDiffUom.push(additionalCost.reqProdId);
+                }
             }
           }
           if (!locationAdditionalCostFlag) {
@@ -169,7 +178,11 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       (additionalCost.totalAmount * additionalCost.exchangeRateToBaseCurrency) / additionalCost.maxQuantity;
     if (additionalCost.isAllProductsCost || !productComponent) {
       rowData.requestOffers.forEach(reqOff => {
-        if(additionalCost.isAllProductsCost || reqOff.requestProductId == additionalCost.requestProductId){
+        if(additionalCost?.reqProdIdWithDiffUom?.length > 0 && additionalCost.reqProdIdWithDiffUom?.filter(x => x.id ==reqOff.requestProductId).length > 0 ){
+          let reqProdDetailsWithDiffUom = additionalCost.reqProdIdWithDiffUom.find(x => x.id ==reqOff.requestProductId);
+          reqOff.cost = reqProdDetailsWithDiffUom.ratePerMTUom;
+        }
+        else if(additionalCost.isAllProductsCost || reqOff.requestProductId == additionalCost.requestProductId){
           reqOff.cost = reqOff.cost + additionalCost.ratePerUom;
         }
       });
@@ -180,7 +193,11 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       ) {
         return object.requestProductId == additionalCost.requestProductId;
       });
-      if (findProductIndex != -1) {
+      if(findProductIndex != -1 && additionalCost?.reqProdIdWithDiffUom?.length > 0 && additionalCost.reqProdIdWithDiffUom?.filter(x => x.id == rowData.requestOffers[findProductIndex].requestProductId).length > 0 ){
+        let reqProdDetailsWithDiffUom = additionalCost.reqProdIdWithDiffUom.find(x => x.id == rowData.requestOffers[findProductIndex].requestProductId);
+        rowData.requestOffers[findProductIndex].cost = reqProdDetailsWithDiffUom.ratePerMTUom;
+      }
+      else if (findProductIndex != -1) {
         rowData.requestOffers[findProductIndex].cost = rowData.requestOffers[findProductIndex].cost + additionalCost.ratePerUom;
       }
     }

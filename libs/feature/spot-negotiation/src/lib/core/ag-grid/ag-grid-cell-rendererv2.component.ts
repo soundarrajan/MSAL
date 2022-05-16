@@ -1221,7 +1221,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
-          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+          let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
@@ -1260,7 +1260,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.UpdateProductsSelection(currentLocProd, row);
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
-          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+          let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
@@ -1703,7 +1703,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   onPriceChange(e, params) {
-    debugger;
     this.priceChanged = false;
     if((e.target.value !='' && this.offerOldValue != e.target.value) || (e.target.value == '' && this.offerOldValue > 0) ){
       params.colDef.valueSetter({
@@ -2020,7 +2019,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         updatedRow.isRfqSend = updatedRow.requestOffers?.some(off => off.isRfqskipped === false);
         let requestProducts = requests.find(x => x.id == updatedRow.requestId)?.requestLocations?.find(l => l.id ==updatedRow.requestLocationId)?.requestProducts;
         updatedRow.requestOffers = updatedRow.requestOffers.map(e => {
-          let isStemmed = requestProducts.find(rp => rp.id == e.requestProductId)?.status;
+          let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
            return { ...e, reqProdStatus: isStemmed };
         });
         updatedRow.hasAnyProductStemmed = updatedRow.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
