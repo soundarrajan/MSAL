@@ -228,7 +228,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
               contenteditable="false"
               (keydown)="editQty($event)"
             >
-              {{ '$'+priceFormatTrailingZero(closureValue,'closure') }}
+              {{ '$'+tenantService.FormatPriceTrailingZero(closureValue,'closure') }}
             </div>
           </div>
           <div
@@ -251,7 +251,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
             >
             <span>
             {{ '$' +
-                priceFormatTrailingZero(
+            tenantService.FormatPriceTrailingZero(
                   params.product.requestGroupProducts.benchMark,
                   'benchMark'
                 )
@@ -281,7 +281,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
               contenteditable="false"
               (keydown)="editQty($event)"
             >
-              $ {{ priceFormatTrailingZero(targetValue,'target') }}
+              $ {{ tenantService.FormatPriceTrailingZero(targetValue,'target') }}
             </div>
           </div>
           <div
@@ -497,7 +497,7 @@ export class ShiptechCustomHeaderGroup {
           let updatedProdLivePrice = requestLoc.requestProducts.find(
             p => p.id == this.requestProductId
           );
-          let formattedLivePrice = this.priceFormatTrailingZero(
+          let formattedLivePrice = this.tenantService.FormatPriceTrailingZero(
             updatedProdLivePrice.requestGroupProducts.livePrice,
             'livePrice'
           );
@@ -634,7 +634,7 @@ export class ShiptechCustomHeaderGroup {
           : [];
       this.bestContractId = contractIds[0]?.contract.id;
       if (min !== null && min != 'Infinity') {
-        return `$ ${this.priceFormatTrailingZero(min, 'benchMark')}`;
+        return `$ ${this.tenantService.FormatPriceTrailingZero(min, 'benchMark')}`;
       }
     } else if (params.product.status === 'Stemmed') {
       let requestGroup, prices;
@@ -663,7 +663,7 @@ export class ShiptechCustomHeaderGroup {
       });
       let min = Math.min.apply(null, prices);
       if (min !== null && min != 'Infinity') {
-        return `$ ${this.priceFormatTrailingZero(min, 'benchMark')}`;
+        return `$ ${this.tenantService.FormatPriceTrailingZero(min, 'benchMark')}`;
       }
     }
     return '--';
@@ -715,55 +715,6 @@ export class ShiptechCustomHeaderGroup {
       );
     } else {
       return Array<SpnegoAddCounterpartyModel>();
-    }
-  }
-  priceFormatTrailingZero(value, type?: any) {
-
-    if (typeof value == 'undefined' || value == null) {
-      return type == 'benchMark' || 'closure' ? '--' : null;
-    }
-
-    if (value == 0) {
-      return type == 'benchMark' ? value : '--';
-    }
-    let format = /[^\d|\-+|\.+]/g;
-    let plainNumber;
-    value = value.toString().replace(/,/g, '');
-    if (format.test(value.toString()) && type == 'livePrice') {
-      this.toastr.warning('Live price should be a numeric value ');
-      plainNumber = '';
-    } else {
-      plainNumber = value.toString().replace(format, '');
-    }
-
-    const number = parseFloat(plainNumber);
-
-    if (isNaN(number)) {
-      return null;
-    }
-
-    let productPricePrecision = this.tenantService.pricePrecision;
-
-    let num = plainNumber.split('.', 2);
-    //To follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
-    if (plainNumber == num ) {
-      this.priceFormat = '';
-    } else {
-      this.priceFormat =
-        '1.' + productPricePrecision + '-' + productPricePrecision;
-    }
-
-    if (plainNumber) {
-      if (!productPricePrecision) {
-        plainNumber = Math.trunc(plainNumber);
-      }
-      if (type && type == 'benchMark') {
-        plainNumber = Math.abs(parseFloat(plainNumber));
-      }
-      this.priceFormat = '';
-      plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
-      
-      return plainNumber;
     }
   }
   priceFormatValue(value, type?: any) {
@@ -821,7 +772,7 @@ export class ShiptechCustomHeaderGroup {
   calculateTargetPrice() {
     this.spinner.show();
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
-    this.livePrice = this.priceFormatTrailingZero(this.livePrice, 'livePrice');
+    this.livePrice = this.tenantService.FormatPriceTrailingZero(this.livePrice, 'livePrice');
     this.livePrice =
       this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice;
     this.benchMark =
