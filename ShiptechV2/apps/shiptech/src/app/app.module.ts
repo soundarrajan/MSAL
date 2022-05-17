@@ -20,7 +20,7 @@ import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
 import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { CoreModule } from '@shiptech/core/core.module';
-import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
+import { APP_BASE_HREF, DecimalPipe, DOCUMENT } from '@angular/common';
 import { TitleModule } from '@shiptech/core/services/title/title.module';
 import { AllModules, ModuleRegistry } from '@ag-grid-enterprise/all-modules';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -160,6 +160,7 @@ export function MSALInterceptConfigFactory() {
       useFactory: getAppBaseHref,
       deps: [DOCUMENT]
     },
+    DecimalPipe,
     !environment.useAdal
       ? {
           provide: APP_INITIALIZER,

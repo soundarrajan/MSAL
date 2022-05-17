@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import moment from 'moment';
 import dateTimeAdapter from '@shiptech/core/utils/dotnet-moment-format-adapter';
 import _ from 'lodash';
+import { DecimalPipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,14 @@ export class TenantFormattingService {
   private quantityFormatter: Intl.NumberFormat;
   private priceFormatter: Intl.NumberFormat;
   private amountFormatter: Intl.NumberFormat;
+  toastr: any;
+  priceFormat: string;
 
-  constructor(tenantSettings: TenantSettingsService) {
+  constructor(
+    tenantSettings: TenantSettingsService,
+    @Inject(DecimalPipe)
+    private _decimalPipe
+  ){
     const generalTenantSettings = tenantSettings.getGeneralTenantSettings();
 
     this.dateFormat = generalTenantSettings.tenantFormats.dateFormat.name;
@@ -51,6 +58,45 @@ export class TenantFormattingService {
     if (isNaN(actualValue)) return undefined;
 
     return this.amountFormatter.format(actualValue);
+  }
+
+  public FormatPriceTrailingZero(value, type?: any){
+    if (typeof value == 'undefined' || value == null) {
+      return type == 'benchMark' || 'closure' ? '--' : null;
+    }
+    if (value == 0) {
+      return type == 'benchMark' ? value : '--';
+    }
+    let format = /[^\d|\-+|\.+]/g;
+    let plainNumber;
+    value = value.toString().replace(/,/g, '');
+    if (format.test(value.toString()) && type == 'livePrice') {
+      this.toastr.warning('Live price should be a numeric value ');
+      plainNumber = '';
+    } else {
+      plainNumber = value.toString().replace(format, '');
+    }
+    const number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    let maxPrecision = this.pricePrecision;
+    let minPrecision = 0;
+    
+     //To follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
+ 
+    this.priceFormat = '1.' + minPrecision + '-' + maxPrecision;
+    if (plainNumber) {
+      if (!maxPrecision) {
+      plainNumber = Math.trunc(plainNumber);
+      }
+      if (type && type == 'benchMark') {
+      plainNumber = Math.abs(parseFloat(plainNumber));
+      }
+      this.priceFormat = '';
+      plainNumber = this._decimalPipe.transform(plainNumber, this.priceFormat);
+      return plainNumber;
+      }
   }
 
   public quantity(value: number | string): string | undefined {
