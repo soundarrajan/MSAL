@@ -234,7 +234,6 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
       let productPricePrecision = this.tenantService.pricePrecision;
   
       let num = plainNumber.split('.', 2);
-      debugger;
       //To follow precision set at tenant. Ignore the precision, if the decimal values are only 0s
       if (plainNumber == num ) {
         this.priceFormat = '';
