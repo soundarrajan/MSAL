@@ -162,8 +162,9 @@ export class ApplicablecostpopupComponent implements OnInit {
               this.locationBasedCosts = this.formatCostItemForDisplay(
                 response.locationAdditionalCosts
               );
+              this.calcLocationBasedAdditionalCosts(this.locationBasedCosts);
               this.changeDetectorRef.detectChanges();
-            }            
+            } 
           //});
       });
 
@@ -180,6 +181,166 @@ export class ApplicablecostpopupComponent implements OnInit {
           this.createAdditionalCostTypes();
         }
       });
+  }
+
+  async additionalCostNameChanged(additionalCost) {
+    if (additionalCost.costTypeId == 2) {
+      await this.addPriceUomChanged(additionalCost);
+    } else {
+      this.calculateAdditionalCostAmounts(additionalCost);
+    }
+  }
+
+  calcLocationBasedAdditionalCosts(additionalCostList){
+    for (let i = 0; i < additionalCostList.length; i++) {
+      if (!additionalCostList[i].isDeleted) {
+        this.additionalCostNameChanged(additionalCostList[i]);
+        //this.calculateAdditionalCostAmounts(additionalCostList[i]);
+      }}
+  }
+
+  calculateAdditionalCostAmounts(additionalCost) {
+        let productComponent;
+        if (!additionalCost.costTypeId) {
+          return additionalCost;
+        }
+        additionalCost.maxQuantity = 0;
+        for (let i = 0; i < this.productList.length; i++) {
+          let product = this.productList[i];
+          if (additionalCost.isAllProductsCost || product.id == additionalCost.requestProductId
+          ) {
+    
+            additionalCost.maxQuantity = additionalCost.maxQuantity + product.maxQuantity;
+          }
+        }
+        if(additionalCost.price != null)
+          additionalCost.price = additionalCost.price.toString().replace(/,/g, '');
+        if(additionalCost.extras != null)
+          additionalCost.extras = additionalCost.extras.toString().replace(/,/g, '');
+        switch (additionalCost.costTypeId) {
+          case COST_TYPE_IDS.FLAT:
+            additionalCost.amount = parseFloat(additionalCost.price);
+            productComponent = this.isProductComponent(additionalCost);
+            break;
+    
+          case COST_TYPE_IDS.UNIT:
+            additionalCost.amount = 0;
+            productComponent = this.isProductComponent(additionalCost);
+            if (
+              additionalCost.priceUomId &&
+              additionalCost.prodConv &&
+              additionalCost.prodConv.length == this.productList.length
+            ) {
+              for (let i = 0; i < this.productList.length; i++) {
+                let product = this.productList[i];
+                if (
+                  additionalCost.isAllProductsCost ||
+                  product.id == additionalCost.requestProductId
+                ) {
+                  additionalCost.amount =
+                    additionalCost.amount +
+                    product.maxQuantity *
+                      additionalCost.prodConv[i] *
+                      parseFloat(additionalCost.price);
+                }
+              }
+            }
+            break;      
+          case COST_TYPE_IDS.RANGE:
+          case COST_TYPE_IDS.TOTAL:
+            additionalCost.amount = parseFloat(additionalCost.price) || 0;
+            break;
+        }
+    
+        if (isNaN(additionalCost.amount)) {
+          additionalCost.amount = null;
+        }
+    
+        additionalCost.extraAmount =
+          (additionalCost.extras / 100) * additionalCost.amount;
+    
+        if (isNaN(additionalCost.extraAmount)) {
+          additionalCost.extraAmount = null;
+        }
+    
+        additionalCost.totalAmount =
+          additionalCost.amount + additionalCost.extraAmount || 0;
+        if (isNaN(additionalCost.totalAmount)) {
+          additionalCost.totalAmount = null;
+        }
+    
+        additionalCost.ratePerUom =
+          additionalCost.totalAmount / additionalCost.maxQuantity;
+        if (isNaN(additionalCost.ratePerUom)) {
+          additionalCost.ratePerUom = null;
+        }
+    this.changeDetectorRef.detectChanges();
+  }
+
+    /**
+   * Sum the Amount field of all products.
+   */
+     sumProductAmounts(products) {
+      let result = 0;
+      let newProducts = _.cloneDeep(products);
+      for (let i = 0; i < newProducts.length; i++) {
+        let currentPrice = Number(newProducts[i].price) * Number(newProducts[i].exchangeRateToBaseCurrency);
+        let findProduct = _.find(this.productList, function(item) {
+          return item.id == newProducts[i].requestProductId;
+        });
+        if (findProduct) {
+          result += Number(currentPrice * findProduct.maxQuantity);
+        }
+      }
+      return result;
+    }
+  /**
+   * Sum the amounts of all additional costs that are NOT tax component additional costs.
+   */
+   sumProductComponentAdditionalCostAmounts(additionalCostList) {
+    let result = 0;
+    if (!additionalCostList.length) {
+      return;
+    }
+    for (let i = 0; i < additionalCostList.length; i++) {
+      if (!additionalCostList[i].isDeleted) {
+        if (
+          this.isProductComponent(additionalCostList[i]) ||
+          additionalCostList[i].costTypeId !== COST_TYPE_IDS.PERCENT
+        ) {
+          result = result + additionalCostList[i].totalAmount;
+        }
+      }
+    }
+    return result;
+  }
+/**
+ * Checks if the given additional cost belongs
+ * to the ProductComponent category.
+ */
+  isProductComponent(additionalCost) {
+    if (!additionalCost.additionalCostId) {
+      return false;
+    }
+    additionalCost.isTaxComponent = false;
+    if (
+      this.additionalCostTypes[additionalCost.additionalCostId].componentType
+    ) {
+      additionalCost.isTaxComponent = !(
+        this.additionalCostTypes[additionalCost.additionalCostId].componentType
+          .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
+      );
+      if (additionalCost.isTaxComponent) {
+      } else {
+        additionalCost.isTaxComponent = false;
+      }
+      return (
+        this.additionalCostTypes[additionalCost.additionalCostId].componentType
+          .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
+      );
+    }
+
+    return null;
   }
 
   createAdditionalCostTypes() {
@@ -519,6 +680,15 @@ export class ApplicablecostpopupComponent implements OnInit {
 
   getCostAmountByType(cost: any) {
     let costAmount = 0;
+    cost.maxQuantity = 0;
+    for (let i = 0; i < this.productList.length; i++) {
+      let product = this.productList[i];
+      if (cost.isAllProductsCost || product.id == cost.requestProductId
+      ) {
+
+        cost.maxQuantity = cost.maxQuantity + product.maxQuantity;
+      }
+    }
     switch (cost.costType) {
       case 'Flat':
         costAmount = cost.price;
