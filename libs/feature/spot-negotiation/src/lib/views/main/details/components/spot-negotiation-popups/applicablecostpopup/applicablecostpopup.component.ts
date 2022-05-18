@@ -86,7 +86,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     private legacyLookupsDatabase: LegacyLookupsDatabase,
     private tenantSettingsService: TenantSettingsService,
     private changeDetectorRef: ChangeDetectorRef,
-    private tenantService: TenantFormattingService,
+    public tenantService: TenantFormattingService,
     @Inject(DecimalPipe) private _decimalPipe,
     private store: Store
   ) {

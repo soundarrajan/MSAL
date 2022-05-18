@@ -142,14 +142,13 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
      private _decimalPipe,
      private spotNegotiationService : SpotNegotiationService,
      private spinner: NgxSpinnerService,
-     private formatService: TenantFormattingService,
+     public formatService: TenantFormattingService,
      public store: Store,
      ) {
         this.requestProductId = data.RequestProductId;
         this.requestLocationId = data.RequestLocationId;
         this.locationName = data.LocationName;
         this.productName = data.ProductName;
-
    }
 
    ngOnInit() {
