@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LayoutMainComponent } from '../../../layout/main/layout-main.component';
 import { Observable } from 'rxjs';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { TitleService } from '@shiptech/core/services/title/title.service';
 import { AuthService } from '@shiptech/core/authentication/auth.service';
@@ -16,12 +16,16 @@ export class TopbarComponent {
 
   @Select(UserProfileState.displayName) displayName$: Observable<string>;
   @Select(UserProfileState.username) username$: Observable<string>;
-
+  smartOperatorURL : string;
   constructor(
     public app: LayoutMainComponent,
     public authService: AuthService,
-    titleService: TitleService
+    titleService: TitleService,
+    private store: Store
   ) {
     this.pageTitle$ = titleService.title$;
+    this.smartOperatorURL = this.store.selectSnapshot<any>((state: any) => {
+      return state.tenantSettings.general.smartTraderLink;
+    });
   }
 }
