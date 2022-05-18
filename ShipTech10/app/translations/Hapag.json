@@ -789,6 +789,7 @@
             "DESCRIPTION": "Description",
             "EXPRESSED_AS": "Expressed as",
             "PAYMENT_TERM_NAME": "Payment term name",
+            "PAYMENT_TERM_DESCRIPTION": "Payment term description",
             "PAYMENT_CONDITION_TYPE": "Payment condition type",
             "PAYMENT_TERM_CONDITIONS": "Payment Term Conditions",
             "DELVIERY_OPTION_NAME": "Delivery Option Name",
