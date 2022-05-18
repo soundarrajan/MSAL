@@ -388,7 +388,7 @@ export class ShiptechCustomHeaderGroup {
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
     private changeDetector: ChangeDetectorRef,
-    private tenantService: TenantFormattingService,
+    public tenantService: TenantFormattingService,
     private spinner: NgxSpinnerService,
     @Inject(DOCUMENT) private _document: HTMLDocument
   ) {

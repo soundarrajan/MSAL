@@ -53,7 +53,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     @Inject(DecimalPipe)
     private _decimalPipe,
     public dialogRef: MatDialogRef<SpotnegoConfirmorderComponent>,
-    private tenantService: TenantFormattingService,
+    public tenantService: TenantFormattingService,
     private store: Store,
     public dialog: MatDialog,
     private toaster: ToastrService,
