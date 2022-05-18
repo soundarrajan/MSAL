@@ -191,7 +191,7 @@
                   <div class="non-editable-container-text-left">
                     {{
                       locationCost.price
-                        ? priceFormatTrailingZero(locationCost.price)
+                        ? tenantService.FormatPriceTrailingZero(locationCost.price)
                         : ' '
                     }}
                   </div>
@@ -249,7 +249,7 @@
               <td class="text-left">
                 {{
                   locationCost.extras
-                    ? priceFormatTrailingZero(locationCost.extras)
+                    ? tenantService.FormatPriceTrailingZero(locationCost.extras)
                     : ' '
                 }}
               </td>
@@ -294,7 +294,7 @@
               <td class="text-left">
                 {{
                   locationCost.ratePerUom && locationCost.costType !== 'Percent'
-                    ? priceFormatTrailingZero(locationCost.ratePerUom)
+                    ? tenantService.FormatPriceTrailingZero(locationCost.ratePerUom)
                     : ''
                 }}
               </td>
