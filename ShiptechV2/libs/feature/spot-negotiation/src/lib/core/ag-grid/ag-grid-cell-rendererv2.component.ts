@@ -382,7 +382,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
               params.index
             }}"
             (keyup.enter)="onGetFocus($event, params)"
-            (keydown.Tab)="onPriceChange($event, params)"
+            (keydown.Tab)="onGetFocus($event, params)"
             (focus)="getCurrentOfferValue($event)"
             (change)="onPriceChange($event, params)"
             autofocus
