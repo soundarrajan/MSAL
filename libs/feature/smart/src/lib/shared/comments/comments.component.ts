@@ -112,7 +112,7 @@ export class CommentsComponent implements OnInit {
   }
 
   loadBunkerPlanComments() {
-    let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
+    let payload = this.vesselRef?.vesselId;
     let Reqpayload = this.vesselRef?.vesselId;
     // this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
     //   console.log('Bunker Plan Comments...', response?.payload);
@@ -214,8 +214,7 @@ export class CommentsComponent implements OnInit {
         ]
       };
 
-      this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
-        console.log('Post Bunker Plan Comments...', response?.payload);
+      this.BPService.saveRequestComments(payload).subscribe((response)=> {
         this.BunkerPlanCommentList = response?.payload;
         this.BunkerPlanCommentTemp = this.BunkerPlanCommentList;
         this.newComment = "";
