@@ -11327,11 +11327,11 @@ tr.title {
     align-items: center;
     padding-left: 7px;
     .calculate-icon-btn{
-      display: flex;
       align-items: center;
       border-right: 4px solid #E0E1E4;
       height: 100%;
       margin-right: 5px;
+      display: none;
       .calculate-icon{
         padding: 0px 15px 0px 5px;
         cursor: pointer;
@@ -11343,6 +11343,9 @@ tr.title {
       }
       }
     }
+    .calculate-icon-btn-show{
+      display: flex;
+    }
     .comments-icon-btn {
       width: 18px;
       position: fixed;
@@ -11351,6 +11354,7 @@ tr.title {
       margin-top: 6px;
       border: none;
       background: none;
+      
       .comments-icon {
         cursor: pointer;
         float: right;
@@ -11366,6 +11370,8 @@ tr.title {
         }
       }
     }
+    
+  
 
     .circle-btn1,
     .circle-btn2 {
@@ -11393,6 +11399,9 @@ tr.title {
       color: #828282;
     }
   }
+}
+.offerPriceHighLight{
+  background-color: #C5DCCF;
 }
 .search-request-popup {
   .mat-dialog-container {
