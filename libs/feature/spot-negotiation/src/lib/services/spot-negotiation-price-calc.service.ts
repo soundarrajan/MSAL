@@ -392,7 +392,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                 sellerOffers.requestOffers.forEach(reqOff => {
                   reqOff.cost = 0;
                 });
-                this.recalculateLocationAdditionalCosts(
+                sellerOffers = _.cloneDeep(sellerOffers);
+                await this.recalculateLocationAdditionalCosts(
                   locAdditionCostsList,
                   true,
                   productList,
