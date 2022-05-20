@@ -58,6 +58,15 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     if (!additionalCost.costTypeId) {
       return additionalCost;
     }
+    additionalCost.maxQuantity = 0;
+    for (let i = 0; i < productList.length; i++) {
+      let product = productList[i];
+      if (additionalCost.isAllProductsCost || product.id == additionalCost.requestProductId
+      ) {
+
+        additionalCost.maxQuantity = additionalCost.maxQuantity + product.maxQuantity;
+      }
+    }
     switch (additionalCost.costTypeId) {
       case COST_TYPE_IDS.FLAT:
         additionalCost.amount = parseFloat(additionalCost.price);
@@ -383,7 +392,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                 sellerOffers.requestOffers.forEach(reqOff => {
                   reqOff.cost = 0;
                 });
-                this.recalculateLocationAdditionalCosts(
+                sellerOffers = _.cloneDeep(sellerOffers);
+                await this.recalculateLocationAdditionalCosts(
                   locAdditionCostsList,
                   true,
                   productList,

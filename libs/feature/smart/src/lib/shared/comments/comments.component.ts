@@ -116,15 +116,14 @@ export class CommentsComponent implements OnInit {
   }
 
   loadBunkerPlanComments() {
-    let payload = { shipId: this.vesselRef?.vesselId, BunkerPlanNotes: [] };
-    let Reqpayload = this.vesselRef?.vesselId;
+    let payload = this.vesselRef?.vesselId;
     // this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
     //   this.BunkerPlanCommentList = response?.payload;
     //   this.BunkerPlanCommentTemp = this.BunkerPlanCommentList;
     //   this.triggerTitleToBind();
     // })
     let BunkerPlanComment = this.BPService.getBunkerPlanComments(payload);
-    let RequestComment = this.BPService.getRequestComments(Reqpayload);
+    let RequestComment = this.BPService.getRequestComments(payload);
     forkJoin([BunkerPlanComment, RequestComment]).subscribe(responseList => {
       this.BunkerPlanCommentList = responseList[0]?.payload;
       this.BunkerPlanCommentTemp = this.BunkerPlanCommentList;
@@ -215,7 +214,7 @@ export class CommentsComponent implements OnInit {
         ]
       };
 
-      this.BPService.getBunkerPlanComments(payload).subscribe(response => {
+      this.BPService.saveRequestComments(payload).subscribe((response)=> {
         this.BunkerPlanCommentList = response?.payload;
         this.BunkerPlanCommentTemp = this.BunkerPlanCommentList;
         this.newComment = '';

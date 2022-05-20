@@ -330,6 +330,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  refreshGrid(){
+    this._spotNegotiationService.callGridRedrawService();
+  }
   addCounterpartyAcrossLocations() {
     const selectedCounterparties = this.toBeAddedCounterparties();
     if (selectedCounterparties.length == 0) return;
