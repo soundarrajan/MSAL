@@ -352,8 +352,8 @@ export class VesselInfoComponent implements OnInit {
   }
 
   loadBunkerPlanComments() {
-    let payload = { shipId: this.vesselRef?.vesselId, BunkerPlanNotes: [] };
-    let Reqpayload = this.vesselRef?.vesselId;
+    // let payload = { "shipId": this.vesselRef?.vesselId,"BunkerPlanNotes": [ ] }
+    let payload = this.vesselRef?.vesselId;
     // this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
     //   this.BunkerPlanCommentList = response?.payload;
     //   this.loadRequestComments();
@@ -361,7 +361,7 @@ export class VesselInfoComponent implements OnInit {
 
     // forkjoin http calls to show count of BunkerPlanComment, RequestComment at same time
     let BunkerPlanComment = this.BPService.getBunkerPlanComments(payload);
-    let RequestComment = this.BPService.getRequestComments(Reqpayload);
+    let RequestComment = this.BPService.getRequestComments(payload);
     forkJoin([BunkerPlanComment, RequestComment]).subscribe(responseList => {
       this.BunkerPlanCommentList = responseList[0]?.payload;
       this.RequestCommentList = responseList[1]?.payload;
@@ -855,18 +855,18 @@ export class VesselInfoComponent implements OnInit {
   VesselHasNewPlanJob() {
     let genBunkerPlanRef = null;
     this.disableCurrentBPlan = true;
+    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
     //Need to check gen plan status once and check after every 15 sec after enter this screen to know the process gen plan completion
     this.observableRef$ = timer(0, 15000)
     .pipe(
       switchMap(() => {
         let req = {
-          action:"",
-          ship_id: this.vesselData?.vesselId,
+          vessel_Code: vesseldata.vesselRef.vesselCode,
           generate_new_plan: 0, //(genBunkerPlanRef?.import_in_progress==0)? 1: 0,
           import_gsis: 0
         }
         this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
-        return this.bunkerPlanService.saveBunkeringPlanDetails(req);
+        return this.bunkerPlanService.getPlanStatus(req);
     }))
     .subscribe((data) => {
       data = (data.payload?.length)? (data.payload)[0]: data.payload;

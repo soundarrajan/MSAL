@@ -170,16 +170,34 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                   this.formatAdditionalCostList(
                     this.locationAdditionalCostsList
                   );
-                  this.recalculatePercentAdditionalCosts(
-                    this.locationAdditionalCostsList,
-                    true
-                  );
+                  // this.recalculatePercentAdditionalCosts(
+                  //   this.offerAdditionalCostList,
+                  //   false
+                  // );
+                  // this.recalculatePercentAdditionalCosts(
+                  //   this.locationAdditionalCostsList,
+                  //   true
+                  // );
+                  this.calculateAdditionalCost(this.offerAdditionalCostList);
+                  this.calculateAdditionalCost(this.locationAdditionalCostsList);
                 }
               //});
               }
           }
         }
       });
+  }
+
+  calculateAdditionalCost(additionalCostList){
+    for (let i = 0; i < additionalCostList.length; i++) {
+      if (!additionalCostList[i].isDeleted) {
+        this.additionalCostNameChanged(
+          additionalCostList[i],
+          true,
+          true
+        )
+      }
+    }    
   }
 
   convertOfferAdditionalCostListToPriceCurrecny(additionalCostList, reqOffer) {
@@ -481,13 +499,13 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   ) {
     for (let i = 0; i < additionalCostList.length; i++) {
       if (!additionalCostList[i].isDeleted) {
-        if (additionalCostList[i].costTypeId == COST_TYPE_IDS.PERCENT) {
+        //if (additionalCostList[i].costTypeId == COST_TYPE_IDS.PERCENT) {
           additionalCostList[i].totalAmount = 0;
           this.calculateAdditionalCostAmounts(
             additionalCostList[i],
             locationAdditionalCostFlag
           );
-        }
+        //}
 
         if (additionalCostList[i].isLocationBased) {
           if (additionalCostList[i].isAllProductsCost) {
@@ -635,6 +653,15 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     let totalAmount, productComponent;
     if (!additionalCost.costTypeId) {
       return additionalCost;
+    }
+    additionalCost.maxQuantity = 0;
+    for (let i = 0; i < this.productList.length; i++) {
+      let product = this.productList[i];
+      if (additionalCost.isAllProductsCost || product.id == additionalCost.requestProductId
+      ) {
+
+        additionalCost.maxQuantity = additionalCost.maxQuantity + product.maxQuantity;
+      }
     }
     if(additionalCost.price != null)
       additionalCost.price = additionalCost.price.toString().replace(/,/g, '');
@@ -1612,6 +1639,15 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (!additionalCost.costTypeId) {
       return additionalCost;
     }
+    additionalCost.maxQuantity = 0;
+    for (let i = 0; i < productList.length; i++) {
+      let product = productList[i];
+      if (additionalCost.isAllProductsCost || product.id == additionalCost.requestProductId
+      ) {
+
+        additionalCost.maxQuantity = additionalCost.maxQuantity + product.maxQuantity;
+      }
+    }
     if(additionalCost.price != null)
       additionalCost.price = additionalCost.price.toString().replace(/,/g, '');
     if(additionalCost.extras != null)
@@ -1717,14 +1753,14 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   ) {
     for (let i = 0; i < copiedAdditionalCost.length; i++) {
       if (!copiedAdditionalCost[i].isDeleted) {
-        if (copiedAdditionalCost[i].costTypeId == COST_TYPE_IDS.PERCENT) {
+        //if (copiedAdditionalCost[i].costTypeId == COST_TYPE_IDS.PERCENT) {
           copiedAdditionalCost[i].totalAmount = 0;
           this.calculateAdditionalCostAmountsForCopiedAdditionalCostPercentType(
             copiedAdditionalCost[i],
             copiedAdditionalCost[i].productList,
             copiedAdditionalCost[i].rowData
           );
-        }
+        //}
       }
     }
   }

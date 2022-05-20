@@ -11320,9 +11320,33 @@ tr.title {
     }
   }
   .section3 {
-    flex: 0 0 14%;
-    padding: 10px;
+    flex: 1 0 144px;
+    // flex: 0 0 16%;
+    //padding: 10px;
     background: #ffffff;
+    display: flex;
+    align-items: center;
+    padding-left: 7px;
+    .calculate-icon-btn{
+      align-items: center;
+      border-right: 4px solid #E0E1E4;
+      height: 100%;
+      margin-right: 5px;
+      display: none;
+      .calculate-icon{
+        padding: 0px 15px 0px 5px;
+        cursor: pointer;
+        height: 21px;
+        content: url("data:image/svg+xml,%3Csvg width='16' height='20' viewBox='0 0 16 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cmask id='path-1-inside-1_3327_29055' fill='white'%3E%3Crect width='16' height='20' rx='1'/%3E%3C/mask%3E%3Crect width='16' height='20' rx='1' stroke='%23364150' stroke-width='2.5' mask='url(%23path-1-inside-1_3327_29055)'/%3E%3Crect x='4.14111' y='5.79712' width='7.52663' height='1.52855' rx='0.764273' fill='%23364150'/%3E%3Crect x='4.14111' y='13.2517' width='7.52663' height='1.52855' rx='0.764273' fill='%23364150'/%3E%3Crect width='6.46493' height='1.37593' rx='0.687963' transform='matrix(0.645181 0.76403 -0.645181 0.76403 4.52393 5.45435)' fill='%23364150'/%3E%3Crect width='6.05407' height='1.37593' rx='0.687963' transform='matrix(0.645181 -0.76403 0.645181 0.76403 3.85156 14.0247)' fill='%23364150'/%3E%3C/svg%3E%0A");
+      &:hover{
+        content: url("data:image/svg+xml,%3Csvg width='16' height='20' viewBox='0 0 16 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cmask id='path-1-inside-1_3327_26215' fill='white'%3E%3Crect width='16' height='20' rx='1'/%3E%3C/mask%3E%3Crect width='16' height='20' rx='1' fill='%231F96FF' stroke='%231F96FF' stroke-width='2.5' mask='url(%23path-1-inside-1_3327_26215)'/%3E%3Crect x='4.14136' y='5.79712' width='7.52663' height='1.52855' rx='0.764273' fill='white'/%3E%3Crect x='4.14136' y='13.2517' width='7.52663' height='1.52855' rx='0.764273' fill='white'/%3E%3Crect width='6.46493' height='1.37593' rx='0.687963' transform='matrix(0.645181 0.76403 -0.645181 0.76403 4.52405 5.45435)' fill='white'/%3E%3Crect width='6.05407' height='1.37593' rx='0.687963' transform='matrix(0.645181 -0.76403 0.645181 0.76403 3.85175 14.0247)' fill='white'/%3E%3C/svg%3E%0A");
+
+      }
+      }
+    }
+    .calculate-icon-btn-show{
+      display: flex;
+    }
     .comments-icon-btn {
       width: 18px;
       position: fixed;
@@ -11331,6 +11355,7 @@ tr.title {
       margin-top: 6px;
       border: none;
       background: none;
+      
       .comments-icon {
         cursor: pointer;
         float: right;
@@ -11346,6 +11371,8 @@ tr.title {
         }
       }
     }
+    
+  
 
     .circle-btn1,
     .circle-btn2 {
@@ -11373,6 +11400,9 @@ tr.title {
       color: #828282;
     }
   }
+}
+.offerPriceHighLight{
+  background-color: #C5DCCF;
 }
 .search-request-popup {
   .mat-dialog-container {

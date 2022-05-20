@@ -241,16 +241,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           width: 100,
           minWidth: 125,
           headerClass: 'border-right',
-          cellClass: 'line-seperator',
-          cellStyle: params => {
+          cellClass: params =>{
             if (
               this.highlightedCells[params.data.requestId] &&
               params.data.id == this.highlightedCells[params.data.requestId]
             ) {
-              return { background: '#C5DCCF' };
-            } else {
-              return { background: 'transparent' };
+              return "line-seperator offerPriceHighLight";
             }
+            return 'line-seperator';
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' },
@@ -436,16 +434,20 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
 
     this.store.dispatch([new EditLocationRow(updatedRow), new UpdateRequest(reqs)]);
-          setTimeout(() => {
-            let element = document.getElementById(elementidValue);
-            if (element) {
-              this.moveCursorToEnd(element);
-            }
-          }, 100);
-         this.spotNegotiationService.callGridRefreshServiceAll();
+    let element = document.getElementById(elementidValue);
+      if (element) {
+        this.moveCursorToEnd(element);
+      }
+    // this.spotNegotiationService.callGridRefreshServiceAll();
+  
+    let x = document.getElementsByClassName("offerPriceHighLight");
+    while(x.length > 0) x[0].classList.remove("offerPriceHighLight");
+debugger;
+    let displayElm = document.getElementsByClassName("calculate-icon-btn");
+    displayElm[0].classList.add("calculate-icon-btn-show");
+
+  
     // Update the store
-
-
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
       if (res?.message == 'Unauthorized') {
@@ -494,7 +496,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   }
 
   refreshGridDetailsAll() {
-      var params = { force:true };
+      var params = { force: true };
       this.gridOptions_counterparty.api?.refreshCells(params);
   }
 
@@ -694,9 +696,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             if (details.hasNoQuote) {
               return 'display-no-quote grey-opacity-cell pad-lr-0';
             }
-            return 'grey-opacity-cell pad-lr-0';
-          },
-          cellStyle: params => {
             if (
               this.highlightedCells[product.productId] &&
               params.data.id ===
@@ -704,10 +703,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               product.id ===
                 this.highlightedCells[product.productId].requestProductId
             ) {
-              return { background: '#C5DCCF' };
-            } else {
-              return { background: 'transparent' };
+              return 'grey-opacity-cell pad-lr-0 offerPriceHighLight';
             }
+            return 'grey-opacity-cell pad-lr-0';
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'addTpr', cellClass: '', index: index },
