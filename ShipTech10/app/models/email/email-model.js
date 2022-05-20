@@ -1,10 +1,14 @@
 angular.module('shiptech.models').factory('emailModel', [ 'emailResource', 'payloadDataModel', 'newRequestResource',
     function(emailResource, payloadDataModel, newRequestResource) {
-        function getTemplates(transactionId) {
+        function getTemplates(transactionId, requestId) {
             let payload = {
                 Filters: [ {
                     ColumnName: 'EmailTransactionTypeId',
                     Value: transactionId
+                },
+                {
+                    ColumnName: 'RequestId',
+                    Value: requestId
                 } ]
             };
             var request_data = payloadDataModel.create(payload);

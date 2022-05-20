@@ -268,6 +268,8 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                 switch (ctrl.transaction) {
                 case EMAIL_TRANSACTION.REQUEST:
                     ctrl.getAvailableDocumentAttachments(ctrl.data.requestId, 'Request');
+                    return emailModel.getTemplates(ctrl.emailTransactionTypeId, ctrl.data.requestId).then((data) => {
+                        ctrl.templateList = data.payload;});                  
                     break;
                 case EMAIL_TRANSACTION.GROUP_OF_REQUESTS:
                     var id = ctrl.data.Requirements[0].RequestId;
