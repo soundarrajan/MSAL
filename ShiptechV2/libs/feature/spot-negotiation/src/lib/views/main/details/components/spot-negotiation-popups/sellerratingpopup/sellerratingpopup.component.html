@@ -1,4 +1,4 @@
-<div class="sellerrating-popup" style="overflow: scroll;">
+<div class="sellerrating-popup">
   <div class="spot-popup-header-container"><div class="spot-nego-title">Seller Rating</div>
     <div class="spot-dialog-title-right">
 
@@ -9,6 +9,7 @@
 
   </div>
   <hr class="hr-line">
+  <div style="overflow:scroll; height: 500px;">
   <div class="spot-nego-comments pl15 pr15" >
       <div class="grid-in-accordion">
           <mat-expansion-panel [expanded]="popupType=='portRating'? true : false" class="sellerrating-expansion-panel">
@@ -30,8 +31,8 @@
               <ng-template matExpansionPanelContent>
                 <div *ngFor="let items of specificPortRatingData">
                   <div class="row second-header"  style="padding: 0px 4px; justify-content: space-between;">
-                      <div class="col-1 bold-text">{{items.categoriesName | htmlDecodeReadonly}}</div>
-                      <div class="col-6 text-right">
+                      <div class="col-7 bold-text">{{items.categoriesName | htmlDecodeReadonly}}</div>
+                      <div class="col-5 text-right">
                           <span class="unbold-text">Rated by </span>
                           <span class="bold-text">{{items.ratedBy}}</span>
                           <span class="unbold-text"> on </span>
@@ -74,8 +75,8 @@
               <ng-template matExpansionPanelContent >
                   <div *ngFor="let items of allLocationRatingData">
                   <div class="row second-header" style="padding: 0px 4px; justify-content: space-between;">
-                      <div class="col-1 bold-text">{{items.categoriesName | htmlDecodeReadonly}}</div>
-                      <div class="col-6 text-right">
+                      <div class="col-7 bold-text">{{items.categoriesName | htmlDecodeReadonly}}</div>
+                      <div class="col-5 text-right">
                           <span class="unbold-text">Rated by </span>
                           <span class="bold-text">{{items.ratedBy}}</span>
                           <span class="unbold-text"> on </span>
@@ -144,6 +145,7 @@
           </mat-expansion-panel>
 
       </div>
+    </div>
   </div>
   </div>
 
