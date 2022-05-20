@@ -14,6 +14,7 @@ export namespace BunkeringPlanApiPaths{
     export const getBunkeringPlanDetails = () => `api/BOPS/bunkerplan/getBunkerPlanDetail`;
     export const getBunkeringPlanIdAndStatus = () => `api/BOPS/bunkerplan/getBunkerPlanInitial` ;
     export const saveBunkeringPlanDetails = () => `api/BOPS/bunkerplan/updateBunkerPlan`;
+    export const getPlanStatus = () => `api/BOPS/bunkerplan/getGsisAndGeneratePlanStatus`;
 }
 
 @Injectable({
@@ -46,6 +47,14 @@ getBunkerPlanIdAndStatus(request: any): Observable<any> {
   saveBunkeringPlanDetails(request: any): Observable<any> {
     return this.http.post<any>(
       `${this._apiUrl}/${BunkeringPlanApiPaths.saveBunkeringPlanDetails()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
+  getPlanStatus(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${BunkeringPlanApiPaths.getPlanStatus()}`,
       { payload: request }
     );
   }

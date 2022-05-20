@@ -16,6 +16,7 @@ import {
 export namespace BunkerPlanCommentApiPaths {
     export const getBPComments = () => `api/Smart/Comment/getBPComments`;
     export const getRequestComments = () => `api/Smart/Comment/getRequestComments`;
+    export const saveBPComments = () => `api/Smart/Comment/updateBPComments`;
 }
 
 @Injectable({
@@ -45,6 +46,14 @@ export class BunkeringPlanCommentsService {
   getRequestComments(request: any): Observable<any> {
     return this.http.post<any>(
       `${this._apiUrl}/${BunkerPlanCommentApiPaths.getRequestComments()}`,
+      { payload: request }
+    );
+  }
+
+  @ObservableException()
+  saveRequestComments(request: any): Observable<any> {
+    return this.http.post<any>(
+      `${this._apiUrl}/${BunkerPlanCommentApiPaths.saveBPComments()}`,
       { payload: request }
     );
   }
