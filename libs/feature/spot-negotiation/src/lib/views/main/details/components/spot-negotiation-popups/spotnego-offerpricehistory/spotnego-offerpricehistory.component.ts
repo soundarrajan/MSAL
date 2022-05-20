@@ -33,7 +33,6 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
   highcharts = Highcharts;
   public chartOptions: any = {
     chart: {
-            height: 600,
             type: "spline"
          },
          title: {

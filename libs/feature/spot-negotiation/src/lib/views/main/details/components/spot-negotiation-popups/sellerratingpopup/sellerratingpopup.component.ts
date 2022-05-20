@@ -30,13 +30,14 @@ export class SellerratingpopupComponent implements OnInit {
               ) {
          this.popupType = data.popupType;
          this.locationId = data.locationId;
-         this.counterpartyId = data.sellerId
+         this.counterpartyId = data.sellerId;
+         this.getSellerRatings();
    }
    ngOnInit() {
     this.store.subscribe(({ spotNegotiation })=>{
       this.locationName = spotNegotiation.locations.find(x=> x.locationId == this.locationId).locationName;
     });
-    this.getSellerRatings();
+    
  }
 
   getSellerRatings(){
