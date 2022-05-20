@@ -3231,6 +3231,11 @@
         };
 
         $scope.triggerChangeFields = function(name, id, isManualChange) {
+            if (vm.app_id == 'invoices' && vm.screen_id == 'treasuryreport') {
+                if(!$scope.formValues.OrderAfter){
+                    $scope.formValues.OrderAfter = $rootScope.adminConfiguration.invoice.orderAfter;
+                }
+            }
 
             $rootScope.formDataFields = $scope.formValues;
 
@@ -6482,12 +6487,14 @@
         		// try refresh datepicker
         		$('[ng-model="formValues.PaymentDateFrom"]').parent().find('input').val('');
                 $('[ng-model="formValues.PaymentDateTo"]').parent().find('input').val('');
+                $('[ng-model="formValues.OrderAfter"]').parent().find('input').val($scope.adminConfiguration.invoice.ordersAfter);
                 $scope.formValues.PaymentStatus = null;
                 $scope.formValues.PaymentDateFrom = null;
                 $scope.formValues.SellerWithInactive = null;
                 $scope.formValues.BrokerWithInactive = null;
                 $scope.formValues.CompanyWithInactive = null;
                 $scope.formValues.PaymentDateTo = null;
+                $scope.formValues.OrderAfter = $scope.adminConfiguration.invoice.ordersAfter;
         	});
         };
 

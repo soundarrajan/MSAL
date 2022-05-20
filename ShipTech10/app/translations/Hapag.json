@@ -1140,7 +1140,8 @@
             "TO_DATE": "To",
             "DEDUCTIONS": "Deductions",
             "PROVISIONAL_INVOICE_NUMBER": "Provisional invoice no.",
-            "COMMENTS": "Comments"
+            "COMMENTS": "Comments",
+            "ORDERS_AFTER": "Orders After"
       },
       "admin": {
             "TENANT_CONFIGURATION_ID": "Tenant configuration id",

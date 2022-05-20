@@ -4947,10 +4947,18 @@ APP_API.factory('$Api_Service', [
                         }
                     }
                     if (param.app == 'invoices' && param.clc_id == 'invoices_treasuryreport' && param.screen == 'treasuryreport') {
-                        // console.log(param);
+   // console.log(param);
                         if (param.params.col == 'paymentStatus') {
                             param.params.col = 'paymentStatus_Name';
                         }
+                        var orderAfter ='';
+                        if($rootScope.formDataFields.OrderAfter){
+                            orderAfter = $rootScope.formDataFields.OrderAfter;
+                        }
+                        else{
+                            orderAfter = $rootScope.adminConfiguration.invoice.orderAfter;
+                        }
+                        param.params.UIFilters = { "OrderAfterDate": orderAfter.substr(0, 10) }
                     }
                     if (param.app == 'masters' && param.clc_id == 'masters_emaillogslist') {
                         if (param.params.col == 'status') {
@@ -5738,7 +5746,7 @@ APP_API.factory('$Api_Service', [
 							if (window.location.href.indexOf("admin/configuration") != -1 || window.location.href.indexOf("id_token=") != -1) {
 								tenantConfigPayload = true;
 							}
-                            $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
+                             $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
                                 Payload: tenantConfigPayload
                             }).then((response) => {
                                 if (response.status == 200) {
