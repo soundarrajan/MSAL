@@ -179,8 +179,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
               {{ params.product.uomName }}</span
             >
           </div>
+          
           <div
-            class="arrow"
+            class="arrow" matTooltipClass="lightTooltip" matTooltip="Manual Live Pricing"
+
             [ngClass]="
               params.product.status === 'Stemmed' ? 'disabled-new-events' : ''
             "
@@ -239,7 +241,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
               black: params.product?.requestGroupProducts?.benchMark == 0
             }"
           >
-            <div class="title">Perf/BM</div>
+          <div class="title" matTooltipClass="lightTooltip" matTooltip="Performance/Benchmark">Perf/BM</div>
             <div 
               class="value" matTooltip="{{perfBM.innerText}}"
               matTooltipClass="lightTooltip"
@@ -260,7 +262,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
             </div>
           </div>
           <div class="label-element dashed" matTooltipClass="lightTooltip" matTooltip="{{ livePrice != undefined ? '$'+livePrice : '$--'}}">
-            <div class="title">Manual Live price</div>
+          <div class="title" matTooltipClass="lightTooltip" matTooltip="Manual Live Pricing">Manual Live price</div>
             $<input
               class="value"
               
@@ -274,8 +276,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
             />
           </div>
           <div class="label-element green">
-            <div class="title">Target</div>
-            <div
+          <div class="title"  matTooltipClass="lightTooltip" matTooltip="Target">Target</div>
+             <div
               class="value" matTooltip="{{(targetValue  != null && targetValue  != 0) ? '$'+targetValue : '$--'}}"
               matTooltipClass="lightTooltip"
               contenteditable="false"
@@ -288,9 +290,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
             class="label-element bestcontract"
             (click)="bestcontractpopup(params)"
           >
-            <div class="title">
-              Best Contract
-              <span
+               <div class="title"matTooltipClass="lightTooltip" matTooltip="Best Contract">
+               Best Contract
+                 <span
                 [style.visibility]="
                   params.product.status === 'Stemmed' ? 'hidden' : 'visible'
                 "
