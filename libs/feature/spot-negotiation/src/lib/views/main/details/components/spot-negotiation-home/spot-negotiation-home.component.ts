@@ -122,7 +122,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
             .map(req => ({ ...req, selected: true }));
           this.selectedRequestList = this.requestOptionsToDuplicatePrice;
         }
-//        this.tenantConfiguration = spotNegotiation.tenantConfigurations;
+        this.tenantConfiguration = spotNegotiation.tenantConfigurations;
         this.setTabItems();
       });
   
