@@ -28,8 +28,7 @@ export class MarketpricehistorypopupComponent implements OnInit {
 
  public chartOptions: any = {
     chart: {
-      height: 550,
-      width: 800
+      type: "spline"
     },
     title: {
       text: ''
