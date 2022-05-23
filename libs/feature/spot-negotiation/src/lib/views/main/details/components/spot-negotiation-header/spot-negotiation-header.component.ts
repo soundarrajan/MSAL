@@ -134,12 +134,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         );
         this.locationsRows = spotNegotiation.locationsRows;
         this.bestOffIconDispaly =  false;
-        this.locationsRows.forEach(element => {
-          if(element?.requestOffers?.length > 0){
-            this.bestOffIconDispaly =  true;
-            return;
-          }
-        });
+        // this.locationsRows.forEach(element => {
+        //   if(element?.requestOffers?.length > 0){
+        //     this.bestOffIconDispaly =  true;
+        //     return;
+        //   }
+        // });
         this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
           this.locations =

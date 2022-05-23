@@ -67,7 +67,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   rowData_aggrid: any = [];
   locationsRows: any = [];
   currentRequestSmallInfo: any;
-  highlightedCells = {};
+  highlightedCells = [];
   uomsMap: any;
   requestOptions: any;
   Index: number;
@@ -246,9 +246,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               this.highlightedCells[params.data.requestId] &&
               params.data.id == this.highlightedCells[params.data.requestId]
             ) {
-              return "line-seperator offerPriceHighLight";
+              return "line-seperator offerPriceHighLight "+'tf_'+params.data.id;
             }
-            return 'line-seperator';
+            return 'line-seperator '+'tf_'+params.data.id;
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' },
@@ -445,12 +445,16 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
     // let displayElm = document.getElementsByClassName("calculate-icon-btn");
     // displayElm[0].classList.add("calculate-icon-btn-show");
-  
-    // this.highlightedCells?.forEach((element,key) => {
-    //   console.log(element.rowId+'/'+key+'/'+element.requestProductId);
-    //   let afterHigh = document.getElementsByClassName(element.rowId+'/'+key+'/'+element.requestProductId);
-    //   afterHigh[0]?.classList?.add("offerPriceHighLight");
-    // });
+
+    this.highlightedCells?.forEach((element,key) => {
+      if(element.rowId){
+        let afterHigh = document.getElementsByClassName(element.rowId+'/'+key);
+        afterHigh[0]?.classList?.add("offerPriceHighLight");
+      }else{
+        let afterHigh = document.getElementsByClassName('tf_'+element);
+        afterHigh[0]?.classList?.add("offerPriceHighLight");
+      }
+    });
 
     // Update the store
     const response = this.spotNegotiationService.updatePrices(payload);
@@ -708,9 +712,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               product.id ===
                 this.highlightedCells[product.productId].requestProductId
             ) {
-              return 'grey-opacity-cell pad-lr-0 offerPriceHighLight '+ params.data.id+'/'+product.productId+'/'+details.requestProductId;
+              return 'grey-opacity-cell pad-lr-0 offerPriceHighLight '+ params.data.id+'/'+product.productId;
             }
-            return 'grey-opacity-cell pad-lr-0 ' + params.data.id+'/'+product.productId+'/'+details.requestProductId;
+            return 'grey-opacity-cell pad-lr-0 ' + params.data.id+'/'+product.productId;
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'addTpr', cellClass: '', index: index },
@@ -998,7 +1002,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       this.locationsRows.map(row => {
         // Create key with id if dosen't exists;
         if (!this.highlightedCells[product.productId]) {
-          this.highlightedCells[product.productId] = {};
+          this.highlightedCells[product.productId] = [];
         }
         // Set smallest total price
         const productDetails = this.getRowProductDetails(
@@ -1141,7 +1145,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
         // Set headers of products;
         this.columnDef_aggridObj = [];
-        this.highlightedCells = {};
+        this.highlightedCells = [];
 
         this.locations.forEach((reqLocation, i) => {
           // Separate rows for each location;
