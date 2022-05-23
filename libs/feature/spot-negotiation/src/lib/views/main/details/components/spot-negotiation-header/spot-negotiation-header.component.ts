@@ -74,6 +74,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   visibleRequestList: any = [];
   couterpartyValue: any;
   clrRequest: any = 0;
+  bestOffIconDispaly : boolean = false;
   // requestsAndVessels = [
   //   { request: 'Demo Req 100001', vessel: 'MerinLion', selected: false },
   //   { request: 'Demo Req 100002', vessel: 'Afif', selected: false },
@@ -132,6 +133,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           this.requestsAndVessels.slice(0, 7)
         );
         this.locationsRows = spotNegotiation.locationsRows;
+        this.bestOffIconDispaly =  false;
+        this.locationsRows.forEach(element => {
+          if(element?.requestOffers?.length > 0){
+            this.bestOffIconDispaly =  true;
+            return;
+          }
+        });
         this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
           this.locations =
