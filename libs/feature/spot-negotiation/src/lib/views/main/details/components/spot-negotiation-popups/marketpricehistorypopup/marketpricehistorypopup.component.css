@@ -1,4 +1,5 @@
 
 .operations-details-block.market-history tbody{
 overflow-y: scroll;
-max-height: 420px;}
+/* max-height: 420px; */
+}
