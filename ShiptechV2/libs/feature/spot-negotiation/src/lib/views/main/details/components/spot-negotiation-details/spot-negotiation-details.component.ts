@@ -442,11 +442,16 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   
     let x = document.getElementsByClassName("offerPriceHighLight");
     while(x.length > 0) x[0].classList.remove("offerPriceHighLight");
-debugger;
-    let displayElm = document.getElementsByClassName("calculate-icon-btn");
-    displayElm[0].classList.add("calculate-icon-btn-show");
 
+    // let displayElm = document.getElementsByClassName("calculate-icon-btn");
+    // displayElm[0].classList.add("calculate-icon-btn-show");
   
+    // this.highlightedCells?.forEach((element,key) => {
+    //   console.log(element.rowId+'/'+key+'/'+element.requestProductId);
+    //   let afterHigh = document.getElementsByClassName(element.rowId+'/'+key+'/'+element.requestProductId);
+    //   afterHigh[0]?.classList?.add("offerPriceHighLight");
+    // });
+
     // Update the store
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
@@ -703,9 +708,9 @@ debugger;
               product.id ===
                 this.highlightedCells[product.productId].requestProductId
             ) {
-              return 'grey-opacity-cell pad-lr-0 offerPriceHighLight';
+              return 'grey-opacity-cell pad-lr-0 offerPriceHighLight '+ params.data.id+'/'+product.productId+'/'+details.requestProductId;
             }
-            return 'grey-opacity-cell pad-lr-0';
+            return 'grey-opacity-cell pad-lr-0 ' + params.data.id+'/'+product.productId+'/'+details.requestProductId;
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'addTpr', cellClass: '', index: index },
