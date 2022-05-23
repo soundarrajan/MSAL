@@ -11331,7 +11331,7 @@ tr.title {
       border-right: 4px solid #E0E1E4;
       height: 100%;
       margin-right: 5px;
-      display: none;
+      display: flex;
       .calculate-icon{
         padding: 0px 15px 0px 5px;
         cursor: pointer;
@@ -11342,9 +11342,6 @@ tr.title {
 
       }
       }
-    }
-    .calculate-icon-btn-show{
-      display: flex;
     }
     .comments-icon-btn {
       width: 18px;
