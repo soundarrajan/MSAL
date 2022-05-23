@@ -323,7 +323,10 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 (selectionChange)="onCurrencyChange($event, params)"
                 [disabled]="paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed"
               >
-                <mat-option [disabled]>Change Currency </mat-option>
+                <!-- <mat-option [disabled]>Change Currency </mat-option> -->
+                <div style="padding:5px 10px;font-size:14px">Change Currency</div>
+
+            <div style="overflow:scroll;height:111px;">
                 <mat-option
                   class="currency-mat-select"
                   *ngFor="let currency of currencyList"
@@ -338,6 +341,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                     </mat-radio-group>
                   </span>
                 </mat-option>
+              </div>
               </mat-select>
             </mat-form-field>
             <mat-form-field
