@@ -446,7 +446,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     // let displayElm = document.getElementsByClassName("calculate-icon-btn");
     // displayElm[0].classList.add("calculate-icon-btn-show");
 
-    this.highlightedCells?.forEach((element,key) => {
+    this.spotNegotiationService.hArray?.forEach((element,key) => {
       if(element.rowId){
         let afterHigh = document.getElementsByClassName(element.rowId+'/'+key);
         afterHigh[0]?.classList?.add("offerPriceHighLight");
@@ -1172,6 +1172,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               requestProductsLength,
               this.currentRequestSmallInfo.id
             );
+            if(this.highlightedCells.length > 0){
+              this.spotNegotiationService.highlihtArrayIni(this.highlightedCells,reqLocation.locationId);
+            }
             this.columnDef_aggridObj[i].push(
               this.createProductHeader(reqProduct, reqLocation.id, index)
             );
