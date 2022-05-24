@@ -1227,11 +1227,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);      
         row.requestOffers = row.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );
@@ -1266,11 +1266,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );
@@ -1288,7 +1288,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         let FilterProdut = currentLocProd[0].requestProducts.filter(
           col => col.id == element1.requestProductId
         );
-        element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
+        element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
       });
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
@@ -2237,11 +2237,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           updatedRow,
           updatedRow);
           locRow.requestOffers = locRow.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );

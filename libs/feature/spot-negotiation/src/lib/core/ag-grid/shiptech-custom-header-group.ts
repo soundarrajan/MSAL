@@ -1049,7 +1049,7 @@ export class ShiptechCustomHeaderGroup {
               let FilterProdut = currentLocProd[0].requestProducts.filter(
                 col => col.id == element1.requestProductId
               );
-              element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
+              element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
               if (
                 FilterProdut.length > 0 &&
                 FilterProdut[0].status != undefined &&
@@ -1071,11 +1071,11 @@ export class ShiptechCustomHeaderGroup {
         row.requestOffers = priceDetailsArray[
           index
         ].requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );
@@ -1113,7 +1113,7 @@ export class ShiptechCustomHeaderGroup {
                 let FilterProdut = currentLocProd[0].requestProducts.filter(
                   col => col.id == element1.requestProductId
                 );
-                element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
+                element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
                 if (
                   FilterProdut.length > 0 &&
                   FilterProdut[0].status != undefined &&
@@ -1135,11 +1135,11 @@ export class ShiptechCustomHeaderGroup {
           }
           row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
             (a, b) =>
-              a.requestProductTypeId === b.requestProductTypeId
+              a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
                 ? a.requestProductId > b.requestProductId
                   ? 1
                   : -1
-                : a.requestProductTypeId > b.requestProductTypeId
+                : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
                 ? 1
                 : -1
           );
