@@ -87,6 +87,12 @@
                     "width": 150
                 },
                 {
+                  "index": "densityDifference",
+                  "label": "Density Difference",
+                  "name": "densityDifference",
+                  "width": 150
+              },
+                {
                     "index": "createdBy.name",
                     "label": "Created By",
                     "name": "createdBy.name",
