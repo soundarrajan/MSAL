@@ -210,7 +210,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               let FilterProdut = currentLocProd[0].requestProducts.filter(
                 col => col.id == element1.requestProductId
               );
-              element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
+              element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
               if (
                 FilterProdut.length > 0 &&
                 FilterProdut[0].status != undefined &&
@@ -224,9 +224,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         });
 
         row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=>
-         a.requestProductTypeId  === b.requestProductTypeId ?
+         a.requestProductTypeOrderBy  === b.requestProductTypeOrderBy ?
          (a.requestProductId > b.requestProductId ? 1 : -1) :
-        (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
+        (a.requestProductTypeOrderBy > b.requestProductTypeOrderBy ? 1 : -1)
         );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
@@ -262,7 +262,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
                 let FilterProdut = currentLocProd[0].requestProducts.filter(
                   col => col.id == element1.requestProductId
                 );
-                element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
+                element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
                 if (
                   FilterProdut.length > 0 &&
                   FilterProdut[0].status != undefined &&
@@ -274,9 +274,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             }
           });
           row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=>
-          a.requestProductTypeId  === b.requestProductTypeId ?
+          a.requestProductTypeOrderBy  === b.requestProductTypeOrderBy ?
           (a.requestProductId > b.requestProductId ? 1 : -1) :
-         (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
+         (a.requestProductTypeOrderBy > b.requestProductTypeOrderBy ? 1 : -1)
          );
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
