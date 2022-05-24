@@ -181,7 +181,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
           </div>
           
           <div
-            class="arrow" matTooltipClass="lightTooltip" matTooltip="Manual Live Pricing"
+            class="arrow" matTooltipClass="lightTooltip" matTooltip="Market Price history"
 
             [ngClass]="
               params.product.status === 'Stemmed' ? 'disabled-new-events' : ''
@@ -261,9 +261,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
             </span>
             </div>
           </div>
-          <div class="label-element dashed" matTooltipClass="lightTooltip" matTooltip="{{ livePrice != undefined ? '$'+livePrice : '$--'}}">
+          <div class="label-element dashed">
           <div class="title" matTooltipClass="lightTooltip" matTooltip="Manual Live Pricing">Manual Live price</div>
-            $<input
+            $<input matTooltipClass="lightTooltip" matTooltip="{{ livePrice != undefined ? '$'+livePrice : '$--'}}"
               class="value"
               
               contenteditable="true"
