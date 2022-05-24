@@ -1136,7 +1136,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
               // Update the store
               this.store.dispatch(new EditLocationRow(locRow));
               this.params.node.setData(locRow);
-              this._spotNegotiationService.callGridRefreshService();
+              this._spotNegotiationService.callGridRedrawService();
             });
         } else {
           this.getPriceDetails();

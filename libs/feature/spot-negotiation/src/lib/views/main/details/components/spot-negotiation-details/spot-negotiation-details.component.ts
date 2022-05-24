@@ -1165,7 +1165,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           this.columnDef_aggridObj[i][0].children[0].cellRendererParams.requestLocationId = reqLocation.id;
 
           // These are locations!!
-          const requestProductsLength = reqLocation.requestProducts.length;
+          const requestProductsLength = reqLocation.requestProducts.filter(rp => !rp.isContract).length;
           reqLocation.requestProducts.map((reqProduct, index) => {
             this.checkHighlight(
               { product: reqProduct },
