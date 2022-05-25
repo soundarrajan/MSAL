@@ -1059,12 +1059,9 @@ export class ShiptechCustomHeaderGroup {
             }
           }
         });
-        let requestLocations = this.currentRequestData.filter(
-          row1 => row1.id == row.requestLocationId
-        );
         row.requestOffers = priceDetailsArray[index].requestOffers;
         row.requestOffers.forEach(element1 => {
-          let FilterProdut = requestLocations[0].requestProducts.filter(
+          let FilterProdut = currentLocProd[0].requestProducts.filter(
             col => col.id == element1.requestProductId
           );
           element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
@@ -1130,12 +1127,9 @@ export class ShiptechCustomHeaderGroup {
               }
             }
           });
-          let requestLocations = this.currentRequestData.filter(
-            row1 => row1.id == row.requestLocationId
-          );
           row.requestOffers = detailsForCurrentRow[0].requestOffers;
           row.requestOffers.forEach(element1 => {
-            let FilterProdut = requestLocations[0].requestProducts.filter(
+            let FilterProdut = currentLocProd[0].requestProducts.filter(
               col => col.id == element1.requestProductId
             );
             element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
