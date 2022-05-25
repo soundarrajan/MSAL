@@ -420,7 +420,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                   await this.additionalCostNameChanged(
                     cost,
                     offerAdditionCostsList,
-                    productList,
+                    reqProList,
                     sellerOffers,
                     locAdditionCostsList,
                     i,
