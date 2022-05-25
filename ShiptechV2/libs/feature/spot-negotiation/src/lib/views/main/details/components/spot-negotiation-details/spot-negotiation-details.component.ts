@@ -312,7 +312,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         if (params.columnApi.getAllDisplayedColumns().length <= 20) {
           params.api.sizeColumnsToFit();
         }
-        params.api.hideOverlay();
+        params.api?.hideOverlay();
       },
       onGridReady: params => {
         // Ng init for AG GRID;
