@@ -688,6 +688,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   copyPriceToSelectedRequests() {
+    debugger;
     if (this.selectedRequestList.length > 0) {
       this.selectedSellerList = [];
       const tenantConfig = this.store.selectSnapshot(
@@ -902,10 +903,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         !tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
         reqIdwithLocationForSeller
       ) {
-        this.toaster.error(
+        this.toaster.warning(
           'Selected seller(s) does not exists in ' + reqIdwithLocationForSeller
         );
-        return;
       }
             // if (isPhySupMandatoryForQuoting) {
       //   this.toaster.error(
