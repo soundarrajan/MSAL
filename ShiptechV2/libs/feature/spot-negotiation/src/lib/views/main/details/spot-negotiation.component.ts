@@ -162,6 +162,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
+    let currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
     this.allRequest = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.requests;
     });
@@ -210,7 +213,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               let FilterProdut = currentLocProd[0].requestProducts.filter(
                 col => col.id == element1.requestProductId
               );
-              element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
               if (
                 FilterProdut.length > 0 &&
                 FilterProdut[0].status != undefined &&
@@ -222,9 +224,18 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             }
           }
         });
-
+        let requestLocations = currentRequestData.filter(
+          row1 => row1.id == row.requestLocationId
+        );
+        row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.requestOffers.forEach(element1 => {
+          let FilterProdut = requestLocations[0].requestProducts.filter(
+            col => col.id == element1.requestProductId
+          );
+          element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
+        });
         row.totalOffer = priceDetailsArray[index].totalOffer;
-        row.totalCost = priceDetailsArray[index].totalCost;
+        row.totalCost = priceDetailsArray[index].totalCost;        
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
@@ -262,7 +273,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
                 let FilterProdut = currentLocProd[0].requestProducts.filter(
                   col => col.id == element1.requestProductId
                 );
-                element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
                 if (
                   FilterProdut.length > 0 &&
                   FilterProdut[0].status != undefined &&
@@ -273,9 +283,18 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               }
             }
           });
-
+          let requestLocations = currentRequestData.filter(
+            row1 => row1.id == row.requestLocationId
+          );
+          row.requestOffers = detailsForCurrentRow[0].requestOffers;
+          row.requestOffers.forEach(element1 => {
+            let FilterProdut = requestLocations[0].requestProducts.filter(
+              col => col.id == element1.requestProductId
+            );
+            element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
+          });
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
-          row.totalCost = detailsForCurrentRow[0].totalCost;
+          row.totalCost = detailsForCurrentRow[0].totalCost;          
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
           row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
           row.requestOffers = row.requestOffers.map(e => {

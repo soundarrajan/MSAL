@@ -1049,7 +1049,6 @@ export class ShiptechCustomHeaderGroup {
               let FilterProdut = currentLocProd[0].requestProducts.filter(
                 col => col.id == element1.requestProductId
               );
-              element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
               if (
                 FilterProdut.length > 0 &&
                 FilterProdut[0].status != undefined &&
@@ -1059,6 +1058,16 @@ export class ShiptechCustomHeaderGroup {
               }
             }
           }
+        });
+        let requestLocations = this.currentRequestData.filter(
+          row1 => row1.id == row.requestLocationId
+        );
+        row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.requestOffers.forEach(element1 => {
+          let FilterProdut = requestLocations[0].requestProducts.filter(
+            col => col.id == element1.requestProductId
+          );
+          element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
         });
         row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId =
@@ -1111,7 +1120,6 @@ export class ShiptechCustomHeaderGroup {
                 let FilterProdut = currentLocProd[0].requestProducts.filter(
                   col => col.id == element1.requestProductId
                 );
-                element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
                 if (
                   FilterProdut.length > 0 &&
                   FilterProdut[0].status != undefined &&
@@ -1121,6 +1129,16 @@ export class ShiptechCustomHeaderGroup {
                 }
               }
             }
+          });
+          let requestLocations = this.currentRequestData.filter(
+            row1 => row1.id == row.requestLocationId
+          );
+          row.requestOffers = detailsForCurrentRow[0].requestOffers;
+          row.requestOffers.forEach(element1 => {
+            let FilterProdut = requestLocations[0].requestProducts.filter(
+              col => col.id == element1.requestProductId
+            );
+            element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
           });
           row.isSelected = detailsForCurrentRow[0].isSelected;
           row.physicalSupplierCounterpartyId =
