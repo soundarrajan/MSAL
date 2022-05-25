@@ -223,11 +223,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           }
         });
 
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=>
-         a.requestProductTypeOrderBy  === b.requestProductTypeOrderBy ?
-         (a.requestProductId > b.requestProductId ? 1 : -1) :
-        (a.requestProductTypeOrderBy > b.requestProductTypeOrderBy ? 1 : -1)
-        );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
@@ -238,6 +233,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+        row.requestOffers = row.requestOffers?.sort((a,b)=>
+        a.requestProductTypeOrderBy  === b.requestProductTypeOrderBy ?
+        (a.requestProductId > b.requestProductId ? 1 : -1) :
+       (a.requestProductTypeOrderBy > b.requestProductTypeOrderBy ? 1 : -1)
+       );
         return row;
       }
 
@@ -273,11 +273,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               }
             }
           });
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=>
-          a.requestProductTypeOrderBy  === b.requestProductTypeOrderBy ?
-          (a.requestProductId > b.requestProductId ? 1 : -1) :
-         (a.requestProductTypeOrderBy > b.requestProductTypeOrderBy ? 1 : -1)
-         );
+
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
@@ -288,6 +284,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           });
           row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
           row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+          row.requestOffers = row.requestOffers?.sort((a,b)=>
+          a.requestProductTypeOrderBy  === b.requestProductTypeOrderBy ?
+          (a.requestProductId > b.requestProductId ? 1 : -1) :
+         (a.requestProductTypeOrderBy > b.requestProductTypeOrderBy ? 1 : -1)
+         );
         }
       }
     }
