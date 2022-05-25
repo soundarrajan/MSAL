@@ -89,7 +89,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       onGridReady: params => {
         this.dialog_gridOptions.api = params.api;
         this.dialog_gridOptions.columnApi = params.columnApi;
-        this.dialog_gridOptions.api.sizeColumnsToFit();
+        this.dialog_gridOptions.api?.sizeColumnsToFit();
 
         this.store.selectSnapshot<any>((state: any) => {
           if (data.isPhysicalSupplier != undefined && data.isPhysicalSupplier) {
@@ -145,7 +145,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       if (res?.message == 'Unauthorized') {
         return;
       }
-      this.dialog_gridOptions.api.hideOverlay();
+      this.dialog_gridOptions.api?.hideOverlay();
       this.rowData = res.payload;
       this.dialog_gridOptions.api.setRowData(this.rowData);
     });
@@ -164,7 +164,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       { Skip: endRowData - this.pageSize, Take: this.pageSize }
     );
     response.subscribe((res: any) => {
-      this.dialog_gridOptions.api.hideOverlay();
+      this.dialog_gridOptions.api?.hideOverlay();
       if (res?.message == 'Unauthorized') {
         return;
       }
@@ -186,7 +186,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       { Skip: 0, Take: this.pageSize }
     );
     response.subscribe((res: any) => {
-      this.dialog_gridOptions.api.hideOverlay();
+      this.dialog_gridOptions.api?.hideOverlay();
       if (res?.message == 'Unauthorized') {
         return;
       }
@@ -213,7 +213,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       { Skip: 0, Take: this.pageSize }
     );
     response.subscribe((res: any) => {
-      this.dialog_gridOptions.api.hideOverlay();
+      this.dialog_gridOptions.api?.hideOverlay();
       if (res?.message == 'Unauthorized') {
         return;
       }
@@ -314,7 +314,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     );
     response.subscribe((res: any) => {
       this.totalItems = res.matchedCount;
-      this.dialog_gridOptions.api.hideOverlay();
+      this.dialog_gridOptions.api?.hideOverlay();
       if (res.payload) {
         var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
         this.page = currentPage + 1;
@@ -338,7 +338,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     );
     response.subscribe((res: any) => {
       this.totalItems = res.matchedCount;
-      this.dialog_gridOptions.api.hideOverlay();
+      this.dialog_gridOptions.api?.hideOverlay();
       if (res.payload) {
         var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
         this.page = currentPage + 1;
