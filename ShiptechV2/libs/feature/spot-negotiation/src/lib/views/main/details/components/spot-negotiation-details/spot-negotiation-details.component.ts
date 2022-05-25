@@ -1324,6 +1324,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           this.toastr.success(
             'Counterparty has been removed from negotiation succesfully.','',{timeOut: 800}
           );
+          this.spotNegotiationService.callGridRedrawService();
           this.store.dispatch([new RemoveCounterparty({ rowId: rowData.id }), new RemoveLocationsRowsOriData({ rowId: rowData.id })]);
 
           if (res['requestLocationSellers'] && res['sellerOffers']) {
