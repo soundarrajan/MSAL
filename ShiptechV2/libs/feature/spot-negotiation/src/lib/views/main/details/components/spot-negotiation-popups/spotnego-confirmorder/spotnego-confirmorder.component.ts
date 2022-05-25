@@ -453,11 +453,10 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     this.buttonsDisabled = true;
 
     (<any>window).startConfirmOfferTime = Date.now();
-
+    this.spinner.show();
     const response = this.spotNegotiationService.GetExistingOrders(payload);
     response.subscribe(
       (res: any) => {
-        this.spinner.hide();
         if (res?.message == 'Unauthorized') {
           return;
         }
@@ -552,7 +551,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           Comments: ''
         };
         //this.toaster.info('Please wait while the offer is confirmed');
-        this.spinner.show();
+        
         setTimeout(() => {
           const response = this.spotNegotiationService.ConfirmRfq(rfq_data);
           response.subscribe(
