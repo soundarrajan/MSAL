@@ -335,7 +335,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
                 if (v.requestId == 0 && v.contract == null) {
                     noContractAssigned = `${noContractAssigned }${v.vessel.name }, `;
                 }
-                if (manual && (v.minQuantity == null || v.maxQuantity == null || v.minQuantity == 0 || v.maxQuantity == 0)) {
+                if (manual && (v.minQuantity == null || v.maxQuantity == null || v.minQuantity < 0 || v.maxQuantity < 0)) {
                     noMinMaxQuantity = `${noMinMaxQuantity }${v.vessel.name }, `;
                 }
                 if (v.agreementType == null) {
