@@ -122,7 +122,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
             .map(req => ({ ...req, selected: true }));
           this.selectedRequestList = this.requestOptionsToDuplicatePrice;
         }
-//        this.tenantConfiguration = spotNegotiation.tenantConfigurations;
+        this.tenantConfiguration = spotNegotiation.tenantConfigurations;
         this.setTabItems();
       });
   
@@ -495,11 +495,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );
@@ -535,11 +535,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );
@@ -567,7 +567,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         let FilterProdut = requestLocations[0].requestProducts.filter(
           col => col.id == element1.requestProductId
         );
-        element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
+        element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
       });
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
@@ -883,10 +883,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       });
 
       if (reqIdForLocation) {
-        this.toaster.error(
+        this.toaster.warning(
           'Selected location(s) does not exists in  ' + reqIdForLocation
         );
-        return;
       }
       if (
         tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
@@ -902,10 +901,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         !tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
         reqIdwithLocationForSeller
       ) {
-        this.toaster.error(
+        this.toaster.warning(
           'Selected seller(s) does not exists in ' + reqIdwithLocationForSeller
         );
-        return;
       }
             // if (isPhySupMandatoryForQuoting) {
       //   this.toaster.error(
@@ -1533,11 +1531,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
             locRow,
             locRow);
             data.requestOffers = data.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );

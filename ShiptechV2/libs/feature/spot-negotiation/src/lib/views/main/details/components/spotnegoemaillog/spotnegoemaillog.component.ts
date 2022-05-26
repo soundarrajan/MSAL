@@ -65,8 +65,8 @@ export class SpotnegoemaillogComponent implements OnInit {
       onGridReady: params => {
         this.gridOptions_data.api = params.api;
         this.gridOptions_data.columnApi = params.columnApi;
-        params.api.sizeColumnsToFit();
-        this.gridOptions_data.api.showLoadingOverlay();
+        params.api?.sizeColumnsToFit();
+        this.gridOptions_data?.api.showLoadingOverlay();
       },
       onColumnResized: function(params) {
         if (
@@ -75,12 +75,12 @@ export class SpotnegoemaillogComponent implements OnInit {
           params.finished === true &&
           params.source === 'uiColumnDragged'
         ) {
-          params.api.sizeColumnsToFit();
+          params.api?.sizeColumnsToFit();
         }
       },
       onColumnVisible: function(params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 8) {
-          params.api.sizeColumnsToFit();
+          params.api?.sizeColumnsToFit();
         }
       }
     };
@@ -179,14 +179,14 @@ export class SpotnegoemaillogComponent implements OnInit {
           );
           emailLogs.subscribe((res: any) => {
             //this.spinner.hide();
-            this.gridOptions_data.api.hideOverlay();
+            this.gridOptions_data.api?.hideOverlay();
             if (res?.message == 'Unauthorized') {
               return;
             }
             if (res.payload) {
               this.totalItems = res.matchedCount;
               //this.rowData_grid = res.payload;
-              this.gridOptions_data.api.setRowData(res.payload);
+              this.gridOptions_data.api?.setRowData(res.payload);
               if (!this.changeDetector['destroyed']) {
                 this.changeDetector.detectChanges();
               }
@@ -200,7 +200,7 @@ export class SpotnegoemaillogComponent implements OnInit {
 
   onPageChange(page: number) {
     var endRowData = page * this.pageSize;
-    this.gridOptions_data.api.showLoadingOverlay();
+    this.gridOptions_data.api?.showLoadingOverlay();
     this.page = page;
     let reqpayload = {
       Order: null,
@@ -217,12 +217,12 @@ export class SpotnegoemaillogComponent implements OnInit {
     };
     const response = this.spotNegotiationService.getEmailLogsList(reqpayload);
     response.subscribe((res: any) => {
-      this.gridOptions_data.api.hideOverlay();
+      this.gridOptions_data.api?.hideOverlay();
       if (res?.message == 'Unauthorized') {
         return;
       }
       if (res.payload) {
-        this.gridOptions_data.api.setRowData(res.payload);
+        this.gridOptions_data.api?.setRowData(res.payload);
       } else {
         this.toaster.error(res);
       }
@@ -231,8 +231,8 @@ export class SpotnegoemaillogComponent implements OnInit {
 
   onPageSizeChange(pageSize: number) {
     this.pageSize = pageSize;
-    this.gridOptions_data.api.showLoadingOverlay();
-    var currentPage = this.gridOptions_data.api.paginationGetCurrentPage();
+    this.gridOptions_data.api?.showLoadingOverlay();
+    var currentPage = this.gridOptions_data.api?.paginationGetCurrentPage();
     this.page = currentPage + 1;
     let reqpayload = {
       Order: null,
@@ -249,14 +249,14 @@ export class SpotnegoemaillogComponent implements OnInit {
     };
     const response = this.spotNegotiationService.getEmailLogsList(reqpayload);
     response.subscribe((res: any) => {
-      this.gridOptions_data.api.hideOverlay();
+      this.gridOptions_data.api?.hideOverlay();
       if (res?.message == 'Unauthorized') {
         return;
       }
       if (res.payload) {
-        this.gridOptions_data.api.setRowData(res.payload);
+        this.gridOptions_data.api?.setRowData(res.payload);
       } else {
-        this.gridOptions_data.api.showNoRowsOverlay();
+        this.gridOptions_data.api?.showNoRowsOverlay();
       }
     });
   }

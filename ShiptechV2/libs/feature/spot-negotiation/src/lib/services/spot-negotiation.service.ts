@@ -37,6 +37,7 @@ export class SpotNegotiationService extends BaseStoreService
   counterpartyTotalCount: any;
   physicalSupplierTotalCount: any;
   requestCount: any;
+  hArray : any = [];
 
   constructor(
     protected store: Store,
@@ -71,6 +72,15 @@ export class SpotNegotiationService extends BaseStoreService
   @ObservableException()
   getEmailLogsList(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.getEmailLogsList(payload);
+  }
+  public highlihtArrayIni(data,_i){
+    data.forEach((element,index) => {
+      if(element.rowId){
+        this.hArray[index] = element;
+      }else{
+        this.hArray[_i+100000]= element;
+      }
+    });
   }
 
   /* Gets the Email Logs based on Id
