@@ -22,22 +22,22 @@
               <th class="text-left w-157">CounterParty</th>
               <th class="text-left w-95">Diff</th>
               <th class="text-left w-95">Curr. offer</th>
-              <th class="text-left "  >Past off</th>
+              <th class="text-left">Past off</th>
             </tr>
           </thead>
           <tbody id="tableBody" style="min-height: 580px; height: auto;">
             <tr id = "commentList" *ngFor="let items of locationData">
-              <td class="text-left w-157" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
+              <td class="text-left w-157" matTooltipClass="lightTooltip" matTooltip="{{items.sellerCounterpartyName| htmlDecodeReadonly}}" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
               <td class="text-left w-95">$ {{formatService.FormatPriceTrailingZero(items.priceDiff)}}</td>
               <td class="text-left w-95" >$ {{formatService.FormatPriceTrailingZero(items.price)}}</td>
                 <td  class="text-left ">
                   <table >
                     <tbody>
-                      <tr style="table-layout: auto; width: fit-content">
-                        <td  class="text-left "*ngIf="items.oldPrices.length==0" >
-                          ---
+                      <tr style="table-layout: auto; overflow-x: scroll;">
+                        <td class="text-left" style="min-width: 3vw; max-width: 3vw;" *ngFor="let item of counter(items.oldPrices)">
+                           <span  *ngIf="item != undefined">&nbsp;$ {{formatService.FormatPriceTrailingZero(item)}} &nbsp;</span>
+                           <span *ngIf="item == undefined">&nbsp;-&nbsp;</span>
                         </td>
-                        <td class="text-left" *ngFor="let item of items.oldPrices">&nbsp;$ {{formatService.FormatPriceTrailingZero(item)}} &nbsp;</td>
                       </tr>
                     </tbody>
 
@@ -46,11 +46,6 @@
             </tr>
           </tbody>
           </table>
-          <!-- <div >
-          <table>
-
-        </table>
-        </div> -->
       </div>
     </div>
   </div>
