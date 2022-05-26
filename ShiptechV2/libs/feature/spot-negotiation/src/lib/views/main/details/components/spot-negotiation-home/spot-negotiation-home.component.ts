@@ -688,7 +688,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   copyPriceToSelectedRequests() {
-    debugger;
     if (this.selectedRequestList.length > 0) {
       this.selectedSellerList = [];
       const tenantConfig = this.store.selectSnapshot(
@@ -884,10 +883,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
       });
 
       if (reqIdForLocation) {
-        this.toaster.error(
+        this.toaster.warning(
           'Selected location(s) does not exists in  ' + reqIdForLocation
         );
-        return;
       }
       if (
         tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
