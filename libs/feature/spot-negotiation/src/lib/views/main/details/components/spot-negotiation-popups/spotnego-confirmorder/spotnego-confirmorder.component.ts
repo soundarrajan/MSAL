@@ -453,11 +453,10 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     this.buttonsDisabled = true;
 
     (<any>window).startConfirmOfferTime = Date.now();
-
+    this.spinner.show();
     const response = this.spotNegotiationService.GetExistingOrders(payload);
     response.subscribe(
       (res: any) => {
-        this.spinner.hide();
         if (res?.message == 'Unauthorized') {
           return;
         }
@@ -552,7 +551,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           Comments: ''
         };
         //this.toaster.info('Please wait while the offer is confirmed');
-        this.spinner.show();
+        
         setTimeout(() => {
           const response = this.spotNegotiationService.ConfirmRfq(rfq_data);
           response.subscribe(
@@ -684,11 +683,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );
@@ -724,11 +723,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
 
         row.requestOffers = row.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );
@@ -746,7 +745,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         let FilterProdut = currentLocProd[0].requestProducts.filter(
           col => col.id == element1.requestProductId
         );
-        element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
+        element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
       });
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;

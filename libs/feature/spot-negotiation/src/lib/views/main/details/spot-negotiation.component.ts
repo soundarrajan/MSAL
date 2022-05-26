@@ -162,6 +162,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
+    this.currentRequestData = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
     this.allRequest = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.requests;
     });
@@ -170,12 +173,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
 
     rowsArray.forEach((row, index) => {
+      let currentLocProd : any;
       let rowrelatedrequest = this.allRequest.filter(
         row1 => row1.id == row.requestId
       );
       let requestProducts = requests.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
       if(rowrelatedrequest.length > 0 && rowrelatedrequest[0]["requestLocations"]){
-        let currentLocProd = rowrelatedrequest[0]["requestLocations"].filter(
+        currentLocProd = rowrelatedrequest[0]["requestLocations"].filter(
           row1 => row1.locationId == row.locationId
         );
       if (currentLocProd.length != 0) {
@@ -210,7 +214,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               let FilterProdut = currentLocProd[0].requestProducts.filter(
                 col => col.id == element1.requestProductId
               );
-              element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
               if (
                 FilterProdut.length > 0 &&
                 FilterProdut[0].status != undefined &&
@@ -222,14 +225,15 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             }
           }
         });
-
-        row.requestOffers = priceDetailsArray[index].requestOffers?.sort((a,b)=>
-         a.requestProductTypeId  === b.requestProductTypeId ?
-         (a.requestProductId > b.requestProductId ? 1 : -1) :
-        (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
-        );
+        row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.requestOffers.forEach(element1 => {
+          let FilterProdut = currentLocProd[0].requestProducts.filter(
+            col => col.id == element1.requestProductId
+          );
+          element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
+        });
         row.totalOffer = priceDetailsArray[index].totalOffer;
-        row.totalCost = priceDetailsArray[index].totalCost;
+        row.totalCost = priceDetailsArray[index].totalCost;        
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
@@ -238,6 +242,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+        row.requestOffers = row.requestOffers?.sort((a,b)=>
+        a.requestProductTypeOrderBy  === b.requestProductTypeOrderBy ?
+        (a.requestProductId > b.requestProductId ? 1 : -1) :
+       (a.requestProductTypeOrderBy > b.requestProductTypeOrderBy ? 1 : -1)
+       );
         return row;
       }
 
@@ -262,7 +271,6 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
                 let FilterProdut = currentLocProd[0].requestProducts.filter(
                   col => col.id == element1.requestProductId
                 );
-                element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
                 if (
                   FilterProdut.length > 0 &&
                   FilterProdut[0].status != undefined &&
@@ -273,13 +281,15 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               }
             }
           });
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort((a,b)=>
-          a.requestProductTypeId  === b.requestProductTypeId ?
-          (a.requestProductId > b.requestProductId ? 1 : -1) :
-         (a.requestProductTypeId > b.requestProductTypeId ? 1 : -1)
-         );
+          row.requestOffers = detailsForCurrentRow[0].requestOffers;
+          row.requestOffers.forEach(element1 => {
+            let FilterProdut = currentLocProd[0].requestProducts.filter(
+              col => col.id == element1.requestProductId
+            );
+            element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
+          });
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
-          row.totalCost = detailsForCurrentRow[0].totalCost;
+          row.totalCost = detailsForCurrentRow[0].totalCost;          
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
           row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
           row.requestOffers = row.requestOffers.map(e => {
@@ -288,6 +298,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           });
           row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
           row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+          row.requestOffers = row.requestOffers?.sort((a,b)=>
+          a.requestProductTypeOrderBy  === b.requestProductTypeOrderBy ?
+          (a.requestProductId > b.requestProductId ? 1 : -1) :
+         (a.requestProductTypeOrderBy > b.requestProductTypeOrderBy ? 1 : -1)
+         );
         }
       }
     }

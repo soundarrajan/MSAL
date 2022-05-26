@@ -385,7 +385,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             id="{{ params.data.requestLocationId }}/{{ params.rowIndex }}/{{
               params.index
             }}"
-            (keyup.enter)="onGetFocus($event, params)"
+            (keydown.enter)="onGetFocus($event, params)"
             (keydown.Tab)="onGetFocus($event, params)"
             (focus)="getCurrentOfferValue($event)"
             (change)="onPriceChange($event, params)"
@@ -1180,7 +1180,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
               // Update the store
               this.store.dispatch(new EditLocationRow(locRow));
               this.params.node.setData(locRow);
-              this._spotNegotiationService.callGridRefreshService();
+              this._spotNegotiationService.callGridRedrawService();
             });
         } else {
           this.getPriceDetails();
@@ -1271,11 +1271,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );
@@ -1310,11 +1310,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );
@@ -1332,7 +1332,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         let FilterProdut = currentLocProd[0].requestProducts.filter(
           col => col.id == element1.requestProductId
         );
-        element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
+        element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
       });
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
@@ -1729,6 +1729,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   onGetFocus(event, params) {
+    debugger;
     if (!this.priceChanged) {
       let idValue = this.returnRowIndex(params);
       let element = document.getElementById(idValue);
@@ -2290,11 +2291,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           updatedRow,
           updatedRow);
           locRow.requestOffers = locRow.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );

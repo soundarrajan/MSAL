@@ -67,7 +67,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   rowData_aggrid: any = [];
   locationsRows: any = [];
   currentRequestSmallInfo: any;
-  highlightedCells = {};
+  highlightedCells = [];
   uomsMap: any;
   requestOptions: any;
   Index: number;
@@ -246,9 +246,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               this.highlightedCells[params.data.requestId] &&
               params.data.id == this.highlightedCells[params.data.requestId]
             ) {
-              return "line-seperator offerPriceHighLight";
+              return "line-seperator offerPriceHighLight "+'tf_'+params.data.id;
             }
-            return 'line-seperator';
+            return 'line-seperator '+'tf_'+params.data.id;
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'totalOffer', cellClass: '' },
@@ -312,7 +312,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         if (params.columnApi.getAllDisplayedColumns().length <= 20) {
           params.api.sizeColumnsToFit();
         }
-        params.api.hideOverlay();
+        params.api?.hideOverlay();
       },
       onGridReady: params => {
         // Ng init for AG GRID;
@@ -438,15 +438,24 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       if (element) {
         this.moveCursorToEnd(element);
       }
-    // this.spotNegotiationService.callGridRefreshServiceAll();
-  
+     //this.spotNegotiationService.callGridRefreshServiceAll();
+  // let displayElm = document.getElementsByClassName("calculate-icon-btn");
+    // displayElm[0].classList.add("calculate-icon-btn-show");
+
     let x = document.getElementsByClassName("offerPriceHighLight");
     while(x.length > 0) x[0].classList.remove("offerPriceHighLight");
-debugger;
-    let displayElm = document.getElementsByClassName("calculate-icon-btn");
-    displayElm[0].classList.add("calculate-icon-btn-show");
 
-  
+    this.spotNegotiationService.hArray?.forEach((element,key) => {
+      if(element.rowId){
+        let afterHigh = document.getElementsByClassName(element.rowId+'/'+key);
+        afterHigh[0]?.classList?.add("offerPriceHighLight");
+      }else{
+        let afterHigh = document.getElementsByClassName('tf_'+element);
+        afterHigh[0]?.classList?.add("offerPriceHighLight");
+      }
+    });
+      let displayElm = document.getElementsByClassName("calculate-icon-btn");
+      displayElm[0].classList.add("calculate-icon-btn-show");
     // Update the store
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
@@ -703,9 +712,9 @@ debugger;
               product.id ===
                 this.highlightedCells[product.productId].requestProductId
             ) {
-              return 'grey-opacity-cell pad-lr-0 offerPriceHighLight';
+              return 'grey-opacity-cell pad-lr-0 offerPriceHighLight '+ params.data.id+'/'+product.productId;
             }
-            return 'grey-opacity-cell pad-lr-0';
+            return 'grey-opacity-cell pad-lr-0 ' + params.data.id+'/'+product.productId;
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'addTpr', cellClass: '', index: index },
@@ -993,7 +1002,7 @@ debugger;
       this.locationsRows.map(row => {
         // Create key with id if dosen't exists;
         if (!this.highlightedCells[product.productId]) {
-          this.highlightedCells[product.productId] = {};
+          this.highlightedCells[product.productId] = [];
         }
         // Set smallest total price
         const productDetails = this.getRowProductDetails(
@@ -1136,7 +1145,7 @@ debugger;
 
         // Set headers of products;
         this.columnDef_aggridObj = [];
-        this.highlightedCells = {};
+        this.highlightedCells = [];
 
         this.locations.forEach((reqLocation, i) => {
           // Separate rows for each location;
@@ -1156,13 +1165,16 @@ debugger;
           this.columnDef_aggridObj[i][0].children[0].cellRendererParams.requestLocationId = reqLocation.id;
 
           // These are locations!!
-          const requestProductsLength = reqLocation.requestProducts.length;
+          const requestProductsLength = reqLocation.requestProducts.filter(rp => !rp.isContract).length;
           reqLocation.requestProducts.map((reqProduct, index) => {
             this.checkHighlight(
               { product: reqProduct },
               requestProductsLength,
               this.currentRequestSmallInfo.id
             );
+            if(this.highlightedCells.length > 0){
+              this.spotNegotiationService.highlihtArrayIni(this.highlightedCells,reqLocation.locationId);
+            }
             this.columnDef_aggridObj[i].push(
               this.createProductHeader(reqProduct, reqLocation.id, index)
             );
@@ -1312,6 +1324,7 @@ debugger;
           this.toastr.success(
             'Counterparty has been removed from negotiation succesfully.','',{timeOut: 800}
           );
+          this.spotNegotiationService.callGridRedrawService();
           this.store.dispatch([new RemoveCounterparty({ rowId: rowData.id }), new RemoveLocationsRowsOriData({ rowId: rowData.id })]);
 
           if (res['requestLocationSellers'] && res['sellerOffers']) {
@@ -1536,11 +1549,11 @@ debugger;
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );
@@ -1575,11 +1588,11 @@ debugger;
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
-            : a.requestProductTypeId > b.requestProductTypeId
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
             ? 1
             : -1
         );
@@ -1597,7 +1610,7 @@ debugger;
         let FilterProdut = currentLocProd[0].requestProducts.filter(
           col => col.id == element1.requestProductId
         );
-        element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
+        element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
       });
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;

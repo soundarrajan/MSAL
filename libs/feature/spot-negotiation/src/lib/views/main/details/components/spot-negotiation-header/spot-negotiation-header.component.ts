@@ -74,6 +74,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   visibleRequestList: any = [];
   couterpartyValue: any;
   clrRequest: any = 0;
+  bestOffIconDispaly : boolean = false;
   // requestsAndVessels = [
   //   { request: 'Demo Req 100001', vessel: 'MerinLion', selected: false },
   //   { request: 'Demo Req 100002', vessel: 'Afif', selected: false },
@@ -132,6 +133,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           this.requestsAndVessels.slice(0, 7)
         );
         this.locationsRows = spotNegotiation.locationsRows;
+        this.bestOffIconDispaly =  false;
+        // this.locationsRows.forEach(element => {
+        //   if(element?.requestOffers?.length > 0){
+        //     this.bestOffIconDispaly =  true;
+        //     return;
+        //   }
+        // });
         this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
           this.locations =
@@ -469,7 +477,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
               let FilterProdut = currentLocProd[0].requestProducts.filter(
                 col => col.id == element1.requestProductId
               );
-              element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
               if (
                 FilterProdut.length > 0 &&
                 FilterProdut[0].status != undefined &&
@@ -480,6 +487,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             }
           }
         });
+
+        row.requestOffers = priceDetailsArray[index].requestOffers;
+        row.requestOffers.forEach(element1 => {
+          let FilterProdut = currentLocProd[0].requestProducts.filter(
+            col => col.id == element1.requestProductId
+          );
+          element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
+        });
         row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId =
           priceDetailsArray[index].physicalSupplierCounterpartyId;
@@ -488,17 +503,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             x => x.id == priceDetailsArray[index].physicalSupplierCounterpartyId
           )?.displayName;
         }
-        row.requestOffers = priceDetailsArray[
-          index
-        ].requestOffers?.sort((a, b) =>
-          a.requestProductTypeId === b.requestProductTypeId
-            ? a.requestProductId > b.requestProductId
-              ? 1
-              : -1
-            : a.requestProductTypeId > b.requestProductTypeId
-            ? 1
-            : -1
-        );
         row.totalOffer = priceDetailsArray[index].totalOffer;
         row.totalCost = priceDetailsArray[index].totalCost;
         row.requestAdditionalCosts = priceDetailsArray[index].requestAdditionalCosts;
@@ -509,6 +513,15 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+        row.requestOffers = row.requestOffers?.sort((a, b) =>
+          a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
+            ? a.requestProductId > b.requestProductId
+              ? 1
+              : -1
+            : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
+            ? 1
+            : -1
+        );
         return row;
       }
 
@@ -533,7 +546,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 let FilterProdut = currentLocProd[0].requestProducts.filter(
                   col => col.id == element1.requestProductId
                 );
-                element1.requestProductTypeId = FilterProdut[0]?.productTypeId;
                 if (
                   FilterProdut.length > 0 &&
                   FilterProdut[0].status != undefined &&
@@ -553,16 +565,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 x.id == detailsForCurrentRow[0].physicalSupplierCounterpartyId
             )?.displayName;
           }
-          row.requestOffers = detailsForCurrentRow[0].requestOffers?.sort(
-            (a, b) =>
-              a.requestProductTypeId === b.requestProductTypeId
-                ? a.requestProductId > b.requestProductId
-                  ? 1
-                  : -1
-                : a.requestProductTypeId > b.requestProductTypeId
-                ? 1
-                : -1
-          );
+          row.requestOffers = detailsForCurrentRow[0].requestOffers;
+          row.requestOffers.forEach(element1 => {
+            let FilterProdut = currentLocProd[0].requestProducts.filter(
+              col => col.id == element1.requestProductId
+            );
+            element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
+          });
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
@@ -573,6 +582,16 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           });
           row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
           row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+          row.requestOffers = row.requestOffers?.sort(
+            (a, b) =>
+              a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
+                ? a.requestProductId > b.requestProductId
+                  ? 1
+                  : -1
+                : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
+                ? 1
+                : -1
+          );
         }
       }
 
