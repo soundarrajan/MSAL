@@ -28,6 +28,7 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
   locationName: string;
   productName: string ;
   locationData: any;
+  maxNumberOfOffers: number = 0;
   tenantService:any;
   targerPrice: any;
   highcharts = Highcharts;
@@ -145,10 +146,20 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
         this.locationName = data.LocationName;
         this.productName = data.ProductName;
         this.targerPrice = data.TargerPrice;
+        this.drawOfferPriceGraph();
    }
 
    ngOnInit() {
-     let payload = {
+}
+  counter(item : any){
+    var diff  = new Array(this.maxNumberOfOffers - item.length);
+    var array = [...item, ...diff]
+    console.log(array);
+    return array;
+  }
+
+  drawOfferPriceGraph(){
+    let payload = {
       requestLocationId : this.requestLocationId,
        requestProductId : this.requestProductId
      };
@@ -159,6 +170,9 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
          this.locationData = res.marketPriceHistory;
          let dataSeries = [];
          this.locationData.map(x=>{
+           if(x.oldPrices.length >= this.maxNumberOfOffers){
+               this.maxNumberOfOffers = x.oldPrices.length;
+           }
             dataSeries.push({
               name: this.format.htmlDecode(x.sellerCounterpartyName),
               marker: {
@@ -167,7 +181,6 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
               data: x.oldPrices.reverse()
             })
          })
-
          if(dataSeries.length === 0){
            this.highcharts.setOptions({ lang: {noData: "No past offers found"}});
            this.highcharts.chart('container', this.chartOptions);

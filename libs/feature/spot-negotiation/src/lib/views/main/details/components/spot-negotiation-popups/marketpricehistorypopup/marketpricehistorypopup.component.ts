@@ -106,7 +106,6 @@ export class MarketpricehistorypopupComponent implements OnInit {
         this.highcharts.chart('container', this.chartOptions);
         return;
        }
-     console.log(this.tabledata);
      this.chartOptions.xAxis.categories = categories;
      this.chartOptions.series[0].data = dataSeries;
      this.highcharts.chart('container', this.chartOptions);
