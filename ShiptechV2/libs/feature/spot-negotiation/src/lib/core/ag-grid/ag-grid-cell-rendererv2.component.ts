@@ -341,7 +341,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             id="{{ params.data.requestLocationId }}/{{ params.rowIndex }}/{{
               params.index
             }}"
-            (keyup.enter)="onGetFocus($event, params)"
+            (keydown.enter)="onGetFocus($event, params)"
             (keydown.Tab)="onGetFocus($event, params)"
             (focus)="getCurrentOfferValue($event)"
             (change)="onPriceChange($event, params)"
@@ -1676,6 +1676,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   onGetFocus(event, params) {
+    debugger;
     if (!this.priceChanged) {
       let idValue = this.returnRowIndex(params);
       let element = document.getElementById(idValue);

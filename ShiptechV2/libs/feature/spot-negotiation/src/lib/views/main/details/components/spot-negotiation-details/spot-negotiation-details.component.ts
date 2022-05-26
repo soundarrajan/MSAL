@@ -438,13 +438,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       if (element) {
         this.moveCursorToEnd(element);
       }
-    // this.spotNegotiationService.callGridRefreshServiceAll();
-  
+     //this.spotNegotiationService.callGridRefreshServiceAll();
+  // let displayElm = document.getElementsByClassName("calculate-icon-btn");
+    // displayElm[0].classList.add("calculate-icon-btn-show");
+
     let x = document.getElementsByClassName("offerPriceHighLight");
     while(x.length > 0) x[0].classList.remove("offerPriceHighLight");
-
-    // let displayElm = document.getElementsByClassName("calculate-icon-btn");
-    // displayElm[0].classList.add("calculate-icon-btn-show");
 
     this.spotNegotiationService.hArray?.forEach((element,key) => {
       if(element.rowId){
