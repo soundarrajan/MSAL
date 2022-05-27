@@ -593,6 +593,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
           this.store.dispatch(
             [new AddCounterpartyToLocations(res.counterparties), new AppendLocationsRowsOriData(res.counterparties)]
           );
+          this._spotNegotiationService.callGridRedrawService();
         } else {
           this.toastr.error(res.message);
           return;
