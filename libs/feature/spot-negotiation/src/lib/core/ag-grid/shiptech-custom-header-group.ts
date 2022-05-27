@@ -1060,12 +1060,6 @@ export class ShiptechCustomHeaderGroup {
           }
         });
         row.requestOffers = priceDetailsArray[index].requestOffers;
-        row.requestOffers.forEach(element1 => {
-          let FilterProdut = currentLocProd[0].requestProducts.filter(
-            col => col.id == element1.requestProductId
-          );
-          element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
-        });
         row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId =
           priceDetailsArray[index].physicalSupplierCounterpartyId;
@@ -1080,7 +1074,8 @@ export class ShiptechCustomHeaderGroup {
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
-           return { ...e, reqProdStatus: isStemmed };
+          let requestProductTypeOrderBy = requestProducts?.find(rp => rp.id == e.requestProductId)?.productTypeOrderBy;
+          return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
@@ -1128,12 +1123,6 @@ export class ShiptechCustomHeaderGroup {
             }
           });
           row.requestOffers = detailsForCurrentRow[0].requestOffers;
-          row.requestOffers.forEach(element1 => {
-            let FilterProdut = currentLocProd[0].requestProducts.filter(
-              col => col.id == element1.requestProductId
-            );
-            element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
-          });
           row.isSelected = detailsForCurrentRow[0].isSelected;
           row.physicalSupplierCounterpartyId =
             detailsForCurrentRow[0].physicalSupplierCounterpartyId;
@@ -1150,7 +1139,8 @@ export class ShiptechCustomHeaderGroup {
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
           row.requestOffers = row.requestOffers.map(e => {
             let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
-             return { ...e, reqProdStatus: isStemmed };
+            let requestProductTypeOrderBy = requestProducts?.find(rp => rp.id == e.requestProductId)?.productTypeOrderBy;
+            return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
           });
           row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
           row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
