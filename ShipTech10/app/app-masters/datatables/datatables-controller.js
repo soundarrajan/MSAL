@@ -2842,7 +2842,6 @@ APP_MASTERS.controller('Controller_Datatables', [
                     {
                         name: 'quotePrice',
                         displayName: 'Price',
-                        format: 'number:3',
                         cellTemplate: $scope.dataTableTemplates.text,
                         ChangeAction: 'grid.appScope.fVal().formValues.marketPrices[grid.appScope.rowIdx(row)].id > 0 ? return : grid.appScope.fVal().formValues.marketPrices[grid.appScope.rowIdx(row)].id = 0'
                     }
