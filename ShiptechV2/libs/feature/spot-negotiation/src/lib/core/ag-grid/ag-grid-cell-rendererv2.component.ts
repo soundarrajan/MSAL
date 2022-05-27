@@ -1222,7 +1222,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
-           return { ...e, reqProdStatus: isStemmed };
+          let requestProductTypeOrderBy = requestProducts?.find(rp => rp.id == e.requestProductId)?.productTypeOrderBy;
+          return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);      
@@ -1261,7 +1262,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
-           return { ...e, reqProdStatus: isStemmed };
+          let requestProductTypeOrderBy = requestProducts?.find(rp => rp.id == e.requestProductId)?.productTypeOrderBy;
+          return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
@@ -1284,12 +1286,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   UpdateProductsSelection(currentLocProd, row) {
     if (currentLocProd.length != 0) {
       let currentLocProdCount = currentLocProd[0].requestProducts.length;
-      row.requestOffers.forEach(element1 => {
-        let FilterProdut = currentLocProd[0].requestProducts.filter(
-          col => col.id == element1.requestProductId
-        );
-        element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
-      });
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
         let val = 'checkProd' + indx;
