@@ -489,12 +489,6 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         });
 
         row.requestOffers = priceDetailsArray[index].requestOffers;
-        row.requestOffers.forEach(element1 => {
-          let FilterProdut = currentLocProd[0].requestProducts.filter(
-            col => col.id == element1.requestProductId
-          );
-          element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
-        });
         row.isSelected = priceDetailsArray[index].isSelected;
         row.physicalSupplierCounterpartyId =
           priceDetailsArray[index].physicalSupplierCounterpartyId;
@@ -509,7 +503,8 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
         row.requestOffers = row.requestOffers.map(e => {
           let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
-           return { ...e, reqProdStatus: isStemmed };
+          let requestProductTypeOrderBy = requestProducts?.find(rp => rp.id == e.requestProductId)?.productTypeOrderBy;
+          return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
@@ -566,19 +561,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             )?.displayName;
           }
           row.requestOffers = detailsForCurrentRow[0].requestOffers;
-          row.requestOffers.forEach(element1 => {
-            let FilterProdut = currentLocProd[0].requestProducts.filter(
-              col => col.id == element1.requestProductId
-            );
-            element1.requestProductTypeOrderBy = FilterProdut[0]?.productTypeOrderBy;
-          });
           row.totalOffer = detailsForCurrentRow[0].totalOffer;
           row.totalCost = detailsForCurrentRow[0].totalCost;
           row.requestAdditionalCosts = detailsForCurrentRow[0].requestAdditionalCosts;
           row.isRfqSend = row.requestOffers?.some(off => off.isRfqskipped === false);
           row.requestOffers = row.requestOffers.map(e => {
             let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
-             return { ...e, reqProdStatus: isStemmed };
+            let requestProductTypeOrderBy = requestProducts?.find(rp => rp.id == e.requestProductId)?.productTypeOrderBy;
+            return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
           });
           row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
           row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
