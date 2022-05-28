@@ -888,11 +888,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
         tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
         reqIdwithLocationForSeller
       ) {
-        this.toaster.error(
+        this.toaster.warning(
           'Selected seller(s) does not have same physical supplier in ' +
             reqIdwithLocationForSeller
         );
-        return;
       }
       if (
         !tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
@@ -915,10 +914,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       }
       else if (!isProductsExists && reqIdwithSellerName) {
-        this.toaster.error(
+        this.toaster.warning(
           'Selected product(s) does not exist for ' + reqIdwithSellerName
         );
-        return;
       }
       if(sellerDetails.length == 0) return;
       let requestLocationIds = [];
