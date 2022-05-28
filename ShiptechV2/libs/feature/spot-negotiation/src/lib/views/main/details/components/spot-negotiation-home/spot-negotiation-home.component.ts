@@ -760,7 +760,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
                   ((tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
                     lr.physicalSupplierCounterpartyId ==
                       s.physicalSupplierCounterpartyId) ||
-                    !tenantConfig['isPhysicalSupplierMandatoryForQuoting'])
+                    !tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && lr.physicalSupplierCounterpartyId == null ||
+                    lr.physicalSupplierCounterpartyId == '')
               )
           );
           if (reqOffers.length == 0) {
@@ -882,7 +883,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
         this.toaster.warning(
           'Selected location(s) does not exists in  ' + reqIdForLocation
         );
-        if(sellerDetails.length == 0) return;
       }
       if (
         tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
@@ -901,7 +901,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
         this.toaster.warning(
           'Selected seller(s) does not exists in ' + reqIdwithLocationForSeller
         );
-        if(sellerDetails.length == 0) return;
       }
             // if (isPhySupMandatoryForQuoting) {
       //   this.toaster.error(
@@ -921,7 +920,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         );
         return;
       }
-
+      if(sellerDetails.length == 0) return;
       let requestLocationIds = [];
       selectedSellerRows.forEach(sellerRow => {
         requestLocationIds.push(sellerRow.RequestLocationId);
