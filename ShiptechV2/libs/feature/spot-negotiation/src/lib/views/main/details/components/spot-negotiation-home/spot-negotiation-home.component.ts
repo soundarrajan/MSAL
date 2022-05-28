@@ -882,6 +882,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         this.toaster.warning(
           'Selected location(s) does not exists in  ' + reqIdForLocation
         );
+        if(sellerDetails.length == 0) return;
       }
       if (
         tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
@@ -900,6 +901,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         this.toaster.warning(
           'Selected seller(s) does not exists in ' + reqIdwithLocationForSeller
         );
+        if(sellerDetails.length == 0) return;
       }
             // if (isPhySupMandatoryForQuoting) {
       //   this.toaster.error(
@@ -913,7 +915,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           'Physical Supplier(s) should be provided to copy offer price');
         return;
       }
-      else if (!isProductsExists) {
+      else if (!isProductsExists && reqIdwithSellerName) {
         this.toaster.error(
           'Selected product(s) does not exist for ' + reqIdwithSellerName
         );
