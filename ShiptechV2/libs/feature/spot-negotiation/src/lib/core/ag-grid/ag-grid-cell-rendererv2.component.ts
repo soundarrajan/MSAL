@@ -266,7 +266,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             $event.stopPropagation();
             onRightClickMenuOpened($event);
             pricePopupTrigger.openMenu()">
-          <span class="duplicate-icon" *ngIf="params.data.requestOffers[params.index]?.isOfferPriceCopied"></span>
+          <span class="duplicate-icon" *ngIf="this.paramsDataCloneForNoQuote?.requestOffers[params.index]?.isOfferPriceCopied"></span>
           <div id="custom-form-field" [ngClass]="ispriceCalculated ? '' : 'priceCalculated'">
             <mat-form-field
               class="without-search currency-select-trigger"
@@ -1672,7 +1672,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   onGetFocus(event, params) {
-    debugger;
     if (!this.priceChanged) {
       let idValue = this.returnRowIndex(params);
       let element = document.getElementById(idValue);
