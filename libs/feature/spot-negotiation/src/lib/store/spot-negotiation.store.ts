@@ -544,11 +544,7 @@ EditLocationRow(
     let sort_ctpys = ctpys.sort((a, b) => {
       let nameA = a.sellerCounterpartyName;
       let nameB = b.sellerCounterpartyName;
-      if (nameA < nameB)
-          return -1;
-      if (nameA > nameB)
-          return 1;
-      return 0;
+      return nameA.localeCompare(nameB);
   });
     patchState({
       locationsRows: sort_ctpys
