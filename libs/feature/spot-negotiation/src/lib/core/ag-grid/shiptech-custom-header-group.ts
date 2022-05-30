@@ -171,10 +171,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
             <span class="title"style="font-size:12px">Qty:</span>
             <span
               class="value"
-              contenteditable="true"
+              contenteditable="false"
               (keydown)="editQty($event)"
-              >{{ params.product.minQuantity }}/{{
-                params.product.maxQuantity
+              >{{ this.tenantService.quantity(params.product.minQuantity) }}/{{
+                this.tenantService.quantity(params.product.maxQuantity)
               }}
               {{ params.product.uomName }}</span
             >
