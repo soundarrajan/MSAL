@@ -39,7 +39,7 @@
           <table>
             <thead>
               <tr>
-                <th class="text-left ">Date</th>
+                <th class="text-left w-100">Date</th>
                 <th class="text-left w-95">Price(in USD)</th>
               </tr>
             </thead>
@@ -49,7 +49,7 @@
               <tbody>
                 <ng-container  *ngFor="let tabledata of tabledata; let i = index">
                 <tr id="commentList" *ngIf="tabledata.price != 0">
-                  <td class="border-bottom-1 fz-13">
+                  <td class="border-bottom-1 fz-13 w-100">
                     {{ tabledata.date }}
                   </td>
                   <td class="border-bottom-1 text-left fz-13 w-95">

@@ -34,7 +34,7 @@ export class TenantFormattingService {
     this.amountPrecision = generalTenantSettings.defaultValues.amountPrecision;
 
     this.quantityFormatter = new Intl.NumberFormat('en', {
-      minimumFractionDigits: this.quantityPrecision,
+      minimumFractionDigits: 0,
       maximumFractionDigits: this.quantityPrecision
     });
     this.priceFormatter = new Intl.NumberFormat('en', {
