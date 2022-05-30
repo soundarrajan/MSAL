@@ -541,9 +541,13 @@ EditLocationRow(
       }
     });
     var ctpys = [...state.locationsRows, ...payload];
-
+    let sort_ctpys = ctpys.sort((a, b) => {
+      let nameA = a.sellerCounterpartyName;
+      let nameB = b.sellerCounterpartyName;
+      return nameA.localeCompare(nameB);
+  });
     patchState({
-      locationsRows: ctpys
+      locationsRows: sort_ctpys
     });
   }
 
