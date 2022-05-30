@@ -137,7 +137,7 @@
                         {{ value.quantity.splittedQuantity | number : $ctrl.quantityPrecision }} {{ $ctrl.formulaDetailsData.quantityUom.name }}
                     </td>
                     <td class="padding">
-                        {{ value.premium + value.price | number : $ctrl.pricePrecision }}
+                        {{ value.premium + value.price | number : value.pricePrecision  }}
                     </td>
                 </tr>
             </tbody>

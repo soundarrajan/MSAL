@@ -4046,6 +4046,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 $.each(data.payload.formulaSchedules, (k, v) => {
                     $.each(v.schedule, (sk, sv) => {
                         sv.data = v;
+                        sv.pricePrecision = rowData.pricePrecision;
                         ctrl.productPrices.push(sv);
                     });
                 });
