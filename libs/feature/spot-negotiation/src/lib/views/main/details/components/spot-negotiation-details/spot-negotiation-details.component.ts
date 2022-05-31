@@ -438,9 +438,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       if (element) {
         this.moveCursorToEnd(element);
       }
-     //this.spotNegotiationService.callGridRefreshServiceAll();
-  // let displayElm = document.getElementsByClassName("calculate-icon-btn");
-    // displayElm[0].classList.add("calculate-icon-btn-show");
 
     let x = document.getElementsByClassName("offerPriceHighLight");
     while(x.length > 0) x[0].classList.remove("offerPriceHighLight");
@@ -454,8 +451,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         afterHigh[0]?.classList?.add("offerPriceHighLight");
       }
     });
-      let displayElm = document.getElementsByClassName("calculate-icon-btn");
-      displayElm[0].classList.add("calculate-icon-btn-show");
+
     // Update the store
     const response = this.spotNegotiationService.updatePrices(payload);
     response.subscribe((res: any) => {
