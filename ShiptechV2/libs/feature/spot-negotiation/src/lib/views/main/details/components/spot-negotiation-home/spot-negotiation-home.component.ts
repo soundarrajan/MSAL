@@ -760,8 +760,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
                   ((tenantConfig['isPhysicalSupplierMandatoryForQuoting'] &&
                     lr.physicalSupplierCounterpartyId ==
                       s.physicalSupplierCounterpartyId) ||
-                    !tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && lr.physicalSupplierCounterpartyId == null ||
-                    lr.physicalSupplierCounterpartyId == '')
+                    (!tenantConfig['isPhysicalSupplierMandatoryForQuoting'] && lr.physicalSupplierCounterpartyId == null ||
+                    lr.physicalSupplierCounterpartyId == '' || lr.physicalSupplierCounterpartyId ==
+                    s.physicalSupplierCounterpartyId))
               )
           );
           if (reqOffers.length == 0) {
