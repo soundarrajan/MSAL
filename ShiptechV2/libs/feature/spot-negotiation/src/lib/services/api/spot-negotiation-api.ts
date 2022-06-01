@@ -81,7 +81,9 @@ export const SpotNegotiationApiPaths = {
   getOfferPriceHistory: `Price/getOfferPriceHistory`,
   updateProductPrice: `RFQ/FreezeMarketPrices`,
   isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`,
-  getSellerRatingsforNegotiation: `api/sellerrating/sellerratingreview/getForNegotiation`
+  getSellerRatingsforNegotiation: `api/sellerrating/sellerratingreview/getForNegotiation`,
+  getContractFormulaList : `api/masters/formulas/listMasters`,
+  getContractFormula : `api/masters/formulas/get`
 };
 
 @Injectable({
@@ -902,7 +904,36 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         catchError((body: any) => this.handleErrorMessage(body))
       );
   }
+
+  @ObservableException()
+  getContractFormulaList(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.getContractFormulaList}`,
+        { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  getContractFormula(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.getContractFormula}`,
+        { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  
 }
+}
+
+
 
 export const SPOT_NEGOTIATION_API_SERVICE = new InjectionToken<
   ISpotNegotiationApiService

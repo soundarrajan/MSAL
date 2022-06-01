@@ -428,10 +428,10 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
     <!-- End offer price cell -->
 
     <mat-menu #priceMenupopup="matMenu" class="darkPanel-add big">
-      <!-- <div class="add-block" (click)="pricingdetailspopup($event, params)">
+      <div class="add-block" (click)="pricingdetailspopup($event, params)">
         <div></div>
         <span>Add/View Formula pricing</span>
-      </div> -->
+      </div>
       <div class="divider-line"></div>
       <div class="add-block" (click)="otherdetailspopup($event, params)">
         <div></div>
@@ -1577,6 +1577,26 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   pricingdetailspopup(e, params) {
+    let payload = {
+      PageFilters: {
+        Filters: []
+      },
+      Filters: [
+        {
+          ColumnName: 'ContractId',
+          Value: null
+        }
+      ],
+      SearchText: null,
+      Pagination: {
+        Skip: 0,
+        Take: 9999
+      }
+    };
+    const response =  this._spotNegotiationService.getContractFormulaList(payload)
+    response.subscribe((data: any)=>{
+      sessionStorage.setItem('formula', JSON.stringify(data));
+    })
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
       width: '1164px',
       panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class']

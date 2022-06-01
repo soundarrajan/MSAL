@@ -1,0 +1,9 @@
+::ng-deep .bg-active-grid {
+    background-color: #99cb82;
+    color: #ffffff !important;
+  }
+
+  ::ng-deep .bg-inactive-grid {
+    background-color: #e7505a;
+    color: #ffffff !important;
+  }

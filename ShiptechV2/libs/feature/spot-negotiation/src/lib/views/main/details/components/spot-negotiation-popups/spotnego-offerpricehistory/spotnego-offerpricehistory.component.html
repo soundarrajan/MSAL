@@ -38,7 +38,6 @@
                            <span  *ngIf="item != undefined">&nbsp;$ {{formatService.FormatPriceTrailingZero(item)}} &nbsp;</span>
                            <span *ngIf="item == undefined">&nbsp;-&nbsp;</span>
                         </td>
-                        <td class="text-left" *ngFor="let item of items.oldPrices">&nbsp;$ {{formatService.FormatPriceTrailingZero(item)}} &nbsp;</td>
                       </tr>
                     </tbody>
 
