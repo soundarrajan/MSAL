@@ -66,3 +66,19 @@
       }
     }
   }
+
+ ::ng-deep .custom-form-field.lightTheme .form-field-action{
+  position: absolute;
+  right: 30px;
+  top: 18px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  width: 60px;
+  .search-btn .img {
+    width: 13px;
+    height: 13px;
+    content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTkuMjkxIDguMTc2aC0uNTlsLS4yMDUtLjIwNGE0Ljc4NSA0Ljc4NSAwIDAwMS4xNjctMy4xNCA0LjgzMSA0LjgzMSAwIDEwLTEuNjkxIDMuNjY3bC4yMDQuMjA1di41ODdMMTEuODkyIDEzIDEzIDExLjg5MyA5LjI5MSA4LjE3NXptLTQuNDYgMGEzLjM0NSAzLjM0NSAwIDExMC02LjY5IDMuMzQ1IDMuMzQ1IDAgMDEwIDYuNjl6IiBmaWxsPSIjMzY0MTUwIi8+PC9zdmc+);
+}
+ }
+  

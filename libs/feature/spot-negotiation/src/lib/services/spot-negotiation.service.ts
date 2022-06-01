@@ -721,4 +721,14 @@ export class SpotNegotiationService extends BaseStoreService
   getSellerRatingforNegotiation(payload: any): Observable<unknown>{
     return this.spotNegotiationApi.getSellerRatingforNegotiation(payload)  ;
   }
+
+  @ObservableException()
+  getContractFormulaList(payload): Observable<unknown> {
+    return this.spotNegotiationApi.getContractFormulaList(payload);
+  }
+
+  @ObservableException()
+  getContractFormula(payload): Observable<unknown> {
+    return this.spotNegotiationApi.getContractFormula(payload);
+  }
 }

@@ -77,6 +77,7 @@ import { CustomHeader } from './core/ag-grid/custom-header.component';
 import { CustomHeaderSelectAll } from './core/ag-grid/custom-header-select-all.component';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { SpotNegotiationPriceCalcService } from './services/spot-negotiation-price-calc.service';
+import {SearchFormulaPopupComponent} from './views/main/details/components/spot-negotiation-popups/search-formula-popup/search-formula-popup.component'
 import {
   getCurrencyCode,
   isRfqSendForAnyProduct,
@@ -142,6 +143,7 @@ import {
     SpotNegotiationHeaderComponent,
     SearchRequestPopupComponent,
     SpotnegoSearchCtpyComponent,
+    SearchFormulaPopupComponent,
     SpotNegotiationDetailsComponent,
     SpotnegoOfferpricehistoryComponent,
     MarketpricehistorypopupComponent,
@@ -197,6 +199,7 @@ import {
     SpotnegoSendRfqComponent,
     SearchRequestPopupComponent,
     SpotnegoSearchCtpyComponent,
+    SearchFormulaPopupComponent,
     RemoveCounterpartyComponent,
     SpotnegoRequestChangesComponent
   ],
