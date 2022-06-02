@@ -276,12 +276,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
           <div class="label-element green">
             <div class="title">Target</div>
             <div
-              class="value" matTooltip="{{(targetValue  != null && targetValue  != 0) ? '$'+targetValue : '$--'}}"
+              class="value" matTooltip="{{(targetValue  != null && targetValue  != 0) ? '$'+targetValue : ((targetValue  == 0)? '$0' : '$--' )}}"
               matTooltipClass="lightTooltip"
               contenteditable="false"
               (keydown)="editQty($event)"
             >
-              $ {{ tenantService.FormatPriceTrailingZero(targetValue,'target') }}
+              $ {{ (targetValue  == 0)? '0' : tenantService.FormatPriceTrailingZero(targetValue,'target') }}
             </div>
           </div>
           <div
