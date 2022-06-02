@@ -10744,7 +10744,7 @@
 
         $scope.initMultilookupsForLocationProducts = () => {
         	$scope.multilookupsForLocationProducts = [
-	        	{"Unique_ID":"locationProductTypes", "Name":"locationProductTypes", "Label":"LOCATION_PRODUCT_TYPES", "Required":false, "masterSource":"ProductType", "LastOnRow":true},
+	        	{"Unique_ID":"locationProductTypes", "Name":"locationProductTypes", "Label":"LOCATION_PRODUCT_TYPES", "Required":false, "masterSource":"MOTProductType", "LastOnRow":true},
 				{"Unique_ID":"locationHSFO35Grades", "Name":"locationHSFO35Grades", "Label":"LOCATION_HSFO_35_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true},
 				{"Unique_ID":"locationHSFO05Grades", "Name":"locationHSFO05Grades", "Label":"LOCATION_VLSFO_05_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}, // Based on #35158, renamed UI label alone.
 				{"Unique_ID":"locationDistillateGrades", "Name":"locationDistillateGrades", "Label":"LOCATION_DISTILLATE_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}
