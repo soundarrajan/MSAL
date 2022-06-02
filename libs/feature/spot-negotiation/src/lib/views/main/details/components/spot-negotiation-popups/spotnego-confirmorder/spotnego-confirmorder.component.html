@@ -51,7 +51,7 @@
                     <th class="text-left">Confirmed Qty</th>
                     <th class="text-left">UOM</th>
                     <th class="text-left">Offer Price</th>
-                    <th class="text-left">Amount</th>
+                    <!-- <th class="text-left">Amount</th> -->
                     <th class="text-left w-125">Phy.Supplier</th>
                   </tr>
                 </thead>
@@ -89,7 +89,7 @@
                         /></td>
                         <td class=""> {{requestOfferItem.value.UomName}}</td>
                         <td class="">{{requestOfferItem.value.currencyName}} {{tenantService.FormatPriceTrailingZero(requestOfferItem.value.OfferPrice)||0}}</td>
-                        <td class="">{{requestOfferItem.value.currencyName}} {{tenantService.FormatPriceTrailingZero(requestOfferItem.value.Amount)}}</td>
+                       <!--  <td class="">{{requestOfferItem.value.currencyName}} {{tenantService.FormatPriceTrailingZero(requestOfferItem.value.Amount)}}</td> -->
                         <td class="w-125" matTooltip="{{this.format.htmlDecode(requestOfferItem.value.SellerName)}}">{{this.format.htmlDecode(requestOfferItem.value.PhysicalSupplierName)}}</td>
                       </tr>
                     </tbody>
