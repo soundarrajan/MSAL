@@ -337,9 +337,10 @@ export class SmartOperatorComponent implements OnInit {
       },
       cellRendererFramework: AGGridCellDataComponent, cellRendererParams: (params)=>{return  {type: 'vesselName', cellClass: ['cell-ellipsis'] }}
     },
-    { headerName: 'Vessel Code', headerTooltip: 'Port', field: 'vesselCode', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c']},
-
-    { headerName: 'Port', headerTooltip: 'Port', field: 'portName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c']},
+    { headerName: 'Vessel Code', headerTooltip: 'Vessel Code', field: 'vesselCode', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c'],
+    cellRendererFramework: AGGridCellRendererComponent },
+    { headerName: 'Port', headerTooltip: 'Port', field: 'portName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c'],
+    cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'Delivery Date', headerTooltip: 'Delivery Date', field: 'deliveryDate', cellRendererFramework: AGGridCellRendererComponent, cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], filter: 'date', width: 140 },
     // { headerName: 'Fuel Grade', headerTooltip: 'Fuel Grade', field: 'fuelGrade', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
     {
@@ -379,12 +380,16 @@ export class SmartOperatorComponent implements OnInit {
         return { cellClass: classArray.length > 0 ? classArray : null }
       }
     },
-
-    { headerName: 'Type', headerTooltip: 'Type', field: 'agreementType', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
-    { headerName: 'Dept', headerTooltip: 'Dept', field: 'department', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c']},
-    { headerName: 'Sub Dept', headerTooltip: 'Sub Dept', field: 'subDepartment', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']},
-    { headerName: 'Service', headerTooltip: 'Service', field: 'serviceName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-vertical-center']},
-    { headerName: 'SOA', headerTooltip: 'SOA', field: 'soa', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center']}
+    { headerName: 'Type', headerTooltip: 'Type', field: 'agreementType', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
+    cellRendererFramework: AGGridCellRendererComponent },
+    { headerName: 'Dept', headerTooltip: 'Dept', field: 'department', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c'],
+    cellRendererFramework: AGGridCellRendererComponent },
+    { headerName: 'Sub Dept', headerTooltip: 'Sub Dept', field: 'subDepartment', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
+    cellRendererFramework: AGGridCellRendererComponent },
+    { headerName: 'Service', headerTooltip: 'Service', field: 'serviceName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-vertical-center'],
+    cellRendererFramework: AGGridCellRendererComponent },
+    { headerName: 'SOA', headerTooltip: 'SOA', field: 'soa', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'],
+    cellRendererFramework: AGGridCellRendererComponent }
   ]
 
   private columnDefs_BdnReport = [
