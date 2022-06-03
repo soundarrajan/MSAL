@@ -1259,12 +1259,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          * Total Fuel Price = (Total Quantity x Unit Price) of all the products in the Order (FSD p. 239).
          */
         function calculateTotalFuelPrice() {
-            let product,
-                result = ctrl.data.totalFuelPrice;
-            // for (var i = 0; i < ctrl.data.products.length; i++) {
-            //     product = ctrl.data.products[i];
-            //     result += product.confirmedQuantity * product.confirmedQtyPrice * product.price;
-            // }
+            let result = ctrl.data.totalFuelPrice;
+            result = tenantService.getFixedFloat(result, ctrl.numberPrecision.amountPrecision);
             return result;
         }
 
@@ -2427,8 +2423,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
 
         ctrl.formatAmount = function (num) {
-            return $filter("number")(num, ctrl.numberPrecision.amountPrecision);
-    
+            var plainNumber = tenantService.getFixedFloat(num, ctrl.numberPrecision.amountPrecision);
+            if (plainNumber) {
+                if (ctrl.numberPrecision.amountPrecision == 0) {
+                    return plainNumber;
+                } else {
+                    return $filter("number")(plainNumber, ctrl.numberPrecision.amountPrecision);
+                }
+            }
         }
 
         ctrl.resetContractData = function(productIndex, skipSpecGroup, isQuantityUom){
