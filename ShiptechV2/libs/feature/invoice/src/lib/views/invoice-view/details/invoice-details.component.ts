@@ -495,7 +495,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
             date: element.invoiceDate
               ? this.formatDateOnly(element.invoiceDate)
               : '',
-            amount: this.format.amount(element.invoiceAmount),
+            amount: this.format.amount(this.format.getFixedFloat(element.invoiceAmount, this.format.amountPrecision)),
             deductions: this.format.amount(element.deductions),
             paid: this.format.amount(element.paidAmount),
             status: element.invoiceStatus.name
@@ -504,10 +504,10 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         this.formValues.relatedInvoicesSummary.forEach(total => {
           this.totalrowData.push({
             id: 'Net Payable',
-            'order-number': this.format.amount(total.netPayable),
+            'order-number': this.format.amount(this.format.getFixedFloat(total.netPayable, this.format.amountPrecision)),
             type: '',
             date: 'Total',
-            amount: this.format.amount(total.invoiceAmountTotal),
+            amount: this.format.amount(this.format.getFixedFloat(total.invoiceAmountTotal, this.format.amountPrecision)),
             deductions: this.format.amount(total.deductionsTotal),
             paid: this.format.amount(total.paidAmount),
             status: ''
