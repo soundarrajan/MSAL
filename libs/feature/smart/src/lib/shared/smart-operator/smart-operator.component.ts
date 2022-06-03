@@ -355,14 +355,6 @@ export class SmartOperatorComponent implements OnInit {
         return { type: 'vesselName', cellClass: ['cell-ellipsis'] };
       }
     },
-    {
-      headerName: 'Port',
-      headerTooltip: 'Port',
-      field: 'portName',
-      width: 100,
-      headerClass: ['aggrid-text-align-c'],
-      cellClass: ['aggrid-content-c']
-    },
     { headerName: 'Vessel Code', headerTooltip: 'Vessel Code', field: 'vesselCode', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c'],
     cellRendererFramework: AGGridCellRendererComponent },
     { headerName: 'Port', headerTooltip: 'Port', field: 'portName', width: 100, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-c'],
