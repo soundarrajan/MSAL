@@ -1167,16 +1167,36 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           this._spotNegotiationService
             .getPriceDetailsById(groupId, requestLocationSellerId)
             .subscribe(async (priceDetailsRes: any) => {
+              let requests = this.store.selectSnapshot<any>((state: any) => {
+                return state['spotNegotiation'].requests;
+              });
               let updatedRow = { ...this.params.data };
+              let requestProducts = requests.find(x => x.id == updatedRow.requestId)?.requestLocations?.find(l => l.id ==updatedRow.requestLocationId)?.requestProducts;
               updatedRow.totalOffer =
                 priceDetailsRes.sellerOffers[0].totalOffer;
               updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
               updatedRow.requestOffers =
                 priceDetailsRes.sellerOffers[0].requestOffers;
               updatedRow.requestAdditionalCosts = priceDetailsRes.sellerOffers[0].requestAdditionalCosts;
-                var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
-                  updatedRow,
-                  updatedRow);
+              updatedRow.requestOffers = updatedRow.requestOffers.map(e => {
+                let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
+                let requestProductTypeOrderBy = requestProducts?.find(rp => rp.id == e.requestProductId)?.productTypeOrderBy;
+                return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
+              });
+              updatedRow.hasAnyProductStemmed = updatedRow.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+              updatedRow.isOfferConfirmed = updatedRow.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+              updatedRow.requestOffers = updatedRow.requestOffers?.sort((a, b) =>
+              a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
+                ? a.requestProductId > b.requestProductId
+                  ? 1
+                  : -1
+                : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
+                ? 1
+                : -1
+            );
+            var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+              updatedRow,
+              updatedRow);
               // Update the store
               this.store.dispatch(new EditLocationRow(locRow));
               this.params.node.setData(locRow);

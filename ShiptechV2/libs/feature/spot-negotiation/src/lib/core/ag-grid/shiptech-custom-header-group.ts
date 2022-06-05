@@ -210,7 +210,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
                 : 'Pricing published on: ') +
               (this.closureDate == 'Invalid date' ? '--' : this.closureDate)
             "
-            matTooltipClass="lightTooltip"
+            matTooltipClass="outdated-tooltip"
           >
             <div class="title">
               <span
@@ -278,12 +278,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
           <div class="label-element green">
           <div class="title"  matTooltipClass="lightTooltip" matTooltip="Target">Target</div>
              <div
-              class="value" matTooltip="{{(targetValue  != null && targetValue  != 0) ? '$'+targetValue : '$--'}}"
+              class="value" matTooltip="{{(targetValue  != null && targetValue  != 0) ? '$'+targetValue : ((targetValue  == 0)? '$0' : '$--' )}}"
               matTooltipClass="lightTooltip"
               contenteditable="false"
               (keydown)="editQty($event)"
             >
-              $ {{ tenantService.FormatPriceTrailingZero(targetValue,'target') }}
+              $ {{ (targetValue  == 0)? '0' : tenantService.FormatPriceTrailingZero(targetValue,'target') }}
             </div>
           </div>
           <div
