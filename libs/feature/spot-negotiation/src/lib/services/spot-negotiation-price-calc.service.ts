@@ -384,14 +384,15 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                 totalMaxQuantity,
                 maxQuantityUomId
               } = this.buildApplicableForItems(requestLocation, sellerOffers);
+              
+              sellerOffers.requestOffers.forEach(reqOff => {
+                reqOff.cost = 0;
+              });
+
               if (
                 offerAdditionCostsList.length > 0 ||
                 locAdditionCostsList.length > 0
               ) {
-
-                sellerOffers.requestOffers.forEach(reqOff => {
-                  reqOff.cost = 0;
-                });
                 sellerOffers = _.cloneDeep(sellerOffers);
                 await this.recalculateLocationAdditionalCosts(
                   locAdditionCostsList,
