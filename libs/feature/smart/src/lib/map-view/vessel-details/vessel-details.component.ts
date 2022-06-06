@@ -23,6 +23,7 @@ export class VesselDetailsComponent implements OnInit {
   @ViewChild(VesselInfoComponent) vesselInfo;
   @Output() closeBPlan = new EventEmitter();
   @Output() changeVessel = new EventEmitter();
+  @ViewChild('currentuser') currentuser;
   public bunkerUserRole = [];
   previousUserRole: any;
   selectedUserRole: any;
@@ -31,10 +32,11 @@ export class VesselDetailsComponent implements OnInit {
   public vesselName;
   public vesselView;
   public vesselData;
+  public defaultLoad : boolean = true;
   public isBunkerPlanEdited: boolean;
   public enableSelection: boolean;
   public theme:boolean=true;
-  selectedRole: any;
+  public selectedRole: any;
   changeUserRole: Subject<void> = new Subject<void>();
   IsVesselhasNewPlan: boolean = false;
   getVesselListVesselWithImo: any[];
@@ -42,7 +44,12 @@ export class VesselDetailsComponent implements OnInit {
   constructor(private store: Store, private localService: LocalService, public dialog: MatDialog,private vesselService: VesselPopupService) { }
 
   ngOnInit() {
-    this.getBunkerUserMode();
+    if(this.defaultLoad == true){
+      this.getBunkerUserModeDefault();
+    }
+    if(this.defaultLoad == false){
+      this.getBunkerUserMode();
+    }
     this.getVesselList();
     // this.localService.getVesselsList().subscribe((res: any) => {
     //   this.vesselList = res;
@@ -57,21 +64,36 @@ export class VesselDetailsComponent implements OnInit {
     this.store.dispatch(new saveVesselDataAction({'vesselRef': this.vesselData}));
   }
 
+  getBunkerUserModeDefault(){
+    this.bunkerUserRole = [{
+      default: 1,
+      id: 2,
+      name: "Operator"
+     },
+    ];
+        this.selectedUserRole = this.bunkerUserRole.find((role)=> (role.default==1) );
+        this.selectedRole= this.selectedUserRole;
+        this.store.dispatch(new saveVesselDataAction({'userRole': this.selectedUserRole?.name}));
+       this.changeUserRole.next(this.selectedUserRole);
+  }
+
   getBunkerUserMode() {
     // load user role
     // this.bunkerUserRole = [{id: 1111, name: 'Vessel', default: false}, {id: 2222, name: 'Operator', default: true}];
     //   this.selectedUserRole = this.bunkerUserRole.find((role)=> (role.default==true) );
     this.localService.getBunkerUserRole(1).subscribe((data)=> {
-      console.log('LoadBunkerPlanByRole',data);
-      this.bunkerUserRole = data.payload;
-      this.selectedUserRole = this.bunkerUserRole.find((role)=> (role.default==1) );
-      this.selectedRole= this.selectedUserRole;
-      // this.LoadBunkerPlanByRole();
-      // store user role for shared ref
-      this.store.dispatch(new saveVesselDataAction({'userRole': this.selectedUserRole?.name}));
-      this.changeUserRole.next(this.selectedUserRole);
-    })
+      if(data.message == 'Unauthorized'){
+        return;
+      }
+        this.bunkerUserRole = data.payload;
+        this.defaultLoad = false;
+      this.currentuser.open();
+      this.selectedUserRole = this.bunkerUserRole.find((role)=>( role.name == this.selectedRole.name));
+      this.selectedRole = this.selectedUserRole;
+    });
+
   }
+
   getVesselList() {
     // load vessel list for vessel search option
     this.localService.getVesselListall(false).subscribe((tenantConfRes)=> {
@@ -85,20 +107,15 @@ export class VesselDetailsComponent implements OnInit {
 
   }
 
-  selectedUserRoleFn(role1: any, role2: any) {
-    if(!role2) {
-      return role1.default;
-    } else {
-      return (role2.name == role1.name)
-    }
-  }
 
   loadBunkerPlan(event) {
+    if(event.name == this.selectedRole.name){
+      return;
+    }
     this.previousUserRole = this.selectedUserRole;
-    this.selectedUserRole = event.value;
-    console.log(this.selectedRole);
-
-    this.LoadBunkerPlanByRole();
+    this.selectedUserRole = event;
+      this.selectedRole = event.name;
+      this.LoadBunkerPlanByRole();
   }
 
   LoadBunkerPlanByRole() {
@@ -297,7 +314,14 @@ export class VesselDetailsComponent implements OnInit {
     if(event.id){
       this.vesselId = event.id;
     }
-    this.getBunkerUserMode();
+    if(this.defaultLoad == false){
+      this.getBunkerUserMode();
+    }
+    if(this.defaultLoad == true){
+      this.getBunkerUserModeDefault();
+    }
+    //this.getBunkerUserMode();
+    
     // this.vesselView = event.ROB.Color.indexOf('red') > 0 ? 'higher-warning-view' :
     //   event.ROB.Color.indexOf('orange') > 0 ? 'minor-warning-view' : 'standard-view';
     // this.changeVessel.emit(event);
