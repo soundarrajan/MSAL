@@ -4050,6 +4050,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         sv.data = v;
                         sv.pricePrecision = rowData.pricePrecision;
                         ctrl.productPrices.push(sv);
+                        var numVal =  (rowData.pricePrecision).toString().replace(/[^\d\.\-]/, "");
+                        var valWithoutZero = parseFloat(numVal);
+                        var valWithCommas= valWithoutZero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        ctrl.formulaDetailsData.pricePrecision = valWithCommas;
                     });
                 });
                 $scope.modalInstance = $uibModal.open({
