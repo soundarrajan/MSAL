@@ -92,7 +92,7 @@ export class SellerratingpopupComponent implements OnInit {
     }
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
-    let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+    let elem = moment(date);
     let formattedDate = moment(elem).format(currentFormat);
     if (hasDayOfWeek) {
       formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
