@@ -1258,11 +1258,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
          * Calculates the order total fuel price.
          * Total Fuel Price = (Total Quantity x Unit Price) of all the products in the Order (FSD p. 239).
          */
-        function calculateTotalFuelPrice() {
+         function calculateTotalFuelPrice() {
             let result = ctrl.data.totalFuelPrice;
             result = tenantService.getFixedFloat(result, ctrl.numberPrecision.amountPrecision);
             return result;
         }
+
 
         function calculateTotalAdditionalCost() {
             let result = 0;
@@ -4043,6 +4044,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 } ]
             };
             orderModel.getFormulaDetails(payload).then((data) => {
+         
                 ctrl.formulaDetailsData = data.payload;
                 ctrl.productPrices = [];
                 $.each(data.payload.formulaSchedules, (k, v) => {
@@ -4050,12 +4052,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         sv.data = v;
                         sv.pricePrecision = rowData.pricePrecision;
                         ctrl.productPrices.push(sv);
-                        var numVal =  (rowData.pricePrecision).toString().replace(/[^\d\.\-]/, "");
-                        var valWithoutZero = parseFloat(numVal);
-                        var valWithCommas= valWithoutZero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                        ctrl.formulaDetailsData.pricePrecision = valWithCommas;
+
                     });
                 });
+                ctrl.formulaDetailsData.pricePrecision = rowData.pricePrecision;
+                ctrl.formulaDetailsData.formulaSchedule.avgDealValue = tenantService.getFixedFloat(ctrl.formulaDetailsData.formulaSchedule.avgDealValue, rowData.pricePrecision);
+
                 $scope.modalInstance = $uibModal.open({
                     template: tpl,
                     appendTo: angular.element(document.getElementsByClassName('page-container')),
