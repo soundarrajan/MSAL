@@ -182,4 +182,18 @@ export class TenantFormattingService {
 
     return decode(_.unescape(str));
   }
+
+  /**
+   * 
+   * @param value
+   * @param precision
+   * @returns a number value
+   * @description Returns nearest fixed float (NFF) of precision + 1
+   * @see https://gauravkk22.medium.com/why-0-1-0-2-0-3-is-false-in-js-mystery-unsolved-with-solution-4f7db2755f18
+   * @see https://stackoverflow.com/a/11832950
+   */
+  public getFixedFloat(value: number, precision: number): number {
+    value = Math.round((value) * Math.pow(10, precision + 1)) / Math.pow(10, precision + 1);
+    return value;
+  }
 }
