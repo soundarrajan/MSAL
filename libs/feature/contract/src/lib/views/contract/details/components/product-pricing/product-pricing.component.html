@@ -507,7 +507,8 @@
                     [ngClass]="{
                       'required-field':
                         buttonClicked &&
-                        !additionalCost.value.amount &&
+                        (!additionalCost.value.amount ||
+                        additionalCost.value.amount == 0) &&
                         additionalCost.value.costType &&
                         additionalCost.value.costType.id != 4 &&
                         additionalCost.value.costType.id != 5

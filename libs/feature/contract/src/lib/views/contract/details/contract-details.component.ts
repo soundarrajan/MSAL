@@ -571,7 +571,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             this.formValues.products[i].additionalCosts[j].costType.id != 5
           ) {
             if (!this.formValues.products[i].additionalCosts[j].amount) {
-              additionalCostRequired.push('Amount');
+              additionalCostRequired.push('Amount ');
             }
           }
         }
@@ -717,10 +717,11 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             this.formValues.products[i].additionalCosts[j].costType.id != 4 &&
             this.formValues.products[i].additionalCosts[j].costType.id != 5
           ) {
-            if (!this.formValues.products[i].additionalCosts[j].amount) {
+            if (!this.formValues.products[i].additionalCosts[j].amount || amount<=0) {
               additionalCostRequired.push('Amount');
             }
           }
+         
         }
       }
     }
