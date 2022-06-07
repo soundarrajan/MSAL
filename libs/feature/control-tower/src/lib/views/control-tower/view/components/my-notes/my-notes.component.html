@@ -69,6 +69,8 @@
           <div
             class="delete-menu"
             [matMenuTriggerFor]="deleteTitle"
+            #menuTrigger="matMenuTrigger"
+            (mouseover)="menuTrigger.openMenu()" (mouseout)="$event.stopPropagation();menuTrigger.openMenu()"
             (menuOpened)="clickDelete(noteIndex)"
             (menuClosed)="closeDelete()"
           ></div>
