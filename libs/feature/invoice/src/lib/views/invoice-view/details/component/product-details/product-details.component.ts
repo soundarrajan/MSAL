@@ -688,8 +688,9 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
     if (isNaN(number)) {
       return null;
     }
+    plainNumber = this.tenantService.getFixedFloat(number, amountPrecision);
     if (plainNumber) {
-      if (this.tenantService.amountPrecision == 0) {
+      if (amountPrecision == 0) {
         return plainNumber;
       } else {
         return this._decimalPipe.transform(plainNumber, this.amountFormat);
