@@ -51,14 +51,16 @@
           <div class="newplan-notification" *ngIf="IsVesselhasNewPlan"><span class="newplan-notification-icon"></span>New Plan has been recieved from the vessel</div>
 
           <div class="label">Currently using as:</div>
-          <mat-select #currentuser panelClass="currentuser" [compareWith]="selectedUserRoleFn" [(ngModel)]="selectedRole" (selectionChange)="loadBunkerPlan($event)" [disabled]="!enableSelection" class="user" disableOptionCentering
+          <mat-select #currentuser panelClass="currentuser" [(ngModel)]="selectedRole" (valueChange)="loadBunkerPlan($event)"  [disabled]="!enableSelection" class="user" disableOptionCentering
             (openedChange)="enableSelection && currentuser.disabled=true;enableSelection=false;" [panelClass]="{'dark-theme':theme,'light-theme':!theme}">
             <mat-option *ngFor="let roleObj of bunkerUserRole" [value]="roleObj">{{roleObj.name}}</mat-option>
             <!-- <mat-option value="operator">Operator</mat-option> -->
           </mat-select>
           <div class="more">
             <mat-icon style="cursor: pointer;"
-              (click)="enableSelection=true;currentuser.disabled=false;currentuser.open()">more_vert</mat-icon>
+              (click)="enableSelection=true;currentuser.disabled=true;getBunkerUserMode()">more_vert
+            </mat-icon>
+            
           </div>
         </div>
       </div>
@@ -66,3 +68,7 @@
   </div>
 
 </div>
+
+<!-- currentuser.open() -->
+<!-- show== true? currentuser.open(): '' -->
+<!-- (selectionChange)="loadBunkerPlan($event)" -->

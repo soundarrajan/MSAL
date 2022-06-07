@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { ApiServiceBase } from '@shiptech/core/api/api-base.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { map, retry, catchError } from 'rxjs/operators';
 import { VesselDataModel, FuelDetails, VesselLocation, RequestDetail } from '../shared/models/vessel.data.model';
 import { BehaviorSubject } from 'rxjs';
@@ -518,6 +518,9 @@ export class LocalService {
       return this.http.post<any>(
         `${this._apiUrl}/${UserRoleApiPaths.getUserRole()}`,
         { payload: request }, { headers: this.headersProp }
+      ).pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
       );
     }
     // VesselListApiPaths to get vessel imono data
@@ -584,8 +587,18 @@ export class LocalService {
       return this.http.post<any>(
         `${this._apiUrl}/${VesselImportPlanStatusApiPaths.GetVesselImportPlanStatus()}`,
         { payload: request }
-      );
+      )
     }
+
+    handleErrorMessage(body: any) {
+        return of(
+          body instanceof HttpErrorResponse && body.status != 401
+            ? body.error.ErrorMessage
+              ? body.error.ErrorMessage
+              : body.error.errorMessage
+            : { message: 'Unauthorized' }
+        );
+      }
     // getBunkerPalnHeader to get bunker plan header details based on vessel change
     @ObservableException()
     getBunkerPlanHeader(request: any): Observable<any> {
