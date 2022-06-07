@@ -263,6 +263,10 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                                         $.each(addCost, (k1, v1) => {
                                             addPriceUomChg(v1, v);
                                         });
+                                        let locAddCost = ctrl.getAdditionalCostsLocationBased(v);
+                                        $.each(locAddCost, (k1, v1) => {
+                                            addPriceUomChg(v1, v);
+                                        });
                                     });
                                     // Bind Select2 selects.
                                     // $('.select2').select2({
@@ -468,6 +472,10 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                                     $.each(ctrl.locations, (k, v) => {
                                         let addCost = ctrl.getAdditionalCosts(v);
                                         $.each(addCost, (k1, v1) => {
+                                            addPriceUomChg(v1, v);
+                                        });
+                                        let locAddCost = ctrl.getAdditionalCostsLocationBased(v);
+                                        $.each(locAddCost, (k1, v1) => {
                                             addPriceUomChg(v1, v);
                                         });
                                     });
@@ -2394,6 +2402,10 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                         $.each(addCost, (k1, v1) => {
                             addPriceUomChg(v1, v);
                         });
+                        let locAddCost = ctrl.getAdditionalCostsLocationBased(v);
+                        $.each(locAddCost, (k1, v1) => {
+                            addPriceUomChg(v1, v);
+                        });
                     });
                     ctrl.activeRFQ = data.payload[0].rfqs[0].rfq.id;
                     ctrl.buttonsDisabled = false;
@@ -2542,6 +2554,10 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                                     $.each(addCost, (k1, v1) => {
                                         addPriceUomChg(v1, v);
                                     });
+                                    let locAddCost = ctrl.getAdditionalCostsLocationBased(v);
+                                    $.each(locAddCost, (k1, v1) => {
+                                        addPriceUomChg(v1, v);
+                                    });
                                 });
                             }
                         } else if (!rfqV.rfq) {
@@ -2552,6 +2568,10 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                             $.each(ctrl.locations, (k, v) => {
                                 let addCost = ctrl.getAdditionalCosts(v);
                                 $.each(addCost, (k1, v1) => {
+                                    addPriceUomChg(v1, v);
+                                });
+                                let locAddCost = ctrl.getAdditionalCostsLocationBased(v);
+                                $.each(locAddCost, (k1, v1) => {
                                     addPriceUomChg(v1, v);
                                 });
                             });
@@ -2670,6 +2690,10 @@ function(API, $scope, $rootScope, Factory_Master, $element, $attrs, $timeout, $h
                 $.each(ctrl.locations, (k, v) => {
                     let addCost = ctrl.getAdditionalCosts(v);
                     $.each(addCost, (k1, v1) => {
+                        addPriceUomChg(v1, v);
+                    });
+                    let locAddCost = ctrl.getAdditionalCostsLocationBased(v);
+                    $.each(locAddCost, (k1, v1) => {
                         addPriceUomChg(v1, v);
                     });
                 });

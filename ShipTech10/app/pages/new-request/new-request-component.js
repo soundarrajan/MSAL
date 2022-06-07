@@ -535,6 +535,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                         // ctrl.request.locations[j].products[i].product.name = ctrl.request.locations[j].products[i].requestIndex + ' - ' + ctrl.request.locations[j].products[i].product.name;
                                         if (ctrl.request.locations[j].products[i].productTypeId) {
                                                 ctrl.request.locations[j].products[i].productType = ctrl.getProductTypeObjById(ctrl.request.locations[j].products[i].productTypeId);
+                                                ctrl.request.locations[j].products[i].requestProductTypeId = ctrl.request.locations[j].products[i].productTypeId;
                                                 $scope.productTypesLoadedPerLocation.loadedProducts += 1;
                                         } else {
                                             listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then((server_data) => {
@@ -803,6 +804,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 // ctrl.request.locations[j].products[i].product.name = ctrl.request.locations[j].products[i].requestIndex + ' - ' + ctrl.request.locations[j].products[i].product.name;
                                 if (ctrl.request.locations[j].products[i].productTypeId) {
                                     ctrl.request.locations[j].products[i].productType = ctrl.getProductTypeObjById(ctrl.request.locations[j].products[i].productTypeId);
+                                    ctrl.request.locations[j].products[i].requestProductTypeId = ctrl.request.locations[j].products[i].productTypeId;
                                     $scope.productTypesLoadedPerLocation.loadedProducts += 1;
                                 } else {
                                     listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then((server_data) => {
@@ -1511,6 +1513,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             newProduct.defaultProduct = angular.copy(product);
             newProduct.screenActions = [];
             newProduct.productType = angular.copy(ctrl.getProductTypeObjById(productTypeId));
+            newProduct.requestProductTypeId = productTypeId;
             if(newProduct.productType != null && newProduct.productType.name != null){
                 if(newProduct.productType.name.includes('VLSFO')){
                     newProduct.isPretestRequired = true;
