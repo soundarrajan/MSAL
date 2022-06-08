@@ -62,7 +62,7 @@
         <div class="col-sm-12">
             <span class="pull-left">
                 <b>
-                    Average Unit Price: {{$ctrl.formulaDetailsData.formulaSchedule.avgDealValue | number : $ctrl.pricePrecision }}
+                    Average Unit Price: {{$ctrl.formulaDetailsData.formulaSchedule.avgDealValue | number:$ctrl.formulaDetailsData.pricePrecision}}
                 </b>
             </span>
         </div>
@@ -137,7 +137,7 @@
                         {{ value.quantity.splittedQuantity | number : $ctrl.quantityPrecision }} {{ $ctrl.formulaDetailsData.quantityUom.name }}
                     </td>
                     <td class="padding">
-                        {{ value.premium + value.price | number : value.pricePrecision  }}
+                        {{ value.premium + value.price | number : value.pricePrecision  }} 
                     </td>
                 </tr>
             </tbody>
