@@ -45,8 +45,10 @@
                       [value]="element"
                       [checked]="element.selected"
                       (change)="onCounterpartyCheckboxChange($event, element)"
-                    >
-                    {{ limitStrLength(element.name, 25) }}
+                      matTooltip="{{ element.name }}"
+                      matTooltipClass="lightTooltip"
+                    > 
+                    {{ limitStrLength(element.name, 30) }}
                     </mat-checkbox>
                   </mat-option>
                 </td>
