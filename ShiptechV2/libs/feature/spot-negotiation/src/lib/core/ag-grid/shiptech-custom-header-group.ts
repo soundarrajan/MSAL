@@ -700,7 +700,7 @@ export class ShiptechCustomHeaderGroup {
             genPrice: '',
             genRating: '',
             isDeleted: false,
-            isSelected: true,
+            isSelected: false,
             mail: '',
             portPrice: '',
             portRating: '',
@@ -1028,6 +1028,7 @@ export class ShiptechCustomHeaderGroup {
       let currentLocProd = this.currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
+      row.isSelected=true; /// Only store update isSelected true
       let requestProducts = requests.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
       this.UpdateProductsSelection(currentLocProd, row);
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
