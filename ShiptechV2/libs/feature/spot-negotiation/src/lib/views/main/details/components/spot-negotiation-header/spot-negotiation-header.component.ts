@@ -315,7 +315,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 genPrice: '',
                 genRating: '',
                 isDeleted: false,
-                isSelected: true,
+                isSelected: false,
                 mail: '',
                 portPrice: '',
                 portRating: '',
@@ -453,6 +453,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       let currentLocProd = this.currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
+      row.isSelected=true; /// Only store update isSelected true
       let requestProducts = requests?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
       let reqLocations = this.requestOptions.filter(req=>req.requestLocations.some(reqloc=>reqloc.id==row.requestLocationId));
       let reqProducts = reqLocations[0].requestLocations.filter(
