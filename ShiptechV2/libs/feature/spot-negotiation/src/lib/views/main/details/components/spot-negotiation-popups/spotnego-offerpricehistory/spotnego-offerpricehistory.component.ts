@@ -31,6 +31,7 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
   maxNumberOfOffers: number = 0;
   tenantService:any;
   targerPrice: any;
+  offerPriceList = [];
   highcharts = Highcharts;
   public chartOptions: any = {
     chart: {
@@ -82,6 +83,8 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
                     let rowNumber = event.point.series.index;
                     let table2;
                     let length;
+                    let table3;
+                    let length2;
                     try{
                       let table = document.getElementById('tableBody') as HTMLTableElement;
                       for (let i in table.rows) {
@@ -103,7 +106,28 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
                      }
                     }
                    catch(e){
-                      //don't do anything
+                   }
+                   try{
+                    let tableSecond = document.getElementById('tableSecondBody') as HTMLTableElement;
+                    for (let i in tableSecond.rows) {
+                     let row2 = tableSecond.rows[i];
+                     if(row2.sectionRowIndex === rowNumber){
+                        table3 = row2.getElementsByTagName('td');
+                        length2 = table3.length;
+                        for(let i =0; i<length2; i++){
+                          table3[i].style.backgroundColor = "#CAE9FF";
+                        }
+                    }
+                    else{
+                       table3 = row2.getElementsByTagName('td');
+                       length2  = table3.length;
+                       for(let i =0; i<length2; i++){
+                        table3[i].style.backgroundColor = "#FFFFFF";
+                      }
+                    }
+                  }
+                   }
+                   catch(e){
                    }
                   }
               }
@@ -153,8 +177,7 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
 }
   counter(item : any){
     var diff  = new Array(this.maxNumberOfOffers - item.length);
-    var array = [...item, ...diff]
-    console.log(array);
+    var array = [...item, ...diff];
     return array;
   }
 
@@ -181,6 +204,9 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
               data: x.oldPrices.reverse()
             })
          })
+         res.marketPriceHistory.map(x=> 
+          this.offerPriceList.push(this.counter(x.oldPrices))
+          );
          if(dataSeries.length === 0){
            this.highcharts.setOptions({ lang: {noData: "No past offers found"}});
            this.highcharts.chart('container', this.chartOptions);
@@ -240,7 +266,6 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
   addNew(){
         this.tabledatas2.push(this.newtabledata)
         this.newtabledata = {};
-        // this.scrollToBottom();
   }
   delete(i){
     this.tabledatas2.splice(i,1);

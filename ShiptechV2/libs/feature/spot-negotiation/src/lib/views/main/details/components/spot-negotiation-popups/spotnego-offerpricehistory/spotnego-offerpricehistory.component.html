@@ -15,37 +15,40 @@
     </div>
 
     <div class="product-terms p-b-5 p-l-15">
-      <div class="operations-details-block offerprice-history" style="height: 75vh;">
-        <table>
+      <div class="operations-details-block offerprice-history" style="height:75vh; max-height: 75vh; display: flex; overflow-y: scroll;">
+        <table style="width: 18vw; left: 0; z-index: 1; position: sticky;">
           <thead>
-            <tr  >
-              <th class="text-left w-157">CounterParty</th>
-              <th class="text-left w-95">Diff</th>
-              <th class="text-left w-95">Curr. offer</th>
-              <th class="text-left">Past off</th>
+            <tr style="border-radius: 0px !important;">
+              <th class="text-left with-ellipsis" style="width: 50%;" matTooltipClass="lightTooltip" matTooltip="CounterParty">CounterParty</th>
+              <th class="text-left with-ellipsis" style="width: 25%;" matTooltipClass="lightTooltip" matTooltip="Diff">Diff</th>
+              <th class="text-left with-ellipsis" style="width: 25%;" matTooltipClass="lightTooltip" matTooltip="Curr. offer">Curr. offer</th>
             </tr>
           </thead>
-          <tbody id="tableBody" style="min-height: 580px; height: auto;">
-            <tr id = "commentList" *ngFor="let items of locationData">
-              <td class="text-left w-157" matTooltipClass="lightTooltip" matTooltip="{{items.sellerCounterpartyName| htmlDecodeReadonly}}" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
-              <td class="text-left w-95">$ {{formatService.FormatPriceTrailingZero(items.priceDiff)}}</td>
-              <td class="text-left w-95" >$ {{formatService.FormatPriceTrailingZero(items.price)}}</td>
-                <td  class="text-left ">
-                  <table >
-                    <tbody>
-                      <tr style="table-layout: auto; overflow-x: scroll;">
-                        <td class="text-left" style="min-width: 3vw; max-width: 3vw;" *ngFor="let item of counter(items.oldPrices)">
-                           <span  *ngIf="item != undefined">&nbsp;$ {{formatService.FormatPriceTrailingZero(item)}} &nbsp;</span>
-                           <span *ngIf="item == undefined">&nbsp;-&nbsp;</span>
-                        </td>
-                      </tr>
-                    </tbody>
-
-                  </table>
-                </td>
-            </tr>
-          </tbody>
+            <tbody id="tableBody">
+               <tr *ngFor="let items of locationData">
+                <td class="text-left w-157 with-ellipsis" style="width: 50%;" matTooltipClass="lightTooltip" matTooltip="{{items.sellerCounterpartyName| htmlDecodeReadonly}}" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
+                <td class="text-left w-95 with-ellipsis" style="width: 25%;" matTooltipClass="lightTooltip" matTooltip="{{formatService.FormatPriceTrailingZero(items.priceDiff)}}">$ {{formatService.FormatPriceTrailingZero(items.priceDiff)}}</td>
+                <td class="text-left w-95 with-ellipsis" style="width: 25%;" matTooltipClass="lightTooltip" matTooltip="{{formatService.FormatPriceTrailingZero(items.price)}}">$ {{formatService.FormatPriceTrailingZero(items.price)}}</td>
+               </tr>
+            </tbody>
           </table>
+          <div style="width: 35vw; max-width: 20vw; height:100%;">
+             <table style="width: 28vw; overflow-x: scroll;">
+              <thead >
+                <tr style="border-radius: 0px !important; margin-left: -0.5vw;">
+                  <th class="text-left with-ellipsis" style="width: 30%;">Past off </th>
+                </tr>
+              </thead>
+              <tbody id="tableSecondBody" >
+                <tr *ngFor="let items of offerPriceList">
+                  <td class="text-left with-ellipsis" style="width: 5vw" *ngFor="let item of items">
+                     <span  *ngIf="item != undefined" matTooltipClass="lightTooltip" matTooltip="{{formatService.FormatPriceTrailingZero(item)}}">&nbsp;$ {{formatService.FormatPriceTrailingZero(item)}} &nbsp;</span>
+                     <span *ngIf="item == undefined">&nbsp;-&nbsp;</span>
+                  </td>
+                </tr>
+              </tbody>
+             </table>
+          </div>
       </div>
     </div>
   </div>
