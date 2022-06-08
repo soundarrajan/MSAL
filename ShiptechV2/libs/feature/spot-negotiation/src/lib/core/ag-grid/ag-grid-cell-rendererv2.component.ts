@@ -960,7 +960,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           null,
           { Filters: [] },
           { SortList: [] },
-          [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
+          [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
           userInput.toLowerCase(),
           { Skip: 0, Take: 25 }
         ).subscribe((res: any) => {
