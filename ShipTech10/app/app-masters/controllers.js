@@ -1396,6 +1396,24 @@
                         }
                     }
                 }
+                // For non-BOPs vessels, remove non-saved vessel products & tanks before save
+                if (!$scope.formValues.isVesselManagable && $scope.formValues.vesselProducts && $scope.formValues.vesselProducts.length > 0) {
+                    if ($scope.formValues.vesselProducts.length > 0) {
+                        var i = $scope.formValues.vesselProducts.length;
+                        while (i--) {
+                            if (!($scope.formValues.vesselProducts[i].id > 0)) {
+                                $scope.formValues.vesselProducts.splice(i, 1);
+                            } else if ($scope.formValues.vesselProducts[i].vesselProductTanks.length > 0) {
+                                var j = $scope.formValues.vesselProducts[i].vesselProductTanks.length;
+                                while (j--) {
+                                    if (!($scope.formValues.vesselProducts[i].vesselProductTanks[j].id > 0)) {
+                                        $scope.formValues.vesselProducts[i].vesselProductTanks.splice(j, 1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
             if (vm.app_id == 'masters' && vm.screen_id == 'vesseltype') {
                 var minMaxError = false;
@@ -5895,7 +5913,7 @@
             if ($scope.formValues.vesselProducts[vesselProdIdx]
                 && $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks.length > 0) {
                 sum = $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks
-                    .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory.id == 1 ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0); // tankCategoryId:1 - Storage
+                    .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory?.id == 1 ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0); // tankCategoryId:1 - Storage
             }
             $scope.formValues.vesselProducts[vesselProdIdx].storageCapacityM3 = sum.toFixed($tenantSettings.defaultValues.quantityPrecision);
         }
@@ -5908,7 +5926,7 @@
                 && $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks.length > 0) {
                 density = $scope.formValues.vesselProducts[vesselProdIdx].density;
                 sum = $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks
-                    .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory.id == 1 ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0); // tankCategoryId:1 - Storage
+                    .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory?.id == 1 ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0); // tankCategoryId:1 - Storage
             }
             $scope.formValues.vesselProducts[vesselProdIdx].storageCapacityMt = (sum * density * mtConversionFactor).toFixed($tenantSettings.defaultValues.quantityPrecision);
         }
