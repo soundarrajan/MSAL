@@ -539,8 +539,10 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                     [value]="element.name"
                     [checked]="element.isSelected"
                     (click)="selectSupplier(element)"
+                    matTooltip="{{ element.name }}"
+                    matTooltipClass="lightTooltip"
                   >
-                    {{ element.name }}
+                    {{ limitStrLength(element.name, 30) }}
                   </mat-radio-button>
                 </mat-option>
               </td>
@@ -760,6 +762,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   priceChanged: boolean = false;
   check_count = 0;
   offerOldValue : number;
+  clrRequest: any = 0;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -791,6 +794,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.baseCurrencyId = this.generalTenantSettings.tenantFormats.currency.id;
   }
+  limitStrLength = (text, max_length) => {
+    if (text.length > max_length - 3) {
+      return text.substring(0, max_length).trimEnd() + '...';
+    }
+    return text;
+  };
 
   ngOnInit() {
     let requestOffers = this.params.data.requestOffers;
@@ -986,60 +995,31 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
     //this.params.data.isOfferAvaialble = this.isOfferRequestAvailable();
   }
+//
 
   search(userInput: string, params: any): void {
-    let selectedCounterpartyList = this.physicalSupplierList
-      .filter(e => {
-        if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
-          return true;
-        }
-        return false;
-      })
-      .slice(0, 7);
-    if (selectedCounterpartyList.length === 0) {
-      const response = this._spotNegotiationService.getResponse(
-        null,
-        { Filters: [] },
-        { SortList: [] },
-        [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
-        userInput.toLowerCase(),
-        { Skip: 0, Take: 25 }
-      );
-      response.subscribe((res: any) => {
-        if (res?.payload?.length > 0) {
-          let SelectedCounterpartyList1 = cloneDeep(res.payload);
-          SelectedCounterpartyList1.forEach(element => {
-            if (
-              params?.data?.physicalSupplierCounterpartyId != null &&
-              element.id == params?.data?.physicalSupplierCounterpartyId
-            ) {
-              element.isSelected = true;
-            } else {
-              element.isSelected = false;
-            }
-          });
-          this.visibleCounterpartyList = SelectedCounterpartyList1.slice(0, 7);
-          this.changeDetector.detectChanges();
-        }
-      });
-    } else {
-      let SelectedCounterpartyList1 = cloneDeep(selectedCounterpartyList);
-      if (SelectedCounterpartyList1?.length > 0) {
-        SelectedCounterpartyList1.forEach(element => {
-          if (
-            params?.data?.physicalSupplierCounterpartyId != null &&
-            element.id == params?.data?.physicalSupplierCounterpartyId
-          ) {
-            element.isSelected = true;
-          } else {
-            element.isSelected = false;
+    clearInterval(this.clrRequest);
+     this.clrRequest = setTimeout(() => {
+        this._spotNegotiationService.getResponse(
+          null,
+          { Filters: [] },
+          { SortList: [] },
+          [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
+          userInput.toLowerCase(),
+          { Skip: 0, Take: 25 }
+        ).subscribe((res: any) => {
+          if (res?.message == 'Unauthorized')return;
+          if (res?.payload?.length > 0) {
+            let SelectedCounterpartyList = cloneDeep(res.payload);
+            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
+          }else{
+            this.visibleCounterpartyList = [];
           }
+          this.changeDetector.detectChanges();
         });
-        this.visibleCounterpartyList = SelectedCounterpartyList1;
-        this.changeDetector.detectChanges();
-      }
-    }
+      }, 1200);
   }
+
   hoverMenu(event) {
     event.target.classList.add('selectedIcon');
     this.menuTriggerHover.openMenu();

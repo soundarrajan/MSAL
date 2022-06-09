@@ -74,8 +74,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
                       <mat-checkbox
                         [value]="element"
                         (change)="onCounterpartyCheckboxChange($event, element)"
+                        matTooltip="{{ element.name }}"
+                        matTooltipClass="lightTooltip"
                       >
-                        {{ limitStrLength(element.name, 25) }}
+                        {{ limitStrLength(element.name, 30) }}
                       </mat-checkbox>
                     </mat-option>
                   </td>
@@ -364,6 +366,7 @@ export class ShiptechCustomHeaderGroup {
   requests: any;
   isLatestClosurePrice: boolean = false;
   locations: any;
+  clrRequest : any;
   ngOnInit(): any {
     this.store.selectSnapshot(({ spotNegotiation }) => {
       this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
@@ -412,30 +415,26 @@ export class ShiptechCustomHeaderGroup {
   }
 
   search(userInput: string): void {
-    this.visibleCounterpartyList = this.counterpartyList
-      .filter(e => {
-        if (e.name.toLowerCase().includes(userInput.toLowerCase())) {
-          return true;
-        }
-        return false;
-      })
-      .slice(0, 7);
-    if (this.visibleCounterpartyList.length === 0) {
-      const response = this._spotNegotiationService.getResponse(
-        null,
-        { Filters: [] },
-        { SortList: [] },
-        [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
-        userInput.toLowerCase(),
-        { Skip: 0, Take: 25 }
-      );
-      response.subscribe((res: any) => {
-        if (res?.payload?.length > 0) {
-          this.visibleCounterpartyList = res.payload.slice(0, 7);
+    clearInterval(this.clrRequest);
+     this.clrRequest = setTimeout(() => {
+        this._spotNegotiationService.getResponse(
+          null,
+          { Filters: [] },
+          { SortList: [] },
+          [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
+          userInput.toLowerCase(),
+          { Skip: 0, Take: 25 }
+        ).subscribe((res: any) => {
+          if (res?.message == 'Unauthorized')return;
+          if (res?.payload?.length > 0) {
+            let SelectedCounterpartyList = cloneDeep(res.payload);
+            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
+          }else{
+            this.visibleCounterpartyList = [];
+          }
           this.changeDetector.detectChanges();
-        }
-      });
-    }
+        });
+      }, 1200);
   }
 
   openCounterpartyPopup(reqLocationId: number) {
@@ -705,7 +704,7 @@ export class ShiptechCustomHeaderGroup {
             genPrice: '',
             genRating: '',
             isDeleted: false,
-            isSelected: true,
+            isSelected: false,
             mail: '',
             portPrice: '',
             portRating: '',
@@ -1033,6 +1032,7 @@ export class ShiptechCustomHeaderGroup {
       let currentLocProd = this.currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
+      row.isSelected=true; /// Only store update isSelected true
       let requestProducts = requests.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
       this.UpdateProductsSelection(currentLocProd, row);
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
