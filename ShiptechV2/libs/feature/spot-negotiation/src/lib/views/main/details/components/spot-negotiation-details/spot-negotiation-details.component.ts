@@ -845,7 +845,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             if(innerArray.expand != undefined){
               return {...innerArray, expand : !innerArray.expand}
             }else{
-              return {...innerArray, expand : index == 0 ? false : true}
+              return {...innerArray, expand : false}
             }
           }else{
             return innerArray;
@@ -856,6 +856,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         return e;
       }      
     });
+    debugger;
     this.store.dispatch(new UpdateRequest(expandArray));
   }
   saveAdditionalCosts(
