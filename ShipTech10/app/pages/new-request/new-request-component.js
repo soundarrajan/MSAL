@@ -563,6 +563,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             // if (ctrl.request.requestStatus.id == ctrl.STATUS.STEMMED.id) ctrl.isReadonlyForm = true;
                             // if (ctrl.request.requestStatus.id == ctrl.STATUS.PARTIALLY_STEMMED.id) ctrl.canComplete = true;
                             ctrl.getCurrentProductsCurrentIds();
+                            $rootScope.requestId = ctrl.requestId;
                             emailModel.getTemplates(ctrl.emailTransactionTypeId,ctrl.requestId).then((data) => {
                                 if (data.payload.length == 0) {
                                     ctrl.previewEmailDisabled = true;
@@ -827,7 +828,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     ctrl.isNewRequest = false;
                     ctrl.getCurrentProductsCurrentIds();
                     emailModel.getTemplates(ctrl.emailTransactionTypeId).then((data) => {
-                        debugger
                         if (data.payload.length == 0) {
                             ctrl.previewEmailDisabled = true;
                         }
@@ -1083,7 +1083,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 }
 
                 localStorage.setItem('previewEmailData', JSON.stringify(previewEmailData));
-                $rootScope.isPreview = true;
+                $rootScope.isPreview = false;
 
                 let url = $state.href(STATE.PREVIEW_EMAIL);
                 // $window.open(url, '_blank');

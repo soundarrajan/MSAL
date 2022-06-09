@@ -47,7 +47,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
         	}
         }
         ctrl.shownEmailNr = 3;
-
+        ctrl.requestId = $stateParams.requestId;
         ctrl.getAvailableDocumentAttachments = function(entityId, transaction) {
             let referenceNo = entityId;
             let transactionTypeId = _.find(ctrl.lists.TransactionType, (el) => {
@@ -263,13 +263,15 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                     resolve(true);
                 });
             }
-            return emailModel.getTemplates(ctrl.emailTransactionTypeId).then((data) => {
+            return emailModel.getTemplates(ctrl.emailTransactionTypeId, $rootScope.requestId).then((data) => {
                 ctrl.templateList = data.payload;
                 switch (ctrl.transaction) {
                 case EMAIL_TRANSACTION.REQUEST:
                     ctrl.getAvailableDocumentAttachments(ctrl.data.requestId, 'Request');
-                    return emailModel.getTemplates(ctrl.emailTransactionTypeId, ctrl.data.requestId).then((data) => {
-                        ctrl.templateList = data.payload;});                  
+                    if (ctrl.templateList.length > 0) {
+                                ctrl.template = ctrl.templateList[0];
+                                ctrl.defaultTemplate = ctrl.templateList[0];
+                            }
                     break;
                 case EMAIL_TRANSACTION.GROUP_OF_REQUESTS:
                     var id = ctrl.data.Requirements[0].RequestId;
@@ -439,6 +441,12 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                 }
                 if (ctrl.template.name === 'RequestCancellationToOperator') {
                     ctrl.template.name = 'Request Cancellation To Operator';
+                }
+                if (ctrl.template.name === 'Questionnaire - Residue') {
+                    ctrl.template.name = 'Residue';
+                }
+                if (ctrl.template.name === 'Questionnaire - Alkali') {
+                    ctrl.template.name = 'Alkali';
                 }
                 newRequestModel.getRequestEmailTemplate(ctrl.data, ctrl.template, ctrl.emailTransactionTypeId, $rootScope.isPreview).then((data) => {
                     ctrl.email = data.payload;
