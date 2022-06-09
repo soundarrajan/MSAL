@@ -1,9 +1,8 @@
 <div class="spot-nego-content">
   <div class="grid-in-accordion">
       <mat-expansion-panel *ngFor="let loc of locations; let i = index; trackBy: identifyer"
-        [expanded]="Index == 0 ? ((loc.expand != undefined &&  loc.expand == 0)? false : true) : (loc.expand != undefined ? (loc.expand == 1 ? true : false) : false)"
+        [expanded]="Index == 0 ? ((loc.expand != undefined &&  loc.expand == 0)? false : true) : (loc.expand != undefined ? (loc.expand == 1 ? true : false) : true)"
         style="margin-top: 1px;"
-        
       >
         <mat-expansion-panel-header (click)="storeExpansionState(loc,Index)">
           <mat-panel-title> 
