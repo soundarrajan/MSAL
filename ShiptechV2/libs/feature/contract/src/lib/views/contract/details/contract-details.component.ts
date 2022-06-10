@@ -902,7 +902,13 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (!isValid) {
       return;
     }
-
+    this.formValues.products.forEach((v, k) => {
+      if (typeof v != 'undefined') {
+      if (v.price == null || v.price == '') {
+        v.price = 0;
+      }
+    }
+    });
     this.formValues.details.forEach((v, k) => {
       if (typeof v != 'undefined') {
         if (v.minContractQuantity == null || v.minContractQuantity == '') {
