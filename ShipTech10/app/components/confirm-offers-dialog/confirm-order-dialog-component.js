@@ -82,7 +82,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                 if (ctrl.orderDataFromRequest) {
                     $.each(data.payload.orders, (ordK, ordV) => {
                         $.each(ctrl.orderDataFromRequest, (odfrK, odfrV) => {
-                            if (ordV.requestLocationId == odfrV.requestLocationId) {
+                            if (ordV.requestLocationId == odfrV.requestLocationId && ordV.seller?.id == odfrV.seller?.id) {
                                 ordV.existingOrderId = odfrV.id;
                             }
                         });
