@@ -74,7 +74,6 @@ import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ContractService } from 'libs/feature/contract/src/lib/services/contract.service';
 import {
   MatDialog,
   MatDialogRef,
@@ -315,7 +314,6 @@ export class PricingFormulaSimple extends DeliveryAutocompleteComponent
     private appConfig: AppConfig,
     private httpClient: HttpClient,
     changeDetectorRef: ChangeDetectorRef,
-    private contractService: ContractService,
     @Inject(MAT_DATE_FORMATS) private dateFormats,
     @Inject(NGX_MAT_DATE_FORMATS) private dateTimeFormats,
     private format: TenantFormattingService,
