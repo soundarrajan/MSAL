@@ -35,6 +35,8 @@ export class SearchFormulaPopupComponent implements OnInit {
 public overlayLoadingTemplate =
       '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
 public overlayNoRowsTemplate = '<span>No rows to show</span>';
+  selectedformula: any;
+  selectedRow: any;
   
   constructor(
       public dialogRef: MatDialogRef<SearchFormulaPopupComponent>,
@@ -162,7 +164,15 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
   }
 
   proceed() {
-      this.dialogRef.close({data:this.formulaValue});
+    this.selectedformula = this.toBeAddedFormula();
+    if (this.selectedformula.length === 0) return;
+
+      this.dialogRef.close({data: this.selectedformula});
+  }
+
+  toBeAddedFormula(){
+    this.selectedRow = this.dialog_gridOptions.api.getSelectedRows();
+    return this.selectedRow;
   }
 
 
@@ -171,7 +181,67 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
     this.getContractFormula();
   }
 
-  // payload(searchText : any, skip :number, take :number )
+  
+
+  getContractFormula(){
+     var requiredData = this.sessionData.payload.slice(0,25);
+          this.page = 1;
+          this.pageSize = 25;
+          this.totalItems = this.sessionData.matchedCount;
+          this.rowData = requiredData;
+  }
+
+  onPageChange(page: number){
+    var start = page * this.pageSize - this.pageSize;
+    var end = this.pageSize * page; 
+    this.page = page;
+    var requiredData = this.sessionData.payload.slice(start,end);
+    this.rowData = requiredData;
+  }
+
+  
+  onPageSizeChange(pageSize: number){
+    this.page = 1;
+    this.pageSize = pageSize;
+    var requiredData = this.sessionData.payload.slice(0,pageSize);
+    this.rowData = requiredData;
+  }
+
+  searchFormula(userInput: any){
+    if(userInput.length === 0){
+      this.page = 1;
+      this.totalItems = this.sessionData.matchedCount;
+      this.rowData = this.sessionData.payload.slice(0,this.pageSize)
+      return;
+    }
+    let requestInput=userInput.trim();
+    var filterData = this.sessionData.payload.filter(x=>
+        x.name.includes(requestInput)
+    )
+    this.totalItems = filterData.length;
+    this.page = 1;
+    this.rowData = filterData.slice(0, this.pageSize);
+    console.log(filterData);
+    
+  }
+
+  
+
+  onformulaChange(value){
+    // this.searchingRequest = value;
+    if (value.length === 0) {
+      //this.totalItems = this.totalItems;
+      this.dialog_gridOptions.api.setRowData(this.rowData);
+    } else {
+      return;
+    }
+  }
+
+}
+
+
+
+// payload(searchText : any, skip :number, take :number )
   // {
   //   const payload = {
   //     PageFilters: {
@@ -205,59 +275,11 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
   //   });
   // }
 
-  getContractFormula(){
-     var requiredData = this.sessionData.payload.slice(0,25);
-          this.page = 1;
-          this.pageSize = 25;
-          this.totalItems = this.sessionData.matchedCount;
-          this.rowData = requiredData;
-  }
 
-  onPageChange(page: number){
-    var start = page * this.pageSize - this.pageSize;
-    var end = this.pageSize * page; 
-    this.page = page;
-    var requiredData = this.sessionData.payload.slice(start,end);
-    this.rowData = requiredData;
-  }
 
-  // onPageChange(page: number) {
-  //   var endRowData = page * this.pageSize;
-  //   this.dialog_gridOptions.api.showLoadingOverlay();
-  //   this.page = page;
-  //   const response = this.spotNegotiationService.getContractFormulaList(this.payload(null,endRowData - this.pageSize,this.pageSize));
-  //   response.subscribe((res: any) => {
-  //     this.dialog_gridOptions.api?.hideOverlay();
-  //     this.dialog_gridOptions.api.setRowData(res.payload);
-  //   });
-  // }
 
-  onPageSizeChange(pageSize: number){
-    this.page = 1;
-    this.pageSize = pageSize;
-    var requiredData = this.sessionData.payload.slice(0,pageSize);
-    this.rowData = requiredData;
-  }
 
-  searchFormula(userInput: any){
-    if(userInput.length === 0){
-      this.page = 1;
-      this.totalItems = this.sessionData.matchedCount;
-      this.rowData = this.sessionData.payload.slice(0,this.pageSize)
-      return;
-    }
-    let requestInput=userInput.trim();
-    var filterData = this.sessionData.payload.filter(x=>
-        x.name.includes(requestInput)
-    )
-    this.totalItems = filterData.length;
-    this.page = 1;
-    this.rowData = filterData.slice(0, this.pageSize);
-    console.log(filterData);
-    
-  }
-
-  // onPageSizeChange(pageSize: number) {
+// onPageSizeChange(pageSize: number) {
   //   this.pageSize = pageSize;
   //   this.dialog_gridOptions.api.showLoadingOverlay();
   //   var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
@@ -290,15 +312,15 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
   //   });
   // }
 
-  onformulaChange(value){
-    // this.searchingRequest = value;
-    if (value.length === 0) {
-      //this.totalItems = this.totalItems;
-      this.dialog_gridOptions.api.setRowData(this.rowData);
-    } else {
-      return;
-    }
-  }
+  // onPageChange(page: number) {
+  //   var endRowData = page * this.pageSize;
+  //   this.dialog_gridOptions.api.showLoadingOverlay();
+  //   this.page = page;
+  //   const response = this.spotNegotiationService.getContractFormulaList(this.payload(null,endRowData - this.pageSize,this.pageSize));
+  //   response.subscribe((res: any) => {
+  //     this.dialog_gridOptions.api?.hideOverlay();
+  //     this.dialog_gridOptions.api.setRowData(res.payload);
+  //   });
+  // }
 
-}
 

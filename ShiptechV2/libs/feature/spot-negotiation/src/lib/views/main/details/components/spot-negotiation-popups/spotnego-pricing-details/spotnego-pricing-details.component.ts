@@ -2,9 +2,17 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { GridOptions } from 'ag-grid-community';
+import { Store } from '@ngxs/store';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import moment from 'moment';
+import _, { identity } from 'lodash';
 import { SearchFormulaPopupComponent } from '../search-formula-popup/search-formula-popup.component';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { finalize } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { FormValues, SimpleFormula } from './spotnego-pricing-details.interface';
 
 @Component({
   selector: 'app-spotnego-pricing-details',
@@ -12,380 +20,220 @@ import { SearchFormulaPopupComponent } from '../search-formula-popup/search-form
   styleUrls: ['./spotnego-pricing-details.component.css']
 })
 export class SpotnegoPricingDetailsComponent implements OnInit {
-
-  disableScrollDown = false
-  public showaddbtn=true;
-  isShown: boolean = true; // hidden by default
-  isBtnActive: boolean = false;
-  isButtonVisible=true;
-  iscontentEditable=false;
-  public switchTheme:boolean = false;
-  public selectedFormulaTab='Pricing formula';
-  formulaValue : any;
-  showFormula : any;
-  formulaDesc: any;
+  
+  formulaFlatPercentageList : any;
+  formulaPlusMinusList: any;
+  marketPriceList: any;
+  systemInstumentList: any;
+  uomList: any;
+  hasInvoicedOrder;
+  staticList: any;
+  currencyList: any;
+  formulaOperationList: any;
+  formulaFunctionList: any;
+  marketPriceTypeList: any;
+  businessCalendarList: any;
+  eventList: any;
+  formulaEventIncludeList : any;
+  pricingSchedulePeriodList: any;
+  dayOfWeekList: any;
+  holidayRuleList: any;
+  quantityTypeList: any;
+  productList: any;
+  enterFormula: any;
+  sessionFormulaList: any;
+  locationList : any;
+  formulaTypeList: any;
+  formulaNameList : any = [];
+  public comment: string = "";
   expressType1: string;
   expressType: string='';
-  public amtType: string = "";
-  public uom: string = "";
-  public comment: string = "";
-  public amount: string = "";
-  public enterFormula:boolean=true;
-  public gridOptions: GridOptions;
-  public gridOptions1: GridOptions;
-  public gridOptions2: GridOptions;
-  public gridOptions3: GridOptions;
+  // formValues: any = {
+  //   name: '',
+  //   simpleFormula: {}
+  // };
+  formValues: FormValues;
+  public selectedFormulaTab='Pricing formula';
+  formulaValue : any = '';
+  showFormula : any;
+  formulaDesc: any;
   rules: any = 1;
-  countryList: any;
-  formulaNameList : any = [];
   public initialized = 1;
-  pricingScheduleOptionSpecificDate = [{id: 0}];
-  pricingScheduleList:string[] = ['Date Range', 'Specific Date', 'Event Based Simple','Event Based Extended','Event Based Continuous'];
-  pricingFormulaList:any=[
-    {"name": "Simple", ID: "D1", "checked": false},
-    {"name": "Complex", ID: "D2", "checked": false},
-  ];
-  businessCalendarList: string[] = [];
-  eventList: string[] = [];
-  formulaEventIncludeList : string[] = [];
-  public sysInstrument: string = "";
-  public priceType: string = "";
-  public type: string = "Premium";
-  public sessionData : any;
-  ngOnInit() {
-    // this.scrollToBottom();
-}
+  pricingScheduleList: any;
+  list : any
+  entityName: string;
 
   constructor(public dialogRef: MatDialogRef<SpotnegoPricingDetailsComponent>, 
               @Inject(MAT_DIALOG_DATA) public data: any,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer,
               public dialog: MatDialog,
-              private spotNegotiationService : SpotNegotiationService
+              private spotNegotiationService : SpotNegotiationService,
+              public format: TenantFormattingService,
+              public legacylookup : LegacyLookupsDatabase,
+              private store : Store,
+              private spinner : NgxSpinnerService,
+              private toastr : ToastrService 
+              
               ) {
-    this.sessionData = JSON.parse(sessionStorage.getItem('formula'));
     iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
-    this.gridOptions = <GridOptions>{
-      enableColResize: true,
-      defaultColDef: {
-        resizable: true,
-        filtering: false,
-        sortable: false
-      },
-      columnDefs: this.columnDef1,
-      suppressRowClickSelection: true,
-      suppressCellSelection: true,
-      headerHeight: 35,
-      rowHeight: 35,
-      // getRowClass:(params) => {
-      //   // Make invoice amount text red if the type is Credit Note or Pre-Claim Credit Note
-      //   if(params.node.data.type === "Credit Note" || params.node.data.type === "Pre-claim Credit Note"){
-      //     return ["related-invoice-red-text"]
-      //   }
-      // },
-      animateRows: false,
-      onGridReady: (params) => {
-        this.gridOptions.api = params.api;
-        this.gridOptions.columnApi = params.columnApi;
-        //this.gridOptions_rel_invoice.api.setPinnedBottomRowData(this.totalrowData);
-        this.gridOptions.api.setRowData(this.rowData1);
-        this.gridOptions.api.sizeColumnsToFit();
-        // params.api.sizeColumnsToFit();
-        this.addNotesEventListener1();
-      },
-      onFirstDataRendered(params) {
-        params.api.sizeColumnsToFit();
-      },
 
-      onColumnResized: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 8 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
-          //params.api.sizeColumnsToFit();
-        }
-      },
-      onColumnVisible: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 8) {
-          params.api.sizeColumnsToFit();
-        }
-      }
-    }
-    this.gridOptions1 = <GridOptions>{
-      enableColResize: true,
-      defaultColDef: {
-        resizable: true,
-        filtering: false,
-        sortable: false
-      },
-      columnDefs: this.columnDef11,
-      suppressRowClickSelection: true,
-      suppressCellSelection: true,
-      headerHeight: 35,
-      rowHeight: 35,
-      // getRowClass:(params) => {
-      //   // Make invoice amount text red if the type is Credit Note or Pre-Claim Credit Note
-      //   if(params.node.data.type === "Credit Note" || params.node.data.type === "Pre-claim Credit Note"){
-      //     return ["related-invoice-red-text"]
-      //   }
-      // },
-      animateRows: false,
-      onGridReady: (params) => {
-        this.gridOptions1.api = params.api;
-        this.gridOptions1.columnApi = params.columnApi;
-        //this.gridOptions_rel_invoice.api.setPinnedBottomRowData(this.totalrowData);
-        this.gridOptions1.api.setRowData(this.rowData11);
-        this.gridOptions1.api.sizeColumnsToFit();
-        // params.api.sizeColumnsToFit();
-        this.addNotesEventListener11();
-      },
-      onFirstDataRendered(params) {
-        params.api.sizeColumnsToFit();
-      },
+    this.sessionFormulaList = JSON.parse(sessionStorage.getItem('formula'));
 
-      onColumnResized: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 8 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
-          //params.api.sizeColumnsToFit();
-        }
+    this.store.selectSnapshot<any>((state: any) => {
+      this.staticList = state.spotNegotiation.staticLists.otherLists;
+    });
+    this.list = this.spotNegotiationService.indexedDBList;
+    this.formValues = {
+      id: 1,
+      name: " ",
+      isEditable: true,
+      formulaType:{
+        id: 1,
       },
-      onColumnVisible: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 8) {
-          params.api.sizeColumnsToFit();
-        }
-      }
+      simpleFormula:{}
     }
-    this.gridOptions2 = <GridOptions>{
-      enableColResize: true,
-      defaultColDef: {
-        resizable: true,
-        filtering: false,
-        sortable: false
-      },
-      columnDefs: this.columnDef22,
-      suppressRowClickSelection: true,
-      suppressCellSelection: true,
-      headerHeight: 35,
-      rowHeight: 35,
-      // getRowClass:(params) => {
-      //   // Make invoice amount text red if the type is Credit Note or Pre-Claim Credit Note
-      //   if(params.node.data.type === "Credit Note" || params.node.data.type === "Pre-claim Credit Note"){
-      //     return ["related-invoice-red-text"]
-      //   }
-      // },
-      animateRows: false,
-      onGridReady: (params) => {
-        this.gridOptions2.api = params.api;
-        this.gridOptions2.columnApi = params.columnApi;
-        //this.gridOptions_rel_invoice.api.setPinnedBottomRowData(this.totalrowData);
-        this.gridOptions2.api.setRowData(this.rowData22);
-        this.gridOptions2.api.sizeColumnsToFit();
-        // params.api.sizeColumnsToFit();
-        this.addNotesEventListener22();
-      },
-      onFirstDataRendered(params) {
-        params.api.sizeColumnsToFit();
-      },
-
-      onColumnResized: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 8 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
-          //params.api.sizeColumnsToFit();
-        }
-      },
-      onColumnVisible: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 8) {
-          params.api.sizeColumnsToFit();
-        }
-      }
-    }
-    this.gridOptions3 = <GridOptions>{
-      enableColResize: true,
-      defaultColDef: {
-        resizable: true,
-        filtering: false,
-        sortable: false
-      },
-      columnDefs: this.columnDef33,
-      suppressRowClickSelection: true,
-      suppressCellSelection: true,
-      headerHeight: 35,
-      rowHeight: 35,
-   
-      animateRows: false,
-      onGridReady: (params) => {
-        this.gridOptions3.api = params.api;
-        this.gridOptions3.columnApi = params.columnApi;
-        //this.gridOptions_rel_invoice.api.setPinnedBottomRowData(this.totalrowData);
-        this.gridOptions3.api.setRowData(this.rowData33);
-        this.gridOptions3.api.sizeColumnsToFit();
-        // params.api.sizeColumnsToFit();
-        this.addNotesEventListener33();
-      },
-      onFirstDataRendered(params) {
-        params.api.sizeColumnsToFit();
-      },
-
-      onColumnResized: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 8 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
-          //params.api.sizeColumnsToFit();
-        }
-      },
-      onColumnVisible: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 8) {
-          params.api.sizeColumnsToFit();
-        }
-      }
-    }
+    this.formValues.complexFormulaQuoteLines = [];
    }
-
   closeDialog() {
       this.dialogRef.close();
-
     }
 
-    private columnDef1 = [
-      {
-        resizable: false,
-        width: 50,
-        field: 'add',
-        suppressMenu: true,
-        headerName: "",
-        headerClass: ['aggridtextalign-center'],
-        headerComponentParams: {
-          template: `<span  unselectable="on">
-               <div class="add-btn add-btn3 add-row"></div>
-               <span ref="eMenu"></span>`
-        },
-        cellClass: ['aggridtextalign-left'],
-        cellRendererParams: { type: 'row-remove-icon' }
-      },
-      { headerName: 'Operation', headerTooltip: 'Operation', field: 'operation',editable: true,cellClass: ['editable-cell'],
-        cellRendererParams: {type: 'plain-select',valueArr:['Add','Subtract']}
-       },
-       { headerName: 'Weight', headerTooltip: 'Weight', field: 'weight',editable: true,cellClass: ['editable-cell'],},
-      { headerName: 'Function', headerTooltip: 'Function', field: 'function',editable: true,cellClass: ['editable-cell'],
-        cellRendererParams: {type: 'plain-select',valueArr:['Min','Max']}
-       },
-       { headerName: 'Instrument 1', headerTooltip: 'Instrument 1', field: 'ins1',editable: true,cellClass: ['editable-cell'],},
-       { headerName: 'Price Type', headerTooltip: 'Price Type', field: 'pricetype',editable: true,cellClass: ['editable-cell'],},
-       { headerName: 'Instrument 2', headerTooltip: 'Instrument 2', field: 'ins2',editable: true,cellClass: ['editable-cell'],},
-       { headerName: 'Price Type', headerTooltip: 'Price Type', field: 'pricetype',editable: true,cellClass: ['editable-cell'],},
-       { headerName: 'Instrument 3', headerTooltip: 'Instrument 3', field: 'ins3',editable: true,cellClass: ['editable-cell'],},
-       { headerName: 'Price Type', headerTooltip: 'Price Type', field: 'pricetype',editable: true,cellClass: ['editable-cell'],},
-       { headerName: '+/-', headerTooltip: '+/-', field: '+/-',editable: true,cellClass: ['editable-cell'],},
-       { headerName: 'Flat/%', headerTooltip: 'Flat/%', field: 'flat',editable: true,cellClass: ['editable-cell'],},
-       { headerName: 'UOM', headerTooltip: 'UOM', field: 'uom',editable: true,cellClass: ['editable-cell'],},
-       
-    ];
+    ngOnInit() {
+        this.formulaFlatPercentageList = this.setStaticLists('FormulaFlatPercentage');
+        this.formulaPlusMinusList = this.setStaticLists('FormulaPlusMinus');
+        this.marketPriceList = this.setStaticLists('MarketPriceType');
+        this.systemInstumentList = this.setStaticLists('SystemInstrument');
+        this.uomList = this.setStaticLists('Uom');
+        this.currencyList = this.setStaticLists('Currency');
+        this.formulaOperationList = this.setStaticLists('FormulaOperation');
+        this.formulaFunctionList = this.setStaticLists('FormulaFunction');
+        this.marketPriceTypeList = this.setStaticLists('MarketPriceType');
+        this.businessCalendarList = this.setStaticLists('BusinessCalendar');
+        this.eventList = this.setStaticLists('Event');
+        this.formulaEventIncludeList =  this.setStaticLists('FormulaEventInclude');
+        this.dayOfWeekList = this.setStaticLists('DayOfWeek');
+        this.holidayRuleList = this.setStaticLists('HolidayRule');
+        this.pricingSchedulePeriodList = this.setStaticLists('PricingSchedulePeriod');
+        this.quantityTypeList = this.setStaticLists('QuantityType');
+        this.productList = this.setStaticLists('Product');
+        this.locationList = this.setStaticLists('Location');
+        this.formulaTypeList = this.setStaticLists('FormulaType');
+        this.pricingScheduleList = this.setStaticLists('PricingSchedule');
+    }
 
-    public rowData1 = [
-      {operation:'Add',weight:'100',function:'Min','+/-':'Premium',flat:'Flat',uom:'BBLS',ins1:'ICE Brent',ins2:'ICE Brent',ins3:'ICE Brent',pricetype:'Close'},
-      {operation:'Subtract',weight:'100',function:'Min','+/-':'Premium',flat:'Flat',uom:'BBLS',ins1:'ICE Brent',ins2:'ICE Brent',ins3:'ICE Brent',pricetype:'Close'},
-    ]
+    setStaticLists(staticName) {
+      const findList = this.list[staticName] ;
+      return findList;
+    }
 
-    private columnDef11 = [
-      {
-        resizable: false,
-        width: 50,
-        field: 'add',
-        suppressMenu: true,
-        headerName: "",
-        headerClass: ['aggridtextalign-center'],
-        headerComponentParams: {
-          template: `<span  unselectable="on">
-               <div class="add-btn add-btn3 add-row11"></div>
-               <span ref="eMenu"></span>`
-        },
-        cellClass: ['aggridtextalign-left'],
-        cellRendererParams: { type: 'row-remove-icon' }
-      },
-      { headerName: 'Quantity Type', headerTooltip: 'Quantity Type', field: 'qtype',editable: true,cellClass: ['editable-cell'],
-        cellRendererParams: {type: 'plain-select',valueArr:['Per Month','Per Day']}
-       },
-       { headerName: 'Quantity From', headerTooltip: 'Quantity From', field: 'qfrom',editable: true,cellClass: ['editable-cell'],},
-       { headerName: 'Quantity To', headerTooltip: 'Quantity To', field: 'qto',editable: true,cellClass: ['editable-cell'],},
-      { headerName: 'UOM', headerTooltip: 'UOM', field: 'uom',editable: true,cellClass: ['editable-cell'],width:100,
-        cellRendererParams: {type: 'plain-select',valueArr:['MT','GAL']}
-       },
-       
-       { headerName: '+/-', headerTooltip: '+/-', field: '+/-',editable: true,cellClass: ['editable-cell'],},
-       { headerName: '$/%', headerTooltip: '$/%', field: '$/%',editable: true,cellClass: ['editable-cell'],},
-       { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount',editable: true,cellClass: ['editable-cell'],},
-       
-    ];
-    public rowData11 = [
-      {qtype:'Per Month',qfrom:'10000',qto:'20000',uom:'MT','+/-':'Premium','$/%':'Flat',amount:'25.00'},
-      {qtype:'Per Day',qfrom:'10000',qto:'20000',uom:'MT','+/-':'Premium','$/%':'Flat',amount:'25.00'},
-      
-    ]
+    isEmptyObject(obj) {
+      return obj && Object.keys(obj).length === 0;
+    }
 
-    private columnDef22 = [
-      {
-        resizable: false,
-        width: 50,
-        field: 'add',
-        suppressMenu: true,
-        headerName: "",
-        headerClass: ['aggridtextalign-center'],
-        headerComponentParams: {
-          template: `<span  unselectable="on">
-               <div class="add-btn add-btn3 add-row22"></div>
-               <span ref="eMenu"></span>`
-        },
-        cellClass: ['aggridtextalign-left'],
-        cellRendererParams: { type: 'row-remove-icon' }
-      },
-      
-       { headerName: 'Product', headerTooltip: 'Product', field: 'qfrom',editable: true,cellClass: ['editable-cell'],},
-       { headerName: '+/-', headerTooltip: '+/-', field: '+/-',editable: true,cellClass: ['editable-cell'],},
-       { headerName: '$/%', headerTooltip: '$/%', field: '$/%',editable: true,cellClass: ['editable-cell'],},
-       { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount',editable: true,cellClass: ['editable-cell'],},
-       { headerName: 'UOM', headerTooltip: 'UOM', field: 'uom',editable: true,cellClass: ['editable-cell'],width:100,
-         cellRendererParams: {type: 'plain-select',valueArr:['MT','GAL']}
-       },
-      
-    ];
+    setFormulaTypeSelected(id) {
+      if (id == 2) {
+        //let isEmptyObject = this.isEmptyObject(this.formValues.simpleFormula);
+        if (this.isEmptyObject(this.formValues.simpleFormula)) {
+          this.formValues.simpleFormula = null;
+        }
+        if (!this.formValues.complexFormulaQuoteLines) {
+          this.formValues.complexFormulaQuoteLines = [];
+        }
+      }
+       else {
+        if (!this.formValues.simpleFormula) {
+          this.formValues.simpleFormula = {id : 0,
+            amount: 0,
+            flatPercentage:{
+              id: 0,
+              name: ''
+            },
+            isDeleted: true,
+            plusMinus: {
+              id: 0,
+              name: ''
+            },
+            priceType : {
+              id: 0,
+              name: ''
+            },
+            systemInstrument :{},
+            uom: {
+              id :0,
+              isDeleted : true,
+              name :''
+            }};
+        }
+      }
+    }
 
-    public rowData22 = [
-      {qtype:'Per Month',qfrom:'10000',qto:'20000',uom:'MT','+/-':'Premium','$/%':'Flat',amount:'25.00'},
-      {qtype:'Per Day',qfrom:'10000',qto:'20000',uom:'MT','+/-':'Premium','$/%':'Flat',amount:'25.00'},
-      
-    ]
+    setPricingType() {
+      if (!this.formValues.pricingSchedule) {
+        this.formValues.pricingSchedule = {};
+      }
+    }
 
-  tabledata=[ {seller:'Total Marine Fuel', port:'Amstredam',contractname:'Cambodia Contarct 2021',contractproduct:'DMA 1.5%', formula:'Cambodia Con', schedule:'Average of 5 Days',contractqty:'10,000,.00',liftedqty:'898.00 MT', availableqty:'96,602.00 MT',price:'$500.00'},
-  {seller:'Total Marine Fuel', port:'Amstredam',contractname:'Amstredam Contarct 2021',contractproduct:'DMA 1.5%', formula:'Cambodia Con', schedule:'Average of 5 Days',contractqty:'10,000,.00',liftedqty:'898.00 MT', availableqty:'96,602.00 MT',price:'$500.00'}];
+    handleNullValues(formValues){
+       if(formValues.simpleFormula == null){
+        this.formValues.simpleFormula = {
+          id : 0,
+          amount: 0,
+          flatPercentage:{
+            id: 0,
+            name: ''
+          },
+          isDeleted: true,
+          plusMinus: {
+            id: 0,
+            name: ''
+          },
+          priceType : {
+            id: 0,
+            name: ''
+          },
+          systemInstrument :{
+            id: 0,
+            name: " "
+          },
+          uom: {
+            id :0,
+            isDeleted : false,
+            name :''
+          }
+        }
+       }
+       if(formValues.complexFormulaQuoteLines == null){
+         this.formValues.complexFormulaQuoteLines = [];
+      }
+    }
 
-  public rowData33 = [
-    {qtype:'Per Month',qfrom:'10000',qto:'20000',uom:'MT','+/-':'Premium','$/%':'Flat',amount:'25.00'},
-    {qtype:'Per Day',qfrom:'10000',qto:'20000',uom:'MT','+/-':'Premium','$/%':'Flat',amount:'25.00'},
-    
-  ]
-
-  private columnDef33 = [
-    {
-      resizable: false,
-      width: 50,
-      field: 'add',
-      suppressMenu: true,
-      headerName: "",
-      headerClass: ['aggridtextalign-center'],
-      headerComponentParams: {
-        template: `<span  unselectable="on">
-             <div class="add-btn add-btn3 add-row33"></div>
-             <span ref="eMenu"></span>`
-      },
-      cellClass: ['aggridtextalign-left'],
-      cellRendererParams: { type: 'row-remove-icon' }
-    },
-    { headerName: 'Vessel Location', headerTooltip: 'Vessel Location', field: 'qfrom',editable: true,cellClass: ['editable-cell'],},
-     { headerName: '+/-', headerTooltip: '+/-', field: '+/-',editable: true,cellClass: ['editable-cell'],},
-     { headerName: '$/%', headerTooltip: '$/%', field: '$/%',editable: true,cellClass: ['editable-cell'],},
-     { headerName: 'Amount', headerTooltip: 'Amount', field: 'amount',editable: true,cellClass: ['editable-cell'],},
-     { headerName: 'UOM', headerTooltip: 'UOM', field: 'uom',editable: true,cellClass: ['editable-cell'],width:100,
-      cellRendererParams: {type: 'plain-select',valueArr:['MT','GAL']}
-     },
-     
-  ];
-
-  setPricingType(){
-
-  }
+    setHolidayRules() {
+      if (!this.formValues.formulaHolidayRules) {
+        this.formValues.formulaHolidayRules = {};
+        this.formValues.formulaHolidayRules.sundayHolidayRule = _.cloneDeep(
+          this.holidayRuleList[0]
+        );
+        this.formValues.formulaHolidayRules.mondayHolidayRule = _.cloneDeep(
+          this.holidayRuleList[0]
+        );
+        this.formValues.formulaHolidayRules.tuesdayHolidayRule = _.cloneDeep(
+          this.holidayRuleList[0]
+        );
+        this.formValues.formulaHolidayRules.wednesdayHolidayRule = _.cloneDeep(
+          this.holidayRuleList[0]
+        );
+        this.formValues.formulaHolidayRules.thursdayHolidayRule = _.cloneDeep(
+          this.holidayRuleList[0]
+        );
+        this.formValues.formulaHolidayRules.fridayHolidayRule = _.cloneDeep(
+          this.holidayRuleList[0]
+        );
+        this.formValues.formulaHolidayRules.saturdayHolidayRule = _.cloneDeep(
+          this.holidayRuleList[0]
+        );
+      }
+    }
 
   displayFn(value) {
     return value && value.name ? value.name : '';
@@ -394,58 +242,263 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   SearchFormulaList(item : any){
     //this.formulaNameList = this.sessionData.payload;
     if (item != null) {
-      this.formulaNameList = this.sessionData.payload.filter(e => {
+     if(this.sessionFormulaList != null){
+      this.formulaNameList = this.sessionFormulaList.payload.filter(e => {
         if (e.name.toLowerCase().includes(item.toLowerCase())) {
           return true;
         } else {
           return false;
         }
       }).splice(0,7)  ;
+     }
+     else{
+       return;
+     }
     }
   }
 
   addFormula(item : any){
     let payload = item.id;
-  const response = this.spotNegotiationService.getContractFormula(payload);
-  response.subscribe((data: any)=>{
-     this.formulaDesc = data.payload.name;
-     this.expressType1  = data.payload.formulaType.name;
-     this.sysInstrument = data.payload.simpleFormula.systemInstrument.name;
-     this.priceType = data.payload.simpleFormula.priceType.name;
-     this.type = data.payload.simpleFormula.plusMinus.name;
-     this.amount = data.payload.simpleFormula.amount;
-     this.amtType = data.payload.simpleFormula.flatPercentage.name;
-     this.uom = data.payload.simpleFormula.uom.name;
-     //this.comment = data.payload
+    this.spinner.show();
+    this.spotNegotiationService.getContractFormula(payload).subscribe((data: any)=>{
+    this.formValues = data.payload;
+    this.spinner.hide();
+     this.formulaDesc = data.payload?.name;
+     this.expressType1  = data.payload.formulaType?.name;
+     this.expressType = data.payload.pricingSchedule?.name;
+     this.handleNullValues(this.formValues);
+     console.log(this.list);
   });
   }
   
   hideFormula(){
 
+  } 
+
+  clearSchedules(id) {
+    this.formValues.pricingScheduleOptionDateRange = {};
+    this.formValues.pricingScheduleOptionSpecificDate = {};
+    this.formValues.pricingScheduleOptionEventBasedSimple = {};
+    this.formValues.pricingScheduleOptionEventBasedExtended = {};
+    this.formValues.pricingScheduleOptionEventBasedContinuous = {};
+    /* 
+    4 = Date Range
+    5 = Specific Dates 
+    6 = Event Based simple
+    7 = Event Based extended
+    8 = Event Based Continuous
+    */
+    if (id == 4) {
+      this.formValues.pricingScheduleOptionDateRange = {};
+      this.formValues.pricingScheduleOptionDateRange.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionDateRange.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionDateRange.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionDateRange.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionDateRange.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionDateRange.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionDateRange.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+    } else if (id == 5) {
+      this.formValues.pricingScheduleOptionSpecificDate = {};
+      this.formValues.pricingScheduleOptionSpecificDate.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionSpecificDate.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionSpecificDate.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionSpecificDate.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionSpecificDate.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionSpecificDate.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionSpecificDate.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+    } else if (id == 6) {
+      this.formValues.pricingScheduleOptionEventBasedSimple = {
+        fromNoOfBusinessDaysBefore: 0,
+        name: " ",
+        toNoOfBusinessDaysAfter: 0,
+        fromBusinessCalendarId: { id: 1 },
+        toBusinessCalendar: { id: 1 }
+      };
+      this.formValues.pricingScheduleOptionEventBasedSimple.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedSimple.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedSimple.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedSimple.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedSimple.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedSimple.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedSimple.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+    } else if (id == 7) {
+      this.formValues.pricingScheduleOptionEventBasedExtended = {
+        fromNoOfBusinessDaysBefore: 0,
+        toNoOfBusinessDaysAfter: 0,
+        fromBusinessCalendar: { id: 1 },
+        toBusinessCalendar: { id: 1 }
+      };
+      this.formValues.pricingScheduleOptionEventBasedExtended.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedExtended.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedExtended.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedExtended.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedExtended.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedExtended.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedExtended.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+    } else if (id == 8) {
+      this.formValues.pricingScheduleOptionEventBasedContinuous = {};
+      this.formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedContinuous.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedContinuous.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedContinuous.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedContinuous.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedContinuous.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+      this.formValues.pricingScheduleOptionEventBasedContinuous.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[2]
+      );
+    }
+
+    if (!this.formValues.formulaHolidayRules) {
+      this.formValues.formulaHolidayRules = {};
+      this.formValues.formulaHolidayRules.sundayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.mondayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.tuesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.wednesdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.thursdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.fridayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+      this.formValues.formulaHolidayRules.saturdayHolidayRule = _.cloneDeep(
+        this.holidayRuleList[1]
+      );
+    }
   }
+
+  saveFormula() {
+    if (this.formValues.id) {
+      this.spinner.show();
+      this.spotNegotiationService
+        .updateFormula(this.formValues)
+        .pipe(
+          finalize(() => {
+            this.spinner.hide();
+          })
+        )
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            this.dialogRef.close({
+              name: this.formValues.name,
+              id: this.formValues.id
+            });
+            this.toastr.success('Operation completed successfully!');
+          }
+        });
+    } else {
+      this.spinner.show();
+      this.spotNegotiationService
+        .saveFormula(this.formValues)
+        .pipe(
+          finalize(() => {
+            this.spinner.hide();
+          })
+        )
+        .subscribe((response: any) => {
+          if (typeof response == 'string') {
+            this.toastr.error(response);
+          } else {
+            this.dialogRef.close({
+              name: this.formValues.name,
+              id: response
+            });
+            this.toastr.success('Operation completed successfully!');
+          }
+        });
+    }
+  }
+
 
   searchFormula(){
     const dialogRef = this.dialog.open(SearchFormulaPopupComponent, {
       width: '80vw',
       height: 'auto',
       maxWidth: '95vw',
-      panelClass: 'search-request-popup'
+      panelClass: 'search-request-popup',
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      //alert(result.data);
-      if(result.data!=undefined){
-        this.showFormula = true;
-        //this.formulaValue = result.data;
-        this.sysInstrument = "1234";
-        this.priceType="Mean";
-        this.type="Discount";
-        this.amount="1000";
-        this.amtType="Flat";
-        this.uom="BBL";
-      }else{
-
-      }
+      console.log(result);
+      this.formulaValue = result.data[0].name
+      return this.addFormula(result.data[0]);
     });
   }
 
@@ -453,72 +506,106 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
 
   }
 
-  addNewSpecificDateLine() {
-    // this.pricingScheduleOptionSpecificDate.push({'id': 0});
+
+
+formatDate(date?: any) {
+  if (date) {
+    let currentFormat = this.format.dateFormat;
+    let hasDayOfWeek;
+
+    if (currentFormat.startsWith('DDD ')) {
+      hasDayOfWeek = true;
+      currentFormat = currentFormat.split('DDD ')[1];
+    }
+    if (currentFormat.endsWith('HH:mm')) {
+      currentFormat = currentFormat.split('HH:mm')[0];
+    }
+
+    currentFormat = currentFormat.replace(/d/g, 'D');
+    currentFormat = currentFormat.replace(/y/g, 'Y');
+
+    const elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+    let formattedDate = moment(elem).format(currentFormat);
+
+    if (hasDayOfWeek) {
+      formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+    }
+
+    return formattedDate;
   }
-
-  removeSpecificDateLine(key) {
-    this.pricingScheduleOptionSpecificDate.splice(key, 1);
 }
 
-addNotesEventListener1() {
-  let addButtonElement = document.getElementsByClassName('add-row');
-  console.log(addButtonElement);
-  addButtonElement[0].addEventListener('click', (event) => {
-     //alert("");
-    this.gridOptions.api.applyTransaction({
-      add: [
-        {operation:'Add',weight:'100',function:'Min','+/-':'Premium',flat:'Flat',uom:'BBLS',ins1:'ICE Brent',ins2:'ICE Brent',ins3:'ICE Brent',pricetype:'Close'},
+// InitilizeSimpleFormula() : SimpleFormula {
+//    return{
+//     amount: 0,
+//     flatPercentage :{},
+//     id : 0,
+//     isDeleted: true,
+//     plusMinus: {},
+//     priceType : {},
+//     systemInstrument : {},
+//     uom : {}
+//    } 
+// }
 
-    ]
-    });
-  });
+// addNotesEventListener1() {
+//   let addButtonElement = document.getElementsByClassName('add-row');
+//   console.log(addButtonElement);
+//   addButtonElement[0].addEventListener('click', (event) => {
+//      //alert("");
+//     this.gridOptions.api.applyTransaction({
+//       add: [
+//         {operation:'Add',weight:'100',function:'Min','+/-':'Premium',flat:'Flat',uom:'BBLS',ins1:'ICE Brent',ins2:'ICE Brent',ins3:'ICE Brent',pricetype:'Close'},
 
-}
+//     ]
+//     });
+//   });
 
-addNotesEventListener11() {
-  let addButtonElement = document.getElementsByClassName('add-row11');
-  console.log(addButtonElement);
-  addButtonElement[0].addEventListener('click', (event) => {
-     //alert("");
-    this.gridOptions1.api.applyTransaction({
-      add: [
-        {qtype:'Per Month',qfrom:'10000',qto:'20000',uom:'MT','+/-':'Premium','$/%':'Flat',amount:'25.00'},
+// }
 
-    ]
-    });
-  });
+// addNotesEventListener11() {
+//   let addButtonElement = document.getElementsByClassName('add-row11');
+//   console.log(addButtonElement);
+//   addButtonElement[0].addEventListener('click', (event) => {
+//      //alert("");
+//     this.gridOptions1.api.applyTransaction({
+//       add: [
+//         {qtype:'Per Month',qfrom:'10000',qto:'20000',uom:'MT','+/-':'Premium','$/%':'Flat',amount:'25.00'},
 
-}
-
-addNotesEventListener22() {
-  let addButtonElement = document.getElementsByClassName('add-row22');
-  console.log(addButtonElement);
-  addButtonElement[0].addEventListener('click', (event) => {
-     //alert("");
-    this.gridOptions2.api.applyTransaction({
-      add: [
-        {operation:'Add',weight:'100',function:'Min','+/-':'Premium',flat:'Flat',uom:'BBLS',ins1:'ICE Brent',ins2:'ICE Brent',ins3:'ICE Brent',pricetype:'Close'},
-
-    ]
-    });
-  });
+//     ]
+//     });
+//   });
 
 }
 
-addNotesEventListener33() {
-  let addButtonElement = document.getElementsByClassName('add-row33');
-  console.log(addButtonElement);
-  addButtonElement[0].addEventListener('click', (event) => {
-     //alert("");
-    this.gridOptions3.api.applyTransaction({
-      add: [
-        {operation:'Add',weight:'100',function:'Min','+/-':'Premium',flat:'Flat',uom:'BBLS',ins1:'ICE Brent',ins2:'ICE Brent',ins3:'ICE Brent',pricetype:'Close'},
+// addNotesEventListener22() {
+//   let addButtonElement = document.getElementsByClassName('add-row22');
+//   console.log(addButtonElement);
+//   addButtonElement[0].addEventListener('click', (event) => {
+//      //alert("");
+//     this.gridOptions2.api.applyTransaction({
+//       add: [
+//         {operation:'Add',weight:'100',function:'Min','+/-':'Premium',flat:'Flat',uom:'BBLS',ins1:'ICE Brent',ins2:'ICE Brent',ins3:'ICE Brent',pricetype:'Close'},
 
-    ]
-    });
-  });
+//     ]
+//     });
+//   });
 
-}
+//}
 
-}
+// addNotesEventListener33() {
+//   let addButtonElement = document.getElementsByClassName('add-row33');
+//   console.log(addButtonElement);
+//   addButtonElement[0].addEventListener('click', (event) => {
+//      //alert("");
+//     this.gridOptions3.api.applyTransaction({
+//       add: [
+//         {operation:'Add',weight:'100',function:'Min','+/-':'Premium',flat:'Flat',uom:'BBLS',ins1:'ICE Brent',ins2:'ICE Brent',ins3:'ICE Brent',pricetype:'Close'},
+
+//     ]
+//     });
+//   });
+
+//}
+
+//}
