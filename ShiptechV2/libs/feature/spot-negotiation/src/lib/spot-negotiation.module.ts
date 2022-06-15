@@ -87,16 +87,6 @@ import {
   checkIfProductIsStemmedWithAnotherSeller,
   priceFormatValue } from '../lib/core/pipes/ag.pipe';
   import{RatingModule} from 'ng-starrating';
-import { PricingFormulaSimple } from '../../../contract/src/lib/views/contract/details/components/pricing-formula-simple/pricing-formula-simple.component'
-import { PricingFormulaComplex } from '../../../contract/src/lib//views/contract/details/components/pricing-formula-complex/pricing-formula-complex.component';
-import { DateRange } from '../../../contract/src/lib//views/contract/details/components/date-range/date-range.component';
-import { SpecificDates } from '../../../contract/src/lib//views/contract/details/components/specific-dates/specific-dates.component';
-import { EventBasedContinuous } from '../../../contract/src/lib//views/contract/details/components/event-based-continuous/event-based-continuous.component';
-import { EventBasedExtended } from '../../../contract/src/lib//views/contract/details/components/event-based-extended/event-based-extended.component';
-import { EventBasedSimple } from '../../../contract/src/lib//views/contract/details/components/event-based-simple/event-based-simple.component';
-import { QuantityBased } from '../../../contract/src/lib//views/contract/details/components/quantity-based/quantity-based.component';
-import { ProductBased } from '../../../contract/src/lib/views/contract/details/components/product-based/product-based.component';
-import { VesselLocationBased } from '../../../contract/src/lib//views/contract/details/components/vessel-location-based/vessel-location-based.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -129,7 +119,7 @@ import { VesselLocationBased } from '../../../contract/src/lib//views/contract/d
     CKEditorModule,
     WunderBarModule,
     SharedModule,
-    RatingModule,
+    RatingModule
   ],
   declarations: [
     MainSpotNegotiationComponent,
@@ -182,17 +172,7 @@ import { VesselLocationBased } from '../../../contract/src/lib//views/contract/d
     NegotiationDocumentsComponent,
     NegotiationReportComponent,
     PriceTenantFormatDirective,
-    DragDropFileUploadDirective,
-    PricingFormulaSimple,
-    PricingFormulaComplex,
-    DateRange,
-    SpecificDates,
-    EventBasedContinuous,
-    EventBasedExtended,
-    ProductBased,
-    VesselLocationBased,
-    EventBasedSimple,
-    QuantityBased,
+    DragDropFileUploadDirective
   ],
   entryComponents: [
     AGGridCellActionsComponent,
@@ -221,7 +201,7 @@ import { VesselLocationBased } from '../../../contract/src/lib//views/contract/d
     SpotnegoSearchCtpyComponent,
     SearchFormulaPopupComponent,
     RemoveCounterpartyComponent,
-    SpotnegoRequestChangesComponent,
+    SpotnegoRequestChangesComponent
   ],
   exports: [],
   providers: [

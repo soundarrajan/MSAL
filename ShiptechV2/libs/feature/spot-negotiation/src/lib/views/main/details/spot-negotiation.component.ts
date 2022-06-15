@@ -34,7 +34,6 @@ import { isNumeric } from 'rxjs/internal-compatibility';
 import { SpotNegotiationPriceCalcService } from '../../../services/spot-negotiation-price-calc.service';
 import _ from 'lodash';
 import { forkJoin } from 'rxjs';
-import { openDB } from 'idb';
 
 @Component({
   selector: 'spot-negotiation-main-component',
@@ -73,13 +72,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.spotNegotiationService.getStaticListFromIDB();
     this.spinner.show();
     const requestIdFromUrl = this.route.snapshot.params.requestId;
     if(requestIdFromUrl && isNumeric(requestIdFromUrl)){
       localStorage.setItem('activeRequestId', requestIdFromUrl.toString());
     }
-    this.setFormulaList();
     this.getStaticLists();
     this.getAdditionalCosts();
     this.getRequestGroup();
@@ -430,37 +427,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  setFormulaList(){
-    let payload = {
-      PageFilters: {
-        Filters: []
-      },
-      Filters: [
-        {
-          ColumnName: 'ContractId',
-          Value: null
-        }
-      ],
-      SearchText: null,
-      Pagination: {
-        Skip: 0,
-        Take: 9999
-      }
-    };
-    const response =  this.spotNegotiationService.getContractFormulaList(payload)
-    response.subscribe((data: any)=>{
-      sessionStorage.setItem('formula', JSON.stringify(data));
-    })
-  }
-
   getStaticLists(): void {
     let staticLists = {};
     forkJoin(
       { currencies: this.legacyLookupsDatabase.getTableByName('currency'),
         products: this.legacyLookupsDatabase.getTableByName('product'),
         // inactiveProducts: this.legacyLookupsDatabase.getTableByName('inactiveProducts'),
-        uoms: this.legacyLookupsDatabase.getTableByName('uom'),
+        uoms: this.legacyLookupsDatabase.getTableByName('uom')
       }
     ).subscribe((res: any)=>{
       staticLists = {'currency': res.currencies };
