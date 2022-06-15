@@ -35,6 +35,8 @@ export class SearchFormulaPopupComponent implements OnInit {
 public overlayLoadingTemplate =
       '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
 public overlayNoRowsTemplate = '<span>No rows to show</span>';
+  selectedformula: any;
+  selectedRow: any;
   
   constructor(
       public dialogRef: MatDialogRef<SearchFormulaPopupComponent>,
@@ -162,7 +164,15 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
   }
 
   proceed() {
-      this.dialogRef.close({data:this.formulaValue});
+    this.selectedformula = this.toBeAddedFormula();
+    if (this.selectedformula.length === 0) return;
+
+      this.dialogRef.close({data: this.selectedformula});
+  }
+
+  toBeAddedFormula(){
+    this.selectedRow = this.dialog_gridOptions.api.getSelectedRows();
+    return this.selectedRow;
   }
 
 
@@ -171,39 +181,7 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
     this.getContractFormula();
   }
 
-  // payload(searchText : any, skip :number, take :number )
-  // {
-  //   const payload = {
-  //     PageFilters: {
-  //       Filters: []
-  //     },
-  //     Filters: [
-  //       {
-  //         ColumnName: 'ContractId',
-  //         Value: null
-  //       }
-  //     ],
-  //     SearchText: searchText,
-  //     Pagination: {
-  //       Skip: skip,
-  //       Take: take
-  //     }
-  //   };
-  //   return payload;
-  // }
   
-  // getContractFormula(){
-  //   const response =  this.spotNegotiationService.getContractFormulaList(this.payload(null,0,25));
-  //   response.subscribe((data : any)=>{
-  //      console.log(data);
-  //      var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
-  //         this.page = currentPage + 1;
-  //         this.pageSize = 25;
-  //         this.totalItems = data.matchedCount;
-  //         this.rowData = data.payload
-  //      this.dialog_gridOptions.api.setRowData(this.rowData);
-  //   });
-  // }
 
   getContractFormula(){
      var requiredData = this.sessionData.payload.slice(0,25);
@@ -221,17 +199,7 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
     this.rowData = requiredData;
   }
 
-  // onPageChange(page: number) {
-  //   var endRowData = page * this.pageSize;
-  //   this.dialog_gridOptions.api.showLoadingOverlay();
-  //   this.page = page;
-  //   const response = this.spotNegotiationService.getContractFormulaList(this.payload(null,endRowData - this.pageSize,this.pageSize));
-  //   response.subscribe((res: any) => {
-  //     this.dialog_gridOptions.api?.hideOverlay();
-  //     this.dialog_gridOptions.api.setRowData(res.payload);
-  //   });
-  // }
-
+  
   onPageSizeChange(pageSize: number){
     this.page = 1;
     this.pageSize = pageSize;
@@ -257,38 +225,7 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
     
   }
 
-  // onPageSizeChange(pageSize: number) {
-  //   this.pageSize = pageSize;
-  //   this.dialog_gridOptions.api.showLoadingOverlay();
-  //   var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
-  //   this.page = currentPage + 1;
-  //   const response = this.spotNegotiationService.getContractFormulaList(this.payload(null,0,this.pageSize));
-  //   response.subscribe((res: any) => {
-  //     this.dialog_gridOptions.api?.hideOverlay();
-  //     if (res.payload) {
-  //       this.dialog_gridOptions.api.setRowData(res.payload);
-  //     } else {
-  //       this.dialog_gridOptions.api.showNoRowsOverlay();
-  //     }
-  //   });
-  // }
-
-  // searchFormula(userInput: any){
-  //   let requestInput=userInput.trim();
-  //   this.dialog_gridOptions.api.showLoadingOverlay();
-  //   const response = this.spotNegotiationService.getContractFormulaList(this.payload(requestInput.toLowerCase(), 0, this.pageSize));
-  //   response.subscribe((res: any) => {
-  //     this.totalItems = res.matchedCount;
-  //     this.dialog_gridOptions.api?.hideOverlay();
-  //     if (res.payload) {
-  //       var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
-  //       this.page = currentPage + 1;
-  //       this.dialog_gridOptions.api.setRowData(res.payload);
-  //     } else {
-  //       this.dialog_gridOptions.api.showNoRowsOverlay();
-  //     }
-  //   });
-  // }
+  
 
   onformulaChange(value){
     // this.searchingRequest = value;

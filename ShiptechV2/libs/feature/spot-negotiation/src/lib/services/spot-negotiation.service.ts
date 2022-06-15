@@ -20,6 +20,7 @@ import {
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
+import { openDB } from 'idb';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
@@ -38,7 +39,7 @@ export class SpotNegotiationService extends BaseStoreService
   physicalSupplierTotalCount: any;
   requestCount: any;
   hArray : any = [];
-
+  indexedDBList: any = [];
   constructor(
     protected store: Store,
     loggerFactory: ModuleLoggerFactory,
@@ -730,5 +731,24 @@ export class SpotNegotiationService extends BaseStoreService
   @ObservableException()
   getContractFormula(payload): Observable<unknown> {
     return this.spotNegotiationApi.getContractFormula(payload);
+  }
+
+   @ObservableException()
+   saveFormula(payload): Observable<unknown> {
+     return this.spotNegotiationApi.saveFormula(payload);
+   }
+ 
+   
+   @ObservableException()
+   updateFormula(payload): Observable<unknown> {
+     return this.spotNegotiationApi.updateFormula(payload);
+   }
+
+  //Getting Static Lists from indexedDB
+  public async getStaticListFromIDB(){
+    const db = await openDB('Shiptech',10)
+    db.getAll('listsCache').then(x=>
+      this.indexedDBList = x[0].data
+    );
   }
 }
