@@ -83,9 +83,7 @@ export const SpotNegotiationApiPaths = {
   isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`,
   getSellerRatingsforNegotiation: `api/sellerrating/sellerratingreview/getForNegotiation`,
   getContractFormulaList : `api/masters/formulas/listMasters`,
-  getContractFormula : `api/masters/formulas/get`,
-  saveFormula :`api/masters/formulas/create`,
-  updateFormula : `api/masters/formulas/update`
+  getContractFormula : `api/masters/formulas/get`
 };
 
 @Injectable({
@@ -933,44 +931,6 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       );
   
 }
-
-@ObservableException()
-  saveFormula(request: any): Observable<any> {
-    return this.http
-      .post<any>(
-        `${this._masterApiUrl}/${SpotNegotiationApiPaths.saveFormula}`,
-        { Payload: request }
-      )
-      .pipe(
-        map((body: any) => body.upsertedId),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage && body.error.Reference
-              ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
-          )
-        )
-      );
-  }
-
-  @ObservableException()
-  updateFormula(request: any): Observable<any> {
-    return this.http
-      .post<any>(
-        `${this._masterApiUrl}/${SpotNegotiationApiPaths.updateFormula}`,
-        { Payload: request }
-      )
-      .pipe(
-        map((body: any) => body.payload),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage && body.error.Reference
-              ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
-          )
-        )
-      );
-  }
 }
 
 
