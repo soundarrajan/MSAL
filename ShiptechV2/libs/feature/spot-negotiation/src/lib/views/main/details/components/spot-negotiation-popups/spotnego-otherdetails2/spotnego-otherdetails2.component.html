@@ -1,10 +1,12 @@
 <div class="spot-popup-header-container" style="padding-left:45px;">
     <div class="spot-nego-title">Counterparty Request changes</div>
     <div class="spot-dialog-title-right">
-      <button class="cancel-btn w-104" mat-button [mat-dialog-close]="true">Cancel</button>
       <button class="proceed-btn w-104"  mat-button [mat-dialog-close]="true" (click)="saveOtherDetails()">Save</button>
       <div class="title-divider">|</div>
-    <span class="close" style="cursor: pointer;" (click)="closeDialog()" type="button"  ></span>
+    <div class="close-circle">
+      <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() "
+        style="font-size: 14px; display: inline; position:relative; top:-1px; ">close</mat-icon>
+    </div>
     </div>
   
   </div>
@@ -12,7 +14,7 @@
   
   <div id="custom-tabs-v2" class="shiptech-inverted-tab" [@.disabled]="true">
     
-      <mat-tab-group #tabs  mat-align-tabs="end" [selectedIndex]="2">
+      <!-- <mat-tab-group #tabs  mat-align-tabs="end" [selectedIndex]="2">
       <!--<mat-tab #tab>
         <ng-template mat-tab-label>
           <div class="custom-label-holder">
@@ -193,29 +195,29 @@
           </div>
         </ng-container>
       </mat-tab> -->
-      <mat-tab #tab>
+      <!-- <mat-tab #tab>
         <ng-template mat-tab-label>
           <div class="custom-label-holder">
             <div class="custom-tab-ui"></div>
             <div class="custom-label">Request Change</div>
           </div>
   
-        </ng-template>
+        </ng-template> -->
         <ng-container>
           <div class="custom-tab-container pricing-details-tab-container">
   
-            <div class="row d-flex col-md-12">
-              <div class="col-md-12">
-                <div class="pricing-type-container">
+            <div class="row d-flex col-md-12 pd-0">
+              <div class="col-md-12 pd-0">
+                <div class="pricing-type-container"style="margin-top: 0px;padding:8px;">
                   <div class="col-md-12 pricing-container">
   
                     <div class="row" style="height: 87px; align-items: center;">
   
-                      <div class="col-md-12 d-flex" style=" flex-wrap: wrap;">
-                        <div class="custom-form-field create-new-formula-form-field"
+                      <div class="col-md-12 d-flex" style=" flex-wrap: wrap; align-items: center;">
+                        <div class="custom-form-field"style="margin: 0 20px 0px 0px"
                           [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                           <div class="d-flex">
-                            <mat-form-field class="with-search" appearance="legacy">
+                            <mat-form-field class="with-search" appearance="legacy"style="border-right: none !important;">
                               <mat-label>Quoted Product</mat-label>
                               <input
                                 class="free-text-field"
@@ -262,13 +264,13 @@
                           </div>
                         </div>
   
-                        <div   class="custom-form-field create-new-formula-form-field"
+                        <div   class="custom-form-field create-new-formula-form-field"style="margin: 0 20px 0px 0px"
                                 [ngClass]="{
                                   darkTheme: switchTheme,
                                   lightTheme: !switchTheme
                                 }"
                               >
-                        <div class="split-field">
+                        <div class="split-field" style="margin-bottom:0px">
                           <mat-form-field
                             class="without-search long-label-field input-field-container"
                             style="width: 64%;border: none;"
@@ -363,8 +365,8 @@
             </div>
           </div>
         </ng-container>
-      </mat-tab>
-    </mat-tab-group>
+      <!-- </mat-tab>
+    </mat-tab-group> -->
   </div>
   <ngx-spinner
   bdColor="rgba(51,51,51,0.8)"
