@@ -1577,26 +1577,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   pricingdetailspopup(e, params) {
-    let payload = {
-      PageFilters: {
-        Filters: []
-      },
-      Filters: [
-        {
-          ColumnName: 'ContractId',
-          Value: null
-        }
-      ],
-      SearchText: null,
-      Pagination: {
-        Skip: 0,
-        Take: 9999
-      }
-    };
-    const response =  this._spotNegotiationService.getContractFormulaList(payload)
-    response.subscribe((data: any)=>{
-      sessionStorage.setItem('formula', JSON.stringify(data));
-    })
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
       width: '1164px',
       panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class']
