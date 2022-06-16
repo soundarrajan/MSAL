@@ -3619,7 +3619,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return true;
         }
         ctrl.sendQuestionnaire = function() {
-debugger
             console.log(ctrl.sendQuestionnaireEmailType);
             var validActiveSpecGroupMessage = ctrl.checkInactiveSpecGroup();
             if (validActiveSpecGroupMessage != true) {
@@ -4616,6 +4615,7 @@ debugger
         }
           // modal close
         $scope.prettyCloseModal = function() {
+            ctrl.buttonsDisabled = false;
             let modalStyles = {
                 transition: '0.3s',
                 opacity: '0',
