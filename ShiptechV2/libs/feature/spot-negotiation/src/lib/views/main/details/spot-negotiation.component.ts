@@ -72,11 +72,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.spotNegotiationService.getStaticListFromIDB();
     this.spinner.show();
     const requestIdFromUrl = this.route.snapshot.params.requestId;
     if(requestIdFromUrl && isNumeric(requestIdFromUrl)){
       localStorage.setItem('activeRequestId', requestIdFromUrl.toString());
     }
+    this.setFormulaList();
     this.getStaticLists();
     this.getAdditionalCosts();
     this.getRequestGroup();
@@ -427,6 +429,30 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  setFormulaList(){
+    let payload = {
+      PageFilters: {
+        Filters: []
+      },
+      Filters: [
+        {
+          ColumnName: 'ContractId',
+          Value: null
+        }
+      ],
+      SearchText: null,
+      Pagination: {
+        Skip: 0,
+        Take: 9999
+      }
+    };
+    const response =  this.spotNegotiationService.getContractFormulaList(payload)
+    response.subscribe((data: any)=>{
+      sessionStorage.setItem('formula', JSON.stringify(data));
+    })
+  }
+
   getStaticLists(): void {
     let staticLists = {};
     forkJoin(

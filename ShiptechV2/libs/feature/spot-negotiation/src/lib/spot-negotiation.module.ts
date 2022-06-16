@@ -87,6 +87,17 @@ import {
   checkIfProductIsStemmedWithAnotherSeller,
   priceFormatValue } from '../lib/core/pipes/ag.pipe';
   import{RatingModule} from 'ng-starrating';
+  import { DateRange } from './views/main/details/components/date-range/date-range.component';
+  
+import { QuantityBased } from './views/main/details/components/quantity-based/quantity-based.component';
+import { EventBasedContinuous } from './views/main/details/components/event-based-continuous/event-based-continuous.component';
+import { PricingFormulaSimple } from './views/main/details/components/pricing-formula-simple/pricing-formula-simple.component';
+import { PricingFormulaComplex } from './views/main/details/components/pricing-formula-complex/pricing-formula-complex.component';
+import { SpecificDates } from './views/main/details/components/specific-dates/specific-dates.component';
+import { EventBasedExtended } from './views/main/details/components/event-based-extended/event-based-extended.component';
+import { ProductBased } from './views/main/details/components/product-based/product-based.component';
+import { VesselLocationBased } from './views/main/details/components/vessel-location-based/vessel-location-based.component';
+import { EventBasedSimple } from './views/main/details/components/event-based-simple/event-based-simple.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -172,7 +183,17 @@ import {
     NegotiationDocumentsComponent,
     NegotiationReportComponent,
     PriceTenantFormatDirective,
-    DragDropFileUploadDirective
+    DragDropFileUploadDirective,
+    EventBasedContinuous,
+    PricingFormulaSimple,
+    PricingFormulaComplex,
+    DateRange,
+    SpecificDates,
+    EventBasedExtended,
+    ProductBased,
+    VesselLocationBased,
+    EventBasedSimple,
+    QuantityBased,
   ],
   entryComponents: [
     AGGridCellActionsComponent,
