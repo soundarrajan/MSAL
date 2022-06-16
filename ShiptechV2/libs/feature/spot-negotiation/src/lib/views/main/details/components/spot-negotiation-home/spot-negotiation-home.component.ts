@@ -251,44 +251,44 @@ export class SpotNegotiationHomeComponent implements OnInit {
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
+    let requestLocations = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locations;
+    });
+
     let isallow = false;
     locationsRows.forEach((element, lkey) => {
+      let reqLoc = requestLocations?.find(l => l.id ==element.requestLocationId);
       if (element.requestOffers == undefined && element.isSelected) {
         isallow = true;
       }
       if (element.requestOffers != undefined) {
-        if (element.checkProd1 && element.requestOffers[0] != undefined) {
-          if (
-            element.requestOffers[0].price == null
-          ) {
+        if (element.checkProd1 && reqLoc?.requestProducts[0]) {
+          let offer = element.requestOffers?.find(x => x.requestProductId == reqLoc?.requestProducts[0].id);
+          if (offer && offer.price == null) {
             isallow = true;
           }
         }
-        if (element.checkProd2 && element.requestOffers[1] != undefined) {
-          if (
-            element.requestOffers[1].price == null
-          ) {
+        if (element.checkProd2 && reqLoc?.requestProducts[1]) {
+          let offer = element.requestOffers?.find(x => x.requestProductId == reqLoc?.requestProducts[1].id);
+          if (offer && offer.price == null) {
             isallow = true;
           }
         }
-        if (element.checkProd3 && element.requestOffers[2] != undefined) {
-          if (
-            element.requestOffers[2].price == null
-          ) {
+        if (element.checkProd3 && reqLoc?.requestProducts[2]) {
+          let offer = element.requestOffers?.find(x => x.requestProductId == reqLoc?.requestProducts[2].id);
+          if (offer && offer.price == null) {
             isallow = true;
           }
         }
-        if (element.checkProd4 && element.requestOffers[3] != undefined) {
-          if (
-            element.requestOffers[3].price == null
-          ) {
+        if (element.checkProd4 && reqLoc?.requestProducts[3]) {
+          let offer = element.requestOffers?.find(x => x.requestProductId == reqLoc?.requestProducts[3].id);
+          if (offer && offer.price == null) {
             isallow = true;
           }
         }
-        if (element.checkProd5 && element.requestOffers[4] != undefined) {
-          if (
-            element.requestOffers[4].price == null
-          ) {
+        if (element.checkProd5 && reqLoc?.requestProducts[4]) {
+          let offer = element.requestOffers?.find(x => x.requestProductId == reqLoc?.requestProducts[4].id);
+          if (offer && offer.price == null) {
             isallow = true;
           }
         }
