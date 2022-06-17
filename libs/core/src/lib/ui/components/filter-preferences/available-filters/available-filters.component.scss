@@ -39,6 +39,11 @@ $red: red;
   }
 }
 
+::ng-deep .mat-dialog-container{
+  padding:10px 22px 15px;
+  overflow: hidden;
+}
+
 .chip-icon {
   // margin-top: 4px;
   margin-left: 15px;
