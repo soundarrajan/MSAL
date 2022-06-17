@@ -6597,6 +6597,22 @@ APP_API.factory('$Api_Service', [
                             }
                         ];
                     }
+
+                    //Common
+                    var datas = { Payload: payload };
+
+                    // treasuryreport
+                    if (param.app == 'invoices' && param.screen == 'treasuryreport') {
+                        var orderAfter = '';
+                        if($rootScope.formDataFields.OrderAfter){
+                            orderAfter = $rootScope.formDataFields.OrderAfter;
+                        }
+                        else{
+                            orderAfter = $rootScope.adminConfiguration.invoice.orderAfter;
+                        }
+                        var UIFilters = { UIFilters : { "OrderAfterDate": orderAfter.substr(0, 10) } };
+                        datas =  angular.extend( datas, UIFilters);
+                    }
                     // console.log(param.app,param.screen);
                     // debugger;
                     screenLoader.showLoader();
@@ -6604,9 +6620,7 @@ APP_API.factory('$Api_Service', [
                         url: url,
                         method: 'POST',
                         responseType: 'arraybuffer',
-                        data: {
-                            Payload: payload
-                        },
+                        data: datas,
                         headers: {
                             'Content-type': 'application/json',
                             'Accept': file_type
