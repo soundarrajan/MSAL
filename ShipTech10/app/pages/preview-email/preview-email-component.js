@@ -1005,7 +1005,11 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                     if(ctrl.template && ctrl.template.name === 'Questionnaire - Standard' ||
 						ctrl.template.name === 'Questionnaire - Redelivery' ||
 						ctrl.template.name === 'Redelivery' ||
-						ctrl.template.name === 'Standard'
+						ctrl.template.name === 'Standard' || 
+                        ctrl.template.name === 'Questionnaire - Alkali' ||
+                        ctrl.template.name === 'Questionnaire - Residue' ||
+                        ctrl.template.name === 'Alkali' ||
+                        ctrl.template.name === 'Residue'
                     ) {
                         var payload = ctrl.data.requestId;
                         newRequestModel.questionnaireStatus(payload).then(() => {
