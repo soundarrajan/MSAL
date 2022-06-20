@@ -443,10 +443,10 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
                     ctrl.template.name = 'Request Cancellation To Operator';
                 }
                 if (ctrl.template.name === 'Questionnaire - Residue') {
-                    ctrl.template.name = 'Residue';
+                    ctrl.template.name = 'Standard Residue';
                 }
                 if (ctrl.template.name === 'Questionnaire - Alkali') {
-                    ctrl.template.name = 'Alkali';
+                    ctrl.template.name = 'Standard Alkali';
                 }
                 newRequestModel.getRequestEmailTemplate(ctrl.data, ctrl.template, ctrl.emailTransactionTypeId, $rootScope.isPreview).then((data) => {
                     ctrl.email = data.payload;
@@ -1008,8 +1008,8 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
 						ctrl.template.name === 'Standard' || 
                         ctrl.template.name === 'Questionnaire - Alkali' ||
                         ctrl.template.name === 'Questionnaire - Residue' ||
-                        ctrl.template.name === 'Alkali' ||
-                        ctrl.template.name === 'Residue'
+                        ctrl.template.name === 'Standard Alkali' ||
+                        ctrl.template.name === 'Standard Residue'
                     ) {
                         var payload = ctrl.data.requestId;
                         newRequestModel.questionnaireStatus(payload).then(() => {
