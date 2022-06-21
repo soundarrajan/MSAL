@@ -541,7 +541,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         // }
         this.errorMessages = errorMessages.join('\n\n');
         if (errorMessages.length > 0) {
-          this.toaster.error(this.errorMessages);
+          this.toaster.warning(this.errorMessages);
         }
         let rfq_data = {
           Requirements: this.selectedOffers, //this.requestOfferItems.filter(row1 => row1.isCheckBox == true),
