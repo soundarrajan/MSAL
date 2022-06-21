@@ -3323,7 +3323,7 @@ Page Loading
 }
 .footer-links {
     float: left;
-    margin-top: 15px;
+    /* margin-top: 15px; */
 }
 .footer-links a {
     padding: 0 10px;
