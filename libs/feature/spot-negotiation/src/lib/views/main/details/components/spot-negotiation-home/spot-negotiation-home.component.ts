@@ -265,7 +265,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
         if (element.checkProd1 && reqLoc?.requestProducts[0]) {
           let offer = element.requestOffers?.find(x => x.requestProductId == reqLoc?.requestProducts[0].id);
           if (offer && offer.price == null) {
-          ) {
             isallow = true;
           }
         }
