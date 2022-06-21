@@ -1326,7 +1326,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             } else {
                                 ctrl.requirementsToAmend = null;
                             }
-                            if(ctrl.request.requestGroup && ctrl.request.requestStatus.name == "Validated"){
+                            if(ctrl.request.requestGroup && (ctrl.request.requestStatus.name == "Validated" || ctrl.request.locations?.find(x=>x.requestId== ctrl.request.id)?.products.some(y=>y.productStatus.name=='Validated' ))){
                                 let payload = {
                                     GroupId: ctrl.request.requestGroup.id,
                                     RequestIds: [ctrl.request.id]
