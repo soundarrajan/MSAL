@@ -109,7 +109,7 @@
                 </div>
                 <div class="row">
                   <div class="row" *ngIf="expressType1 === 'Simple'">
-                  <div class="col-md-12 d-flex pd-0" style="padding:0; margin-top: 15px; flex-wrap: wrap;">
+                  <div class="col-md-12 d-flex pd-0" style="padding:0; margin-top: 15px; margin-left: 1vw   ; flex-wrap: wrap;">
                     <shiptech-pricing-formula-simple
                       [model]="formValues"
                       [formulaFlatPercentageList]="formulaFlatPercentageList"
@@ -172,7 +172,7 @@
               </div>
               <div >
                  
-                  <div class="shiptech-date-range row" *ngIf="expressType === 'Date Range'" >
+                  <div *ngIf="expressType === 'Date Range'" >
                     <shiptech-date-range
                       class="row"
                       [model]="formValues"
@@ -183,7 +183,7 @@
                   
               </div>
               <div >
-                  <div class="shiptech-specific-dates row" *ngIf="expressType == 'Specific Dates'">
+                  <div *ngIf="expressType == 'Specific Dates'">
                     <shiptech-specific-dates
                       class="row"
                       [model]="formValues" 
@@ -202,7 +202,7 @@
                 >
                 </shiptech-event-based-simple>
             </div>
-            <div *ngIf="expressType === 'Event Based Extended'" class="shiptech-event-based-extended row" >
+            <div *ngIf="expressType === 'Event Based Extended'" >
             <shiptech-event-based-extended
             class="row"
             [model]="formValues"
@@ -213,7 +213,7 @@
           >
           </shiptech-event-based-extended>
             </div> 
-            <div *ngIf="expressType === 'Event Based Continuous'" class="shiptech-event-based-continuous row"> 
+            <div *ngIf="expressType === 'Event Based Continuous'"> 
             <shiptech-event-based-continuous
             class="row"
             [model]="formValues"
