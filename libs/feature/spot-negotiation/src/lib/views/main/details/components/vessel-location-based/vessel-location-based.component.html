@@ -38,7 +38,7 @@
     </thead>
   </table>
   <div class="table-with-scroll">
-    <table>
+    <table class="product-based-table table table-stripped table-hover" style="width:100%">
       <tbody>
         <ng-container
           *ngFor="
@@ -49,11 +49,10 @@
           <tr *ngIf="!locationDiscountRule.value.isDeleted">
             <td
               class="padding"
-              style="padding-left: 0px  !important; padding-right: 0px  !important;"
+              style="width: 30px;"
             >
               <a
                 class="remove-icon"
-                style="margin-left: 10px;"
                 (click)="
                   !formValues.isEditable || hasInvoicedOrder
                     ? ''
@@ -61,7 +60,7 @@
                 "
               ></a>
             </td>
-            <td style="width:20%">
+            <td style="width:20%;">
               <div
                 class="custom-form-field quantity-based-info"
                 [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
