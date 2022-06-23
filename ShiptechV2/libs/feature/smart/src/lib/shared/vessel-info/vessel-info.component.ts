@@ -862,7 +862,7 @@ export class VesselInfoComponent implements OnInit {
     .pipe(
       switchMap(() => {
         let req = {
-          vessel_Code: vesseldata.vesselRef.vesselCode,
+          vessel_Code: vesseldata.vesselRef.vesselCode ?? vesseldata.vesselRef.code,
           generate_new_plan: 0, //(genBunkerPlanRef?.import_in_progress==0)? 1: 0,
           import_gsis: 0
         }
