@@ -263,7 +263,8 @@
                       >
                         <input
                           matInput
-                          (keypress)="keyPressNumber($event)"
+                          (keypress)="OfferPricekeyPressNumber($event, offerAdditionalCost)"
+                          (change)="validateNumber(offerAdditionalCost)"
                           autocomplete="off"
                           priceFormat
                           [(ngModel)]="offerAdditionalCost.price"
