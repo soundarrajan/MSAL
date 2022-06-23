@@ -806,7 +806,8 @@ export class VesselInfoComponent implements OnInit {
           panelClass: 'confirmation-popup-operator',
           data: {
             message: 'Please wait, a new plan is getting generated for vessel ',
-            id: this.vesselData?.vesselRef?.vesselRef?.vesselCode
+            id: this.vesselData?.vesselRef?.vesselRef?.vesselCode,
+            okayButton: true
           }
           // data: {message : 'Already a request to generate a new plan for this vessel is under process. Please wait'}
         });
