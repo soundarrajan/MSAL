@@ -46,6 +46,7 @@
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "disableTypeScriptVersionCheck": true,
-    "enableIvy": false
+    //"enableIvy": false
+    "compilationMode": "partial"
   }
 }
