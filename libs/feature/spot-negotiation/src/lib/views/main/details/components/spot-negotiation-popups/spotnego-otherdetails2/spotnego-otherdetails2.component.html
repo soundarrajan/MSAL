@@ -311,7 +311,7 @@
                         class="custom-form-field"
                         [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
                       >
-                        <mat-form-field
+                        <!-- <mat-form-field
                           class="without-search"
                           appearance="legacy"
                           [ngClass]="{
@@ -343,9 +343,15 @@
                       </button>
                       <ngx-mat-datetime-picker #supplyDeliveryDate></ngx-mat-datetime-picker>
                         </mat-form-field>
-                      </div>
-                        <!-- <div id="custom-form-field" class="lightTheme supply-date m-l-0">
-                            <mat-form-field class="without-search" appearance="legacy">
+                      </div> -->
+                        <div id="custom-form-field" class="lightTheme supply-date m-l-0">
+                            <mat-form-field class="without-search" class="without-search"
+                            appearance="legacy"
+                            [ngClass]="{
+                              'date-invalid': isSupplyDeliveryDateInvalid,
+                              'date-valid': !isSupplyDeliveryDateInvalid
+                            }"
+                            >
                                 <mat-label>Supply Date</mat-label>
                                 <input name="Supply date" 
                                 [(ngModel)]="otherDetailsItems[productIndex].SupplyDeliveryDate"
@@ -356,8 +362,8 @@
                                 </mat-datepicker-toggle>
                                 <mat-datepicker #SupplyDeliveryDate></mat-datepicker>
                             </mat-form-field>
-                         </div> -->
-                      </div>
+                         </div>
+                      <!-- </div>
                     </div>
                   </div>
                 </div>
@@ -365,9 +371,9 @@
             </div>
           </div>
         </ng-container>
-      <!-- </mat-tab>
-    </mat-tab-group> -->
-  </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div> -->
   <ngx-spinner
   bdColor="rgba(51,51,51,0.8)"
   size="medium"
