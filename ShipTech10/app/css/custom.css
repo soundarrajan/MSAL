@@ -3979,7 +3979,7 @@ Uncomment to see border around all .col-*
             }
 
             .global_elements {
-                position: fixed;
+                /* position: fixed; */
                 bottom: 0;
                 right: 0;
                 z-index: 99999;
@@ -3991,9 +3991,10 @@ Uncomment to see border around all .col-*
 
             .elements_actions {
                 pointer-events: auto;
-                position: fixed;
+                float: right;
+                /* position: fixed;
                 bottom: 5px;
-                right: 5px;
+                right: 5px; */
             }
 
             .blink {

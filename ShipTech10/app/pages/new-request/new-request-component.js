@@ -433,7 +433,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                     if (ctrl.request.locations[j].products[i].product) {
                                         listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then((server_data) => {
                                             ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
-                                            ctrl.request.locations[server_data.id].products[server_data.id2].requestProductTypeId = server_data.data.payload?.id;
                                             if(ctrl.request.locations[server_data.id].products[server_data.id2].productType.name.includes('VLSFO')){
                                                 ctrl.request.locations[server_data.id].products[server_data.id2].isPretestRequired = true;
                                             }
@@ -535,12 +534,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                         // ctrl.request.locations[j].products[i].product.name = ctrl.request.locations[j].products[i].requestIndex + ' - ' + ctrl.request.locations[j].products[i].product.name;
                                         if (ctrl.request.locations[j].products[i].productTypeId) {
                                                 ctrl.request.locations[j].products[i].productType = ctrl.getProductTypeObjById(ctrl.request.locations[j].products[i].productTypeId);
-                                                ctrl.request.locations[j].products[i].requestProductTypeId = ctrl.request.locations[j].products[i].productTypeId;
                                                 $scope.productTypesLoadedPerLocation.loadedProducts += 1;
                                         } else {
                                             listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then((server_data) => {
                                                 ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
-                                                ctrl.request.locations[server_data.id].products[server_data.id2].requestProductTypeId = server_data.data.payload?.id;
                                                 $scope.productTypesLoadedPerLocation.loadedProducts += 1;
                                             });
                                         }
@@ -720,7 +717,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             if (ctrl.request.locations[j].products[i].product) {
                                 listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then((server_data) => {
                                     ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
-                                    ctrl.request.locations[server_data.id].products[server_data.id2].requestProductTypeId = server_data.data.payload?.id;
                                     if (ctrl.request.locations[server_data.id].products[server_data.id2].productType.name.includes('VLSFO')) {
                                         ctrl.request.locations[server_data.id].products[server_data.id2].isPretestRequired = true;
                                     }
@@ -805,12 +801,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 // ctrl.request.locations[j].products[i].product.name = ctrl.request.locations[j].products[i].requestIndex + ' - ' + ctrl.request.locations[j].products[i].product.name;
                                 if (ctrl.request.locations[j].products[i].productTypeId) {
                                     ctrl.request.locations[j].products[i].productType = ctrl.getProductTypeObjById(ctrl.request.locations[j].products[i].productTypeId);
-                                    ctrl.request.locations[j].products[i].requestProductTypeId = ctrl.request.locations[j].products[i].productTypeId;
                                     $scope.productTypesLoadedPerLocation.loadedProducts += 1;
                                 } else {
                                     listsModel.getProductTypeByProduct(ctrl.request.locations[j].products[i].product.id, j, i).then((server_data) => {
                                         ctrl.request.locations[server_data.id].products[server_data.id2].productType = server_data.data.payload;
-                                        ctrl.request.locations[server_data.id].products[server_data.id2].requestProductTypeId = server_data.data.payload?.id;
                                         $scope.productTypesLoadedPerLocation.loadedProducts += 1;
                                     });
                                 }
@@ -1513,7 +1507,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             newProduct.defaultProduct = angular.copy(product);
             newProduct.screenActions = [];
             newProduct.productType = angular.copy(ctrl.getProductTypeObjById(productTypeId));
-            newProduct.requestProductTypeId = productTypeId;
             if(newProduct.productType != null && newProduct.productType.name != null){
                 if(newProduct.productType.name.includes('VLSFO')){
                     newProduct.isPretestRequired = true;
@@ -1586,7 +1579,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.getProductType = function(product) {
             listsModel.getProductTypeByProduct(product.id).then((server_data) => {
                 product.productType = server_data.data.payload;
-                product.requestProductTypeId = server_data.data.payload?.id;
             });
         };
         ctrl.getScreenActionByName = function(name) {
@@ -2868,7 +2860,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
                 listsModel.getProductTypeByProduct(server_data.payload.id).then((server_data1) => {
                     ctrl.request.locations[locIdx].products[productKey].productType = server_data1.data.payload;
-                    ctrl.request.locations[locIdx].products[productKey].requestProductTypeId = server_data1.data.payload?.id;
                     if(ctrl.request.locations[locIdx].products[productKey].product != undefined && ctrl.request.locations[locIdx].products[productKey].product.productType != undefined){
                         if(ctrl.request.locations[locIdx].products[productKey].product.productType.name != undefined && ctrl.request.locations[locIdx].products[productKey].product.productType.name != '')
                         {
