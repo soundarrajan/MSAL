@@ -470,7 +470,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         additionalCost
       ).id;
     }
-
+    additionalCost.isAllowingNegativeAmmount = this.additionalCostList.find(ac => ac.id == additionalCost.additionalCostId)?.isAllowingNegativeAmmount;
     if (!skipDefaultPriceUom) {
       if (additionalCost.costTypeId != 2) {
         additionalCost.priceUomId = null;
@@ -1158,16 +1158,45 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       }
     }
   }
-
-  // Only Number
-  keyPressNumber(event) {
-    const inp = String.fromCharCode(event.keyCode);
-    if (inp == '.' || inp == ',') {
-      return true;
-    }
-    if (/^[-,+]*\d{1,6}(,\d{3})*(\.\d*)?$/.test(inp)) {
+  validateNumber(offerAdditionalCost){
+    if (offerAdditionalCost.price && offerAdditionalCost.price.match(/^[-,.]?\d{1,6}(,\d{3})*(\.\d*)?$/)) {
       return true;
     } else {
+      this.toastr.warning('Please enter the valid number')
+      return false;
+    }
+  }
+  // Only Number
+  OfferPricekeyPressNumber(event, offerAdditionalCost) {
+    const typedChar = String.fromCharCode(event.keyCode);
+    if (typedChar == '.' || typedChar == ',') {
+      return true;
+    }
+    if (offerAdditionalCost.isAllowingNegativeAmmount && typedChar == "-" && (event.target.value == "" || !event.target.value.match(/^-/))) {
+      return;
+    } 
+    else if (typedChar == "-"){
+      event.preventDefault();
+      return false;
+    }
+    if (offerAdditionalCost.isAllowingNegativeAmmount && /^[-,.]?\d{1,6}(,\d{3})*(\.\d*)?$/.test(typedChar)) {
+      return true;
+    } else if (!offerAdditionalCost.isAllowingNegativeAmmount && /\d{1,6}(,\d{3})*(\.\d*)?$/.test(typedChar)) {
+      return true;
+    }else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  keyPressNumber(event) {
+    const typedChar = String.fromCharCode(event.keyCode);
+    if (typedChar == '.' || typedChar == ',') {
+      return true;
+    }
+    if (/\d{1,6}(,\d{3})*(\.\d*)?$/.test(typedChar)) {
+      return true;
+    }else {
       event.preventDefault();
       return false;
     }
@@ -1186,8 +1215,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       }
       if(this.offerAdditionalCostList[index].price != null)
         this.offerAdditionalCostList[index].price.toString().replace(/,/g, '');
+      }
     }
-  }
 
   getRequestsList() {
     if (this.requestList && this.currentRequestInfo) {
