@@ -603,7 +603,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
     >
       <span *ngIf="params.value">{{ format.amount(params.value) }} </span>
       <span *ngIf="!params.value">-</span>
-      <div class="dollarButton" *ngIf="params.data.totalCost"></div>
+      <div class="dollarButton" *ngIf="params.data.hasAdditionalCost"></div>
     </div>
     <mat-menu #addAdditionalCostMenuPopUp="matMenu" class="darkPanel-add big">
       <div class="add-block" (click)="additionalcostpopup()">
