@@ -1476,6 +1476,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         }
 
         $scope.$on('filters-applied', function (event, payload, isBreadcrumbFilter, productTypeView) {
+            debugger
             if (!timeline) {
                 return;
             }

@@ -28,7 +28,135 @@
                 <span class="caption-subject">
                     Show rows that match
                 </span>
-                <span ng-if="!globalFilters || globalFilters.length == 0">{{initGlobalFilters()}}</span>
+                <span ng-if="!precedenceFilters || precedenceFilters.length == 0 ">{{initGlobalFilters((!precedenceFilters || precedenceFilters.length == 0),(!globalFilters || globalFilters.length == 0))}}</span>
+                <div class="row" ng-repeat="(key, value) in precedenceFilters">
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <!-- parameter -->
+                            <div class="col-sm-4">
+                                <div class="form_input">
+                                   <select tabindex="-1" ng-model="precedenceFilters[key].column" class="form-control bs-select" name="rule_precedence_{{ key }}_parameter" id="rule_precedence_{{ key }}_parameter" ng-options="item as item.columnName for item in precedenceColumns track by item.columnValue" required ng-change="(value.column.columnRoute == 'schedule-dashboard-calendar' && value.column.columnName == 'Port Status') ? clearCurrentLine(key,'column') : return;" ></select>
+                                    <div class="hidden">
+                                        {{value.column.columnName == 'Port Status' ? precedenceFilters[key].condition.conditionValue = '=' : ''}}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- condition -->
+                            <div class="col-sm-4">
+                                <div class="form_input">
+                                    <span class="hidden">
+                                    {{precedenceFilters[key].column.columnType == 'Quantity' || 
+                                    precedenceFilters[key].column.columnType == 'Price' || 
+                                    precedenceFilters[key].column.columnType == 'Amount' 
+                                    ? renderColumnType = 'Number' 
+                                    : renderColumnType = precedenceFilters[key].column.columnType}}
+                                    </span>
+                                    <select tabindex="-1" ng-model="precedenceFilters[key].condition" class="form-control bs-select" name="rule_precedence_{{ key }}_condition" id="rule_precedence_{{ key }}_condition" ng-options="item as item.conditionName for item in (conditions | filter:{conditionApplicable:renderColumnType}) track by item.conditionValue " ng-disabled="!precedenceFilters[key].column || value.column.columnName == 'Port Status'" required ng-change="clearCurrentLine(key,'condition');"></select>
+                                </div>
+                            </div>
+                           <!-- value -->
+                            <div ng-class="precedenceFilters[key].column.columnType == 'Date' ? 'col-sm-12' : 'col-sm-4'">
+                                <div class="form_input">
+                                    <span ng-switch="precedenceFilters[key].condition.conditionNrOfValues">
+                                        <span ng-switch-when="2">
+                                            <div class="form_group no-label" ng-if="precedenceFilters[key].column.columnType != 'Date'">
+                                                <div class="between">
+                                                    <input  tabindex="-1" autocomplete="off" type="text" id="filter{{ key }}_{{ precedenceFilters[key].column.columnType }}0" class="form-control " ng-model="precedenceFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required format="{{precedenceFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}">
+                                                </div>
+                                                <div class="between">
+                                                    <input tabindex="-1" autocomplete="off" type="text" id="filter{{ key }}_{{ precedenceFilters[key].column.columnType }}1" class="form-control" ng-model="precedenceFilters[key].value[1]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required format="{{precedenceFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}">
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form_group no-label" ng-if="precedenceFilters[key].column.columnType == 'Date'">
+                                                <div class="between" class="date-picker input-group pull=left" style="margin: 15px; position: relative; margin-left: 0;  padding-left: 0;">
+                                                    <input tabindex="-1"
+                                                        ng-model="precedenceFilters[key].value[0]" 
+                                                        name="{{ 'precedenceFilters' + key }}_0"
+                                                        id="{{ 'precedenceFilters' + key }}_0"
+                                                        new-date-picker                                                       
+                                                        picker-type="date"
+                                                        class="form-control date-mask new-date-picker">
+                                                </div>
+
+
+                                                <div class="between" class="date-picker input-group pull=left" style="margin: 15px; position: relative; margin-left: 0; ">
+                                                    <input tabindex="-1"
+                                                        ng-model="precedenceFilters[key].value[1]" 
+                                                        name="{{ 'precedenceFilters' + key }}_1"
+                                                        id="{{ 'precedenceFilters' + key }}_1"
+                                                        new-date-picker                                                       
+                                                        picker-type="date"
+                                                        class="form-control date-mask new-date-picker">
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <span ng-switch-when="1">
+                                            <div class="form_input no-label">
+                                                <div ng-if="precedenceFilters[key].column.columnType != 'Date'">
+
+                                                    <input tabindex="-1" type="text" id="filter{{ key }}_{{ precedenceFilters[key].column.columnType }}0" class="form-control" ng-model="precedenceFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  />
+                                                </div>
+
+                                                <div ng-if="precedenceFilters[key].column.columnType == 'Date'" class="input-group" style="margin: 15px; margin-left: 0;  padding-left: 0;">
+                                                    <input tabindex="-1"
+                                                        ng-model="precedenceFilters[key].value[0]" 
+                                                        name="{{ 'precedenceFilters' + key }}_0"
+                                                        id="{{ 'precedenceFilters' + key }}_0"
+                                                        new-date-picker
+                                                        picker-type="date"                                                       
+                                                        class="form-control date-mask new-date-picker">
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <span ng-switch-default>
+                                                <div ng-show="value.column.columnName == 'Port Status'">
+                                                    <input tabindex="-1" type="text" id="filter{{ key }}_{{ precedenceFilters[key].column.columnType }}0" class="form-control" ng-model="precedenceFilters[key].value[0]" name="condition_value_{{ key }}" id="condition_value_{{ key }}" required  format="{{precedenceFilters[key].column.columnType == 'Number' ? 'number:3' : ''}}" />
+                                            </div>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <span ng-if="!$first || $first && precedenceFilters.length > 1" class=""  ng-click="precedenceFilters.splice(key, 1)">
+                            <a  tabindex="-1"  class=" btn default">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                        </span>
+                        <span class=""  ng-click="precedenceFilters.push({})">
+                            <a tabindex="-1"  class=" btn default">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="col-sm-12">
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="page-quick-sidebar-chat-user-messages">
+            <div class="right-menu-title"></div>
+            <div class="filters_top row">
+                <div class="left col-md-6">
+                    <span class="caption-subject">
+                        Filter by:
+                    </span>
+                </div>
+
+
+            </div>
+            <div class="right-menu-content">
+                <span class="caption-subject">
+                    Show rows that match
+                </span>
+                <span ng-if="!globalFilters || globalFilters.length == 0">{{initGlobalFilters((!precedenceFilters || precedenceFilters.length == 0 ),(!globalFilters || globalFilters.length == 0))}}</span>
                 <div class="row" ng-repeat="(key, value) in globalFilters">
                     <div class="col-sm-10">
                         <div class="row">
@@ -157,7 +285,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12 filters_configuration" ng-if="globalFilters[0].condition">
+    <div class="col-md-12 filters_configuration" ng-if="globalFilters[0].condition || precedenceFilters[0].condition">
         <div class="footer_action">
             <div class="configuration_actions">
                 <span>Configuration Actions</span>
