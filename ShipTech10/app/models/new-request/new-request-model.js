@@ -373,7 +373,17 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
                 return data;
             });
         }
-
+        /**
+         * Create a request & send Questionnaire 
+         * @param {Integer} data - vesseldetails Id
+         * @returns {object} pre-populated request objects.
+         */
+         function sendQuestionnaire(data) {
+            var request_data = payloadDataModel.create(data);
+            return newRequestResource.sendQuestionnaire(request_data).$promise.then((data) => {
+                return new newRequestModel(data);
+            });
+        }
         function getBunkerPlansForVesselVoyageDetailId(data) {
             request_data = payloadDataModel.create(data);
             return newRequestResource.getBunkerPlansForVesselVoyageDetailId(request_data).$promise.then((data) => {
@@ -409,7 +419,8 @@ angular.module('shiptech.models').factory('newRequestModel', [ 'newRequestResour
             omitOffer: omitOffer,
             getRequestStatusesOrdered: getRequestStatusesOrdered,
             getBunkerPlansForVesselVoyageDetailId: getBunkerPlansForVesselVoyageDetailId,
-            questionnaireStatus: questionnaireStatus
+            questionnaireStatus: questionnaireStatus,
+            sendQuestionnaire: sendQuestionnaire
         };
     }
 ]);

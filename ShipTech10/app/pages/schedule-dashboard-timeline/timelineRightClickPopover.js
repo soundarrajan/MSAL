@@ -1,6 +1,6 @@
 angular.module('shiptech.components')
-    .controller('timelineRightClickPopover', [ '$scope', '$rootScope', '$filter', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings', 'API', '$http', '$listsCache', 'statusColors',
-        function($scope, $rootScope, $filter, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings, API, $http, $listsCache, statusColors) {
+    .controller('timelineRightClickPopover', [ '$scope', '$rootScope', '$filter', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings', 'API', '$http', '$listsCache', 'statusColors','screenLoader','newRequestModel',
+        function($scope, $rootScope, $filter, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings, API, $http, $listsCache, statusColors,screenLoader,newRequestModel) {
 	        let ctrl = this;
 	        $scope.tenantSettings = $tenantSettings;
 
@@ -648,6 +648,19 @@ angular.module('shiptech.components')
             ctrl.removePopup = function() {
                 $("schedule-dashboard-timeline .contextmenu").remove();
                 $('timeline-right-click-popover').hide();
+            }
+            ctrl.sendQuestionnaires =function(voyageId){
+                screenLoader.showLoader();
+                newRequestModel.sendQuestionnaire(voyageId).then((newRequestData) => {
+                    ctrl.request = newRequestData.payload;
+                    var win = window.open("/#/edit-request/" + ctrl.request.id, '_blank');
+                    win.focus();
+                }, () => {
+                }).finally(() => {
+                    setTimeout(() => {
+                        screenLoader.hideLoader();
+                    }, 1500);
+                });;
             }
         }
 

@@ -202,6 +202,12 @@ angular.module('shiptech.models').factory('newRequestResource', [ '$resource', '
             params: {
                 verb: 'questionnaireStatus'
             }
+        },
+        sendQuestionnaire: {
+            method: 'POST',
+            params: {
+                verb: 'sendQuestionnaire'
+            }
         }
     });
 } ]).factory('newRequestResourceMasters', [ '$resource', 'resourceInterceptor', 'API', function($resource, resourceInterceptor, API) {

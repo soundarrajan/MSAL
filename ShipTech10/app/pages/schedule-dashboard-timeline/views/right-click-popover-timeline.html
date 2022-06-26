@@ -91,13 +91,17 @@
 						</span>
 					</div>
 					<div class="action-btn-container">
+						<span class="sendQuesBtn" ng-click="$ctrl.sendQuestionnaires(voyage)" >
+							<a class="action-btn" style="margin-right: 15px; color: #333333;">Questionnaire</a> 
+							<i class="send-questionnaires"></i>
+						</span>
 						<span ng-if="$ctrl.canAddToContractPlanning(voyage) && !tenantSettings.shiptechLite && $ctrl.checkProductTypeView($ctrl.productTypeView)">
-							<i class="contract-planning"></i>
-							<a class="action-btn" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;">Contract Planning  </a> 
+						
+							<a class="action-btn" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;">Contract Planning <i class="contract-planning"></i>  </a> 
 						</span>
 						<span>
-							<i class="contract-planning"></i> 
-							<a class="action-btn" href="#/new-request/{{voyage}}/{{$ctrl.productTypeView.id}}" target="_blank"> Create Request</a>
+							<a class="action-btn" href="#/new-request/{{voyage}}/{{$ctrl.productTypeView.id}}" target="_blank">Create Request 	<i class="contract-planning"></i> </a>
+						
 						</span>
 					</div>
 				</div>
