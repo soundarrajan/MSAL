@@ -127,9 +127,9 @@ angular.module('shiptech.components').controller('FiltersController', [
         });
 
         $scope.applyFilters = function(data, noSlide, fromcol, column, defaultConf) {
-            if($scope.currentList === 'schedule-dashboard-calendar'){
-                if($scope.precedenceFilters && $scope.precedenceFilters.find(x=>x !== '$$hashKey')){
-                    if(data && data.find(x=>x !== '$$hashKey') && !data.clear){
+            if($scope.currentList === 'schedule-dashboard-calendar' || $scope.currentList === 'schedule-dashboard-table'){
+                if($scope.precedenceFilters && Object.keys($scope.precedenceFilters).length > 0){
+                    if(data && Object.keys(data).length > 0 && !data.clear){
                         data = $scope.precedenceFilters.concat(data);
                     }
                     else{
@@ -138,7 +138,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                 }
             }
             // $scope.currentList = $state.current.url.replace(":screen_id", $state.params.screen_id).replace("/", "");
-
+            $rootScope.rawFilters=[];
             if (typeof $rootScope.lastFilterApplied == 'undefined') {
             	$rootScope.lastFilterApplied = 0;
             }
@@ -515,7 +515,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     }
                 }
                 
-                if (($state.current.name == 'default.home' || $state.current.name == 'default.dashboard-timeline') && (val.columnValue == 'BuyerName' || val.columnValue == 'ServiceBuyerName')){
+                if (($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' ||  $state.current.name == 'default.schedule-dashboard-table' || $state.current.name == 'default.dashboard-table') && (val.columnValue == 'BuyerName' || val.columnValue == 'ServiceBuyerName')){
                     // check in current columns
                     $.each($scope.precedenceColumns, (key2, val2) => {
                         if (val2.columnValue == val.columnValue) {
@@ -540,14 +540,16 @@ angular.module('shiptech.components').controller('FiltersController', [
                     newFilter.value.push(val2);
                 });
 
-                if (newFilter && newFilter.column && newFilter.column.columnRoute  == 'schedule-dashboard-calendar' && (newFilter.column.columnValue == 'BuyerName' || newFilter.column.columnValue == 'ServiceBuyerName')) {
+                if (newFilter && newFilter.column && (newFilter.column.columnRoute  == 'schedule-dashboard-calendar' || newFilter.column.columnRoute  == 'schedule-dashboard-table')
+                    && (newFilter.column.columnValue == 'BuyerName' || newFilter.column.columnValue == 'ServiceBuyerName')) {
                     $scope.precedenceFilters.push(newFilter);   
                 }
                 else{
                     $scope.globalFilters.push(newFilter);
                 }
 
-                if (newFilter && newFilter.column && newFilter.column.columnRoute === 'schedule-dashboard-calendar' && newFilter.column.columnName == 'Port Status') {
+                if (newFilter && newFilter.column && (newFilter.column.columnRoute === 'schedule-dashboard-calendar' || newFilter.column.columnRoute  == 'schedule-dashboard-table')
+                     && newFilter.column.columnName == 'Port Status') {
                     $rootScope.activeBreadcrumbFilters = newFilter.value[0];
                     // $rootScope.$broadcast(CUSTOM_EVENTS.BREADCRUMB_FILTER_STATUS, newFilter.value[0], 0);
                 }
@@ -660,7 +662,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                         if(val.filterOperator) {
                             filter.FilterOperator = val.filterOperator;
                         }
-                        else if (val.column.columnRoute  == 'schedule-dashboard-calendar' && (val.column.columnValue == 'BuyerName' || val.column.columnValue == 'ServiceBuyerName')) {
+                        else if ((val.column.columnRoute  == 'schedule-dashboard-calendar' || val.column.columnRoute  == 'schedule-dashboard-table') && (val.column.columnValue == 'BuyerName' || val.column.columnValue == 'ServiceBuyerName')) {
                             filter.FilterOperator = 2;   
                         }
                         else if(key === 0) {
@@ -763,7 +765,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                         }
                     }
 
-                    if (value.columnRoute  == 'schedule-dashboard-calendar' && (value.columnValue == 'BuyerName' || value.columnValue == 'ServiceBuyerName')) {
+                    if ((value.columnRoute  == 'schedule-dashboard-calendar' || value.columnRoute  == 'schedule-dashboard-table') && (value.columnValue == 'BuyerName' || value.columnValue == 'ServiceBuyerName')) {
                         $scope.precedenceColumns.push(value);    
                     }
                     else{
