@@ -8,6 +8,6 @@
   "exclude": ["**/*.spec.ts"],
   "angularCompilerOptions": {
     //"enableIvy": false
-    "compilationMode": "partial"
+    "compilationMode": "full"
   }
 }
