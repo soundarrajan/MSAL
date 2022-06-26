@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import {
   animate,
   state,
@@ -7,9 +7,10 @@ import {
   trigger
 } from '@angular/animations';
 import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
-import { SidebarComponent } from '../sidebar.component';
+//import { SidebarComponent } from '../sidebar.component';
 import { MenuItem } from 'primeng/api';
 import { AppConfig } from '@shiptech/core/config/app-config';
+import { ScrollPanel } from 'primeng/scrollpanel';
 
 @Component({
   /* tslint:disable:component-selector */
@@ -62,6 +63,9 @@ export class AppSubMenuComponent {
 
   @Input() visible: boolean;
 
+  @ViewChild('layoutMenuScroller', { static: true })
+  layoutMenuScrollerViewChild: ScrollPanel;
+
   _parentActive: boolean;
 
   _reset: boolean;
@@ -70,7 +74,6 @@ export class AppSubMenuComponent {
 
   constructor(
     public app: LayoutMainComponent,
-    public appMenu: SidebarComponent,
     public appConfig: AppConfig
   ) {}
 
@@ -96,7 +99,8 @@ export class AppSubMenuComponent {
     // prevent hash change
     if (item.items || (!item.url && !item.routerLink)) {
       setTimeout(() => {
-        this.appMenu.layoutMenuScrollerViewChild.moveBar();
+        //this.appMenu.layoutMenuScrollerViewChild.moveBar();
+        this.layoutMenuScrollerViewChild.moveBar();
       }, 450);
       event.preventDefault();
     }

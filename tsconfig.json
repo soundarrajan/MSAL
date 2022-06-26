@@ -47,6 +47,6 @@
     "fullTemplateTypeCheck": true,
     "disableTypeScriptVersionCheck": true,
     //"enableIvy": false
-    "compilationMode": "partial"
+    "compilationMode": "full"
   }
 }
