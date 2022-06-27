@@ -1860,7 +1860,7 @@
                                     </td>
                                     <td>
                                         <input class="form-control"
-                                            format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
+                                            format="number:{{ $ctrl.numberPrecision.pricePrecision }}:false:true"
                                             id="additional_cost_extras_{{ $index }}" max="100"
                                             ng-disabled="((additionalCost.costType.name == 'Range' || additionalCost.costType.name == 'Total' || additionalCost.locationAdditionalCostId > 0) ||
                                                 $ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)) || additionalCost.isContract"
@@ -1919,7 +1919,7 @@
 
 
                                             <input class="form-control" disabled
-                                                format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
+                                                format="number:{{ $ctrl.numberPrecision.pricePrecision }}:false:true"
                                                 ng-model="additionalCost.rate" readonly />
                                             <div class="input-group-btn">
                                                 <button aria-expanded="false" aria-haspopup="true"
