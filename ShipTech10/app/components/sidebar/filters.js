@@ -128,8 +128,8 @@ angular.module('shiptech.components').controller('FiltersController', [
 
         $scope.applyFilters = function(data, noSlide, fromcol, column, defaultConf) {
             if($scope.currentList === 'schedule-dashboard-calendar' || $scope.currentList === 'schedule-dashboard-table'){
-                if($scope.precedenceFilters && Object.keys($scope.precedenceFilters).length > 0){
-                    if(data && Object.keys(data).length > 0 && !data.clear){
+                if($scope.precedenceFilters && $scope.precedenceFilters.find(x=>x.column != null)){
+                    if(data && data.find(x=>x.column !=null) && !data.clear){
                         data = $scope.precedenceFilters.concat(data);
                     }
                     else{
