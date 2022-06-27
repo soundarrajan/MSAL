@@ -2341,7 +2341,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     } else if (vessel.voyages.length > 0) {
                             if (vessel.voyages[0].voyageDetails) {
                                 if (vessel.voyages[0].voyageDetails[0].company) {
-                                    companyToDefault = vessel.voyages[0].voyageDetails[0].company.Name;
+                                    companyToDefault = vessel.voyages[0].voyageDetails[0].company;
                                 }
                             }
                         }
