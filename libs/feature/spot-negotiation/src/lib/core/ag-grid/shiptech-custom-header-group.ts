@@ -265,7 +265,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
           </div>
           <div class="label-element dashed">
           <div class="title" matTooltipClass="lightTooltip" matTooltip="Manual Live Pricing">Manual Live price</div>
-            $<input matTooltipClass="lightTooltip" matTooltip="{{ livePrice != undefined ? '$'+livePrice : '$--'}}"
+              $<input matTooltipClass="lightTooltip" matTooltip="{{ livePrice != undefined ? '$'+livePrice : '$--'}}"
               class="value"
               
               contenteditable="true"
@@ -280,7 +280,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
           <div class="label-element green">
           <div class="title"  matTooltipClass="lightTooltip" matTooltip="Target">Target</div>
              <div
-              class="value" matTooltip="{{(targetValue  != null && targetValue  != 0) ? '$'+targetValue : ((targetValue  == 0)? '$0' : '$--' )}}"
+             class="value" matTooltip="{{(targetValue  != null && targetValue  != 0) ? '$'+targetValue : ((targetValue  == 0)? '$0' : '$--' )}}"
               matTooltipClass="lightTooltip"
               contenteditable="false"
               (keydown)="editQty($event)"
@@ -502,7 +502,7 @@ export class ShiptechCustomHeaderGroup {
             updatedProdLivePrice.requestGroupProducts.livePrice,
             'livePrice'
           );
-          this.livePrice = this.tenantService.liveformat(formattedLivePrice);
+          this.livePrice = this.tenantService.FormatPriceTrailingZero(formattedLivePrice,'livePrice');
           this.targetValue =
             updatedProdLivePrice.requestGroupProducts.targetPrice;
           this.closureValue =
@@ -776,7 +776,7 @@ export class ShiptechCustomHeaderGroup {
     this.spinner.show();
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     this.livePrice = this.tenantService.FormatPriceTrailingZero(this.livePrice, 'livePrice');
-    this.livePrice =
+     this.livePrice =
       this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice;
     this.benchMark =
       this.benchMark == null || this.benchMark == '--' ? 0 : this.benchMark;
