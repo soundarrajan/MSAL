@@ -2173,7 +2173,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     this.formValues.backOfficeComments =
       this.formValues.backOfficeComments?.trim() == ''
         ? null
-        : this.formValues.backOfficeComments;
+        : this.format.htmlDecode(this.formValues.backOfficeComments);
     if (
       this.formValues.paymentDetails != undefined &&
       this.formValues.paymentDetails != null
