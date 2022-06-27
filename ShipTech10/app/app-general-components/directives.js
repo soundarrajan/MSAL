@@ -2379,10 +2379,12 @@ Number(function() {
                         return;
                     }                  
                     ctrl.$formatters.unshift((a) => {
-                        var filter, fraction;
+                        var filter, fraction,mustChangeModel,trailRemove;
                         if (attrs.format.split(':')[1]) {
                             filter = attrs.format.split(':')[0];
                             fraction = attrs.format.split(':')[1];
+                            mustChangeModel = attrs.format.split(':')[2];
+                            trailRemove = attrs.format.split(':')[3];
                         } else {
                             filter = attrs.format;
                             fraction = 3;
@@ -2417,16 +2419,32 @@ Number(function() {
                                 console.error(error);
                                  
                             }
+                        }    
+                        if(mustChangeModel == 'true') {
+                            ctrl.$setViewValue(elem.val());
+                        }                   
+                        if(trailRemove == 'true')
+                        {
+                            var numval = returnData.split('.');
+                        if(numval.length > 0){
+                            var temp = parseFloat(0+'.'+numval[1]);
+                            if(temp > 0){
+                                returnData = numval[0]+temp.toString().substring(1);
+                            }else{
+                                returnData = numval[0];
+                            }
                         }
+                        } 
                         return returnData;
                         elem.unbind();
                     });
                     ctrl.$parsers.unshift((viewValue) => {
-                        var filter, fraction, mustChangeModel;
+                        var filter, fraction, mustChangeModel,trailRemove;
                         if (attrs.format.split(':')[1]) {
                             filter = attrs.format.split(':')[0];
                             fraction = attrs.format.split(':')[1];
                             mustChangeModel = attrs.format.split(':')[2];
+                            trailRemove = attrs.format.split(':')[3];
                         } else {
                             filter = attrs.format;
                             fraction = 3;
@@ -2452,6 +2470,18 @@ Number(function() {
                             }
                             if(mustChangeModel == 'true') {
                                 ctrl.$setViewValue(elem.val());
+                            }
+                            if(trailRemove == 'true')
+                            {
+                                var numval = viewValue.split('.');
+                                if(numval.length > 0){
+                                    var temp = parseFloat(0+'.'+numval[1]);
+                                    if(temp > 0){
+                                        viewValue = numval[0]+temp.toString().substring(1);
+                                    }else{
+                                        viewValue = numval[0];
+                                    }
+                                }
                             }
                         });
                         return viewValue;

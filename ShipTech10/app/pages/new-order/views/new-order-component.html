@@ -1358,7 +1358,7 @@
                                     <td style="max-width: 200px;min-width: 200px">
                                         <div class="input-group">
                                             <!-- price -->
-                                            <input class="form-control" format="number:{{ product.pricePrecision }}"
+                                            <input class="form-control" format="number:{{ product.pricePrecision }}:false:true"  
                                                    id="product_price_{{ $index }}"
                                                    name="{{ $ctrl.productColumns.price.name }}"
                                                    ng-change="$ctrl.productPriceChanged(product)"
@@ -1366,7 +1366,9 @@
                                                    ng-disabled="product.formula.id || product.contract.id || $ctrl.disabledProduct[product.id]"
                                                    ng-model="product.originalPrice"
                                                    ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id && !(product.contractProductId != null  || product.agreementType.name.toLowerCase() == 'contract' || product.pricingType.id == 1 || $ctrl.disabledProduct[product.id])"
-                                                   style="min-width:80px" type="text" />
+                                                   style="min-width:80px" type="text" 
+                                                   
+                                                   />
 
 
                                             <!-- price uom -->
@@ -1766,7 +1768,7 @@
 
                                             <!--  cost value -->
                                             <input class="form-control"
-                                                format="number:{{ $ctrl.numberPrecision.pricePrecision }}"
+                                                format="number:{{ $ctrl.numberPrecision.pricePrecision }}:false:true"
                                                 id="additional_cost_price_{{ $index }}"
                                                 name="{{ $ctrl.additionalCostColumns.Price.name }}_{{ $index }}"
                                                 ng-blur="$ctrl.validateAdditionalCostAllowNegative(additionalCost.price,additionalCost.additionalCost.allowNegative, $index, additionalCost.additionalCost, additionalCost.additionalCostList); $ctrl.additionalCostRowPriceChanged(additionalCost, 'input');"
