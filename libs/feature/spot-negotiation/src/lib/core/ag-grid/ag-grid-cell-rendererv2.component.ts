@@ -1368,19 +1368,19 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.store.selectSnapshot<any>((state: any) => {
       this.locationRowsAcrossRequest = state.spotNegotiation.locationsRows;
     });
-    // let locRow = this.store.selectSnapshot<any>((state: any) => {
-    //   return state.spotNegotiation.locationsRows?.find(lr => lr.id == params.data.id);
-    // });
-    let sameSellerData = this.locationRowsAcrossRequest.filter(
-      s =>
-        s.sellerCounterpartyId == params.data.sellerCounterpartyId 
-    );
-    let sellerData = sameSellerData.length>0 ? sameSellerData : this.locationRowsAcrossRequest.filter(
-      s =>
-        s.sellerCounterpartyId == params.data.sellerCounterpartyId && 
-        s.requestId == params.data.requestId
-    );
+    let locRow = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows?.find(lr => lr.id == params.data.id);
+    });
 
+    let sameSellerData= this.locationRowsAcrossRequest.filter(
+      s =>
+        s.sellerCounterpartyId == locRow.sellerCounterpartyId 
+    );
+    let sellerData = sameSellerData.length>0?sameSellerData:this.locationRowsAcrossRequest.filter(
+      s =>
+        s.sellerCounterpartyId ==locRow.sellerCounterpartyId && 
+        s.requestId == locRow.requestId
+    );;
     // let products = this.currentRequestInfo.requestLocations.filter(loc => this.locationRowsAcrossRequest.some(s => s.sellerCounterpartyId == locRow.sellerCounterpartyId && s.requestId == locRow.requestId && s.requestLocationId ==  loc.id)).map(prod =>
     //   prod.requestProducts.map((e, i) => locRow['checkProd' + (i + 1)] ? e.id : undefined).filter(x => x)
     // )
