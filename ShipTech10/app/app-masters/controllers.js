@@ -3696,10 +3696,9 @@
                 }
             }
             
-            if (field.Unique_ID == 'locationProductTypes') { // #39629 - Work around can be "masterSource:MinimalProductTypes" -> A new enum may need to be introduced
-                let locationProductTypeIds = [1, 4, 5, 27, 28]; // (Id, Name). [(1, HSFO), (4, VLSFO), (5, ULSFO), (27, Distillate HS), (28, Distillate LS)]
+            if (field.Unique_ID == 'locationProductTypes') { // #39629
                 for (let i = $scope.options.locationProductTypes.length - 1; i >= 0; i--) {
-                    if (!locationProductTypeIds.includes($scope.options.locationProductTypes[i].id)) {
+                    if (!$scope.options.locationProductTypes[i].isMOTLocationProductType) {
                         $scope.options.locationProductTypes.splice(i, 1);
                     }
                 }

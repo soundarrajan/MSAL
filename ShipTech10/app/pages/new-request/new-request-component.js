@@ -5091,11 +5091,34 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             fieldChanged = false;
                         }
                     } else {
-                        if (ctrl.request.locations[locationIndex].products[productIndex][modelProperty] == ctrl.getRequestinitialSnapshot.locations[locationIndex].products[productIndex][modelProperty]) {
-                            ctrl.request.locations[locationIndex].products[productIndex].tempReasons[changedFieldName] = null;
-                            ctrl.captureReasonModalData = null;
-                            fieldChanged = false;
+                        let storedMTRArray = ctrl.getRequestinitialSnapshot.locations[locationIndex].products[productIndex][modelProperty];
+                        let currentMTRArray = ctrl.request.locations[locationIndex].products[productIndex][modelProperty];
+                        if (storedMTRArray && currentMTRArray) {
+                            if (storedMTRArray.length != currentMTRArray.length) {
+                                return fieldChanged;
+                            }
+                            for (const storedMTRArrayElem of storedMTRArray) {
+                                let currentMTRArrayElem = currentMTRArray.find(c => c.id == storedMTRArrayElem.id);
+                                if (!currentMTRArrayElem) { // One of the object itself changed entirely
+                                    return fieldChanged;
+                                }
+                                if(storedMTRArrayElem.portId != currentMTRArrayElem.portId
+                                    || storedMTRArrayElem.port.id != currentMTRArrayElem.port.id
+                                    || storedMTRArrayElem.eta != currentMTRArrayElem.eta
+                                    || storedMTRArrayElem.minQtyToReach != currentMTRArrayElem.minQtyToReach
+                                    || storedMTRArrayElem.minQtyToReachPretest != currentMTRArrayElem.minQtyToReachPretest
+                                    || storedMTRArrayElem.estimatedPrice != currentMTRArrayElem.estimatedPrice
+                                    || storedMTRArrayElem.isDeleted != currentMTRArrayElem.isDeleted
+                                    ) {
+                                        // One or more of the object's property changed
+                                        return fieldChanged;
+                                }
+                            }
                         }
+                        // There were no changes
+                        ctrl.request.locations[locationIndex].products[productIndex].tempReasons[changedFieldName] = null;
+                        ctrl.captureReasonModalData = null;
+                        fieldChanged = false;
                     }
                 }
             }
