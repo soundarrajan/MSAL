@@ -388,11 +388,12 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
               sellerOffers.requestOffers.forEach(reqOff => {
                 reqOff.cost = 0;
               });
-
+              sellerOffers.hasAdditionalCost = false;
               if (
                 offerAdditionCostsList.length > 0 ||
                 locAdditionCostsList.length > 0
               ) {
+                sellerOffers.hasAdditionalCost = true;
                 sellerOffers = _.cloneDeep(sellerOffers);
                 await this.recalculateLocationAdditionalCosts(
                   locAdditionCostsList,
