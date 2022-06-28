@@ -72,12 +72,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
                   <td mat-cell *matCellDef="let element">
                     <mat-option [value]="element">
                       <mat-checkbox
-                        [value]="element"
+                        [value]="this.tenantService.htmlDecode(element)"
                         (change)="onCounterpartyCheckboxChange($event, element)"
-                        matTooltip="{{ element.name }}"
+                        matTooltip="{{ this.tenantService.htmlDecode(element.name) }}"
                         matTooltipClass="lightTooltip"
                       >
-                        {{ limitStrLength(element.name, 30) }}
+                        {{ limitStrLength(this.tenantService.htmlDecode(element.name), 30) }}
                       </mat-checkbox>
                     </mat-option>
                   </td>
