@@ -1088,7 +1088,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       }
     };
     if (this.formValues.status) {
-      if (this.formValues.status.name != 'Confirmed' && product.id != 0) {
+      if (this.formValues.status.name != 'Confirmed' && this.formValues.status.name != 'Delivered' && product.id != 0) {
         this.modalSpecGroupParametersEditable = true;
         this.canChangeSpec = true;
       }

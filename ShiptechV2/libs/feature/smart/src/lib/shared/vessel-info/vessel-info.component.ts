@@ -806,7 +806,8 @@ export class VesselInfoComponent implements OnInit {
           panelClass: 'confirmation-popup-operator',
           data: {
             message: 'Please wait, a new plan is getting generated for vessel ',
-            id: this.vesselData?.vesselRef?.vesselRef?.vesselCode
+            id: this.vesselData?.vesselRef?.vesselRef?.vesselCode,
+            okayButton: true
           }
           // data: {message : 'Already a request to generate a new plan for this vessel is under process. Please wait'}
         });
@@ -861,7 +862,7 @@ export class VesselInfoComponent implements OnInit {
     .pipe(
       switchMap(() => {
         let req = {
-          vessel_Code: vesseldata.vesselRef.vesselCode,
+          vessel_Code: vesseldata.vesselRef.vesselCode ?? vesseldata.vesselRef.code,
           generate_new_plan: 0, //(genBunkerPlanRef?.import_in_progress==0)? 1: 0,
           import_gsis: 0
         }

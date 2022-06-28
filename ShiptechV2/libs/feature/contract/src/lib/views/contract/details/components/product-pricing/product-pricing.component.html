@@ -296,7 +296,7 @@
           "
           [ngClass]="{
             'search-icon-disabled':
-              formValues.status && formValues.status.name == 'Confirmed'
+              formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
           }"
           appMasterSelectorTrigger
           [masterSelector]="masterSelector1"
