@@ -853,7 +853,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         return e;
       }      
     });
-    debugger;
     this.store.dispatch(new UpdateRequest(expandArray));
   }
   saveAdditionalCosts(
