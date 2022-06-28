@@ -38,12 +38,12 @@
     </div>
   </div> -->
 
-  <div class="labels">
-    <div class="content">
-      <span class="title">Terminal:</span>
-      <span class="text" *ngIf='terminal'>{{ terminal }}</span>
-      <span class="text" *ngIf='!terminal'>--</span>
-    </div>
+  <div class="terminal">
+    <span class="title">Terminal:</span>
+    <!-- <div class="location w-160" style="margin-bottom: 2px;"> -->
+        <span class="terminal-name" *ngIf='terminal'>{{ terminal }}</span>
+        <span class="terminal-name" *ngIf='!terminal'>--</span>
+    <!-- </div> -->
   </div>
 
   <!-- Eta -->
