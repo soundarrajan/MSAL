@@ -3695,6 +3695,15 @@
                     });
                 }
             }
+            
+            if (field.Unique_ID == 'locationProductTypes') { // #39629 - Work around can be "masterSource:MinimalProductTypes" -> A new enum may need to be introduced
+                let locationProductTypeIds = [1, 4, 5, 27, 28]; // (Id, Name). [(1, HSFO), (4, VLSFO), (5, ULSFO), (27, Distillate HS), (28, Distillate LS)]
+                for (let i = $scope.options.locationProductTypes.length - 1; i >= 0; i--) {
+                    if (!locationProductTypeIds.includes($scope.options.locationProductTypes[i].id)) {
+                        $scope.options.locationProductTypes.splice(i, 1);
+                    }
+                }
+            }
         };
         $scope.$watchGroup(
             [ 'formValues.defaultFuelOilProduct', 'formValues.defaultDistillateProduct', 'formValues.defaultLsfoProduct' ],
@@ -10762,7 +10771,7 @@
 
         $scope.initMultilookupsForLocationProducts = () => {
         	$scope.multilookupsForLocationProducts = [
-	        	{"Unique_ID":"locationProductTypes", "Name":"locationProductTypes", "Label":"LOCATION_PRODUCT_TYPES", "Required":false, "masterSource":"MOTProductType", "LastOnRow":true},
+	        	{"Unique_ID":"locationProductTypes", "Name":"locationProductTypes", "Label":"LOCATION_PRODUCT_TYPES", "Required":false, "masterSource":"ProductType", "LastOnRow":true},
 				{"Unique_ID":"locationHSFO35Grades", "Name":"locationHSFO35Grades", "Label":"LOCATION_HSFO_35_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true},
 				{"Unique_ID":"locationHSFO05Grades", "Name":"locationHSFO05Grades", "Label":"LOCATION_VLSFO_05_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}, // Based on #35158, renamed UI label alone.
 				{"Unique_ID":"locationDistillateGrades", "Name":"locationDistillateGrades", "Label":"LOCATION_DISTILLATE_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}
