@@ -40,6 +40,7 @@ import { ConfirmdialogComponent } from '../spot-negotiation-popups/confirmdialog
 import { cloneDeep } from 'lodash';
 import _ from 'lodash';
 import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 @Component({
   selector: 'app-spot-negotiation-header',
   templateUrl: './spot-negotiation-header.component.html',
@@ -97,7 +98,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
-    private renderer: Renderer2,
+    public tenantService: TenantFormattingService,
     public dialog: MatDialog,
     private changeDetector: ChangeDetectorRef,
     private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService
