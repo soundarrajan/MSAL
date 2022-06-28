@@ -965,8 +965,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           { Skip: 0, Take: 25 }
         ).subscribe((res: any) => {
           if (res?.message == 'Unauthorized')return;
-          if (res?.counterpartyListItems?.length > 0) {
-            let SelectedCounterpartyList = cloneDeep(res.counterpartyListItems);
+          if (res?.payload?.length > 0) {
+            let SelectedCounterpartyList = cloneDeep(res.payload);
             this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
           }else{
             this.visibleCounterpartyList = [];
