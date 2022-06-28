@@ -352,9 +352,14 @@
                               'date-valid': !isSupplyDeliveryDateInvalid
                             }"
                             >
-                                <mat-label>Supply Date</mat-label>
+                             <mat-label>Supply Date</mat-label>
                                 <input name="Supply date" 
                                 [(ngModel)]="otherDetailsItems[productIndex].SupplyDeliveryDate"
+                              
+                            (onInput)="onChange($event, 'supplyDeliveryDate')"
+                            (dateChange)="
+                            otherDetailsItems[productIndex].SupplyDeliveryDate = formatDateForBe(otherDetailsItems[productIndex].SupplyDeliveryDate, false)
+                            "
                                 matInput [matDatepicker]="SupplyDeliveryDate" (focus)="SupplyDeliveryDate.open()" autocomplete="off" placeholder="Supply Date">
                                 <mat-datepicker-toggle matSuffix [for]="SupplyDeliveryDate">
                                     <mat-icon matDatepickerToggleIcon class="mini-dateIcon">
