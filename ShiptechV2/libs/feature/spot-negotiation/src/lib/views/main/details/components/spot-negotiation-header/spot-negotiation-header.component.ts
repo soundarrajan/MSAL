@@ -149,9 +149,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             this.counterpartyList.length === 0 &&
             spotNegotiation.counterpartyList
           ) {
-            this.counterpartyList = spotNegotiation.counterpartyList;
+            this.counterpartyList = _.cloneDeep(spotNegotiation.counterpartyList);
+            this.counterpartyList?.forEach(element => {
+              element.name = this.tenantService.htmlDecode(element.name);
+            });
             this.visibleCounterpartyList = _.cloneDeep(
-              this.counterpartyList.slice(0, 7)
+              this.counterpartyList.slice(0, 12)
             );
           }
         }
@@ -353,8 +356,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       counterparties: selectedCounterparties
     };
     this.couterpartyValue = null;
+    this.counterpartyList.forEach(element => {
+      element.name = this.tenantService.htmlDecode(element.name);
+    });
     this.visibleCounterpartyList = _.cloneDeep(
-      this.counterpartyList.slice(0, 7)
+      this.counterpartyList.slice(0, 12)
     );
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
@@ -810,7 +816,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           if (res?.message == 'Unauthorized')return;
           if (res?.counterpartyListItems?.length > 0) {
             let SelectedCounterpartyList = cloneDeep(res.counterpartyListItems);
-            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
+            SelectedCounterpartyList.forEach(element => {
+              element.name = this.tenantService.htmlDecode(element.name);
+            });
+            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 12);
           }else{
             this.visibleCounterpartyList = [];
           }
