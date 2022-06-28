@@ -324,17 +324,7 @@ export class SmartOperatorComponent implements OnInit {
     cellRendererParams: { cellClass: ['cell-ellipsis']},
     },
     { headerName: 'Order Date', headerTooltip: 'Order Date', field: 'orderDate', cellRendererFramework: AGGridCellRendererComponent,
-      cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], filter: 'date', width: 140 },
-    {
-      headerName: 'Order Date',
-      headerTooltip: 'Order Date',
-      field: 'orderDate',
-      cellRendererFramework: AGGridCellRendererComponent,
-      cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] },
-      headerClass: ['aggrid-text-align-c'],
-      cellClass: ['aggrid-content-center'],
-      filter: 'date',
-      width: 140
+      cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] }, headerClass: ['aggrid-text-align-c'], cellClass: ['aggrid-content-center'], filter: 'date', width: 140
     },
     {
       headerName: 'Vessel Name',
@@ -343,11 +333,6 @@ export class SmartOperatorComponent implements OnInit {
       width: 150,
       cellClass: function(params) {
         var classArray: string[] = ['aggridlink aggrid-vertical-center'];
-        // let newClass =
-        //   params.data.severity === '3' ? 'aggrid-left-ribbon mediumred1' :
-        //     (params.data.severity === '2' ? 'aggrid-left-ribbon mediumamber' :
-        //       'aggrid-left-ribbon mediumblue1');
-        // classArray.push(newClass);
         return classArray.length > 0 ? classArray : null;
       },
       cellRendererFramework: AGGridCellDataComponent,
