@@ -34,7 +34,7 @@ export const SpotNegotiationApiPaths = {
   // tenantConfiguration: `api/admin/tenantConfiguration/get`,
   tenantConfiguration: `Groups/getTenantConfiguration`,
   staticLists: `api/infrastructure/static/lists`,
-  counterpartyLists: `counterparty/getCounterpartyList`,
+  counterpartyLists: `api/masters/counterparties/listbyTypes`,
   addCounterparties: `groups/addSellers`,
   addRequesttoGroup: `groups/linkRequest`,
   saveTargetPrice: `Groups/saveTargetPrice`,
@@ -262,8 +262,8 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   getCounterpartyList(payload: any): Observable<any> {
     return this.http
       .post<any>(
-        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.counterpartyLists}`,
-         payload 
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.counterpartyLists}`,
+        { Payload: payload }
       )
       .pipe(
         map((body: any) => body),
