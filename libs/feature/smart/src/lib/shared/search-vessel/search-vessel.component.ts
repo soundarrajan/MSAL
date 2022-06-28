@@ -139,9 +139,6 @@ export class SearchVesselComponent implements OnInit, OnChanges {
       this.displayClose = true;
       this.enableVesselList = false;
       this.toggleFlag = false;
-    } else if (event.keyCode == '13') {
-      //If not on keyboard ENTER keycode
-      this.onVesselSelected(trigger);
     }
   }
 
