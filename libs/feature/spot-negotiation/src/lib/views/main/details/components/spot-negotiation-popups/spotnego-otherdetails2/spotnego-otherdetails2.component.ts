@@ -501,10 +501,15 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     }
   }
 
-  formatDateForBe(value) {
+  formatDateForBe(value, canBeConvertedUTC = true) {
     if (value) {
-      let beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
-      return `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      let beValue;
+      if (canBeConvertedUTC) {
+        beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      } else {
+        beValue = `${moment(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
+      }
+      return beValue;
     } else {
       return null;
     }
