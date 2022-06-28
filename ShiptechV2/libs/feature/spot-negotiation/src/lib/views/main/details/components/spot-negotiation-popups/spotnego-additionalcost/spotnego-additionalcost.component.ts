@@ -15,7 +15,6 @@ import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/se
 import _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { finalize } from 'rxjs/operators';
 import { AdditionalCostViewModel } from '../../../../../../core/models/additional-costs-model';
 
 export const COMPONENT_TYPE_IDS = {
@@ -68,6 +67,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
   duplicateCost: boolean = false;
   copiedAdditionalCost: any[] = [];
   endpointCount: number = 0;
+  isCheckedMain: boolean = true;
 
   constructor(
     public dialogRef: MatDialogRef<SpotnegoAdditionalcostComponent>,
@@ -118,6 +118,26 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     this.getAdditionalCosts();
   }
 
+  checkUncheckAll(event : any, rowNumber: number){
+      if(this.offerAdditionalCostList.length === 0){
+          this.isCheckedMain = false;
+       }
+       this.offerAdditionalCostList.map(req=>(req.isSelected == event.checked ? true: false));
+     if(event.checked == true && rowNumber === -1){
+       this.offerAdditionalCostList.map(x=> x.isSelected = true);
+    }
+     if(event.checked == false && rowNumber === -1){
+      this.isCheckedMain = false;
+       this.offerAdditionalCostList.map(x=> x.isSelected = false);
+     }
+     if(this.offerAdditionalCostList.every(x=> x.isSelected== true)){
+      this.isCheckedMain = true; 
+     }
+     else{
+      this.isCheckedMain = false;
+     }
+  }
+
   getAdditionalCosts() {
     this.spinner.show();
     this.spotNegotiationService
@@ -160,7 +180,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                 } else {
                   this.spinner.hide();
                   this.offerAdditionalCostList = _.cloneDeep(
-                    response.offerAdditionalCosts
+                    response.offerAdditionalCosts.map( resp =>({...resp, isSelected: true}))
                   );
                   this.formatAdditionalCostList(this.offerAdditionalCostList);
                   this.locationAdditionalCostsList = _.cloneDeep(
@@ -170,14 +190,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                   this.formatAdditionalCostList(
                     this.locationAdditionalCostsList
                   );
-                  // this.recalculatePercentAdditionalCosts(
-                  //   this.offerAdditionalCostList,
-                  //   false
-                  // );
-                  // this.recalculatePercentAdditionalCosts(
-                  //   this.locationAdditionalCostsList,
-                  //   true
-                  // );
                   this.calculateAdditionalCost(this.offerAdditionalCostList);
                   this.calculateAdditionalCost(this.locationAdditionalCostsList);
                 }
@@ -433,6 +445,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       offerId: this.offerId,
       requestLocationId: this.rowData.requestLocationId,
       isDeleted: false,
+      isSelected: true,
       id: 0
     } as AdditionalCostViewModel;
     this.offerAdditionalCostList.push(additionalCost);
@@ -446,7 +459,10 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (this.offerAdditionalCostList[key].id) {
       this.offerAdditionalCostList[key].isDeleted = true;
     } else {
-      this.offerAdditionalCostList.splice(key, 1);
+      this.offerAdditionalCostList = this.offerAdditionalCostList.splice(key, 1);
+    }
+    if(this.offerAdditionalCostList.length === 0){
+      this.isCheckedMain = false;
     }
     this.recalculatePercentAdditionalCosts(this.offerAdditionalCostList, false);
     this.enableSave = true;
@@ -844,8 +860,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
 
   checkRequiredFields(): string {
     let additionalCostRequired = [];
-    for (let i = 0; i < this.offerAdditionalCostList.length; i++) {
-      if (!this.offerAdditionalCostList[i].isDeleted) {
+    for (let i = 0, rowLength = this.offerAdditionalCostList.length ; i < rowLength; i++) {
+      if (!this.offerAdditionalCostList[i].isDeleted && this.offerAdditionalCostList[i].isSelected) {
         if (!this.offerAdditionalCostList[i].additionalCostId) {
           additionalCostRequired.push('Cost name is required!');
         }
@@ -875,11 +891,11 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     return additionalCostRequiredString;
   }
 
-  saveAdditionalCosts() {
+  saveAdditionalCosts(isSaveType : string) {
     let findIfAdditionalCostExists = _.filter(
       this.offerAdditionalCostList,
       function(object) {
-        return !object.isDeleted;
+        return !object.isDeleted && object.isSelected;
       }
     );
     if (
@@ -901,12 +917,14 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
-
-    let selectedRequestList = _.filter(this.requestListToDuplicate, function(
-      request
-    ) {
-      return request.isSelected;
-    });
+    let selectedRequestList = [];
+    if(isSaveType == 'isProceed'){
+      selectedRequestList = _.filter(this.requestListToDuplicate, function(
+        request
+      ) {
+        return request.isSelected;
+      });
+    }
 
     if (this.duplicateCost && !selectedRequestList.length) {
       this.toastr.warning('At least one request should be selected!');
@@ -1047,6 +1065,12 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
 
     if (!selectedRequestList.length) {
+      if(this.offerAdditionalCostList.length ==0){
+        this.offerAdditionalCostList = [];
+      }
+      else{
+        this.offerAdditionalCostList =  this.offerAdditionalCostList.filter((x)=> x.isSelected == true);
+      }
       let payload = {
         additionalCosts: this.offerAdditionalCostList.concat(
           this.locationAdditionalCostsList
@@ -1225,7 +1249,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           .filter(
             r => r.id != this.currentRequestInfo.id && r.status !== 'Stemmed'
           )
-          .map(req => ({ ...req }))
+          .map(req => ({ ...req, isSelected: true }))
       );
     }
   }
@@ -1255,7 +1279,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     const locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
-
+    this.offerAdditionalCostList = this.offerAdditionalCostList.filter((x) => x.isSelected && !x.isDeleted );
     selectedRequestList.forEach(request => {
       request.requestLocations.forEach(requestLocation => {
         //statusId = 12 => Stemmed status
