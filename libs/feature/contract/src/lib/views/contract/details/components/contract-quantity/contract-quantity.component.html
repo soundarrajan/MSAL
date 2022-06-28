@@ -1,7 +1,7 @@
 <div class="row col-md-12 contract-section" style="margin-left: 0px;">
   <div
     (click)="
-      formValues.status && formValues.status.name == 'Confirmed'
+      formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
         ? ''
         : addContractQuantityDetail()
     "
@@ -25,7 +25,7 @@
             <a
               class="remove-contract-quantity-icon"
               (click)="
-                formValues.status && formValues.status.name == 'Confirmed'
+                formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
                   ? ''
                   : removeContractQuantityDetail(contractDetail.key)
               "
@@ -50,7 +50,7 @@
                     disableOptionCentering
                     [panelClass]="'contract-quantity-select-container'"
                     [disabled]="
-                      formValues.status && formValues.status.name == 'Confirmed'
+                      formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
                     "
                     [compareWith]="compareUomObjects"
                   >
@@ -114,7 +114,7 @@
                       quantityFormat
                       [disabled]="
                         formValues.status &&
-                        formValues.status.name == 'Confirmed'
+                        (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
                       "
                     />
                   </mat-form-field>
@@ -169,7 +169,7 @@
                       (keypress)="keyPressNumber($event)"
                       [disabled]="
                         formValues.status &&
-                        formValues.status.name == 'Confirmed'
+                        (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
                       "
                     />
                   </mat-form-field>
@@ -193,7 +193,7 @@
                     panelClass="general-info-select-container"
                     [compareWith]="compareUomObjects"
                     [disabled]="
-                      formValues.status && formValues.status.name == 'Confirmed'
+                      formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
                     "
                   >
                     <mat-option *ngFor="let option of uomList" [value]="option">
@@ -237,7 +237,7 @@
                       (keypress)="keyPressNumber($event)"
                       [disabled]="
                         formValues.status &&
-                        formValues.status.name == 'Confirmed'
+                        (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
                       "
                     />
                   </mat-form-field>
