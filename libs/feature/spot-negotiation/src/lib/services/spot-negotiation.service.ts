@@ -123,6 +123,14 @@ export class SpotNegotiationService extends BaseStoreService
   }
 
   /**
+ * @param payload = False
+ */
+  @ObservableException()
+  getCounterpartyListByName(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getCounterpartyListByName(payload);
+  }
+
+  /**
    * @param payload = False
    */
   @ObservableException()
@@ -560,7 +568,8 @@ export class SpotNegotiationService extends BaseStoreService
     SortList: any,
     Filters: any,
     SearchText: any,
-    Pagination: any
+    Pagination: any,
+    IsSearchOnlyInName: boolean = false
   ) {
     let payload = {
       Order: Order,
@@ -570,7 +579,7 @@ export class SpotNegotiationService extends BaseStoreService
       SearchText: SearchText,
       Pagination: Pagination
     };
-    return this.getCounterpartyList(payload);
+    return IsSearchOnlyInName ? this.getCounterpartyListByName(payload) : this.getCounterpartyList(payload);
   }
 
   getRequestresponse(
