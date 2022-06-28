@@ -804,11 +804,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           { SortList: [] },
           [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
           userInput.toLowerCase(),
-          { Skip: 0, Take: 25 }
+          { Skip: 0, Take: 25 },
+          true
         ).subscribe((res: any) => {
           if (res?.message == 'Unauthorized')return;
-          if (res?.payload?.length > 0) {
-            let SelectedCounterpartyList = cloneDeep(res.payload);
+          if (res?.counterpartyListItems?.length > 0) {
+            let SelectedCounterpartyList = cloneDeep(res.counterpartyListItems);
             this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
           }else{
             this.visibleCounterpartyList = [];

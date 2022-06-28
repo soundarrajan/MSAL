@@ -21,10 +21,7 @@ import {
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
 import {
-  IDocumentsUpdateIsVerifiedRequest,
-  IDocumentsUpdateIsVerifiedResponse
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
-import { IDocumentsListResponse } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents.dto';
+  IDocumentsUpdateIsVerifiedRequest} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
 import {
   IDocumentsUpdateNotesRequest,
   IDocumentsUpdateNotesResponse
@@ -35,6 +32,7 @@ export const SpotNegotiationApiPaths = {
   tenantConfiguration: `Groups/getTenantConfiguration`,
   staticLists: `api/infrastructure/static/lists`,
   counterpartyLists: `api/masters/counterparties/listbyTypes`,
+  counterpartyListsByName: `counterparty/getCounterpartyList`,
   addCounterparties: `groups/addSellers`,
   addRequesttoGroup: `groups/linkRequest`,
   saveTargetPrice: `Groups/saveTargetPrice`,
@@ -264,6 +262,19 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .post<any>(
         `${this._masterApiUrl}/${SpotNegotiationApiPaths.counterpartyLists}`,
         { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  getCounterpartyListByName(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.counterpartyListsByName}`,
+         payload
       )
       .pipe(
         map((body: any) => body),
