@@ -144,11 +144,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
       *ngIf="params.type == 'single-bg-header'"
     >
       <div class="border-line"></div>
-      <div class="options">
-        <div class="checkBox w-100" matTooltip="Total offer" matTooltipClass="lightTooltip" style="padding-top:0px;">
-          Total Offer
+        <div matTooltip="Total Offer" matTooltipClass="lightTooltip" class="options" style="padding-top: 5px;padding-bottom:10px; ">
+          <div class="checkBox w-100" style="padding-top:0px;" >
+              Total Offer
+          </div>
         </div>
-      </div>
       <div class="label" matTooltipClass="lightTooltip" matTooltip="No. of Products">
         <div class="label-content" style="width:95%;">
           <div class="label-element w-100" style="width:100%;">
