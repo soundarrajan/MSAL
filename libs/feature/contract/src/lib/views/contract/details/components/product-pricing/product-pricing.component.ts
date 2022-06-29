@@ -1195,12 +1195,11 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       this.formValues.products[this.selectedTabIndex].additionalCosts[
         key
       ].isDeleted = true;
-    } else {
       this.formValues.products[this.selectedTabIndex].additionalCosts.splice(
         key,
         1
       );
-    }
+    } 
   }
 
   setDefaultCostType(additionalCost) {
