@@ -13,6 +13,7 @@ angular.module('shiptech.components')
 	        });
 
 		    ctrl.$onChanges = function(changes) {
+                //$scope.changesData=changes;
 		    	$scope.test = new Date();
 		    	$scope.rightClickPopoverData = changes.rightClickPopoverData.currentValue;
                 ctrl.productTypeView = changes.rightClickPopoverData.currentValue.productTypeView;
@@ -25,7 +26,8 @@ angular.module('shiptech.components')
 			    			todayVoyages.push(v);
 			    		});
 		    		}
-			    	groupVoyages(todayVoyages);
+                    var vesselId=changes.rightClickPopoverData.currentValue.todayVoyages[0].VesselId;
+			    	groupVoyages(todayVoyages,vesselId);
 		    	});
 		    	ctrl.vesselName = changes.rightClickPopoverData.currentValue.todayVoyages[0].VesselName;
 		    };
@@ -67,7 +69,7 @@ angular.module('shiptech.components')
 		    	return normalizedBunkerDetails;
 		    };
 
-		    var groupVoyages = function(voyages) {
+		    var groupVoyages = function(voyages,vesselId) {
 		    	var groupedVoyages = _.groupBy(voyages, 'voyageDetail.id');
 
 		    	ctrl.groupedVoyagesDetails = angular.copy(groupedVoyages);
@@ -86,7 +88,11 @@ angular.module('shiptech.components')
 		    		uniqueVoyages.push(v.voyageDetail.id);
 		    	});
 		    	uniqueVoyages = _.uniq(uniqueVoyages);
-
+                ctrl.questionnaireFlag=voyages?.filter(x=>x.VesselId==vesselId)?.filter(v=>v.voyageDetail.portStatus.displayName=='New' 
+                || v.voyageDetail.portStatus.displayName=='BunkerStrategy' 
+                || v.voyageDetail.portStatus.displayName=='Created'
+                || v.voyageDetail.portStatus.displayName=='Nearing ETA').length;
+                ctrl.totalVoyages=voyages?.filter(x=>x.VesselId==vesselId).length;
 		    	var hasEntity = {};
 		    	$.each(uniqueVoyages, (k, v) => {
 	    			hasEntity[v] = {
@@ -653,8 +659,11 @@ angular.module('shiptech.components')
                 screenLoader.showLoader();
                 newRequestModel.sendQuestionnaire(voyageId).then((newRequestData) => {
                     ctrl.request = newRequestData.payload;
-                    var win = window.open("/#/edit-request/" + ctrl.request.id, '_blank');
-                    win.focus();
+                    if(newRequestData.isSuccess){
+                        //ctrl.$onChanges($scope.changesData); 
+                        var win = window.open("/#/edit-request/" + ctrl.request.id, '_blank');
+                        win.focus();
+                    }
                 }, () => {
                 }).finally(() => {
                     setTimeout(() => {
