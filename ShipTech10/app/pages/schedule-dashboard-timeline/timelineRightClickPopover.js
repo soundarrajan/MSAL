@@ -31,6 +31,13 @@ angular.module('shiptech.components')
 		    	});
 		    	ctrl.vesselName = changes.rightClickPopoverData.currentValue.todayVoyages[0].VesselName;
 		    };
+            ctrl.portStatusCheck=function(voyageId){
+                var isVisiblePort=false;
+                if(ctrl.questionnaireFlag?.filter(t=>t.voyageDetail.id==voyageId).length==ctrl.totalVoyages?.filter(t=>t.voyageDetail.id==voyageId).length){
+                    isVisiblePort=true;
+                }
+                return isVisiblePort;
+            };
 		    $scope.formatDateToMomentFormat = function(dateFormat) {
 	            var dbFormat = dateFormat;
 	            var hasDayOfWeek = false;
@@ -91,8 +98,8 @@ angular.module('shiptech.components')
                 ctrl.questionnaireFlag=voyages?.filter(x=>x.VesselId==vesselId)?.filter(v=>v.voyageDetail.portStatus.displayName=='New' 
                 || v.voyageDetail.portStatus.displayName=='BunkerStrategy' 
                 || v.voyageDetail.portStatus.displayName=='Created'
-                || v.voyageDetail.portStatus.displayName=='Nearing ETA').length;
-                ctrl.totalVoyages=voyages?.filter(x=>x.VesselId==vesselId).length;
+                || v.voyageDetail.portStatus.displayName=='Nearing ETA');
+                ctrl.totalVoyages=voyages?.filter(x=>x.VesselId==vesselId);
 		    	var hasEntity = {};
 		    	$.each(uniqueVoyages, (k, v) => {
 	    			hasEntity[v] = {
@@ -663,6 +670,7 @@ angular.module('shiptech.components')
                         //ctrl.$onChanges($scope.changesData); 
                         var win = window.open("/#/edit-request/" + ctrl.request.id, '_blank');
                         win.focus();
+                        toastr.isSuccess('Operation completed succcessfully!')
                     }
                 }, () => {
                 }).finally(() => {

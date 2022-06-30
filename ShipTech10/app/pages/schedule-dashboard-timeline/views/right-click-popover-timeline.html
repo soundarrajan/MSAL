@@ -91,7 +91,7 @@
 						</span>
 					</div>
 					<div class="action-btn-container">
-						<span class="sendQuesBtn" ng-click="$ctrl.sendQuestionnaires(voyage)"  ng-if="$ctrl.questionnaireFlag==$ctrl.totalVoyages">
+						<span class="sendQuesBtn" ng-if="$ctrl.portStatusCheck(voyage)" ng-click="$ctrl.sendQuestionnaires(voyage)">
 							<a class="action-btn" style="margin-right: 15px; color: #333333;">Questionnaire</a> 
 							<i class="send-questionnaires"></i>
 						</span>
