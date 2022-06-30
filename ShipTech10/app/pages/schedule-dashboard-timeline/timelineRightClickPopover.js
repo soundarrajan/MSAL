@@ -11,7 +11,9 @@ angular.module('shiptech.components')
 	            ctrl.amountPrecision = settings.payload.defaultValues.amountPrecision;
 	            ctrl.dateFormat = $scope.formatDateToMomentFormat(settings.payload.tenantFormats.dateFormat.name);
 	        });
-
+            $rootScope.$on('tenantConfiguration', (event, value) => {
+                ctrl.requestTenantSettings = value.procurement.request;
+            });
 		    ctrl.$onChanges = function(changes) {
                 //$scope.changesData=changes;
 		    	$scope.test = new Date();
