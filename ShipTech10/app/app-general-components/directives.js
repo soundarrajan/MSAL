@@ -984,9 +984,6 @@ Number(function() {
 
                                         $rootScope.getGlobalFilters().then((data) => {
                                             if (data) {
-                                                if($state.current.name  === 'default.dashboard-table'){
-                                                    data = $rootScope.rawFilters;
-                                                }
                                                 $(Elements.table[Elements.settings[table_id].table]).jqGrid('Ascensys.columnFilters', data);
                                                 CLC.tableParams.unpackedFilters = data;
                                             }
