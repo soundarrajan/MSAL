@@ -880,7 +880,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     return this.expandedSearch;
   }
 
-  searchCounterparty(userInput: string): void {
+  searchLocationCounterparty(userInput: any) {
     if (userInput.length === 0) {
       const locationsRowsOriData = this.store.selectSnapshot(
         (state: SpotNegotiationStoreModel) => {

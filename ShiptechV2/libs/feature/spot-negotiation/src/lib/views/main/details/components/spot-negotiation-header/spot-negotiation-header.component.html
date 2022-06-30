@@ -87,11 +87,11 @@
         (click)="expandedSearch = showSearch(expandedSearch)"
       ></span>
       <div *ngIf="expandedSearch" style="display:flex" class="search-input">
-        <input
+        <input matInput
           type="search"
           name="inputSearch"
           #inputSearch
-          (input)="searchCounterparty($event.target.value)"
+          (input)="searchLocationCounterparty(inputSearch.value);"
           placeholder="Search counterparty" 
           matTooltip="{{inputSearch.value? inputSearch.value : 'Search counterparty' }}"
           matTooltipClass="lightTooltip"
