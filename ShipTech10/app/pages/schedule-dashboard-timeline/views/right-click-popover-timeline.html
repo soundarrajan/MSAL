@@ -91,7 +91,7 @@
 						</span>
 					</div>
 					<div class="action-btn-container">
-						<span class="sendQuesBtn" ng-if="$ctrl.portStatusCheck(voyage) && $ctrl.requestTenantSettings.isPrerequestEnabled" ng-click="$ctrl.sendQuestionnaires(voyage)">
+						<span class="sendQuesBtn" ng-if="$ctrl.portStatusCheck(voyage) && $ctrl.requestTenantSettings.request.isPrerequestEnabled" ng-click="$ctrl.sendQuestionnaires(voyage)">
 							<a class="action-btn" style="margin-right: 15px; color: #333333;">Questionnaire</a> 
 							<i class="send-questionnaires"></i>
 						</span>
@@ -100,8 +100,7 @@
 							<a class="action-btn" ng-click="$ctrl.addVoyageToContractPlanning(voyage)" style="margin-right: 15px;">Contract Planning <i class="contract-planning"></i>  </a> 
 						</span>
 						<span>
-							<a class="action-btn" href="#/new-request/{{voyage}}/{{$ctrl.productTypeView.id}}" target="_blank">Create Request 	<i class="contract-planning"></i> </a>
-						
+							<a class="action-btn" href="#/new-request/{{voyage}}/{{$ctrl.productTypeView.id}}" target="_blank">Create Requests 	<i class="contract-planning"></i> </a>						
 						</span>
 					</div>
 				</div>

@@ -1,9 +1,9 @@
 angular.module('shiptech.components')
-    .controller('timelineRightClickPopover', [ '$scope', '$rootScope', '$filter', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings', 'API', '$http', '$listsCache', 'statusColors','screenLoader','newRequestModel',
-        function($scope, $rootScope, $filter, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings, API, $http, $listsCache, statusColors,screenLoader,newRequestModel) {
+    .controller('timelineRightClickPopover', [ '$scope', '$rootScope', '$filter', '$element', '$attrs', '$timeout', 'groupOfRequestsModel', 'MOCKUP_MAP', '$state', 'tenantService', '$tenantSettings','$tenantConfiguration', 'API', '$http', '$listsCache', 'statusColors','screenLoader','newRequestModel',
+        function($scope, $rootScope, $filter, $element, $attrs, $timeout, groupOfRequestsModel, MOCKUP_MAP, $state, tenantService, $tenantSettings,$tenantConfiguration, API, $http, $listsCache, statusColors,screenLoader,newRequestModel) {
 	        let ctrl = this;
 	        $scope.tenantSettings = $tenantSettings;
-
+            ctrl.requestTenantSettings=$tenantConfiguration.procurementConfiguration;
             ctrl.collapseContainer = [];
 	        tenantService.tenantSettings.then((settings) => {
 	            ctrl.numberPrecision = settings.payload.defaultValues;
@@ -11,9 +11,6 @@ angular.module('shiptech.components')
 	            ctrl.amountPrecision = settings.payload.defaultValues.amountPrecision;
 	            ctrl.dateFormat = $scope.formatDateToMomentFormat(settings.payload.tenantFormats.dateFormat.name);
 	        });
-            $rootScope.$on('tenantConfiguration', (event, value) => {
-                ctrl.requestTenantSettings = value.procurement.request;
-            });
 		    ctrl.$onChanges = function(changes) {
                 //$scope.changesData=changes;
 		    	$scope.test = new Date();
