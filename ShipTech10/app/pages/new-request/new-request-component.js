@@ -2346,7 +2346,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             }
                         }
 
-                    if (ctrl.requestTenantSettings.displayOfCompany.id == 1) {
+                   // if (ctrl.requestTenantSettings.displayOfCompany.id == 2) {
                         if (!ctrl.request.company) {
                             ctrl.request.company = {};
                         }
@@ -2354,7 +2354,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             ctrl.request.company.name = companyToDefault.name;
                             ctrl.request.company.id = companyToDefault.id;
                         }
-                    }
+                   // }
 
                     ctrl.vesselDefaultDetails = {
                         company: companyToDefault,
