@@ -375,7 +375,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             #menuTriggerHover="matMenuTrigger"
             *ngIf="
               params.value > 0 &&
-              params.data.requestOffers[params.index]?.supplyQuantity != null
+              params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
+              params.data.requestOffers[params.index]?.supplyQuantity != null              
             "
           ></div>
         </div>
