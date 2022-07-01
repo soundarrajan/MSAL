@@ -398,7 +398,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
                 await this.recalculateLocationAdditionalCosts(
                   locAdditionCostsList,
                   true,
-                  productList,
+                  reqProList,
                   offerAdditionCostsList,
                   sellerOffers,
                   locAdditionCostsList,
