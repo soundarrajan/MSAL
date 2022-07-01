@@ -383,6 +383,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
 })
 export class SpotnegoOtherdetails2Component implements OnInit {
   uomList: any;
+  enableSave: boolean = false;
   switchTheme; //false-Light Theme, true- Dark Theme
   SupplyQuantityUoms: any;
   disableScrollDown = false;
@@ -502,7 +503,8 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   }
 
   formatDateForBe(value, canBeConvertedUTC = true) {
-    if (value) {
+      if (value) {
+      this.enableSave = true;
       let beValue;
       if (canBeConvertedUTC) {
         beValue = `${moment.utc(value).format('YYYY-MM-DDTHH:mm:ss')}+00:00`;
@@ -622,7 +624,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     } else {
       event.preventDefault();
       return false;
-    }
+    }    
   }
   onChange($event, field) {
     if ($event.value) {
@@ -632,6 +634,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
       if (field == 'supplyDeliveryDate') {
         this.isSupplyDeliveryDateInvalid = false;
       }
+      this.enableSave = true;
     } else {
       if (field == 'supplyDeliveryDate') {
         this.isSupplyDeliveryDateInvalid = true;
