@@ -1,7 +1,7 @@
 <div class="spot-popup-header-container" style="padding-left:45px;">
     <div class="spot-nego-title">Counterparty Request changes</div>
     <div class="spot-dialog-title-right">
-      <button class="proceed-btn w-104"  mat-button [mat-dialog-close]="true" (click)="saveOtherDetails()">Save</button>
+      <button class="proceed-btn w-104" [disabled]="!enableSave" mat-button [mat-dialog-close]="true" (click)="saveOtherDetails()">Save</button>
       <div class="title-divider">|</div>
     <div class="close-circle">
       <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() "
@@ -224,6 +224,7 @@
                                 type="text"
                                 matInput
                                 [(ngModel)]="otherDetailsItems[productIndex].product"
+                                (ngModelChange)="this.enableSave = true;"
                                 [matAutocomplete]="auto"
                                 placeholder="Quoted Product"
                                 required
@@ -286,6 +287,7 @@
                               autocomplete="off"
                               placeholder="Supply Qty"
                               quantityFormat
+                              (ngModelChange)="this.enableSave = true;"
                               (keypress)="keyPressNumber($event)"
                               required
                             />
