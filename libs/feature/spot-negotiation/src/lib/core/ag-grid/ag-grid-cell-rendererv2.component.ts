@@ -413,7 +413,6 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
             >{{ params.data.physicalSupplierCounterpartyName }}</span
           >
-          <!--  <span *ngIf="!editSeller">{{ this.editedSeller }}</span> -->
         </span>
         <ng-container *ngIf="paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed;
          then second else first">
@@ -443,7 +442,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         </ng-template>
         <ng-template #second>
         <span
-            *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
+            *ngIf="!params.data.isEditable && editSeller && params.data.physicalSupplierCounterpartyName"
             >{{
               this.format.htmlDecode(
                 params.data.physicalSupplierCounterpartyName
