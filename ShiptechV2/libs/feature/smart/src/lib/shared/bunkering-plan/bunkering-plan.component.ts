@@ -964,23 +964,28 @@ export class BunkeringPlanComponent implements OnInit {
       SaveBunkeringPlanState.getTotalTankCapacity
     );
     //business address validation
-    let isValidBusinessAddress =
+    let idx =
       data.findIndex(
         data =>
-          (!data?.business_address ||
-            !mailPattern.test(data?.business_address)) &&
-          data?.operator_ack == 1
-      ) == -1
-        ? 'Y'
-        : 'N';
-    if (isValidBusinessAddress == 'N') {
-      let id = data.findIndex(
-        data =>
-          (!data?.business_address ||
-            !mailPattern.test(data?.business_address)) &&
+          (!data?.business_address) &&
           data?.operator_ack == 1
       );
-      let port_id = data[id]?.port_id;
+
+    if (idx == -1) {
+      idx =
+        data.findIndex(
+          data => {
+            let BAs: [] = data?.business_address.split(',');
+            for (let ba of BAs) {
+              if (!mailPattern.test(ba) && data?.operator_ack == 1)
+                return data;
+            }
+          }
+        );
+    }
+
+    if (idx > -1) {
+      let port_id = data[idx]?.port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
         panelClass: 'confirmation-popup-operator',
@@ -989,6 +994,7 @@ export class BunkeringPlanComponent implements OnInit {
       isHardValidation = 1;
       return isHardValidation;
     }
+    
     // Min HSFO SOD validation : Min HSFO SOD > HSFO tank capacity
     let isValidHsfoSod =
       data.findIndex(
