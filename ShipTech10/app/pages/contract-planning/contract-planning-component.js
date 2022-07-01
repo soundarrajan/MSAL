@@ -353,7 +353,7 @@ angular.module('shiptech.pages').controller('ContractPlanningController', [ '$sc
                     displayError = `${displayError }The following vessels: ${ noContractAssigned } have no contract assigned\r\n`;
                 }
                 if (manual && noMinMaxQuantity.length > 0) {
-                    displayError = `${displayError }The following vessels: ${ noMinMaxQuantity } have invalid Min-Max Quantities\r\n`;
+                    displayError = `${displayError }The following vessels: ${ noMinMaxQuantity } have invalid Max Quantities\r\n`;
                 }
                 if (noAgreementType.length > 0) {
                     displayError = `${displayError }The following vessels: ${ noAgreementType } have no Agreement Types selected`;
