@@ -601,7 +601,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           tooltipField: 'offerPrice',
           product: product,
           flex: 2,
-          width: 200,
+          width: 160,
           minWidth: 150,
           cellClass: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
@@ -751,6 +751,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           headerTooltip: 'Target difference',
           field: `diff`,
           flex: 5,
+          width: 135,
           minWidth: 94,
           valueGetter: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
