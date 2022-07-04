@@ -138,6 +138,311 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
      }
   }
 
+  addLocationCostToAllRequests(){ ///save & proceed
+    this.copiedAdditionalCost = this.offerAdditionalCostList.filter(x=> x.isSelected == true);
+    if(this.copiedAdditionalCost.length === 0){
+      this.toastr.warning('Please Select Atleast one Row');
+      return;
+    }
+    if(this.requestListToDuplicate.length === 0){
+      this.toastr.warning('Please Select Atleast one Request');
+      return;
+    }
+    const locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    let requestAditionalCost = [];
+     requestAditionalCost = locationsRows.find(loc => loc.sellerCounterpartyId == this.rowData.sellerCounterpartyId).requestAdditionalCosts;
+
+    if(requestAditionalCost.length > 0  ){
+      this.saveAdditionalCostsToSelectedRequests(this.requestListToDuplicate);
+    }
+    else{
+      this.saveAdditionalCosts('isProceed');
+    }
+}
+
+ saveAdditionalCostsToSelectedRequests(selectedRequestList){
+  this.copiedAdditionalCost =  [];
+  this.endpointCount = 0;
+  let reqIdForLocation: String;
+  let noRequestOffer: String;
+  let reqIdForOfferLocation: String;
+  let reqIdForStemmedProduct: String;
+
+  let requestLocationId = this.requestLocation.locationId;
+  const locationsRows = this.store.selectSnapshot<any>((state: any) => {
+    return state.spotNegotiation.locationsRows;
+  });
+  //this.offerAdditionalCostList = this.offerAdditionalCostList.filter((x) => x.isSelected && !x.isDeleted );
+  let rowsToCopy = this.offerAdditionalCostList.filter((x) => x.isSelected && !x.isDeleted );
+  selectedRequestList.forEach(request => {
+    request.requestLocations.forEach(requestLocation => {
+      //statusId = 12 => Stemmed status
+      if (
+        requestLocation.locationId == requestLocationId &&
+        requestLocation.statusId != 12
+      ) {
+        let reqProductIdForLocation = [];
+        let reqOfferIdForLocation = [];
+        let noRequestOfferArray = [];
+        let productsStemmedArray = [];
+        rowsToCopy.forEach(additionalCost => {
+          if (!additionalCost.isDeleted) {
+            let newCost = _.cloneDeep(additionalCost);
+            newCost.id = 0;
+            newCost.hasStemmedProduct = false;
+            newCost.requestLocationId = requestLocation.id;
+            newCost.amount = additionalCost.amount;
+            newCost.extraAmount = additionalCost.extraAmount;
+            newCost.totalAmount = additionalCost.totalAmount;
+            newCost.ratePerUom = additionalCost.ratePerUom;
+            newCost.offerId = null;
+            newCost.selectedRequestLocation = requestLocation;
+            newCost.isCostCopy = true;
+
+            let row = locationsRows.filter(
+              lr =>
+                lr.requestLocationId == requestLocation.id &&
+                this.rowData.sellerCounterpartyId == lr.sellerCounterpartyId
+            );
+
+            if (!row[0].requestOffers) {
+              noRequestOfferArray.push(
+                request.name + ' - ' + requestLocation.locationName
+              );
+            }
+
+            //If All is selected in the applicable for dropdown
+            if (newCost.isAllProductsCost) {
+              let rowData = row[0];
+              newCost.rowData = rowData;
+              newCost.requestOfferIds = null;
+              newCost.isAllProductsCost = true;
+
+              const productDetails = this.getProductDetails(
+                newCost.selectedApplicableForId,
+                requestLocation,
+                rowData
+              );
+
+              newCost.productList = productDetails.productList;
+              newCost.maxQuantity = productDetails.maxQty;
+              newCost.maxQuantityUomId = productDetails.maxQtyUomId;
+
+              requestLocation.requestProducts.forEach((product: any) => {
+                if (product.status !== 'Stemmed') {
+                  //Check if exist request offer for product
+                  let findRequestOffer = _.filter(
+                    rowData.requestOffers,
+                    function(object) {
+                      return object.requestProductId == product.id;
+                    }
+                  );
+                  if (!findRequestOffer.length) {
+                    reqOfferIdForLocation.push(product.productName);
+                  }
+                }
+              });
+
+              if (productDetails.productList.length > 1) {
+                newCost.requestOfferIds = this.getRequestOfferIdsForCopyAdditionalCost(
+                  0,
+                  rowData
+                );
+                newCost.offerId = rowData.requestOffers[0].offerId;
+              } else if (productDetails.productList.length == 1) {
+                newCost.excludeCost = true;
+                requestLocation.requestProducts.forEach((product: any) => {
+                  if (product.status === 'Stemmed') {
+                    productsStemmedArray.push(product.productName);
+                  }
+                });
+              } else if (!productDetails.productList.length) {
+                newCost.excludeCost = true;
+              }
+            } else {
+              //One product is selected in the applicable for dropdown
+              let rowData = row[0];
+              newCost.rowData = rowData;
+              newCost.requestOfferId = null;
+
+              let applicableForProduct = _.find(
+                this.requestLocation.requestProducts,
+                function(product) {
+                  return product.id == newCost.requestProductId;
+                }
+              );
+              let productId = applicableForProduct.productId;
+              let productList = _.filter(
+                requestLocation.requestProducts,
+                function(product) {
+                  return product.productId === productId;
+                }
+              );
+
+              if (!productList.length) {
+                reqProductIdForLocation.push(
+                  applicableForProduct.productName
+                );
+              } else {
+                //If selected product exist
+                let product = _.find(
+                  requestLocation.requestProducts,
+                  function(product) {
+                    return product.productId === productId;
+                  }
+                );
+
+                let findRequestOffer = _.filter(
+                  rowData.requestOffers,
+                  function(object) {
+                    return object.requestProductId == product.id;
+                  }
+                );
+
+                if (!findRequestOffer.length) {
+                  reqOfferIdForLocation.push(
+                    applicableForProduct.productName
+                  );
+                } else {
+                  if (product.status == 'Stemmed') {
+                    productsStemmedArray.push(product.productName);
+                  }
+                  this.formatCopiedAdditionalCostForSpecificProduct(
+                    newCost,
+                    product,
+                    requestLocation,
+                    rowData
+                  );
+                }
+              }
+            }
+
+            if (!newCost.hasStemmedProduct && !newCost.excludeCost) {
+              this.copiedAdditionalCost.push(newCost);
+            }
+          }
+        });
+
+        //If selected product in applicable for dropdown doesn't exist in selected request
+        reqProductIdForLocation = _.uniq(reqProductIdForLocation);
+        let reqProductIdForLocationString = reqProductIdForLocation.join(',');
+        if (reqProductIdForLocationString != '') {
+          reqIdForLocation = reqIdForLocation
+            ? reqIdForLocation +
+              ', ' +
+              reqProductIdForLocationString +
+              ' is not available in ' +
+              request.name +
+              ' '
+            : reqProductIdForLocationString +
+              ' is not available in ' +
+              request.name +
+              ' ';
+        }
+
+        //If counterparty doesn't have request offers available
+        noRequestOfferArray = _.uniq(noRequestOfferArray);
+        let noRequestOfferArrayString = noRequestOfferArray.join(',');
+        if (noRequestOfferArrayString != '') {
+          noRequestOffer = noRequestOffer
+            ? noRequestOffer + ', ' + noRequestOfferArrayString + ' '
+            : noRequestOfferArrayString + ' ';
+        }
+
+        //If counterparty doesn't have request offer available for selected product
+        reqOfferIdForLocation = _.uniq(reqOfferIdForLocation);
+        let reqOfferIdForLocationString = reqOfferIdForLocation.join(',');
+        if (reqOfferIdForLocationString != '') {
+          reqIdForOfferLocation = reqIdForOfferLocation
+            ? reqIdForOfferLocation +
+              ', ' +
+              reqOfferIdForLocationString +
+              ' is not available in ' +
+              request.name +
+              ' '
+            : reqOfferIdForLocationString +
+              ' is not available in ' +
+              request.name +
+              ' ';
+        }
+
+        //If user select stemmed product  for selected product
+        productsStemmedArray = _.uniq(productsStemmedArray);
+        let productsStemmedString = productsStemmedArray.join(',');
+        if (productsStemmedString != '') {
+          reqIdForStemmedProduct = reqIdForStemmedProduct
+            ? productsStemmedString +
+              ', ' +
+              productsStemmedString +
+              ' are stemmed in ' +
+              request.name +
+              ' '
+            : productsStemmedString + ' are stemmed in ' + request.name + ' ';
+        }
+      }
+    });
+  });
+
+  if (reqIdForLocation) {
+    this.toastr.warning('Cost cannot be copied as the ' + reqIdForLocation);
+    return;
+  }
+
+  if (noRequestOffer) {
+    this.toastr.warning(
+      'Cost cannot be copied as the request offer(s) ' +
+        ' is not available in ' +
+        noRequestOffer +
+        ' for the counterparty ' +
+        this.rowData.sellerCounterpartyName
+    );
+    return;
+  }
+
+  if (reqIdForOfferLocation) {
+    this.toastr.warning(
+      'Cost cannot be copied as the request offer(s) for the counterpaty ' +
+        this.rowData.sellerCounterpartyName +
+        ': ' +
+        reqIdForOfferLocation
+    );
+    return;
+  }
+
+  if (reqIdForStemmedProduct) {
+    this.toastr.warning(
+      'Cost cannot be copied as the product(s) ' + reqIdForStemmedProduct
+    );
+    return;
+  }
+
+  if (this.copiedAdditionalCost.length) {
+    let payload = {
+      additionalCosts: this.offerAdditionalCostList
+        .concat(this.copiedAdditionalCost)
+    };
+
+    this.saveButtonClicked = false;
+    this.spotNegotiationService
+      .saveOfferAdditionalCosts(payload)
+      .subscribe((res: any) => {
+        this.enableSave = false;
+        if (res?.message == 'Unauthorized') {
+          return;
+        }
+        if (res.status) {
+          this.toastr.success('Additional cost copied successfully!');
+        } else this.toastr.error('Please try again later.');
+      });
+  }
+  else{
+    this.toastr.error('Please try again later');
+    return;
+  }
+ }
+
   getAdditionalCosts() {
     this.spinner.show();
     this.spotNegotiationService
@@ -1965,7 +2270,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         if (res.status) {
           this.toastr.success('Additional cost copied successfully!');
         } else this.toastr.error('Please try again later.');
-        this.closeDialog(this.duplicateCost);
       });
   }
 
