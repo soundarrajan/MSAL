@@ -357,6 +357,19 @@ export class SpotNegotiationHomeComponent implements OnInit {
     let requestProductIds = this.selectedSellerList.map(
       x => x.RequestProductIds
     );
+    let locRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    let data = this.selectedSellerList.filter(list=>
+               list.RfqId !== 0 && list.RequestOffers.find(x => x.isRfqskipped != false));
+    if(data){
+      data.forEach( data => {
+        this.selectedSellerList = this.selectedSellerList.filter(x=> x.SellerId != data.SellerId);
+        this.toaster.error('RFQ mail cannot be sent as the RFQ was skipped earlier for ' +locRows.find(x=> x.sellerCounterpartyId === data.SellerId).sellerCounterpartyName);
+      }
+        );
+       if(this.selectedSellerList.length === 0) {return;}
+    }
     var FinalAPIdata = {
       RequestGroupId: this.currentRequestInfo.requestGroupId,
       quoteByDate: new Date(this.child.getValue()),
