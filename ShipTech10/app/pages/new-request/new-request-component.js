@@ -2337,7 +2337,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
                     let companyToDefault = null;
                     if (vessel.operatingCompany) {
-                        companyToDefault = vessel.operatingCompany;                      
+                        companyToDefault = vessel.operatingCompany;                         
                     } else if (vessel.voyages.length > 0) {
                             if (vessel.voyages[0].voyageDetails) {
                                 if (vessel.voyages[0].voyageDetails[0].company) {
@@ -2346,15 +2346,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             }
                         }
 
-                    if (ctrl.requestTenantSettings.displayOfCompany.id == 2) {
+                    //if (ctrl.requestTenantSettings.displayOfCompany.id == 2) {
                         if (!ctrl.request.company) {
                             ctrl.request.company = {};
                         }
                         if (!preventUpdateCompany) {
                             ctrl.request.company.name = companyToDefault.name;
+                            if(ctrl.request.locations.length > 0) {ctrl.request.locations[0].company.name = companyToDefault.name;}
                             ctrl.request.company.id = companyToDefault.id;
                         }
-                    }
+                    //}
 
                     ctrl.vesselDefaultDetails = {
                         company: companyToDefault,
