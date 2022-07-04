@@ -766,6 +766,7 @@ export class VesselInfoComponent implements OnInit {
     event.stopPropagation();
   }
   generateCurrentBPlan(event) {
+    this.import_gsis = this.isChecked ? 1 : 0;
     let req = {
       action: '',
       ship_id: this.vesselData?.vesselId,
