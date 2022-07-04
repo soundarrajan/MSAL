@@ -764,7 +764,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     if (this.offerAdditionalCostList[key].id) {
       this.offerAdditionalCostList[key].isDeleted = true;
     } else {
-      this.offerAdditionalCostList = this.offerAdditionalCostList.splice(key, 1);
+      this.offerAdditionalCostList.splice(key, 1);
     }
     if(this.offerAdditionalCostList.length === 0){
       this.isCheckedMain = false;
