@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   ContentChild,
+  Injectable,
   Input,
   OnDestroy
 } from '@angular/core';
@@ -14,7 +15,7 @@ import { AutoComplete } from 'primeng/autocomplete';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { query } from '@angular/animations';
 import _ from 'lodash';
-
+@Injectable()
 export class MasterAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;

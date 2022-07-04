@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Injectable, OnDestroy } from '@angular/core';
 import {
   ColDef,
   ColumnApi,
@@ -31,7 +31,7 @@ import { EMPTY$ } from '@shiptech/core/utils/rxjs-operators';
 export const PageSizeOptions = [25, 50, 75, 100];
 export const DefaultPageSize = 25;
 export const colGroupMarginClass = 'col-group-border';
-
+@Injectable()
 export abstract class BaseGridViewModel implements OnDestroy {
   get page(): number {
     return this.gridApi
