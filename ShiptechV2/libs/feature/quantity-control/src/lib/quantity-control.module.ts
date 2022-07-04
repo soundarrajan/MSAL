@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggingModule } from '@shiptech/core/logging/logging.module';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
@@ -107,6 +107,10 @@ import { ExportModule } from '@shiptech/core/ui/components/export/export.module'
     AccordionModule,
     DropdownModule,
     MessagesModule
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
   ],
   declarations: [
     MainQuantityControlComponent,

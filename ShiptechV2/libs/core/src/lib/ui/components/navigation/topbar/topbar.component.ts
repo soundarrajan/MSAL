@@ -5,6 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { TitleService } from '@shiptech/core/services/title/title.service';
 import { AuthService } from '@shiptech/core/authentication/auth.service';
+//import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
 
 @Component({
   selector: 'shiptech-topbar',
