@@ -2337,8 +2337,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
 
                     let companyToDefault = null;
                     if (vessel.operatingCompany) {
-                        companyToDefault = vessel.operatingCompany;                        
-                        ctrl.request.locations[0].company.name = companyToDefault.name;
+                        companyToDefault = vessel.operatingCompany;                      
                     } else if (vessel.voyages.length > 0) {
                             if (vessel.voyages[0].voyageDetails) {
                                 if (vessel.voyages[0].voyageDetails[0].company) {
