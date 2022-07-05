@@ -888,7 +888,7 @@ angular.module('shiptech.components').controller('FiltersController', [
         $scope.clearValues = function(column, key) {
         	setTimeout(() => {
 	        	$scope.$apply(() => {
-		        	$scope.columnFilters[column][key].value = null;
+		        	//$scope.columnFilters[column][key].value = null;
 	        	});
         	});
         };
