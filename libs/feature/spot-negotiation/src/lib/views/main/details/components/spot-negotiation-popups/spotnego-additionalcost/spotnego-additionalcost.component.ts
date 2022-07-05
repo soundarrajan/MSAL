@@ -297,7 +297,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
     let applicableForItemsArray = [];
     this.requestLocation.requestProducts.forEach((product: any, index) => {
-      ///if (product.status != 'Stemmed') {
+      //if (product.status != 'Stemmed') {
         let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function(
           object: any
         ) {
@@ -315,7 +315,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
 
           this.productList.push(product);
         }
-      ///}
+      //}
     });
     if (applicableForItemsArray.length > 1) {
       const allElement = { id: 0, name: 'All' };
