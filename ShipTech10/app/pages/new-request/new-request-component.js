@@ -370,6 +370,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         
                         newRequestModel.newRequest(voyageId).then((newRequestData) => {
                             ctrl.request = newRequestData.payload;
+                            ctrl.request.company = null;
                             $.each(ctrl.request.locations, (i, j) => {
                                 if (typeof productView != 'undefined' && productView !== null) {
                                     if ([2, 3].indexOf(parseFloat(productView)) != -1) {
@@ -2341,8 +2342,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     } else if (vessel.voyages.length > 0) {
                             if (vessel.voyages[0].voyageDetails) {
                                 if (vessel.voyages[0].voyageDetails[0].company) {
+                                    if(ctrl.request.locations.length > 0) {
+
                                     companyToDefault = vessel.voyages[0].voyageDetails[0].company;
-                                }
+                                    }
+                                }  
                             }
                         }
 
