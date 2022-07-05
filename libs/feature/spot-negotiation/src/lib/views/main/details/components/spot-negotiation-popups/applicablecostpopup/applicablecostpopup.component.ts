@@ -534,7 +534,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   buildApplicableForItems() {
     let applicableForItemsArray = [];
     this.requestLocation.requestProducts.forEach((product: any) => {
-      ///if (product.status !== 'Stemmed') {
+      //if (product.status !== 'Stemmed') {
         applicableForItemsArray.push({
           id: product.id,
           name: product.productName,
@@ -546,7 +546,7 @@ export class ApplicablecostpopupComponent implements OnInit {
         this.totalMaxQuantity = this.totalMaxQuantity + product.maxQuantity;
         this.maxQuantityUomId = product.uomId;
         this.maxQuantityUom = product.uomName;
-     ///}
+     //}
     });
 
     if (applicableForItemsArray.length > 1) {
