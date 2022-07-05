@@ -360,8 +360,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   saveLocationAdditionalCosts(save: string) {
-    this.locationBasedCosts = this.locationBasedCosts.filter(x=> x.isSelected === true);
-    if(this.locationBasedCosts.length === 0){
+    if(this.locationBasedCosts.length === 0 && this.enableSave == false){
       this.toastr.warning('Please Select Atleast one Row');
       return;
     }
@@ -378,7 +377,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.toastr.warning('Please add location cost');
       return;
     }
-    if (!this.enableSave) {
+    if (!this.enableSave && save == 'isSave') {
       this.toastr.warning('No changes are made to perform save.');
       return;
     }
@@ -430,6 +429,11 @@ export class ApplicablecostpopupComponent implements OnInit {
           reqIdForLocation +
           ' as the location is not available! '
       );
+      return;
+    }
+
+    if(!selectedRequestList.length && save == 'isProceed'){
+      this.toastr.warning('Please Select Atleast one Request');
       return;
     }
     
@@ -544,16 +548,6 @@ export class ApplicablecostpopupComponent implements OnInit {
     this.isCheckedMain = false;
    }
 }
-  addLocationCostToAllRequests(){ ///save & proceed
-    if(this.locationBasedCosts.length === 0){
-      this.toastr.warning('Please Select Atleast one Row');
-      return;
-    }
-    else{
-        this.saveLocationAdditionalCosts('isProceed');
-    }
-}
-
 
   checkIfSelectedApplicableIdExistsInapplicableForItems(
     locationAdditionalCost
@@ -1104,6 +1098,10 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   copyLocationBasedCostToSelectedRequest(selectedRequestList) {
+    if(selectedRequestList.length == 0){
+      this.toastr.warning('Please Select Atlest one Row');
+      return;
+    }
     this.copiedLocationCost = [];
     this.endpointCount = 0;
     let reqIdForLocation: String;
@@ -1117,7 +1115,7 @@ export class ApplicablecostpopupComponent implements OnInit {
         ) {
           let reqProductIdForLocation = [];
           this.locationBasedCosts.forEach(locationCost => {
-            if (!locationCost.isDeleted) {
+            if (!locationCost.isDeleted && locationCost.isSelected) {
               let newCost = _.cloneDeep(locationCost);
               newCost.id = 0;
               newCost.hasStemmedProduct = false;
