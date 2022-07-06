@@ -36,6 +36,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
           class="add-icon"
           [matMenuTriggerFor]="clickmenu"
           #menuTrigger="matMenuTrigger"
+          (click)="setValuefun()">
         ></span>
         <mat-menu #clickmenu="matMenu" class="add-new-request-menu add-counterparties">
           <div class="expansion-popup" style="margin: 20px 0px;">
@@ -414,7 +415,16 @@ export class ShiptechCustomHeaderGroup {
       );
     }
   }
-
+  setValuefun(){
+    let counterparties = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 12);
+    });
+    this.counterpartyList = cloneDeep(counterparties);
+    this.counterpartyList?.forEach(element => {
+      element.name = this.tenantService.htmlDecode(element.name);
+    });
+    this.visibleCounterpartyList = this.counterpartyList.slice(0, 12);
+  }
   search(userInput: string): void {
     clearInterval(this.clrRequest);
      this.clrRequest = setTimeout(() => {
