@@ -227,60 +227,86 @@
               </mat-form-field>
             </div>
           </td>
+          
           <td style="max-width: initial;min-width: 200px" class="padding-line">
             <div
-              class="custom-form-field-additional-cost"
-              [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
+            #menuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="additionalProductSearch"
+            (click)="
+            additionalProdSearch = null;"
+          ><a class="add-icon"></a>
+          </div>
+		   <mat-menu
+            #additionalProductSearch="matMenu"
+            class="select-product-container additional-cost-pop-up"
+            yPosition="above"
+            style="max-height: 400px !important;"
+          >
+          <div
+              [ngClass]="{
+                'expand-allowed-company-container': expandAddTransactionListPopUp
+              }"
             >
-              <mat-form-field
-                class="without-search dotted-form-field product-field"
-                appearance="legacy"
-              >
-                <mat-select
-                  [(ngModel)]="additionalCost.value.product"
-                  (ngModelChange)="
-                    getRangeTotalAmount(
-                      additionalCost.value,
-                      additionalCost.key
-                    );
-                    invoiceConvertUom('cost', additionalCost.key)
-                  "
-                  [compareWith]="compareProductObjects"
-                  [disableOptionCentering]="true"
-                  [disabled]="
-                    (additionalCost.value.locationAdditionalCostId &&
-                      !(
-                        additionalCost.value.costType.name == 'Range' ||
-                        additionalCost.value.costType.name == 'Total'
-                      )) ||
-                    additionalCost.value.orderAdditionalCostId ||
-                    (formValues.status &&
-                      (formValues.status.name == 'Cancelled' ||
-                        formValues.status.name == 'Approved'))
-                  "
-                  panelClass="general-information-select-container"
-                >
-                  <ng-container *ngFor="let option of applyForList">
-                    <mat-option *ngIf="option.name != 'All'" [value]="option">
-                      {{ option.name }}
-                    </mat-option>
-                    <mat-option
-                      *ngIf="
-                        !(
-                          additionalCost.value.costType.name == 'Range' ||
-                          additionalCost.value.costType.name == 'Total'
-                        ) && option.name == 'All'
-                      "
-                      [value]="option"
-                    >
-                      {{ option.name }}
-                    </mat-option>
-                  </ng-container>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </td>
-          <td
+            <div class="col-md-12 header-container-product">
+              <div class="search-product-container col-md-10">
+                               <span
+                                 class="search-product-lookup"
+                                 (click)="$event.stopPropagation(); $event.preventDefault()"
+                               >
+                               </span>
+                               <input
+                                 matInput
+                                 (click)="$event.stopPropagation(); $event.preventDefault()"
+                                 [(ngModel)]="additionalProdSearch"
+                                 (input)="searchProduct(
+                                  $event.target.value,
+                                  this.formValues.orderDetails?.portId
+                                )"
+                                 placeholder="Search all and select a product"
+                                 class="search-product-input"
+                               />
+                             </div>
+                           
+                             </div>
+                             <table mat-table [dataSource]="applyForList">
+                              <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef>
+                                  Products
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                  <mat-radio-group
+                                    [(ngModel)]="additionalCostProduct"
+                                    (ngModelChange)="
+                                      getRangeTotalAmount(
+                                    additionalCost.value,
+                                    additionalCost.key
+                                  );
+                                    "
+                                  >
+                                    <mat-radio-button [value]="element">
+                                      {{ element.name }}
+                                    </mat-radio-button>
+                                  </mat-radio-group>
+                                </td>
+                              </ng-container>
+                              <td></td><td></td><td></td>
+                              <ng-container matColumnDef="delNo">
+                                <th mat-header-cell *matHeaderCellDef>
+                                  Delivery No
+                                </th><td></td>
+                                <td mat-cell *matCellDef="let element">
+                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{element.deliveryNumber}}
+                                </td>
+                              </ng-container>
+                              <tr mat-header-row *matHeaderRowDef="displayedColumnsProd"></tr>
+                              <tr
+                                mat-row
+                                *matRowDef="let row; columns: displayedColumnsProd"
+                              ></tr>
+                              </table>
+                              </div>
+                      </mat-menu>
+          </td>          <td
             class="padding-left-column"
             style="max-width: initial;min-width: 200px"
           >
