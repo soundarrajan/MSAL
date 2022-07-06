@@ -576,7 +576,7 @@ var Cfg = {
                     }
                     if (v.column.columnRoute == 'schedule-dashboard-table' || v.column.columnRoute == 'schedule-dashboard-calendar') {
                     	if (k > 0) {
-	                    	// concat = " or "
+                            concat =  v.column.groupName == 'OR' ? " or " : " and ";
                     	}
                     }
                     var columnName = v.column.columnName;

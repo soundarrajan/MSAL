@@ -126,8 +126,23 @@ angular.module('shiptech.components').controller('FiltersController', [
             $scope.applyFilters($scope.globalFilters);
         });
 
-        $scope.applyFilters = function(data, noSlide, fromcol, column, defaultConf) {
+        $scope.CombineGlobalAndPrecedenceData = function(data) {
+            if ($scope.precedenceFilters && $scope.precedenceFilters.find(x => x.column != null)) {
+                if (data && data.find(x => x.column != null) && !data.clear) {
+                    data = $scope.precedenceFilters.concat(data);
+                }
+                else {
+                    data = $scope.precedenceFilters;
+                }
+            }
+            return data;
+        }
+
+        $scope.applyFilters = function (data, noSlide, fromcol, column, defaultConf) {
             // $scope.currentList = $state.current.url.replace(":screen_id", $state.params.screen_id).replace("/", "");
+            if ($scope.currentList === 'schedule-dashboard-calendar' || $scope.currentList === 'schedule-dashboard-table' || $scope.currentList === 'schedule-dashboard-timeline'){
+                data = $scope.CombineGlobalAndPrecedenceData(data);
+            }
 
             if (typeof $rootScope.lastFilterApplied == 'undefined') {
             	$rootScope.lastFilterApplied = 0;
@@ -352,17 +367,17 @@ angular.module('shiptech.components').controller('FiltersController', [
             for (let i = 0; i < filters.length; i++) {
                 let skipFilters = false;
                 if ($rootScope.productTypeView && $rootScope.productTypeView.id == 1) {
-                    if (filters[i].value[0] == 'Alkali Strategy' || filters[i].value[0] == 'Residue Strategy') {
+                    if (filters && filters[i].value && (filters[i].value[0] == 'Alkali Strategy' || filters[i].value[0] == 'Residue Strategy')) {
                         skipFilters = true;
                     }
                 }
                 if ($rootScope.productTypeView && $rootScope.productTypeView.id == 2) {
-                    if (filters[i].value[0] == 'Alkali Strategy' || filters[i].value[0] == 'Bunker Strategy') {
+                    if (filters && filters[i].value && (filters[i].value[0] == 'Alkali Strategy' || filters[i].value[0] == 'Bunker Strategy')) {
                         skipFilters = true;
                     }
                 }
                 if ($rootScope.productTypeView && $rootScope.productTypeView.id == 3) {
-                    if (filters[i].value[0] == 'Residue Strategy' || filters[i].value[0] == 'Bunker Strategy') {
+                    if (filters && filters[i].value && (filters[i].value[0] == 'Residue Strategy' || filters[i].value[0] == 'Bunker Strategy')) {
                         skipFilters = true;
                     }
                 }
@@ -450,9 +465,11 @@ angular.module('shiptech.components').controller('FiltersController', [
                 data.filters = data.filters.replace('VoyageDetail_Request_Id', '(CASE WHEN VoyageDetail_Request_Id = 0 THEN NULL ELSE VoyageDetail_Request_Id END)');
             }
             $scope.globalFilters = [];
+            $scope.precedenceFilters = [];
             // if new configuration, return
             if (!data) {
                 $scope.globalFilters.push({});
+                $scope.precedenceFilters.push({});
                 $scope.clearUnsavedFilters();
                 $rootScope.activeBreadcrumbFilters = null;
                 // $rootScope.appFilters = null;
@@ -461,6 +478,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             }
             if (data.id == 0) {
                 $scope.globalFilters.push({});
+                $scope.precedenceFilters.push({});
                 $scope.clearUnsavedFilters();
                 $rootScope.activeBreadcrumbFilters = null;
                 // $rootScope.appFilters = null;
@@ -503,6 +521,15 @@ angular.module('shiptech.components').controller('FiltersController', [
                         newFilter.column = val2;
                     }
                 });
+                if (($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' || $state.current.name == 'default.schedule-dashboard-table' || $state.current.name == 'default.dashboard-table' || $state.current.name == 'default.dashboard-calendar') 
+                    && (val.columnValue == 'BuyerName' || val.columnValue == 'ServiceBuyerName')){
+                    // check in current precedencecolumns
+                    $.each($scope.currentPrecedenceColumns, (key2, val2) => {
+                        if (val2.columnValue == val.columnValue) {
+                            newFilter.column = val2;
+                        }
+                    });
+                }
                 // check values
                 $.each($scope.conditions, (key2, val2) => {
                     if (val2.conditionValue == val.conditionValue) {
@@ -513,8 +540,16 @@ angular.module('shiptech.components').controller('FiltersController', [
                 $.each(val.values, (key2, val2) => {
                     newFilter.value.push(val2);
                 });
-                $scope.globalFilters.push(newFilter);
-                if (newFilter.column.columnRoute === 'schedule-dashboard-calendar' && newFilter.column.columnName == 'Port Status') {
+
+                if (newFilter && newFilter.column && (newFilter.column.columnRoute == 'schedule-dashboard-calendar' || newFilter.column.columnRoute == 'schedule-dashboard-table' || newFilter.column.columnRoute == 'schedule-dashboard-timeline')
+                    && (newFilter.column.columnValue == 'BuyerName' || newFilter.column.columnValue == 'ServiceBuyerName')) {
+                    $scope.precedenceFilters.push(newFilter);   
+                }
+                else{
+                    $scope.globalFilters.push(newFilter);
+                }
+
+                if (newFilter && newFilter.column && newFilter.column.columnRoute === 'schedule-dashboard-calendar' && newFilter.column.columnName == 'Port Status') {
                     $rootScope.activeBreadcrumbFilters = newFilter.value[0];
                     // $rootScope.$broadcast(CUSTOM_EVENTS.BREADCRUMB_FILTER_STATUS, newFilter.value[0], 0);
                 }
@@ -530,8 +565,19 @@ angular.module('shiptech.components').controller('FiltersController', [
             }
         };
 
-        $scope.initGlobalFilters = function() {
-        	$scope.globalFilters = [ {} ];
+        $scope.initGlobalFilters = function (globalFiltersbool, precedenceFiltersbool) {
+        	if(globalFiltersbool && precedenceFiltersbool){
+                $scope.globalFilters = [ {} ];
+                $scope.precedenceFilters = [ {} ];
+            }
+
+            if(!globalFiltersbool){
+                $scope.globalFilters = [ {} ];
+            }
+
+            if(!precedenceFiltersbool){
+                $scope.precedenceFilters = [ {} ];
+            }
         	if (localStorage.getItem('persistentGlobalFilters')) {
 	        	$scope.globalFilters = angular.copy(JSON.parse(localStorage.getItem('persistentGlobalFilters')));
 	        	$scope.applyFilters($scope.globalFilters);
@@ -591,6 +637,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     if (!_.isEmpty(val) && !_.isEmpty(val.column)) {
                         // console.log(val);
                         let filter = {
+                            groupName: val.column.groupName,
                             columnValue: val.column.columnValue,
                             fromTreasurySummary: val.fromTreasurySummary,
                             ColumnType: val.column.columnType,
@@ -607,6 +654,8 @@ angular.module('shiptech.components').controller('FiltersController', [
                             filter.FilterOperator = val.filterOperator;
                         } else if(key === 0) {
                             filter.FilterOperator = 0;
+                        } else if ((val.column.columnRoute == 'schedule-dashboard-calendar' || val.column.columnRoute == 'schedule-dashboard-table' || val.column.columnRoute == 'schedule-dashboard-timeline') && (val.column.columnValue == 'BuyerName' || val.column.columnValue == 'ServiceBuyerName')) {
+                            filter.FilterOperator = 2;   
                         } else {
                             filter.FilterOperator = 1;
                         }
@@ -660,6 +709,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             console.log('currentList', $scope.currentList);
             // console.log('$scope.filtersData',$scope.filtersData);
             $scope.currentColumns = [];
+            $scope.currentPrecedenceColumns = [];
             if($rootScope.rawFilters === undefined) {
                 $rootScope.rawFilters = [];
             }
@@ -703,7 +753,13 @@ angular.module('shiptech.components').controller('FiltersController', [
                         }
                     }
 
-                    $scope.currentColumns.push(value);
+                    if ((value.columnRoute == 'schedule-dashboard-calendar' || value.columnRoute == 'schedule-dashboard-table' || value.columnRoute == 'schedule-dashboard-timeline') && (value.columnValue == 'BuyerName' || value.columnValue == 'ServiceBuyerName')) {
+                        value.groupName = 'OR';
+                        $scope.currentPrecedenceColumns.push(value);    
+                    }
+                    else{
+                        $scope.currentColumns.push(value);
+                    }
                     // $rootScope.rawFilters[value.columnName] = value;
                     $rootScope.CheckForFilters++;
                 } else if (value.columnRoute === 'view-order-auditlog' && $scope.currentList.indexOf('masters') > -1) {
@@ -725,6 +781,7 @@ angular.module('shiptech.components').controller('FiltersController', [
         $scope.createFilters();
         $scope.clearFilters = function(noSlide) {
             $scope.globalFilters = [];
+            $scope.precedenceFilters = [];
             $rootScope.isDefaultConfig = $scope.selectedConfig;
             $scope.selectedConfig = null;
             $rootScope.timelineSaved = null;
@@ -762,6 +819,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     $rootScope.isTimelineFiltersDefault = false;
                 }
                 $scope.globalFilters = [];
+                $scope.precedenceFilters = [];
                 $rootScope.listOfAppliedFiltersString = [];
                 $rootScope.rawFilters = [];
                 $scope.createFilters();
@@ -778,6 +836,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                 $rootScope.isTimelineFiltersDefault = false;
             }
             $scope.globalFilters = [];
+            $scope.precedenceFilters = [];
             $rootScope.listOfAppliedFiltersString = [];
             $rootScope.startView = true;
             $rootScope.rawFilters = [];
@@ -791,6 +850,7 @@ angular.module('shiptech.components').controller('FiltersController', [
         $rootScope.$on('filtersTimelineDefault', () => {
             $rootScope.clc_loaded = false;
             $scope.globalFilters = [];
+            $scope.precedenceFilters = [];
             $rootScope.listOfAppliedFiltersString = [];
             $rootScope.rawFilters = [];
             $scope.createFilters();
@@ -894,6 +954,9 @@ angular.module('shiptech.components').controller('FiltersController', [
         };
 
         $scope.createAndUpdateFilterConfig = function(id, name, data, isDefault, menuZone, table) {
+            if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' || $state.current.name == 'default.schedule-dashboard-table' || $state.current.name == 'default.dashboard-table' || $state.current.name == 'default.dashboard-calendar') {
+                data = $scope.CombineGlobalAndPrecedenceData(data);
+            }
             // configuration must have at least one filter
             console.log($rootScope);
             // console.log($scope.$parent.CLC.tableParams)
@@ -1176,7 +1239,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             return $q((resolve, reject) => {
                 // send default config to table build
                 // no default config, send false
-                $scope.$watch('globalFilters', (newVal) => {
+                $scope.$watchCollection(['globalFilters','PrecedenceFilters'], (newVal) => {
                     // if (newVal != null) {
                     // console.log(newVal)
                     console.log($rootScope.rawFilters);
@@ -1339,7 +1402,10 @@ angular.module('shiptech.components').controller('FiltersController', [
 
 
         $scope.verifyValue = function(element) {
-            if (window.location.href.indexOf("all-requests-table") != -1 || window.location.href.indexOf("order-list") != -1) {
+            if ((window.location.href.indexOf("all-requests-table") != -1 || window.location.href.indexOf("order-list") != -1) && $rootScope.filtersAppliedOps) {
+                // if(element && element.column && element.column.columnRoute){
+                //     $rootScope.filtersAppliedOps =  $rootScope.filtersAppliedOps.filter(x=>x.column.columnRoute == element.column.columnRoute)
+                // }
                 for (var i = 0; i < $rootScope.filtersAppliedOps.length; i++) {
                     $rootScope.rawFilters[i] = angular.copy($rootScope.filtersAppliedOps[i]);
                 }

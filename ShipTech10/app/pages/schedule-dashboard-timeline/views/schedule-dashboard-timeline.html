@@ -3,7 +3,7 @@
 	<div ng-if="timelineLoaded && appFilters.length > 0" class="vis-timeline-filters-container">
 		Filter:  
 		<div class="filterCondition" ng-repeat="filter in appFilters" style="padding: 5px;">
-			<span style="margin-right: 5px;" ng-if="$index !== 0"> and </span>
+			<span style="margin-right: 5px;" ng-if="$index !== 0"> {{filter && filter.groupName == 'OR' ?  'or' : 'and'}} </span>
 			{{ filter.displayName }}
 			
 			<span class="filterVal" ng-if="filter.ColumnType == 'Date' || filter.ColumnType == 'DateOnly'" ng-show="filter.conditionName.indexOf('blank') == -1"> 
