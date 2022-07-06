@@ -569,9 +569,9 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
                 element.locationId == this.data.LocationId &&
                 element.id == this.data.requestLocationSellerId
               ) {
-                if (this.data?.PhysicalSupplierCounterpartyName && this.data?.PhysicalSupplierCounterpartyName != null) {
+                if (this.selectedCounterparties[0]?.sellerCounterpartyName && this.selectedCounterparties[0]?.sellerCounterpartyName != null) {
                   const PreviousPhySupplier = state.spotNegotiation.counterpartyList.filter(
-                    item => item.name === this.data.PhysicalSupplierCounterpartyName
+                    item => item.name === this.selectedCounterparties[0]?.sellerCounterpartyName
                   );
                   if (PreviousPhySupplier.length != 0) {
                     return (valid = true);
