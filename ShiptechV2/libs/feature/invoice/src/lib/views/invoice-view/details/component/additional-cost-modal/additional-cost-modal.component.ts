@@ -35,6 +35,7 @@ export class AdditionalCostModalComponent implements OnInit {
   productDetails: any;
   @Output() changedAdditonalcost = new EventEmitter();
   displayedColumns: string[] = ['name'];
+  displayedColumnsProd: string[] = ['name', 'delNo']
   formValues: any;
   generalTenantSettings: any;
   adminConfiguration: any;
@@ -57,6 +58,8 @@ export class AdditionalCostModalComponent implements OnInit {
   eventsSubscription: any;
   expandAddTransactionListPopUp: any;
   selectedProductLine: any;
+  additionalCostProduct: any;
+  additionalProdSearch: any;
   costType: any;
   costDetailsComponentTypes: any;
   filterCostNames: any[];
@@ -1145,6 +1148,9 @@ export class AdditionalCostModalComponent implements OnInit {
     ].filter(option => option.name.toLowerCase().includes(value.toLowerCase()));
     this.additionalCostForLocation[locationId] = _.cloneDeep(filterCostList);
     this.changeDetectorRef.detectChanges();
+  }
+
+  searchProduct(value: string, locationId): void {
   }
 
   getAdditionalCostsPerPort(locationId) {
