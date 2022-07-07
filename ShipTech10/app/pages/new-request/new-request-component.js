@@ -2013,8 +2013,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             locationObject.company = angular.copy(extraInfo.company);
                         }
                         if (ctrl.vesselDefaultDetails.company) {
-                            if(locationObject.vesselVoyageId == null){ locationObject.company = null;}
-                             else { locationObject.company = angular.copy(ctrl.vesselDefaultDetails.company);}
+                            if(locationObject.voyageCode == null && (typeof locationObject.company != 'undefined')){ locationObject.company = null;}
+                            else if(locationObject.voyageCode == null && ctrl.request.locations.length > 0) {ctrl.request.locations[0].company.name = null;}
+                            else { locationObject.company = angular.copy(ctrl.vesselDefaultDetails.company);}
                         }
                     } else {
                         if (extraInfo.company) {
@@ -2344,7 +2345,6 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             if (vessel.voyages[0].voyageDetails) {
                                 if (vessel.voyages[0].voyageDetails[0].company) {
                                     if(ctrl.request.locations.length > 0) {
-
                                     companyToDefault = vessel.voyages[0].voyageDetails[0].company;
                                     }
                                 }  
@@ -2357,7 +2357,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         }
                         if (!preventUpdateCompany) {
                             ctrl.request.company.name = companyToDefault.name;
-                            //if(ctrl.request.locations.length > 0) {ctrl.request.locations[0].company.name = companyToDefault.name;}
+                            if(ctrl.request.locations.length > 0) {ctrl.request.locations[0].company.name = companyToDefault.name;}
                             ctrl.request.company.id = companyToDefault.id;
                         }
                     //}
