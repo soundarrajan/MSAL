@@ -2013,10 +2013,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             locationObject.company = angular.copy(extraInfo.company);
                         }
                         if (ctrl.vesselDefaultDetails.company) {
-                          //  if(locationObject.voyageCode == null && (typeof locationObject.company != 'undefined')){ locationObject.company = null;}
-                          //  else if(locationObject.voyageCode == null && ctrl.request.locations.length > 0) {ctrl.request.locations[0].company.name = null;}
-                          //  else { 
-                            locationObject.company = angular.copy(ctrl.vesselDefaultDetails.company);
+                          if(locationObject.voyageCode == null && (typeof locationObject.voyageCode == 'undefined'))
+                          { if(ctrl.selectedVessel.operatingCompany == null) {ctrl.vesselDefaultDetails.company = null;}}
+                          locationObject.company = angular.copy(ctrl.vesselDefaultDetails.company);
                         }
                     } else {
                         if (extraInfo.company) {
@@ -2345,9 +2344,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     } else if (vessel.voyages.length > 0) {
                             if (vessel.voyages[0].voyageDetails) {
                                 if (vessel.voyages[0].voyageDetails[0].company) {
-                                    if(ctrl.request.locations.length > 0) {
+                                    
                                     companyToDefault = vessel.voyages[0].voyageDetails[0].company;
-                                    }
                                 }  
                             }
                         }
