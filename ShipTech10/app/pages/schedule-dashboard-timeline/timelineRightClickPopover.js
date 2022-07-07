@@ -32,7 +32,7 @@ angular.module('shiptech.components')
 		    };
             ctrl.portStatusCheck=function(voyageId){
                 var isVisiblePort=false;
-                if(ctrl.questionnaireFlag?.filter(t=>t.voyageDetail.id==voyageId).length==ctrl.totalVoyages?.filter(t=>t.voyageDetail.id==voyageId).length){
+                if(ctrl.totalVoyages?.filter(t=>t.voyageDetail.id==voyageId).filter(v=>v.voyageDetail.request.id==0).length>0){
                     isVisiblePort=true;
                 }
                 return isVisiblePort;
@@ -94,10 +94,6 @@ angular.module('shiptech.components')
 		    		uniqueVoyages.push(v.voyageDetail.id);
 		    	});
 		    	uniqueVoyages = _.uniq(uniqueVoyages);
-                ctrl.questionnaireFlag=voyages?.filter(x=>x.VesselId==vesselId)?.filter(v=>v.voyageDetail.portStatus.displayName=='New' 
-                || v.voyageDetail.portStatus.displayName=='BunkerStrategy' 
-                || v.voyageDetail.portStatus.displayName=='Created'
-                || v.voyageDetail.portStatus.displayName=='Nearing ETA');
                 ctrl.totalVoyages=voyages?.filter(x=>x.VesselId==vesselId);
 		    	var hasEntity = {};
 		    	$.each(uniqueVoyages, (k, v) => {
