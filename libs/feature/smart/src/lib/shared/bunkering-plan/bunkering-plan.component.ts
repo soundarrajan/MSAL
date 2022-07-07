@@ -764,7 +764,7 @@ export class BunkeringPlanComponent implements OnInit {
         hsfo05_stock: bPlan.hsfo05_stock,
         hsfo_est_consumption_color: bPlan.hsfo_est_consumption_color,
         hsfo_estimated_consumption: bPlan.hsfo_estimated_consumption,
-        hsfo_estimated_lift: bPlan.hsfo_estimated_lift,
+        hsfo_estimated_lift: bPlan.hsfo_estimated_lift+bPlan.vlsfo_estimated_lift,
         hsfo_max_lift: bPlan.hsfo_max_lift,
         hsfo_max_lift_color: bPlan.hsfo_max_lift_color,
         hsfo_min_sod: bPlan.hsfo_min_sod,
@@ -773,6 +773,9 @@ export class BunkeringPlanComponent implements OnInit {
         hsfo_soa: bPlan.hsfo_soa,
         hsfo_sod_comment: bPlan.hsfo_sod_comment,
         is_alt_port: bPlan.is_alt_port,
+        is_alt_port_hsfo: bPlan.is_alt_port_hsfo,
+        is_alt_port_ulsfo: bPlan.is_alt_port_ulsfo,
+        is_alt_port_lsdis: bPlan.is_alt_port_lsdis,
         is_end_of_service: bPlan.is_end_of_service,
         is_min_soa: bPlan.is_min_soa,
         is_new_port: bPlan.is_new_port,
@@ -855,7 +858,7 @@ export class BunkeringPlanComponent implements OnInit {
     this.localService.setBunkerPlanState(this.gridChanged);
   }
 
-  toggleSave() {
+  toggleSave() {    
     this.gridSaved = true;
     this.gridChanged = false;
     //this.getRecalculatedHsfoCurrentStock();
@@ -893,7 +896,7 @@ export class BunkeringPlanComponent implements OnInit {
     };
     let isHardValidated = this.checkBunkerPlanValidations(dataFromStore);
     if (isHardValidated === 0) {
-      this.bplanService.saveBunkeringPlanDetails(req).subscribe(data => {
+      this.bplanService.saveBunkeringPlanDetails(req).subscribe(data => {        
         if (data?.isSuccess == true) {
           const dialogRef = this.dialog.open(SuccesspopupComponent, {
             panelClass: ['success-popup-panel'],
@@ -1218,7 +1221,7 @@ export class BunkeringPlanComponent implements OnInit {
     this.sodCommentsUpdated = true;
   }
 
-  calculateSOA(column) {
+  calculateSOA(column) {    
     if (this.store.selectSnapshot(UpdateBplanTypeState.getBplanType) == 'C') {
       let currentROB = this.store.selectSnapshot(
         SaveCurrentROBState.saveCurrentROB
@@ -1314,6 +1317,10 @@ export class BunkeringPlanComponent implements OnInit {
             }
             //For Port 1 to N
             else {
+              // let hsfo_lift = rowData2[i - 1].is_alt_port_hsfo == 'D'
+              // ? parseInt(rowData2[i - 1].hsfo_estimated_lift)
+              // : 0;
+
               rowData2[i].hsfo_soa =
                 parseInt(rowData2[i - 1].hsfo_estimated_lift) +
                 parseInt(rowData2[i - 1].hsfo_soa) -
@@ -1351,8 +1358,10 @@ export class BunkeringPlanComponent implements OnInit {
       SaveCurrentROBState.saveCurrentROB
     );
     let ulsfo_cons = 0;
-    let ulsfo_unpumpables = currentROB.upulsfo ? currentROB.upulsfo : 0;
-    let lsdis_unpumpables = currentROB.uplsdis ? currentROB.uplsdis : 0;
+    // let ulsfo_unpumpables = currentROB.upulsfo ? currentROB.upulsfo : 0;
+    // let lsdis_unpumpables = currentROB.uplsdis ? currentROB.uplsdis : 0;
+    let ulsfo_unpumpables = 0;
+    let lsdis_unpumpables = 0;
     let ulsfo_original_stock = 0;
     let lsdis_original_stock = 0;
     let prev_ulsfo_lift = 0;
@@ -1372,11 +1381,11 @@ export class BunkeringPlanComponent implements OnInit {
       prev_lsdis_lift = 0;
     } else {
       prev_ulsfo_lift =
-        rowData[index - 1].is_alt_port == 'D'
+        rowData[index - 1].is_alt_port_ulsfo == 'D'
           ? parseInt(rowData[index - 1].ulsfo_estimated_lift)
           : 0;
       prev_lsdis_lift =
-        rowData[index - 1].is_alt_port == 'D'
+        rowData[index - 1].is_alt_port_lsdis == 'D'
           ? parseInt(rowData[index - 1].lsdis_estimated_lift)
           : 0;
     }
