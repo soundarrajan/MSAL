@@ -4,7 +4,7 @@ import { AppConfig } from '@shiptech/core/config/app-config';
 import { ApiServiceBase } from '@shiptech/core/api/api-base.service';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, Subject, throwError } from 'rxjs';
 import { map, retry, catchError } from 'rxjs/operators';
 import { VesselDataModel, FuelDetails, VesselLocation, RequestDetail } from '../shared/models/vessel.data.model';
 import { BehaviorSubject } from 'rxjs';
@@ -77,6 +77,12 @@ export class LocalService {
     api: any;
     headersProp: HttpHeaders;
 
+    private changeUserRoal = new Subject<any>();
+    changeUserRoal$ = this.changeUserRoal.asObservable();
+
+    private reCallVesselPlanReport = new Subject<any>();
+    reCallVesselPlanReport$ = this.reCallVesselPlanReport.asObservable();
+
     @ApiCallUrl()
     protected _apiUrlAdmin = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
     protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_BOPS;
@@ -92,8 +98,16 @@ export class LocalService {
 
         this.getCountriesList().subscribe(data => {
         });
-
     }
+    
+    checkVesselNewPlanJob(){
+        this.reCallVesselPlanReport.next();
+    }
+
+    changeDefaultUserRole() {
+      this.changeUserRoal.next();
+    }
+
     setTheme(flag) {
         this.isDarkTheme.next(flag);
     }
