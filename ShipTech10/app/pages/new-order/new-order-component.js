@@ -4051,12 +4051,14 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     $.each(v.schedule, (sk, sv) => {
                         sv.data = v;
                         sv.pricePrecision = rowData.pricePrecision;
+                        sv.val=(sv.price+sv.premium);
+                        sv.unit_Price = trailremover(sv.val,sv.pricePrecision)
                         ctrl.productPrices.push(sv);
 
                     });
                 });
                 ctrl.formulaDetailsData.pricePrecision = rowData.pricePrecision;
-                ctrl.formulaDetailsData.formulaSchedule.avgDealValue = tenantService.getFixedFloat(ctrl.formulaDetailsData.formulaSchedule.avgDealValue, rowData.pricePrecision);
+                ctrl.formulaDetailsData.formulaSchedule.avgDealValue =trailremover(tenantService.getFixedFloat(ctrl.formulaDetailsData.formulaSchedule.avgDealValue, rowData.pricePrecision),rowData.pricePrecision);
 
                 $scope.modalInstance = $uibModal.open({
                     template: tpl,
@@ -5190,3 +5192,19 @@ function AplicableCostForProduct() {
         return ret;
     };
 }
+
+function trailremover(returnData,price_precision){
+data= new Intl.NumberFormat( 'en-IN',{  minimumFractionDigits: 0,
+    maximumFractionDigits: price_precision}).format(returnData)
+var numval = data.split('.');
+if(numval.length > 0){
+    var temp = parseFloat(0+'.'+numval[1]);
+    if(temp > 0){
+        data = numval[0]+temp.toString().substring(1);
+    }else{
+        data = numval[0];
+    }
+
+}
+return data;
+};
