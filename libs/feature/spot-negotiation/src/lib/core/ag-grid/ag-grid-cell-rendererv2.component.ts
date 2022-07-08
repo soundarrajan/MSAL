@@ -2372,6 +2372,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
     if (valid) {
+      this.editedSeller='Add P. Supplier';
+      this.phySupplierId=0;
       this.toastr.error(
         'Physical supplier already available against the given the Seller.'
       );
@@ -2439,6 +2441,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             });
           }
         }
+        this.editedSeller='Add P. Supplier';
+        this.phySupplierId=0;
         this.toastr.error(res.message);
         return;
       }
