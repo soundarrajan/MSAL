@@ -417,9 +417,9 @@ export class GeneratePlanStateModel{
   name : 'GeneratePlan',
   defaults : {
     generatePlan : 0,
-    genInProgress : 0,
+    genInProgress : false,
     importGsis : 0,
-    importInProgress : 0,
+    importInProgress : false,
     sendPlan : 0,
     isNewVesselPlanAvailable : 'N'
   }
