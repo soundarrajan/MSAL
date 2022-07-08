@@ -122,15 +122,15 @@ export class VesselDetailsComponent implements OnInit {
     // load vessel list for vessel search option
     this.localService.getVesselListall(false).subscribe(tenantConfRes => {
       this.getVesselListVesselWithImo = tenantConfRes.find(
-        txn => txn.name == 'VesselWithImo' &&
-          txn.description?.toLowerCase() == 'BopsVessel'
+        txn => txn.name == 'VesselWithImo'
       ).items;
       this.getVesselListVesselWithCode = tenantConfRes.find(
         txn => txn.name == 'Vessel'
       ).items;
       this.vesselList = this.getVesselListVesselWithCode.map((vesselItem) => {
         let obj = this.getVesselListVesselWithImo.find(
-          imoItem => imoItem.id === vesselItem.id
+          imoItem => imoItem.id === vesselItem.id &&
+            imoItem.description?.toLowerCase() == ('BopsVessel').toLowerCase()
         );
         return obj
           ? { ...vesselItem, imono: obj.name, displayName: vesselItem.name }
