@@ -2013,7 +2013,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             locationObject.company = angular.copy(extraInfo.company);
                         }
                         if (ctrl.vesselDefaultDetails.company) {
-                          if(locationObject.voyageCode == null && (typeof locationObject.voyageCode == 'undefined'))
+                          if(locationObject.voyageCode == null || (typeof locationObject.voyageCode == 'undefined'))
                           { if(ctrl.selectedVessel.operatingCompany == null) {ctrl.vesselDefaultDetails.company = null;}}
                           locationObject.company = angular.copy(ctrl.vesselDefaultDetails.company);
                         }
