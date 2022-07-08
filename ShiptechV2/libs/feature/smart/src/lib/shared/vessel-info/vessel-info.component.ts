@@ -783,8 +783,8 @@ export class VesselInfoComponent implements OnInit {
       // if(data?.isSuccess == true ){
       if (
         data?.isSuccess == true &&
-        data?.payload[0]?.gen_in_progress == 0 &&
-        data?.payload[0]?.import_in_progress == 0
+        data?.payload[0]?.gen_in_progress == false &&
+        data?.payload[0]?.import_in_progress == false
       ) {
         /* As per new requirement discussion, "import_in_progress, gen_in_progress" will be 0
          ** only on gen plan completion. So we don't need to handle this dialog for this plan completed case
@@ -799,8 +799,8 @@ export class VesselInfoComponent implements OnInit {
         // this.store.dispatch(new ImportGsisProgressAction(data.payload[0].import_in_progress));
       } else if (
         data?.isSuccess == true &&
-        data?.payload[0]?.gen_in_progress == 1 &&
-        data?.payload[0]?.import_in_progress == 0
+        data?.payload[0]?.gen_in_progress == true &&
+        data?.payload[0]?.import_in_progress == false
       ) {
         const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
@@ -819,7 +819,7 @@ export class VesselInfoComponent implements OnInit {
         this.store.dispatch(
           new ImportGsisProgressAction(data.payload[0].import_in_progress)
         );
-      } else if (data.payload && data?.payload[0]?.import_in_progress == 1) {
+      } else if (data.payload && data?.payload[0]?.import_in_progress == true) {
         const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
           panelClass: 'confirmation-popup-operator',
@@ -873,7 +873,7 @@ export class VesselInfoComponent implements OnInit {
     .subscribe((data) => {
       data = (data.payload?.length)? (data.payload)[0]: data.payload;
       genBunkerPlanRef = data;
-      if(data.import_in_progress==0 && data.gen_in_progress==0) {
+      if(data.import_in_progress == false && data.gen_in_progress == false) {
         //Refresh current bunker plan section once gen plan get completed
         let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
         this.loadBunkerPlanDetails(vesseldata.vesselRef);
