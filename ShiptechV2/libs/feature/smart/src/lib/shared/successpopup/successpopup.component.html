@@ -13,7 +13,7 @@
     <div class="success-text">{{message}} {{id}}</div>
     <div class="yes-no">
      
-      <button mat-raised-button class="blue-button" [mat-dialog-close]="true">
+      <button mat-raised-button (click)="changeVessalPlanViewFlag(observableRestartFlag)" class="blue-button" [mat-dialog-close]="true">
         <span>Ok</span>
       </button>
     </div>

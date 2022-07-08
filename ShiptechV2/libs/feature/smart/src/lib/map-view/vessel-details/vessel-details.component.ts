@@ -59,7 +59,11 @@ export class VesselDetailsComponent implements OnInit {
     private localService: LocalService,
     public dialog: MatDialog,
     private vesselService: VesselPopupService
-  ) {}
+  ) {
+    this.localService.changeUserRoal$.subscribe(() => {
+      this.getBunkerUserModeDefault();
+    });
+  }
 
   ngOnInit() {
     if(this.defaultLoad == true){
