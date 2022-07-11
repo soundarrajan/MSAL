@@ -2040,7 +2040,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         }
                     } else {
                         if (extraInfo.company) {
-                            ctrl.request.company = angular.copy(extraInfo.company);
+                            //ctrl.request.company = angular.copy(extraInfo.company);
                         }
                         if (ctrl.vesselDefaultDetails) {
                             if (ctrl.vesselDefaultDetails.company) {
