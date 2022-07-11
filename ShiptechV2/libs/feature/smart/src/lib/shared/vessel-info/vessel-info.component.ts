@@ -776,6 +776,7 @@ export class VesselInfoComponent implements OnInit {
     this.import_gsis = this.isChecked ? 1 : 0;
     let req = {
       action: '',
+      user_id: this.store.selectSnapshot(UserProfileState.username), //"default@inatech.com",
       ship_id: this.vesselData?.vesselId,
       generate_new_plan: 1,
       import_gsis: this.import_gsis
