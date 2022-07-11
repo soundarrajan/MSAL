@@ -295,14 +295,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
     });
     if (!isallow) {
-      const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
-        width: '1045px',
-        height: '555px',
-        panelClass: 'additional-cost-popup'
-      });
-
-      dialogRef.afterClosed().subscribe(result => {});
-      this.spotNegotiationService.callGridRefreshService();
+      setTimeout(() => {
+        const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
+          width: '1045px',
+          height: '555px',
+          panelClass: 'additional-cost-popup'
+        });  
+        dialogRef.afterClosed().subscribe(result => {});
+        this.spotNegotiationService.callGridRefreshService();
+      },1000);
     } else {
       this.toaster.warning('Cannot confirm offer as no offer price available');
       return;
