@@ -875,8 +875,9 @@ export class VesselInfoComponent implements OnInit {
           generate_new_plan: 0, //(genBunkerPlanRef?.import_in_progress==0)? 1: 0,
           import_gsis: 0
         }
+        let payload_req = {vessel_Code:''}
         //this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
-        return this.bunkerPlanService.getPlanStatus(req);
+        return this.bunkerPlanService.getPlanStatus(payload_req);
     }))
     .subscribe((data_all) => {
       let userVessalList = data_all.payload.filter(data => {
