@@ -269,7 +269,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             ctrl.PortLocationEditable = false;
             if(orderId != null && data.status != null && data.status != undefined) {
                 ctrl.isEnabledVessel = false;
-                if(ctrl.procurementSettings.order?.optionToChangePort?.name == 'Yes' && ctrl.relatedOrders.length > 0 && ctrl.relatedOrders[0].deliveryCount == 0 && (data.status.name == 'Stemmed' || data.status.name == 'Confirmed' || data.status.name == 'Approved')) {
+                if(ctrl.procurementSettings.order?.optionToChangePort?.name == 'Yes' && ctrl.relatedOrders?.length > 0 && ctrl.relatedOrders[0].deliveryCount == 0 && (data.status.name == 'Stemmed' || data.status.name == 'Confirmed' || data.status.name == 'Approved')) {
                     ctrl.PortLocationEditable = true;
                     ctrl.isEnabledVessel = true;
                 }
@@ -620,13 +620,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
           });
         };
 
-        // set all data mappings 
+        // set all data mappings
         getOrderListForRequest();
         function loadData(data) {
             ctrl.data = data.payload;
             ctrl.getOrderinitialSnapshot = angular.copy(ctrl.data);
             ctrl.PortLocationEditable = false;
-            ctrl.getPortVisible(ctrl.orderId, ctrl.data);
             $.each(ctrl.data.products, (k, v) => {
                 if ((!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) && _.get(v, 'status.name') !== 'Cancelled') {
                     ctrl.data.missingPhysicalSupplier = true;
@@ -3509,12 +3508,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         function getOrderListForRequest() {
             if (window.clickOnSaveAndSend && window.orderDetails) {
                 ctrl.relatedOrders = angular.copy(window.orderDetails.relatedOrders);
+                ctrl.getPortVisible(ctrl.orderId, ctrl.data);
             } else {
                 orderModel.getOrderListForRequest(ctrl.orderId).then((data) => {
                     ctrl.relatedOrders = data.payload;
+                    ctrl.getPortVisible(ctrl.orderId, ctrl.data);
                 });
             }
-
         }
 
         /**

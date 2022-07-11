@@ -5109,7 +5109,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 }
                                 if(storedMTRArrayElem.portId != currentMTRArrayElem.portId
                                     || storedMTRArrayElem.port.id != currentMTRArrayElem.port.id
-                                    || storedMTRArrayElem.eta != currentMTRArrayElem.eta
+                                    || ctrl.formatDate(storedMTRArrayElem.eta, null) != ctrl.formatDate(currentMTRArrayElem.eta, null)
                                     || storedMTRArrayElem.minQtyToReach != currentMTRArrayElem.minQtyToReach
                                     || storedMTRArrayElem.minQtyToReachPretest != currentMTRArrayElem.minQtyToReachPretest
                                     || storedMTRArrayElem.estimatedPrice != currentMTRArrayElem.estimatedPrice

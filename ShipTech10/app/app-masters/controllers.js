@@ -11157,6 +11157,17 @@
             }   
         }
 
+        vm.validateNumber = function (val) {
+            if (typeof val == 'string') {
+                let plainNumber = val.replace(/[^\d|\-+|\.+]/g, '');
+                val = parseFloat(plainNumber);
+            }
+            if (isNaN(val)) {
+                val = null;
+            }
+            return val;
+        };
+
         $scope.vessel_loadBopsCopy = function() {
             data = { Payload: $scope.formValues.copyVessel.id };
             Factory_Master.getVesselBOPSDetails(data, (callback) => {
