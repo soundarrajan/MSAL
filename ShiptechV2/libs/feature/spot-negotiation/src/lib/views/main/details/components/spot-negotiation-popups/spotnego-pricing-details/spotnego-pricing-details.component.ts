@@ -10,9 +10,9 @@ import moment from 'moment';
 import _ from 'lodash';
 import { SearchFormulaPopupComponent } from '../search-formula-popup/search-formula-popup.component';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { finalize } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { FormValues } from './spotnego-pricing-details.interface';
+import { switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-spotnego-pricing-details',
@@ -62,7 +62,13 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   pricingScheduleList: any;
   list : any
   entityName: string;
-
+  formulaId: number;
+  scheduleId: number;
+  requestOfferId: number;
+  priceConfigurationId : number;
+  offerPriceFormulaId: number;
+  locationId : number;
+  evaluatedFormulaPrice: any;
   constructor(public dialogRef: MatDialogRef<SpotnegoPricingDetailsComponent>, 
               @Inject(MAT_DIALOG_DATA) public data: any,
               iconRegistry: MatIconRegistry,
@@ -77,9 +83,10 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
               
               ) {
     iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
-
+    this.requestOfferId = data.requestOfferId;
+    this.offerPriceFormulaId = data.offerPriceFormulaId;
     this.sessionFormulaList = JSON.parse(sessionStorage.getItem('formula'));
-
+    this.locationId = data.locationId;
     this.store.selectSnapshot<any>((state: any) => {
       this.staticList = state.spotNegotiation.staticLists.otherLists;
     });
@@ -100,26 +107,55 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.formulaFlatPercentageList = this.setStaticLists('FormulaFlatPercentage');
-        this.formulaPlusMinusList = this.setStaticLists('FormulaPlusMinus');
-        this.marketPriceList = this.setStaticLists('MarketPriceType');
-        this.systemInstumentList = this.setStaticLists('SystemInstrument');
-        this.uomList = this.setStaticLists('Uom');
-        this.currencyList = this.setStaticLists('Currency');
-        this.formulaOperationList = this.setStaticLists('FormulaOperation');
-        this.formulaFunctionList = this.setStaticLists('FormulaFunction');
-        this.marketPriceTypeList = this.setStaticLists('MarketPriceType');
-        this.businessCalendarList = this.setStaticLists('BusinessCalendar');
-        this.eventList = this.setStaticLists('Event');
-        this.formulaEventIncludeList =  this.setStaticLists('FormulaEventInclude');
-        this.dayOfWeekList = this.setStaticLists('DayOfWeek');
-        this.holidayRuleList = this.setStaticLists('HolidayRule');
-        this.pricingSchedulePeriodList = this.setStaticLists('PricingSchedulePeriod');
-        this.quantityTypeList = this.setStaticLists('QuantityType');
-        this.productList = this.setStaticLists('Product');
-        this.locationList = this.setStaticLists('Location');
-        this.formulaTypeList = this.setStaticLists('FormulaType');
-        this.pricingScheduleList = this.setStaticLists('PricingSchedule');
+      this.formulaFlatPercentageList = this.setListFromStaticLists('FormulaFlatPercentage');
+        this.formulaPlusMinusList = this.setListFromStaticLists('FormulaPlusMinus');
+        this.marketPriceList = this.setListFromStaticLists('MarketPriceType');
+        this.systemInstumentList = this.setListFromStaticLists('SystemInstrument');
+        this.uomList = this.setListFromStaticLists('Uom');
+        this.currencyList = this.setListFromStaticLists('Currency');
+        this.formulaOperationList = this.setListFromStaticLists('FormulaOperation');
+        this.formulaFunctionList = this.setListFromStaticLists('FormulaFunction');
+        this.marketPriceTypeList = this.setListFromStaticLists('MarketPriceType');
+        this.businessCalendarList = this.setListFromStaticLists('BusinessCalendar');
+        this.eventList = this.setListFromStaticLists('Event');
+        this.formulaEventIncludeList =  this.setListFromStaticLists('FormulaEventInclude');
+        this.dayOfWeekList = this.setListFromStaticLists('DayOfWeek');
+        this.holidayRuleList = this.setListFromStaticLists('HolidayRule');
+        this.pricingSchedulePeriodList = this.setListFromStaticLists('PricingSchedulePeriod');
+        this.quantityTypeList = this.setListFromStaticLists('QuantityType');
+        this.productList = this.setListFromStaticLists('Product');
+        this.locationList = this.setListFromStaticLists('Location');
+        this.formulaTypeList = this.setListFromStaticLists('FormulaType');
+        this.pricingScheduleList = this.setListFromStaticLists('PricingSchedule');
+        // this.formulaFlatPercentageList = this.setStaticLists('FormulaFlatPercentage');
+        // this.formulaPlusMinusList = this.setStaticLists('FormulaPlusMinus');
+        // this.marketPriceList = this.setStaticLists('MarketPriceType');
+        // this.systemInstumentList = this.setStaticLists('SystemInstrument');
+        // this.uomList = this.setStaticLists('Uom');
+        // this.currencyList = this.setStaticLists('Currency');
+        // this.formulaOperationList = this.setStaticLists('FormulaOperation');
+        // this.formulaFunctionList = this.setStaticLists('FormulaFunction');
+        // this.marketPriceTypeList = this.setStaticLists('MarketPriceType');
+        // this.businessCalendarList = this.setStaticLists('BusinessCalendar');
+        // this.eventList = this.setStaticLists('Event');
+        // this.formulaEventIncludeList =  this.setStaticLists('FormulaEventInclude');
+        // this.dayOfWeekList = this.setStaticLists('DayOfWeek');
+        // this.holidayRuleList = this.setStaticLists('HolidayRule');
+        // this.pricingSchedulePeriodList = this.setStaticLists('PricingSchedulePeriod');
+        // this.quantityTypeList = this.setStaticLists('QuantityType');
+        // this.productList = this.setStaticLists('Product');
+        // this.locationList = this.setStaticLists('Location');
+        // this.formulaTypeList = this.setStaticLists('FormulaType');
+        // this.pricingScheduleList = this.setStaticLists('PricingSchedule');
+    }
+
+    setListFromStaticLists(name) {
+      const findList = _.find(this.staticList, function(object) {
+        return object.name == name;
+      });
+      if (findList != -1) {
+        return findList?.items;
+      }
     }
 
     setStaticLists(staticName) {
@@ -131,42 +167,62 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       return obj && Object.keys(obj).length === 0;
     }
 
-    setFormulaTypeSelected(id) {
-      if (id == 2) {
-        //let isEmptyObject = this.isEmptyObject(this.formValues.simpleFormula);
-        if (this.isEmptyObject(this.formValues.simpleFormula)) {
-          this.formValues.simpleFormula = null;
-        }
-        if (!this.formValues.complexFormulaQuoteLines) {
+    setFormulaTypeSelected(id){
+      if(id == 1){
+        if(this.formValues.complexFormulaQuoteLines){
           this.formValues.complexFormulaQuoteLines = [];
+          this.formulaId = id;
+        }
+        else this.formulaId = id;
+      }
+      if(id == 2){
+        if(this.formValues.simpleFormula){
+          this.formValues.simpleFormula = {};
+          this.formulaId = id
+        }
+        else{
+          this.formulaId = id
         }
       }
-       else {
-        if (!this.formValues.simpleFormula) {
-          this.formValues.simpleFormula = {id : 0,
-            amount: 0,
-            flatPercentage:{
-              id: 0,
-              name: ''
-            },
-            isDeleted: true,
-            plusMinus: {
-              id: 0,
-              name: ''
-            },
-            priceType : {
-              id: 0,
-              name: ''
-            },
-            systemInstrument :{},
-            uom: {
-              id :0,
-              isDeleted : true,
-              name :''
-            }};
-        }
-      }
+      
     }
+
+    // setFormulaTypeSelected(id) {
+    //   if (id == 2) {
+    //     //let isEmptyObject = this.isEmptyObject(this.formValues.simpleFormula);
+    //     if (this.isEmptyObject(this.formValues.simpleFormula)) {
+    //       this.formValues.simpleFormula = null;
+    //     }
+    //     if (!this.formValues.complexFormulaQuoteLines) {
+    //       this.formValues.complexFormulaQuoteLines = [];
+    //     }
+    //   }
+    //    else {
+    //     if (!this.formValues.simpleFormula) {
+    //       this.formValues.simpleFormula = {id : 0,
+    //         amount: 0,
+    //         flatPercentage:{
+    //           id: 0,
+    //           name: ''
+    //         },
+    //         isDeleted: true,
+    //         plusMinus: {
+    //           id: 0,
+    //           name: ''
+    //         },
+    //         priceType : {
+    //           id: 0,
+    //           name: ''
+    //         },
+    //         systemInstrument :{},
+    //         uom: {
+    //           id :0,
+    //           isDeleted : true,
+    //           name :''
+    //         }};
+    //     }
+    //   }
+    // }
 
     setPricingType() {
       if (!this.formValues.pricingSchedule) {
@@ -261,13 +317,12 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     let payload = item.id;
     this.spinner.show();
     this.spotNegotiationService.getContractFormula(payload).subscribe((data: any)=>{
-    this.formValues = data.payload;
-    this.spinner.hide();
+      this.spinner.hide();
+     this.formValues = data.payload;
      this.formulaDesc = data.payload?.name;
-     this.expressType1  = data.payload.formulaType?.name;
-     this.expressType = data.payload.pricingSchedule?.name;
+     this.formulaId = data.payload.formulaType?.id;
+     this.scheduleId = data.payload.pricingSchedule?.id; 
      this.handleNullValues(this.formValues);
-     console.log(this.list);
   });
   }
   
@@ -442,50 +497,336 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     }
   }
 
-  saveFormula() {
-    if (this.formValues.id) {
-      this.spinner.show();
-      this.spotNegotiationService
-        .updateFormula(this.formValues)
-        .pipe(
-          finalize(() => {
-            this.spinner.hide();
-          })
-        )
-        .subscribe((response: any) => {
-          if (typeof response == 'string') {
-            this.toastr.error(response);
-          } else {
-            this.dialogRef.close({
-              name: this.formValues.name,
-              id: this.formValues.id
-            });
-            this.toastr.success('Operation completed successfully!');
-          }
-        });
-    } else {
-      this.spinner.show();
-      this.spotNegotiationService
-        .saveFormula(this.formValues)
-        .pipe(
-          finalize(() => {
-            this.spinner.hide();
-          })
-        )
-        .subscribe((response: any) => {
-          if (typeof response == 'string') {
-            this.toastr.error(response);
-          } else {
-            this.dialogRef.close({
-              name: this.formValues.name,
-              id: response
-            });
-            this.toastr.success('Operation completed successfully!');
-          }
-        });
+  generateDate(dates: any){
+    let date = [];
+    dates.forEach(val =>{
+       date.push({
+         date : val.date,
+         comment : val.comment,
+         isDeleted : val.isDeleted
+       })
+    });
+    return date;
+  }
+
+  generateSystemInstrumentForComplexFormula(systemInstrument : any){
+    let systemInstrumentList =[];
+    systemInstrument.forEach(sys => 
+      systemInstrumentList.push(
+       {
+         marketPriceTypeId : sys.marketPriceTypeId.id,
+         systemInstrumentId : sys.systemInstrument.id,
+       })
+    );
+
+    return systemInstrumentList;
+ }
+  constructSimpleFormula(simpleFormula){
+    let simplePayload = {
+      systemInstrumentId: simpleFormula.systemInstrument.id,
+      marketPriceTypeId : simpleFormula.priceType.id,
+      formulaPlusMinusId : simpleFormula.plusMinus.id,
+      amount : simpleFormula.amount,
+      formulaFlatPercentageId : simpleFormula.flatPercentage.id,
+      uomId : simpleFormula.uom.id 
+    }
+    return simplePayload;
+  }
+  constructComplexFormula(complexFormula){
+    let complexPayload = [];
+    complexFormula.forEach(comp=>
+       complexPayload.push({
+        id : comp.id,
+        amount : comp.amount,
+        formulaFlatPercentageId: comp.formulaFlatPercentage.id,
+        formulaFunctionId : comp.formulaFunction.id,
+        formulaOperationId : comp.formulaOperation.id,
+        formulaPlusMinusId : comp.formulaPlusMinus.id,
+        weight : comp.weight,
+        SystemInstruments : this.generateSystemInstrumentForComplexFormula(comp.systemInstruments)
+       })
+      );
+     return complexPayload;
+  }
+  constructHolidayRule(holidayRules: any){
+    // if(!holidayRules) return null;
+    if(!holidayRules){
+      let holidayRule = {
+        assumeHolidayOnInstruments: true,
+        sundayHolidayRuleId: 0,
+        mondayHolidayRuleId: 0,     
+        tuesdayHolidayRuleId: 0,    
+         wednesdayHolidayRuleId: 0,        
+         thursdayHolidayRuleId: 0,      
+         fridayHolidayRuleId: 0,    
+         saturdayHolidayRuleId  : 0,   
+    };
+      return holidayRule; 
+    }
+    else{
+      let holidayRule = {
+        assumeHolidayOnInstruments: holidayRules.assumeHolidayOnInstruments,
+        sundayHolidayRuleId: holidayRules.sundayHolidayRule.id ,
+        mondayHolidayRuleId: holidayRules.mondayHolidayRule.id ,
+        tuesdayHolidayRuleId: holidayRules.tuesdayHolidayRule.id,
+        wednesdayHolidayRuleId: holidayRules.wednesdayHolidayRule.id ,
+        thursdayHolidayRuleId: holidayRules.thursdayHolidayRule.id,
+        fridayHolidayRuleId: holidayRules.fridayHolidayRule.id,
+        saturdayHolidayRuleId  : holidayRules.saturdayHolidayRule.id
+      };
+      return holidayRule; 
     }
   }
 
+  constructFormulaPayload(formValues : any){
+    let formulaPayload = {
+      formulaTypeId: formValues.formulaType.id,
+      isMean : formValues.isMean,
+      CurrencyId: 2, //------------------------------Needs to replace----------------------
+      simpleFormula: this.constructSimpleFormula(formValues.simpleFormula),
+      ComplexFormulaQuoteLines: this.constructComplexFormula(formValues.complexFormulaQuoteLines),
+      holidayRule: this.constructHolidayRule(formValues.formulaHolidayRules),
+    }
+    return formulaPayload;
+  }
+
+  constructSchedulePayload(formValues : any){
+    let schedulePayload = {
+      pricingScheduleId : formValues.pricingSchedule.id,
+      dateRange :this.constructDateRange(formValues.pricingScheduleOptionDateRange),
+      specificDate: this.constructSpecificDate(formValues.pricingScheduleOptionSpecificDate),
+      eventBasedSimple : this.constructEventBasedSimple(formValues.pricingScheduleOptionEventBasedSimple),
+      eventBasedExtended: this.constructEventBasedExtended(formValues.pricingScheduleOptionEventBasedExtended),
+      eventBasedContinuous : this.constructEventBasedContinuous(formValues.pricingScheduleOptionEventBasedContinuous)
+    }
+    return schedulePayload;
+  }
+
+  constructEventBasedContinuous(scheduleEventBasedContinuous : any){
+    if(!scheduleEventBasedContinuous) return null;
+    let eventBasedContinuous ={
+      assumeHolidayOnInstruments: scheduleEventBasedContinuous.assumeHolidayOnInstruments ,
+      sundayHolidayRuleId: scheduleEventBasedContinuous.sundayHolidayRule.id,
+      mondayHolidayRuleId: scheduleEventBasedContinuous.mondayHolidayRule.id,
+      tuesdayHolidayRuleId: scheduleEventBasedContinuous.tuesdayHolidayRule.id,
+      wednesdayHolidayRuleId: scheduleEventBasedContinuous.wednesdayHolidayRule.id,
+      thursdayHolidayRuleId: scheduleEventBasedContinuous.thursdayHolidayRule.id,
+      fridayHolidayRuleId: scheduleEventBasedContinuous.fridayHolidayRule.id,
+      saturdayHolidayRuleId: scheduleEventBasedContinuous.saturdayHolidayRule.id,
+      pricingSchedulePeriodId: scheduleEventBasedContinuous.period.id,
+      eventId: scheduleEventBasedContinuous.event.id,
+      date: scheduleEventBasedContinuous.date ,
+      weekStartsOn: scheduleEventBasedContinuous.weekStartsOn.id
+    }
+    return eventBasedContinuous;
+  } 
+
+constructEventBasedExtended(scheduleEventBasedExtended : any){
+ if(!scheduleEventBasedExtended) return null;
+ let eventBasedExtended = {
+  assumeHolidayOnInstruments : scheduleEventBasedExtended.assumeHolidayOnInstruments,
+  sundayHolidayRuleId: scheduleEventBasedExtended.sundayHolidayRule.id,
+  mondayHolidayRuleId : scheduleEventBasedExtended.mondayHolidayRule.id,
+  tuesdayHolidayRuleId : scheduleEventBasedExtended.tuesdayHolidayRule.id,
+  wednesdayHolidayRuleId : scheduleEventBasedExtended.wednesdayHolidayRule.id,
+  thursdayHolidayRuleId : scheduleEventBasedExtended.thursdayHolidayRule.id,
+  fridayHolidayRuleId : scheduleEventBasedExtended.fridayHolidayRule.id,
+  saturdayHolidayRuleId : scheduleEventBasedExtended.saturdayHolidayRule.id,
+  name : scheduleEventBasedExtended.name,
+  fromNoOfBusinessDaysBefore: scheduleEventBasedExtended.fromNoOfBusinessDaysBefore ,
+  fromBusinessCalendarId: scheduleEventBasedExtended.fromBusinessCalendar.id ,
+  toNoOfBusinessDaysAfter: scheduleEventBasedExtended.toNoOfBusinessDaysAfter ,
+  toBusinessCalendarId: scheduleEventBasedExtended.toBusinessCalendar.id ,
+  excludeFromNoOfBusinessDaysBefore: scheduleEventBasedExtended.excludeFromNoOfBusinessDaysBefore ,
+  excludeToNoOfBusinessDaysAfter: scheduleEventBasedExtended.excludeToNoOfBusinessDaysAfter,
+  eventId: scheduleEventBasedExtended.event.id ,
+  isEventIncludedId: scheduleEventBasedExtended.isEventIncluded.id
+ }
+ return eventBasedExtended;
+}
+
+constructEventBasedSimple(scheduleEvenetBasedSimple: any){
+  if(!scheduleEvenetBasedSimple) return null;
+  let eventBasedSimple = {
+      assumeHolidayOnInstruments : scheduleEvenetBasedSimple.assumeHolidayOnInstruments,
+      sundayHolidayRuleId: scheduleEvenetBasedSimple.sundayHolidayRule.id,
+      mondayHolidayRuleId : scheduleEvenetBasedSimple.mondayHolidayRule.id,
+      tuesdayHolidayRuleId : scheduleEvenetBasedSimple.tuesdayHolidayRule.id,
+      wednesdayHolidayRuleId : scheduleEvenetBasedSimple.wednesdayHolidayRule.id,
+      thursdayHolidayRuleId : scheduleEvenetBasedSimple.thursdayHolidayRule.id,
+      fridayHolidayRuleId : scheduleEvenetBasedSimple.fridayHolidayRule.id,
+      saturdayHolidayRuleId : scheduleEvenetBasedSimple.saturdayHolidayRule.id,
+      name : scheduleEvenetBasedSimple.name,
+      fromNoOfBusinessDaysBefore : scheduleEvenetBasedSimple.fromNoOfBusinessDaysBefore,
+      fromBusinessCalendarId : scheduleEvenetBasedSimple.fromBusinessCalendarId.id,
+      toNoOfBusinessDaysAfter : scheduleEvenetBasedSimple.toNoOfBusinessDaysAfter,
+      toBusinessCalendarId : scheduleEvenetBasedSimple.toBusinessCalendar.id,
+      eventId : scheduleEvenetBasedSimple.event.id,
+      isEventIncludedId : scheduleEvenetBasedSimple.isEventIncluded.id
+  };
+  return eventBasedSimple;
+}
+
+constructSpecificDate(ScheduleSpecificDate: any){
+    if(!ScheduleSpecificDate) return null;
+    let specificDate = {
+      assumeHolidayOnInstruments : ScheduleSpecificDate.assumeHolidayOnInstruments,
+      sundayHolidayRuleId: ScheduleSpecificDate.sundayHolidayRule.id,
+      mondayHolidayRuleId : ScheduleSpecificDate.mondayHolidayRule.id,
+      tuesdayHolidayRuleId : ScheduleSpecificDate.tuesdayHolidayRule.id,
+      wednesdayHolidayRuleId : ScheduleSpecificDate.wednesdayHolidayRule.id,
+      thursdayHolidayRuleId : ScheduleSpecificDate.thursdayHolidayRule.id,
+      fridayHolidayRuleId : ScheduleSpecificDate.fridayHolidayRule.id,
+      saturdayHolidayRuleId : ScheduleSpecificDate.saturdayHolidayRule.id,
+      name : ScheduleSpecificDate.name,
+      allowsPricingOnHoliday : ScheduleSpecificDate.allowsPricingOnHoliday,
+      dates : this.generateDate(ScheduleSpecificDate.dates)
+    }
+    return specificDate;
+  }
+  
+ constructDateRange(scheduleDateRange : any){
+  if(!scheduleDateRange) return null;
+    let dateRange = {
+      assumeHolidayOnInstruments : scheduleDateRange.assumeHolidayOnInstruments,
+      sundayHolidayRuleId: scheduleDateRange?.sundayHolidayRule?.id ? scheduleDateRange?.sundayHolidayRule?.id : 0 ,
+      mondayHolidayRuleId : scheduleDateRange?.mondayHolidayRule?.id ? scheduleDateRange?.mondayHolidayRule?.id : 0,
+      tuesdayHolidayRuleId : scheduleDateRange?.tuesdayHolidayRule?.id ? scheduleDateRange?.tuesdayHolidayRule?.id : 0,
+      wednesdayHolidayRuleId : scheduleDateRange?.wednesdayHolidayRule?.id ? scheduleDateRange?.wednesdayHolidayRule?.id : 0,
+      thursdayHolidayRuleId : scheduleDateRange?.thursdayHolidayRule?.id ? scheduleDateRange?.thursdayHolidayRule?.id : 0,
+      fridayHolidayRuleId : scheduleDateRange?.fridayHolidayRule?.id ? scheduleDateRange?.fridayHolidayRule?.id : 0,
+      saturdayHolidayRuleId : scheduleDateRange?.saturdayHolidayRule?.id ? scheduleDateRange?.saturdayHolidayRule?.id : 0,
+      name : scheduleDateRange.name,
+      validFrom : scheduleDateRange.from,
+      validTo : scheduleDateRange.to,
+      allowsPricingOnHoliday: scheduleDateRange.allowsPricingOnHoliday
+    }
+    return dateRange;
+ }
+
+ constructDiscountRulesQuantityBased(quantityDiscountRules : any){
+  if(!quantityDiscountRules) return null;
+  let discountRulesQuantityBased = [];
+  quantityDiscountRules.forEach(rules => 
+    discountRulesQuantityBased.push({
+      formulaPlusMinusId : rules.plusMinus?.id ? rules.plusMinus?.id : 0,
+      amount : rules.amount,
+      formulaFlatPercentageId : rules.flatPercentage?.id ? rules.flatPercentage?.id : 0,
+      uomId : rules.uom?.id ? rules.uom.id : 0,
+      quantityTypeId : rules.quantityType?.id ? rules.quantityType.id : 0,
+      quantityRangeFrom : rules.quantityRangeFrom,
+      quantityRangeTo : rules.quantityRangeTo
+    })
+  );
+  return discountRulesQuantityBased;
+ }
+
+ constructDiscountRulesProductBased(productBased : any){
+  if(!productBased) return null;
+  let discountRulesProductBased = [];
+    productBased.forEach(rule =>
+      discountRulesProductBased.push({
+        formulaPlusMinusId : rule.plusMinus?.id ? rule.plusMinus.id : 0,
+        amount : rule.amount,
+        formulaFlatPercentageId : rule.flatPercentage?.id ? rule.flatPercentage.id :0,
+        uomId : rule.uom?.id ? rule.uom.id : 0,
+        productId : rule.product?.id ? rule.product.id : 0
+      })
+  );
+  return discountRulesProductBased;
+ }
+
+ constructLocationDiscount(locationDiscount : any){
+   if(!locationDiscount) return null;
+   let discountruleLocationBased = [];
+   locationDiscount.forEach(rule =>
+      discountruleLocationBased.push({
+        formulaId : rule.id ? rule.id : 0,
+        formulaPlusMinusId : rule.plusMinus?.id ? rule.plusMinus.id : 0,
+        amount : rule.amount,
+        formulaFlatPercentageId : rule.formulaFlatPercentageId?.id ? rule.formulaFlatPercentageId.id : 0,
+        uomId : rule.uom?.id ?  rule.uom.id : 0,
+        locationId : rule.location?.id ? rule.location.id : 0
+      })
+    );
+    return discountruleLocationBased;
+ }
+
+ constructDiscountRules(discountRules: any){
+   let discountRulesList = {
+    quantityDiscountRules : this.constructDiscountRulesQuantityBased(discountRules.quantityDiscountRules),
+    productDiscountRules : this.constructDiscountRulesProductBased(discountRules.productDiscountRules),
+    locationDiscountRules : this.constructLocationDiscount(discountRules.locationDiscountRules)
+   }
+   return discountRulesList;
+ }
+
+
+  constructPayload(formValues: any){
+    let finalPayload = {};
+      // for pricing Formula
+      finalPayload = {
+        id : this.offerPriceFormulaId ? this.offerPriceFormulaId : 0,
+        requestOfferId : this.requestOfferId,
+        name: formValues.name,
+        formula : this.constructFormulaPayload(formValues),
+        schedule : this.constructSchedulePayload(formValues),
+        discountRules : this.constructDiscountRules(formValues)
+      }
+    return finalPayload;
+  }
+
+  saveFormula(){
+    let formulaPayload : any = this.constructPayload(this.formValues);
+     if(formulaPayload.id == 0){
+       console.log(formulaPayload);
+       this.spinner.show();
+       this.spotNegotiationService.addNewFormulaPrice(formulaPayload, this.requestOfferId)
+         .pipe(
+            switchMap((res : any )=> 
+              // this.store.dispatch(new)
+               this.spotNegotiationService.evaluateFormulaPrice({RequestOfferId: res.requestOfferId,  PriceConfigurationId : res.id})
+            ) 
+        ).subscribe((item : any)=>{
+          this.spinner.hide();
+          if(item.errors){
+            debugger;
+            this.toastr.error('Failed to save Formula');
+            return;
+          }
+          else{
+            this.toastr.success('Operatation completed Successfully');
+            this.evaluatedFormulaPrice = item;
+            console.log(item)
+            
+          }
+          });
+     }
+     else{
+      this.spinner.show();
+      this.spotNegotiationService.updateFormulaPrice(formulaPayload, this.requestOfferId, this.offerPriceFormulaId)
+        .pipe(
+            switchMap((res: any) => 
+               this.spotNegotiationService.evaluateFormulaPrice({RequestOfferId: res.requestOfferId,  PriceConfigurationId : res.id})))
+               .subscribe((item : any) =>{
+                this.spinner.hide();
+                if(item.errors){
+                  this.toastr.error('Failed to Update formula');
+                  return;
+                }
+                else{
+                  this.toastr.success('Operation Completed Successfully');
+                  this.evaluatedFormulaPrice = item;
+                  console.log(item)
+                }
+              });
+     }
+  
+  }
+
+  closePopup(){
+    this.dialogRef.close(this.evaluatedFormulaPrice);
+  }
 
   searchFormula(){
     const dialogRef = this.dialog.open(SearchFormulaPopupComponent, {
@@ -501,12 +842,6 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       return this.addFormula(result.data[0]);
     });
   }
-
-  typeFormula(){
-
-  }
-
-
 
 formatDate(date?: any) {
   if (date) {
