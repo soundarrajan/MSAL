@@ -1391,26 +1391,30 @@
                                 !$scope.formValues.vesselProducts[i].vesselProductTanks.some(vpt => !vpt.isDeleted && vpt.isActive && vpt.tankCategory && vpt.tankCategory.id == 1))))
                         {
                             $('#Product_' + i + '_tank_Product').addClass('invalid');
-                            toastr.error('Please add atleast one Storage tank for the Product type ' + $scope.formValues.vesselProducts[i].productType.name + ' to proceed');
+                            if (!$scope.formValues.vesselProducts[i].productType) {
+                                toastr.error('Please add Product and Product type to proceed');
+                                return;
+                            }
+                            toastr.error('Please add atleast one Storage tank for the Product type ' + $scope.formValues.vesselProducts[i].productType?.name + ' to proceed');
                             return;
+                        }
+                        else {
+                            $('#Product_' + i + '_tank_Product').removeClass('invalid');
                         }
                     }
                 }
-                // For non-BOPs vessels, remove non-saved vessel products & tanks before save
+                // For non-BOPs vessels, validate non-nullable properties
                 if (!$scope.formValues.isVesselManagable && $scope.formValues.vesselProducts && $scope.formValues.vesselProducts.length > 0) {
-                    if ($scope.formValues.vesselProducts.length > 0) {
-                        var i = $scope.formValues.vesselProducts.length;
-                        while (i--) {
-                            if (!($scope.formValues.vesselProducts[i].id > 0)) {
-                                $scope.formValues.vesselProducts.splice(i, 1);
-                            } else if ($scope.formValues.vesselProducts[i].vesselProductTanks.length > 0) {
-                                var j = $scope.formValues.vesselProducts[i].vesselProductTanks.length;
-                                while (j--) {
-                                    if (!($scope.formValues.vesselProducts[i].vesselProductTanks[j].id > 0)) {
-                                        $scope.formValues.vesselProducts[i].vesselProductTanks.splice(j, 1);
-                                    }
-                                }
-                            }
+                    for(i = 0; i < $scope.formValues.vesselProducts.length; i++) {
+                        if (!$scope.formValues.vesselProducts[i].productType || !$scope.formValues.vesselProducts[i].product) {
+                            $('#Product_' + i + '_tank_Product').addClass('invalid');
+                            toastr.error('Please add Product and Product type to proceed');
+                            return;
+                        }
+                        if ($scope.formValues.vesselProducts[i].vesselProductTanks.some(vpt => !vpt.isDeleted && (!vpt.tankCategory || !vpt.name))) {
+                            $('#Product_' + i + '_tank_Product').addClass('invalid');
+                            toastr.error('Please add mandatory fields for the Product type ' + $scope.formValues.vesselProducts[i].productType?.name + ' to proceed');
+                            return;
                         }
                     }
                 }
@@ -5877,8 +5881,8 @@
                 if(!$scope.formValues.vesselProducts[i].isDeleted && key!=i)
                 {
                     var vesselProduct=$scope.formValues.vesselProducts[i];
-                    if (vesselProduct.productType.id == productTypeId.id && vesselProduct.density !=undefined  ) {
-                        $scope.formValues.vesselProducts[key].productType=null;
+                    if (vesselProduct.productType?.id == productTypeId?.id && vesselProduct.density !=undefined  ) {
+                        $scope.formValues.vesselProducts[key].productType = null;
                         return toastr.error('Selected productType already exists');;
                     }
                 }
