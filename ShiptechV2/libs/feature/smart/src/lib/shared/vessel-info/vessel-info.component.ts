@@ -863,14 +863,15 @@ export class VesselInfoComponent implements OnInit {
 
   VesselHasNewPlanJob() {
     let currentUserId = this.store.selectSnapshot(UserProfileState.username);
-    this.disableCurrentBPlan = true;
-    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
+    this.disableCurrentBPlan = false;
+    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
+    let vessalCode = vesseldata.vesselRef.vesselCode ?? vesseldata.vesselRef.code;
     //Need to check gen plan status once and check after every 15 sec after enter this screen to know the process gen plan completion
     this.observableRef$ = timer(0, 15000)
     .pipe(
       switchMap(() => {
         let req = {
-          vessel_Code: vesseldata.vesselRef.vesselCode ?? vesseldata.vesselRef.code,
+          vessel_Code: vessalCode,
           generate_new_plan: 0, //(genBunkerPlanRef?.import_in_progress==0)? 1: 0,
           import_gsis: 0
         }
@@ -879,6 +880,9 @@ export class VesselInfoComponent implements OnInit {
     }))
     .subscribe((data_all) => {
       let userVessalList = data_all.payload.filter(data => {
+        if(data.vessel_code.trim() == vessalCode.trim()){
+          this.disableCurrentBPlan = true;
+        }
         if(data.plan_generated_by == currentUserId && data.import_in_progress == false && data.gen_in_progress==false){
           return data;
         }
@@ -894,7 +898,7 @@ export class VesselInfoComponent implements OnInit {
         this.loadBunkerPlanDetails(vesseldata.vesselRef);
         
         //Enable Import GSIS checkbox and generate button after gen plan success
-        this.disableCurrentBPlan = false;
+        //this.disableCurrentBPlan = false;
         this.isChecked = false;
         //unsubscribe next exec after 15 sec, if plan generate get completed
         this.observableRef$.unsubscribe();
