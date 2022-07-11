@@ -4507,7 +4507,7 @@
             		}
 	            	modeledData = {
 	            		"product" : data,
-	            		"productGrade" : {"id":productGrade},
+	            		"productGrade" : $listsCache.ProductGrade?.find(pg => pg.id == productGrade),
 	            		"location" : {"id":vm.entity_id},
 	            		"id" : 0,
 	            		"name" : data.name

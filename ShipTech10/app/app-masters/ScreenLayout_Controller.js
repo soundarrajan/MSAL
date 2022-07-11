@@ -1421,7 +1421,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                     $scope.modal.filters = filter;
                 }
                 if (clc == 'masters_productlist') {
-                    if(filter != 'master_selectMotProductTypeId') {
+                    if(filter != 'master_selectMotProductTypeId' && filter != 'master_selectProductTypeId') {
                         $scope.modal.filters = filter;
                     }
                 }
@@ -1656,6 +1656,22 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                     $scope.modal.filters.push(
                         {
                             ColumnName: 'MOTProductTypeId',
+                            Value: value
+                        }
+                    );
+                }
+                if (clc == 'masters_productlist' && filter == 'master_selectProductTypeId') {
+                    if(!$scope.modal.filters) {
+                        $scope.modal.filters = [];
+                    }
+                    let value = null;
+                    if($scope.formValues.locationProducts.length > 0 &&
+                        $scope.formValues.locationProducts[idx].productType && $scope.formValues.locationProducts[idx].productType.id > 0) {
+                        value = $scope.formValues.locationProducts[idx].productType.id;
+                    }
+                    $scope.modal.filters.push(
+                        {
+                            ColumnName: 'productTypeId',
                             Value: value
                         }
                     );

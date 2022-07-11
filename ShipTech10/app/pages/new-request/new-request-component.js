@@ -1158,7 +1158,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             return response;
         };
 
-
+        ctrl.isRequiredMTRValid = function(mtrList) {
+            let isMTRValid = false;
+            if (mtrList && mtrList.length > 0 && mtrList.some(elem => !elem.isDeleted
+                    && !IsLessThanZero(elem.minQtyToReach) && !IsLessThanZero(elem.minQtyToReachPretest) && !IsDataNotExists(elem.minQtyToReachPretest) && !IsDataNotExists(elem.eta) && !IsDataNotExists(elem.port.id)
+                )
+            ) {
+                isMTRValid = true;
+            }
+            return isMTRValid;
+        }
 
         ctrl.saveRequest = function() {
             $scope.forms.detailsFromRequest.$setPristine(); 
@@ -1182,6 +1191,18 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 ctrl.isRequiredMinMax();
             }
             ctrl.isSpecGroupIsRequired();
+
+            if (ctrl.request.isMTRRequired) {
+                for (let location of ctrl.request.locations) {
+                    for (let product of location.products) {
+                        if (!ctrl.isRequiredMTRValid(product.minimumQuantitiesToReach)) {
+                            toastr.error('The following fields are required or invalid: MINIMUM TO REACH');
+                            ctrl.buttonsDisabled = false;
+                            return false;
+                        }
+                    }
+                }
+            }
 
             if (ctrl.showVesselExpiryWarningMessage && !ctrl.request.id) {
                 toastr.warning(ctrl.showVesselExpiryWarningMessage);
@@ -3431,6 +3452,17 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             // call function to see required fields
             var valid = ctrl.checkValidQuantities();
             var validMQTR = ctrl.checkValidMQTRs();
+            if (ctrl.request.isMTRRequired) {
+                for (let location of ctrl.request.locations) {
+                    for (let product of location.products) {
+                        if (!ctrl.isRequiredMTRValid(product.minimumQuantitiesToReach)) {
+                            toastr.error('The following fields are required or invalid: MINIMUM TO REACH');
+                            ctrl.buttonsDisabled = false;
+                            return false;
+                        }
+                    }
+                }
+            }
             $('form').addClass('submitted');
             ctrl.isRequiredMinMax(true);
             ctrl.isSpecGroupIsRequired(true);
@@ -4595,14 +4627,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             }
         }
 
-        function IsDataExists(data) {
+        function IsDataNotExists(data) {
             if (data == "" || data == null || data == undefined) {
                 return true;
             } else {
                 return false;
             }
         }
-        function IsZeroOrHigher(data) {
+        function IsLessThanZero(data) {
             if (data >= 0) {
                 return false;
             } else {
@@ -4691,18 +4723,18 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     let v = ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[k];
                     if(v.isDeleted!=true ){
                         if(FormvalueLength != k ) {
-                            if(IsZeroOrHigher(v.minQtyToReach) || IsZeroOrHigher(v.minQtyToReachPretest) ||IsDataExists(v.minQtyToReach)  ||IsDataExists(v.minQtyToReachPretest) || IsDataExists(v.eta) || IsDataExists(v.port.id)){
+                            if(IsLessThanZero(v.minQtyToReach) || IsLessThanZero(v.minQtyToReachPretest) ||IsDataNotExists(v.minQtyToReach)  ||IsDataNotExists(v.minQtyToReachPretest) || IsDataNotExists(v.eta) || IsDataNotExists(v.port.id)){
                                 isvalidminQtyTOReach = false;
-                                if(IsDataExists(v.minQtyToReachPretest) ){
+                                if(IsDataNotExists(v.minQtyToReachPretest) ){
                                     $('#minQtyToReachPretest'+k).addClass('ng-cus-invalidcolor');
                                 }
-                                if(IsDataExists(v.minQtyToReach) ){
+                                if(IsDataNotExists(v.minQtyToReach) ){
                                     $('#minQtyToReach'+k).addClass('ng-cus-invalidcolor');
                                 }
-                                if(IsDataExists(v.port.id)){
+                                if(IsDataNotExists(v.port.id)){
                                     $('#Port'+k).addClass('ng-cus-invalidcolor');
                                 }
-                                if (IsDataExists(v.eta)) {
+                                if (IsDataNotExists(v.eta)) {
                                     $(k + '#_etaMQTR').addClass('ng-cus-invalidcolor');
                                 }
                                 break;
@@ -4714,18 +4746,18 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             }
                         }
                         else{
-                            if(IsZeroOrHigher(v.minQtyToReach) ||IsZeroOrHigher(v.minQtyToReachPretest) || IsDataExists(v.minQtyToReach) ||IsDataExists(v.minQtyToReachPretest)    || IsDataExists(v.eta) || IsDataExists(v.port.id)){
+                            if(IsLessThanZero(v.minQtyToReach) ||IsLessThanZero(v.minQtyToReachPretest) || IsDataNotExists(v.minQtyToReach) ||IsDataNotExists(v.minQtyToReachPretest)    || IsDataNotExists(v.eta) || IsDataNotExists(v.port.id)){
                                 isvalidminQtyTOReach = false;
-                                if(IsDataExists(v.minQtyToReachPretest)  ){
+                                if(IsDataNotExists(v.minQtyToReachPretest)  ){
                                     $('#minQtyToReachPretest'+k).addClass('ng-cus-invalidcolor');
                                 }
-                                if(IsDataExists(v.minQtyToReach) ){
+                                if(IsDataNotExists(v.minQtyToReach) ){
                                     $('#minQtyToReach'+k).addClass('ng-cus-invalidcolor');
                                 }
-                                if(IsDataExists(v.port.id)){
+                                if(IsDataNotExists(v.port.id)){
                                     $('#Port'+k).addClass('ng-cus-invalidcolor');
                                 }
-                                if(IsDataExists(v.eta)){
+                                if(IsDataNotExists(v.eta)){
                                     $(k+'#_etaMQTR').addClass('ng-cus-invalidcolor');
                                 }
                                 break;
