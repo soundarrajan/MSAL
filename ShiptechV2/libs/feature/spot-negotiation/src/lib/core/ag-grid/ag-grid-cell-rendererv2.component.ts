@@ -734,6 +734,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   public editSeller: boolean = true;
   public editedSeller = '';
   public phySupplierId = 0;
+  public editedSellerCopy = '';
+  public phySupplierIdCopy = 0;
   public priceFormat = '';
   public stcount = 0;
   public docVal = 'Document Uploaded';
@@ -2313,13 +2315,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     );
   }
   selectSupplier(element) {
-    this.editedSeller = element.name;
-    this.phySupplierId = element.id;
+    this.editedSellerCopy = element.name;
+    this.phySupplierIdCopy  = element.id;
   }
 
   updatePhysicalSupplier() {
     let valid = false;
-    if (!this.phySupplierId) {
+    let phySupplier=this.phySupplierIdCopy ==0?this.phySupplierId:this.phySupplierIdCopy;
+    if (!phySupplier) {
       this.toastr.warning(
         'Invalid or same physical supplier selected, Please try selecting it again.'
       );
@@ -2334,7 +2337,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             item.sellerCounterpartyId ===
               this.params.data.sellerCounterpartyId &&
             item.requestId === this.params.data.requestId &&
-            item.physicalSupplierCounterpartyId === this.phySupplierId &&
+            item.physicalSupplierCounterpartyId ===phySupplier &&
             item.id !== this.params.data.id
         );
         if (selectItems.length != 0) {
@@ -2383,6 +2386,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     const locationsRows = this.store.selectSnapshot<string>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
+    this.editedSeller=this.editedSellerCopy;
+    this.phySupplierId=this.phySupplierIdCopy;
     let payload = {
       requestGroupId: this.params.data.requestGroupId,
       requestLocationId: this.params.data.requestLocationId,
