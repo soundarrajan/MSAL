@@ -40,6 +40,7 @@ import { ConfirmdialogComponent } from '../spot-negotiation-popups/confirmdialog
 import { cloneDeep } from 'lodash';
 import _ from 'lodash';
 import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 @Component({
   selector: 'app-spot-negotiation-header',
   templateUrl: './spot-negotiation-header.component.html',
@@ -97,7 +98,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private _spotNegotiationService: SpotNegotiationService,
-    private renderer: Renderer2,
+    public tenantService: TenantFormattingService,
     public dialog: MatDialog,
     private changeDetector: ChangeDetectorRef,
     private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService
@@ -148,9 +149,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             this.counterpartyList.length === 0 &&
             spotNegotiation.counterpartyList
           ) {
-            this.counterpartyList = spotNegotiation.counterpartyList;
+            this.counterpartyList = _.cloneDeep(spotNegotiation.counterpartyList);
+            this.counterpartyList?.forEach(element => {
+              element.name = this.tenantService.htmlDecode(element.name);
+            });
             this.visibleCounterpartyList = _.cloneDeep(
-              this.counterpartyList.slice(0, 7)
+              this.counterpartyList.slice(0, 12)
             );
           }
         }
@@ -352,8 +356,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       counterparties: selectedCounterparties
     };
     this.couterpartyValue = null;
+    this.counterpartyList.forEach(element => {
+      element.name = this.tenantService.htmlDecode(element.name);
+    });
     this.visibleCounterpartyList = _.cloneDeep(
-      this.counterpartyList.slice(0, 7)
+      this.counterpartyList.slice(0, 12)
     );
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
@@ -803,12 +810,16 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           { SortList: [] },
           [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
           userInput.toLowerCase(),
-          { Skip: 0, Take: 25 }
+          { Skip: 0, Take: 25 },
+          true
         ).subscribe((res: any) => {
           if (res?.message == 'Unauthorized')return;
           if (res?.counterpartyListItems?.length > 0) {
             let SelectedCounterpartyList = cloneDeep(res.counterpartyListItems);
-            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
+            SelectedCounterpartyList.forEach(element => {
+              element.name = this.tenantService.htmlDecode(element.name);
+            });
+            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 12);
           }else{
             this.visibleCounterpartyList = [];
           }

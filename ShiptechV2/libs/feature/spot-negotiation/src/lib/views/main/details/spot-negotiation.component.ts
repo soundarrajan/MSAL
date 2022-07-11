@@ -377,15 +377,15 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         alert('Handle Error');
         return;
       } else {
-        if (res?.counterpartyListItems?.length > 0) {
+        if (res?.payload?.length > 0) {
           this.spotNegotiationService.counterpartyTotalCount = res.matchedCount;
-          res.counterpartyListItems.forEach(element => {
+          res.payload.forEach(element => {
             element.isSelected = false;
             element.name = this.format.htmlDecode(element.name);
           });
         }
         // Populate Store
-        this.store.dispatch(new SetCounterpartyList(res.counterpartyListItems));
+        this.store.dispatch(new SetCounterpartyList(res.payload));
       }
     });
   }
@@ -397,15 +397,15 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         alert('Handle Error');
         return;
       } else {
-        if (res?.counterpartyListItems?.length > 0) {
+        if (res?.payload?.length > 0) {
           this.spotNegotiationService.physicalSupplierTotalCount = res.matchedCount;
-          res.counterpartyListItems.forEach(element => {
+          res.payload.forEach(element => {
             element.isSelected = false;
             element.name = this.format.htmlDecode(element.name);
           });
         }
         // Populate Store
-        this.store.dispatch(new SetPhysicalSupplierCounterpartyList(res.counterpartyListItems));
+        this.store.dispatch(new SetPhysicalSupplierCounterpartyList(res.payload));
       }
     });
   }

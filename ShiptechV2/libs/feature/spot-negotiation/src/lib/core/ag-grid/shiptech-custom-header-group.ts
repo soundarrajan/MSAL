@@ -37,7 +37,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
           [matMenuTriggerFor]="clickmenu"
           #menuTrigger="matMenuTrigger"
         ></span>
-        <mat-menu #clickmenu="matMenu" class="add-new-request-menu">
+        <mat-menu #clickmenu="matMenu" class="add-new-request-menu add-counterparties">
           <div class="expansion-popup" style="margin: 20px 0px;">
             <div class="select-product-container">
               <div
@@ -62,7 +62,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
                 </div>
               </div>
               <table
-                class="delivery-products-pop-up col-md-12 no-padding"
+                class="delivery-products-pop-up counterpartyList col-md-12 no-padding"
                 mat-table
                 (click)="$event.stopPropagation()"
                 [dataSource]="visibleCounterpartyList"
@@ -71,7 +71,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
                   <th mat-header-cell *matHeaderCellDef>Counterparty</th>
                   <td mat-cell *matCellDef="let element">
                     <mat-option [value]="element">
-                      <mat-checkbox
+                      <mat-checkbox class="single_column_label"
                         [value]="element"
                         (change)="onCounterpartyCheckboxChange($event, element)"
                         matTooltip="{{ element.name }}"
@@ -144,11 +144,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
       *ngIf="params.type == 'single-bg-header'"
     >
       <div class="border-line"></div>
-      <div class="options">
-        <div class="checkBox w-100" matTooltip="Total offer" matTooltipClass="lightTooltip" style="padding-top:0px;">
-          Total Offer
+        <div matTooltip="Total Offer" matTooltipClass="lightTooltip" class="options" style="padding-top: 5px;padding-bottom:10px; ">
+          <div class="checkBox w-100" style="padding-top:0px;" >
+              Total Offer
+          </div>
         </div>
-      </div>
       <div class="label" matTooltipClass="lightTooltip" matTooltip="No. of Products">
         <div class="label-content" style="width:95%;">
           <div class="label-element w-100" style="width:100%;">
@@ -374,9 +374,12 @@ export class ShiptechCustomHeaderGroup {
       if (
         this.counterpartyList.length === 0 &&
         spotNegotiation.counterpartyList
-      ) {
-        this.counterpartyList = spotNegotiation.counterpartyList;
-        this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
+      ) {        
+        this.counterpartyList = cloneDeep(spotNegotiation.counterpartyList);
+        this.counterpartyList?.forEach(element => {
+          element.name = this.tenantService.htmlDecode(element.name);
+        });
+        this.visibleCounterpartyList = this.counterpartyList.slice(0, 12);
       }
     });
   }
@@ -421,12 +424,16 @@ export class ShiptechCustomHeaderGroup {
           { SortList: [] },
           [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
           userInput.toLowerCase(),
-          { Skip: 0, Take: 25 }
+          { Skip: 0, Take: 25 },
+          true
         ).subscribe((res: any) => {
           if (res?.message == 'Unauthorized')return;
           if (res?.counterpartyListItems?.length > 0) {
             let SelectedCounterpartyList = cloneDeep(res.counterpartyListItems);
-            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
+            SelectedCounterpartyList.forEach(element => {
+              element.name = this.tenantService.htmlDecode(element.name);
+            });
+            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 12);
           }else{
             this.visibleCounterpartyList = [];
           }

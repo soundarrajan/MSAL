@@ -146,7 +146,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         return;
       }
       this.dialog_gridOptions.api?.hideOverlay();
-      this.rowData = res.counterpartyListItems;
+      this.rowData = res.payload;
       this.dialog_gridOptions.api.setRowData(this.rowData);
     });
   }
@@ -168,7 +168,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       if (res?.message == 'Unauthorized') {
         return;
       }
-      this.dialog_gridOptions.api.setRowData(res.counterpartyListItems);
+      this.dialog_gridOptions.api.setRowData(res.payload);
     });
   }
 
@@ -191,8 +191,8 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         return;
       }
       if (res.payload) {
-        this.rowData = res.counterpartyListItems;
-        this.dialog_gridOptions.api.setRowData(res.counterpartyListItems);
+        this.rowData = res.payload;
+        this.dialog_gridOptions.api.setRowData(res.payload);
       } else {
         this.dialog_gridOptions.api.showNoRowsOverlay();
       }
@@ -217,9 +217,9 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
       if (res?.message == 'Unauthorized') {
         return;
       }
-      if (res.counterpartyListItems) {
-        this.rowData = res.counterpartyListItems;
-        this.dialog_gridOptions.api.setRowData(res.counterpartyListItems);
+      if (res.payload) {
+        this.rowData = res.payload;
+        this.dialog_gridOptions.api.setRowData(res.payload);
       } else {
         this.dialog_gridOptions.api.showNoRowsOverlay();
       }
@@ -315,10 +315,10 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     response.subscribe((res: any) => {
       this.totalItems = res.matchedCount;
       this.dialog_gridOptions.api?.hideOverlay();
-      if (res.counterpartyListItems) {
+      if (res.payload) {
         var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
         this.page = currentPage + 1;
-        this.dialog_gridOptions.api.setRowData(res.counterpartyListItems);
+        this.dialog_gridOptions.api.setRowData(res.payload);
       } else {
         this.dialog_gridOptions.api.showNoRowsOverlay();
       }
@@ -339,10 +339,10 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
     response.subscribe((res: any) => {
       this.totalItems = res.matchedCount;
       this.dialog_gridOptions.api?.hideOverlay();
-      if (res.counterpartyListItems) {
+      if (res.payload) {
         var currentPage = this.dialog_gridOptions.api.paginationGetCurrentPage();
         this.page = currentPage + 1;
-        this.dialog_gridOptions.api.setRowData(res.counterpartyListItems);
+        this.dialog_gridOptions.api.setRowData(res.payload);
       } else {
         this.dialog_gridOptions.api.showNoRowsOverlay();
       }

@@ -413,7 +413,6 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
             >{{ params.data.physicalSupplierCounterpartyName }}</span
           >
-          <!--  <span *ngIf="!editSeller">{{ this.editedSeller }}</span> -->
         </span>
         <ng-container *ngIf="paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed;
          then second else first">
@@ -443,7 +442,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         </ng-template>
         <ng-template #second>
         <span
-            *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
+            *ngIf="!params.data.isEditable && editSeller && params.data.physicalSupplierCounterpartyName"
             >{{
               this.format.htmlDecode(
                 params.data.physicalSupplierCounterpartyName
@@ -453,7 +452,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         <!--<div class="addButton"></div>-->
       </div>
     </div>
-    <mat-menu #clickmenu="matMenu" class="add-new-request-menu">
+    <mat-menu #clickmenu="matMenu" class="add-new-request-menu add-counterparties">
       <div
         *ngIf="!editSeller"
         class="expansion-popup"
@@ -482,7 +481,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             </div>
           </div>
           <table
-            class="delivery-products-pop-up col-md-12 no-padding"
+            class="delivery-products-pop-up counterpartyList col-md-12 no-padding"
             mat-table
             (click)="$event.stopPropagation()"
             [dataSource]="visibleCounterpartyList"
@@ -491,7 +490,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
               <th mat-header-cell *matHeaderCellDef>Counterparty</th>
               <td mat-cell *matCellDef="let element">
                 <mat-option [value]="element">
-                  <mat-radio-button
+                  <mat-radio-button class="single_column_label"
                     [value]="element.name"
                     [checked]="element.isSelected"
                     (click)="selectSupplier(element)"
@@ -789,7 +788,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       // Fetching counterparty list
       if (state.spotNegotiation.counterpartyList) {
         this.counterpartyList = state.spotNegotiation.counterpartyList;
-        this.visibleCounterpartyList = this.counterpartyList.slice(0, 7);
+        this.visibleCounterpartyList = this.counterpartyList.slice(0, 12);
       }
 
       if (
@@ -859,12 +858,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   setValuefun(params) {
     this.searchValue = '';
     this.physicalSupplierList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 7);
+      return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 12);
     });
     let SelectedCounterpartyList = cloneDeep(this.physicalSupplierList);
 
     if (SelectedCounterpartyList?.length > 0) {
       SelectedCounterpartyList.forEach(element => {
+        element.name = this.format.htmlDecode(element.name);
         if (
           params.physicalSupplierCounterpartyId != null &&
           element.id == params.physicalSupplierCounterpartyId
@@ -962,12 +962,16 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           { SortList: [] },
           [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
           userInput.toLowerCase(),
-          { Skip: 0, Take: 25 }
+          { Skip: 0, Take: 25 },
+          true
         ).subscribe((res: any) => {
           if (res?.message == 'Unauthorized')return;
           if (res?.counterpartyListItems?.length > 0) {
             let SelectedCounterpartyList = cloneDeep(res.counterpartyListItems);
-            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 7);
+            SelectedCounterpartyList.forEach(element => {
+              element.name = this.format.htmlDecode(element.name);
+            });
+            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 12);
           }else{
             this.visibleCounterpartyList = [];
           }
