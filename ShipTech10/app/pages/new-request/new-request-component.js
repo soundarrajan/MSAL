@@ -91,6 +91,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         $rootScope.isGoSpotAction = false;
         $rootScope.isCopyAction = false;
         window.requestDetailsIsChangedFromLookup = false;
+        ctrl.isOrderexisting = false;
 
         if ($stateParams.requestId) {
             $state.params.title = 'Edit Request';

@@ -441,7 +441,8 @@
             "CONTRACT_5": "5th Best Contract"
         },
       "CONFIRM_DIALOG": {
-        "OFFER_TITLE": "You are about to confirm this offer, do you want to proceed?",
+        "OFFER_TITLE": "You are about to confirm this offers.",
+        "ORDER_IFEXIST_OFFER_TITLE": "Please note that some of these offers have already confirmed from the same supplier",
         "CONTRACTS_TITLE": "Available Term Contracts",
         "SELLER": "Seller",
         "CONTRACT_NAME": "Contract name",

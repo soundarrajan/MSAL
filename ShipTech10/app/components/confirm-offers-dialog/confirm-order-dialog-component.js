@@ -51,6 +51,8 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
             });
         };
         ctrl.$onChanges = function(changes) {
+            ctrl.isOrderexisting =false;
+            ctrl.isOrdertype = "1";
             $('#offer').show();
             $('#warning').hide();
             if (changes.confirmationProductOrders.isFirstChange()) {
@@ -89,6 +91,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                     });
                 }
                 ctrl.orderList = data.payload.orders;
+                ctrl.isOrderexisting = ctrl.orderList && ctrl.orderList.some(x=>x.existingOrderId !=null) ? true : false;
                 ctrl.requestOfferItems = normalizeOfferData(data.payload.orders);
                 ctrl.availableContractItems = data.payload.termContract;
             });
@@ -195,6 +198,13 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
             ctrl.buttonsDisabled = true;
             var requestProductIds = [];
             var contractIds = [];
+
+            //ctrl.orderList ? ctrl.isOrderexisting = true : false;
+            if(ctrl.orderList && ctrl.isOrdertype == "2") // split order
+            {
+                ctrl.orderList.forEach(x=>x.existingOrderId = null );
+            }
+            
             $.each(ctrl.orderList, (ordk, ordv) => {
                 $.each(ordv.products, (prodk, prodv) => {
                     requestProductIds.push(prodv.requestProductId);

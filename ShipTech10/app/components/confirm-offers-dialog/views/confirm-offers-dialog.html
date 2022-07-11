@@ -1,19 +1,33 @@
 <div id="offer" class="confirm-offers-dialog">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" ng-click="$ctrl.enableButtons()" aria-hidden="true" ng-if="isRequest()"></button>
-        <button type="button" class="close" data-dismiss="modal" ng-click="$ctrl.enableButtons()" aria-hidden="true" ng-if="!isRequest()"></button>
-        <a class="closeBlade pull-right font-white" ng-click="closeBlade()" ng-controller="BladeController">
+        <div class="row">
+            <div class="col-md-6">
+                <h4 class="modal-title font-blue-madison">
+                    <b>
+                        {{ $ctrl.ui.offers.title | translate }} 
+                    </b>
+                </h4>
+            </div>
+            <div class="col-md-6">
+         <div style="display: inline;">       
+        <button style="margin-top: 10px !IMPORTANT;" type="button" class="close" data-dismiss="modal" ng-click="$ctrl.enableButtons()" aria-hidden="true" ng-if="isRequest()"></button>
+        <button style="margin-top: 10px !IMPORTANT;" type="button" class="close" data-dismiss="modal" ng-click="$ctrl.enableButtons()" aria-hidden="true" ng-if="!isRequest()"></button>
+        <a style="margin-top: 10px !IMPORTANT;" class="closeBlade pull-right font-white" ng-click="closeBlade()" ng-controller="BladeController">
             <i class="fa  fa-close font-white"></i>
         </a>
-        <h4 class="modal-title font-blue-madison">
-            <b>
-                {{ $ctrl.ui.offers.title | translate }}
-            </b>
-        </h4>
+    </div>
+                <select style="float: right;width: 150px;" class="form-control" ng-if="$ctrl.isOrderexisting" name="isordertype" id="isordertype" ng-model="$ctrl.isOrdertype">
+                     <option value="1" selected>Consolidated</option>
+                    <option value="2">Individual</option>
+                </select>
+                <span style="float: right;margin: 6px 10px 0px 0px;font-weight: 700;">{{ 'Order Type' | translate }}</span>
+x            </div>
+        </div>
     </div>
     <div class="modal-body">
         <h4 class="font-yellow-gold">
             {{ $ctrl.ui.offers.subtitle | translate }}
+            <span ng-if="$ctrl.isOrderexisting">{{"Please note that some of these offers have already confirmed from the same supplier" | translate }}</span>
         </h4>
         <form name="requestOfferItems">
         <table class="table table-striped table-bordered" ng-class="$ctrl.requestOfferItems.length> 0 ? 'has_data' : 'no_data'" >
