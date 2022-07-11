@@ -459,13 +459,50 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       { currencies: this.legacyLookupsDatabase.getTableByName('currency'),
         products: this.legacyLookupsDatabase.getTableByName('product'),
         // inactiveProducts: this.legacyLookupsDatabase.getTableByName('inactiveProducts'),
-        uoms: this.legacyLookupsDatabase.getTableByName('uom')
+        uoms: this.legacyLookupsDatabase.getTableByName('uom'),
+        otherLists : this.spotNegotiationService.getStaticLists([
+          'Company',
+          'Seller',
+          'PaymentTerm',
+          'Incoterm',
+          'ApplyTo',
+          'ContractualQuantityOption',
+          'Uom',
+          'UomMass',
+          'UomVolume',
+          'ContractConversionFactorOptions',
+          'SpecParameter',
+          'FormulaType',
+          'SystemInstrument',
+          'MarketPriceType',
+          'FormulaPlusMinus',
+          'FormulaFlatPercentage',
+          'Currency',
+          'FormulaOperation',
+          'FormulaFunction',
+          'MarketPriceType',
+          'PricingSchedule',
+          'HolidayRule',
+          'PricingSchedulePeriod',
+          'Event',
+          'DayOfWeek',
+          'BusinessCalendar',
+          'FormulaEventInclude',
+          'ContractTradeBook',
+          'QuantityType',
+          'Product',
+          'Location',
+          'AdditionalCost',
+          'CostType',
+          'Customer'
+        ])
       }
     ).subscribe((res: any)=>{
       staticLists = {'currency': res.currencies };
       staticLists = { ...staticLists, 'product': res.products};
       // staticLists = { ...staticLists, 'inactiveProducts': res.inactiveProducts};
       staticLists = { ...staticLists, 'uom': res.uoms};
+      staticLists = {...staticLists, 'otherLists': res.otherLists}
       this.store.dispatch(new SetStaticLists(staticLists));
     });
   }

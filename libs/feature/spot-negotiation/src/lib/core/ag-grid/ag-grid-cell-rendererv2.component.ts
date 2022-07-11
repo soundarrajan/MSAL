@@ -716,7 +716,6 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
     changeDetection: ChangeDetectionStrategy.OnPush
   })
 export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
-  @ViewChild('inputSection') inputSection: ElementRef;
   @ViewChild('menuTriggerHover') menuTriggerHover: MatMenuTrigger;
   @ViewChild('addAdditionalCostPopUpTrigger')
   addAdditionalCostPopUpTrigger: MatMenuTrigger;
@@ -1583,33 +1582,49 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   pricingdetailspopup(e, params) {
+    let requestedOfferId = params.data.requestOffers.find(x=> x.quotedProductId == params.product.productId).id;
+    let offerPriceFormulaId = params.data.requestOffers.find(x=> x.id == requestedOfferId).offerPriceFormulaId;
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
       width: '1164px',
+      data : {
+        requestOfferId : requestedOfferId,
+        offerPriceFormulaId : offerPriceFormulaId,
+        locationId : params.data.id
+      },
       panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class']
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      e.target.parentElement.classList.add('active');
-      this.inputValue = '560.19';
-      var itemsToUpdate = [];
-      let rowData = [];
-
-      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
-        if (!rowNode.isSelected() === true) {
-          return;
-        }
-        var data = rowNode.data;
-        data.tPr = '$560.19';
-        data.amt = '4,48,152.00';
-        data.diff = '1.19';
-        data.phySupplier = 'Same as seller';
-        itemsToUpdate.push(data);
+      params.colDef.valueSetter({
+        colDef: params.colDef,
+        data: params.data,
+        newValue: result.price,
+        event: e,
+        elementidValue: this.returnRowIndex(params)
       });
-      var res = params.api.applyTransaction({ update: itemsToUpdate });
-      params.api.deselectAll(); //optional
-      this.ispriceCalculated = false;
-      this.showFormula = true;
       this._spotNegotiationService.callGridRefreshService();
+      //e.target.parentElement.classList.add('active');
+      //this.inputValue = result.price;
+      
+      
+     // var itemsToUpdate = [];
+
+      // params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
+      //   if (!rowNode.isSelected() === true) {
+      //     return;
+      //   }
+      //   var data = rowNode.data;
+      //   data.tPr = '$560.19';
+      //   data.amt = '4,48,152.00';
+      //   data.diff = '1.19';
+      //   data.phySupplier = 'Same as seller';
+      //   itemsToUpdate.push(data);
+      // });
+      // var res = params.api.applyTransaction({ update: itemsToUpdate });
+      // params.api.deselectAll(); //optional
+      // this.ispriceCalculated = false;
+      // this.showFormula = true;
+      // this._spotNegotiationService.callGridRefreshService();
     });
   }
   otherdetailspopup(e, params) {

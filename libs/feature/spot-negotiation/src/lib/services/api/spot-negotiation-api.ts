@@ -81,9 +81,7 @@ export const SpotNegotiationApiPaths = {
   isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`,
   getSellerRatingsforNegotiation: `api/sellerrating/sellerratingreview/getForNegotiation`,
   getContractFormulaList : `api/masters/formulas/listMasters`,
-  getContractFormula : `api/masters/formulas/get`,
-  saveFormula :`api/masters/formulas/create`,
-  updateFormula : `api/masters/formulas/update`
+  getContractFormula : `api/masters/formulas/get`
 };
 
 @Injectable({
@@ -105,6 +103,9 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
 
   @ApiCallUrl()
   private _sellerApiUrl = this.appConfig.v1.API.BASE_URL_DATA_SELLERRATING;
+
+  @ApiCallUrl()
+  private _baseUrl = this.appConfig.v1.API.BASE_URL;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -945,15 +946,15 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   
 }
 
-@ObservableException()
-  saveFormula(request: any): Observable<any> {
+  @ObservableException()
+  addNewFormulaPrice(request: any, requestOfferId : number): Observable<any> {
     return this.http
       .post<any>(
-        `${this._masterApiUrl}/${SpotNegotiationApiPaths.saveFormula}`,
-        { Payload: request }
+        `${this._baseUrl}/offers/${requestOfferId}/priceConfiguration`,
+           request
       )
       .pipe(
-        map((body: any) => body.upsertedId),
+        map((body: any) => body),
         catchError((body: any) =>
           of(
             body.error.ErrorMessage && body.error.Reference
@@ -965,14 +966,71 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   @ObservableException()
-  updateFormula(request: any): Observable<any> {
+  updateFormulaPrice(request: any, requestOfferId : number, priceConfigurationId: number): Observable<any> {
     return this.http
-      .post<any>(
-        `${this._masterApiUrl}/${SpotNegotiationApiPaths.updateFormula}`,
-        { Payload: request }
+      .patch<any>(
+        `${this._baseUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigurationId}`,
+           request
       )
       .pipe(
-        map((body: any) => body.payload),
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  evaluateFormulaPrice(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._baseUrl}/offerPriceEvaluations`,
+          request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  cloneToPriceConfiguration(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._baseUrl}/orders/cloneToPriceconfigurations`,
+          request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
+
+  @ObservableException()
+  orderPriceEvaluations(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._baseUrl}/orderPriceEvaluations`,
+          request
+      )
+      .pipe(
+        map((body: any) => body),
         catchError((body: any) =>
           of(
             body.error.ErrorMessage && body.error.Reference

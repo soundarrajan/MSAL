@@ -3,9 +3,9 @@
     <div class="spot-nego-title">Formula pricing details</div>
     <div class="spot-dialog-title-right">
       <!-- <button class="cancel-btn w-104" mat-button [mat-dialog-close]="true">Cancel</button> -->
-      <button class="proceed-btn w-104" mat-button [mat-dialog-close]="true" (click)="saveFormula()" [disabled]="">Save</button>
+      <button class="proceed-btn w-104" mat-button  (click)="saveFormula()" [disabled]="">Save</button>
       <div class="title-divider">|</div>
-      <span class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
+      <span class="close" style="cursor:pointer;" (click)="closePopup()"></span>
       <!-- <div class="close-circle">
         <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() "
           style="font-size: 14px; display: inline; position:relative; top:-1px; ">close</mat-icon>
@@ -56,7 +56,7 @@
       <div class="custom-form-field lightTheme" style="width: 100% !important;margin:0px">
         <mat-form-field class="without-search" style="width:100%;border-radius: 4px;">
           <mat-label>Formula Name</mat-label>
-          <input matInput (keypress)="typeFormula()" autocomplete="off" [(ngModel)]="formulaDesc" name="formula-name" placeholder="Formula Name">
+          <input matInput autocomplete="off" [(ngModel)]="formulaDesc" name="formula-name" placeholder="Formula Name">
         </mat-form-field>
       </div>
           </div>
@@ -99,16 +99,16 @@
                     Pricing Type
                   </div>
                   <div class="col-md-12">
-                    <mat-radio-group class="pricing-container-radio-group"  [(ngModel)]="expressType1" (ngModelChange)="setFormulaTypeSelected(formValues.formulaType.id);" style="display: flex;
+                    <mat-radio-group class="pricing-container-radio-group"  [ngModel]="formulaId" (ngModelChange)="setFormulaTypeSelected($event)" style="display: flex;
                     justify-content: space-between;width: 75%;">
-                      <mat-radio-button class="pricing-container-radio-button col-md-3" *ngFor="let option of formulaTypeList;let i = index" [value]="option.name">
+                      <mat-radio-button class="pricing-container-radio-button col-md-3"  *ngFor="let option of formulaTypeList" [value]="option.id">
                         {{option.name}}
                     </mat-radio-button>
                     </mat-radio-group>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="row" *ngIf="expressType1 === 'Simple'">
+                  <div class="row" *ngIf="formulaId === 1">
                   <div class="col-md-12 d-flex pd-0" style="padding:0; margin-top: 15px; margin-left: 1vw   ; flex-wrap: wrap;">
                     <shiptech-pricing-formula-simple
                       [model]="formValues"
@@ -122,7 +122,7 @@
                     </shiptech-pricing-formula-simple>
                   </div>
                 </div>
-                <div class="col-md-12" style="padding:0" *ngIf="expressType1 === 'Complex'">
+                <div class="col-md-12" style="padding:0" *ngIf="formulaId === 2">
                   <shiptech-pricing-formula-complex
                     [model]="formValues"
                     [formulaFlatPercentageList]="formulaFlatPercentageList"
@@ -138,7 +138,7 @@
             </shiptech-pricing-formula-complex>
               </div>
                 </div>
-                <div class="col-md-12 no-padding" *ngIf="expressType1 === 'Simple' || expressType1 === 'Complex'">
+                <div class="col-md-12 no-padding" *ngIf="formulaId === 1 || formulaId === 2">
                   <mat-form-field appearance="outline" class="custom-form-field-comments">
                     <mat-label>Comments</mat-label>
                     <textarea matInput rows="4" cols="60" [(ngModel)] = "comment" placeholder="Comments"></textarea>
@@ -160,10 +160,10 @@
                 </div>
                 <div class="">
                     <mat-radio-group class="pricing-container-radio-group" 
-                                     [(ngModel)]="expressType" 
+                                     [(ngModel)]="scheduleId" 
                                      (ngModelChange)="clearSchedules(formValues.pricingSchedule.id)"
                     >
-                    <mat-radio-button class="pricing-container-radio-button" *ngFor="let option of pricingScheduleList" [value]="option.name">
+                    <mat-radio-button class="pricing-container-radio-button" *ngFor="let option of pricingScheduleList" [value]="option.id">
                         {{option.name}}
                       </mat-radio-button>
                         
@@ -172,7 +172,7 @@
               </div>
               <div >
                  
-                  <div *ngIf="expressType === 'Date Range'" >
+                  <div *ngIf="scheduleId === 4" >
                     <shiptech-date-range
                       class="row"
                       [model]="formValues"
@@ -183,7 +183,7 @@
                   
               </div>
               <div >
-                  <div *ngIf="expressType == 'Specific Dates'">
+                  <div *ngIf="scheduleId === 5">
                     <shiptech-specific-dates
                       class="row"
                       [model]="formValues" 
@@ -192,7 +192,7 @@
                   </shiptech-specific-dates>
                   </div>
               </div>
-              <div *ngIf="expressType === 'Event Based Simple'" >
+              <div *ngIf="scheduleId === 6" >
                 <shiptech-event-based-simple
                   class="row"
                   [model]="formValues"
@@ -202,7 +202,7 @@
                 >
                 </shiptech-event-based-simple>
             </div>
-            <div *ngIf="expressType === 'Event Based Extended'" >
+            <div *ngIf="scheduleId === 7" >
             <shiptech-event-based-extended
             class="row"
             [model]="formValues"
@@ -213,7 +213,7 @@
           >
           </shiptech-event-based-extended>
             </div> 
-            <div *ngIf="expressType === 'Event Based Continuous'"> 
+            <div *ngIf="scheduleId === 8 "> 
             <shiptech-event-based-continuous
             class="row"
             [model]="formValues"
@@ -238,73 +238,73 @@
           </div>
       </div>
   </div>
-                <!-- Pricing schedule section end -->
-                <!-- Discount Rules-- Start -->
-                <div class="row d-flex col-md-12 discount-rules" *ngIf="initialized == 3">
-                    <div class="col-md-12">
-                        <div class="pricing-type-container">
-                            <div class="col-md-12 pricing-container" style="max-height: 365px;overflow:auto">
-                                <div style="margin-top: 15px;">
-                                    <div class="col-md-12 pricing-formula-tab no-padding"
-                                        style="display: flex;justify-content: flex-start;">
-                                        <div class="pricing-formula-tab-header flexi-row col-md-6">
-                                            <div [ngClass]="{'selected-tab': rules == 1, 
-                                  'unselected-tab grey-bg': rules != 1}" (click)="rules = 1">
-                                                <div class="value">Quantity Based</div>
-                                            </div>
-                                            <div class="border_line"></div>
-                                            <div [ngClass]="{'selected-tab': rules == 2, 
-                            'unselected-tab grey-bg': rules != 2}" (click)="rules = 2">
-                                                <div class="value">Product Based</div>
-                                            </div>
-                                            <div class="border_line"></div>
-                                            <div [ngClass]="{'selected-tab': rules == 3,
-                            'unselected-tab grey-bg': rules != 3}" (click)="rules = 3">
-                                                <div class="value">Vessel Location Based</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div *ngIf="rules == 1">
-                                  <shiptech-quantity-based
-                                  [model]="formValues"
-                                  [formulaFlatPercentageList]="formulaFlatPercentageList"
-                                  [quantityTypeList]="quantityTypeList"
-                                  [formulaPlusMinusList]="formulaPlusMinusList"
-                                  [uomList]="uomList"
-                                  
-                              >
-                              </shiptech-quantity-based>
-                                    
-                                </div>
-                                <div *ngIf="rules == 2">
-                                  <shiptech-product-based
-                                    [model]="formValues"
-                                    [formulaFlatPercentageList]="formulaFlatPercentageList"
-                                    [quantityTypeList]="quantityTypeList"
-                                    [formulaPlusMinusList]="formulaPlusMinusList"
-                                    [uomList]="uomList"
-                                    [productList]="productList"
-                                    
-                                  >
-                                  </shiptech-product-based>
-                                </div>
-                                <div *ngIf="rules == 3">
-                                  <shiptech-vessel-location-based
-                                  [model]="formValues"
-                                  [formulaFlatPercentageList]="formulaFlatPercentageList"
-                                  [quantityTypeList]="quantityTypeList"
-                                  [formulaPlusMinusList]="formulaPlusMinusList"
-                                  [uomList]="uomList"
-                                  [locationList]="locationList"
-                                  
-                                >
-                                </shiptech-vessel-location-based>
-                                </div>
+<!-- Pricing schedule section end -->
+<!-- Discount Rules-- Start -->
+<div class="row d-flex col-md-12 discount-rules" *ngIf="initialized == 3">
+    <div class="col-md-12">
+        <div class="pricing-type-container">
+            <div class="col-md-12 pricing-container" style="max-height: 365px;overflow:auto">
+                <div style="margin-top: 15px;">
+                    <div class="col-md-12 pricing-formula-tab no-padding"
+                        style="display: flex;justify-content: flex-start;">
+                        <div class="pricing-formula-tab-header flexi-row col-md-6">
+                            <div [ngClass]="{'selected-tab': rules == 1, 
+                  'unselected-tab grey-bg': rules != 1}" (click)="rules = 1">
+                                <div class="value">Quantity Based</div>
+                            </div>
+                            <div class="border_line"></div>
+                            <div [ngClass]="{'selected-tab': rules == 2, 
+            'unselected-tab grey-bg': rules != 2}" (click)="rules = 2">
+                                <div class="value">Product Based</div>
+                            </div>
+                            <div class="border_line"></div>
+                            <div [ngClass]="{'selected-tab': rules == 3,
+            'unselected-tab grey-bg': rules != 3}" (click)="rules = 3">
+                                <div class="value">Vessel Location Based</div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div *ngIf="rules == 1">
+                  <shiptech-quantity-based
+                  [model]="formValues"
+                  [formulaFlatPercentageList]="formulaFlatPercentageList"
+                  [quantityTypeList]="quantityTypeList"
+                  [formulaPlusMinusList]="formulaPlusMinusList"
+                  [uomList]="uomList"
+                  
+              >
+              </shiptech-quantity-based>
+                    
+                </div>
+                <div *ngIf="rules == 2">
+                  <shiptech-product-based
+                    [model]="formValues"
+                    [formulaFlatPercentageList]="formulaFlatPercentageList"
+                    [quantityTypeList]="quantityTypeList"
+                    [formulaPlusMinusList]="formulaPlusMinusList"
+                    [uomList]="uomList"
+                    [productList]="productList"
+                    
+                  >
+                  </shiptech-product-based>
+                </div>
+                <div *ngIf="rules == 3">
+                  <shiptech-vessel-location-based
+                  [model]="formValues"
+                  [formulaFlatPercentageList]="formulaFlatPercentageList"
+                  [quantityTypeList]="quantityTypeList"
+                  [formulaPlusMinusList]="formulaPlusMinusList"
+                  [uomList]="uomList"
+                  [locationList]="locationList"
+                  
+                >
+                </shiptech-vessel-location-based>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                 <!-- Discount Rules -- END -->
   
       </div>

@@ -741,23 +741,37 @@ export class SpotNegotiationService extends BaseStoreService
   getContractFormula(payload): Observable<unknown> {
     return this.spotNegotiationApi.getContractFormula(payload);
   }
-
-   @ObservableException()
-   saveFormula(payload): Observable<unknown> {
-     return this.spotNegotiationApi.saveFormula(payload);
-   }
- 
-   
-   @ObservableException()
-   updateFormula(payload): Observable<unknown> {
-     return this.spotNegotiationApi.updateFormula(payload);
-   }
-
+  
   //Getting Static Lists from indexedDB
   public async getStaticListFromIDB(){
     const db = await openDB('Shiptech',10)
     db.getAll('listsCache').then(x=>
       this.indexedDBList = x[0].data
     );
+  }
+
+  @ObservableException()
+  addNewFormulaPrice(payload, requestOfferId): Observable<unknown> {
+     return this.spotNegotiationApi.addNewFormulaPrice(payload, requestOfferId);
+   }
+
+   @ObservableException()
+   updateFormulaPrice(payload, requestOfferId, priceConfigurationId): Observable<unknown> {
+     return this.spotNegotiationApi.updateFormulaPrice(payload, requestOfferId, priceConfigurationId);
+   }
+
+   @ObservableException()
+   evaluateFormulaPrice(payload): Observable<unknown> {
+    return this.spotNegotiationApi.evaluateFormulaPrice(payload);
+  }
+
+  @ObservableException()
+  cloneToPriceConfiguration(payload): Observable<unknown> {
+    return this.spotNegotiationApi.cloneToPriceConfiguration(payload);
+  }
+
+  @ObservableException()
+  orderPriceEvaluations(payload): Observable<unknown> {
+    return this.spotNegotiationApi.orderPriceEvaluations(payload);
   }
 }
