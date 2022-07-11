@@ -39,6 +39,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   searchingPhysicalSuppilier: string = null;
   controlTowerListServerKeys: any;
   selectedCounterparties: any;
+  locationsRows: any[];
   public count: number = 0;
   public count2: number = 0;
   public counterpartyList: any;
@@ -547,6 +548,48 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
         physicalSupplierCounterpartyName: this.selectedCounterparties[0]
           .sellerCounterpartyName
       };
+      ///Supplier validation
+      let valid=false;
+      this.store.selectSnapshot<any>((state: any) => {
+        if (state.spotNegotiation.locationsRows.length > 0) {
+          const currentRequestInfo = state.spotNegotiation.currentRequestSmallInfo;
+          const selectItems = state.spotNegotiation.locationsRows.filter(
+            item =>
+              item.locationId === this.data.LocationId &&
+              item.sellerCounterpartyId ===
+                this.data.SellerCounterpartyId &&
+              item.requestId === currentRequestInfo.id &&
+              item.physicalSupplierCounterpartyId === this.selectedCounterparties[0].sellerCounterpartyId &&
+              item.id !== this.data.requestLocationSellerId
+          );
+          if (selectItems.length != 0) {
+            this.locationsRows = state.spotNegotiation.locationsRows;
+            this.locationsRows.forEach(element => {
+              if (
+                element.locationId == this.data.LocationId &&
+                element.id == this.data.requestLocationSellerId
+              ) {
+                if (this.selectedCounterparties[0]?.sellerCounterpartyName && this.selectedCounterparties[0]?.sellerCounterpartyName != null) {
+                  const PreviousPhySupplier = state.spotNegotiation.counterpartyList.filter(
+                    item => item.name === this.selectedCounterparties[0]?.sellerCounterpartyName
+                  );
+                  if (PreviousPhySupplier.length != 0) {
+                    return (valid = true);
+                  }
+                }
+              }
+            });
+          } else {
+            return (valid = false);
+          }
+        }
+      });
+      if (valid) {
+        this.toastr.error(
+          'Physical supplier already available against the given the Seller.'
+        );
+        return;
+      } 
       const locationsRows = this.store.selectSnapshot<string>((state: any) => {
         return state.spotNegotiation.locationsRows;
       });

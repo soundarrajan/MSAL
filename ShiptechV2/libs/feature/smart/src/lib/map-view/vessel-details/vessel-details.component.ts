@@ -59,7 +59,11 @@ export class VesselDetailsComponent implements OnInit {
     private localService: LocalService,
     public dialog: MatDialog,
     private vesselService: VesselPopupService
-  ) {}
+  ) {
+    this.localService.changeUserRoal$.subscribe(() => {
+      this.getBunkerUserModeDefault();
+    });
+  }
 
   ngOnInit() {
     if(this.defaultLoad == true){
@@ -127,9 +131,10 @@ export class VesselDetailsComponent implements OnInit {
       this.getVesselListVesselWithCode = tenantConfRes.find(
         txn => txn.name == 'Vessel'
       ).items;
-      this.vesselList = this.getVesselListVesselWithCode.map(vesselItem => {
+      this.vesselList = this.getVesselListVesselWithCode.map((vesselItem) => {
         let obj = this.getVesselListVesselWithImo.find(
-          imoItem => imoItem.id === vesselItem.id
+          imoItem => imoItem.id === vesselItem.id &&
+            imoItem.description?.toLowerCase() == ('BopsVessel').toLowerCase()
         );
         return obj
           ? { ...vesselItem, imono: obj.name, displayName: vesselItem.name }
