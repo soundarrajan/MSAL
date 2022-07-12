@@ -83,6 +83,7 @@ export class AllBunkeringPlanComponent implements OnInit {
   }
 
   changeVesselTrigger(event) {
+    this.localService.checkVesselNewPlanJob();
     this.loadBunkerPlanHistory(event);
     let vesselObjFormat = Object.assign({}, event);
     delete Object.assign(vesselObjFormat, {
