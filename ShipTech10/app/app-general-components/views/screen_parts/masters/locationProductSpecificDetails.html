@@ -16,7 +16,8 @@
 					<span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.locationProducts.splice(key,1) : formValues.locationProducts[key].isDeleted=true"></span>
 				</td>
 				<td>
-					 <select name="productType_{{ $index }}" class="form-control" ng-model="formValues.locationProducts[$index].productType" ng-options="item as item.name for item in CM.listsCache.ProductType | filter:filterMultiple track by item.id" ng-required="true">
+					<select name="productType_{{ $index }}" class="form-control" ng-model="formValues.locationProducts[$index].productType" ng-options="item as item.name for item in CM.listsCache.ProductType | filter:filterMultiple track by item.id" ng-required="true"
+					ng-change="formValues.locationProducts[$index].product = null">
 				 </td>
 				<td>
 					<input type="text" name="maxTransferRate_{{ $index }}" ng-required="formValues.locationProducts[$index].productType?true:false" type="number" class="form-control" ng-model="formValues.locationProducts[$index].maxTransferRate" format="number:0">
