@@ -20,8 +20,8 @@
                      <option value="1" selected>Consolidated</option>
                     <option value="2">Individual</option>
                 </select>
-                <span style="float: right;margin: 6px 10px 0px 0px;font-weight: 700;">{{ 'Order Type' | translate }}</span>
-x            </div>
+                <span ng-if="$ctrl.isOrderexisting" style="float: right;margin: 6px 10px 0px 0px;font-weight: 700;">{{ 'Order Type' | translate }}</span>
+           </div>
         </div>
     </div>
     <div class="modal-body">
