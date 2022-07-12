@@ -774,4 +774,9 @@ export class SpotNegotiationService extends BaseStoreService
   orderPriceEvaluations(payload): Observable<unknown> {
     return this.spotNegotiationApi.orderPriceEvaluations(payload);
   }
+
+  @ObservableException()
+  evaluatePrices(payload): Observable<unknown> {
+    return this.spotNegotiationApi.evaluatePrices(payload);
+  }
 }

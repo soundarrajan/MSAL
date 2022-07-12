@@ -86,6 +86,13 @@ export class SetLocationsRows {
 
   constructor(public payload: any) {}
 }
+
+export class SetOfferPriceFormulaId {
+  static readonly type = '[SetOfferPriceFormulaId] Set';
+
+  constructor(public payload: any) {}
+}
+
 export class SetLocationsRowsOriData {
   static readonly type = '[LocationsRowsOriData] Set';
 

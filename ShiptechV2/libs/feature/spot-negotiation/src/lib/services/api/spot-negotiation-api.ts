@@ -1040,6 +1040,25 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         )
       );
   }
+
+  @ObservableException()
+  evaluatePrices(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._baseUrl}/offerPriceEvaluations/ForOffers`,
+          request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) =>
+          of(
+            body.error.ErrorMessage && body.error.Reference
+              ? body.error.ErrorMessage + ' ' + body.error.Reference
+              : body.error.errorMessage + ' ' + body.error.reference
+          )
+        )
+      );
+  }
 }
 
 
