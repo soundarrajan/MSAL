@@ -2040,14 +2040,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                           locationObject.company = angular.copy(ctrl.vesselDefaultDetails.company);
                         }
                     } else {
-                        if (extraInfo.company) {
+                       // if (extraInfo.company) {
                             //ctrl.request.company = angular.copy(extraInfo.company);
-                        }
-                        if (ctrl.vesselDefaultDetails) {
-                            if (ctrl.vesselDefaultDetails.company) {
-                                ctrl.request.company = angular.copy(ctrl.vesselDefaultDetails.company);
-                            }
-                        }
+                        //}
+                       // if (ctrl.vesselDefaultDetails) {
+                           // if (ctrl.vesselDefaultDetails.company) {
+                           //     ctrl.request.company = angular.copy(ctrl.vesselDefaultDetails.company);
+                           // }
+                       // }
                     }
                     if (extraInfo) {
                         locationObject.vesselVoyageDetailId = extraInfo.vesselVoyageDetailId;
