@@ -60,6 +60,7 @@ export class AdditionalCostModalComponent implements OnInit {
   selectedProductLine: any;
   additionalCostProduct: any;
   additionalProdSearch: any;
+  selectedProduct: any;
   costType: any;
   costDetailsComponentTypes: any;
   filterCostNames: any[];
@@ -1151,6 +1152,10 @@ export class AdditionalCostModalComponent implements OnInit {
   }
 
   searchProduct(value: string, locationId): void {
+  }
+
+  productChange(event, data){
+    this.selectedProduct = data;
   }
 
   getAdditionalCostsPerPort(locationId) {

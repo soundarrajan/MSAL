@@ -234,7 +234,7 @@
             [matMenuTriggerFor]="additionalProductSearch"
             (click)="
             additionalProdSearch = null;"
-          ><a class="add-icon"></a>
+          ><mat-form-field class="dotted-form-field" appearance="none" style="height: 40px"><input matInput value="{{selectedProduct}}"></mat-form-field>
           </div>
 		   <mat-menu
             #additionalProductSearch="matMenu"
@@ -283,7 +283,7 @@
                                   );
                                     "
                                   >
-                                    <mat-radio-button [value]="element">
+                                    <mat-radio-button [value]="element" (change)="productChange($event, element.name)">
                                       {{ element.name }}
                                     </mat-radio-button>
                                   </mat-radio-group>
