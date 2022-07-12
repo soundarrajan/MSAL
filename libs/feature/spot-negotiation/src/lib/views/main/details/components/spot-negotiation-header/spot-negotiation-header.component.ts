@@ -135,12 +135,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         );
         this.locationsRows = spotNegotiation.locationsRows;
         this.bestOffIconDispaly =  false;
-        // this.locationsRows.forEach(element => {
-        //   if(element?.requestOffers?.length > 0){
-        //     this.bestOffIconDispaly =  true;
-        //     return;
-        //   }
-        // });
+        this.locationsRows.forEach(element => {
+          if(element?.requestOffers?.length > 0){
+            this.bestOffIconDispaly =  true;
+            return;
+          }
+        });
         this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
           this.locations =
@@ -343,6 +343,21 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   refreshGrid(){
+    let locationData : any[] = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    let OfferIds = [];
+    locationData.forEach(loc =>{
+      if(loc.requestOffers){
+         let offerId = loc.requestOffers.find(x => x.isFormulaPricing == true)?.id;
+         OfferIds.push(offerId);
+      }
+    }
+    );
+    OfferIds =  OfferIds.filter(x=> x!=undefined);
+    this._spotNegotiationService.evaluatePrices({ RequestOfferIds: OfferIds}).subscribe((resp:any) =>{
+      console.log(resp);
+    })
     this._spotNegotiationService.callGridRedrawService();
   }
   addCounterpartyAcrossLocations() {

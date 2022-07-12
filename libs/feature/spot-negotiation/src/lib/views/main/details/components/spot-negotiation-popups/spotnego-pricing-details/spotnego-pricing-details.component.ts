@@ -12,7 +12,8 @@ import { SearchFormulaPopupComponent } from '../search-formula-popup/search-form
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { FormValues } from './spotnego-pricing-details.interface';
-import { switchMap} from 'rxjs/operators';
+import { switchMap, tap} from 'rxjs/operators';
+import { SetOfferPriceFormulaId } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 
 @Component({
   selector: 'app-spotnego-pricing-details',
@@ -514,8 +515,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     systemInstrument.forEach(sys => 
       systemInstrumentList.push(
        {
-         marketPriceTypeId : sys.marketPriceTypeId.id,
-         systemInstrumentId : sys.systemInstrument.id,
+         marketPriceTypeId : sys.marketPriceTypeId?.id ? sys.marketPriceTypeId.id : 0,
+         systemInstrumentId : sys.systemInstrument?.id ? sys.systemInstrument.id : 0,
        })
     );
 
@@ -523,12 +524,12 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
  }
   constructSimpleFormula(simpleFormula){
     let simplePayload = {
-      systemInstrumentId: simpleFormula.systemInstrument.id,
-      marketPriceTypeId : simpleFormula.priceType.id,
-      formulaPlusMinusId : simpleFormula.plusMinus.id,
-      amount : simpleFormula.amount,
-      formulaFlatPercentageId : simpleFormula.flatPercentage.id,
-      uomId : simpleFormula.uom.id 
+      systemInstrumentId: simpleFormula.systemInstrument?.id ? simpleFormula.systemInstrument.id : 0,
+      marketPriceTypeId : simpleFormula.priceType.id ? simpleFormula.priceType.id : 0,
+      formulaPlusMinusId : simpleFormula.plusMinus.id ? simpleFormula.plusMinus.id : 0,
+      amount : simpleFormula.amount ? simpleFormula.amount : 0,
+      formulaFlatPercentageId : simpleFormula.flatPercentage.id ? simpleFormula.flatPercentage.id : 0,
+      uomId : simpleFormula.uom?.id ? simpleFormula.uom.id  : 0
     }
     return simplePayload;
   }
@@ -536,12 +537,12 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     let complexPayload = [];
     complexFormula.forEach(comp=>
        complexPayload.push({
-        id : comp.id,
+        id : comp.id ? comp.id : 0,
         amount : comp.amount,
-        formulaFlatPercentageId: comp.formulaFlatPercentage.id,
-        formulaFunctionId : comp.formulaFunction.id,
-        formulaOperationId : comp.formulaOperation.id,
-        formulaPlusMinusId : comp.formulaPlusMinus.id,
+        formulaFlatPercentageId: comp.formulaFlatPercentage?.id ?  comp.formulaFlatPercentage.id: 0,
+        formulaFunctionId : comp.formulaFunction?.id ? comp.formulaFunction.id: 0,
+        formulaOperationId : comp.formulaOperation.id ?  comp.formulaOperation.id:0,
+        formulaPlusMinusId : comp.formulaPlusMinus.id ? comp.formulaPlusMinus.id : 0,
         weight : comp.weight,
         SystemInstruments : this.generateSystemInstrumentForComplexFormula(comp.systemInstruments)
        })
@@ -566,13 +567,13 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     else{
       let holidayRule = {
         assumeHolidayOnInstruments: holidayRules.assumeHolidayOnInstruments,
-        sundayHolidayRuleId: holidayRules.sundayHolidayRule.id ,
-        mondayHolidayRuleId: holidayRules.mondayHolidayRule.id ,
-        tuesdayHolidayRuleId: holidayRules.tuesdayHolidayRule.id,
-        wednesdayHolidayRuleId: holidayRules.wednesdayHolidayRule.id ,
-        thursdayHolidayRuleId: holidayRules.thursdayHolidayRule.id,
-        fridayHolidayRuleId: holidayRules.fridayHolidayRule.id,
-        saturdayHolidayRuleId  : holidayRules.saturdayHolidayRule.id
+        sundayHolidayRuleId: holidayRules.sundayHolidayRule?.id ? holidayRules.sundayHolidayRule.id : 0 ,
+        mondayHolidayRuleId: holidayRules.mondayHolidayRule?.id ? holidayRules.mondayHolidayRule.id : 0,
+        tuesdayHolidayRuleId: holidayRules.tuesdayHolidayRule?.id ? holidayRules.tuesdayHolidayRule.id : 0,
+        wednesdayHolidayRuleId: holidayRules.wednesdayHolidayRule?.id ? holidayRules.wednesdayHolidayRule.id : 0,
+        thursdayHolidayRuleId: holidayRules.thursdayHolidayRule?.id ? holidayRules.thursdayHolidayRule.id : 0,
+        fridayHolidayRuleId: holidayRules.fridayHolidayRule?.id ? holidayRules.fridayHolidayRule.id : 0,
+        saturdayHolidayRuleId  : holidayRules.saturdayHolidayRule?.id ? holidayRules.saturdayHolidayRule.id : 0
       };
       return holidayRule; 
     }
@@ -580,7 +581,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
 
   constructFormulaPayload(formValues : any){
     let formulaPayload = {
-      formulaTypeId: formValues.formulaType.id,
+      formulaTypeId: formValues.formulaType?.id ? formValues.formulaType.id : 0,
       isMean : formValues.isMean,
       CurrencyId: 2, //------------------------------Needs to replace----------------------
       simpleFormula: this.constructSimpleFormula(formValues.simpleFormula),
@@ -592,7 +593,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
 
   constructSchedulePayload(formValues : any){
     let schedulePayload = {
-      pricingScheduleId : formValues.pricingSchedule.id,
+      pricingScheduleId : formValues.pricingSchedule?.id ? formValues.pricingSchedule.id : 0,
       dateRange :this.constructDateRange(formValues.pricingScheduleOptionDateRange),
       specificDate: this.constructSpecificDate(formValues.pricingScheduleOptionSpecificDate),
       eventBasedSimple : this.constructEventBasedSimple(formValues.pricingScheduleOptionEventBasedSimple),
@@ -606,17 +607,17 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     if(!scheduleEventBasedContinuous) return null;
     let eventBasedContinuous ={
       assumeHolidayOnInstruments: scheduleEventBasedContinuous.assumeHolidayOnInstruments ,
-      sundayHolidayRuleId: scheduleEventBasedContinuous.sundayHolidayRule.id,
-      mondayHolidayRuleId: scheduleEventBasedContinuous.mondayHolidayRule.id,
-      tuesdayHolidayRuleId: scheduleEventBasedContinuous.tuesdayHolidayRule.id,
-      wednesdayHolidayRuleId: scheduleEventBasedContinuous.wednesdayHolidayRule.id,
-      thursdayHolidayRuleId: scheduleEventBasedContinuous.thursdayHolidayRule.id,
-      fridayHolidayRuleId: scheduleEventBasedContinuous.fridayHolidayRule.id,
-      saturdayHolidayRuleId: scheduleEventBasedContinuous.saturdayHolidayRule.id,
-      pricingSchedulePeriodId: scheduleEventBasedContinuous.period.id,
-      eventId: scheduleEventBasedContinuous.event.id,
+      sundayHolidayRuleId: scheduleEventBasedContinuous.sundayHolidayRule?.id ? scheduleEventBasedContinuous.sundayHolidayRule.id : 0,
+      mondayHolidayRuleId: scheduleEventBasedContinuous.mondayHolidayRule?.id ? scheduleEventBasedContinuous.mondayHolidayRule.id :0,
+      tuesdayHolidayRuleId: scheduleEventBasedContinuous.tuesdayHolidayRule?.id ? scheduleEventBasedContinuous.tuesdayHolidayRule.id : 0,
+      wednesdayHolidayRuleId: scheduleEventBasedContinuous.wednesdayHolidayRule?.id ? scheduleEventBasedContinuous.wednesdayHolidayRule.id : 0,
+      thursdayHolidayRuleId: scheduleEventBasedContinuous.thursdayHolidayRule?.id ? scheduleEventBasedContinuous.thursdayHolidayRule.id : 0,
+      fridayHolidayRuleId: scheduleEventBasedContinuous.fridayHolidayRule?.id ? scheduleEventBasedContinuous.fridayHolidayRule.id : 0,
+      saturdayHolidayRuleId: scheduleEventBasedContinuous.saturdayHolidayRule?.id ? scheduleEventBasedContinuous.saturdayHolidayRule.id : 0,
+      pricingSchedulePeriodId: scheduleEventBasedContinuous.period?.id ? scheduleEventBasedContinuous.period.id : 0,
+      eventId: scheduleEventBasedContinuous.event.id ? scheduleEventBasedContinuous.event.id : 0,
       date: scheduleEventBasedContinuous.date ,
-      weekStartsOn: scheduleEventBasedContinuous.weekStartsOn.id
+      weekStartsOn: scheduleEventBasedContinuous.weekStartsOn.id ? scheduleEventBasedContinuous.weekStartsOn.id: 0
     }
     return eventBasedContinuous;
   } 
@@ -625,22 +626,22 @@ constructEventBasedExtended(scheduleEventBasedExtended : any){
  if(!scheduleEventBasedExtended) return null;
  let eventBasedExtended = {
   assumeHolidayOnInstruments : scheduleEventBasedExtended.assumeHolidayOnInstruments,
-  sundayHolidayRuleId: scheduleEventBasedExtended.sundayHolidayRule.id,
-  mondayHolidayRuleId : scheduleEventBasedExtended.mondayHolidayRule.id,
-  tuesdayHolidayRuleId : scheduleEventBasedExtended.tuesdayHolidayRule.id,
-  wednesdayHolidayRuleId : scheduleEventBasedExtended.wednesdayHolidayRule.id,
-  thursdayHolidayRuleId : scheduleEventBasedExtended.thursdayHolidayRule.id,
-  fridayHolidayRuleId : scheduleEventBasedExtended.fridayHolidayRule.id,
-  saturdayHolidayRuleId : scheduleEventBasedExtended.saturdayHolidayRule.id,
+  sundayHolidayRuleId: scheduleEventBasedExtended.sundayHolidayRule?.id ? scheduleEventBasedExtended.sundayHolidayRule.id : 0,
+  mondayHolidayRuleId : scheduleEventBasedExtended.mondayHolidayRule?.id ? scheduleEventBasedExtended.mondayHolidayRule.id : 0,
+  tuesdayHolidayRuleId : scheduleEventBasedExtended.tuesdayHolidayRule?.id ? scheduleEventBasedExtended.tuesdayHolidayRule.id : 0,
+  wednesdayHolidayRuleId : scheduleEventBasedExtended.wednesdayHolidayRule?.id ? scheduleEventBasedExtended.wednesdayHolidayRule.id: 0,
+  thursdayHolidayRuleId : scheduleEventBasedExtended.thursdayHolidayRule?.id ?  scheduleEventBasedExtended.thursdayHolidayRule.id : 0,
+  fridayHolidayRuleId : scheduleEventBasedExtended.fridayHolidayRule?.id ? scheduleEventBasedExtended.fridayHolidayRule.id : 0,
+  saturdayHolidayRuleId : scheduleEventBasedExtended.saturdayHolidayRule.id ? scheduleEventBasedExtended.saturdayHolidayRule.id : 0,
   name : scheduleEventBasedExtended.name,
   fromNoOfBusinessDaysBefore: scheduleEventBasedExtended.fromNoOfBusinessDaysBefore ,
-  fromBusinessCalendarId: scheduleEventBasedExtended.fromBusinessCalendar.id ,
+  fromBusinessCalendarId: scheduleEventBasedExtended.fromBusinessCalendar?.id ? scheduleEventBasedExtended.fromBusinessCalendar.id : 0 ,
   toNoOfBusinessDaysAfter: scheduleEventBasedExtended.toNoOfBusinessDaysAfter ,
-  toBusinessCalendarId: scheduleEventBasedExtended.toBusinessCalendar.id ,
+  toBusinessCalendarId: scheduleEventBasedExtended.toBusinessCalendar?.id ? scheduleEventBasedExtended.toBusinessCalendar.id : 0 ,
   excludeFromNoOfBusinessDaysBefore: scheduleEventBasedExtended.excludeFromNoOfBusinessDaysBefore ,
   excludeToNoOfBusinessDaysAfter: scheduleEventBasedExtended.excludeToNoOfBusinessDaysAfter,
-  eventId: scheduleEventBasedExtended.event.id ,
-  isEventIncludedId: scheduleEventBasedExtended.isEventIncluded.id
+  eventId: scheduleEventBasedExtended.event?.id ? scheduleEventBasedExtended.event.id : 0 ,
+  isEventIncludedId: scheduleEventBasedExtended.isEventIncluded?.id ? scheduleEventBasedExtended.isEventIncluded.id: 0
  }
  return eventBasedExtended;
 }
@@ -649,20 +650,20 @@ constructEventBasedSimple(scheduleEvenetBasedSimple: any){
   if(!scheduleEvenetBasedSimple) return null;
   let eventBasedSimple = {
       assumeHolidayOnInstruments : scheduleEvenetBasedSimple.assumeHolidayOnInstruments,
-      sundayHolidayRuleId: scheduleEvenetBasedSimple.sundayHolidayRule.id,
-      mondayHolidayRuleId : scheduleEvenetBasedSimple.mondayHolidayRule.id,
-      tuesdayHolidayRuleId : scheduleEvenetBasedSimple.tuesdayHolidayRule.id,
-      wednesdayHolidayRuleId : scheduleEvenetBasedSimple.wednesdayHolidayRule.id,
-      thursdayHolidayRuleId : scheduleEvenetBasedSimple.thursdayHolidayRule.id,
-      fridayHolidayRuleId : scheduleEvenetBasedSimple.fridayHolidayRule.id,
-      saturdayHolidayRuleId : scheduleEvenetBasedSimple.saturdayHolidayRule.id,
+      sundayHolidayRuleId: scheduleEvenetBasedSimple.sundayHolidayRule?.id ? scheduleEvenetBasedSimple.sundayHolidayRule.id : 0,
+      mondayHolidayRuleId : scheduleEvenetBasedSimple.mondayHolidayRule?.id ? scheduleEvenetBasedSimple.mondayHolidayRule.id : 0,
+      tuesdayHolidayRuleId : scheduleEvenetBasedSimple.tuesdayHolidayRule?.id ? scheduleEvenetBasedSimple.tuesdayHolidayRule.id : 0,
+      wednesdayHolidayRuleId : scheduleEvenetBasedSimple.wednesdayHolidayRule.id ? scheduleEvenetBasedSimple.wednesdayHolidayRule.id : 0,
+      thursdayHolidayRuleId : scheduleEvenetBasedSimple.thursdayHolidayRule?.id ? scheduleEvenetBasedSimple.thursdayHolidayRule.id : 0,
+      fridayHolidayRuleId : scheduleEvenetBasedSimple.fridayHolidayRule?.id ? scheduleEvenetBasedSimple.fridayHolidayRule.id : 0,
+      saturdayHolidayRuleId : scheduleEvenetBasedSimple.saturdayHolidayRule?.id ? scheduleEvenetBasedSimple.saturdayHolidayRule.id : 0,
       name : scheduleEvenetBasedSimple.name,
       fromNoOfBusinessDaysBefore : scheduleEvenetBasedSimple.fromNoOfBusinessDaysBefore,
-      fromBusinessCalendarId : scheduleEvenetBasedSimple.fromBusinessCalendarId.id,
+      fromBusinessCalendarId : scheduleEvenetBasedSimple.fromBusinessCalendarId?.id ? scheduleEvenetBasedSimple.fromBusinessCalendarId.id : 0,
       toNoOfBusinessDaysAfter : scheduleEvenetBasedSimple.toNoOfBusinessDaysAfter,
-      toBusinessCalendarId : scheduleEvenetBasedSimple.toBusinessCalendar.id,
-      eventId : scheduleEvenetBasedSimple.event.id,
-      isEventIncludedId : scheduleEvenetBasedSimple.isEventIncluded.id
+      toBusinessCalendarId : scheduleEvenetBasedSimple.toBusinessCalendar?.id ? scheduleEvenetBasedSimple.toBusinessCalendar.id : 0,
+      eventId : scheduleEvenetBasedSimple.event?.id ? scheduleEvenetBasedSimple.event.id : 0,
+      isEventIncludedId : scheduleEvenetBasedSimple.isEventIncluded.id ? scheduleEvenetBasedSimple.isEventIncluded.id:0
   };
   return eventBasedSimple;
 }
@@ -671,13 +672,13 @@ constructSpecificDate(ScheduleSpecificDate: any){
     if(!ScheduleSpecificDate) return null;
     let specificDate = {
       assumeHolidayOnInstruments : ScheduleSpecificDate.assumeHolidayOnInstruments,
-      sundayHolidayRuleId: ScheduleSpecificDate.sundayHolidayRule.id,
-      mondayHolidayRuleId : ScheduleSpecificDate.mondayHolidayRule.id,
-      tuesdayHolidayRuleId : ScheduleSpecificDate.tuesdayHolidayRule.id,
-      wednesdayHolidayRuleId : ScheduleSpecificDate.wednesdayHolidayRule.id,
-      thursdayHolidayRuleId : ScheduleSpecificDate.thursdayHolidayRule.id,
-      fridayHolidayRuleId : ScheduleSpecificDate.fridayHolidayRule.id,
-      saturdayHolidayRuleId : ScheduleSpecificDate.saturdayHolidayRule.id,
+      sundayHolidayRuleId: ScheduleSpecificDate.sundayHolidayRule?.id ? ScheduleSpecificDate.sundayHolidayRule.id :0,
+      mondayHolidayRuleId : ScheduleSpecificDate.mondayHolidayRule?.id ? ScheduleSpecificDate.mondayHolidayRule.id : 0 ,
+      tuesdayHolidayRuleId : ScheduleSpecificDate.tuesdayHolidayRule?.id ? ScheduleSpecificDate.tuesdayHolidayRule.id :0,
+      wednesdayHolidayRuleId : ScheduleSpecificDate.wednesdayHolidayRule?.id ? ScheduleSpecificDate.wednesdayHolidayRule.id : 0,
+      thursdayHolidayRuleId : ScheduleSpecificDate.thursdayHolidayRule?.id ? ScheduleSpecificDate.thursdayHolidayRule.id : 0,
+      fridayHolidayRuleId : ScheduleSpecificDate.fridayHolidayRule?.id ? ScheduleSpecificDate.fridayHolidayRule.id :0,
+      saturdayHolidayRuleId : ScheduleSpecificDate.saturdayHolidayRule?.id ? ScheduleSpecificDate.saturdayHolidayRule.id : 0,
       name : ScheduleSpecificDate.name,
       allowsPricingOnHoliday : ScheduleSpecificDate.allowsPricingOnHoliday,
       dates : this.generateDate(ScheduleSpecificDate.dates)
@@ -689,13 +690,13 @@ constructSpecificDate(ScheduleSpecificDate: any){
   if(!scheduleDateRange) return null;
     let dateRange = {
       assumeHolidayOnInstruments : scheduleDateRange.assumeHolidayOnInstruments,
-      sundayHolidayRuleId: scheduleDateRange?.sundayHolidayRule?.id ? scheduleDateRange?.sundayHolidayRule?.id : 0 ,
-      mondayHolidayRuleId : scheduleDateRange?.mondayHolidayRule?.id ? scheduleDateRange?.mondayHolidayRule?.id : 0,
-      tuesdayHolidayRuleId : scheduleDateRange?.tuesdayHolidayRule?.id ? scheduleDateRange?.tuesdayHolidayRule?.id : 0,
-      wednesdayHolidayRuleId : scheduleDateRange?.wednesdayHolidayRule?.id ? scheduleDateRange?.wednesdayHolidayRule?.id : 0,
-      thursdayHolidayRuleId : scheduleDateRange?.thursdayHolidayRule?.id ? scheduleDateRange?.thursdayHolidayRule?.id : 0,
-      fridayHolidayRuleId : scheduleDateRange?.fridayHolidayRule?.id ? scheduleDateRange?.fridayHolidayRule?.id : 0,
-      saturdayHolidayRuleId : scheduleDateRange?.saturdayHolidayRule?.id ? scheduleDateRange?.saturdayHolidayRule?.id : 0,
+      sundayHolidayRuleId: scheduleDateRange?.sundayHolidayRule?.id ? scheduleDateRange.sundayHolidayRule.id : 0 ,
+      mondayHolidayRuleId : scheduleDateRange?.mondayHolidayRule?.id ? scheduleDateRange.mondayHolidayRule.id : 0,
+      tuesdayHolidayRuleId : scheduleDateRange?.tuesdayHolidayRule?.id ? scheduleDateRange.tuesdayHolidayRule.id : 0,
+      wednesdayHolidayRuleId : scheduleDateRange?.wednesdayHolidayRule?.id ? scheduleDateRange.wednesdayHolidayRule.id : 0,
+      thursdayHolidayRuleId : scheduleDateRange?.thursdayHolidayRule?.id ? scheduleDateRange.thursdayHolidayRule.id : 0,
+      fridayHolidayRuleId : scheduleDateRange?.fridayHolidayRule?.id ? scheduleDateRange.fridayHolidayRule.id : 0,
+      saturdayHolidayRuleId : scheduleDateRange?.saturdayHolidayRule?.id ? scheduleDateRange.saturdayHolidayRule.id : 0,
       name : scheduleDateRange.name,
       validFrom : scheduleDateRange.from,
       validTo : scheduleDateRange.to,
@@ -779,26 +780,27 @@ constructSpecificDate(ScheduleSpecificDate: any){
   saveFormula(){
     let formulaPayload : any = this.constructPayload(this.formValues);
      if(formulaPayload.id == 0){
-       console.log(formulaPayload);
        this.spinner.show();
        this.spotNegotiationService.addNewFormulaPrice(formulaPayload, this.requestOfferId)
          .pipe(
+            tap((res: any)=> {this.requestOfferId = res.requestOfferId;this.offerPriceFormulaId = res.id}),
             switchMap((res : any )=> 
-              // this.store.dispatch(new)
                this.spotNegotiationService.evaluateFormulaPrice({RequestOfferId: res.requestOfferId,  PriceConfigurationId : res.id})
             ) 
         ).subscribe((item : any)=>{
           this.spinner.hide();
           if(item.errors){
-            debugger;
             this.toastr.error('Failed to save Formula');
             return;
           }
           else{
             this.toastr.success('Operatation completed Successfully');
             this.evaluatedFormulaPrice = item;
-            console.log(item)
-            
+            let payload = {
+              RequestOfferId: this.requestOfferId ,
+              priceConfigurationId: this.offerPriceFormulaId
+           };
+            this.store.dispatch(new SetOfferPriceFormulaId(payload))
           }
           });
      }
@@ -817,7 +819,6 @@ constructSpecificDate(ScheduleSpecificDate: any){
                 else{
                   this.toastr.success('Operation Completed Successfully');
                   this.evaluatedFormulaPrice = item;
-                  console.log(item)
                 }
               });
      }
@@ -837,7 +838,6 @@ constructSpecificDate(ScheduleSpecificDate: any){
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       this.formulaValue = result.data[0].name
       return this.addFormula(result.data[0]);
     });

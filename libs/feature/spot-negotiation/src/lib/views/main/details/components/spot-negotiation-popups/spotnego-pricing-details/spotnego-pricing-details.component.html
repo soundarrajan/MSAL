@@ -25,7 +25,7 @@
             <div class="custom-form-field lightTheme" style="width: 100% !important;margin:0px">
               <mat-form-field class="with-search" style="width: 100%; border-radius: 4px;">
                 <mat-label>Search Formula</mat-label>
-                <input  matInput [matAutocomplete]="auto1" name="formula-name" [value]="formulaValue" placeholder="Search Formula" (keyup) ="SearchFormulaList($event.target.value)">
+                <input  matInput [matAutocomplete]="auto1" name="formula-name" [value]="formulaValue" [(ngModel)]="formValues.name" placeholder="Search Formula" (keyup) ="SearchFormulaList($event.target.value)">
                 <mat-autocomplete
                         #auto1="matAutocomplete"
                         class="darkPanelAuto"
@@ -56,7 +56,7 @@
       <div class="custom-form-field lightTheme" style="width: 100% !important;margin:0px">
         <mat-form-field class="without-search" style="width:100%;border-radius: 4px;">
           <mat-label>Formula Name</mat-label>
-          <input matInput autocomplete="off" [(ngModel)]="formulaDesc" name="formula-name" placeholder="Formula Name">
+          <input matInput autocomplete="off" [(ngModel)]="formValues.name" name="formula-name" placeholder="Formula Name">
         </mat-form-field>
       </div>
           </div>
@@ -99,7 +99,7 @@
                     Pricing Type
                   </div>
                   <div class="col-md-12">
-                    <mat-radio-group class="pricing-container-radio-group"  [ngModel]="formulaId" (ngModelChange)="setFormulaTypeSelected($event)" style="display: flex;
+                    <mat-radio-group class="pricing-container-radio-group"  [(ngModel)]="formValues.formulaType.id" (ngModelChange)="setFormulaTypeSelected($event)" style="display: flex;
                     justify-content: space-between;width: 75%;">
                       <mat-radio-button class="pricing-container-radio-button col-md-3"  *ngFor="let option of formulaTypeList" [value]="option.id">
                         {{option.name}}
@@ -108,7 +108,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="row" *ngIf="formulaId === 1">
+                  <div class="row" *ngIf="formValues.formulaType && formValues.formulaType.id == 1">
                   <div class="col-md-12 d-flex pd-0" style="padding:0; margin-top: 15px; margin-left: 1vw   ; flex-wrap: wrap;">
                     <shiptech-pricing-formula-simple
                       [model]="formValues"
@@ -122,7 +122,7 @@
                     </shiptech-pricing-formula-simple>
                   </div>
                 </div>
-                <div class="col-md-12" style="padding:0" *ngIf="formulaId === 2">
+                <div class="col-md-12" style="padding:0" *ngIf="formValues.formulaType && formValues.formulaType.id == 2">
                   <shiptech-pricing-formula-complex
                     [model]="formValues"
                     [formulaFlatPercentageList]="formulaFlatPercentageList"
@@ -160,7 +160,7 @@
                 </div>
                 <div class="">
                     <mat-radio-group class="pricing-container-radio-group" 
-                                     [(ngModel)]="scheduleId" 
+                                     [(ngModel)]="formValues.pricingSchedule.id" 
                                      (ngModelChange)="clearSchedules(formValues.pricingSchedule.id)"
                     >
                     <mat-radio-button class="pricing-container-radio-button" *ngFor="let option of pricingScheduleList" [value]="option.id">
@@ -172,7 +172,7 @@
               </div>
               <div >
                  
-                  <div *ngIf="scheduleId === 4" >
+                  <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 4" >
                     <shiptech-date-range
                       class="row"
                       [model]="formValues"
@@ -183,7 +183,7 @@
                   
               </div>
               <div >
-                  <div *ngIf="scheduleId === 5">
+                  <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 5">
                     <shiptech-specific-dates
                       class="row"
                       [model]="formValues" 
@@ -192,7 +192,7 @@
                   </shiptech-specific-dates>
                   </div>
               </div>
-              <div *ngIf="scheduleId === 6" >
+              <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 6" >
                 <shiptech-event-based-simple
                   class="row"
                   [model]="formValues"
@@ -202,7 +202,7 @@
                 >
                 </shiptech-event-based-simple>
             </div>
-            <div *ngIf="scheduleId === 7" >
+            <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 7" >
             <shiptech-event-based-extended
             class="row"
             [model]="formValues"
@@ -213,7 +213,7 @@
           >
           </shiptech-event-based-extended>
             </div> 
-            <div *ngIf="scheduleId === 8 "> 
+            <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 8"> 
             <shiptech-event-based-continuous
             class="row"
             [model]="formValues"
@@ -229,8 +229,7 @@
             <div *ngIf="expressType !=''"style="margin-top: 15px;padding: 0 5px !important" class="col-md-12 lightTheme">
                 <mat-form-field appearance="outline" class="custom-form-field-comments">
                     <mat-label>Comments</mat-label>
-                    <textarea  matInput autocomplete="off">
-
+                    <textarea  matInput autocomplete="off" [(ngModel)]="formValues.comment">
                     </textarea>
                 </mat-form-field>
             </div>
