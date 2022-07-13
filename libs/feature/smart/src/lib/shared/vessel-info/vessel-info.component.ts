@@ -785,8 +785,6 @@ export class VesselInfoComponent implements OnInit {
     this.BPlanGenTrigger.push(this.vesselData?.vesselId);
     this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe(data => {
-      //Trigger VesselHasNewPlanJob Fn to get gen plan completion to refresh this current bunker plan section
-      this.VesselHasNewPlanJob();
       this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
       // if(data?.isSuccess == true ){
       if (
@@ -864,7 +862,6 @@ export class VesselInfoComponent implements OnInit {
 
   VesselHasNewPlanJob() {
     let currentUserId = this.store.selectSnapshot(UserProfileState.username);
-    this.disableCurrentBPlan = false;
     let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
     let vessalCode = vesseldata.vesselRef.vesselCode ?? vesseldata.vesselRef.code;
     //Need to check gen plan status once and check after every 15 sec after enter this screen to know the process gen plan completion
@@ -881,19 +878,21 @@ export class VesselInfoComponent implements OnInit {
         return this.bunkerPlanService.getPlanStatus(payload_req);
     }))
     .subscribe((data_all) => {
+      this.disableCurrentBPlan = false;
       let userVessalList = data_all.payload.filter(data => {
-        if(data.vessel_code.trim() == vessalCode.trim()){
-          this.disableCurrentBPlan = true;
-        }
         if(data.plan_generated_by == currentUserId && data.import_in_progress == false && data.gen_in_progress==false){
-          return data;
+        }
+        if(data.vessel_code.trim() == vessalCode.trim()  && data.gen_in_progress == true){
+          this.disableCurrentBPlan = true;
+        }else if(data.vessel_code.trim() == vessalCode.trim()  && data.gen_in_progress == false){
+          this.disableCurrentBPlan = false;
         }
       });
-    
+
       this.continueCheckingPlans = userVessalList.length;
       userVessalList.filter(data => {
      // data = (data.payload?.length)? (data.payload)[0]: data.payload;
-      if(data.import_in_progress==false && data.gen_in_progress==false) {
+      if(data.plan_generated_by == currentUserId &&  data.import_in_progress==false && data.gen_in_progress==false) {
          
         //Refresh current bunker plan section once gen plan get completed
         let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
@@ -915,6 +914,9 @@ export class VesselInfoComponent implements OnInit {
               observableIniFlag : userVessalList.length
             }
           });
+          if(data.vessel_code.trim() == vessalCode.trim()){
+            this.disableCurrentBPlan = false;
+          }
         if(this.BPlanGenTrigger.indexOf(this.vesselData?.vesselId)!=-1) {
           this.BPlanGenTrigger.splice(this.BPlanGenTrigger.indexOf(this.vesselData?.vesselId), 1);
         }
