@@ -881,6 +881,7 @@ export class VesselInfoComponent implements OnInit {
       this.disableCurrentBPlan = false;
       let userVessalList = data_all.payload.filter(data => {
         if(data.plan_generated_by == currentUserId && data.import_in_progress == false && data.gen_in_progress==false){
+          return data;
         }
         if(data.vessel_code.trim() == vessalCode.trim()  && data.gen_in_progress == true){
           this.disableCurrentBPlan = true;
