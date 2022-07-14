@@ -434,10 +434,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     });
 
     this.store.dispatch([new EditLocationRow(updatedRow), new UpdateRequest(reqs)]);
-    let element = document.getElementById(elementidValue);
-      if (element) {
-        this.moveCursorToEnd(element);
-      }
+    // let element = document.getElementById(elementidValue);
+    //   if (element) {
+    //     this.moveCursorToEnd(element);
+    //   }
      //this.spotNegotiationService.callGridRefreshServiceAll();
   // let displayElm = document.getElementsByClassName("calculate-icon-btn");
     // displayElm[0].classList.add("calculate-icon-btn-show");
