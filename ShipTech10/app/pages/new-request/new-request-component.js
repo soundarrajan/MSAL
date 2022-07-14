@@ -2376,8 +2376,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             ctrl.request.company = {};
                         }
                        // if (!preventUpdateCompany) {
+                        if (vessel.operatingCompany){
                             ctrl.request.company.name = companyToDefault.name;
-                            ctrl.request.company.id = companyToDefault.id;
+                            ctrl.request.company.id = companyToDefault.id;}
                             if(ctrl.request.locations.length > 0) 
                             {ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.name = companyToDefault.name:'';}
                        // }
