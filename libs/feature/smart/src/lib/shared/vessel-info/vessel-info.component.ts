@@ -757,19 +757,8 @@ export class VesselInfoComponent implements OnInit {
     event.stopPropagation();
   }
   setImportGSIS(event) {
-    this.import_gsis = this.isChecked == false ? 1 : 0;
+    this.import_gsis = this.isChecked ? 1 : 0;
     this.store.dispatch(new ImportGsisAction(this.import_gsis));
-
-    // As per new requirement discussion, we plan to send gen plan request only after click generate button
-    // let req = {
-    //   action:"",
-    //   ship_id: this.vesselData?.vesselId,
-    //   generate_new_plan:this.store.selectSnapshot(GeneratePlanState.getGeneratePlan),
-    //   import_gsis:this.import_gsis,
-    // }
-    // this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
-    // })
-
     event.stopPropagation();
   }
   generateCurrentBPlan(event) {
