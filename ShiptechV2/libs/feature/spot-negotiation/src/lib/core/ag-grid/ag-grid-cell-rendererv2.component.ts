@@ -1720,7 +1720,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
   public getCurrentOfferValue(e){
-    this.offerOldValue = e.target.value;
+    this.offerOldValue = e.target.value.replace(/,/g, "");
   }
   public checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1 = (params) => {
     const requestLocation = this.getCurrentRequestLocation();
