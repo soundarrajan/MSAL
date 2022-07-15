@@ -861,6 +861,7 @@ export class VesselInfoComponent implements OnInit {
   }
 
   VesselHasNewPlanJob() {
+    let hideFlag = 0 ;
     let currentUserId = this.store.selectSnapshot(UserProfileState.username);
     let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
     let vessalCode = vesseldata.vesselRef.vesselCode ?? vesseldata.vesselRef.code;
@@ -893,8 +894,8 @@ export class VesselInfoComponent implements OnInit {
       this.continueCheckingPlans = userVessalList.length;
       userVessalList.filter(data => {
      // data = (data.payload?.length)? (data.payload)[0]: data.payload;
-      if(data.plan_generated_by == currentUserId &&  data.import_in_progress==false && data.gen_in_progress==false) {
-         
+      if(data.plan_generated_by == currentUserId &&  data.import_in_progress==false && data.gen_in_progress==false && hideFlag == 0) {
+        hideFlag = 1;
         //Refresh current bunker plan section once gen plan get completed
         let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
         this.loadBunkerPlanDetails(vesseldata.vesselRef);
