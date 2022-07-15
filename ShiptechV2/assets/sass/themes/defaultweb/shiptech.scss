@@ -12338,11 +12338,17 @@ tr.title {
     text-align: left;
   }
 }
-
+.add-new-request-menu{
+  &.mat-menu-panel {
+    height: fit-content !important;
+    background: transparent;
+    box-shadow: none;
+  }
+}
 .add-new-request-menu,.add-counterparties {
   &.mat-menu-panel {
     overflow: hidden;
-    height: 417px;
+    height: 380px;
     margin-top: 10px;
   }
   .expansion-popup {
