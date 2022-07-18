@@ -72,7 +72,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.spotNegotiationService.getStaticListFromIDB();
+    // this.spotNegotiationService.getStaticListFromIDB();
     this.spinner.show();
     const requestIdFromUrl = this.route.snapshot.params.requestId;
     if(requestIdFromUrl && isNumeric(requestIdFromUrl)){

@@ -419,8 +419,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             #menuTriggerHover="matMenuTrigger"
             *ngIf="
               params.value > 0 &&
-              params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
-              params.data.requestOffers[params.index]?.supplyQuantity != null              
+              (params.data.requestOffers[params.index]?.isFormulaPricing || (params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
+              params.data.requestOffers[params.index]?.supplyQuantity != null))                        
             "
           ></div>
         </div>
@@ -1591,23 +1591,25 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         offerPriceFormulaId : offerPriceFormulaId,
         locationId : params.data.id
       },
-      panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class']
+      panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class'],
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      params.colDef.valueSetter({
-        colDef: params.colDef,
-        data: params.data,
-        newValue: result.price,
-        event: e,
-        elementidValue: this.returnRowIndex(params)
-      });
-      this._spotNegotiationService.callGridRefreshService();
+      if (result) {
+        params.colDef.valueSetter({
+          colDef: params.colDef,
+          data: params.data,
+          newValue: result.price,
+          event: e,
+          elementidValue: this.returnRowIndex(params)
+        });
+        this._spotNegotiationService.callGridRefreshService();
+      }
       //e.target.parentElement.classList.add('active');
       //this.inputValue = result.price;
-      
-      
-     // var itemsToUpdate = [];
+
+      // var itemsToUpdate = [];
 
       // params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
       //   if (!rowNode.isSelected() === true) {
