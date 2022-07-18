@@ -7789,6 +7789,24 @@
             return null;
         };
 
+        /// Comma Separated (CS) emails' validation
+        $scope.validateCSEmailPattern = function(modelData) {
+            let separator = ',';
+            // Empty or Single mail validation
+            if (!modelData.contains(separator)) {
+                return $scope.validateEmailPattern(modelData);
+            }
+            // Multi mail validation
+            let emails = modelData.split(separator);
+            for(let email of emails) {
+                if (!$scope.validateEmailPattern(email, true)) {
+                    toastr.error('Invalid email address');
+                    return null;
+                }
+            }
+            return modelData;
+        }
+
         $scope.validateContactNamePattern = function(modelData) {
             var errorMessage = 'The contacts cannot contain the characters ",", ";", "|"';
             if (modelData.indexOf(',') == -1 && modelData.indexOf(';') == -1 && modelData.indexOf('|') == -1) {
