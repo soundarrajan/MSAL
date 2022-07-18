@@ -41,9 +41,7 @@ export class SuccesspopupComponent implements OnInit {
     this.ViewFlagPayload = {"vessel_code":this.vessalId};
     this.bplanService.updatePlanStatus(this.ViewFlagPayload).subscribe();
     if(this.observableRestartFlag == this.observableIniFlag){
-      setTimeout(() => {
         this.localService.checkVesselNewPlanJob();
-      }, 15000);
     }
   }
   close() {
