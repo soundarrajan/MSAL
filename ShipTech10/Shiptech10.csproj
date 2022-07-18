@@ -2373,6 +2373,7 @@
     <Content Include="app\img\icon-color.png" />
     <Content Include="app\img\icon-copy-hover.png" />
     <Content Include="app\img\icon-copy.png" />
+    <Content Include="app\img\convert-icon.png" />
     <Content Include="app\img\icon-delete-hover.jpg" />
     <Content Include="app\img\icon-delete.jpg" />
     <Content Include="app\img\icon-edit-hover.png" />
@@ -2444,6 +2445,7 @@
     <Content Include="app\pages\home\views\home-page-component.html" />
     <Content Include="app\pages\new-order\new-order-component.js" />
     <Content Include="app\pages\new-order\views\new-order-component.html" />
+    <Content Include="app\pages\new-order\views\conversionFactorsModal.html" />
     <Content Include="app\pages\new-request\new-request-component.js" />
     <Content Include="app\pages\new-request\views\new-request-component.html" />
     <Content Include="app\pages\schedule-dashboard-calendar\schedule-dashboard-calendar-component.js" />

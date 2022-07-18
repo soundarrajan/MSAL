@@ -1,0 +1,65 @@
+<div>
+    <button type="button" style="margin-left: 25px;" class="close" ng-click="prettyCloseModal()" aria-hidden="true"></button>
+    <div class="caption-subject">
+        Conversion Factors
+    </div>
+    <hr/>
+        <div>
+            <div class="col-sm-12">
+                <label class="control-label" ng-if="!$ctrl.isUnitPriceForConversionFactor">
+                    Confirmed Quantity ({{$ctrl.conversionFactorData.quantityUom.name}}) :
+                </label> 
+                <label class="control-label" ng-if="$ctrl.isUnitPriceForConversionFactor">
+                    Unit Price ({{$ctrl.conversionFactorData.currency.code}}/{{$ctrl.conversionFactorData.priceUom.name}}) :
+                </label>              
+            </div>
+            <div class="col-sm-12">
+                <form autocomplete="off" class="" name="" novalidate>
+                    <table class="table table-hover table-bordered table-stripped">
+                        <thead>
+                            <tr>
+                                 <th id="generatedThId193">
+                                    Unit of Measurement
+                                </th>
+                                <th id="generatedThId194">
+                                    Converted Value
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody ng-if="!$ctrl.isUnitPriceForConversionFactor">
+                            <tr>
+                                <td>Metric Ton</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>MMBTU</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>CBM</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>MWH</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <tbody ng-if="$ctrl.isUnitPriceForConversionFactor">
+                            <tr>
+                                <td>{{$ctrl.conversionFactorData.currency.code}}/Ton</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>{{$ctrl.conversionFactorData.currency.code}}/MMBTU</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>{{$ctrl.conversionFactorData.currency.code}}/MWH</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>              
+            </div>            
+        </div>
+</div>

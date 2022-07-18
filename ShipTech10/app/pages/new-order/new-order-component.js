@@ -46,7 +46,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
         ctrl.commentsExpanded = true;
         ctrl.orderCommentsExpanded =  false;
-
+        ctrl.isUnitPriceForConversionFactor = false;
         ctrl.disabledProduct = [];
         tenantService.emailSettings.then((settings) => {
         	ctrl.emailConfiguration = settings.payload;
@@ -3049,6 +3049,19 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 ctrl.openPreviewEmail(previewEmailData);
             }
         };
+        ctrl.openConversionFactorModel = function(isUnitPriConvFac, convFactData) {
+            //debugger;
+            ctrl.isUnitPriceForConversionFactor = isUnitPriConvFac;
+            ctrl.conversionFactorData = convFactData;
+            $scope.modalInstance = $uibModal.open({
+                templateUrl: 'pages/new-order/views/conversionFactorsModal.html',
+                appendTo: angular.element(document.getElementsByClassName('page-container')),
+                windowTopClass: ' fullWidthModal smallModal',
+                windowClass: 'fullWidthConversionFactorModal limited-max-height',
+                scope: $scope
+            });
+
+         };
         ctrl.orderConfirmationPreviewEmail = function() {
             if (ctrl.orderId) {
                 let data = {

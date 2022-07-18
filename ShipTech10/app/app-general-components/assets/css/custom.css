@@ -3810,6 +3810,11 @@ span.negotiation-blade-actions>span {
     top: 20%;
 }
 
+.modal.fade.ng-isolate-scope.fullWidthConversionFactorModal.smallModal.in {
+    width:33% !important;
+    left: 33%;
+}
+
 .smallModal #modal_close_bar {
     right: 20px;
     top: 10px;
@@ -4820,4 +4825,14 @@ select option {
 {
     border:none;
 
+}
+
+.conversionFactorIcon:hover i {
+    color: #fff
+}
+.conversionFactorIcon{
+    display: inline-block;
+    background: url(/img/convert-icon.png) no-repeat 0px center;
+    height: 15px;
+    width: 15px;
 }

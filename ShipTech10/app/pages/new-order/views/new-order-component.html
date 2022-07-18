@@ -1326,7 +1326,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="max-width: initial; min-width: 150px;">
+                                    <td style="max-width: initial; min-width: 185px;">
                                         <div class="input-group">
                                             <input class="form-control"
                                                    format="number:{{ $ctrl.numberPrecision.quantityPrecision }}"
@@ -1352,10 +1352,16 @@
                                                         ng-required="$ctrl.requiredAndDisabledRules('required', 'confirmedQty', product.status.id)"
                                                         style="max-width: 50px;"></select>
                                             </div>
+                                            <div class="input-group-btn" ng-disabled="$ctrl.disabledProduct[product.id]" style="max-width: 30px;">
+                                                 <a class=" btn default" href=""
+                                                   ng-disabled="$ctrl.disabledProduct[product.id]" ng-click="$ctrl.openConversionFactorModel(false, product)">
+                                                   <i class="conversionFactorIcon"></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </td>
                                     <!--  unit price for product -->
-                                    <td style="max-width: 200px;min-width: 200px">
+                                    <td style="max-width: 265px;min-width: 255px">
                                         <div class="input-group">
                                             <!-- price -->
                                             <input class="form-control" format="number:{{ product.pricePrecision }}:false:true"  
@@ -1393,6 +1399,12 @@
                                                         ng-model="product.currency"
                                                         ng-options="item as item.code for item in $ctrl.lists.Currency | decodeReadOnly track by item.id"></select>
                                             </div>
+                                            <div class="input-group-btn" ng-disabled="$ctrl.disabledProduct[product.id]" style="max-width: 30px;">
+                                                <a class=" btn default" href=""
+                                                  ng-disabled="$ctrl.disabledProduct[product.id]" ng-click="$ctrl.openConversionFactorModel(true, product)">
+                                                  <i class="conversionFactorIcon"></i>
+                                               </a>
+                                           </div>
                                         </div>
                                     </td>
                                     <td style="min-width:75px"
