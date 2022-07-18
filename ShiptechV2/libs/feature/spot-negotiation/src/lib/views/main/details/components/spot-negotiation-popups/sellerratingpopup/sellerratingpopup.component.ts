@@ -21,6 +21,7 @@ export class SellerratingpopupComponent implements OnInit {
   allLocationRatingData: any = [];
   allocationRating: string;
   specificRating: string;
+  counterpartyName: any;
   constructor(public dialogRef: MatDialogRef<SellerratingpopupComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private store: Store,
@@ -32,10 +33,12 @@ export class SellerratingpopupComponent implements OnInit {
          this.locationId = data.locationId;
          this.counterpartyId = data.sellerId;
          this.getSellerRatings();
+         
    }
    ngOnInit() {
     this.store.subscribe(({ spotNegotiation })=>{
       this.locationName = spotNegotiation.locations.find(x=> x.locationId == this.locationId).locationName;
+      this.counterpartyName = spotNegotiation.locationsRows.find(x=> x.sellerCounterpartyId == this.counterpartyId).sellerCounterpartyName;
     });
     
  }
