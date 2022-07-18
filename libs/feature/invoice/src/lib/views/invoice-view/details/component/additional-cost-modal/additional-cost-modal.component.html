@@ -234,7 +234,7 @@
             [matMenuTriggerFor]="additionalProductSearch"
             (click)="
             additionalProdSearch = null;"
-          ><mat-form-field class="dotted-form-field" appearance="none" style="height: 40px"><input matInput value="{{additionalCost.value.product.name}}"
+          ><mat-form-field class="dotted-form-field" appearance="none" style="height: 40px"><input matInput value="{{additionalCost.value.product == null ? '' : additionalCost.value.product.name }}"
                     [disabled]="
                     (additionalCost.value.locationAdditionalCostId &&
                       !(
@@ -289,11 +289,12 @@
                                   <mat-radio-group
                                     [(ngModel)]="additionalCost.value.product"
                                     (ngModelChange)="
-                                      getRangeTotalAmount(
-                                    additionalCost.value,
-                                    additionalCost.key
-                                  );
-                                    "
+                                    getRangeTotalAmount(
+                                      additionalCost.value,
+                                      additionalCost.key
+                                    );
+                                    invoiceConvertUom('cost', additionalCost.key)
+                                  "
                                   >
                                     <mat-radio-button [value]="element">
                                       {{ element.name }}
