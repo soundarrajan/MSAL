@@ -289,7 +289,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 .then((data) => {
                     if ($stateParams.copyFrom) {
                         newRequestModel.getDefaultBuyer($stateParams.copyFrom.vesselId).then((data) => {
-                            
+
                             ctrl.disableAllFields = false;// fields enabled at copy
                             ctrl.request = angular.copy($stateParams.copyFrom);
                             ctrl.request.requestCompleted = false;// fields enabled at copy, send this to be
@@ -5227,7 +5227,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 window.confirmRequestLeave = true;
                 $scope.sweetConfirm('The changes made in the request are not saved. Do you still want to continue?', (response) => {
                     if(response == true) {
-                        window.location.href = angular.copy(window.confirmRequestLeaveDestinationUrl);
+                        //window.location.href = angular.copy(window.confirmRequestLeaveDestinationUrl);
+                        ctrl.getResponse();
                         setTimeout(() => {
                             window.confirmRequestLeave = false;
                         });
