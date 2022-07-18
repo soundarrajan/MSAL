@@ -1204,7 +1204,7 @@ angular.module('shiptech.pages').controller('PreviewEmailController', [
 
         ctrl.saveAndSendButtonLabel = function() {
             var saveAndSendButtonLabel = 'Save and Send';
-            if ([ 'ContractPlanningEmailTemplate', 'ContractPlanningUpdateEmailTemplate', 'RequoteRFQEmailTemplate' ].indexOf(ctrl.template.name) != -1) {
+            if ([ 'ContractPlanningEmailTemplate', 'ContractPlanningUpdateEmailTemplate', 'RequoteRFQEmailTemplate' ].indexOf(ctrl.template?.name) != -1) {
                 saveAndSendButtonLabel = 'Send Email';
             }
 

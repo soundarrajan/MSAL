@@ -267,7 +267,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
         ctrl.getPortVisible = function(orderId,data) {
             ctrl.PortLocationEditable = false;
-            if(orderId != null && data.status != null && data.status != undefined) {
+            if(orderId != null && data?.status != null && data?.status != undefined) {
                 ctrl.isEnabledVessel = false;
                 if(ctrl.procurementSettings.order?.optionToChangePort?.name == 'Yes' && ctrl.relatedOrders?.length > 0 && ctrl.relatedOrders[0].deliveryCount == 0 && (data.status.name == 'Stemmed' || data.status.name == 'Confirmed' || data.status.name == 'Approved')) {
                     ctrl.PortLocationEditable = true;
