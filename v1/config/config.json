@@ -9,6 +9,7 @@
         "logOutUri": "",
         "endpoints": {
             "https://bvtapi.shiptech.com": "24fc89b1-b1b1-47a7-b90b-513ec362a576",
+            "http://localhost:5021": "24fc89b1-b1b1-47a7-b90b-513ec362a576",
             "https://euw-sh-int-dev-api01.azurewebsites.net": "24fc89b1-b1b1-47a7-b90b-513ec362a576"
         },
         "anonymousEndpoints": [
@@ -26,6 +27,7 @@
         ],
         "cacheLocation": "localStorage",
         "endpoints": {
+            "http://localhost:5021": "fe75785b-6545-4ede-95f5-d7137f9f5bfa",
             "https://bvtapi.shiptech.com": "fe75785b-6545-4ede-95f5-d7137f9f5bfa"
         },
         "anonymousEndpoints": [

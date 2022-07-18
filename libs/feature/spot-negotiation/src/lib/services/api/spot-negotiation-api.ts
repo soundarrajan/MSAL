@@ -107,6 +107,9 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   @ApiCallUrl()
   private _baseUrl = this.appConfig.v1.API.BASE_URL;
 
+  @ApiCallUrl()
+  private _shitechApiUrl = 'http://localhost:5021';
+
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
   @ObservableException()
@@ -950,7 +953,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   addNewFormulaPrice(request: any, requestOfferId : number): Observable<any> {
     return this.http
       .post<any>(
-        `${this._baseUrl}/offers/${requestOfferId}/priceConfiguration`,
+        `${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration`,
            request
       )
       .pipe(
@@ -963,7 +966,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   updateFormulaPrice(request: any, requestOfferId : number, priceConfigurationId: number): Observable<any> {
     return this.http
       .patch<any>(
-        `${this._baseUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigurationId}`,
+        `${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigurationId}`,
            request
       )
       .pipe(
@@ -976,7 +979,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   evaluateFormulaPrice(request: any): Observable<any> {
     return this.http
       .post<any>(
-        `${this._baseUrl}/offerPriceEvaluations`,
+        `${this._shitechApiUrl}/offerPriceEvaluations`,
           request
       )
       .pipe(
@@ -989,7 +992,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   cloneToPriceConfiguration(request: any): Observable<any> {
     return this.http
       .post<any>(
-        `${this._baseUrl}/orders/cloneToPriceconfigurations`,
+        `${this._shitechApiUrl}/orders/cloneToPriceconfigurations`,
           request
       )
       .pipe(
@@ -1002,7 +1005,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   orderPriceEvaluations(request: any): Observable<any> {
     return this.http
       .post<any>(
-        `${this._baseUrl}/orderPriceEvaluations`,
+        `${this._shitechApiUrl}/orderPriceEvaluations`,
           request
       )
       .pipe(
@@ -1015,7 +1018,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   evaluatePrices(request: any): Observable<any> {
     return this.http
       .post<any>(
-        `${this._baseUrl}/offerPriceEvaluations/ForOffers`,
+        `${this._shitechApiUrl}/offerPriceEvaluations/ForOffers`,
           request
       )
       .pipe(
@@ -1026,7 +1029,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
 
   @ObservableException()
   getOfferPriceConfiguration(requestOfferId: number, priceConfigId : number): Observable<any> {
-    return this.http.get<any>(`${this._baseUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigId}`)
+    return this.http.get<any>(`${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigId}`)
     .pipe(
       map((body: any) => body),
       catchError((body: any) => this.handleErrorMessage(body))
