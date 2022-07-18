@@ -164,6 +164,7 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
   marketPriceTypeList: any;
   amountFormat: string;
   hasInvoicedOrder: any;
+  readonly NO_OF_SIs: number = 3;
 
   get entityId(): number {
     return this._entityId;
@@ -250,6 +251,15 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
       return;
     }
     this.formValues = formValues;
+
+    for (let cfql of this.formValues.complexFormulaQuoteLines) {
+      for (var i = 0; i < this.NO_OF_SIs; i++) {
+        if(!cfql.systemInstruments[i] || !(cfql.systemInstruments[i].id > 0)) {
+          cfql.systemInstruments[i] = { id: 0, systemInstrument: null, marketPriceTypeId: null }
+        }
+      }
+    }
+
     if (
       this.formValues.complexFormulaQuoteLines &&
       this.formValues.complexFormulaQuoteLines.length
