@@ -1154,10 +1154,6 @@ export class AdditionalCostModalComponent implements OnInit {
   searchProduct(value: string, locationId): void {
   }
 
-  productChange(event, data){
-    this.selectedProduct = data;
-  }
-
   getAdditionalCostsPerPort(locationId) {
     if (!locationId) {
       return;
