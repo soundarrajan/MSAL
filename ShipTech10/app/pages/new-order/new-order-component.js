@@ -2308,7 +2308,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
 
         ctrl.additionalCostRowPriceChanged = function(additionalCost, initiatorName) {
             if(initiatorName == 'input') {
-                additionalCost.price = $filter("number")(additionalCost.originalPrice.replace(new RegExp(',', 'g'), ''), ctrl.pricePrecision);
+                additionalCost.price = $filter("number")(additionalCost.originalPrice.toString().replace(new RegExp(',', 'g'), ''), ctrl.pricePrecision);
                 let product = ctrl.additionalCostApplicableFor[additionalCost.fakeId];
                 additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
                 ctrl.evaluateAdditionalCostList();
@@ -4843,7 +4843,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 additionalCost.extras = locAddCost.extras || additionalCost.extras ||0;
                 //additionalCost.price = locAddCost.price || additionalCost.price || 0;
                 additionalCost.originalPrice = locAddCost.price || additionalCost.price || 0;
-                additionalCost.price =$filter("number")(additionalCost.originalPrice.replace(new RegExp(',', 'g'), ''), ctrl.pricePrecision)
+                additionalCost.price =$filter("number")(additionalCost.originalPrice.toString().replace(new RegExp(',', 'g'), ''), ctrl.pricePrecision)
                 additionalCost.amount = locAddCost.amount || additionalCost.amount || 0;
                 additionalCost.priceUom = locAddCost.priceUom || additionalCost.priceUom || null;
                 additionalCost.costType = locAddCost.costType || additionalCost.costType || 0;
@@ -4924,7 +4924,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     if(response && response.data && response.data.payload) {
                         let addCostIdx = product.additionalCosts.indexOf(additionalCost);
                         additionalCost.originalPrice = response.data.payload.price || 0;
-                        additionalCost.price = $filter("number")(additionalCost.originalPrice.replace(new RegExp(',', 'g'), ''), ctrl.pricePrecision);
+                        additionalCost.price = $filter("number")(additionalCost.originalPrice.toString().replace(new RegExp(',', 'g'), ''), ctrl.pricePrecision);
                         additionalCost.price = convertDecimalSeparatorStringToNumber(additionalCost.price);
                         additionalCost = calculateAdditionalCostAmounts(additionalCost, product);
                         product.additionalCosts[addCostIdx] = additionalCost;
