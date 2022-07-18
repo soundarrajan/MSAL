@@ -1239,7 +1239,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             return $q((resolve, reject) => {
                 // send default config to table build
                 // no default config, send false
-                $scope.$watchCollection(['globalFilters','PrecedenceFilters'], (newVal) => {
+                $scope.$watchGroup(['globalFilters','precedenceFilters'], (newVal) => {
                     // if (newVal != null) {
                     // console.log(newVal)
                     console.log($rootScope.rawFilters);
@@ -1248,8 +1248,9 @@ angular.module('shiptech.components').controller('FiltersController', [
                     		newVal.push(v);
                     	}
                     });
+                    newVal = [...newVal[0], ...newVal[1]]; //merge
+                    newVal = newVal.filter(x => x.column != null) // remove empty objects
                     resolve(newVal);
-
                     // }
                 });
             });
