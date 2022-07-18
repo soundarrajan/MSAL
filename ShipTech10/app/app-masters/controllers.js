@@ -1386,7 +1386,9 @@
                 }
                 if (!$scope.isHideVesselBopsDetails && $scope.formValues.isVesselManagable && $scope.formValues.vesselProducts && $scope.formValues.vesselProducts.length > 0) {
                     for(i = 0; i < $scope.formValues.vesselProducts.length; i++) {
-                        if (!$scope.formValues.vesselProducts[i].isDeleted && ($scope.formValues.vesselProducts[i].vesselProductTanks.length == 0 ||
+                        if (!$scope.formValues.vesselProducts[i].isDeleted && (
+                            !$scope.formValues.vesselProducts[i].vesselProductTanks ||
+                            $scope.formValues.vesselProducts[i].vesselProductTanks.length == 0 ||
                             ($scope.formValues.vesselProducts[i].vesselProductTanks.length > 0 &&
                                 !$scope.formValues.vesselProducts[i].vesselProductTanks.some(vpt => !vpt.isDeleted && vpt.isActive && vpt.tankCategory && vpt.tankCategory.id == 1))))
                         {
@@ -5923,7 +5925,7 @@
         $scope.calculateStorageCapacityM3 = function (vesselProdIdx) {
             var sum = 0;
             if ($scope.formValues.vesselProducts[vesselProdIdx]
-                && $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks.length > 0) {
+                && $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks?.length > 0) {
                 sum = $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks
                     .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory?.id == 1 ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0); // tankCategoryId:1 - Storage
             }
@@ -5935,7 +5937,7 @@
             var density = 0;
             var mtConversionFactor = 0.001;
             if ($scope.formValues.vesselProducts[vesselProdIdx]
-                && $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks.length > 0) {
+                && $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks?.length > 0) {
                 density = $scope.formValues.vesselProducts[vesselProdIdx].density;
                 sum = $scope.formValues.vesselProducts[vesselProdIdx].vesselProductTanks
                     .reduce((a, cv) => { return a + (!cv.isDeleted && cv.isActive && cv.tankCategory?.id == 1 ? convertDecimalSeparatorStringToNumber(cv.capacity) : 0) }, 0); // tankCategoryId:1 - Storage
@@ -5967,7 +5969,7 @@
             $scope.vptKey = vptKey;
             $scope.sweetConfirmModal('Do you want delete the Tank?', (response) => {
                 if ($scope.currentEntity == 'VesselProductTank' && response == true) {
-                    if($scope.formValues.vesselProducts[$scope.vpKey] && $scope.formValues.vesselProducts[$scope.vpKey].vesselProductTanks.length > 0) {
+                    if($scope.formValues.vesselProducts[$scope.vpKey] && $scope.formValues.vesselProducts[$scope.vpKey].vesselProductTanks?.length > 0) {
                         if($scope.formValues.vesselProducts[$scope.vpKey].vesselProductTanks[$scope.vptKey].id == undefined ||
                             $scope.formValues.vesselProducts[$scope.vpKey].vesselProductTanks[$scope.vptKey].id == 0) {
                             $scope.formValues.vesselProducts[$scope.vpKey].vesselProductTanks.splice($scope.vptKey,1)
@@ -10747,7 +10749,7 @@
 
         $scope.deleteVesselProduct = function(key) {
             //Delete childs
-            if($scope.formValues.vesselProducts[key].product!=null){
+            if($scope.formValues.vesselProducts[key].product!=null && $scope.formValues.vesselProducts[key].vesselProductTanks){
                 angular.forEach($scope.formValues.vesselProducts[key].vesselProductTanks, (input, vptKey) => {
                     $scope.formValues.vesselProducts[key].vesselProductTanks[vptKey].isDeleted = true;
                 });
