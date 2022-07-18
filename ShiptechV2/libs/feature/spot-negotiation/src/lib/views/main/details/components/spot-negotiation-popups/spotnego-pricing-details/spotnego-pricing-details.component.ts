@@ -509,9 +509,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           ? comp.formulaPlusMinus.id
           : 0,
         weight: comp.weight,
-        SystemInstruments: this.generateSystemInstrumentForComplexFormula(
-          comp.systemInstruments
-        )
+        SystemInstruments: this.generateSystemInstrumentForComplexFormula(comp.systemInstruments),
+        uomId: comp.uom?.id
       })
     );
     return complexPayload;
@@ -564,10 +563,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       formulaTypeId: formValues.formulaType?.id ? formValues.formulaType.id : 0,
       isMean: formValues.isMean,
       CurrencyId: 2, //------------------------------Needs to replace----------------------
-      simpleFormula: this.constructSimpleFormula(formValues.simpleFormula),
-      ComplexFormulaQuoteLines: this.constructComplexFormula(
-        formValues.complexFormulaQuoteLines
-      ),
+      simpleFormula: formValues.formulaType?.id === 1? this.constructSimpleFormula(formValues.simpleFormula) : null,
+      ComplexFormulaQuoteLines: formValues.formulaType?.id === 2? this.constructComplexFormula(formValues.complexFormulaQuoteLines) : null,
       holidayRule: this.constructHolidayRule(formValues.formulaHolidayRules)
     };
     return formulaPayload;
@@ -921,6 +918,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
               priceConfigurationId: this.offerPriceFormulaId
             };
             this.store.dispatch(new SetOfferPriceFormulaId(payload));
+            //close popup with evaluated price item update
+            this.closePopup();
           }
         });
     } else {
@@ -947,6 +946,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           } else {
             this.toastr.success('Operation Completed Successfully');
             this.evaluatedFormulaPrice = item;
+            //close popup with evaluated price item update
+            this.closePopup();
           }
         });
     }
