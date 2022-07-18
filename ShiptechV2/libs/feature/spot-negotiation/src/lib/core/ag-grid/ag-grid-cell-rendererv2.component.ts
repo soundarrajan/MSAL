@@ -385,6 +385,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             id="{{ params.data.requestLocationId }}/{{ params.rowIndex }}/{{
               params.index
             }}"
+            (keypress)="spotNegotiationPriceCalcService.keyPressNumber($event)"
             (keydown.enter)="onGetFocus($event, params)"
             (keydown.Tab)="onGetFocus($event, params)"
             (focus)="getCurrentOfferValue($event)"
@@ -778,7 +779,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     private tenantSettingsService: TenantSettingsService,
     private spinner: NgxSpinnerService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
-    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService
+    public spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService
   ) {
     this.legacyLookupsDatabase.getTableByName('costType').then(response => {
       this.costTypeList = response;
@@ -1789,7 +1790,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
   public getCurrentOfferValue(e){
-    this.offerOldValue = e.target.value;
+    this.offerOldValue = e.target.value.replace(/,/g, "");
   }
   public checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1 = (params) => {
     const requestLocation = this.getCurrentRequestLocation();
