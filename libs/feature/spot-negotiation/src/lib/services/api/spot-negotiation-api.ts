@@ -81,7 +81,7 @@ export const SpotNegotiationApiPaths = {
   isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`,
   getSellerRatingsforNegotiation: `api/sellerrating/sellerratingreview/getForNegotiation`,
   getContractFormulaList : `api/masters/formulas/listMasters`,
-  getContractFormula : `api/masters/formulas/get`
+  getMasterFormula : `api/masters/formulas/get`
 };
 
 @Injectable({
@@ -933,10 +933,10 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
 
   @ObservableException()
-  getContractFormula(payload: any): Observable<any> {
+  getMasterFormula(payload: any): Observable<any> {
     return this.http
       .post<any>(
-        `${this._masterApiUrl}/${SpotNegotiationApiPaths.getContractFormula}`,
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.getMasterFormula}`,
         { Payload: payload }
       )
       .pipe(
@@ -955,13 +955,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage && body.error.Reference
-              ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -974,13 +968,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage && body.error.Reference
-              ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -993,13 +981,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage && body.error.Reference
-              ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -1012,13 +994,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage && body.error.Reference
-              ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -1031,13 +1007,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage && body.error.Reference
-              ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
 
@@ -1050,18 +1020,19 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       )
       .pipe(
         map((body: any) => body),
-        catchError((body: any) =>
-          of(
-            body.error.ErrorMessage && body.error.Reference
-              ? body.error.ErrorMessage + ' ' + body.error.Reference
-              : body.error.errorMessage + ' ' + body.error.reference
-          )
-        )
+        catchError((body: any) => this.handleErrorMessage(body))
       );
   }
+
+  @ObservableException()
+  getOfferPriceConfiguration(requestOfferId: number, priceConfigId : number): Observable<any> {
+    return this.http.get<any>(`${this._baseUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigId}`)
+    .pipe(
+      map((body: any) => body),
+      catchError((body: any) => this.handleErrorMessage(body))
+    );
+  }
 }
-
-
 
 export const SPOT_NEGOTIATION_API_SERVICE = new InjectionToken<
   ISpotNegotiationApiService

@@ -39,7 +39,7 @@ export class SpotNegotiationService extends BaseStoreService
   physicalSupplierTotalCount: any;
   requestCount: any;
   hArray : any = [];
-  indexedDBList: any = [];
+  // indexedDBList: any = [];
   constructor(
     protected store: Store,
     loggerFactory: ModuleLoggerFactory,
@@ -738,17 +738,17 @@ export class SpotNegotiationService extends BaseStoreService
   }
 
   @ObservableException()
-  getContractFormula(payload): Observable<unknown> {
-    return this.spotNegotiationApi.getContractFormula(payload);
+  getMasterFormula(payload): Observable<unknown> {
+    return this.spotNegotiationApi.getMasterFormula(payload);
   }
   
   //Getting Static Lists from indexedDB
-  public async getStaticListFromIDB(){
-    const db = await openDB('Shiptech',10)
-    db.getAll('listsCache').then(x=>
-      this.indexedDBList = x[0].data
-    );
-  }
+  // public async getStaticListFromIDB(){
+  //   const db = await openDB('Shiptech',10)
+  //   db.getAll('listsCache').then(x=>
+  //     this.indexedDBList = x[0].data
+  //   );
+  // }
 
   @ObservableException()
   addNewFormulaPrice(payload, requestOfferId): Observable<unknown> {
@@ -778,5 +778,10 @@ export class SpotNegotiationService extends BaseStoreService
   @ObservableException()
   evaluatePrices(payload): Observable<unknown> {
     return this.spotNegotiationApi.evaluatePrices(payload);
+  }
+
+  @ObservableException()
+  getOfferPriceConfiguration(requestOfferId: number, priceConfigurationId: number): Observable<unknown> {
+    return this.spotNegotiationApi.getOfferPriceConfiguration(requestOfferId, priceConfigurationId);
   }
 }
