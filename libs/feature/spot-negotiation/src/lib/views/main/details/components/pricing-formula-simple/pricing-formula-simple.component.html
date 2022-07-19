@@ -156,10 +156,12 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div
+</div>
+<div class="row col-md-12" style="margin-left: 1px ;">
+   <div
     class="custom-form-field create-new-formula-form-field"
     [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
-    style="margin-top:1vh"
+    style="margin-top:1.8vh"
   >
     <mat-form-field class="without-search" appearance="legacy">
       <mat-label>Uom</mat-label>
@@ -183,4 +185,36 @@
       </mat-select>
     </mat-form-field>
   </div>
-</div>
+  <div class="custom-form-field create-new-formula-form-field" style="margin-top: 15px; flex-wrap: wrap;">
+    <div class="convertorEditable-component-v2">
+      <div class="block">
+        <div class="title">Mass UOM</div>
+        <div class="inline-dropdown">
+          <!-- <span style="font-weight: 500;">1 MT</span> -->
+          <span style="font-weight: 500;">1 {{massUomName}}</span>
+        </div>
+      </div>
+      <div class="convert-img">
+      </div>
+      <div style="padding:2px;">
+        <div class="block dashed-border">
+          <div class="title">Conversion Rate</div>
+          <div class="value">{{conversionFactor}}</div>
+        </div>
+      </div>
+      <div class="block m-l-15">
+        <div class="title">Volume UOM</div>
+        <div class="inline-dropdown">
+          <mat-form-field style="background: none !important;border: none !important;">
+            <mat-select  style="height: 18px;" [(ngModel)]="volumeUomName">
+              <mat-option *ngFor="let option of uomVolumeList" [value]="option.name">
+                {{option.name}}
+              </mat-option>
+              
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>

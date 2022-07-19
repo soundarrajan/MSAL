@@ -72,6 +72,11 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   priceConfigurationId: number;
   offerPriceFormulaId: number;
   evaluatedFormulaPrice: any;
+  productId : number;
+  massUomName: number;
+  volumeUomId : number;
+  conversionRate: any;
+  uomVolumeList: any;
   constructor(
     public dialogRef: MatDialogRef<SpotnegoPricingDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -93,12 +98,25 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     );
     this.requestOfferId = data.requestOfferId;
     this.offerPriceFormulaId = data.offerPriceFormulaId;
+    this.productId = data.productId;
     this.sessionFormulaList = JSON.parse(sessionStorage.getItem('formula'));
     this.store.selectSnapshot<any>((state: any) => {
       this.staticList = state.spotNegotiation.staticLists.otherLists;
     });
 
     this.getOfferPriceConfiguration();
+  }
+
+  getConversionFactor(){
+    const payload = {
+      ProductId: this.productId
+    };
+    this.spotNegotiationService.getDefaultConversionFactor(payload)
+      .subscribe((res: any)=>{
+        this.massUomName = res.payload.massUom.name;
+        this.volumeUomId = res.payload.volumeUom.id;
+        this.conversionRate = res.payload.value;
+      });
   }
 
   ngOnInit() {
@@ -115,6 +133,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     this.marketPriceTypeList = this.setListFromStaticLists('MarketPriceType');
     this.businessCalendarList = this.setListFromStaticLists('BusinessCalendar');
     this.eventList = this.setListFromStaticLists('Event');
+    this.uomVolumeList = this.setListFromStaticLists('UomVolume');
     this.formulaEventIncludeList = this.setListFromStaticLists(
       'FormulaEventInclude'
     );
@@ -128,6 +147,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     this.locationList = this.setListFromStaticLists('Location');
     this.formulaTypeList = this.setListFromStaticLists('FormulaType');
     this.pricingScheduleList = this.setListFromStaticLists('PricingSchedule');
+
+    this.getConversionFactor();
   }
 
   setListFromStaticLists(name) {

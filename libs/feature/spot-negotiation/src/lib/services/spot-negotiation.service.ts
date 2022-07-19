@@ -784,4 +784,9 @@ export class SpotNegotiationService extends BaseStoreService
   getOfferPriceConfiguration(requestOfferId: number, priceConfigurationId: number): Observable<unknown> {
     return this.spotNegotiationApi.getOfferPriceConfiguration(requestOfferId, priceConfigurationId);
   }
+
+  @ObservableException()
+  getDefaultConversionFactor(payload): Observable<unknown>{
+    return this.spotNegotiationApi.getDefaultConversionFactor(payload);
+  }
 }

@@ -81,7 +81,8 @@ export const SpotNegotiationApiPaths = {
   isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`,
   getSellerRatingsforNegotiation: `api/sellerrating/sellerratingreview/getForNegotiation`,
   getContractFormulaList : `api/masters/formulas/listMasters`,
-  getMasterFormula : `api/masters/formulas/get`
+  getMasterFormula : `api/masters/formulas/get`,
+  getDefaultConversionFactor : `api/masters/products/getProdDefaultConversionFactors`
 };
 
 @Injectable({
@@ -1031,6 +1032,19 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       map((body: any) => body),
       catchError((body: any) => this.handleErrorMessage(body))
     );
+  }
+
+  @ObservableException()
+  getDefaultConversionFactor(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.getDefaultConversionFactor}`,
+        { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
   }
 }
 

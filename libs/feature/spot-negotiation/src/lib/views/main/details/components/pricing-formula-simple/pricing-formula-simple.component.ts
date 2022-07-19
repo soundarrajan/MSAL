@@ -94,6 +94,9 @@ export class PricingFormulaSimple implements OnInit {
   autocompleteSystemInstrument: knownMastersAutocomplete;
   amountFormat: string;
   hasInvoicedOrder: any;
+  massUomName : any;
+  volumeUomName : string;
+  conversionFactor : number;
 
   get entityId(): number {
     return this._entityId;
@@ -101,6 +104,20 @@ export class PricingFormulaSimple implements OnInit {
 
   get entityName(): string {
     return this._entityName;
+  }
+
+  @Input() set massUom(value: string){
+    this.massUomName = value;
+  }
+
+  @Input() set volumeUom(value: string){
+    if(value){
+      this.volumeUomName = this.uomVolumeList.find(x => x.id == value).name;
+    }
+  }
+
+  @Input() set value(value: number){
+    this.conversionFactor = value;
   }
 
   @Input() set entityId(value: number) {

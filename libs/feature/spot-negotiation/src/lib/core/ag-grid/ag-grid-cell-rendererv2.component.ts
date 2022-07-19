@@ -1591,7 +1591,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       width: '1164px',
       data : {
         requestOfferId : requestedOffer.id,
-        offerPriceFormulaId: requestedOffer.offerPriceFormulaId
+        offerPriceFormulaId: requestedOffer.offerPriceFormulaId,
+        productId: params.product.productId
       },
       panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class'],
       disableClose: true
