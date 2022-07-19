@@ -152,6 +152,9 @@ export class VesselDetailsComponent implements OnInit {
     this.selectedUserRole = event;
       this.selectedRole = event.name;
       this.LoadBunkerPlanByRole();
+      setTimeout(() => {
+        this.localService.checkVesselNewPlanJob();
+      }, 5000);
   }
 
   LoadBunkerPlanByRole() {
