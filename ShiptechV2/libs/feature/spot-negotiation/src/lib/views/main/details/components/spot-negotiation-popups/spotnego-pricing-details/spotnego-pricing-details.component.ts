@@ -15,12 +15,9 @@ import _ from 'lodash';
 import { SearchFormulaPopupComponent } from '../search-formula-popup/search-formula-popup.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { ComplexFormula, DateRangeDto, EventBasedSimpleDto, FormulaHolidayRule, FormValues, HolidayRuleDto, OfferPriceFormulaDto, PricingScheduleOptionDateRange, PricingScheduleOptionEventBasedSimple, SystemInstrumentDto, SystemInstruments } from './spotnego-pricing-details.interface';
+import { ComplexFormula, DateRangeDto, EventBasedSimpleDto, FormValues, HolidayRuleDto, OfferPriceFormulaDto, PricingScheduleOptionDateRange, PricingScheduleOptionEventBasedSimple, SystemInstrumentDto, SystemInstruments } from './spotnego-pricing-details.interface';
 import { first, switchMap, tap } from 'rxjs/operators';
 import { SetOfferPriceFormulaId } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
-import { QcSurveyHistoryStateModel } from 'libs/feature/quantity-control/src/lib/store/report/details/qc-survey-history-state.model';
-import { DateRange } from '@angular/material/datepicker';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-spotnego-pricing-details',
@@ -74,7 +71,6 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   requestOfferId: number;
   priceConfigurationId: number;
   offerPriceFormulaId: number;
-  locationId: number;
   evaluatedFormulaPrice: any;
   constructor(
     public dialogRef: MatDialogRef<SpotnegoPricingDetailsComponent>,
@@ -98,7 +94,6 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     this.requestOfferId = data.requestOfferId;
     this.offerPriceFormulaId = data.offerPriceFormulaId;
     this.sessionFormulaList = JSON.parse(sessionStorage.getItem('formula'));
-    this.locationId = data.locationId;
     this.store.selectSnapshot<any>((state: any) => {
       this.staticList = state.spotNegotiation.staticLists.otherLists;
     });
@@ -472,6 +467,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     return systemInstrumentList;
   }
   constructSimpleFormula(simpleFormula) {
+    if(simpleFormula.systemInstrument === undefined) return null;
     let simplePayload = {
       systemInstrumentId: simpleFormula.systemInstrument?.id
         ? simpleFormula.systemInstrument.id
@@ -491,6 +487,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     return simplePayload;
   }
   constructComplexFormula(complexFormula) {
+    if(complexFormula.SystemInstruments === undefined) return null;
     let complexPayload = [];
     complexFormula.forEach(comp =>
       complexPayload.push({
@@ -572,24 +569,14 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
 
   constructSchedulePayload(formValues: any) {
     let schedulePayload = {
-      pricingScheduleId: formValues.pricingSchedule?.id
-        ? formValues.pricingSchedule.id
-        : 0,
-      dateRange: this.constructDateRange(
-        formValues.pricingScheduleOptionDateRange
-      ),
-      specificDate: this.constructSpecificDate(
-        formValues.pricingScheduleOptionSpecificDate
-      ),
-      eventBasedSimple: this.constructEventBasedSimple(
-        formValues.pricingScheduleOptionEventBasedSimple
-      ),
-      eventBasedExtended: this.constructEventBasedExtended(
-        formValues.pricingScheduleOptionEventBasedExtended
-      ),
-      eventBasedContinuous: this.constructEventBasedContinuous(
-        formValues.pricingScheduleOptionEventBasedContinuous
-      )
+      pricingScheduleId: formValues.pricingSchedule.id,
+      dateRange: formValues.pricingSchedule.id === 4? this.constructDateRange(formValues.pricingScheduleOptionDateRange) : null,
+      specificDate: formValues.pricingSchedule.id === 5? this.constructSpecificDate(formValues.pricingScheduleOptionSpecificDate) : null,
+      eventBasedSimple: formValues.pricingSchedule.id === 6? 
+          this.constructEventBasedSimple(formValues.pricingScheduleOptionEventBasedSimple) : null,
+      eventBasedExtended: formValues.pricingSchedule.id === 7? 
+        this.constructEventBasedExtended(formValues.pricingScheduleOptionEventBasedExtended) : null,
+      eventBasedContinuous: formValues.pricingSchedule.id === 8? this.constructEventBasedContinuous(formValues.pricingScheduleOptionEventBasedContinuous) : null
     };
     return schedulePayload;
   }
@@ -881,20 +868,44 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       requestOfferId: this.requestOfferId,
       name: formValues.name,
       formula: this.constructFormulaPayload(formValues),
-      schedule: this.constructSchedulePayload(formValues),
-      discountRules: this.constructDiscountRules(formValues)
+      schedule: formValues.pricingSchedule? this.constructSchedulePayload(formValues) : null,
+      discountRules: this.constructDiscountRules(formValues),
+      conversionMassUomId: 5,
+      conversionValue: 7,
+      conversionVolumeUomId: 1
     };
     return finalPayload;
   }
 
   saveFormula() {
     let formulaPayload: any = this.constructPayload(this.formValues);
+    
+    if(!formulaPayload.name || formulaPayload.name ===''){
+        this.toastr.error('Formula name field is required.')
+        return;
+    }
+    if(!formulaPayload.formula.simpleFormula && !formulaPayload.formula.complexFormulaQuoteLines){
+      this.toastr.error('Either simple or complex formula quote lines are required.')
+      return;
+    }
+
+    if(!formulaPayload.schedule.pricingSchedule){
+      this.toastr.error('Atleast 1 pricing schedule is required.')
+      return;
+    }
+
     if (formulaPayload.id == 0) {
       this.spinner.show();
       this.spotNegotiationService
         .addNewFormulaPrice(formulaPayload, this.requestOfferId)
         .pipe(
           tap((res: any) => {
+            if(!res || !res.id)
+            {
+              this.spinner.hide();
+              this.toastr.error('Failed to save Formula. Please try again with valid data.');
+              return;
+            }
             this.requestOfferId = res.requestOfferId;
             this.offerPriceFormulaId = res.id;
           }),
@@ -908,10 +919,10 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         .subscribe((item: any) => {
           this.spinner.hide();
           if (item.errors) {
-            this.toastr.error('Failed to save Formula');
+            this.toastr.error('Failed to save Formula.');
             return;
           } else {
-            this.toastr.success('Operatation completed Successfully');
+            this.toastr.success('Operatation completed Successfully.');
             this.evaluatedFormulaPrice = item;
             let payload = {
               RequestOfferId: this.requestOfferId,
@@ -1012,12 +1023,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
 
   getOfferPriceConfiguration() {
     this.formValues = {
-      id: 1,
-      name: '',
       isEditable: true,
-      formulaType: {
-        id: 1
-      },
+      formulaType: { },
       simpleFormula: {}
     };
     this.formValues.complexFormulaQuoteLines = [];

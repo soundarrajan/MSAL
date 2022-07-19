@@ -105,10 +105,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   private _sellerApiUrl = this.appConfig.v1.API.BASE_URL_DATA_SELLERRATING;
 
   @ApiCallUrl()
-  private _baseUrl = this.appConfig.v1.API.BASE_URL;
-
-  @ApiCallUrl()
-  private _shitechApiUrl = 'http://localhost:5021';
+  private _shitechApiUrl = this.appConfig.v1.API.BASE_URL; // 'http://localhost:5021';
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -856,7 +853,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       body instanceof HttpErrorResponse && body.status != 401
         ? body.error.ErrorMessage
           ? body.error.ErrorMessage
-          : body.error.errorMessage
+          : (body.error.errors)? body.error.errors : body.error.errorMessage
         : { message: 'Unauthorized' }
     );
   }
