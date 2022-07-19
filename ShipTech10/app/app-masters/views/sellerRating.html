@@ -129,7 +129,11 @@
 			                                                    maxlength="500"
 			                                                    ng-model="value3.comments"
 			                                                    placeholder="Type your answer..."
-			                                                    ng-blur="changeNameAndDate(value2)"
+			                                                    ng-change="changeNameAndDate(value2)"
+																spellcheck="false"
+																 autocomplete="off" 
+																 autocorrect="off" 
+																 autocapitalize="off"
 			                                                    ></textarea>
 															<div  ng-if="value3.ratingRequired" rating="{{value3.rating}}" class="rating" data-rate-value=0 onmouseleave="setModelOfRatingForSpecificLocation(this)" 
 															onclick="changeNameAndDateForSpecificLocation(this)"  location-key="{{key4}}" category-key="{{key2}}" detail-key="{{key3}}" >
@@ -199,7 +203,11 @@
 					                                                    maxlength="500"
 					                                                    ng-model="value3.comments"
 					                                                    placeholder="Type your answer..."
-					                                                    ng-blur="changeNameAndDate(value2)"
+					                                                    ng-change="changeNameAndDate(value2)"
+																        spellcheck="false"
+																        autocomplete="off" 
+																        autocorrect="off" 
+																        autocapitalize="off
 					                                                    ></textarea>
 																	<div  ng-if="value3.ratingRequired" rating="{{value3.rating}}" class="rating" data-rate-value=0 onmouseleave="setModelOfRatingForSpecificLocation(this)" 
 																	onclick="changeNameAndDateForSpecificLocation(this)"  location-key="{{key4}}" category-key="{{key2}}" detail-key="{{key3}}" >
