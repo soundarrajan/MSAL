@@ -377,7 +377,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.toastr.warning('Please add location cost');
       return;
     }
-    if (!this.enableSave && save == 'isSave') {
+    if (!this.enableSave) {
       this.toastr.warning('No changes are made to perform save.');
       return;
     }
@@ -451,7 +451,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.spotNegotiationService
         .saveOfferAdditionalCosts(payload)
         .subscribe((res: any) => {
-          this.enableSave = false;
+         // this.enableSave = false;
           if (res?.message == 'Unauthorized') {
             return;
           }
@@ -530,6 +530,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
  
   checkUncheckAll(event : any, rowNumber: number){
+    this.enableSave = true;
     if(this.locationBasedCosts.length === 0){
         this.isCheckedMain = false;
      }
