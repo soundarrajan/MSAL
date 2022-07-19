@@ -662,15 +662,18 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         class="p-tb-5"
         style="display:flex;align-items:center;"
         (click)="pricingdetailspopup($event, params)"
+        *ngIf="params.value > 0 && params.data?.requestOffers[params.index]?.isFormulaPricing"
       >
         <span><div class="infocircle-icon"></div></span>
         <span class="fs-13"> Formula Based Pricing</span>
+        <hr class="menu-divider-line2" />
       </div>
-      <hr class="menu-divider-line2" />
       <div
         class="p-tb-5"
         style="display:flex;align-items:center;"
         (click)="otherdetailspopup($event, params)"
+        *ngIf="params.value > 0 && (params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
+              params.data.requestOffers[params.index]?.supplyQuantity != null)"
       >
         <span><div class="infocircle-icon"></div></span>
         <span class="fs-13">Other Details</span>
@@ -1583,14 +1586,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   pricingdetailspopup(e, params) {
-    let requestedOfferId = params.data.requestOffers.find(x=> x.quotedProductId == params.product.productId).id;
-    let offerPriceFormulaId = params.data.requestOffers.find(x=> x.id == requestedOfferId).offerPriceFormulaId;
+    let requestedOffer = params.data.requestOffers[params.index];
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
       width: '1164px',
       data : {
-        requestOfferId : requestedOfferId,
-        offerPriceFormulaId : offerPriceFormulaId,
-        locationId : params.data.id
+        requestOfferId : requestedOffer.id,
+        offerPriceFormulaId: requestedOffer.offerPriceFormulaId
       },
       panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class'],
       disableClose: true

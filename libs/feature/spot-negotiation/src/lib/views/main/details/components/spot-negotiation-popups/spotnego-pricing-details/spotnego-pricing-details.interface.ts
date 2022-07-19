@@ -116,9 +116,9 @@ export interface OfferPriceFormulaDto extends IdNameModelDto{
     formula: FormulaDto
     schedule: PricingScheduleDto
     discountRules: DiscountRulesDto
-    massUomId: number
-    volumeUomId: number
-    conversionRate: number
+    conversionMassUomId: number
+    conversionValue: number
+    conversionVolumeUomId: number
 }
 
 export interface FormulaDto{
