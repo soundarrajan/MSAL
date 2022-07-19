@@ -365,6 +365,23 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                     }
                 }, 100);
             }
+            else
+            {
+                setTimeout(() => {
+                    var data = {
+                        orderId: $scope.formValues.order.id,
+                        orderProductId: $scope.formValues.orderProductId,
+                        deliveryProductId: $scope.formValues.deliveryProductId,
+                        labResultId: $scope.formValues.id
+                    };
+                    console.log(data);
+                    console.log($scope.formValues);
+                    if (vm.changed > 0 && vm.entity_id > 0 || vm.changed >= 0 && vm.entity_id < 1) {
+                        vm.getDataTable('spec', data, 'labTestResults');
+                    }
+                }, 100);
+
+            }
             vm.changed++;
             vm.setPhysicalSupplier();
         }
@@ -380,7 +397,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
         if (id) {
             id = id.toLowerCase();
             if ($scope.formValues.isFromIntegration) {
-                return;
+               // return;
             }
             Factory_Master.getDataTable(app, screen, id, data, (callback) => {
                 if (callback) {

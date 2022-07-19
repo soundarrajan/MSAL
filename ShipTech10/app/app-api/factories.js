@@ -4574,6 +4574,10 @@ APP_API.factory('$Api_Service', [
                                     {
                                         ColumnName: 'OrderProductId',
                                         Value: param.data.orderProductId
+                                    },
+                                    {
+                                        ColumnName: 'LabResultId',
+                                        Value: param.data.labResultId
                                     }
                                 ],
                                 Pagination: {
