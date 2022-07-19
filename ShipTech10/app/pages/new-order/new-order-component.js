@@ -3053,6 +3053,34 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             //debugger;
             ctrl.isUnitPriceForConversionFactor = isUnitPriConvFac;
             ctrl.conversionFactorData = convFactData;
+            let metricTonUom = _.find(ctrl.listsCache.Uom, { name : 'MT' });
+            let cubicMeterUom = _.find(ctrl.listsCache.Uom, { name : 'CBM' });
+            let metricMillionBritishThermalUnitUom = _.find(ctrl.listsCache.Uom, { name : 'MMBTU' });
+            let mWHUom = _.find(ctrl.listsCache.Uom, { name : 'MWH' });
+            if(!isUnitPriConvFac){
+                lookupModel.getConvertedUOM(convFactData.product.id, 1, convFactData.quantityUom.id, metricTonUom.id, convFactData.id).then((server_data) => {
+                    ctrl.conversionFactorData.quantityToMTConversionFactor = server_data.payload;
+                }).catch((e) => {
+                    throw 'Unable to get the uom.';
+                });
+                lookupModel.getConvertedUOM(convFactData.product.id, 1, convFactData.quantityUom.id, cubicMeterUom.id, convFactData.id).then((server_data) => {
+                    ctrl.conversionFactorData.quantityToCBEConversionFactor = server_data.payload;
+                }).catch((e) => {
+                    throw 'Unable to get the uom.';
+                });
+                // lookupModel.getConvertedUOM(convFactData.product.id, 1, convFactData.quantityUom.id, metricMillionBritishThermalUnitUom.id, convFactData.id).then((server_data) => {
+                //     ctrl.conversionFactorData.quantityToMMBTUConversionFactor = server_data.payload;
+                // }).catch((e) => {
+                //     throw 'Unable to get the uom.';
+                // });
+                // lookupModel.getConvertedUOM(convFactData.product.id, 1, convFactData.quantityUom.id, mWHUom.id, convFactData.id).then((server_data) => {
+                //     ctrl.conversionFactorData.quantityTomWHUomConversionFactor = server_data.payload;
+                // }).catch((e) => {
+                //     throw 'Unable to get the uom.';
+                // });
+            }
+            
+            //debugger;
             $scope.modalInstance = $uibModal.open({
                 templateUrl: 'pages/new-order/views/conversionFactorsModal.html',
                 appendTo: angular.element(document.getElementsByClassName('page-container')),

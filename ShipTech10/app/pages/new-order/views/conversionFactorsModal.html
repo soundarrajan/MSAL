@@ -7,10 +7,10 @@
         <div>
             <div class="col-sm-12">
                 <label class="control-label" ng-if="!$ctrl.isUnitPriceForConversionFactor">
-                    Confirmed Quantity ({{$ctrl.conversionFactorData.quantityUom.name}}) :
+                    Confirmed Quantity ({{$ctrl.conversionFactorData.quantityUom.name}}) : {{$ctrl.conversionFactorData.confirmedQuantity | number: $ctrl.numberPrecision.quantityPrecision }} 
                 </label> 
                 <label class="control-label" ng-if="$ctrl.isUnitPriceForConversionFactor">
-                    Unit Price ({{$ctrl.conversionFactorData.currency.code}}/{{$ctrl.conversionFactorData.priceUom.name}}) :
+                    Unit Price ({{$ctrl.conversionFactorData.currency.code}}/{{$ctrl.conversionFactorData.priceUom.name}}) : {{$ctrl.conversionFactorData.originalPrice | number: $ctrl.conversionFactorData.pricePrecision }} 
                 </label>              
             </div>
             <div class="col-sm-12">
@@ -28,8 +28,8 @@
                         </thead>
                         <tbody ng-if="!$ctrl.isUnitPriceForConversionFactor">
                             <tr>
-                                <td>Metric Ton</td>
-                                <td></td>
+                                <td>MT</td>
+                                <td>{{$ctrl.conversionFactorData.confirmedQuantity / $ctrl.conversionFactorData.quantityToMTConversionFactor | number: $ctrl.numberPrecision.quantityPrecision}}</td>
                             </tr>
                             <tr>
                                 <td>MMBTU</td>
@@ -37,7 +37,7 @@
                             </tr>
                             <tr>
                                 <td>CBM</td>
-                                <td></td>
+                                <td>{{$ctrl.conversionFactorData.confirmedQuantity / $ctrl.conversionFactorData.quantityToCBEConversionFactor | number: $ctrl.numberPrecision.quantityPrecision}}</td>
                             </tr>
                             <tr>
                                 <td>MWH</td>
@@ -46,7 +46,7 @@
                         </tbody>
                         <tbody ng-if="$ctrl.isUnitPriceForConversionFactor">
                             <tr>
-                                <td>{{$ctrl.conversionFactorData.currency.code}}/Ton</td>
+                                <td>{{$ctrl.conversionFactorData.currency.code}}/MT</td>
                                 <td></td>
                             </tr>
                             <tr>
