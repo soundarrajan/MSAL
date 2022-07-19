@@ -3503,7 +3503,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 (respData) => {});
                         }
                         ctrl.buttonsDisabled = false;
-                        $state.reload();
+                       // $state.reload();
+                        ctrl.getResponse();
                     },
                     () => {
                         ctrl.buttonsDisabled = false;
