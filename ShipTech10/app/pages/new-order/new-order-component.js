@@ -3050,37 +3050,94 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
         };
         ctrl.openConversionFactorModel = function(isUnitPriConvFac, convFactData) {
-            //debugger;
             ctrl.isUnitPriceForConversionFactor = isUnitPriConvFac;
             ctrl.conversionFactorData = convFactData;
             let metricTonUom = _.find(ctrl.listsCache.Uom, { name : 'MT' });
             let cubicMeterUom = _.find(ctrl.listsCache.Uom, { name : 'CBM' });
             let metricMillionBritishThermalUnitUom = _.find(ctrl.listsCache.Uom, { name : 'MMBTU' });
-            let mWHUom = _.find(ctrl.listsCache.Uom, { name : 'MWH' });
+            let mWHUom = _.find(ctrl.listsCache.Uom, { name : 'MWH' });            
+                var request_payload = [];
             if(!isUnitPriConvFac){
-                lookupModel.getConvertedUOM(convFactData.product.id, 1, convFactData.quantityUom.id, metricTonUom.id, convFactData.id).then((server_data) => {
-                    ctrl.conversionFactorData.quantityToMTConversionFactor = server_data.payload;
-                }).catch((e) => {
-                    throw 'Unable to get the uom.';
-                });
-                lookupModel.getConvertedUOM(convFactData.product.id, 1, convFactData.quantityUom.id, cubicMeterUom.id, convFactData.id).then((server_data) => {
-                    ctrl.conversionFactorData.quantityToCBEConversionFactor = server_data.payload;
-                }).catch((e) => {
-                    throw 'Unable to get the uom.';
-                });
-                // lookupModel.getConvertedUOM(convFactData.product.id, 1, convFactData.quantityUom.id, metricMillionBritishThermalUnitUom.id, convFactData.id).then((server_data) => {
-                //     ctrl.conversionFactorData.quantityToMMBTUConversionFactor = server_data.payload;
-                // }).catch((e) => {
-                //     throw 'Unable to get the uom.';
-                // });
-                // lookupModel.getConvertedUOM(convFactData.product.id, 1, convFactData.quantityUom.id, mWHUom.id, convFactData.id).then((server_data) => {
-                //     ctrl.conversionFactorData.quantityTomWHUomConversionFactor = server_data.payload;
-                // }).catch((e) => {
-                //     throw 'Unable to get the uom.';
-                // });
+                var request_dataForMT = {
+                    ProductId: convFactData.product.id,
+                    Quantity: 1,
+                    FromUomId: convFactData.quantityUom.id,
+                    ToUomId: metricTonUom.id,
+                    OrderProductId: convFactData.id
+                };
+                var request_dataForMMBTU = {
+                    ProductId: 0,
+                    Quantity: 1,
+                    FromUomId: metricTonUom.id,
+                    ToUomId: metricMillionBritishThermalUnitUom.id,
+                    OrderProductId: convFactData.id,
+                    productTypeId: convFactData.productType.id
+                };
+                var request_dataForMWH = {
+                    ProductId: 0,
+                    Quantity: 1,
+                    FromUomId: metricTonUom.id,
+                    ToUomId: mWHUom.id,
+                    OrderProductId: convFactData.id,
+                    productTypeId: convFactData.productType.id
+                };
+                request_payload.push(request_dataForMT);
+                request_payload.push(request_dataForMMBTU);
+                request_payload.push(request_dataForMWH);
+
+                var request_dataForCBM = {
+                    ProductId: convFactData.product.id,
+                    Quantity: 1,
+                    FromUomId: convFactData.quantityUom.id,
+                    ToUomId: cubicMeterUom.id,
+                    OrderProductId: convFactData.id
+                };
+                request_payload.push(request_dataForCBM);
             }
-            
-            //debugger;
+            else if(isUnitPriConvFac){
+                var request_dataForMT = {
+                    ProductId: convFactData.product.id,
+                    Quantity: 1,
+                    FromUomId: convFactData.priceUom.id,
+                    ToUomId: metricTonUom.id,
+                    OrderProductId: convFactData.id
+                };
+                var request_dataForMMBTU = {
+                    ProductId: 0,
+                    Quantity: 1,
+                    FromUomId: metricTonUom.id,
+                    ToUomId: metricMillionBritishThermalUnitUom.id,
+                    OrderProductId: convFactData.id,
+                    productTypeId: convFactData.productType.id
+                };
+                var request_dataForMWH = {
+                    ProductId: 0,
+                    Quantity: 1,
+                    FromUomId: metricTonUom.id,
+                    ToUomId: mWHUom.id,
+                    OrderProductId: convFactData.id,
+                    productTypeId: convFactData.productType.id
+                };
+                request_payload.push(request_dataForMT);
+                request_payload.push(request_dataForMMBTU);
+                request_payload.push(request_dataForMWH);
+            }
+
+                lookupModel.getUOMConversionFactor(request_payload).then((server_data) => {
+                    server_data.payload.forEach((cv) => { 
+                        if(cv.id == metricTonUom.id)
+                            ctrl.conversionFactorData.conversionFactorToMT = cv.conversionFactor;
+                        else if(cv.id == cubicMeterUom.id)
+                            ctrl.conversionFactorData.conversionFactorToCBE = cv.conversionFactor;
+                        else if(cv.id == metricMillionBritishThermalUnitUom.id)
+                            ctrl.conversionFactorData.conversionFactorToMMBTU = cv.conversionFactor;
+                        else if(cv.id == mWHUom.id)
+                            ctrl.conversionFactorData.conversionFactorToMWHUom = cv.conversionFactor;
+
+                    });
+                }).catch((e) => {
+                    throw 'Unable to get the uom.';
+                });
             $scope.modalInstance = $uibModal.open({
                 templateUrl: 'pages/new-order/views/conversionFactorsModal.html',
                 appendTo: angular.element(document.getElementsByClassName('page-container')),
@@ -3088,7 +3145,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 windowClass: 'fullWidthConversionFactorModal limited-max-height',
                 scope: $scope
             });
-
          };
         ctrl.orderConfirmationPreviewEmail = function() {
             if (ctrl.orderId) {

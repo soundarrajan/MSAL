@@ -422,7 +422,7 @@ angular.module('shiptech.models').factory('lookupModel', [ 'lookupResource', 'lo
                 });
         }
 
-        function getConvertedUOM(product, quantity, fromUOM, toUOM, orderProductId) {
+        function getConvertedUOM(product, quantity, fromUOM, toUOM, orderProductId, productTypeId) {
             let request_data = {
                 Payload: payload
             };
@@ -431,9 +431,22 @@ angular.module('shiptech.models').factory('lookupModel', [ 'lookupResource', 'lo
                 OrderProductId: orderProductId,
                 Quantity: quantity,
                 FromUomId: fromUOM,
-                ToUomId: toUOM
+                ToUomId: toUOM,
+                productTypeId: productTypeId
             };
             return lookupResource.getConvertedUOM(request_data)
+                .$promise
+                .then((data) => {
+                    return data;
+                });
+        }
+
+        function getUOMConversionFactor(request_data_ConversionFactor) {
+            let request_data = {
+                Payload: payload
+            };
+            request_data.Payload = request_data_ConversionFactor;
+            return lookupResource.getUomConversionFactor(request_data)
                 .$promise
                 .then((data) => {
                     return data;
@@ -500,7 +513,8 @@ angular.module('shiptech.models').factory('lookupModel', [ 'lookupResource', 'lo
             getConvertedUOMForSupplierPortal: getConvertedUOMForSupplierPortal,
             getSpecParameterForRequestProduct: getSpecParameterForRequestProduct,
             getNoQuoteReasonForSupplierPortal: getNoQuoteReasonForSupplierPortal,
-            getBuyerDetailsForSupplierPortal: getBuyerDetailsForSupplierPortal
+            getBuyerDetailsForSupplierPortal: getBuyerDetailsForSupplierPortal,
+            getUOMConversionFactor: getUOMConversionFactor
         };
     }
 ]);

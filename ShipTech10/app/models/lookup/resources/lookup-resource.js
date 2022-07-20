@@ -68,6 +68,13 @@ angular.module('shiptech.models').factory('lookupResource', [ '$resource', '$sta
                 verb: 'convertQuantity'
             }
         },
+        getUomConversionFactor: {
+            method: 'POST',
+            params: {
+                type: 'uoms',
+                verb: 'getUOMConversionFactor'
+            }
+        },
         getFilteredSpecGroup: {
             method: 'POST',
             params: {
