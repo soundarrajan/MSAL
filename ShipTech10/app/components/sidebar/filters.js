@@ -1248,8 +1248,13 @@ angular.module('shiptech.components').controller('FiltersController', [
                     		newVal.push(v);
                     	}
                     });
-                    newVal = [...newVal[0], ...newVal[1]]; //merge
-                    newVal = newVal.filter(x => x.column != null) // remove empty objects
+                    if(newVal.length > 0)
+                    {
+                        newVal[0] = newVal[0] ? newVal[0] : [];
+                        newVal[1] = newVal[1] ? newVal[1] : [];
+                        newVal = [...newVal[0], ...newVal[1]]; //merge
+                        newVal = newVal.filter(x => x.column != null) // remove empty objects
+                    }
                     resolve(newVal);
                     // }
                 });
