@@ -91,9 +91,16 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                     });
                 }
                 ctrl.orderList = data.payload.orders;
-                ctrl.isOrderexisting = ctrl.orderList && ctrl.orderList.some(x=>x.existingOrderId !=null) ? true : false;
                 ctrl.requestOfferItems = normalizeOfferData(data.payload.orders);
                 ctrl.availableContractItems = data.payload.termContract;
+                if (ctrl.orderList && ctrl.orderList.some(x=>x.existingOrderId != null)){
+                    for (let existingorders of ctrl.orderList) {
+                        ctrl.isOrderexisting = ctrl.requestOfferItems.some(y=>y.requestLocationId == existingorders.requestLocationId && y.sellerId  == existingorders.seller?.id);
+                        if (ctrl.isOrderexisting == true) {
+                            return;
+                        }
+                    }
+                }
             });
         };
         ctrl.changeOrderQty = function(item) {
@@ -198,13 +205,16 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
             ctrl.buttonsDisabled = true;
             var requestProductIds = [];
             var contractIds = [];
-
-            //ctrl.orderList ? ctrl.isOrderexisting = true : false;
-            if(ctrl.orderList && ctrl.isOrdertype == "2") // split order
+            if(ctrl.orderList && ctrl.orderList.some(x=>x.existingOrderId != null) && ctrl.isOrdertype == "2") // split order
             {
-                ctrl.orderList.forEach(x=>x.existingOrderId = null );
+                for (let existingorders of ctrl.orderList) {
+                    var IsResetExistingOrder = ctrl.requestOfferItems.some(y=>y.requestLocationId == existingorders.requestLocationId && y.sellerId  == existingorders.seller?.id);
+                    if (IsResetExistingOrder) {
+                        existingorders.existingOrderId = null 
+                    }
+                  }
             }
-            
+
             $.each(ctrl.orderList, (ordk, ordv) => {
                 $.each(ordv.products, (prodk, prodv) => {
                     requestProductIds.push(prodv.requestProductId);
@@ -288,6 +298,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                     let product;
                     // product = pv;
                     item.contractId = pv.contract && pv.contract.id > 0 ? pv.contract.id : v.contract.id;
+                    item.sellerId = v.seller.id;
                     item.sellerName = v.seller.name;
                     item.existingOrderId = v.existingOrderId;
                     item.locationName = v.location.name;
@@ -301,6 +312,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                     item.productType = pv.productType;
                     item.pricePrecision = pv.pricePrecision;
                     item.requestProductId = pv.requestProductId;
+                    item.requestLocationId = v.requestLocationId;
                     item.conversionFactorToUomOfPriceFromContract = pv.conversionFactorToUomOfPriceFromContract;
                     item.physicalSupplierName = _.get(pv, 'physicalSupplier.name');
                     item.oId = v.id;
