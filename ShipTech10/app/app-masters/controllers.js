@@ -4411,7 +4411,11 @@
         $scope.addTagToMulti = function(model, data) {
         	if (vm.app_id == 'masters' && vm.screen_id == 'location') {
            		if (["locationProductTypes","locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(model) ) {
-        			$scope.addTagToMultiInLocationMaster(model, data);
+                    if (data.id > 0) {
+                        $scope.addTagToMultiInLocationMaster(model, data);
+                    } else {
+                        toastr.warning('Field not in source or not modeled. Kindly select from source');
+                    }
         			return;
         		}
         	}

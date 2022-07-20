@@ -164,12 +164,10 @@ angular.module('shiptech').config([
                             routeCall = `api/${ request.url.split('/api/')[1]}`;
                         }
 
-
                         if (routeCall.indexOf('invoice/list') != -1) {
                             // debugger;
                         }
-                        if (routeExceptions.indexOf(routeCall) == -1) {
-
+                        if (routeExceptions.indexOf(routeCall) == -1 && request.url.toLowerCase() != 'tree') {
                             /* APP INSIGHTS LOGGER Start Timer*/
                             if (!loaderIsOpen()) {
                                 window.firstApiCallStartTime = Date.now();
