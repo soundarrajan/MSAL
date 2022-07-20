@@ -15,7 +15,11 @@ import _ from 'lodash';
 import { SearchFormulaPopupComponent } from '../search-formula-popup/search-formula-popup.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { ComplexFormula, DateRangeDto, EventBasedSimpleDto, FormValues, HolidayRuleDto, OfferPriceFormulaDto, PricingScheduleOptionDateRange, PricingScheduleOptionEventBasedSimple, SystemInstrumentDto, SystemInstruments } from './spotnego-pricing-details.interface';
+import { ComplexFormula, DateRangeDto, EventBasedContinuousDto, EventBasedExtendDto, EventBasedSimpleDto, FormValues, HolidayRuleDto, LocationDiscountRulesDto, OfferPriceFormulaDto,
+   PricingScheduleOptionDateRange, PricingScheduleOptionEventBasedContinuous, PricingScheduleOptionEventBasedExtended, PricingScheduleOptionEventBasedSimple, 
+   ProductDiscountRulesDto, 
+   QuantityDiscountRulesDto, 
+   SpecificDateDto, SystemInstrumentDto, SystemInstruments } from './spotnego-pricing-details.interface';
 import { first, switchMap, tap } from 'rxjs/operators';
 import { SetOfferPriceFormulaId } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 
@@ -73,9 +77,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   offerPriceFormulaId: number;
   evaluatedFormulaPrice: any;
   productId : number;
-  massUomName: number;
-  volumeUomId : number;
-  conversionRate: any;
+  massUom: any;
   uomVolumeList: any;
   constructor(
     public dialogRef: MatDialogRef<SpotnegoPricingDetailsComponent>,
@@ -113,9 +115,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     };
     this.spotNegotiationService.getDefaultConversionFactor(payload)
       .subscribe((res: any)=>{
-        this.massUomName = res.payload.massUom.name;
-        this.volumeUomId = res.payload.volumeUom.id;
-        this.conversionRate = res.payload.value;
+        this.massUom = res.payload.massUom;
+        this.formValues.conversionRate = res.payload.value;
+        this.formValues.conversionVolumeUom = {id : res.payload.volumeUom.id }
       });
   }
 
@@ -148,7 +150,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     this.formulaTypeList = this.setListFromStaticLists('FormulaType');
     this.pricingScheduleList = this.setListFromStaticLists('PricingSchedule');
 
-    this.getConversionFactor();
+    //this.getConversionFactor();
   }
 
   setListFromStaticLists(name) {
@@ -508,7 +510,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     return simplePayload;
   }
   constructComplexFormula(complexFormula) {
-    if(complexFormula.SystemInstruments === undefined) return null;
+    if(!complexFormula || complexFormula.length <=0) return null;
     let complexPayload = [];
     complexFormula.forEach(comp =>
       complexPayload.push({
@@ -527,7 +529,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           ? comp.formulaPlusMinus.id
           : 0,
         weight: comp.weight,
-        SystemInstruments: this.generateSystemInstrumentForComplexFormula(comp.systemInstruments),
+        systemInstruments: this.generateSystemInstrumentForComplexFormula(comp.systemInstruments),
         uomId: comp.uom?.id
       })
     );
@@ -580,9 +582,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     let formulaPayload = {
       formulaTypeId: formValues.formulaType?.id ? formValues.formulaType.id : 0,
       isMean: formValues.isMean,
-      CurrencyId: 2, //------------------------------Needs to replace----------------------
+      currencyId: formValues.currency?.id, //------------------------------Needs to replace----------------------
       simpleFormula: formValues.formulaType?.id === 1? this.constructSimpleFormula(formValues.simpleFormula) : null,
-      ComplexFormulaQuoteLines: formValues.formulaType?.id === 2? this.constructComplexFormula(formValues.complexFormulaQuoteLines) : null,
+      complexFormulaQuoteLines: formValues.formulaType?.id === 2? this.constructComplexFormula(formValues.complexFormulaQuoteLines) : null,
       holidayRule: this.constructHolidayRule(formValues.formulaHolidayRules)
     };
     return formulaPayload;
@@ -815,54 +817,59 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   constructDiscountRulesQuantityBased(quantityDiscountRules: any) {
     if (!quantityDiscountRules) return null;
     let discountRulesQuantityBased = [];
-    quantityDiscountRules.forEach(rules =>
-      discountRulesQuantityBased.push({
-        formulaPlusMinusId: rules.plusMinus?.id ? rules.plusMinus?.id : 0,
-        amount: rules.amount,
-        formulaFlatPercentageId: rules.flatPercentage?.id
-          ? rules.flatPercentage?.id
-          : 0,
-        uomId: rules.uom?.id ? rules.uom.id : 0,
-        quantityTypeId: rules.quantityType?.id ? rules.quantityType.id : 0,
-        quantityRangeFrom: rules.quantityRangeFrom,
-        quantityRangeTo: rules.quantityRangeTo
-      })
-    );
+    quantityDiscountRules.forEach(rules => {
+      if (!rules.isDeleted) {
+        discountRulesQuantityBased.push({
+          plusMinusId: rules.plusMinus?.id ? rules.plusMinus?.id : 0,
+          amount: rules.amount,
+          flatPercentageId: rules.flatPercentage?.id
+            ? rules.flatPercentage?.id
+            : 0,
+          uomId: rules.uom?.id ? rules.uom.id : 0,
+          quantityTypeId: rules.quantityType?.id ? rules.quantityType.id : 0,
+          quantityRangeFrom: rules.quantityRangeFrom,
+          quantityRangeTo: rules.quantityRangeTo
+        });
+      }
+    });
     return discountRulesQuantityBased;
   }
 
   constructDiscountRulesProductBased(productBased: any) {
     if (!productBased) return null;
     let discountRulesProductBased = [];
-    productBased.forEach(rule =>
-      discountRulesProductBased.push({
-        formulaPlusMinusId: rule.plusMinus?.id ? rule.plusMinus.id : 0,
-        amount: rule.amount,
-        formulaFlatPercentageId: rule.flatPercentage?.id
-          ? rule.flatPercentage.id
-          : 0,
-        uomId: rule.uom?.id ? rule.uom.id : 0,
-        productId: rule.product?.id ? rule.product.id : 0
-      })
-    );
+    productBased.forEach(rule => {
+      if (!rule.isDeleted) {
+        discountRulesProductBased.push({
+          plusMinusId: rule.plusMinus?.id ? rule.plusMinus.id : 0,
+          amount: rule.amount,
+          flatPercentageId: rule.flatPercentage?.id
+            ? rule.flatPercentage.id
+            : 0,
+          uomId: rule.uom?.id ? rule.uom.id : 0,
+          productId: rule.product?.id ? rule.product.id : 0
+        });
+      }
+    });
     return discountRulesProductBased;
   }
 
   constructLocationDiscount(locationDiscount: any) {
     if (!locationDiscount) return null;
     let discountruleLocationBased = [];
-    locationDiscount.forEach(rule =>
-      discountruleLocationBased.push({
-        formulaId: rule.id ? rule.id : 0,
-        formulaPlusMinusId: rule.plusMinus?.id ? rule.plusMinus.id : 0,
-        amount: rule.amount,
-        formulaFlatPercentageId: rule.formulaFlatPercentageId?.id
-          ? rule.formulaFlatPercentageId.id
-          : 0,
-        uomId: rule.uom?.id ? rule.uom.id : 0,
-        locationId: rule.location?.id ? rule.location.id : 0
-      })
-    );
+    locationDiscount.forEach(rule => {
+      if (!rule.isDeleted) {
+        discountruleLocationBased.push({
+          plusMinusId: rule.plusMinus?.id ? rule.plusMinus.id : 0,
+          amount: rule.amount,
+          flatPercentageId: rule.formulaFlatPercentageId?.id
+            ? rule.formulaFlatPercentageId.id
+            : 0,
+          uomId: rule.uom?.id ? rule.uom.id : 0,
+          locationId: rule.location?.id ? rule.location.id : 0
+        });
+      }
+    });
     return discountruleLocationBased;
   }
 
@@ -891,9 +898,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       formula: this.constructFormulaPayload(formValues),
       schedule: formValues.pricingSchedule? this.constructSchedulePayload(formValues) : null,
       discountRules: this.constructDiscountRules(formValues),
-      conversionMassUomId: 5,
-      conversionValue: 7,
-      conversionVolumeUomId: 1
+      conversionMassUomId: this.massUom.id,
+      conversionValue: formValues.conversionRate,
+      conversionVolumeUomId: formValues.conversionVolumeUom.id
     };
     return finalPayload;
   }
@@ -910,8 +917,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       return;
     }
 
-    if(!formulaPayload.schedule.pricingSchedule){
-      this.toastr.error('Atleast 1 pricing schedule is required.')
+    if(!formulaPayload.schedule || !formulaPayload.schedule.pricingScheduleId){
+      this.toastr.error('Atleast 1 pricing schedule option is required.')
       return;
     }
 
@@ -1046,7 +1053,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     this.formValues = {
       isEditable: true,
       formulaType: { },
-      simpleFormula: {}
+      simpleFormula: {},
+      conversionVolumeUom: {}
     };
     this.formValues.complexFormulaQuoteLines = [];
     if (this.offerPriceFormulaId) {
@@ -1061,6 +1069,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           this.spinner.hide();
           this.constructUIFormValues(response as OfferPriceFormulaDto);
         });
+    }else{
+      this.getConversionFactor();
     }
   }
 
@@ -1098,6 +1108,12 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     return dateRangeOption;
   }
 
+  getSpecificDate(scheduleSpecificDate: any){
+    var scheduleOption = this.getHolidayRule(scheduleSpecificDate as HolidayRuleDto);
+    scheduleOption = {...scheduleSpecificDate};
+    return scheduleOption;
+  }
+
   getEventBasedSimple(eventBasedSimple: EventBasedSimpleDto){
     var scheduleOption = this.getHolidayRule(eventBasedSimple as HolidayRuleDto) as PricingScheduleOptionEventBasedSimple;
     scheduleOption.fromNoOfBusinessDaysBefore = eventBasedSimple.fromNoOfBusinessDaysBefore;
@@ -1109,6 +1125,52 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     return scheduleOption;
   }
 
+  getEventBasedExtended(eventBasedExtended: EventBasedExtendDto){
+    var scheduleOption = this.getHolidayRule(eventBasedExtended as HolidayRuleDto) as PricingScheduleOptionEventBasedExtended;
+    scheduleOption = { ...this.getEventBasedSimple(eventBasedExtended) as PricingScheduleOptionEventBasedExtended}
+    scheduleOption.excludeFromNoOfBusinessDaysBefore = eventBasedExtended.excludeFromNoOfBusinessDaysBefore;
+    scheduleOption.excludeToNoOfBusinessDaysAfter = eventBasedExtended.excludeToNoOfBusinessDaysAfter;
+    return scheduleOption;
+  }
+
+  getEventBasedContinuous(eventBasedContinuous: EventBasedContinuousDto){
+    var scheduleOption = this.getHolidayRule(eventBasedContinuous as HolidayRuleDto) as PricingScheduleOptionEventBasedContinuous;
+    scheduleOption.pricingSchedulePeriod = { id: eventBasedContinuous.pricingSchedulePeriodId };
+    scheduleOption.event = { id: eventBasedContinuous.eventId };
+    scheduleOption.date = eventBasedContinuous.date;
+    scheduleOption.weekStartsOn = eventBasedContinuous.weekStartsOn;
+    return scheduleOption;
+  }
+
+  getQuantityDiscountRules(quantityRules: any){
+    quantityRules.forEach(rule => {
+      rule.plusMinus = this.formulaPlusMinusList.find(item=> item.id === rule.plusMinusId);
+      rule.flatPercentage = this.formulaFlatPercentageList.find(item=> item.id === rule.flatPercentageId);
+      rule.uom = this.uomList.find(item=> item.id === rule.uomId);
+      rule.quantityType = this.quantityTypeList.find(item=> item.id === rule.quantityTypeId);
+    });
+    return quantityRules;
+  }
+
+  getProductDiscountRules(productRules: any){
+    productRules.forEach(rule => {
+      rule.plusMinus = this.formulaPlusMinusList.find(item=> item.id === rule.plusMinusId);
+      rule.flatPercentage = this.formulaFlatPercentageList.find(item=> item.id === rule.flatPercentageId);
+      rule.uom = this.uomList.find(item=> item.id === rule.uomId);
+      rule.product = this.productList.find(item=> item.id === rule.productId); 
+    });
+    return productRules;
+  }
+  getLocationDiscountRules(locationRules: any){
+    locationRules.forEach(rule => {
+      rule.plusMinus = this.formulaPlusMinusList.find(item=> item.id === rule.plusMinusId);
+      rule.flatPercentage = this.formulaFlatPercentageList.find(item=> item.id === rule.flatPercentageId);
+      rule.uom = this.uomList.find(item=> item.id === rule.uomId);
+      rule.location = this.locationList.find(item=> item.id === rule.locationId);
+    });
+    return locationRules;
+  }
+
   constructUIFormValues(priceConfig: OfferPriceFormulaDto) {
     this.formValues = {
       id: priceConfig.id,
@@ -1116,16 +1178,18 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       isEditable: true,
       formulaType: { id: priceConfig.formula.formulaTypeId },
       isMean: priceConfig.formula.isMean,
+      currency: this.currencyList.find(item=> item.id === priceConfig.formula.currencyId),
       pricingSchedule: {id: priceConfig.schedule.pricingScheduleId},
       pricingScheduleOptionDateRange: priceConfig.schedule.pricingScheduleId === 4? this.getDateRange(priceConfig.schedule.dateRange) : null,
-      pricingScheduleOptionSpecificDate:  priceConfig.schedule.pricingScheduleId === 5? null: null,
+      pricingScheduleOptionSpecificDate:  priceConfig.schedule.pricingScheduleId === 5? this.getSpecificDate(priceConfig.schedule.specificDate): null,
       pricingScheduleOptionEventBasedSimple: priceConfig.schedule.pricingScheduleId === 6? this.getEventBasedSimple(priceConfig.schedule.eventBasedSimple): null,
-      pricingScheduleOptionEventBasedExtended: priceConfig.schedule.pricingScheduleId === 6? null: null,
-      pricingScheduleOptionEventBasedContinuous: priceConfig.schedule.pricingScheduleId === 6? null: null,
+      pricingScheduleOptionEventBasedExtended: priceConfig.schedule.pricingScheduleId === 7? this.getEventBasedExtended(priceConfig.schedule.eventBasedExtended): null,
+      pricingScheduleOptionEventBasedContinuous: priceConfig.schedule.pricingScheduleId === 8? this.getEventBasedContinuous(priceConfig.schedule.eventBasedContinuous): null,
       formulaHolidayRules: priceConfig.formula.holidayRule? this.getHolidayRule(priceConfig.formula.holidayRule) : null,
-      quantityDiscountRules: [],
-      productDiscountRules: [],
-      locationDiscountRules: []
+      quantityDiscountRules: this.getQuantityDiscountRules(priceConfig.discountRules?.quantityDiscountRules),
+      productDiscountRules:  this.getProductDiscountRules(priceConfig.discountRules?.productDiscountRules),
+      locationDiscountRules:  this.getLocationDiscountRules(priceConfig.discountRules?.locationDiscountRules),
+      conversionVolumeUom: {}
     };
 
     if (priceConfig.formula.formulaTypeId === 1) {
@@ -1158,7 +1222,10 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
 
       this.formValues.complexFormulaQuoteLines = complexFormulaQuoteLines;
     }
-
+    var uomMassList = this.setListFromStaticLists('UomMass');
+    this.massUom = uomMassList.find(item=> item.id === priceConfig.conversionMassUomId);
+    this.formValues.conversionRate = priceConfig.conversionValue;
+    this.formValues.conversionVolumeUom = { id : priceConfig.conversionVolumeUomId }
 
   }
 }

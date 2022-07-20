@@ -13,14 +13,17 @@ export interface FormValues{
     pricingSchedule?: PricingSchedule;
     formulaHolidayRules?: FormulaHolidayRule;
     pricingScheduleOptionDateRange?;
+    pricingScheduleOptionSpecificDate?;
+    pricingScheduleOptionEventBasedSimple ?: PricingScheduleOptionEventBasedSimple;
     pricingScheduleOptionEventBasedContinuous?;
     pricingScheduleOptionEventBasedExtended?;
-    pricingScheduleOptionEventBasedSimple ?: PricingScheduleOptionEventBasedSimple;
-    pricingScheduleOptionSpecificDate?;
     productDiscountRules?: [];
     quantityDiscountRules?: [];
     locationDiscountRules?: [];
     formulaType?: event ;
+    currency?: event
+    conversionRate?: number,
+    conversionVolumeUom: event
 }
 
 export interface PricingScheduleOptionHolidayRule{
@@ -49,6 +52,18 @@ export interface PricingScheduleOptionEventBasedSimple extends PricingScheduleOp
     isEventIncluded?: event;
     event?: event;
 }
+
+export interface PricingScheduleOptionEventBasedExtended extends PricingScheduleOptionHolidayRule, PricingScheduleOptionEventBasedSimple {
+    excludeFromNoOfBusinessDaysBefore: number
+    excludeToNoOfBusinessDaysAfter: number
+ }
+
+ export interface PricingScheduleOptionEventBasedContinuous extends PricingScheduleOptionHolidayRule {
+    pricingSchedulePeriod: event,
+    event: event,
+    date: Date,
+    weekStartsOn: number
+ }
 export interface event{
     id?: number;
     isDeleted?: boolean;
@@ -213,6 +228,30 @@ export interface EventBasedContinuousDto extends HolidayRuleDto {
     eventId: number,
     date: Date,
     weekStartsOn: number
+}
+
+export interface DiscountRulesDto{
+    plusMinusId: number
+    plusMinus: IdNameModelDto
+    flatPercentageId: number
+    flatPercentage: IdNameModelDto
+    amount: number
+    uomId: number
+    uom: IdNameModelDto 
+}
+export interface QuantityDiscountRulesDto extends DiscountRulesDto{
+    quantityTypeId: number
+    quantityType: IdNameModelDto
+    quantityRangeFrom: number
+    quantityRangeTo: number
+}
+export interface ProductDiscountRulesDto extends DiscountRulesDto {
+    productId: number
+    product: IdNameModelDto
+}
+export interface LocationDiscountRulesDto extends DiscountRulesDto {
+    locationId: number
+    location: IdNameModelDto
 }
 
 export interface DiscountRulesDto{
