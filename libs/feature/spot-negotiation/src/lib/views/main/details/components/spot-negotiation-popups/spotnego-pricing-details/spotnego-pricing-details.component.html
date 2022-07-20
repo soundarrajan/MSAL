@@ -39,7 +39,7 @@
                         </mat-option>
                     </mat-autocomplete>
               </mat-form-field>
-              <div class="form-field-action" style="right: 10px;top: 16px;">
+              <div class="form-field-action" style="right: 16px;top: 10px;">
               <button class="search-icon" (click)="searchFormula();">
                 <div class="img"></div>
               </button>
@@ -93,23 +93,62 @@
         <div class="row d-flex col-md-12" *ngIf="initialized == 1" >
           <div class="col-md-12">
             <div class="pricing-type-container">
-              <div class="col-md-12 pricing-container" style="padding-top: 10px;padding-bottom: 10px;max-height: 365px;overflow:auto">
-                <div class="pricing-container-formula-list row no-padding" style="width: 220px">
-                  <div class="col-md-12 pricing-container-formula-list-header">
-                    Pricing Type
+              <div class="col-md-12 pricing-container" style="padding-bottom:10px;">
+                <div class="row no-padding">
+                  <div class="col-md-3 pricing-container-formula-list" style="height: auto;margin-top:12px">
+                    <div class="col-md-12 pricing-container-formula-list-header">
+                      Pricing Type
+                    </div>
+                    <div class="col-md-12">
+                      <mat-radio-group class="pricing-container-radio-group" [(ngModel)]="formValues.formulaType.id"
+                        (ngModelChange)="setFormulaTypeSelected($event)" style="display: flex;
+                                                          justify-content: space-between;width: 75%;">
+                        <mat-radio-button class="pricing-container-radio-button col-md-3" *ngFor="let option of formulaTypeList"
+                          [value]="option.id">
+                          {{option.name}}
+                        </mat-radio-button>
+                      </mat-radio-group>
+                    </div>
                   </div>
-                  <div class="col-md-12">
-                    <mat-radio-group class="pricing-container-radio-group"  [(ngModel)]="formValues.formulaType.id" (ngModelChange)="setFormulaTypeSelected($event)" style="display: flex;
-                    justify-content: space-between;width: 75%;">
-                      <mat-radio-button class="pricing-container-radio-button col-md-3"  *ngFor="let option of formulaTypeList" [value]="option.id">
-                        {{option.name}}
-                    </mat-radio-button>
-                    </mat-radio-group>
+                  <div class="col-md-9">
+                    <div class="custom-form-field create-new-formula-form-field" style="margin-top: 15px; flex-wrap: wrap;">
+                      <div class="convertorEditable-component-v2">
+                        <div class="block">
+                          <div class="title">Mass UOM</div>
+                          <div class="inline-dropdown">
+                            <span style="font-weight: 500;">1 {{massUom?.name}}</span>
+                          </div>
+                        </div>
+                        <div class="convert-img">
+                        </div>
+                        <div style="padding:2px;">
+                          <div class="block dashed-border">
+                            <div class="title">Conversion Rate</div>
+                            <div class="value"><input matInput name="formula-converion-rate" 
+                              [disabled]="!formValues.formulaType.id"    
+                              [(ngModel)]="formValues.conversionRate"/></div>
+                          </div>
+                        </div>
+                        <div class="block m-l-15">
+                          <div class="title">Volume UOM</div>
+                          <div class="inline-dropdown">
+                            <mat-form-field style="background: none !important;border: none !important;">
+                              <mat-select style="height: 18px;" [(ngModel)]="formValues.conversionVolumeUom.id">
+                                <mat-option *ngFor="let option of uomVolumeList" [value]="option.id">
+                                  {{option.name}}
+                                </mat-option>
+                
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="row" *ngIf="formValues.formulaType && formValues.formulaType.id == 1">
-                  <div class="col-md-12 d-flex pd-0" style="padding:0; margin-top: 15px; margin-left: 1vw   ; flex-wrap: wrap;">
+                  <div class="col-md-12 d-flex pd-0" style="margin-left: 1vw; flex-wrap: wrap;">
                     <shiptech-pricing-formula-simple
                       [model]="formValues"
                       [formulaFlatPercentageList]="formulaFlatPercentageList"
@@ -126,7 +165,7 @@
                     </shiptech-pricing-formula-simple>
                   </div>
                 </div>
-                <div class="col-md-12" style="padding:0" *ngIf="formValues.formulaType && formValues.formulaType.id == 2">
+                <div class="col-md-12" style="padding:inherit;" *ngIf="formValues.formulaType && formValues.formulaType.id == 2">
                   <shiptech-pricing-formula-complex
                     [model]="formValues"
                     [formulaFlatPercentageList]="formulaFlatPercentageList"
@@ -151,6 +190,7 @@
               </div>
             </div>
           </div>
+         
         </div>
                    <!-- Pricing schedule section start -->
   <div class="row d-flex col-md-12" *ngIf="initialized == 2" >
