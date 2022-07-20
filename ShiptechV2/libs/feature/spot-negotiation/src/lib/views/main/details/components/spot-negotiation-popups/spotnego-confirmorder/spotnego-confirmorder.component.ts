@@ -86,6 +86,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    this.isOrderexisting = this.data ? true : false;
     // this.scrollToBottom();
     this.legacyLookupsDatabase.getTableByName('currency').then(response => {
       this.currencyList = response;
@@ -102,7 +103,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
     });
     this.getRequests();
     this.getSelectedLocationRowsForLocation();
-    this.checkorderexist();
   }
   openEditOrder(orderId: number): void {
     window.open(
@@ -637,41 +637,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               reqLocationRows.push(data);
           }
           this.store.dispatch(new SetLocationsRows(reqLocationRows));
-        }
-      });
-  }
-
-  checkorderexist(){
-    let RequestProductIds = [];
-    let filters: ServerQueryFilter[] = [];
-    this.requestOfferItems.forEach((itemVal, itemKey) => {
-      if (itemVal.isCheckBox) {
-        RequestProductIds.push(itemVal.RequestProductId);
-      }
-    });
-    if (RequestProductIds.length > 0) {
-      filters = [
-        {
-          columnName: 'RequestProductIds',
-          value: '[' + RequestProductIds.join(',') + ']'
-        }
-      ];
-    } else {
-      this.toaster.warning('Please select at least one products');
-      return;
-    }
-    let payload = {
-      filters
-    };
-    const response = this.spotNegotiationService.GetExistingOrders(payload);
-     response.subscribe(
-      (res: any) => {
-        if (res?.message == 'Unauthorized') {
-          return;
-        }
-
-        if (res.payload.length > 0) {
-          this.isOrderexisting = true;
         }
       });
   }

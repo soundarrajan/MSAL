@@ -27,6 +27,7 @@ import _ from 'lodash';
 import { NegotiationDetailsToolbarComponent } from '../../../toolbar/spot-negotiation-details-toolbar.component';
 import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
 import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
+import { ServerQueryFilter } from '@shiptech/core/grid/server-grid/server-query.filter';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -63,6 +64,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   baseOrigin: string;
   isAuthorizedForReportsTab: boolean = false;
   public menuItems: any[];
+  public isOrderexisting:boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -225,6 +227,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   confirmorderpopup() {
+    this.isOrderexisting = false;
     let selectedFinalData = this.FilterselectedRowForRFQ();
     let requestOffers = [];
     selectedFinalData.forEach(e => {
@@ -294,20 +297,60 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       }
     });
+    this.checkorderexists();
     if (!isallow) {
       setTimeout(() => {
         const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
+          data: this.isOrderexisting,
           width: '1045px',
           height: '555px',
           panelClass: 'additional-cost-popup'
         });  
         dialogRef.afterClosed().subscribe(result => {});
         this.spotNegotiationService.callGridRefreshService();
-      },1000);
+      },1500);
     } else {
       this.toaster.warning('Cannot confirm offer as no offer price available');
       return;
     }
+  }
+
+  checkorderexists(){
+    let RequestProductIds = [];
+    let filters: ServerQueryFilter[] = [];
+    RequestProductIds = this.selectedSellerList.map(
+      x => x.RequestProductIds
+    );
+    if (RequestProductIds.length > 0) {
+      filters = [
+        {
+          columnName: 'RequestProductIds',
+          value: '[' + RequestProductIds.join(',') + ']'
+        }
+      ];
+    } else {
+      this.toaster.warning('Please select at least one products');
+      return;
+    }
+    let payload = {
+      filters
+    };
+    const response = this.spotNegotiationService.GetExistingOrders(payload);
+     response.subscribe(
+      (res: any) => {
+        if (res?.message == 'Unauthorized') {
+          return;
+        }
+
+        if (res.payload.length > 0 && res.payload.some(x=>x.id !=null)) {
+          for (let existingorders of res.payload) {
+            this.isOrderexisting = this.selectedSellerList.some(y=>y.RequestLocationId == existingorders.requestLocationId && y.SellerId  == existingorders.seller?.id);
+            if (this.isOrderexisting == true) {
+                return;
+            }
+          }      
+        }
+      });
   }
 
   sendRFQpopup() {
