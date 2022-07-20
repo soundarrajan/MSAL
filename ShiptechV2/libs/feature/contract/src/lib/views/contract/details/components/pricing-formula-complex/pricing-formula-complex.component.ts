@@ -254,7 +254,8 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
 
     for (let cfql of this.formValues.complexFormulaQuoteLines) {
       for (var i = 0; i < this.NO_OF_SIs; i++) {
-        if(!cfql.systemInstruments[i] || !(cfql.systemInstruments[i].id > 0)) {
+        if(!cfql.systemInstruments[i] ||
+          (!cfql.systemInstruments[i].systemInstrument && !cfql.systemInstruments[i].marketPriceTypeId)) {
           cfql.systemInstruments[i] = { id: 0, systemInstrument: null, marketPriceTypeId: null }
         }
       }
