@@ -106,20 +106,6 @@ export class PricingFormulaSimple implements OnInit {
     return this._entityName;
   }
 
-  @Input() set massUom(value: string){
-    this.massUomName = value;
-  }
-
-  @Input() set volumeUom(value: string){
-    if(value){
-      this.volumeUomName = this.uomVolumeList.find(x => x.id == value).name;
-    }
-  }
-
-  @Input() set value(value: number){
-    this.conversionFactor = value;
-  }
-
   @Input() set entityId(value: number) {
     this._entityId = value;
     this.gridViewModel.entityId = this.entityId;
