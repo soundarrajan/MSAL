@@ -23,7 +23,7 @@ export interface FormValues{
     formulaType?: event ;
     currency?: event
     conversionRate?: number,
-    conversionVolumeUom: event
+    conversionVolumeUomId? : number
 }
 
 export interface PricingScheduleOptionHolidayRule{

@@ -56,10 +56,6 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   public comment: string = '';
   expressType1: string;
   expressType: string = '';
-  // formValues: any = {
-  //   name: '',
-  //   simpleFormula: {}
-  // };
   formValues: FormValues;
   public selectedFormulaTab = 'Pricing formula';
   formulaValue: any = '';
@@ -79,6 +75,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   productId : number;
   massUom: any;
   uomVolumeList: any;
+  defaultConversionRate: number;
+  defaultConversionVolumeUomId: number;
   constructor(
     public dialogRef: MatDialogRef<SpotnegoPricingDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -116,8 +114,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     this.spotNegotiationService.getDefaultConversionFactor(payload)
       .subscribe((res: any)=>{
         this.massUom = res.payload.massUom;
-        this.formValues.conversionRate = res.payload.value;
-        this.formValues.conversionVolumeUom = {id : res.payload.volumeUom.id }
+        this.defaultConversionRate = this.formValues.conversionRate = res.payload.value;
+        this.defaultConversionVolumeUomId = this.formValues.conversionVolumeUomId = res.payload.volumeUom.id;
       });
   }
 
@@ -286,6 +284,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       .subscribe((data: any) => {
         this.spinner.hide();
         this.formValues = data.payload;
+        this.formValues.conversionRate  = this.defaultConversionRate;
+        this.formValues.conversionVolumeUomId = this.defaultConversionVolumeUomId;
         this.formulaDesc = data.payload?.name;
         this.formulaId = data.payload.formulaType?.id;
         this.scheduleId = data.payload.pricingSchedule?.id;
@@ -900,7 +900,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       discountRules: this.constructDiscountRules(formValues),
       conversionMassUomId: this.massUom.id,
       conversionValue: formValues.conversionRate,
-      conversionVolumeUomId: formValues.conversionVolumeUom.id
+      conversionVolumeUomId: formValues.conversionVolumeUomId
     };
     return finalPayload;
   }
@@ -1054,7 +1054,6 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       isEditable: true,
       formulaType: { },
       simpleFormula: {},
-      conversionVolumeUom: {}
     };
     this.formValues.complexFormulaQuoteLines = [];
     if (this.offerPriceFormulaId) {
@@ -1188,8 +1187,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       formulaHolidayRules: priceConfig.formula.holidayRule? this.getHolidayRule(priceConfig.formula.holidayRule) : null,
       quantityDiscountRules: this.getQuantityDiscountRules(priceConfig.discountRules?.quantityDiscountRules),
       productDiscountRules:  this.getProductDiscountRules(priceConfig.discountRules?.productDiscountRules),
-      locationDiscountRules:  this.getLocationDiscountRules(priceConfig.discountRules?.locationDiscountRules),
-      conversionVolumeUom: {}
+      locationDiscountRules:  this.getLocationDiscountRules(priceConfig.discountRules?.locationDiscountRules)
     };
 
     if (priceConfig.formula.formulaTypeId === 1) {
@@ -1225,7 +1223,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     var uomMassList = this.setListFromStaticLists('UomMass');
     this.massUom = uomMassList.find(item=> item.id === priceConfig.conversionMassUomId);
     this.formValues.conversionRate = priceConfig.conversionValue;
-    this.formValues.conversionVolumeUom = { id : priceConfig.conversionVolumeUomId }
+    this.formValues.conversionVolumeUomId = priceConfig.conversionVolumeUomId;
 
   }
 }
