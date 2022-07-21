@@ -417,9 +417,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             (mouseenter)="hoverMenu($event)"
             [matMenuTriggerFor]="formulamenu"
             #menuTriggerHover="matMenuTrigger"
-            *ngIf="params && params.value > 0 &&
-              (params.data.requestOffers[params.index]?.isFormulaPricing || (params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
-              params.data.requestOffers[params.index]?.supplyQuantity != null))"
+            *ngIf="params && (params.data.requestOffers && params.data.requestOffers[params.index]?.isFormulaPricing) || (params.value > 0 && params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
+              params.data.requestOffers[params.index]?.supplyQuantity != null)"
           ></div>
         </div>
       </div>
@@ -659,7 +658,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         class="p-tb-5"
         style="display:flex;align-items:center;"
         (click)="pricingdetailspopup($event, params)"
-        *ngIf="params.value > 0 && params.data.requestOffers && params.data?.requestOffers[params.index]?.isFormulaPricing"
+        *ngIf="params.data.requestOffers && params.data?.requestOffers[params.index]?.isFormulaPricing"
       >
         <span><div class="infocircle-icon"></div></span>
         <span class="fs-13"> Formula Based Pricing</span>
