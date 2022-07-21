@@ -492,20 +492,12 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   constructSimpleFormula(simpleFormula) {
     if(simpleFormula.systemInstrument === undefined) return null;
     let simplePayload = {
-      systemInstrumentId: simpleFormula.systemInstrument?.id
-        ? simpleFormula.systemInstrument.id
-        : 0,
-      marketPriceTypeId: simpleFormula.priceType.id
-        ? simpleFormula.priceType.id
-        : 0,
-      formulaPlusMinusId: simpleFormula.plusMinus.id
-        ? simpleFormula.plusMinus.id
-        : 0,
-      amount: simpleFormula.amount ? simpleFormula.amount : 0,
-      formulaFlatPercentageId: simpleFormula.flatPercentage.id
-        ? simpleFormula.flatPercentage.id
-        : 0,
-      uomId: simpleFormula.uom?.id ? simpleFormula.uom.id : 0
+      systemInstrumentId: simpleFormula.systemInstrument?.id? simpleFormula.systemInstrument.id : 0,
+      marketPriceTypeId: simpleFormula.priceType.id? simpleFormula.priceType.id: 0,
+      formulaPlusMinusId: simpleFormula.plusMinus.id? simpleFormula.plusMinus.id: 0,
+      amount: simpleFormula.amount ? simpleFormula.amount : 0, 
+      formulaFlatPercentageId: simpleFormula.flatPercentage?.id? simpleFormula.flatPercentage?.id: 0,
+      uomId: simpleFormula.uom?.id? simpleFormula.uom?.id : 0
     };
     return simplePayload;
   }
@@ -514,20 +506,12 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     let complexPayload = [];
     complexFormula.forEach(comp =>
       complexPayload.push({
-        id: comp.id ? comp.id : 0,
+        id: comp.id? comp.id : 0,
         amount: comp.amount,
-        formulaFlatPercentageId: comp.formulaFlatPercentage?.id
-          ? comp.formulaFlatPercentage.id
-          : 0,
-        formulaFunctionId: comp.formulaFunction?.id
-          ? comp.formulaFunction.id
-          : 0,
-        formulaOperationId: comp.formulaOperation.id
-          ? comp.formulaOperation.id
-          : 0,
-        formulaPlusMinusId: comp.formulaPlusMinus.id
-          ? comp.formulaPlusMinus.id
-          : 0,
+        formulaFlatPercentageId: comp.formulaFlatPercentage?.id? comp.formulaFlatPercentage?.id : 0,
+        formulaFunctionId: comp.formulaFunction?.id? comp.formulaFunction.id : 0,
+        formulaOperationId: comp.formulaOperation.id? comp.formulaOperation.id : 0,
+        formulaPlusMinusId: comp.formulaPlusMinus.id? comp.formulaPlusMinus.id : 0,
         weight: comp.weight,
         systemInstruments: this.generateSystemInstrumentForComplexFormula(comp.systemInstruments),
         uomId: comp.uom?.id
@@ -536,7 +520,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     return complexPayload;
   }
   constructHolidayRule(holidayRules: any) {
-    // if(!holidayRules) return null;
+    if(!holidayRules) return null;
     if (!holidayRules) {
       let holidayRule = {
         assumeHolidayOnInstruments: true,
@@ -822,9 +806,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         discountRulesQuantityBased.push({
           plusMinusId: rules.plusMinus?.id ? rules.plusMinus?.id : 0,
           amount: rules.amount,
-          flatPercentageId: rules.flatPercentage?.id
-            ? rules.flatPercentage?.id
-            : 0,
+          flatPercentageId: rules.flatPercentage?.id? rules.flatPercentage?.id : 0,
           uomId: rules.uom?.id ? rules.uom.id : 0,
           quantityTypeId: rules.quantityType?.id ? rules.quantityType.id : 0,
           quantityRangeFrom: rules.quantityRangeFrom,
@@ -843,11 +825,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         discountRulesProductBased.push({
           plusMinusId: rule.plusMinus?.id ? rule.plusMinus.id : 0,
           amount: rule.amount,
-          flatPercentageId: rule.flatPercentage?.id
-            ? rule.flatPercentage.id
-            : 0,
-          uomId: rule.uom?.id ? rule.uom.id : 0,
-          productId: rule.product?.id ? rule.product.id : 0
+          flatPercentageId: rule.flatPercentage?.id? rule.flatPercentage?.id: 0,
+          uomId: rule.uom?.id ? rule.uom?.id : 0,
+          productId: rule.product?.id? rule.product.id : 0
         });
       }
     });
