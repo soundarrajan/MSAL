@@ -213,7 +213,7 @@ export interface EventBasedSimpleDto extends HolidayRuleDto{
     fromNoOfBusinessDaysBefore ?: number
     toNoOfBusinessDaysAfter?: number
     fromBusinessCalendarId?: number
-    toBusinessCalenderId?: number 
+    toBusinessCalendarId?: number 
     isEventIncludedId: number
     eventId: number
 }
