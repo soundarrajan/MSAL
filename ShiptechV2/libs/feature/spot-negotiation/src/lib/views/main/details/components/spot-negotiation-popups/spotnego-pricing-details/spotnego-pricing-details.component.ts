@@ -504,19 +504,21 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   constructComplexFormula(complexFormula) {
     if(!complexFormula || complexFormula.length <=0) return null;
     let complexPayload = [];
-    complexFormula.forEach(comp =>
-      complexPayload.push({
-        id: comp.id? comp.id : 0,
-        amount: comp.amount,
-        formulaFlatPercentageId: comp.formulaFlatPercentage?.id? comp.formulaFlatPercentage?.id : 0,
-        formulaFunctionId: comp.formulaFunction?.id? comp.formulaFunction.id : 0,
-        formulaOperationId: comp.formulaOperation.id? comp.formulaOperation.id : 0,
-        formulaPlusMinusId: comp.formulaPlusMinus.id? comp.formulaPlusMinus.id : 0,
-        weight: comp.weight,
-        systemInstruments: this.generateSystemInstrumentForComplexFormula(comp.systemInstruments),
-        uomId: comp.uom?.id
-      })
-    );
+    complexFormula.forEach(comp => {
+      if (!comp.isDeleted) {
+        complexPayload.push({
+          id: comp.id ? comp.id : 0,
+          amount: comp.amount,
+          formulaFlatPercentageId: comp.formulaFlatPercentage?.id ? comp.formulaFlatPercentage?.id : 0,
+          formulaFunctionId: comp.formulaFunction?.id ? comp.formulaFunction.id : 0,
+          formulaOperationId: comp.formulaOperation.id ? comp.formulaOperation.id : 0,
+          formulaPlusMinusId: comp.formulaPlusMinus.id ? comp.formulaPlusMinus.id : 0,
+          weight: comp.weight,
+          systemInstruments: this.generateSystemInstrumentForComplexFormula(comp.systemInstruments),
+          uomId: comp.uom?.id
+        });
+      }
+    });
     return complexPayload;
   }
   constructHolidayRule(holidayRules: any) {
@@ -1098,7 +1100,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     scheduleOption.fromNoOfBusinessDaysBefore = eventBasedSimple.fromNoOfBusinessDaysBefore;
     scheduleOption.toNoOfBusinessDaysAfter = eventBasedSimple.toNoOfBusinessDaysAfter;
     scheduleOption.fromBusinessCalendarId = {id: eventBasedSimple.fromBusinessCalendarId};
-    scheduleOption.toBusinessCalendar = {id : eventBasedSimple.toBusinessCalenderId}
+    scheduleOption.toBusinessCalendar = {id : eventBasedSimple.toBusinessCalendarId}
     scheduleOption.event = {id: eventBasedSimple.eventId }
     scheduleOption.isEventIncluded = {id: eventBasedSimple.isEventIncludedId}
     return scheduleOption;
@@ -1122,7 +1124,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   getQuantityDiscountRules(quantityRules: any){
-    quantityRules.forEach(rule => {
+    quantityRules?.forEach(rule => {
       rule.plusMinus = this.formulaPlusMinusList.find(item=> item.id === rule.plusMinusId);
       rule.flatPercentage = this.formulaFlatPercentageList.find(item=> item.id === rule.flatPercentageId);
       rule.uom = this.uomList.find(item=> item.id === rule.uomId);
@@ -1132,7 +1134,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   getProductDiscountRules(productRules: any){
-    productRules.forEach(rule => {
+    productRules?.forEach(rule => {
       rule.plusMinus = this.formulaPlusMinusList.find(item=> item.id === rule.plusMinusId);
       rule.flatPercentage = this.formulaFlatPercentageList.find(item=> item.id === rule.flatPercentageId);
       rule.uom = this.uomList.find(item=> item.id === rule.uomId);
@@ -1141,7 +1143,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     return productRules;
   }
   getLocationDiscountRules(locationRules: any){
-    locationRules.forEach(rule => {
+    locationRules?.forEach(rule => {
       rule.plusMinus = this.formulaPlusMinusList.find(item=> item.id === rule.plusMinusId);
       rule.flatPercentage = this.formulaFlatPercentageList.find(item=> item.id === rule.flatPercentageId);
       rule.uom = this.uomList.find(item=> item.id === rule.uomId);
