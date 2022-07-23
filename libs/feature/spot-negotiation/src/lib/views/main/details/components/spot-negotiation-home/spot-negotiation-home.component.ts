@@ -16,6 +16,7 @@ import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from '../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
   SetLocationsRows,
+  SetOfferPriceFormulaId,
   UpdateRequest
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotnegoemaillogComponent } from '../spotnegoemaillog/spotnegoemaillog.component';
@@ -901,7 +902,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
                       proOff.price,
                       reqLoc,
                       true,
-                      proOff
+                      proOff,
+                      proOff.isFormulaPricing,
+                      proOff.offerPriceFormulaId
                     );
                     requestProductIds.push(
                       reqLoc.requestProducts?.find(
@@ -986,7 +989,32 @@ export class SpotNegotiationHomeComponent implements OnInit {
         RequestLocationIds: requestLocationIds,
         RequestGroupId: this.currentRequestInfo.requestGroupId
       };
-      this.spinner.show();
+      let sellerDetailsforFormula =[] ;
+      sellerDetails.map(rows => rows.Offers.map(offer => {
+         offer.requestOffers.map(x=> {
+          if(x.isFormulaPricing){
+            sellerDetailsforFormula.push({
+              priceConfigurationId : x.offerPriceFormulaId,
+              requestOfferIds : [x.id]
+            })
+          }
+         })
+      }));
+       const payload = {
+        copyOfferPrices : sellerDetailsforFormula
+       }
+      
+      this.spotNegotiationService.copyPriceConfigurations(payload)
+      .subscribe((res: any)=>{
+        this.spinner.hide();
+        res.copyOfferPrices.forEach(off=>{
+          let payload = {
+            RequestOfferId: off.requestOfferId,
+            priceConfigurationId: off.priceConfigurationId
+          };
+          this.store.dispatch(new SetOfferPriceFormulaId(payload));
+        })
+      })
       const response = this.spotNegotiationService.copyPriceDetails(
         copyPricePayload
       );
@@ -1662,8 +1690,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         price: productDetails.price,
         cost: productDetails.cost,
         currencyId: productDetails.currencyId,
-        isOfferPriceCopied: productDetails.isOfferPriceCopied,
-        hasNoQuote : productDetails.hasNoQuote
+        isFormulaPricing : productDetails.isFormulaPricing,
+        hasNoQuote : productDetails.hasNoQuote,
+        offerPriceFormulaId: productDetails.offerPriceFormulaId,
       };
       requestOffers.push(requOffer);
     });

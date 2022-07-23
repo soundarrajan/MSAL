@@ -609,7 +609,9 @@ export class SpotNegotiationService extends BaseStoreService
     newValue,
     currentLocation,
     isPriceCopied,
-    sourceReqProOff
+    sourceReqProOff,
+    isFormulaPricing ?,
+    offerPriceFormulaId ?
   ) {
     const productDetails = this.getRowProductDetails(row, product.id);
 
@@ -647,6 +649,8 @@ export class SpotNegotiationService extends BaseStoreService
           ? 0
           : productDetails.targetDifference;
       productDetails.isOfferPriceCopied = isPriceCopied;
+      productDetails.isFormulaPricing = isFormulaPricing;
+      productDetails.offerPriceFormulaId = offerPriceFormulaId;
       productDetails.currencyId = isPriceCopied
         ? sourceReqProOff?.currencyId
         : productDetails.currencyId;
@@ -789,4 +793,10 @@ export class SpotNegotiationService extends BaseStoreService
   getDefaultConversionFactor(payload): Observable<unknown>{
     return this.spotNegotiationApi.getDefaultConversionFactor(payload);
   }
+
+  @ObservableException()
+  copyPriceConfigurations(payload): Observable<unknown>{
+    return this.spotNegotiationApi.copyPriceConfigurations(payload);
+  }
+
 }

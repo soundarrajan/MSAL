@@ -880,9 +880,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       formula: this.constructFormulaPayload(formValues),
       schedule: formValues.pricingSchedule? this.constructSchedulePayload(formValues) : null,
       discountRules: this.constructDiscountRules(formValues),
-      conversionMassUomId: this.massUom.id,
+      conversionMassUomId: this.massUom?.id ?  this.massUom.id : 0,
       conversionValue: formValues.conversionRate,
-      conversionVolumeUomId: formValues.conversionVolumeUomId
+      conversionVolumeUomId: formValues.conversionVolumeUom?.id ? formValues.conversionVolumeUom.id : 0
     };
     return finalPayload;
   }
