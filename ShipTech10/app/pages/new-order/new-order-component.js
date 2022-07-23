@@ -3056,7 +3056,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             let cubicMeterUom = _.find(ctrl.listsCache.Uom, { name : 'CBM' });
             let metricMillionBritishThermalUnitUom = _.find(ctrl.listsCache.Uom, { name : 'MMBTU' });
             let mWHUom = _.find(ctrl.listsCache.Uom, { name : 'MWH' });            
-                var request_payload = [];
+            var request_payload = [];
             if(!isUnitPriConvFac){
                 var request_dataForMT = {
                     ProductId: convFactData.product.id,
@@ -3095,6 +3095,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 request_payload.push(request_dataForCBM);
             }
             else if(isUnitPriConvFac){
+                if(_.find(ctrl.listsCache.UomMass, { id : convFactData.priceUom.id })){
+                    ctrl.conversionFactorData.isPriceUomMass = true;
+                }
+                else{   //else if(_.find(ctrl.listsCache.UomVolume, { id : convFactData.priceUom.id })){
+                    ctrl.conversionFactorData.isPriceUomMass = false;
+                }
                 var request_dataForMT = {
                     ProductId: convFactData.product.id,
                     Quantity: 1,
@@ -3122,22 +3128,26 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 request_payload.push(request_dataForMMBTU);
                 request_payload.push(request_dataForMWH);
             }
+            lookupModel.getUOMConversionFactor(request_payload).then((server_data) => {
+                server_data.payload.forEach((cv) => { 
+                    if(cv.id == metricTonUom.id){
+                        ctrl.conversionFactorData.conversionFactorToMT = cv.conversionFactor;
+                        if(isUnitPriConvFac && ctrl.conversionFactorData.isPriceUomMass)
+                        ctrl.conversionFactorData.priceValueConveredToMT = ctrl.conversionFactorData.originalPrice * ctrl.conversionFactorData.conversionFactorToMT;
+                        else if(isUnitPriConvFac && !ctrl.conversionFactorData.isPriceUomMass)
+                        ctrl.conversionFactorData.priceValueConveredToMT = ctrl.conversionFactorData.originalPrice / ctrl.conversionFactorData.conversionFactorToMT;
+                    }
+                    else if(cv.id == cubicMeterUom.id)
+                        ctrl.conversionFactorData.conversionFactorToCBE = cv.conversionFactor;
+                    else if(cv.id == metricMillionBritishThermalUnitUom.id)
+                        ctrl.conversionFactorData.conversionFactorToMMBTU = cv.conversionFactor;
+                    else if(cv.id == mWHUom.id)
+                        ctrl.conversionFactorData.conversionFactorToMWHUom = cv.conversionFactor;
 
-                lookupModel.getUOMConversionFactor(request_payload).then((server_data) => {
-                    server_data.payload.forEach((cv) => { 
-                        if(cv.id == metricTonUom.id)
-                            ctrl.conversionFactorData.conversionFactorToMT = cv.conversionFactor;
-                        else if(cv.id == cubicMeterUom.id)
-                            ctrl.conversionFactorData.conversionFactorToCBE = cv.conversionFactor;
-                        else if(cv.id == metricMillionBritishThermalUnitUom.id)
-                            ctrl.conversionFactorData.conversionFactorToMMBTU = cv.conversionFactor;
-                        else if(cv.id == mWHUom.id)
-                            ctrl.conversionFactorData.conversionFactorToMWHUom = cv.conversionFactor;
-
-                    });
-                }).catch((e) => {
-                    throw 'Unable to get the uom.';
                 });
+            }).catch((e) => {
+                throw 'Unable to get the uom.';
+            });
             $scope.modalInstance = $uibModal.open({
                 templateUrl: 'pages/new-order/views/conversionFactorsModal.html',
                 appendTo: angular.element(document.getElementsByClassName('page-container')),
@@ -3698,7 +3708,6 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         };
 
         function convertDecimalSeparatorStringToNumber(number) {
-            debugger;
             var numberToReturn = number;
             var decimalSeparator, thousandsSeparator;
             if (typeof number == 'string') {
