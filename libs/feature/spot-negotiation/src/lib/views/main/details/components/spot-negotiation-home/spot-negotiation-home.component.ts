@@ -992,7 +992,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       let sellerDetailsforFormula =[] ;
       sellerDetails.map(rows => rows.Offers.map(offer => {
          offer.requestOffers.map(x=> {
-          if(x.isFormulaPricing){
+          if(x.isFormulaPricing && x.offerPriceFormulaId){
             sellerDetailsforFormula.push({
               priceConfigurationId : x.offerPriceFormulaId,
               requestOfferIds : [x.id]
@@ -1000,21 +1000,27 @@ export class SpotNegotiationHomeComponent implements OnInit {
           }
          })
       }));
-       const payload = {
-        copyOfferPrices : sellerDetailsforFormula
-       }
-      
-      this.spotNegotiationService.copyPriceConfigurations(payload)
-      .subscribe((res: any)=>{
-        this.spinner.hide();
-        res.copyOfferPrices.forEach(off=>{
-          let payload = {
-            RequestOfferId: off.requestOfferId,
-            priceConfigurationId: off.priceConfigurationId
-          };
-          this.store.dispatch(new SetOfferPriceFormulaId(payload));
-        })
-      })
+      if(sellerDetailsforFormula.length>0){
+        const payload = {
+          copyOfferPrices : sellerDetailsforFormula
+         }
+        this.spinner.show();
+        this.spotNegotiationService.copyPriceConfigurations(payload)
+        .subscribe((res: any)=>{
+          this.spinner.hide();
+          if (res?.message == 'Unauthorized') {
+            return;
+          }
+          res.copyOfferPrices.forEach(off=>{
+            let payload = {
+              RequestOfferId: off.requestOfferId,
+              priceConfigurationId: off.priceConfigurationId
+            };
+            this.store.dispatch(new SetOfferPriceFormulaId(payload));
+          })
+        });
+      }
+       
       const response = this.spotNegotiationService.copyPriceDetails(
         copyPricePayload
       );
