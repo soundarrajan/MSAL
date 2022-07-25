@@ -658,8 +658,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         class="p-tb-5"
         style="display:flex;align-items:center;"
         (click)="pricingdetailspopup($event, params)"
-        
-      >
+        *ngIf="params.data.requestOffers && params.data?.requestOffers[params.index]?.isFormulaPricing">
         <span><div class="infocircle-icon"></div></span>
         <span class="fs-13"> Formula Based Pricing</span>
         <hr class="menu-divider-line2" />
@@ -667,8 +666,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       <div
         class="p-tb-5"
         style="display:flex;align-items:center;"
-        (click)="otherdetailspopup($event, params)"
-      >
+        (click)="otherdetailspopup($event, params)" *ngIf="params.value > 0 && params.data.requestOffers && (params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
+              params.data.requestOffers[params.index]?.supplyQuantity != null)">
         <span><div class="infocircle-icon"></div></span>
         <span class="fs-13">Other Details</span>
       </div>
