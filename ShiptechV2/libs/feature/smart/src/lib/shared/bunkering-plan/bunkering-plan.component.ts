@@ -147,11 +147,6 @@ export class BunkeringPlanComponent implements OnInit {
       onGridSizeChanged: function(params) {
         params.api.sizeColumnsToFit();
       }
-      // onRowDataChanged: function (params) {
-      //   if(this.rowData)
-      //     this.gridOptions.suppressLoadingOverlay = true;
-
-      // }
     };
   }
 
@@ -176,11 +171,6 @@ export class BunkeringPlanComponent implements OnInit {
           field: 'operator_ack',
           resizable: false,
           width: 45,
-          // cellClassRules: {
-          //   'lightgreen': function (params) {
-          //     return params.value == 1?true:false;
-          //   }
-          // },
           cellClass: [
             'custom-check-box aggrid-content-center aggrid-left-ribbon '
           ],
@@ -846,13 +836,6 @@ export class BunkeringPlanComponent implements OnInit {
   }
   toggleOperAck(params) {
     this.triggerChangeEvent();
-    // let RefreshCellsParams = {
-    //   columns: [params.colDef.colId], // specify columns, or all columns by default
-    //   rowNodes: [params.node],
-    //   force: false, // skips change detection, refresh everything
-    //   suppressFlash: false, // skips cell flashing, if cell flashing is enabled
-    // }
-    // params.api.refreshCells(RefreshCellsParams);
     this.triggerRefreshGrid();
     this.gridChanged = true;
     this.localService.setBunkerPlanState(this.gridChanged);
@@ -861,7 +844,6 @@ export class BunkeringPlanComponent implements OnInit {
   toggleSave() {    
     this.gridSaved = true;
     this.gridChanged = false;
-    //this.getRecalculatedHsfoCurrentStock();
     let currentROBObj = this.store.selectSnapshot(
       SaveCurrentROBState.saveCurrentROB
     );
@@ -1015,8 +997,6 @@ export class BunkeringPlanComponent implements OnInit {
     }
     // Total max SOD validation : Total max SOD< Total min SOD ; if the Total Max SOD is greater than 0, then the comparison needs to be done by Total Tank Capacity
     let isValidMaxSod = data.findIndex(data => {
-      // let OpUpdated = opUdatedColumn.find(op => op.detail_no == data.detail_no);
-      // let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
       if (parseInt(data?.max_sod) > 0)
         return parseInt(data?.max_sod) < parseInt(data?.min_sod);
       else return parseInt(totalTankCapacity) < parseInt(data?.min_sod);
@@ -1024,8 +1004,6 @@ export class BunkeringPlanComponent implements OnInit {
     isValidMaxSod = isValidMaxSod == -1 ? 'Y' : 'N';
     if (isValidMaxSod == 'N') {
       let id = data.findIndex(data => {
-        // let OpUpdated = opUdatedColumn.find(op => op.detail_no == data.detail_no);
-        // let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
         if (parseInt(data?.max_sod) > 0)
           return parseInt(data?.max_sod) < parseInt(data?.min_sod);
         else return parseInt(totalTankCapacity) < parseInt(data?.min_sod);
@@ -1068,8 +1046,6 @@ export class BunkeringPlanComponent implements OnInit {
     // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD ; if the Total Max SOD is greater than 0, then the comparison needs to be done by Total Tank Capacity
     let isValidMinEcaSod = data.findIndex(params => {
       let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
-      // let OpUpdated = opUdatedColumn.find(op => op.detail_no == params.detail_no);
-      //   let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
       if (parseInt(params?.max_sod) > 0) return sum > parseInt(params?.max_sod);
       else return sum > parseInt(totalTankCapacity);
     });
@@ -1078,8 +1054,6 @@ export class BunkeringPlanComponent implements OnInit {
       let id = data.findIndex(params => {
         let sum =
           parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
-        // let OpUpdated = opUdatedColumn.find(op => op.detail_no == params.detail_no);
-        //   let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
         if (parseInt(params?.max_sod) > 0)
           return sum > parseInt(params?.max_sod);
         else return sum > parseInt(totalTankCapacity);
@@ -1208,9 +1182,6 @@ export class BunkeringPlanComponent implements OnInit {
     let data = params.data;
     if (data.rowIndex == 0) data.hsfo_current_stock = 1000 - value;
     let index = params.node.rowIndex;
-    // this.gridOptions.api.applyTransaction({
-    //   update: [data]
-    // })
   }
   sodCommentsUpdatedEvent() {
     this.sodCommentsUpdated = true;
@@ -1312,12 +1283,8 @@ export class BunkeringPlanComponent implements OnInit {
             }
             //For Port 1 to N
             else {
-              // let hsfo_lift = rowData2[i - 1].is_alt_port_hsfo == 'D'
-              // ? parseInt(rowData2[i - 1].hsfo_estimated_lift)
-              // : 0;
-
               rowData2[i].hsfo_soa =
-                parseInt(rowData2[i - 1].hsfo_estimated_lift) +
+                parseInt(rowData2[i - 1].hsfo_estimated_lift) + parseInt(rowData2[i - 1].vlsfo_estimated_lift) +
                 parseInt(rowData2[i - 1].hsfo_soa) -
                 parseInt(estdConsHsfoList[i].hsfo_estimated_consumption);
             }
@@ -1353,8 +1320,6 @@ export class BunkeringPlanComponent implements OnInit {
       SaveCurrentROBState.saveCurrentROB
     );
     let ulsfo_cons = 0;
-    // let ulsfo_unpumpables = currentROB.upulsfo ? currentROB.upulsfo : 0;
-    // let lsdis_unpumpables = currentROB.uplsdis ? currentROB.uplsdis : 0;
     let ulsfo_unpumpables = 0;
     let lsdis_unpumpables = 0;
     let ulsfo_original_stock = 0;
