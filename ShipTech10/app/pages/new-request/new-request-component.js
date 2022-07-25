@@ -2379,7 +2379,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         if (vessel.operatingCompany){
                             ctrl.request.company.name = companyToDefault.name;
                             ctrl.request.company.id = companyToDefault.id;}
-                            if(ctrl.request.locations.length > 0) 
+                            if(ctrl.request.locations.length > 0 && !ctrl.request.id > 0) 
                             {ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.name = companyToDefault.name:'';
                              ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.id = companyToDefault.id:0}
                        // }
