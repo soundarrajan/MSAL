@@ -3052,32 +3052,44 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         ctrl.openConversionFactorModel = function(isUnitPriConvFac, convFactData) {
             ctrl.isUnitPriceForConversionFactor = isUnitPriConvFac;
             ctrl.conversionFactorData = convFactData;
-            let metricTonUom = _.find(ctrl.listsCache.Uom, { name : 'MT' });
-            let cubicMeterUom = _.find(ctrl.listsCache.Uom, { name : 'CBM' });
-            let metricMillionBritishThermalUnitUom = _.find(ctrl.listsCache.Uom, { name : 'MMBTU' });
-            let mWHUom = _.find(ctrl.listsCache.Uom, { name : 'MWH' });            
+            let metricTonUom = _.find(ctrl.listsCache.Uom, function(object) {
+                if(object?.name.toLowerCase() == 'mt')
+                    return object;
+            });
+            let cubicMeterUom = _.find(ctrl.listsCache.Uom, function(object) {
+                if(object?.name.toLowerCase() == 'cbm')
+                    return object;
+            });
+            let metricMillionBritishThermalUnitUom = _.find(ctrl.listsCache.Uom, function(object) {
+                if(object?.name.toLowerCase() == 'mmbtu')
+                    return object;
+            });
+            let mWHUom = _.find(ctrl.listsCache.Uom, function(object) {
+                if(object?.name.toLowerCase() == 'mwh')
+                    return object;
+            });         
             var request_payload = [];
             if(!isUnitPriConvFac){
                 var request_dataForMT = {
                     ProductId: convFactData.product.id,
                     Quantity: 1,
                     FromUomId: convFactData.quantityUom.id,
-                    ToUomId: metricTonUom.id,
+                    ToUomId: metricTonUom?.id,
                     OrderProductId: convFactData.id
                 };
                 var request_dataForMMBTU = {
                     ProductId: 0,
                     Quantity: 1,
-                    FromUomId: metricTonUom.id,
-                    ToUomId: metricMillionBritishThermalUnitUom.id,
+                    FromUomId: metricTonUom?.id,
+                    ToUomId: metricMillionBritishThermalUnitUom?.id,
                     OrderProductId: convFactData.id,
                     productTypeId: convFactData.productType.id
                 };
                 var request_dataForMWH = {
                     ProductId: 0,
                     Quantity: 1,
-                    FromUomId: metricTonUom.id,
-                    ToUomId: mWHUom.id,
+                    FromUomId: metricTonUom?.id,
+                    ToUomId: mWHUom?.id,
                     OrderProductId: convFactData.id,
                     productTypeId: convFactData.productType.id
                 };
@@ -3089,7 +3101,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     ProductId: convFactData.product.id,
                     Quantity: 1,
                     FromUomId: convFactData.quantityUom.id,
-                    ToUomId: cubicMeterUom.id,
+                    ToUomId: cubicMeterUom?.id,
                     OrderProductId: convFactData.id
                 };
                 request_payload.push(request_dataForCBM);
@@ -3105,22 +3117,22 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     ProductId: convFactData.product.id,
                     Quantity: 1,
                     FromUomId: convFactData.priceUom.id,
-                    ToUomId: metricTonUom.id,
+                    ToUomId: metricTonUom?.id,
                     OrderProductId: convFactData.id
                 };
                 var request_dataForMMBTU = {
                     ProductId: 0,
                     Quantity: 1,
-                    FromUomId: metricTonUom.id,
-                    ToUomId: metricMillionBritishThermalUnitUom.id,
+                    FromUomId: metricTonUom?.id,
+                    ToUomId: metricMillionBritishThermalUnitUom?.id,
                     OrderProductId: convFactData.id,
                     productTypeId: convFactData.productType.id
                 };
                 var request_dataForMWH = {
                     ProductId: 0,
                     Quantity: 1,
-                    FromUomId: metricTonUom.id,
-                    ToUomId: mWHUom.id,
+                    FromUomId: metricTonUom?.id,
+                    ToUomId: mWHUom?.id,
                     OrderProductId: convFactData.id,
                     productTypeId: convFactData.productType.id
                 };
@@ -3130,18 +3142,18 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             lookupModel.getUOMConversionFactor(request_payload).then((server_data) => {
                 server_data.payload.forEach((cv) => { 
-                    if(cv.id == metricTonUom.id){
+                    if(cv.id == metricTonUom?.id){
                         ctrl.conversionFactorData.conversionFactorToMT = cv.conversionFactor;
                         if(isUnitPriConvFac && ctrl.conversionFactorData.isPriceUomMass)
                         ctrl.conversionFactorData.priceValueConveredToMT = ctrl.conversionFactorData.originalPrice * ctrl.conversionFactorData.conversionFactorToMT;
                         else if(isUnitPriConvFac && !ctrl.conversionFactorData.isPriceUomMass)
                         ctrl.conversionFactorData.priceValueConveredToMT = ctrl.conversionFactorData.originalPrice / ctrl.conversionFactorData.conversionFactorToMT;
                     }
-                    else if(cv.id == cubicMeterUom.id)
+                    else if(cv.id == cubicMeterUom?.id)
                         ctrl.conversionFactorData.conversionFactorToCBE = cv.conversionFactor;
-                    else if(cv.id == metricMillionBritishThermalUnitUom.id)
+                    else if(cv.id == metricMillionBritishThermalUnitUom?.id)
                         ctrl.conversionFactorData.conversionFactorToMMBTU = cv.conversionFactor;
-                    else if(cv.id == mWHUom.id)
+                    else if(cv.id == mWHUom?.id)
                         ctrl.conversionFactorData.conversionFactorToMWHUom = cv.conversionFactor;
 
                 });
