@@ -283,6 +283,16 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       .getMasterFormula(payload)
       .subscribe((data: any) => {
         this.spinner.hide();
+        data.payload?.complexFormulaQuoteLines.filter(item=> item.systemInstruments.length < 3).forEach(quote => {
+          for(var i=0; i<3;i++){
+            var instrument = quote?.systemInstruments.length>0? quote.systemInstruments[i]: null;
+            quote.systemInstruments.push({
+              marketPriceTypeId: instrument?.marketPriceTypeId?.id? instrument.marketPriceTypeId.id: 0,
+              systemInstrumentId: instrument.systemInstrument?.id? instrument.systemInstrument.id : 0  
+            });
+          }
+        });
+        
         this.formValues = data.payload;
         this.formValues.conversionRate  = this.defaultConversionRate;
         this.formValues.conversionVolumeUomId = this.defaultConversionVolumeUomId;
@@ -474,18 +484,16 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     return date;
   }
 
-  generateSystemInstrumentForComplexFormula(systemInstrument: any) {
+  generateSystemInstrumentForComplexFormula(systemInstruments: any) {
     let systemInstrumentList = [];
-    systemInstrument.forEach(sys =>
-      systemInstrumentList.push({
-        marketPriceTypeId: sys.marketPriceTypeId?.id
-          ? sys.marketPriceTypeId.id
-          : 0,
-        systemInstrumentId: sys.systemInstrument?.id
-          ? sys.systemInstrument.id
-          : 0
-      })
-    );
+    systemInstruments.forEach(sys => {
+      if (sys.systemInstrument) {
+        systemInstrumentList.push({
+          marketPriceTypeId: sys.marketPriceTypeId?.id ? sys.marketPriceTypeId.id : 0,
+          systemInstrumentId: sys.systemInstrument?.id ? sys.systemInstrument.id : 0
+        })
+      }
+    });
 
     return systemInstrumentList;
   }
@@ -882,7 +890,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       discountRules: this.constructDiscountRules(formValues),
       conversionMassUomId: this.massUom?.id ?  this.massUom.id : 0,
       conversionValue: formValues.conversionRate,
-      conversionVolumeUomId: formValues.conversionVolumeUom?.id ? formValues.conversionVolumeUom.id : 0
+      conversionVolumeUomId: formValues.conversionVolumeUomId
     };
     return finalPayload;
   }
