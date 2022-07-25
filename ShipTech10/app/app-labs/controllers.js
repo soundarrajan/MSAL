@@ -403,7 +403,7 @@ APP_LABS.controller('Controller_Labs', ['$scope', '$rootScope', '$Api_Service', 
                 if (callback) {
                     $scope.dynamicTable[id] = callback;
                     if (obj == 'labTestResults') {
-                        if (typeof $scope.formValues.labTestResults == 'undefined') {
+                        if (typeof $scope.formValues.labTestResults == 'undefined' || $scope.formValues.isFromIntegration) {
                             $scope.formValues.labTestResults = [];
                             $scope.formValues.labTestResults = callback;
                         } else {
