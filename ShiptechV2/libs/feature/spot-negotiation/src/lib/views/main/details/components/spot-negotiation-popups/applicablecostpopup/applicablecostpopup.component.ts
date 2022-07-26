@@ -264,10 +264,9 @@ export class ApplicablecostpopupComponent implements OnInit {
         if (isNaN(additionalCost.extraAmount)) {
           additionalCost.extraAmount = null;
         }
-        // additionalCost.totalAmount =
-        // (additionalCost.amount + additionalCost.extraAmount || 0) * Number(additionalCost.exchangeRateToBaseCurrency);
+    
         additionalCost.totalAmount =
-          (additionalCost.amount + additionalCost.extraAmount || 0) * 0.98;
+          additionalCost.amount + additionalCost.extraAmount || 0;
         if (isNaN(additionalCost.totalAmount)) {
           additionalCost.totalAmount = null;
         }
