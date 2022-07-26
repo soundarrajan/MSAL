@@ -10010,6 +10010,20 @@
             return array;
         }
         vm.EmailTypeNoManual = emailNoManualType();
+        
+        function emailNoNoneType() {
+            let array = [];
+            if (vm.listsCache.EmailType) {
+                vm.listsCache.EmailType.forEach((obj) => {
+                    if (obj.name != 'None') {
+                        array.push(obj);
+                    }
+                });
+            }
+
+            return array;
+        }
+        vm.EmailTypeNoNone = emailNoNoneType();
 
         vm.enabledEmailToVessel = function() {
             if (window.location.href.indexOf("delivery/delivery") != -1 ) {
