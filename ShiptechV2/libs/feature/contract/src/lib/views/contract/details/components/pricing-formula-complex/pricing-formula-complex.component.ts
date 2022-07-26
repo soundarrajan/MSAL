@@ -395,6 +395,8 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
   ngOnInit() {
     this.entityName = 'Contract';
     this.autocompleteCurrency = knownMastersAutocomplete.currency;
+    this.autocompleteSystemInstrument =
+      knownMastersAutocomplete.systemInstrument;
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
   }
 
