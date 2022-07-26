@@ -901,7 +901,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   createNewFormulaPopup(selectedTabIndex) {
     if (!this.formValues.products[selectedTabIndex].formula) {
       const dialogRef = this.dialog.open(CreateNewFormulaModalComponent, {
-        width: '80%',
+        maxWidth: '95vw',
+        width: '100%',
         data: {
           formValues: null,
           selectedTabIndex: this.selectedTabIndex,
