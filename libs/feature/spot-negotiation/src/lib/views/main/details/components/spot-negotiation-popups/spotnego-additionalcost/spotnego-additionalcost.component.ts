@@ -1175,7 +1175,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
             ? this.additionalCostTypes[
                 this.offerAdditionalCostList[i].additionalCostId
               ].name
-            : 'from line ' + i;
+            : 'from line ' + (i+1);
           additionalCostRequired.push('Price is required for cost ' + costName);
         }
       }
