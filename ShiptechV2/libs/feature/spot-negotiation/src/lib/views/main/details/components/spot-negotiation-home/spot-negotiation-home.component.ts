@@ -399,26 +399,44 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   sendRFQs() {
+    let selectedSellerrName: String;
+    let selectedCounterpartyList = [];
     let requestProductIds = this.selectedSellerList.map(
       x => x.RequestProductIds
     );
     let locRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
-    let data = this.selectedSellerList.filter(list=>
-               list.RfqId !== 0 && list.RequestOffers.find(x => x.isRfqskipped != false));
-    if(data){
-      data.forEach( data => {
-        this.selectedSellerList = this.selectedSellerList.filter(x=> x.SellerId != data.SellerId);
-        this.toaster.error('RFQ mail cannot be sent as the RFQ was skipped earlier for ' +locRows.find(x=> x.sellerCounterpartyId === data.SellerId).sellerCounterpartyName);
+
+
+    this.selectedSellerList.forEach(selectedSeller => {
+      if(selectedSeller.RfqId !== 0 && !selectedSeller.RequestOffers?.some(x => !x.isRfqskipped && !x.isDeleted)){
+          if (selectedSellerrName)
+          selectedSellerrName =
+          selectedSellerrName +
+              ', ' +
+              locRows.find(x=> x.sellerCounterpartyId === selectedSeller.SellerId).sellerCounterpartyName;
+          else
+          selectedSellerrName =
+          locRows.find(x=> x.sellerCounterpartyId === selectedSeller.SellerId).sellerCounterpartyName;
+
       }
-        );
-       if(this.selectedSellerList.length === 0) {return;}
+      else{
+        selectedCounterpartyList.push(selectedSeller);
+      }
+    });
+
+    if (selectedSellerrName) {
+      this.toaster.error(
+        'RFQ mail cannot be sent as the RFQ was skipped earlier for  ' + selectedSellerrName 
+      );
     }
+    if(selectedCounterpartyList.length === 0) {return;}
+
     var FinalAPIdata = {
       RequestGroupId: this.currentRequestInfo.requestGroupId,
       quoteByDate: new Date(this.child.getValue()),
-      selectedSellers: this.selectedSellerList
+      selectedSellers: selectedCounterpartyList
     };
     this.spinner.show();
 
@@ -485,6 +503,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.spotNegotiationService.callGridRedrawService();
       this.changeDetector.detectChanges();
     });
+  }
+
+ toTitleCase(str) {
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
   }
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
