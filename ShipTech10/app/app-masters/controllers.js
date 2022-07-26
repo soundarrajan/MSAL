@@ -4408,11 +4408,11 @@
                 }, 1);
             }
         };
-        $scope.addTagToMulti = function(model, data) {
+        $scope.addTagToMulti = function(model, data, isFromModal) {
         	if (vm.app_id == 'masters' && vm.screen_id == 'location') {
            		if (["locationProductTypes","locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(model) ) {
                     if (data.id > 0) {
-                        $scope.addTagToMultiInLocationMaster(model, data);
+                        $scope.addTagToMultiInLocationMaster(model, data, isFromModal);
                     } else {
                         toastr.warning('Field not in source or not modeled. Kindly select from source');
                     }
@@ -4421,7 +4421,7 @@
         	}
             vm.plusClickedMultilookup = true;
             var alreadyAdded = false;
-            if (!$scope.formValues[model] || typeof $scope.formValues[model] == 'undefined') {
+            if (!$scope.formValues[model] || typeof $scope.formValues[model] == 'undefined' || jQuery.isEmptyObject($scope.formValues[model])) {
                 $scope.formValues[model] = [];
             }
             if (model != '' && typeof $scope.formValues[model] != 'undefined') {
@@ -4467,15 +4467,16 @@
 
         }
 
-        $scope.addTagToMultiInLocationMaster = (model, data) => {
+        $scope.addTagToMultiInLocationMaster = (model, data, isFromModal) => {
             vm.plusClickedMultilookup = true;
             var alreadyAdded = false;
-            if (!$scope.formValues[model] || typeof $scope.formValues[model] == 'undefined') {
+            if (!$scope.formValues[model] || typeof $scope.formValues[model] == 'undefined' || jQuery.isEmptyObject($scope.formValues[model])) {
                 $scope.formValues[model] = [];
             }
-            if (model != '' && typeof $scope.formValues[model] != 'undefined') {
+            let items = $scope.formValues[model];
+            if (model != '' && typeof items != 'undefined') {
             	if (model == "locationProductTypes") {
-	                $.each($scope.formValues[model], (k, v) => {
+	                $.each(items, (k, v) => {
 	                    if (v.productType.id == data.id) {
 	                    	if (v.isDeleted) {
 	                    		v.isDeleted = false;
@@ -4485,7 +4486,7 @@
 	                    }
 	                });
             	} else if (["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(model)) {
-            		$.each($scope.formValues[model], (k, v) => {
+            		$.each(items, (k, v) => {
             			if (v.product.id == data.id) {
             				if (v.isDeleted) {
             					v.isDeleted = false;
@@ -4497,7 +4498,7 @@
 	            }
             }
             if (alreadyAdded == true) {
-                toastr.error('Field is already added!');
+                toastr.error('Field ' + data.name + ' is already added!');
             } else {
             	if (model == "locationProductTypes") {
 	            	modeledData = {
@@ -4523,7 +4524,9 @@
 	            		"name" : data.name
 	            	}
             	}
-                $scope.formValues[model].push(modeledData);
+                if (items) {
+                    items.push(modeledData);
+                }
                 setTimeout(() => {
                     $scope.initBoostrapTagsInputTooltip();
                 });
@@ -5639,6 +5642,30 @@
             $rootScope.$broadcast('triggerProductChanging', obj.products[productIndex].product, productIndex);
         };
 
+        function addTagsFromModalToMulti(model, data) {
+            if ($rootScope[model]?.length > 0 && vm.app_id == 'masters' && vm.screen_id == 'location') {
+                if (typeof data.isFromModal != 'undefined' && data.isFromModal) {
+                    for (let item of $rootScope[model]) {
+                        $scope.addTagToMulti(model, item, data.isFromModal);
+                    }
+                    $rootScope[model] = []; // reset once added to multi-tags
+                }
+            }
+        }
+
+        $rootScope.$on('locationHSFO05Grades', (e, a) => {
+            let model = 'locationHSFO05Grades';
+            addTagsFromModalToMulti(model, a);
+        });
+        $rootScope.$on('locationDistillateGrades', (e, a) => {
+            let model = 'locationDistillateGrades';
+            addTagsFromModalToMulti(model, a);
+        });
+        $rootScope.$on('locationHSFO35Grades', (e, a) => {
+            let model = 'locationHSFO35Grades';
+            addTagsFromModalToMulti(model, a);
+        });
+
         $scope.selectedModalValue = function(element) {
             // if (!element)return
             if (!element) {
@@ -5656,6 +5683,15 @@
             let CLC = $(`#modal_${ id } table.ui-jqgrid-btable`);
             let rowId = CLC.jqGrid('getGridParam', 'selrow');
             let rowData = CLC.jqGrid.Ascensys.gridObject.rows[rowId - 1];
+
+            let model = element.source.split('.')[1] ?? null;
+            if(model && ["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(model)) {
+                $scope.isMultiselectModel = true;
+                $rootScope.$broadcast(model, { isFromModal: $scope.isMultiselectModel, items: $rootScope[model] });
+                $scope.prettyCloseModal();
+                $('*').tooltip('destroy');
+                return;
+            }
 
             $scope.selected_value = {};
             let transaction_type = '';
@@ -5728,7 +5764,7 @@
             // if (element.screen == 'locationlist'  && vm.app_id == 'default'){
             //     $scope.portValuechange(rowData);
             // }
-            if (angular.equals($scope.selected_value, {})) {
+            if (angular.equals($scope.selected_value, {}) && !$scope.isMultiselectModel) {
                 toastr.error('Please select one row');
                 return;
             }
@@ -5778,12 +5814,11 @@
                     if (window.location.href.indexOf('order') != -1) {
                         $scope.assignObjValueForOrderProducts($scope, elements, $scope.selected_value, element.index);
                     }
-                    if(elements[1]=='locationProducts'){
+                    if(elements[1]=='locationProducts') {
                         $scope.addLocationProductToConversion(productIndex, null, true);
-                    }else{
+                    } else{
                         $scope.addProductToConversion(productIndex, null, true);
                     }
-
                 }
                   if (element.screen == 'rfqrequestslist') {
                 	$scope.selected_value = [];
@@ -10799,9 +10834,9 @@
         $scope.initMultilookupsForLocationProducts = () => {
         	$scope.multilookupsForLocationProducts = [
 	        	{"Unique_ID":"locationProductTypes", "Name":"locationProductTypes", "Label":"LOCATION_PRODUCT_TYPES", "Required":false, "masterSource":"ProductType", "LastOnRow":true},
-				{"Unique_ID":"locationHSFO35Grades", "Name":"locationHSFO35Grades", "Label":"LOCATION_HSFO_35_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true},
-				{"Unique_ID":"locationHSFO05Grades", "Name":"locationHSFO05Grades", "Label":"LOCATION_VLSFO_05_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}, // Based on #35158, renamed UI label alone.
-				{"Unique_ID":"locationDistillateGrades", "Name":"locationDistillateGrades", "Label":"LOCATION_DISTILLATE_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true}
+				{"Unique_ID":"locationHSFO35Grades", "Name":"locationHSFO35Grades", "Label":"LOCATION_HSFO_35_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true, "multiSelectable": true},
+				{"Unique_ID":"locationHSFO05Grades", "Name":"locationHSFO05Grades", "Label":"LOCATION_VLSFO_05_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true, "multiSelectable": true},
+				{"Unique_ID":"locationDistillateGrades", "Name":"locationDistillateGrades", "Label":"LOCATION_DISTILLATE_GRADES", "Required":false, "masterSource":"Product", "LastOnRow":true, "multiSelectable": true}
         	]
         }
 

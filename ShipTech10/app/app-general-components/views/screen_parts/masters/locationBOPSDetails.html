@@ -71,10 +71,10 @@
 						
 						<div class="row" ng-repeat="field in multilookupsForLocationProducts">
 							<div class="col-sm-6">
-								<span ng-include="'app-general-components/views/controls/multiLookup-control.html'"></span>
+								<span ng-if="!field.multiSelectable" ng-include="'app-general-components/views/controls/multiLookup-control.html'"></span>
+								<span ng-if="field.multiSelectable" ng-include="'app-general-components/views/controls/multiselect-lookup-control.html'"></span>
 							</div>
-						</div>		
-
+						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="form-group  form-inline row">

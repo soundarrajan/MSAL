@@ -68,6 +68,8 @@ Number(function() {
                         CLC.tableParams.filters = Elements.scope[scope.id].filters;
                         CLC.tableParams.PageFilters = {};
                     }
+                    Elements.scope[scope.id].modalSource = attrs?.modalsource;
+                    Elements.scope[scope.id].multiSelectable = ["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(attrs?.modalsource) ?? false;
                     scope.tenantSetting = $tenantSettings;
                     CLC.tableParams.PageFilters = {};
                     $rootScope.rawFilters = [];
@@ -585,7 +587,7 @@ Number(function() {
 
                         if (Elements.scope[attrs.id].modal) {
                             Elements.settings[table_id].source.height = window.innerHeight / 1.8;
-                            if (scope.id != 'procurement_rfqrequestslist') {
+                            if (scope.id != 'procurement_rfqrequestslist' && !Elements.scope[scope.id].multiSelectable) {
                                 Elements.settings[table_id].source.colModel.unshift({
                                     label: 'Actions-checkboxes',
                                     name: 'actions-checkboxes',
@@ -1141,6 +1143,27 @@ Number(function() {
                                     // allRowData = null;
                                 }
                                 console.log($rootScope.selectedInvoices);
+                            };
+                        }
+                        if (scope.app == 'masters' && scope.screen == 'productlist' && table_id == 'flat_productslist') {
+                            let key = ["locationHSFO05Grades","locationDistillateGrades","locationHSFO35Grades"].includes(Elements.scope[scope.id].modalSource)
+                                ? Elements.scope[scope.id].modalSource : 'selectedProducts';
+                            Elements.settings[table_id].source.onSelectRow = function(rowid, status, e) {
+                                let allRowData = Elements.settings[table_id].source.datastr[rowid - 1];
+                                if (!$rootScope[key]) {
+                                	$rootScope[key] = [];
+                                }
+                                if (status) {
+                                	$rootScope[key].push(allRowData);
+                                } else {
+                                	$.each($rootScope[key], (k,v) => {
+                                		if (v) {
+	                                		if (v.id == allRowData.id) {
+	                                			$rootScope[key].splice(k,1);
+	                                		}
+                                		}
+                                	})
+                                }
                             };
                         }
 

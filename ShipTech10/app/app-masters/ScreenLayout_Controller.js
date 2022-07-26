@@ -1337,7 +1337,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 			    	$scope.modal.filters = [
 			    		{
 			    			ColumnName: 'VesselId',
-			    			Value: ctrlData.vesselDetails.vessel.id
+			    			Value: ctrlData?.vesselDetails.vessel.id
 			    		}
 		    		];
 		    		$scope.filters = $scope.modal.filters;
@@ -1431,6 +1431,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                 if (clc == 'masters_productlist') {
                     if(filter != 'master_selectMotProductTypeId' && filter != 'master_selectProductTypeId') {
                         $scope.modal.filters = filter;
+                        $scope.modal.modalSource = ctrlData?.Unique_ID;
                     }
                 }
                 if (clc == 'procurement_bunkerableport' || clc == 'procurement_destinationport') {

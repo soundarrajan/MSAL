@@ -5101,7 +5101,7 @@ APP_API.factory('$Api_Service', [
 
 
                     if (typeof param.params != 'undefined' && param.params != null) {
-                        if (typeof param.params.filters !== 'undefined' && param.params.filters.length > 0) {
+                        if (typeof param.params.filters !== 'undefined' && param.params.filters?.length > 0) {
                             apiJSON.Payload.Filters = param.params.filters;
                         }
                         // UIFilters
