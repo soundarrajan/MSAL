@@ -418,6 +418,9 @@ export class ShiptechCustomHeaderGroup {
     }
   }
   setValuefun(){
+    if (this.visibleCounterpartyList.length != 0) {
+      return
+    }
     let counterparties = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 12);
     });
