@@ -234,7 +234,7 @@
             [matMenuTriggerFor]="additionalProductSearch"
             (click)="
             additionalProdSearch = null;"
-          ><mat-form-field class="dotted-form-field" appearance="none" style="height: 40px"><input matInput value="{{additionalCost.value.product == null ? '' : additionalCost.value.product.name + '' +  additionalCost.value.product.deliveryId }}"
+          ><mat-form-field class="dotted-form-field" appearance="none" style="height: 40px"><input matInput value="{{additionalCost.value.product == null ? '' : additionalCost.value.product.name }} {{ additionalCost.value.product != null && additionalCost.value.product.name =='All' ? '' : ' - ' }} {{ additionalCost.value.deliveryId}}"
                     [disabled]="
                     (additionalCost.value.locationAdditionalCostId &&
                       !(
@@ -286,7 +286,7 @@
                                   Products
                                 </th>
                                 <td mat-cell *matCellDef="let element">
-                                  <mat-radio-group
+                                  <mat-radio-group 
                                     [(ngModel)]="additionalCost.value.product"
                                     (ngModelChange)="
                                     getRangeTotalAmount(
@@ -296,19 +296,19 @@
                                     invoiceConvertUom('cost', additionalCost.key)
                                   "
                                   >
-                                    <mat-radio-button [value]="element">
+                                    <mat-radio-button class="location-container-radio-button" [value]="element">
                                       {{ element.name }}
                                     </mat-radio-button>
                                   </mat-radio-group>
                                 </td>
                               </ng-container>
-                              <td></td><td></td><td></td>
+                           
                               <ng-container matColumnDef="delNo">
-                                <th mat-header-cell *matHeaderCellDef>
+                                <th style="padding-left: 100px;" mat-header-cell *matHeaderCellDef>
                                   Delivery No
                                 </th><td></td>
-                                <td mat-cell *matCellDef="let element">
-                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{element.deliveryNumber}}
+                                <td style="padding-left: 100px;" mat-cell *matCellDef="let element">
+                                 <span>{{element.deliveryNumber}}</span>
                                 </td>
                               </ng-container>
                               <tr mat-header-row *matHeaderRowDef="displayedColumnsProd"></tr>
