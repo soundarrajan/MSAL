@@ -491,6 +491,24 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
         return knowMastersAutocompleteHeaderName.currency;
     }
   }
+  getHeaderNameSelector(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.systemInstrument:
+        return knowMastersAutocompleteHeaderName.systemInstrument;
+      default:
+        return knowMastersAutocompleteHeaderName.systemInstrument;
+    }
+  }
+  selectorSystemInstumentSelectionChange(selection: IOrderLookupDto,key): void {
+    if (selection != null || selection != undefined) {
+      const obj = {
+        id: selection.id,
+        name: selection.name
+      };
+      this.selectSystemInstrumentFromComplexFormulaQuoteLine(obj,"0",key);
+      this.changeDetectorRef.detectChanges();
+    }
+  }
 
   selectorCurrencySelectionChange(selection: IOrderLookupDto): void {
     if (selection === null || selection === undefined) {
