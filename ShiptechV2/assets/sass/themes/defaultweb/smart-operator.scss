@@ -3050,6 +3050,14 @@ label {
   }
 }
 
+.edit-input-menu .mat-input-element {
+  caret-color: $grey !important;
+}
+
+.edit-input-menu .light-theme .mat-input-element {
+  caret-color: $dark !important;
+}
+
 .new-comment-section {
   margin: 10px 0px;
   .image-upload {
