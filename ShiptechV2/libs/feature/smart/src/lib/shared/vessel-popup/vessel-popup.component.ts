@@ -232,7 +232,6 @@ export class VesselPopupComponent implements OnInit {
   }
 
   CheckDefaultView(event) {
-    // debugger;
     if (event) {
       this.myDefaultView = true;
       this.vesselService.myDefaultViewPayload.defaultView = 1;
@@ -271,9 +270,6 @@ export class VesselPopupComponent implements OnInit {
       this.vesselService.myDefaultViewPayload.defaultView = 0;
       this.vesselService.myDefaultViewPayload.vessel = 0;
     }
-    //this.vesselService.myDefaultViewPayload.vessel = 1;
-    // this.vesselService.myDefaultViewPayload.port = 0;
-    // this.vesselService.myDefaultViewPayload.bunkerPlan = 0;
   }
 
   public changeDefault(expandRef?: any) {
@@ -407,16 +403,43 @@ export class VesselPopupComponent implements OnInit {
       let req = { VesselId: vesselId }; //VesselId : 2805
       this.vesselService.getVesselRedeliveryInfo(req).subscribe(res => {
         if (res.payload.length > 0) {
-          this.popup_data.vesselExpDate = res.payload[0].expiryDate;
-          this.popup_data.redeliveryDays = res.payload[0].redeliveryDays
-            ? res.payload[0].redeliveryDays + ' Days'
-            : '';
-          this.popup_data.hfo = res.payload[0].hsfoRedeliveryQty;
-          this.popup_data.lshfo = res.payload[0].lsfoRedeliveryQty;
-          this.popup_data.lsmdo = res.payload[0].lsmdoRedeliveryQty;
-          this.popup_data.mdo = res.payload[0].mdoRedeliveryQty;
-          this.popup_data.mgo = res.payload[0].mgoRedeliveryQty;
-          this.popup_data.lsmgo = res.payload[0].lsmgoRedeliveryQty;
+          // Object.defineProperties to resolve "Uncaught TypeError: Cannot assign to read only property 'vesselExpDate' of object '[object Object]'"
+          Object.defineProperties(this.popup_data, {
+            vesselExpDate: {
+              value: res.payload[0].expiryDate,
+              writable: true
+            },
+            redeliveryDays: {
+              value: res.payload[0].redeliveryDays
+                ? res.payload[0].redeliveryDays + ' Days'
+                : '',
+              writable: true
+            },
+            hfo: {
+              value: res.payload[0].hsfoRedeliveryQty,
+              writable: true
+            },
+            lshfo: {
+              value: res.payload[0].lsfoRedeliveryQty,
+              writable: true
+            },
+            lsmdo: {
+              value: res.payload[0].lsmdoRedeliveryQty,
+              writable: true
+            },
+            mdo: {
+              value: res.payload[0].mdoRedeliveryQty,
+              writable: true
+            },
+            mgo: {
+              value: res.payload[0].mgoRedeliveryQty,
+              writable: true
+            },
+            lsmgo: {
+              value: res.payload[0].lsmgoRedeliveryQty,
+              writable: true
+            }
+          });
 
           this.triggerClickEvent();
         }
@@ -471,344 +494,6 @@ export class VesselPopupComponent implements OnInit {
     let requestPayload = {
       VesselId: this.popup_data?.vesselId
     };
-    // let VesselAlertList = {
-    //   "payload": {
-    //     "vesselAlertDetails": [
-    //       {
-    //         "vesselId": 91,
-    //         "alertColorFlag_Name": "Red",
-    //         "alertTypes": {
-    //           "id": 6,
-    //           "name": "TestAlert7",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "alertStatus": {
-    //           "id": 1,
-    //           "name": "No Action Taken",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "alertComments": "testing alert",
-    //         "createdBy": {
-    //           "id": 0,
-    //           "name": "RM",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "createdOn": "2021-06-17T12:56:07.727Z",
-    //         "lastModifiedBy": {
-    //           "id": 0,
-    //           "name": "RM",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "lastModifiedOn": "2021-06-17T12:56:07.727Z",
-    //         "id": 10,
-    //         "isDeleted": false,
-    //         "modulePathUrl": null,
-    //         "clientIpAddress": null,
-    //         "userAction": null
-    //       },
-    //       {
-    //         "vesselId": 91,
-    //         "alertColorFlag_Name": "Red",
-    //         "alertTypes": {
-    //           "id": 6,
-    //           "name": "TestAlert7",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "alertStatus": {
-    //           "id": 1,
-    //           "name": "No Action Taken",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "alertComments": "testing alert",
-    //         "createdBy": {
-    //           "id": 0,
-    //           "name": "RM",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "createdOn": "2021-06-17T12:56:07.727Z",
-    //         "lastModifiedBy": {
-    //           "id": 0,
-    //           "name": "RM",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "lastModifiedOn": "2021-06-17T12:56:07.727Z",
-    //         "id": 10,
-    //         "isDeleted": false,
-    //         "modulePathUrl": null,
-    //         "clientIpAddress": null,
-    //         "userAction": null
-    //       },
-    //       {
-    //         "vesselId": 91,
-    //         "alertColorFlag_Name": "Amber",
-    //         "alertTypes": {
-    //           "id": 6,
-    //           "name": "TestAlert7",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "alertStatus": {
-    //           "id": 1,
-    //           "name": "No Action Taken",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "alertComments": "testing alert",
-    //         "createdBy": {
-    //           "id": 0,
-    //           "name": "RM",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "createdOn": "2021-06-17T12:56:07.727Z",
-    //         "lastModifiedBy": {
-    //           "id": 0,
-    //           "name": "RM",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "lastModifiedOn": "2021-06-17T12:56:07.727Z",
-    //         "id": 10,
-    //         "isDeleted": false,
-    //         "modulePathUrl": null,
-    //         "clientIpAddress": null,
-    //         "userAction": null
-    //       }
-    //     ],
-    //     "vesselAlertLogs": [
-    //       {
-    //         "vesselId": 91,
-    //         "alertTypes": {
-    //           "id": 6,
-    //           "name": "TestAlert7",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "alertStatus": {
-    //           "id": 1,
-    //           "name": "No Action Taken",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "createdBy": {
-    //           "id": 0,
-    //           "name": "RM",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "createdOn": "2021-06-17T12:56:07.727Z",
-    //         "lastModifiedBy": {
-    //           "id": 0,
-    //           "name": "RM",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "lastModifiedOn": "2021-06-17T12:56:07.727Z",
-    //         "id": 1,
-    //         "isDeleted": false,
-    //         "modulePathUrl": null,
-    //         "clientIpAddress": null,
-    //         "userAction": null
-    //       },
-    //       {
-    //         "vesselId": 91,
-    //         "alertTypes": {
-    //           "id": 6,
-    //           "name": "TestAlert7",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "alertStatus": {
-    //           "id": 1,
-    //           "name": "No Action Taken",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "createdBy": {
-    //           "id": 0,
-    //           "name": "RM",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "createdOn": "2021-06-17T12:56:07.727Z",
-    //         "lastModifiedBy": {
-    //           "id": 0,
-    //           "name": "RM",
-    //           "internalName": null,
-    //           "displayName": null,
-    //           "code": null,
-    //           "collectionName": null,
-    //           "customNonMandatoryAttribute1": null,
-    //           "isDeleted": false,
-    //           "modulePathUrl": null,
-    //           "clientIpAddress": null,
-    //           "userAction": null
-    //         },
-    //         "lastModifiedOn": "2021-06-17T12:56:07.727Z",
-    //         "id": 2,
-    //         "isDeleted": false,
-    //         "modulePathUrl": null,
-    //         "clientIpAddress": null,
-    //         "userAction": null
-    //       }
-    //     ]
-    //   },
-    //   "deletedCount": 0,
-    //   "modifiedCount": 0,
-    //   "matchedCount": 0,
-    //   "isAcknowledged": false,
-    //   "isModifiedCountAvailable": false,
-    //   "upsertedId": 0,
-    //   "status": 0,
-    //   "isSuccess": true,
-    //   "message": "",
-    //   "error": null,
-    //   "errorMessage": "Successful"
-    // }
-    // let VesselAlertData = VesselAlertList?.payload;
-    // this.VesselAlertList = VesselAlertData?.vesselAlertDetails;
-    // this.VesselAlertLogs = VesselAlertData?.vesselAlertLogs;
     this.vesselService.loadVesselAlertList(requestPayload).subscribe(data => {
       let VesselAlertData = data?.payload;
       this.VesselAlertList = VesselAlertData?.vesselAlertDetails;
@@ -833,8 +518,6 @@ export class VesselPopupComponent implements OnInit {
           ).length > 0
         ))
     ) {
-      // this.mapService.getLocationsListForMap("").subscribe(res => {
-      //  selectedPort = res.payload.filter(item => item.locationName.toLowerCase() == portName.toLowerCase());
       data = {
         locationId: portId,
         position: 1,
@@ -843,29 +526,6 @@ export class VesselPopupComponent implements OnInit {
         earliestTradingTime: '',
         latestTradingTime: '',
         avlProdCategory: [],
-        //notavlProdCategory: ['DIS'],
-        // destination: 'Marseille',
-        // eta1: '2020-04-13 10:00',
-        // eta2: '2020-04-14 10:00',
-        // next_destination: 'Catania',
-        // voyageStatus: 'Laden',
-        // vesselId: '1YM',
-        // vesselExpDate: '12/06/2020',
-        // vesselType: 'LR1',
-        // bunkeringStatus: 'Created',
-        // serviceId: '271',
-        // deptId: 'MLAS',
-        // ownership: 'Chartered',
-        // hsfo: '468',
-        // dogo: '600',
-        // ulsfo: '120',
-        // vlsfo: '364',
-        // hfo: '58',
-        // lshfo: '120',
-        // mdo: '10',
-        // lsmdo: '20',
-        // mso: '10',
-        // lsmgo: '10',
         notificationsCount: 6,
         messagesCount: 2,
         latitude: 0, //selectedPort[0].locationLatitude,
@@ -933,7 +593,6 @@ export class VesselPopupComponent implements OnInit {
       width: 70,
       cellRendererFramework: AGGridCellDataComponent,
       cellRendererParams: { type: 'popup-multiple-values' },
-      // cellRendererParams: { type: 'multiple-values', gridTable: 'future-request' },
       cellClass: ['aggrid-content-center fs-10'],
       valueGetter: function(params) {
         if (params?.data?.productName) {
@@ -962,17 +621,6 @@ export class VesselPopupComponent implements OnInit {
         if (colorCode?.code) {
           cellStyle = { background: colorCode.code };
         }
-        // let newClass = status === 'Stemmed' ? 'custom-chip small-chip darkgreen' :
-        // status === 'Validated' ? 'custom-chip small-chip amber' :
-        // status === 'PartiallyInquired' ? 'custom-chip small-chip purple' :
-        // status === 'Inquired' ? 'custom-chip small-chip purple' :
-        // status === 'PartiallyQuoted' ? 'custom-chip small-chip purple' :
-        // status === 'Quoted' ? 'custom-chip small-chip purple' :
-        // status === 'Amended' ? 'custom-chip small-chip purple' :
-        // status === 'PartiallyStemmed' ? 'custom-chip small-chip purple' :
-        // status === 'Cancelled' ? 'custom-chip small-chip purple' :
-        //       'custom-chip small-chip dark';
-        // classArray.push(newClass);
         return {
           cellClass: classArray.length > 0 ? classArray : null,
           cellStyle: cellStyle
@@ -981,21 +629,6 @@ export class VesselPopupComponent implements OnInit {
     }
   ];
 
-  // private rowData = [
-  //   {
-  //     requestid: '12819ED', port: 'Marseille', fuelgrade: ['RMK850', 'RMK5005'], trader: 'BOPs', status: 'Stemmed'
-  //   },
-  //   {
-  //     requestid: '13587ED', port: 'Catania', fuelgrade: ['RMK850', 'RMK5005'], trader: 'Operator', status: 'Inquired'
-  //   },
-  //   {
-  //     requestid: '13587ED', port: 'Aden', fuelgrade: ['RMK850', 'RMK5005'], trader: 'BOPs', status: 'New'
-  //   },
-  //   {
-  //     requestid: '56900GA', port: 'Kish', fuelgrade: ['RMK850', 'RMK5005'], trader: 'BOPs', status: 'New'
-  //   }
-
-  // ];
   rowSpan(params) {
     if (params.data.merge === '1') {
       return 1;
