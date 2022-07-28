@@ -51,6 +51,7 @@ export class BunkeringPlanComponent implements OnInit {
   public sodCommentsUpdated: boolean = false;
   public rowData;
   public bPlanData: any;
+  public orig_bPlanData: any;
   public selectedPort: any = [];
   public vesselData: any;
   public latestPlanId: any;
@@ -813,6 +814,7 @@ export class BunkeringPlanComponent implements OnInit {
         voyage_detail_id: bPlan.voyage_detail_id
       });
     });
+    this.orig_bPlanData = data;
     this.store.dispatch(new SaveBunkeringPlanAction(data));
   }
   portClicked(params) {
@@ -1225,7 +1227,8 @@ export class BunkeringPlanComponent implements OnInit {
           let currentRobUslfo = currentROB.ULSFO ? currentROB.ULSFO : 0;
           if (rowData2.length > 0) {
             for (let i = 0; i < rowData2.length; i++) {
-              let lsdisAsEca = 0;
+              let orig_lsdisAsSeca = this.orig_bPlanData?.find(x => x.detail_no == rowData2[i].detail_no).lsdis_as_eca;
+
               //For Port 0
               if (i == 0) {
                 this.calculateConsumptionAndLsdisAsEca(
@@ -1234,7 +1237,8 @@ export class BunkeringPlanComponent implements OnInit {
                   parseInt(currentRobUslfo.toString()),
                   rowData2,
                   estdConsEcaList,
-                  estdConsLsdisList
+                  estdConsLsdisList,
+                  parseInt(orig_lsdisAsSeca.toString())
                 );
               }
               //For Port 1 to N
@@ -1245,7 +1249,8 @@ export class BunkeringPlanComponent implements OnInit {
                   parseInt(rowData2[i - 1].ulsfo_soa),
                   rowData2,
                   estdConsEcaList,
-                  estdConsLsdisList
+                  estdConsLsdisList,
+                  parseInt(orig_lsdisAsSeca)
                 );
               }
               rowData2 = this.rowData;
@@ -1314,7 +1319,8 @@ export class BunkeringPlanComponent implements OnInit {
     ulsfoCurrentRob,
     rowData,
     ecaEstdConsList,
-    lsdisEstdConsList
+    lsdisEstdConsList,
+    origLsdisAsEca
   ) {
     let currentROB = this.store.selectSnapshot(
       SaveCurrentROBState.saveCurrentROB
@@ -1382,6 +1388,16 @@ export class BunkeringPlanComponent implements OnInit {
           ? ulsfo_cons - ulsfo_reduce_cons
           : lsdis_original_stock;
 
+    // Recalculate 'ulsfo to be reduced' and 'lsdis_as_eca' when lsdis_as_eca goes below orig lsdis_as_eca
+    if (lsdis_as_eca < origLsdisAsEca && ulsfo_cons >= origLsdisAsEca) {
+      if (ulsfo_reduce_cons <= (origLsdisAsEca - lsdis_as_eca)) {
+        ulsfo_reduce_cons = (origLsdisAsEca - lsdis_as_eca) - ulsfo_reduce_cons;
+        lsdis_as_eca = origLsdisAsEca;
+      } else {
+        ulsfo_reduce_cons = ulsfo_reduce_cons - (origLsdisAsEca - lsdis_as_eca);
+        lsdis_as_eca = origLsdisAsEca;
+      }
+    }
     //Pending Cons
     pendingCons = ulsfo_cons - lsdis_as_eca - ulsfo_reduce_cons;
 
