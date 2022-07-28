@@ -410,7 +410,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
 
     this.selectedSellerList.forEach(selectedSeller => {
-      if(selectedSeller.RfqId !== 0 && !selectedSeller.RequestOffers?.some(x => !x.isRfqskipped && !x.isDeleted)){
+      if(selectedSeller.RfqId !== 0 && selectedSeller.RequestOffers?.length > 0 && !selectedSeller.RequestOffers?.some(x => !x.isRfqskipped && !x.isDeleted)){
           if (selectedSellerrName)
           selectedSellerrName =
           selectedSellerrName +
