@@ -3,6 +3,16 @@
     <p-scrollPanel #layoutMenuScroller>
         <div class="menu-scroll-content">
             <ul shiptech-menu-items [item]="model" root="true" class="layout-menu" visible="true" [reset]="reset" parentActive="true"></ul>
+        
         </div>
+        <div id="version" class="bottom-menu-item" style="border-top: 1px solid #404853; color: #fff;">
+
+            <span class="version-icon" style="float: left; margin-right: 15px;"></span>
+            <span>{{appVersion}}</span>
+        </div>
+           <ul style="padding: 10px 15px 0px 15px; margin-bottom: 10px;">
+            <img src="../../assets/images/inatech_logo_new.png" style="height: 35px; width: auto;">
+             </ul> 
     </p-scrollPanel>
 </div>
+
