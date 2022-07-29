@@ -838,9 +838,6 @@ export class BunkeringPlanComponent implements OnInit {
   }
   toggleOperAck(params) {
     this.triggerChangeEvent();
-    this.triggerRefreshGrid();
-    this.gridChanged = true;
-    this.localService.setBunkerPlanState(this.gridChanged);
   }
 
   toggleSave() {    
