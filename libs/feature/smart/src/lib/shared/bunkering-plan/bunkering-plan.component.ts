@@ -1355,8 +1355,8 @@ export class BunkeringPlanComponent implements OnInit {
 
     // ExpectedUlsfoCons = EcaEstdCons - LsdisEstdCons
     ulsfo_cons =
-      parseInt(ecaEstdConsList[index].eca_estimated_consumption) -
-      parseInt(lsdisEstdConsList[index].lsdis_estimated_consumption);
+      parseInt(ecaEstdConsList[index]?.eca_estimated_consumption) -
+      parseInt(lsdisEstdConsList[index]?.lsdis_estimated_consumption);
 
     //Ulsfo Original Stock calculation
     ulsfo_original_stock =
