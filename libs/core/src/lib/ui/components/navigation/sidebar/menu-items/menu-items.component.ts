@@ -100,7 +100,9 @@ export class AppSubMenuComponent {
     if (item.items || (!item.url && !item.routerLink)) {
       setTimeout(() => {
         //this.appMenu.layoutMenuScrollerViewChild.moveBar();
-        this.layoutMenuScrollerViewChild.moveBar();
+        if (this.layoutMenuScrollerViewChild) {
+          this.layoutMenuScrollerViewChild.moveBar();
+        }
       }, 450);
       event.preventDefault();
     }
