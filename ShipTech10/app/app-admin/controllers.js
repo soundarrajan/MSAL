@@ -765,8 +765,12 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
                             }
                             $scope.tabData[val.id] = aligendObject;
                             $scope.checkData[val.id] = false;
-                            $scope.tabData['buyer_access'] = $scope.buildTree($scope.tabInitalData['buyer_access'], $scope.formValues.accessBuyers);
+                            if(val.id == 'buyer_access'){
+                             $scope.tabData['buyer_access'] = $scope.buildTree($scope.tabInitalData['buyer_access'], $scope.formValues.accessBuyers);
+                            }
+                            if(val.id == 'accessCompanies'){
                             $scope.tabData['company_access'] = $scope.buildTree($scope.tabInitalData['company_access'], $scope.formValues.accessCompanies);
+                            }
                             $scope.detectInitialAllSelected();
                         }
                     } else {
@@ -997,14 +1001,17 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         };
         var types = ['vessel_access', 'buyer_access', 'company_access'];
         _.forEach(types, function (type) {
-            $scope.isAll = true;
-            for (let i = 0; i < $scope.tabData[type]?.length; i++) {
-                detectAllSelected($scope.tabData[type][i], $scope.checkData[type]);
+            if($scope.tabData[type])
+            {
+                $scope.isAll = true;
+                for (let i = 0; i < $scope.tabData[type].length; i++) {
+                    detectAllSelected($scope.tabData[type][i], $scope.checkData[type]);
+                }
+                $scope.checkData[type] = $scope.isAll ? true : false;
+                $timeout( () => {
+                    $scope.delayAccessRendering[type] = $scope.tabData[type].length;
+                },1000)
             }
-            $scope.checkData[type] = $scope.isAll ? true : false;
-            $timeout( () => {
-                $scope.delayAccessRendering[type] = $scope.tabData[type].length;
-            },1000)
         });
     }
     window.change = function(event) {
