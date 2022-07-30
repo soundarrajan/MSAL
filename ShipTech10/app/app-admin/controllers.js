@@ -998,7 +998,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         var types = ['vessel_access', 'buyer_access', 'company_access'];
         _.forEach(types, function (type) {
             $scope.isAll = true;
-            for (let i = 0; i < $scope.tabData[type].length; i++) {
+            for (let i = 0; i < $scope.tabData[type]?.length; i++) {
                 detectAllSelected($scope.tabData[type][i], $scope.checkData[type]);
             }
             $scope.checkData[type] = $scope.isAll ? true : false;
