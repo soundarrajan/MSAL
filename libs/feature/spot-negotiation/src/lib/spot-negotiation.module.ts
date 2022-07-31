@@ -98,6 +98,7 @@ import { EventBasedExtended } from './views/main/details/components/event-based-
 import { ProductBased } from './views/main/details/components/product-based/product-based.component';
 import { VesselLocationBased } from './views/main/details/components/vessel-location-based/vessel-location-based.component';
 import { EventBasedSimple } from './views/main/details/components/event-based-simple/event-based-simple.component';
+import { AmountTenantFormatDirective } from './views/main/details/directives/amount-tenant-format.directive';
 @NgModule({
   imports: [
     CommonModule,
@@ -183,6 +184,7 @@ import { EventBasedSimple } from './views/main/details/components/event-based-si
     NegotiationDocumentsComponent,
     NegotiationReportComponent,
     PriceTenantFormatDirective,
+    AmountTenantFormatDirective,
     DragDropFileUploadDirective,
     EventBasedContinuous,
     PricingFormulaSimple,
