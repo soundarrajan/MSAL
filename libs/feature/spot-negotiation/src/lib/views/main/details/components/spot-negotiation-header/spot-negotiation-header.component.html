@@ -253,12 +253,12 @@
       </div>
     </div>
     <div class="section3">
-      <div class="calculate-icon-btn" matTooltip="Calculate Best Offer"  matTooltipClass="lightTooltip" matTooltipPosition="below">
+      <div *ngIf="evaluateIconDisplay" class="calculate-icon-btn" matTooltip="Evaluate Formula  Price"  matTooltipClass="lightTooltip" matTooltipPosition="below">
         <span class="calculate-icon" (click)="refreshGrid();"></span>
       </div>
       <span class="go-to-port">Go to port</span>
       <span *ngFor="let item of locations; let i = index">
-        <button class="circle-btn1" (click)="scrollPort1(port1)">
+        <button class="circle-btn1" (click)="scrollPort(i)">
           {{ i + 1 }}
         </button>
       </span>
@@ -272,13 +272,14 @@
   style="overflow-y: scroll; width: 100%; height: calc( 100vh - 200px );margin-left: -22px;position: fixed; background-color: #ffffff;"
 >
   <div
-    #port1
+    #port2
     class="col-md-12"
-    style="background-color: #ffffff;padding: 0px 5px;"
+    style="background-color: #ffffff; padding: 0px 5px;"
   >
-  <div *ngFor="let location of locations; let locationIndex = index">
-    <app-spot-negotiation-details [location]="location" [locationIndex] = "locationIndex" > </app-spot-negotiation-details>
-  </div>
+
+     <div *ngFor="let location of locations; let locationIndex = index" id="scroll{{locationIndex}}">
+        <app-spot-negotiation-details [location]="location" [locationIndex] = "locationIndex" > </app-spot-negotiation-details>
+      </div>
     
   </div>
   <div

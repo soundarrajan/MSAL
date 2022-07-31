@@ -92,6 +92,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   locationsRowsOriData: any[];
   availableContracts = {};
   initAvailableContracts: any;
+  evaluateIconDisplay: boolean = false;
   constructor(
     private store: Store,
     private route: ActivatedRoute,
@@ -134,11 +135,18 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           this.requestsAndVessels.slice(0, 7)
         );
         this.locationsRows = spotNegotiation.locationsRows;
+        
         this.bestOffIconDispaly =  false;
         this.locationsRows.forEach(element => {
           if(element?.requestOffers?.length > 0){
             this.bestOffIconDispaly =  true;
-            return;
+            element.requestOffers.filter(_data => {
+              if(_data.isFormulaPricing == true){
+                this.evaluateIconDisplay = true;
+              return;
+              }
+            });
+          if(this.evaluateIconDisplay == true) return;
           }
         });
         this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
@@ -922,8 +930,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  scrollPort1(el: HTMLElement) {
-    el.scrollIntoView();
+  scrollPort(scrollPlaceId) {
+    let scrollId = "scroll"+scrollPlaceId;
+    document.getElementById(scrollId).scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
   }
 
   scrollComments(el: HTMLElement) {
