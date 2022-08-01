@@ -210,20 +210,60 @@ export class VesselPopupComponent implements OnInit {
       let req = { VesselId: vesselId };
       this.vesselService.getVesselBasicInfo(req).subscribe(res => {
         if (res.payload.length > 0) {
-          //this.popup_data.serviceId = res.payload[0].serviceId;
-          this.popup_data.serviceCode = res.payload[0].serviceCode;
-          this.popup_data.deptId = res.payload[0].deptId;
-          this.popup_data.ownership = res.payload[0].ownership;
-          this.popup_data.destination = res.payload[0].destination;
-          this.popup_data.next_destination = res.payload[0].nextDestination;
-          this.popup_data.eta1 = res.payload[0].destinationEta;
-          this.popup_data.eta2 = res.payload[0].nextDestinationEta;
-          this.popup_data.hsfo = res.payload[0].hsfo_current_stock;
-          this.popup_data.ulsfo = res.payload[0].ulsfo_current_stock;
-          this.popup_data.vlsfo = res.payload[0].vlsfo_current_stock;
-          this.popup_data.lsdis = res.payload[0].lsdis_current_stock;
-          this.popup_data.dis = res.payload[0].hsdis_current_stock;
-          this.popup_data.routeAvailable = res.payload[0].isRouteAvailable;
+          Object.defineProperties(this.popup_data, {
+            serviceCode: {
+              value: res.payload[0].serviceCode,
+              writable: true
+            },
+            deptId: {
+              value: res.payload[0].deptId,
+              writable: true
+            },
+            ownership: {
+              value: res.payload[0].ownership,
+              writable: true
+            },
+            destination: {
+              value: res.payload[0].destination,
+              writable: true
+            },
+            next_destination: {
+              value: res.payload[0].nextDestination,
+              writable: true
+            },
+            eta1: {
+              value: res.payload[0].destinationEta,
+              writable: true
+            },
+            eta2: {
+              value: res.payload[0].nextDestinationEta,
+              writable: true
+            },
+            hsfo: {
+              value: res.payload[0].hsfo_current_stock,
+              writable: true
+            },
+            ulsfo: {
+              value: res.payload[0].ulsfo_current_stock,
+              writable: true
+            },
+            vlsfo: {
+              value: res.payload[0].vlsfo_current_stock,
+              writable: true
+            },
+            lsdis: {
+              value: res.payload[0].lsdis_current_stock,
+              writable: true
+            },
+            dis: {
+              value: res.payload[0].hsdis_current_stock,
+              writable: true
+            },
+            routeAvailable: {
+              value: res.payload[0].isRouteAvailable,
+              writable: true
+            }
+          });
 
           this.triggerClickEvent();
         }
