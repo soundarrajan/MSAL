@@ -945,19 +945,21 @@ export class BunkeringPlanComponent implements OnInit {
     //business address validation
     let idx =
       data.findIndex(
-        data =>
-          (!data?.business_address) &&
-          data?.operator_ack == 1
+        d =>
+          (!d?.business_address) &&
+          d?.operator_ack == 1
       );
 
     if (idx == -1) {
       idx =
         data.findIndex(
-          data => {
-            let BAs: [] = data?.business_address.split(',');
-            for (let ba of BAs) {
-              if (!mailPattern.test(ba) && data?.operator_ack == 1)
-                return data;
+          d => {
+            let BAs: [] = d?.business_address?.split(',');
+            if (BAs && BAs.length > 0) {
+              for (let ba of BAs) {
+                if (!mailPattern.test(ba) && d?.operator_ack == 1)
+                  return d;
+              }
             }
           }
         );
