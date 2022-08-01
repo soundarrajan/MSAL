@@ -321,7 +321,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed"
+                [disabled]="(paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed) || (params && (params.data.requestOffers && params.data.requestOffers[params.index]?.isFormulaPricing))"
               >
                 <!-- <mat-option [disabled]>Change Currency </mat-option> -->
                 <div style="padding:5px 10px;font-size:14px">Change Currency</div>
@@ -355,7 +355,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed"
+                [disabled]="(paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed) ||  (params && (params.data.requestOffers && params.data.requestOffers[params.index]?.isFormulaPricing))"
               >
                 <mat-select-trigger overlayPanelClass="123class">
                   {{ paramsDataClone.currency | getCurrencyCode:getCurrencyCode1 }}
@@ -400,7 +400,11 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             style="display:inline"
             matTooltipClass="lightTooltip"
             [matTooltip]="params.value |  priceFormatValue : priceFormatValue1"
-            [disabled]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed'"
+            [disabled]="
+            (params.product.status === 'Stemmed' || params.product.status === 'Confirmed') ||
+            (params && (params.data.requestOffers && params.data.requestOffers[params.index]?.isFormulaPricing) || (params.value > 0 && params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
+              params.data.requestOffers[params.index]?.supplyQuantity != null))
+            "
             [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' ? 'inputFieldHighlightOff' : ''"
           />
 
@@ -430,6 +434,15 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         <div></div>
         <span>Add/View Formula pricing</span>
       </div>
+      <ng-container 
+      *ngIf="params && (params.data.requestOffers && params.data.requestOffers[params.index]?.isFormulaPricing)"
+      >
+      <div class="divider-line"></div>
+      <div class="remove-block" (click)="removeFormulaPrice(params)">
+        <div></div>
+        <span>Remove Formula pricing</span>
+      </div>
+      </ng-container>
       <div class="divider-line"></div>
       <div class="add-block" (click)="otherdetailspopup($event, params)">
         <div></div>
@@ -1974,7 +1987,21 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       setTimeout(() => {this.spinner.hide()}, 1000);
     });
   }
-
+  removeFormulaPrice(params){
+    let requestedOffer = params.data.requestOffers[params.index];
+    var newData = _.cloneDeep(params.data);
+    newData.requestOffers.map((el,_index) => {
+      if(params.index == _index){
+        el.isFormulaPricing = false;
+        el.price = 0;
+        el.totalPrice = 0;
+        el.amount = 0;
+      }      
+    });
+   this._spotNegotiationService.removeFormula(requestedOffer.id,requestedOffer.offerPriceFormulaId).subscribe();
+   this.store.dispatch(new EditLocationRow(newData));
+   this._spotNegotiationService.callGridRedrawService();
+  }
   changeCurrencyForAdditionalCost(currencyId, exchangeRateValue) {
     this.checkAdditionalCost(
       _.cloneDeep(this.params.data),
