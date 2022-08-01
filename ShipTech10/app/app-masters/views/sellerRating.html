@@ -96,7 +96,7 @@
 		                                <div class="portlet-body">
 		                                    <div class="portlet seller-rating-portlet-body" ng-repeat="(key2, value2) in value4.categories">
 		                                    	<div class="col-md-push-8 seller-rating-caption-subject">
-		                                      		 Features Rating
+		                                      		 Features Rating 
 		                                    	</div>
 		                                    	<div class="portlet-body seller-rating-portlet-param-container">
 		                                    		<div class="portlet-title portlet-title-no-border">
@@ -130,10 +130,6 @@
 			                                                    ng-model="value3.comments"
 			                                                    placeholder="Type your answer..."
 			                                                    ng-change="changeNameAndDate(value2)"
-																spellcheck="false"
-																 autocomplete="off" 
-																 autocorrect="off" 
-																 autocapitalize="off"
 			                                                    ></textarea>
 															<div  ng-if="value3.ratingRequired" rating="{{value3.rating}}" class="rating" data-rate-value=0 onmouseleave="setModelOfRatingForSpecificLocation(this)" 
 															onclick="changeNameAndDateForSpecificLocation(this)"  location-key="{{key4}}" category-key="{{key2}}" detail-key="{{key3}}" >
@@ -157,7 +153,7 @@
             				</div>
 			                <div class="caption ">
 			                    <span class="caption-subject pull-left ">
-			                        All Locations
+			                        All Locations 
 			                    </span>
 			                </div>
 			            </div>
@@ -170,7 +166,7 @@
 				                                <div class="portlet-body">
 				                                    <div class="portlet seller-rating-portlet-body" ng-repeat="(key2, value2) in value4.categories">
 				                                    	<div class="col-md-push-8 seller-rating-caption-subject">
-				                                      		 Features Rating
+				                                      		 Features Rating 
 				                                    	</div>
 				                                    	<div class="portlet-body seller-rating-portlet-param-container">
 				                                    		<div class="portlet-title portlet-title-no-border">
@@ -204,12 +200,8 @@
 					                                                    ng-model="value3.comments"
 					                                                    placeholder="Type your answer..."
 					                                                    ng-change="changeNameAndDate(value2)"
-																        spellcheck="false"
-																        autocomplete="off" 
-																        autocorrect="off" 
-																        autocapitalize="off
 					                                                    ></textarea>
-																	<div  ng-if="value3.ratingRequired" rating="{{value3.rating}}" class="rating" data-rate-value=0 onmouseleave="setModelOfRatingForSpecificLocation(this)" 
+																	<div  ng-if= "value3.ratingRequired" rating="{{value3.rating}}" class="rating" data-rate-value=0 onmouseleave="setModelOfRatingForSpecificLocation(this)" 
 																	onclick="changeNameAndDateForSpecificLocation(this)"  location-key="{{key4}}" category-key="{{key2}}" detail-key="{{key3}}" >
 																	</div>
 																	{{rating()}}
