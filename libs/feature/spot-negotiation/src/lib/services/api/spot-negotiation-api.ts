@@ -1059,6 +1059,14 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         catchError((body: any) => this.handleErrorMessage(body))
       );
   }
+  @ObservableException()
+  removeFormula(requestOfferId: number, priceConfigId : number): Observable<any> {
+    return this.http.delete<any>(`${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigId}`)
+    .pipe(
+      map((body: any) => body),
+      catchError((body: any) => this.handleErrorMessage(body))
+    );
+  }
 }
 
 export const SPOT_NEGOTIATION_API_SERVICE = new InjectionToken<

@@ -798,5 +798,9 @@ export class SpotNegotiationService extends BaseStoreService
   copyPriceConfigurations(payload): Observable<unknown>{
     return this.spotNegotiationApi.copyPriceConfigurations(payload);
   }
+  @ObservableException()
+  removeFormula(requestOfferId,priceConfigId):Observable<unknown>{
+    return this.spotNegotiationApi.removeFormula(requestOfferId,priceConfigId);
+  }
 
 }
