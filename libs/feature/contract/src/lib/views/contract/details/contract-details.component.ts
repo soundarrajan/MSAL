@@ -571,7 +571,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             this.formValues.products[i].additionalCosts[j].costType.id != 5
           ) {
             if (!this.formValues.products[i].additionalCosts[j].amount) {
-              additionalCostRequired.push('Amount');
+              additionalCostRequired.push('Amount ');
             }
           }
         }
@@ -717,10 +717,11 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             this.formValues.products[i].additionalCosts[j].costType.id != 4 &&
             this.formValues.products[i].additionalCosts[j].costType.id != 5
           ) {
-            if (!this.formValues.products[i].additionalCosts[j].amount) {
+            if (!this.formValues.products[i].additionalCosts[j].amount ) {
               additionalCostRequired.push('Amount');
             }
           }
+         
         }
       }
     }
@@ -778,6 +779,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       );
       return false;
     }
+    
     if (additionalCostString != '' && additionalCost.length == 1) {
       this.toastr.warning(
         'The additional cost ' +
@@ -901,7 +903,13 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (!isValid) {
       return;
     }
-
+    this.formValues.products.forEach((v, k) => {
+      if (typeof v != 'undefined') {
+      if (v.price == null || v.price == '') {
+        v.price = 0;
+      }
+    }
+    });
     this.formValues.details.forEach((v, k) => {
       if (typeof v != 'undefined') {
         if (v.minContractQuantity == null || v.minContractQuantity == '') {

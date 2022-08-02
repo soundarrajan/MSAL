@@ -78,6 +78,7 @@ export class VesselInfoComponent implements OnInit {
     LSDIS: null,
     HSDIS: null
   };
+  changeUserRole: Subject<void> = new Subject<void>();
   public enableCreateReq: boolean = false;
   public expandBplan: boolean = false;
   public expandComments: boolean = false;
@@ -130,6 +131,8 @@ export class VesselInfoComponent implements OnInit {
   public lsdisRobClasses: any;
   public hsdisRobClasses: any;
   offset:number;
+  continueCheckingPlans: any;
+  public hideFlag = 0 ;
 
   constructor(
     private store: Store,
@@ -167,6 +170,11 @@ export class VesselInfoComponent implements OnInit {
     //Check if auto-plan generation is in progress on Initial Load of Plan
     this.checkAutoPlanGenInProgress = true;
     this.VesselHasNewPlanJob();
+
+    this.localService.reCallVesselPlanReport$.subscribe(() => {
+      this.hideFlag = 0;
+      //this.VesselHasNewPlanJob();
+    });
   }
 
   ngOnInit() {
@@ -633,6 +641,7 @@ export class VesselInfoComponent implements OnInit {
     this.store.dispatch(new ImportGsisAction(0));
     this.store.dispatch(new SendPlanAction(0));
     this.sendPlanReminder = false;
+    this.localService.changeDefaultUserRole();
     //Check if auto-plan generation is in progress on vessel change in lookup
     this.checkAutoPlanGenInProgress = true;
     //Trigger gen plan status auto update on vessel change after clear mem leakage
@@ -714,7 +723,7 @@ export class VesselInfoComponent implements OnInit {
     this.currentBplan.toggleSave();
   }
 
-  // A method that will be triggered via event emitter of bunkering-plan.component
+  // A method that will be triggered via event emitter of bunkering-plan.component ORCA,
   bunkerPlanSaved() {
     if (this.currentBplan.sodCommentsUpdated) {
       this.currentBplan.sodCommentsUpdated = false;
@@ -750,24 +759,15 @@ export class VesselInfoComponent implements OnInit {
     event.stopPropagation();
   }
   setImportGSIS(event) {
-    this.import_gsis = this.isChecked == false ? 1 : 0;
+    this.import_gsis = this.isChecked ? 1 : 0;
     this.store.dispatch(new ImportGsisAction(this.import_gsis));
-
-    // As per new requirement discussion, we plan to send gen plan request only after click generate button
-    // let req = {
-    //   action:"",
-    //   ship_id: this.vesselData?.vesselId,
-    //   generate_new_plan:this.store.selectSnapshot(GeneratePlanState.getGeneratePlan),
-    //   import_gsis:this.import_gsis,
-    // }
-    // this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe((data)=> {
-    // })
-
     event.stopPropagation();
   }
   generateCurrentBPlan(event) {
+    this.import_gsis = this.isChecked ? 1 : 0;
     let req = {
       action: '',
+      user_id: this.store.selectSnapshot(UserProfileState.username), //"default@inatech.com",
       ship_id: this.vesselData?.vesselId,
       generate_new_plan: 1,
       import_gsis: this.import_gsis
@@ -776,14 +776,12 @@ export class VesselInfoComponent implements OnInit {
     this.BPlanGenTrigger.push(this.vesselData?.vesselId);
     this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe(data => {
-      //Trigger VesselHasNewPlanJob Fn to get gen plan completion to refresh this current bunker plan section
-      this.VesselHasNewPlanJob();
       this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
       // if(data?.isSuccess == true ){
       if (
         data?.isSuccess == true &&
-        data?.payload[0]?.gen_in_progress == 0 &&
-        data?.payload[0]?.import_in_progress == 0
+        data?.payload[0]?.gen_in_progress == false &&
+        data?.payload[0]?.import_in_progress == false
       ) {
         /* As per new requirement discussion, "import_in_progress, gen_in_progress" will be 0
          ** only on gen plan completion. So we don't need to handle this dialog for this plan completed case
@@ -798,15 +796,16 @@ export class VesselInfoComponent implements OnInit {
         // this.store.dispatch(new ImportGsisProgressAction(data.payload[0].import_in_progress));
       } else if (
         data?.isSuccess == true &&
-        data?.payload[0]?.gen_in_progress == 1 &&
-        data?.payload[0]?.import_in_progress == 0
+        data?.payload[0]?.gen_in_progress == true &&
+        data?.payload[0]?.import_in_progress == false
       ) {
         const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
           panelClass: 'confirmation-popup-operator',
           data: {
             message: 'Please wait, a new plan is getting generated for vessel ',
-            id: this.vesselData?.vesselRef?.vesselRef?.vesselCode
+            id: this.vesselData?.vesselRef?.vesselRef?.vesselCode,
+            okayButton: true
           }
           // data: {message : 'Already a request to generate a new plan for this vessel is under process. Please wait'}
         });
@@ -817,7 +816,7 @@ export class VesselInfoComponent implements OnInit {
         this.store.dispatch(
           new ImportGsisProgressAction(data.payload[0].import_in_progress)
         );
-      } else if (data.payload && data?.payload[0]?.import_in_progress == 1) {
+      } else if (data.payload && data?.payload[0]?.import_in_progress == true) {
         const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
           panelClass: 'confirmation-popup-operator',
@@ -853,53 +852,64 @@ export class VesselInfoComponent implements OnInit {
   }
 
   VesselHasNewPlanJob() {
-    let genBunkerPlanRef = null;
-    this.disableCurrentBPlan = true;
-    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
+    this.hideFlag = 0;
+    let currentUserId = this.store.selectSnapshot(UserProfileState.username);
+    let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
+    let vessalCode = vesseldata.vesselRef.vesselCode ?? vesseldata.vesselRef.code;
     //Need to check gen plan status once and check after every 15 sec after enter this screen to know the process gen plan completion
-    this.observableRef$ = timer(0, 15000)
+    this.observableRef$ = timer(0,15000)
     .pipe(
       switchMap(() => {
         let req = {
-          vessel_Code: vesseldata.vesselRef.vesselCode,
+          vessel_Code: vessalCode,
           generate_new_plan: 0, //(genBunkerPlanRef?.import_in_progress==0)? 1: 0,
           import_gsis: 0
         }
-        this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
-        return this.bunkerPlanService.getPlanStatus(req);
+        let payload_req = {vessel_Code:''}
+        //this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
+        return this.bunkerPlanService.getPlanStatus(payload_req);
     }))
-    .subscribe((data) => {
-      data = (data.payload?.length)? (data.payload)[0]: data.payload;
-      genBunkerPlanRef = data;
-      if(data.import_in_progress==0 && data.gen_in_progress==0) {
-        //Refresh current bunker plan section once gen plan get completed
-        let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
-        this.loadBunkerPlanDetails(vesseldata.vesselRef);
+    .subscribe((data_all) => {
+      this.disableCurrentBPlan = false;
+      let userVessalList = data_all.payload.filter(data => {
+        if(data.plan_generated_by == currentUserId && data.import_in_progress == false && data.gen_in_progress==false){
+          return data;
+        }
+        if(data.vessel_code.trim() == vessalCode.trim()  && data.gen_in_progress == true){
+          this.disableCurrentBPlan = true;
+        }else if(data.vessel_code.trim() == vessalCode.trim()  && data.gen_in_progress == false){
+          this.disableCurrentBPlan = false;
+        }
+      });
+
+      this.continueCheckingPlans = userVessalList.length;
+      if(this.hideFlag == 0){
+      userVessalList.forEach(data => {
+         // data = (data.payload?.length)? (data.payload)[0]: data.payload;
+      if(data.plan_generated_by == currentUserId &&  data.import_in_progress==false && data.gen_in_progress==false) {
+        this.hideFlag = 1;
         //Enable Import GSIS checkbox and generate button after gen plan success
-        this.disableCurrentBPlan = false;
+        //this.disableCurrentBPlan = false;
         this.isChecked = false;
         //unsubscribe next exec after 15 sec, if plan generate get completed
-        this.observableRef$.unsubscribe();
-
-        let vesselCode = this.vesselData?.vesselRef?.vesselRef?.code;
-        vesselCode = vesselCode? vesselCode : this.vesselData?.vesselRef?.vesselRef?.vesselCode;
-        let prevPlanId = this.vesselData?.vesselRef?.planId;
-        let todayDate = new Date(new Date().toLocaleDateString());
-        let planCreatedDate = data?.planCreatedDate;
-        planCreatedDate = new Date(new Date(planCreatedDate).setHours(0,0,0,0));
-        if((data?.planStatus == 'INV') && ((data?.plan_id).trim() != prevPlanId) && (+planCreatedDate == +todayDate) && this.BPlanGenTrigger.includes(this.vesselData?.vesselId)) {
-          const dialogInvalidRef = this.dialog.open(WarningoperatorpopupComponent, {
-            width: '350px',
-            panelClass: 'confirmation-popup-operator',
-            data: {message : 'latest bunker plan is Invalid', hideActionbtn: true }
-          });
-        } else if(data?.planStatus == 'INP' && ((data?.plan_id).trim() != prevPlanId) && vesselCode) {
+       // this.observableRef$.unsubscribe();
+        let vesselCode = data.vessel_code;
           const dialogValidRef = this.dialog.open(SuccesspopupComponent, {
             panelClass: ['success-popup-panel'],
             width: '350px',
-            data: {message : `A plan ${data?.plan_id} is generated for vessel ${vesselCode}`, hideActionbtn: true }
+            data: {
+              message : `A plan ${data?.plan_id} is generated for vessel ${vesselCode}`,
+              hideActionbtn: true, vCode : vesselCode, 
+              observableRestartFlag : this.continueCheckingPlans--,
+              observableIniFlag : userVessalList.length
+            }
           });
-        }
+          if(data.vessel_code.trim() == vessalCode.trim()){
+            //Refresh current bunker plan section once gen plan get completed
+            let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
+            this.loadBunkerPlanDetails(vesseldata.vesselRef);
+            this.disableCurrentBPlan = false;
+          }
         if(this.BPlanGenTrigger.indexOf(this.vesselData?.vesselId)!=-1) {
           this.BPlanGenTrigger.splice(this.BPlanGenTrigger.indexOf(this.vesselData?.vesselId), 1);
         }
@@ -907,7 +917,9 @@ export class VesselInfoComponent implements OnInit {
       //Check if auto-plan generation is happening at the backend. (Usually happens once in a day)
       if (this.checkAutoPlanGenInProgress == true)
         this.checkAutoPlanGenerationInProgress(data.auto_gen_possible_time);
-      });
+    });
+    }
+    });
   }
 
   checkAutoPlanGenerationInProgress(auto_gen_possible_time) {

@@ -3,26 +3,25 @@
     Applicable Location Costs - {{ requestLocation.locationName }}
   </div>
   <div class="spot-dialog-title-right popup-header-form">
-    <mat-checkbox
+    <!-- <mat-checkbox
       class="check-text"
       [(ngModel)]="duplicateCost"
       (change)="onRequestListCheckboxChange($event)"
       [disabled]="!requestListToDuplicateLocationBasedCost.length"
       [matTooltip]="!requestListToDuplicateLocationBasedCost.length? 'No request to copy': ''"
-    >Duplicate Costs to:</mat-checkbox>
+    >Duplicate Costs to:</mat-checkbox> -->
 
-    <ng-container *ngIf="!duplicateCost">
-      <div class="vessels_req">
-        All Vessels <span class="down-arrow"></span>
+    <!-- <ng-container *ngIf="!duplicateCost">
+      <div class="header-btn-icons">
+        <span  matTooltip="No Quote" matTooltipClass="lightTooltip"  class="no-quote-header-icon"></span>
       </div>
-    </ng-container>
-    <ng-container *ngIf="duplicateCost">
+    </ng-container> -->
+    <ng-container >
       <div
-        [matMenuTriggerFor]="clickmenu"
-        #menuTrigger="matMenuTrigger"
-        class="vessels_req"
+        class = "header-btn-icons"
       >
-        All Vessels <span class="down-arrow"></span>
+         <span class="duplicate-price" [matMenuTriggerFor]="clickmenu"
+               #menuTrigger="matMenuTrigger"></span>
       </div>
       <mat-menu
         #clickmenu="matMenu"
@@ -38,7 +37,10 @@
           >
             <div class="checkboxOptions">No request found</div>
           </div>
-
+          <div class="text">
+            <span>Copy To</span>
+          </div>
+          <div class="divider-line"></div>
           <div
             class="more-options-menu-inv no-border p-lr-0"
             (click)="$event.stopPropagation()"
@@ -60,14 +62,24 @@
               >
             </div>
           </div>
+          <div class="proceed-div" style="margin: 0px;">
+            <button
+              mat-button
+              class="mid-blue-button proceed-btn"
+              style="left: 116px;"
+              (click)="saveLocationAdditionalCosts('isProceed')"
+            >
+              Proceed
+            </button>
+          </div>
         </div>
-      </mat-menu></ng-container
-    >
-
+      </mat-menu>
+      </ng-container>
+    
     <button
       mat-button
-      [ngClass]="{ 'save-btn': !enableSave, 'mid-blue-button': enableSave }"
-      (click)="saveLocationAdditionalCosts()"
+      [ngClass]="{ 'mid-blue-button': enableSave }"
+      (click)="saveLocationAdditionalCosts('isSave')"
     >
       Save
     </button>
@@ -93,12 +105,24 @@
         <tr>
           <th
             class="increment-circle-button"
-            style="width: 30px;"
-            (click)="addNewLocationCost()"
+            style="width: 50px;"
           >
+          <div class="row" style="padding-left: 10px;">
             <div class="increment-circle">
-              <div class="plus">+</div>
+              <div class="plus"  (click)="addNewLocationCost()">+</div>
             </div>
+            <div class="" style="padding-left: 3px ;">
+              <mat-checkbox
+                 #checkbox
+                 style="padding-left: 4px;"
+                 class="mat-checkbox"
+                 [(ngModel)]="isCheckedMain"
+                 (change)="checkUncheckAll($event, -1)"
+              >
+              </mat-checkbox>
+            
+            </div>
+          </div>
           </th>
           <th class="text-left">Cost Name</th>
           <th class="text-left">Cost Type</th>
@@ -122,14 +146,28 @@
             *ngFor="let locationCost of locationBasedCosts; let j = index"
           >
             <tr class="border-bottom" *ngIf="!locationCost.isDeleted">
-              <td class="decrement-circle-button" style="width: 30px;">
-                <div
+              <td class="decrement-circle-button" style="width: 50px;">
+                <div class="row" style="padding-left: 10px;">
+                  <div
                   class="decrement-circle"
                   *ngIf="!locationCost.hasStemmedProduct"
                   (click)="removeLocationCost(j)"
                 >
                   <div class="minus">-</div>
                 </div>
+                <div
+                  class="" style="padding-left: 3px;"
+                >
+                <mat-checkbox
+                style="padding-left: 4px;"
+                 class="mat-checkbox"
+                 [(ngModel)]="locationCost.isSelected"
+                 (change)="checkUncheckAll($event, j)"
+                 >
+             </mat-checkbox>
+                </div>
+                </div>
+                
               </td>
               <td
                 class="text-left "
@@ -213,9 +251,9 @@
                   <mat-select
                     [ngModel]="locationCost.selectedApplicableForId"
                     (ngModelChange)="
-                      locationCost.selectedApplicableForId = $event;
-                      onApplicableForChange($event, j)
+                      locationCost.selectedApplicableForId = $event
                     "
+                    (selectionChange)="onApplicableForChange($event.value, j)"
                     [disableOptionCentering]="true"
                     panelClass="spot-select-panel-container"
                     [disabled]="
@@ -275,12 +313,15 @@
               <td>
                 <div class="non-editable-container">
                   <div class="non-editable-container-text-left">
-                    {{
+                    <span *ngIf="locationCost.costType !== 'Percent'">
+                        {{amountFormatValue(locationCost?.totalAmount)}}
+                    </span>
+                    <!-- {{
                       locationCost.totalAmount &&
                       locationCost.costType !== 'Percent'
                         ? amountFormatValue(locationCost.totalAmount)
                         : ' '
-                    }}
+                    }} -->
                   </div>
                   <div class="non-editable-container-text-left">
                     &nbsp;{{

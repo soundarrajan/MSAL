@@ -20,6 +20,7 @@ import {
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
+import { openDB } from 'idb';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
@@ -38,7 +39,7 @@ export class SpotNegotiationService extends BaseStoreService
   physicalSupplierTotalCount: any;
   requestCount: any;
   hArray : any = [];
-
+  // indexedDBList: any = [];
   constructor(
     protected store: Store,
     loggerFactory: ModuleLoggerFactory,
@@ -608,7 +609,9 @@ export class SpotNegotiationService extends BaseStoreService
     newValue,
     currentLocation,
     isPriceCopied,
-    sourceReqProOff
+    sourceReqProOff,
+    isFormulaPricing ?,
+    offerPriceFormulaId ?
   ) {
     const productDetails = this.getRowProductDetails(row, product.id);
 
@@ -646,6 +649,8 @@ export class SpotNegotiationService extends BaseStoreService
           ? 0
           : productDetails.targetDifference;
       productDetails.isOfferPriceCopied = isPriceCopied;
+      productDetails.isFormulaPricing = isFormulaPricing;
+      productDetails.offerPriceFormulaId = offerPriceFormulaId;
       productDetails.currencyId = isPriceCopied
         ? sourceReqProOff?.currencyId
         : productDetails.currencyId;
@@ -725,4 +730,77 @@ export class SpotNegotiationService extends BaseStoreService
   getOfferPrice(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.getOfferPriceHistory(payload);
   }
+
+  @ObservableException()
+  getSellerRatingforNegotiation(payload: any): Observable<unknown>{
+    return this.spotNegotiationApi.getSellerRatingforNegotiation(payload)  ;
+  }
+
+  @ObservableException()
+  getContractFormulaList(payload): Observable<unknown> {
+    return this.spotNegotiationApi.getContractFormulaList(payload);
+  }
+
+  @ObservableException()
+  getMasterFormula(payload): Observable<unknown> {
+    return this.spotNegotiationApi.getMasterFormula(payload);
+  }
+  
+  //Getting Static Lists from indexedDB
+  // public async getStaticListFromIDB(){
+  //   const db = await openDB('Shiptech',10)
+  //   db.getAll('listsCache').then(x=>
+  //     this.indexedDBList = x[0].data
+  //   );
+  // }
+
+  @ObservableException()
+  addNewFormulaPrice(payload, requestOfferId): Observable<unknown> {
+     return this.spotNegotiationApi.addNewFormulaPrice(payload, requestOfferId);
+   }
+
+   @ObservableException()
+   updateFormulaPrice(payload, requestOfferId, priceConfigurationId): Observable<unknown> {
+     return this.spotNegotiationApi.updateFormulaPrice(payload, requestOfferId, priceConfigurationId);
+   }
+
+   @ObservableException()
+   evaluateFormulaPrice(payload): Observable<unknown> {
+    return this.spotNegotiationApi.evaluateFormulaPrice(payload);
+  }
+
+  @ObservableException()
+  cloneToPriceConfiguration(payload): Observable<unknown> {
+    return this.spotNegotiationApi.cloneToPriceConfiguration(payload);
+  }
+
+  @ObservableException()
+  orderPriceEvaluations(payload): Observable<unknown> {
+    return this.spotNegotiationApi.orderPriceEvaluations(payload);
+  }
+
+  @ObservableException()
+  evaluatePrices(payload): Observable<unknown> {
+    return this.spotNegotiationApi.evaluatePrices(payload);
+  }
+
+  @ObservableException()
+  getOfferPriceConfiguration(requestOfferId: number, priceConfigurationId: number): Observable<unknown> {
+    return this.spotNegotiationApi.getOfferPriceConfiguration(requestOfferId, priceConfigurationId);
+  }
+
+  @ObservableException()
+  getDefaultConversionFactor(payload): Observable<unknown>{
+    return this.spotNegotiationApi.getDefaultConversionFactor(payload);
+  }
+
+  @ObservableException()
+  copyPriceConfigurations(payload): Observable<unknown>{
+    return this.spotNegotiationApi.copyPriceConfigurations(payload);
+  }
+  @ObservableException()
+  removeFormula(requestOfferId,priceConfigId):Observable<unknown>{
+    return this.spotNegotiationApi.removeFormula(requestOfferId,priceConfigId);
+  }
+
 }

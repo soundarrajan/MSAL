@@ -1,0 +1,43 @@
+<div class="search-request-popup grid-ui">
+    <div class="header">
+        <div class="title">Search Formula</div>
+        <div style="display:flex">
+            <input #formulaInput type="text" placeholder="Search formula here" class="search-box" (input)="searchFormula(formulaInput.value)">
+            <button class="searchButton" type="submit" (click)="searchFormula(formulaInput.value)">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+        <div class="header-btn rows" style="display: flex;">
+            <button class="blue-button" style="width:100px;border-radius:3px" [ngStyle]="formulaSelected?{'pointer-events': 'all'} : {'pointer-events': 'none'}" (click)="proceed();">Proceed</button>
+            <div class="title-divider">|</div>
+            <span class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
+        </div>
+    </div>
+    <mat-dialog-content style="overflow: hidden;">
+        <ag-grid-angular id="tradelistgrid" style="height: calc(100vh - 235px);"
+            [gridOptions]="dialog_gridOptions"  
+            class="ag-theme-material angular-v9" 
+            [rowData]="rowData"
+            (selectionChanged)="onSelectionChanged($event)"
+            [overlayLoadingTemplate]="overlayLoadingTemplate"
+            [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+            >
+        </ag-grid-angular>
+        <div class="footer-popup">
+            <app-ag-footer-new
+            [gridViewModel]="dialog_gridOptions"
+            [page]="page"
+            [size]="pageSize"
+            [count]="totalItems"
+            [singleGrid]="true"
+            [doublePagination]="true"
+            [maxSize]="765"
+            id="{{ gridId }}"
+            (pageChange)="onPageChange($event.page)"
+            (newPageSize) = "onPageSizeChange($event.pageSize)"
+            [enabler] = "true"
+          >
+          </app-ag-footer-new>
+          </div>
+    </mat-dialog-content>
+</div>

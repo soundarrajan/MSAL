@@ -1,0 +1,27 @@
+.sellerrating-popup .spot-popup-header-container .close{
+    opacity: .5;
+}
+
+.sellerrating-popup .spot-popup-header-container .close:hover{
+    opacity: 100;
+}
+
+.sellerrating-popup .spot-popup-header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.sellerrating-popup .spot-dialog-title-right .supplierName {
+    padding: 0 12px;
+    margin: 0 12px;
+    border-right: 1px solid #c4c4c4;
+    font-weight: 400;
+}
+.sellerrating-popup .spot-dialog-title-right .supplierName .value {
+    font-weight: 500;
+    color: rgba(0,0,0,.87)
+}

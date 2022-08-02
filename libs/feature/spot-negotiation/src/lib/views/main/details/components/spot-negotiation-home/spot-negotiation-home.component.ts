@@ -16,6 +16,7 @@ import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from '../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
   SetLocationsRows,
+  SetOfferPriceFormulaId,
   UpdateRequest
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotnegoemaillogComponent } from '../spotnegoemaillog/spotnegoemaillog.component';
@@ -397,13 +398,44 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   sendRFQs() {
+    let selectedSellerrName: String;
+    let selectedCounterpartyList = [];
     let requestProductIds = this.selectedSellerList.map(
       x => x.RequestProductIds
     );
+    let locRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+
+
+    this.selectedSellerList.forEach(selectedSeller => {
+      if(selectedSeller.RfqId !== 0 && selectedSeller.RequestOffers?.length > 0 && !selectedSeller.RequestOffers?.some(x => !x.isRfqskipped && !x.isDeleted)){
+          if (selectedSellerrName)
+          selectedSellerrName =
+          selectedSellerrName +
+              ', ' +
+              locRows.find(x=> x.sellerCounterpartyId === selectedSeller.SellerId).sellerCounterpartyName;
+          else
+          selectedSellerrName =
+          locRows.find(x=> x.sellerCounterpartyId === selectedSeller.SellerId).sellerCounterpartyName;
+
+      }
+      else{
+        selectedCounterpartyList.push(selectedSeller);
+      }
+    });
+
+    if (selectedSellerrName) {
+      this.toaster.error(
+        'RFQ mail cannot be sent as the RFQ was skipped earlier for  ' + selectedSellerrName 
+      );
+    }
+    if(selectedCounterpartyList.length === 0) {return;}
+
     var FinalAPIdata = {
       RequestGroupId: this.currentRequestInfo.requestGroupId,
       quoteByDate: new Date(this.child.getValue()),
-      selectedSellers: this.selectedSellerList
+      selectedSellers: selectedCounterpartyList
     };
     this.spinner.show();
 
@@ -470,6 +502,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.spotNegotiationService.callGridRedrawService();
       this.changeDetector.detectChanges();
     });
+  }
+
+ toTitleCase(str) {
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      }
+    );
   }
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
@@ -887,7 +928,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
                       proOff.price,
                       reqLoc,
                       true,
-                      proOff
+                      proOff,
+                      proOff.isFormulaPricing,
+                      proOff.offerPriceFormulaId
                     );
                     requestProductIds.push(
                       reqLoc.requestProducts?.find(
@@ -972,7 +1015,38 @@ export class SpotNegotiationHomeComponent implements OnInit {
         RequestLocationIds: requestLocationIds,
         RequestGroupId: this.currentRequestInfo.requestGroupId
       };
-      this.spinner.show();
+      let sellerDetailsforFormula =[] ;
+      sellerDetails.map(rows => rows.Offers.map(offer => {
+         offer.requestOffers.map(x=> {
+          if(x.isFormulaPricing && x.offerPriceFormulaId){
+            sellerDetailsforFormula.push({
+              priceConfigurationId : x.offerPriceFormulaId,
+              requestOfferIds : [x.id]
+            })
+          }
+         })
+      }));
+      if(sellerDetailsforFormula.length>0){
+        const payload = {
+          copyOfferPrices : sellerDetailsforFormula
+         }
+        this.spinner.show();
+        this.spotNegotiationService.copyPriceConfigurations(payload)
+        .subscribe((res: any)=>{
+          this.spinner.hide();
+          if (res?.message == 'Unauthorized') {
+            return;
+          }
+          res.copyOfferPrices.forEach(off=>{
+            let payload = {
+              RequestOfferId: off.requestOfferId,
+              priceConfigurationId: off.priceConfigurationId
+            };
+            this.store.dispatch(new SetOfferPriceFormulaId(payload));
+          })
+        });
+      }
+       
       const response = this.spotNegotiationService.copyPriceDetails(
         copyPricePayload
       );
@@ -1648,8 +1722,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         price: productDetails.price,
         cost: productDetails.cost,
         currencyId: productDetails.currencyId,
-        isOfferPriceCopied: productDetails.isOfferPriceCopied,
-        hasNoQuote : productDetails.hasNoQuote
+        isFormulaPricing : productDetails.isFormulaPricing,
+        hasNoQuote : productDetails.hasNoQuote,
+        offerPriceFormulaId: productDetails.offerPriceFormulaId,
       };
       requestOffers.push(requOffer);
     });

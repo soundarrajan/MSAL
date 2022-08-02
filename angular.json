@@ -106,7 +106,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "7mb"
+                  "maximumError": "9mb"
                 }
               ],
               "fileReplacements": [
@@ -129,7 +129,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
+                  "maximumWarning": "5mb",
                   "maximumError": "7mb"
                 }
               ],

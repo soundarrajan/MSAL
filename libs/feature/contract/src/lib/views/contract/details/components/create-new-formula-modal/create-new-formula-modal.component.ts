@@ -698,10 +698,23 @@ export class CreateNewFormulaModalComponent
   }
 
   saveFormula() {
+    let payload = _.cloneDeep(this.formValues);
+    if (payload.complexFormulaQuoteLines && payload.complexFormulaQuoteLines?.length > 0) {
+      for (let cfql of payload.complexFormulaQuoteLines) {
+        if (cfql.systemInstruments) {
+          for (var i = cfql.systemInstruments.length - 1; i >= 0; i--) {
+            if(!(cfql.systemInstruments[i]?.id > 0) && !cfql.systemInstruments[i]?.systemInstrument
+            && !cfql.systemInstruments[i]?.marketPriceTypeId) {
+              cfql.systemInstruments.splice(i, 1);
+            }
+          }
+        }
+      }
+    }
     if (this.formValues.id) {
       this.spinner.show();
       this.contractService
-        .updateFormula(this.formValues)
+        .updateFormula(payload)
         .pipe(
           finalize(() => {
             this.spinner.hide();
@@ -721,7 +734,7 @@ export class CreateNewFormulaModalComponent
     } else {
       this.spinner.show();
       this.contractService
-        .saveFormula(this.formValues)
+        .saveFormula(payload)
         .pipe(
           finalize(() => {
             this.spinner.hide();

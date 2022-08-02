@@ -99,7 +99,7 @@
                               <td><div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" [textContent]="ROBArbitrageData?.hsdisCurrentStock" (input)="ROBOnChange($event,$event.target.textContent, 'HSDIS');ROBArbitrageData.hsdisCurrentStock=$event.target.textContent" [ngClass]="hsdisRobClasses">{{ROBArbitrageData?.hsdisCurrentStock? (ROBArbitrageData?.hsdisCurrentStock): 0}}</div></td>
                             </tr>
                           <tr>
-                            <th scope="row">MSPS <span>(dt: {{ROBArbitrageData?.mspsestdate | date: 'dd/MM/yyyy'}})</span></th>
+                            <th scope="row">MSPS <span>(dt: {{ (!ROBArbitrageData?.mspsestdate || (ROBArbitrageData?.mspsestdate | date: 'dd/MM/yyyy') == '01/01/0001') ? '' : (ROBArbitrageData?.mspsestdate | date: 'dd/MM/yyyy') }})</span></th>
                             <td colspan=2>{{ROBArbitrageData?.mspshsfo? (ROBArbitrageData?.mspshsfo): 0}}</td>
                             <td>{{ROBArbitrageData?.mspsulsfo? (ROBArbitrageData?.mspsulsfo): 0}}</td>
                             <td>{{ROBArbitrageData?.mspslsdis? (ROBArbitrageData?.mspslsdis): 0}}</td>

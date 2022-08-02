@@ -51,6 +51,7 @@ export class BunkeringPlanComponent implements OnInit {
   public sodCommentsUpdated: boolean = false;
   public rowData;
   public bPlanData: any;
+  public orig_bPlanData: any;
   public selectedPort: any = [];
   public vesselData: any;
   public latestPlanId: any;
@@ -147,11 +148,6 @@ export class BunkeringPlanComponent implements OnInit {
       onGridSizeChanged: function(params) {
         params.api.sizeColumnsToFit();
       }
-      // onRowDataChanged: function (params) {
-      //   if(this.rowData)
-      //     this.gridOptions.suppressLoadingOverlay = true;
-
-      // }
     };
   }
 
@@ -176,11 +172,6 @@ export class BunkeringPlanComponent implements OnInit {
           field: 'operator_ack',
           resizable: false,
           width: 45,
-          // cellClassRules: {
-          //   'lightgreen': function (params) {
-          //     return params.value == 1?true:false;
-          //   }
-          // },
           cellClass: [
             'custom-check-box aggrid-content-center aggrid-left-ribbon '
           ],
@@ -764,7 +755,7 @@ export class BunkeringPlanComponent implements OnInit {
         hsfo05_stock: bPlan.hsfo05_stock,
         hsfo_est_consumption_color: bPlan.hsfo_est_consumption_color,
         hsfo_estimated_consumption: bPlan.hsfo_estimated_consumption,
-        hsfo_estimated_lift: bPlan.hsfo_estimated_lift,
+        hsfo_estimated_lift: bPlan.hsfo_estimated_lift+bPlan.vlsfo_estimated_lift,
         hsfo_max_lift: bPlan.hsfo_max_lift,
         hsfo_max_lift_color: bPlan.hsfo_max_lift_color,
         hsfo_min_sod: bPlan.hsfo_min_sod,
@@ -773,6 +764,9 @@ export class BunkeringPlanComponent implements OnInit {
         hsfo_soa: bPlan.hsfo_soa,
         hsfo_sod_comment: bPlan.hsfo_sod_comment,
         is_alt_port: bPlan.is_alt_port,
+        is_alt_port_hsfo: bPlan.is_alt_port_hsfo,
+        is_alt_port_ulsfo: bPlan.is_alt_port_ulsfo,
+        is_alt_port_lsdis: bPlan.is_alt_port_lsdis,
         is_end_of_service: bPlan.is_end_of_service,
         is_min_soa: bPlan.is_min_soa,
         is_new_port: bPlan.is_new_port,
@@ -820,6 +814,7 @@ export class BunkeringPlanComponent implements OnInit {
         voyage_detail_id: bPlan.voyage_detail_id
       });
     });
+    this.orig_bPlanData = data;
     this.store.dispatch(new SaveBunkeringPlanAction(data));
   }
   portClicked(params) {
@@ -843,22 +838,14 @@ export class BunkeringPlanComponent implements OnInit {
   }
   toggleOperAck(params) {
     this.triggerChangeEvent();
-    // let RefreshCellsParams = {
-    //   columns: [params.colDef.colId], // specify columns, or all columns by default
-    //   rowNodes: [params.node],
-    //   force: false, // skips change detection, refresh everything
-    //   suppressFlash: false, // skips cell flashing, if cell flashing is enabled
-    // }
-    // params.api.refreshCells(RefreshCellsParams);
     this.triggerRefreshGrid();
     this.gridChanged = true;
     this.localService.setBunkerPlanState(this.gridChanged);
   }
 
-  toggleSave() {
+  toggleSave() {    
     this.gridSaved = true;
     this.gridChanged = false;
-    //this.getRecalculatedHsfoCurrentStock();
     let currentROBObj = this.store.selectSnapshot(
       SaveCurrentROBState.saveCurrentROB
     );
@@ -884,16 +871,11 @@ export class BunkeringPlanComponent implements OnInit {
       lsdis_current_stock: currentROBObj?.LSDIS,
       hsdis_current_stock: currentROBObj?.HSDIS,
       plan_details: dataFromStore,
-      is_vessel_role_played: storeVesselData.userRole == 'Vessel' ? 1 : 0, //this.selectedUserRole == 1 ? 1 : 0,
-      generate_new_plan: this.store.selectSnapshot(
-        GeneratePlanState.getGeneratePlan
-      ),
-      import_gsis: this.store.selectSnapshot(GeneratePlanState.getImportGsis),
-      send_plan: this.store.selectSnapshot(GeneratePlanState.getSendPlan)
+      is_vessel_role_played: storeVesselData.userRole == 'Vessel' ? 1 : 0
     };
     let isHardValidated = this.checkBunkerPlanValidations(dataFromStore);
     if (isHardValidated === 0) {
-      this.bplanService.saveBunkeringPlanDetails(req).subscribe(data => {
+      this.bplanService.saveBunkeringPlanDetails(req).subscribe(data => {        
         if (data?.isSuccess == true) {
           const dialogRef = this.dialog.open(SuccesspopupComponent, {
             panelClass: ['success-popup-panel'],
@@ -964,23 +946,28 @@ export class BunkeringPlanComponent implements OnInit {
       SaveBunkeringPlanState.getTotalTankCapacity
     );
     //business address validation
-    let isValidBusinessAddress =
+    let idx =
       data.findIndex(
         data =>
-          (!data?.business_address ||
-            !mailPattern.test(data?.business_address)) &&
-          data?.operator_ack == 1
-      ) == -1
-        ? 'Y'
-        : 'N';
-    if (isValidBusinessAddress == 'N') {
-      let id = data.findIndex(
-        data =>
-          (!data?.business_address ||
-            !mailPattern.test(data?.business_address)) &&
+          (!data?.business_address) &&
           data?.operator_ack == 1
       );
-      let port_id = data[id]?.port_id;
+
+    if (idx == -1) {
+      idx =
+        data.findIndex(
+          data => {
+            let BAs: [] = data?.business_address.split(',');
+            for (let ba of BAs) {
+              if (!mailPattern.test(ba) && data?.operator_ack == 1)
+                return data;
+            }
+          }
+        );
+    }
+
+    if (idx > -1) {
+      let port_id = data[idx]?.port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
         panelClass: 'confirmation-popup-operator',
@@ -989,6 +976,7 @@ export class BunkeringPlanComponent implements OnInit {
       isHardValidation = 1;
       return isHardValidation;
     }
+    
     // Min HSFO SOD validation : Min HSFO SOD > HSFO tank capacity
     let isValidHsfoSod =
       data.findIndex(
@@ -1011,8 +999,6 @@ export class BunkeringPlanComponent implements OnInit {
     }
     // Total max SOD validation : Total max SOD< Total min SOD ; if the Total Max SOD is greater than 0, then the comparison needs to be done by Total Tank Capacity
     let isValidMaxSod = data.findIndex(data => {
-      // let OpUpdated = opUdatedColumn.find(op => op.detail_no == data.detail_no);
-      // let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
       if (parseInt(data?.max_sod) > 0)
         return parseInt(data?.max_sod) < parseInt(data?.min_sod);
       else return parseInt(totalTankCapacity) < parseInt(data?.min_sod);
@@ -1020,8 +1006,6 @@ export class BunkeringPlanComponent implements OnInit {
     isValidMaxSod = isValidMaxSod == -1 ? 'Y' : 'N';
     if (isValidMaxSod == 'N') {
       let id = data.findIndex(data => {
-        // let OpUpdated = opUdatedColumn.find(op => op.detail_no == data.detail_no);
-        // let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
         if (parseInt(data?.max_sod) > 0)
           return parseInt(data?.max_sod) < parseInt(data?.min_sod);
         else return parseInt(totalTankCapacity) < parseInt(data?.min_sod);
@@ -1064,8 +1048,6 @@ export class BunkeringPlanComponent implements OnInit {
     // min ECA bunker SOD validation : ECA Min SOD + HSFO Min SOD > Total Max SOD ; if the Total Max SOD is greater than 0, then the comparison needs to be done by Total Tank Capacity
     let isValidMinEcaSod = data.findIndex(params => {
       let sum = parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
-      // let OpUpdated = opUdatedColumn.find(op => op.detail_no == params.detail_no);
-      //   let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
       if (parseInt(params?.max_sod) > 0) return sum > parseInt(params?.max_sod);
       else return sum > parseInt(totalTankCapacity);
     });
@@ -1074,8 +1056,6 @@ export class BunkeringPlanComponent implements OnInit {
       let id = data.findIndex(params => {
         let sum =
           parseInt(params?.eca_min_sod) + parseInt(params?.hsfo_min_sod);
-        // let OpUpdated = opUdatedColumn.find(op => op.detail_no == params.detail_no);
-        //   let IsMaxSodOpUpdated = OpUpdated.op_updated_columns.split('0', 7);
         if (parseInt(params?.max_sod) > 0)
           return sum > parseInt(params?.max_sod);
         else return sum > parseInt(totalTankCapacity);
@@ -1204,15 +1184,12 @@ export class BunkeringPlanComponent implements OnInit {
     let data = params.data;
     if (data.rowIndex == 0) data.hsfo_current_stock = 1000 - value;
     let index = params.node.rowIndex;
-    // this.gridOptions.api.applyTransaction({
-    //   update: [data]
-    // })
   }
   sodCommentsUpdatedEvent() {
     this.sodCommentsUpdated = true;
   }
 
-  calculateSOA(column) {
+  calculateSOA(column) {    
     if (this.store.selectSnapshot(UpdateBplanTypeState.getBplanType) == 'C') {
       let currentROB = this.store.selectSnapshot(
         SaveCurrentROBState.saveCurrentROB
@@ -1250,7 +1227,8 @@ export class BunkeringPlanComponent implements OnInit {
           let currentRobUslfo = currentROB.ULSFO ? currentROB.ULSFO : 0;
           if (rowData2.length > 0) {
             for (let i = 0; i < rowData2.length; i++) {
-              let lsdisAsEca = 0;
+              let orig_lsdisAsSeca = this.orig_bPlanData?.find(x => x.detail_no == rowData2[i].detail_no).lsdis_as_eca;
+
               //For Port 0
               if (i == 0) {
                 this.calculateConsumptionAndLsdisAsEca(
@@ -1259,7 +1237,8 @@ export class BunkeringPlanComponent implements OnInit {
                   parseInt(currentRobUslfo.toString()),
                   rowData2,
                   estdConsEcaList,
-                  estdConsLsdisList
+                  estdConsLsdisList,
+                  parseInt(orig_lsdisAsSeca.toString())
                 );
               }
               //For Port 1 to N
@@ -1270,7 +1249,8 @@ export class BunkeringPlanComponent implements OnInit {
                   parseInt(rowData2[i - 1].ulsfo_soa),
                   rowData2,
                   estdConsEcaList,
-                  estdConsLsdisList
+                  estdConsLsdisList,
+                  parseInt(orig_lsdisAsSeca)
                 );
               }
               rowData2 = this.rowData;
@@ -1309,7 +1289,7 @@ export class BunkeringPlanComponent implements OnInit {
             //For Port 1 to N
             else {
               rowData2[i].hsfo_soa =
-                parseInt(rowData2[i - 1].hsfo_estimated_lift) +
+                parseInt(rowData2[i - 1].hsfo_estimated_lift) + parseInt(rowData2[i - 1].vlsfo_estimated_lift) +
                 parseInt(rowData2[i - 1].hsfo_soa) -
                 parseInt(estdConsHsfoList[i].hsfo_estimated_consumption);
             }
@@ -1339,14 +1319,15 @@ export class BunkeringPlanComponent implements OnInit {
     ulsfoCurrentRob,
     rowData,
     ecaEstdConsList,
-    lsdisEstdConsList
+    lsdisEstdConsList,
+    origLsdisAsEca
   ) {
     let currentROB = this.store.selectSnapshot(
       SaveCurrentROBState.saveCurrentROB
     );
     let ulsfo_cons = 0;
-    let ulsfo_unpumpables = currentROB.upulsfo ? currentROB.upulsfo : 0;
-    let lsdis_unpumpables = currentROB.uplsdis ? currentROB.uplsdis : 0;
+    let ulsfo_unpumpables = 0;
+    let lsdis_unpumpables = 0;
     let ulsfo_original_stock = 0;
     let lsdis_original_stock = 0;
     let prev_ulsfo_lift = 0;
@@ -1366,11 +1347,11 @@ export class BunkeringPlanComponent implements OnInit {
       prev_lsdis_lift = 0;
     } else {
       prev_ulsfo_lift =
-        rowData[index - 1].is_alt_port == 'D'
+        rowData[index - 1].is_alt_port_ulsfo == 'D'
           ? parseInt(rowData[index - 1].ulsfo_estimated_lift)
           : 0;
       prev_lsdis_lift =
-        rowData[index - 1].is_alt_port == 'D'
+        rowData[index - 1].is_alt_port_lsdis == 'D'
           ? parseInt(rowData[index - 1].lsdis_estimated_lift)
           : 0;
     }
@@ -1407,6 +1388,16 @@ export class BunkeringPlanComponent implements OnInit {
           ? ulsfo_cons - ulsfo_reduce_cons
           : lsdis_original_stock;
 
+    // Recalculate 'ulsfo to be reduced' and 'lsdis_as_eca' when lsdis_as_eca goes below orig lsdis_as_eca
+    if (lsdis_as_eca < origLsdisAsEca && ulsfo_cons >= origLsdisAsEca) {
+      if (ulsfo_reduce_cons <= (origLsdisAsEca - lsdis_as_eca)) {
+        ulsfo_reduce_cons = (origLsdisAsEca - lsdis_as_eca) - ulsfo_reduce_cons;
+        lsdis_as_eca = origLsdisAsEca;
+      } else {
+        ulsfo_reduce_cons = ulsfo_reduce_cons - (origLsdisAsEca - lsdis_as_eca);
+        lsdis_as_eca = origLsdisAsEca;
+      }
+    }
     //Pending Cons
     pendingCons = ulsfo_cons - lsdis_as_eca - ulsfo_reduce_cons;
 

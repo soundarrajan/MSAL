@@ -72,11 +72,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // this.spotNegotiationService.getStaticListFromIDB();
     this.spinner.show();
     const requestIdFromUrl = this.route.snapshot.params.requestId;
     if(requestIdFromUrl && isNumeric(requestIdFromUrl)){
       localStorage.setItem('activeRequestId', requestIdFromUrl.toString());
     }
+    this.setFormulaList();
     this.getStaticLists();
     this.getAdditionalCosts();
     this.getRequestGroup();
@@ -427,19 +429,80 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  setFormulaList(){
+    let payload = {
+      PageFilters: {
+        Filters: []
+      },
+      Filters: [
+        {
+          ColumnName: 'ContractId',
+          Value: null
+        }
+      ],
+      SearchText: null,
+      Pagination: {
+        Skip: 0,
+        Take: 9999
+      }
+    };
+    const response =  this.spotNegotiationService.getContractFormulaList(payload)
+    response.subscribe((data: any)=>{
+      sessionStorage.setItem('formula', JSON.stringify(data));
+    })
+  }
+
   getStaticLists(): void {
     let staticLists = {};
     forkJoin(
       { currencies: this.legacyLookupsDatabase.getTableByName('currency'),
         products: this.legacyLookupsDatabase.getTableByName('product'),
         // inactiveProducts: this.legacyLookupsDatabase.getTableByName('inactiveProducts'),
-        uoms: this.legacyLookupsDatabase.getTableByName('uom')
+        uoms: this.legacyLookupsDatabase.getTableByName('uom'),
+        otherLists : this.spotNegotiationService.getStaticLists([
+          'Company',
+          'Seller',
+          'PaymentTerm',
+          'Incoterm',
+          'ApplyTo',
+          'ContractualQuantityOption',
+          'Uom',
+          'UomMass',
+          'UomVolume',
+          'ContractConversionFactorOptions',
+          'SpecParameter',
+          'FormulaType',
+          'SystemInstrument',
+          'MarketPriceType',
+          'FormulaPlusMinus',
+          'FormulaFlatPercentage',
+          'Currency',
+          'FormulaOperation',
+          'FormulaFunction',
+          'MarketPriceType',
+          'PricingSchedule',
+          'HolidayRule',
+          'PricingSchedulePeriod',
+          'Event',
+          'DayOfWeek',
+          'BusinessCalendar',
+          'FormulaEventInclude',
+          'ContractTradeBook',
+          'QuantityType',
+          'Product',
+          'Location',
+          'AdditionalCost',
+          'CostType',
+          'Customer'
+        ])
       }
     ).subscribe((res: any)=>{
       staticLists = {'currency': res.currencies };
       staticLists = { ...staticLists, 'product': res.products};
       // staticLists = { ...staticLists, 'inactiveProducts': res.inactiveProducts};
       staticLists = { ...staticLists, 'uom': res.uoms};
+      staticLists = {...staticLists, 'otherLists': res.otherLists}
       this.store.dispatch(new SetStaticLists(staticLists));
     });
   }

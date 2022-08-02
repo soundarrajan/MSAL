@@ -16,10 +16,8 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { DecimalPipe } from '@angular/common';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
-import { finalize } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { UpdateRequest } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
-
 export const COMPONENT_TYPE_IDS = {
   TAX_COMPONENT: 1,
   PRODUCT_COMPONENT: 2
@@ -47,7 +45,8 @@ export class ApplicablecostpopupComponent implements OnInit {
   isBtnActive: boolean = false;
   isButtonVisible = true;
   iscontentEditable = false;
-
+  isCheckedMain:boolean = true;
+  isChecked:boolean =  true;
   locationCosts: any = []; // location specific costs from location master
   locationBasedCosts: AdditionalCostViewModel[] = []; // saved location based costs
   deletedCosts: AdditionalCostViewModel[] = []; // deleted costs
@@ -162,6 +161,9 @@ export class ApplicablecostpopupComponent implements OnInit {
               this.locationBasedCosts = this.formatCostItemForDisplay(
                 response.locationAdditionalCosts
               );
+              if(this.locationBasedCosts.length ===0){
+                this.isCheckedMain = false;
+              }
               this.calcLocationBasedAdditionalCosts(this.locationBasedCosts);
               this.changeDetectorRef.detectChanges();
             } 
@@ -357,7 +359,11 @@ export class ApplicablecostpopupComponent implements OnInit {
     }
   }
 
-  saveLocationAdditionalCosts() {
+  saveLocationAdditionalCosts(save: string) {
+    if(this.locationBasedCosts.length === 0 && this.enableSave == false){
+      this.toastr.warning('Please Select Atleast one Row');
+      return;
+    }
     let findIfLocationCostExists = _.filter(this.locationBasedCosts, function(
       object
     ) {
@@ -388,13 +394,15 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.toastr.error(locationBasedCostsRequiredString);
       return;
     }
-
-    let selectedRequestList = _.filter(
-      this.requestListToDuplicateLocationBasedCost,
-      function(request) {
-        return request.isSelected;
-      }
-    );
+    let selectedRequestList = [];
+    if(save == 'isProceed'){
+       selectedRequestList = _.filter(
+        this.requestListToDuplicateLocationBasedCost,
+        function(request) {
+          return request.isSelected;
+        }
+      );
+    }
 
     if (this.duplicateCost && selectedRequestList.length == 0) {
       this.toastr.error('At least one request should be selected!');
@@ -424,6 +432,11 @@ export class ApplicablecostpopupComponent implements OnInit {
       return;
     }
 
+    if(!selectedRequestList.length && save == 'isProceed'){
+      this.toastr.warning('Please Select Atleast one Request');
+      return;
+    }
+    
     if (selectedRequestList.length) {
       this.copyLocationBasedCostToSelectedRequest(selectedRequestList);
     }
@@ -438,7 +451,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.spotNegotiationService
         .saveOfferAdditionalCosts(payload)
         .subscribe((res: any) => {
-          this.enableSave = false;
+         // this.enableSave = false;
           if (res?.message == 'Unauthorized') {
             return;
           }
@@ -460,7 +473,7 @@ export class ApplicablecostpopupComponent implements OnInit {
             });            
             this.store.dispatch(new UpdateRequest(reqs));
             this.toastr.success('Additional cost saved successfully.');
-            this.closeDialog();
+            
           } else this.toastr.error('Please try again later.');
         });
     }
@@ -482,6 +495,7 @@ export class ApplicablecostpopupComponent implements OnInit {
 
   formatCostItemForDisplay(locationAdditionalCosts: any) {
     locationAdditionalCosts.forEach((cost: any) => {
+      cost.isSelected = true;
       cost.selectedApplicableForId = cost.isAllProductsCost
         ? 0
         : cost.requestProductId;
@@ -514,6 +528,27 @@ export class ApplicablecostpopupComponent implements OnInit {
       };
     }
   }
+ 
+  checkUncheckAll(event : any, rowNumber: number){
+    this.enableSave = true;
+    if(this.locationBasedCosts.length === 0){
+        this.isCheckedMain = false;
+     }
+     this.locationBasedCosts.map(req=>(req.isSelected == event.checked ? true: false));
+   if(event.checked == true && rowNumber === -1){
+     this.locationBasedCosts.map(x=> x.isSelected = true);
+  }
+   if(event.checked == false && rowNumber === -1){
+    this.isCheckedMain = false;
+     this.locationBasedCosts.map(x=> x.isSelected = false);
+   }
+   if(this.locationBasedCosts.every(x=> x.isSelected== true)){
+    this.isCheckedMain = true; 
+   }
+   else{
+    this.isCheckedMain = false;
+   }
+}
 
   checkIfSelectedApplicableIdExistsInapplicableForItems(
     locationAdditionalCost
@@ -534,7 +569,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   buildApplicableForItems() {
     let applicableForItemsArray = [];
     this.requestLocation.requestProducts.forEach((product: any) => {
-      ///if (product.status !== 'Stemmed') {
+      //if (product.status !== 'Stemmed') {
         applicableForItemsArray.push({
           id: product.id,
           name: product.productName,
@@ -546,7 +581,7 @@ export class ApplicablecostpopupComponent implements OnInit {
         this.totalMaxQuantity = this.totalMaxQuantity + product.maxQuantity;
         this.maxQuantityUomId = product.uomId;
         this.maxQuantityUom = product.uomName;
-     ///}
+     //}
     });
 
     if (applicableForItemsArray.length > 1) {
@@ -661,8 +696,8 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   recalculatePercentAdditionalCosts(locationBasedCosts) {
-    for (let i = 0; i < locationBasedCosts.length; i++) {
-      if (!locationBasedCosts[i].isDeleted) {
+    for (let i = 0, costLength=locationBasedCosts.length; i < costLength; i++) {
+      if (!locationBasedCosts[i].isDeleted && locationBasedCosts[i].isSelected) {
         if (locationBasedCosts[i].costTypeId == COST_TYPE_IDS.PERCENT) {
           locationBasedCosts[i].totalAmount = 0;
           this.calculateCostAmount(locationBasedCosts[i]);
@@ -858,7 +893,8 @@ export class ApplicablecostpopupComponent implements OnInit {
     for (let i = 0; i < this.locationBasedCosts.length; i++) {
       if (
         !this.locationBasedCosts[i].additionalCostId &&
-        !this.locationBasedCosts[i].isDeleted
+         this.locationBasedCosts[i].isSelected && 
+         !this.locationBasedCosts[i].isDeleted
       ) {
         locationBasedCostsRequired.push('Cost name is required!');
       }
@@ -885,12 +921,16 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.toastr.warning('No location specific additional cost is available.');
     else {
       const additionalCost = {
-        selectedApplicableForId: this.applicableForItems[0]?.id
+        selectedApplicableForId: this.applicableForItems[0]?.id,
+        isSelected : true
       } as AdditionalCostViewModel;
       if (!this.applicableForItems.length) {
         this.toastr.warning('All products are stemmed!');
       } else {
         this.locationBasedCosts.push(additionalCost);
+        if(this.locationBasedCosts.length ===1){
+          this.isCheckedMain = true;
+        }
         this.onApplicableForChange(
           additionalCost.selectedApplicableForId,
           this.locationBasedCosts.length - 1
@@ -900,11 +940,16 @@ export class ApplicablecostpopupComponent implements OnInit {
     this.enableSave = true;
   }
 
+
   removeLocationCost(key: number) {
     if (this.locationBasedCosts[key].id) {
       this.locationBasedCosts[key].isDeleted = true;
     } else {
       this.locationBasedCosts.splice(key, 1);
+    }
+    this.recalculatePercentAdditionalCosts(this.locationBasedCosts);
+    if(this.locationBasedCosts.length === 0){
+        this.isCheckedMain = false;
     }
     this.recalculatePercentAdditionalCosts(this.locationBasedCosts);
     this.enableSave = true;
@@ -1017,7 +1062,7 @@ export class ApplicablecostpopupComponent implements OnInit {
           .filter(
             r => r.id != this.currentRequestInfo.id && r.status !== 'Stemmed'
           )
-          .map(req => ({ ...req }))
+          .map(req => ({ ...req, isSelected: true }))
       );
     }
   }
@@ -1054,6 +1099,10 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   copyLocationBasedCostToSelectedRequest(selectedRequestList) {
+    if(selectedRequestList.length == 0){
+      this.toastr.warning('Please Select Atlest one Row');
+      return;
+    }
     this.copiedLocationCost = [];
     this.endpointCount = 0;
     let reqIdForLocation: String;
@@ -1067,7 +1116,7 @@ export class ApplicablecostpopupComponent implements OnInit {
         ) {
           let reqProductIdForLocation = [];
           this.locationBasedCosts.forEach(locationCost => {
-            if (!locationCost.isDeleted) {
+            if (!locationCost.isDeleted && locationCost.isSelected) {
               let newCost = _.cloneDeep(locationCost);
               newCost.id = 0;
               newCost.hasStemmedProduct = false;
@@ -1483,7 +1532,7 @@ export class ApplicablecostpopupComponent implements OnInit {
           this.store.dispatch(new UpdateRequest(reqs));
           this.toastr.success('Additional cost copied successfully.');
 
-          this.closeDialog();
+          
         } else this.toastr.error(res.message);
       });
   }

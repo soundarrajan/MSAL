@@ -60,6 +60,7 @@ export class SaveBunkeringPlanState{
           ulsfo_estimated_lift: bPlan.ulsfo_estimated_lift,
           ulsfo_max_lift: bPlan.ulsfo_max_lift,
           ulsfo_soa: bPlan.ulsfo_soa,
+          lsdis_as_eca: bPlan.lsdis_as_eca,
           lsdis_max_lift: bPlan.lsdis_max_lift,
           lsdis_estimated_consumption: bPlan.lsdis_estimated_consumption,
           lsdis_estimated_lift: bPlan.lsdis_estimated_lift,
@@ -417,9 +418,9 @@ export class GeneratePlanStateModel{
   name : 'GeneratePlan',
   defaults : {
     generatePlan : 0,
-    genInProgress : 0,
+    genInProgress : false,
     importGsis : 0,
-    importInProgress : 0,
+    importInProgress : false,
     sendPlan : 0,
     isNewVesselPlanAvailable : 'N'
   }

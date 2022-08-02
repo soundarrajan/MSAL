@@ -87,7 +87,6 @@ import { MatSelect } from '@angular/material/select';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/product-spec-group-modal.component';
-import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
 
 const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   parse: {
