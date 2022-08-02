@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GridOptions } from 'ag-grid-community';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-search-formula-popup',
   templateUrl: './search-formula-popup.component.html',
@@ -41,6 +42,7 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
   constructor(
       public dialogRef: MatDialogRef<SearchFormulaPopupComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
+      private toastr : ToastrService
       )
       {
       this.sessionData = JSON.parse(sessionStorage.getItem('formula'));
@@ -157,16 +159,17 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
   }
 
   onSelectionChanged(ev){
-    //alert("");
     this.formulaSelected=true;
     var selectedRows = this.dialog_gridOptions.api.getSelectedRows();
-    this.formulaValue = selectedRows[0].description;
+    this.formulaValue = selectedRows[0]?.description;
   }
 
   proceed() {
     this.selectedformula = this.toBeAddedFormula();
-    if (this.selectedformula.length === 0) return;
-
+    if (this.selectedformula.length === 0) {
+      this.toastr.error('Please Select Atleast one Row');
+      return;
+    }
       this.dialogRef.close({data: this.selectedformula});
   }
 
