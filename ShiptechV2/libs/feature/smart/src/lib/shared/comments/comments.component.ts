@@ -41,51 +41,6 @@ export class CommentsComponent implements OnInit {
   subscription: Subscription;
   searchKey: string;
   _timer;
-  // public newAttachment = [];
-  // public bunkerPlanData = [
-  //   {
-  //     placeholder: 'AJ',
-  //     name: 'Alexander James',
-  //     time: '09:00',
-  //     date: '13 Dec 2019',
-  //     comment: 'Status remains the same. See the link to get further details.',
-  //     attachment: ['Screenshot1_2018-06-21', 'Screenshot2_2018-06-21']
-  //   },
-  //   {
-  //     placeholder: 'PB',
-  //     name: 'Pooja Bhattiprolu',
-  //     time: '09:00',
-  //     date: '13 Dec 2019',
-  //     comment: 'Catania will be closed from tomorrow.',
-  //     attachment: []
-  //   },
-  //   {
-  //     placeholder: 'YH',
-  //     name: 'Yusuf Hassan',
-  //     time: '09:00',
-  //     date: '13 Dec 2019',
-  //     comment: 'Status remains the same. See the link to get further details.',
-  //     attachment: []
-  //   }
-  // ]
-  // public requests = [
-  //   {
-  //     placeholder: 'AJ',
-  //     name: 'Alexander James',
-  //     time: '09:00',
-  //     date: '13 Dec 2019',
-  //     comment: 'Status remains the same. See the link to get further details.',
-  //     attachment: []
-  //   },
-  //   {
-  //     placeholder: 'GS',
-  //     name: 'Gokul Simsons',
-  //     time: '09:00',
-  //     date: '13 Dec 2019',
-  //     comment: 'Status remains the same. See the link to get further details so as to decide on future changes to be incorporated into the design system.Link given below.',
-  //     attachment: []
-  //   },
-  // ]
 
   constructor(private BPService: BunkeringPlanCommentsService) {
     //Subscribe only once after getting different object model after 800ms
@@ -98,30 +53,15 @@ export class CommentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.participants = this.bunkerPlanData
     this.loadComments();
-  }
-
-  BPCommentsCountFn(count) {
-    this.BPCommentsCount = count ? count : 0;
-    clearTimeout(this._timer);
-    this._timer = setTimeout(() => {
-      this.triggerTitleToBind();
-    }, 100);
   }
 
   public loadComments() {
     this.loadBunkerPlanComments();
-    // this.loadRequestComments();
   }
 
   loadBunkerPlanComments() {
     let payload = this.vesselRef?.vesselId;
-    // this.BPService.getBunkerPlanComments(payload).subscribe((response)=> {
-    //   this.BunkerPlanCommentList = response?.payload;
-    //   this.BunkerPlanCommentTemp = this.BunkerPlanCommentList;
-    //   this.triggerTitleToBind();
-    // })
     let BunkerPlanComment = this.BPService.getBunkerPlanComments(payload);
     let RequestComment = this.BPService.getRequestComments(payload);
     forkJoin([BunkerPlanComment, RequestComment]).subscribe(responseList => {
@@ -140,16 +80,6 @@ export class CommentsComponent implements OnInit {
     this.ShowCommentCount.emit(this.totalCommentCount);
     this.triggerTitleToBind();
   }
-  // loadRequestComments() {
-  //   let payload = this.vesselRef?.vesselId; //3524
-  //   this.BPService.getRequestComments(payload).subscribe((response)=> {
-  //     this.RequestCommentList = response?.payload;
-  //     this.totalCommentCount = (this.BunkerPlanCommentList?.length? this.BunkerPlanCommentList?.length: 0)
-  //     +(this.RequestCommentList?.length? this.RequestCommentList?.length: 0);
-  //     this.ShowCommentCount.emit(this.totalCommentCount);
-  //     this.triggerTitleToBind();
-  //   })
-  // }
 
   RetainOriginalBPComment(participant) {
     //retain all BP comments once filter get reset
@@ -176,11 +106,8 @@ export class CommentsComponent implements OnInit {
 
   onTabChange(event) {
     let data;
-    // this.selectedCommentTab = event?.index;
     if (event.index == 0) data = this.BunkerPlanCommentList;
     else data = this.RequestCommentList;
-
-    // this.filterParticipants(data);
   }
   filterParticipants(data) {
     var resArr = [];
@@ -196,10 +123,6 @@ export class CommentsComponent implements OnInit {
     this.expanded = !this.expanded;
   }
   postNewComment(tabGroup) {
-    // let HighNoteIdObj = {notes_id: '0'};
-    // if(this.BunkerPlanCommentList.length) {
-    //   HighNoteIdObj = this.BunkerPlanCommentList.reduce(function(prev, cur) { return prev.notes_id > cur.notes_id? prev: cur; })
-    // }
     if (this.newComment.trim() != '' && tabGroup.selectedIndex == 0) {
       let payload = {
         shipId: this.vesselRef?.vesselId,
@@ -209,7 +132,6 @@ export class CommentsComponent implements OnInit {
             plan_id: this.vesselRef?.planId,
             notes: this.newComment,
             notes_from: this.vesselRef?.userRole
-            // "notes_id": (Number(HighNoteIdObj?.notes_id)+1).toString()
           }
         ]
       };
@@ -219,7 +141,6 @@ export class CommentsComponent implements OnInit {
         this.BunkerPlanCommentTemp = this.BunkerPlanCommentList;
         this.newComment = '';
         this.emitCommentCount();
-        this.triggerTitleToBind();
       });
     }
   }
@@ -248,46 +169,4 @@ export class CommentsComponent implements OnInit {
     //unsubscribe to avoid memory leakage
     this.subscription.unsubscribe();
   }
-
-  // addNewComment(tabGroup) {
-  //   if (this.newComment.trim() != '' || this.newAttachment.length > 0) {
-  //     if (tabGroup.selectedIndex == 0) {
-  //       this.bunkerPlanData.push(
-  //         {
-  //           placeholder: 'RT',
-  //           name: 'Reshma Thomas',
-  //           time: '09:00',
-  //           date: '13 Dec 2019',
-  //           comment: this.newComment,
-  //           attachment: this.newAttachment
-  //         }
-  //       )
-  //       this.filterParticipants(this.bunkerPlanData);
-  //     }
-  //     else {
-  //       this.requests.push(
-  //         {
-  //           placeholder: 'RT',
-  //           name: 'Reshma Thomas',
-  //           time: '09:00',
-  //           date: '13 Dec 2019',
-  //           comment: this.newComment,
-  //           attachment: this.newAttachment
-  //         }
-  //       )
-  //       this.filterParticipants(this.requests);
-  //     }
-
-  //     this.newComment = "";
-  //     this.newAttachment = [];
-  //   }
-
-  // }
-
-  // upload(attachment: File[]) {
-  //   this.newAttachment.push(attachment[0].name);
-  // }
-  // removeFile(attachment) {
-  //   this.newAttachment = this.newAttachment.filter(file => file != attachment)
-  // }
 }
