@@ -95,7 +95,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                 ctrl.availableContractItems = data.payload.termContract;
                 if (ctrl.orderList && ctrl.orderList.some(x=>x.existingOrderId != null)){
                     for (let existingorders of ctrl.orderList) {
-                        ctrl.isOrderexisting = ctrl.requestOfferItems.some(y=>y.requestLocationId == existingorders.requestLocationId && y.sellerId  == existingorders.seller?.id);
+                        ctrl.isOrderexisting = ctrl.requestOfferItems.some(y=>y.requestLocationId == existingorders.requestLocationId && ((y.locationId > 0 && existingorders.locationId > 0) ? y.locationId == existingorders.locationId : true) && y.sellerId  == existingorders.seller?.id);
                         if (ctrl.isOrderexisting == true) {
                             return;
                         }
@@ -302,6 +302,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                     item.sellerName = v.seller.name;
                     item.existingOrderId = v.existingOrderId;
                     item.locationName = v.location.name;
+                    item.locationId = v.location.id;
                     item.productName = pv.product ? pv.product.name : null;
                     item.minQuantity = pv.minQuantity;
                     item.maxQuantity = pv.maxQuantity;
