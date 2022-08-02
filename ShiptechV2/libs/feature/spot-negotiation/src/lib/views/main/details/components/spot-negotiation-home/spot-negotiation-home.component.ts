@@ -226,7 +226,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     //  }
   }
 
-  confirmorderpopup() {
+ async confirmorderpopup() {
     this.isOrderexisting = false;
     let selectedFinalData = this.FilterselectedRowForRFQ();
     let requestOffers = [];
@@ -297,7 +297,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       }
     });
-    this.checkorderexists();
+  await this.checkorderexists();
     if (!isallow) {
       setTimeout(() => {
         const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
@@ -315,7 +315,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
   }
 
-  checkorderexists(){
+  async checkorderexists(){
     let RequestProductIds = [];
     let filters: ServerQueryFilter[] = [];
     RequestProductIds = this.selectedSellerList.map(
@@ -341,10 +341,9 @@ export class SpotNegotiationHomeComponent implements OnInit {
         if (res?.message == 'Unauthorized') {
           return;
         }
-
         if (res.payload.length > 0 && res.payload.some(x=>x.id !=null)) {
           for (let existingorders of res.payload) {
-            this.isOrderexisting = this.selectedSellerList.some(y=>y.RequestLocationId == existingorders.requestLocationId && y.SellerId  == existingorders.seller?.id);
+            this.isOrderexisting = this.selectedSellerList.some(y=>y.RequestLocationId == existingorders.requestLocationId && ((y.LocationID > 0 && existingorders.locationId > 0) ? y.LocationID == existingorders.locationId : true) && y.SellerId  == existingorders.seller?.id);
             if (this.isOrderexisting == true) {
                 return;
             }

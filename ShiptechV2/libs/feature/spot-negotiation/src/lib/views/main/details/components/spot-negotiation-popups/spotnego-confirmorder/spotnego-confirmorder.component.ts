@@ -467,7 +467,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         if (res?.message == 'Unauthorized') {
           return;
         }
-        
         let errorMessages = [];
         this.selectedOffers.forEach((rqV, rqK) => {
           let hasOrder = false;
@@ -556,7 +555,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           QuoteByDate: this.selectedOffers[0].QuoteByDate,
           QuoteByCurrencyId: this.selectedOffers[0].QuoteByCurrencyId,
           QuoteByTimeZoneId: this.selectedOffers[0].QuoteByTimeZoneId, //this.requestOffers.Select(off => off.QuoteByTimeZoneId).FirstOrDefault()
-          Comments: ''
+          Comments: '',
+          IsOrderType: this.isOrdertype
         };
         //this.toaster.info('Please wait while the offer is confirmed');
         
