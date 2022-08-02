@@ -20,6 +20,7 @@ import { SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/ac
 import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
 import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-spotnego-confirmorder',
@@ -337,6 +338,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         Amount:
           requestOffer.amount * (requestOffer.exchangeRateToBaseCurrency ?? 1),
         RequestOfferId: requestOffer.id,
+        isofferPriceFormula : requestOffer.isFormulaPricing,
         RfqId: requestOffer.rfqId,
         OrderFields: {
           ConfirmedQuantity:
@@ -408,10 +410,14 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   }
   confirmOffers(shouldValidate) {
     let RequestProductIds = [];
+    let requestOfferIds = [];
     let errorMessages = [];
     let filters: ServerQueryFilter[] = [];
     this.requestOfferItems.forEach((itemVal, itemKey) => {
       if (itemVal.isCheckBox) {
+        if(itemVal.isofferPriceFormula == true){
+          requestOfferIds.push(itemVal.RequestOfferId)
+        }
         RequestProductIds.push(itemVal.RequestProductId);
         this.selectedOffers.push(itemVal);
       }
@@ -547,7 +553,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         // }
         this.errorMessages = errorMessages.join('\n\n');
         if (errorMessages.length > 0) {
-          this.toaster.error(this.errorMessages);
+          this.toaster.warning(this.errorMessages);
         }
         let rfq_data = {
           Requirements: this.selectedOffers, //this.requestOfferItems.filter(row1 => row1.isCheckBox == true),
@@ -581,6 +587,13 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                 );
                 resp.subscribe((result: any) => {
                   if(result.status ) {
+                  
+                    if(requestOfferIds.length>0){
+                      this.spotNegotiationService.cloneToPriceConfiguration({RequestOfferIds:requestOfferIds})
+                        .pipe(
+                          switchMap((resp: any) => this.spotNegotiationService.orderPriceEvaluations({PriceConfigurationIds: resp.orderPriceConfigurationIds}))
+                        ).subscribe(res=> console.log(res));
+                      }
                     //this.openEditOrder(receivedOffers.payload);
                     const baseOrigin = new URL(window.location.href).origin;
                     window.open(

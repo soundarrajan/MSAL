@@ -90,7 +90,6 @@ import { MatSelect } from '@angular/material/select';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/product-spec-group-modal.component';
-import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
 import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
   MomentDateAdapter
@@ -1088,7 +1087,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       }
     };
     if (this.formValues.status) {
-      if (this.formValues.status.name != 'Confirmed' && product.id != 0) {
+      if (this.formValues.status.name != 'Confirmed' && this.formValues.status.name != 'Delivered' && product.id != 0) {
         this.modalSpecGroupParametersEditable = true;
         this.canChangeSpec = true;
       }

@@ -56,6 +56,7 @@ import { FutureRequestGridComponent } from './future-request-grid/future-request
 import { CountByPriorityPipe } from './pipes/count-by-priority.pipe';
 import { UtcDatePipePipe } from './pipes/UtcDatePipe/utc-date-pipe.pipe';
 import { CurrentRobArbitSectionComponent } from './current-rob-arbit-section/current-rob-arbit-section.component';
+import { SelectTextOnFocusDirectiveModule } from '@shiptech/core/ui/directives/default/select-text-on-focus.directive';
 
 @NgModule({
   declarations: [HeaderComponent, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, VesselDetailsComponent, HeaderPanelComponent,
@@ -81,6 +82,7 @@ import { CurrentRobArbitSectionComponent } from './current-rob-arbit-section/cur
     FormsModule,
     OwlDateTimeModule, OwlNativeDateTimeModule,
     MatDatepickerModule,
+    SelectTextOnFocusDirectiveModule,
     AgGridModule.withComponents([AGGridCellRendererComponent,AGGridDownloadFileComponent, AGGridCellDataComponent, AgGridInputCellEditor])
   ],
   exports: [ReactiveFormsModule, FormsModule, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, HeaderPanelComponent,

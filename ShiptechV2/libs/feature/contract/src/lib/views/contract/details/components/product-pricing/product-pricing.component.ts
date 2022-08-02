@@ -86,7 +86,6 @@ import { MatSelect } from '@angular/material/select';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/product-spec-group-modal.component';
-import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
 import { CreateNewFormulaModalComponent } from '../create-new-formula-modal/create-new-formula-modal.component';
 import { throws } from 'assert';
 import { FormulaHistoryModalComponent } from '../formula-history-modal/formula-history-modal.component';
@@ -901,7 +900,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
   createNewFormulaPopup(selectedTabIndex) {
     if (!this.formValues.products[selectedTabIndex].formula) {
       const dialogRef = this.dialog.open(CreateNewFormulaModalComponent, {
-        width: '80%',
+        maxWidth: '95vw',
+        width: '100%',
         data: {
           formValues: null,
           selectedTabIndex: this.selectedTabIndex,
@@ -1200,7 +1200,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         key,
         1
       );
-    }
+    } 
   }
 
   setDefaultCostType(additionalCost) {

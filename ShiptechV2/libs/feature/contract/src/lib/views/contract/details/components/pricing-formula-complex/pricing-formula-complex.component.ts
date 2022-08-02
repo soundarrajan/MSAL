@@ -86,7 +86,6 @@ import { MatSelect } from '@angular/material/select';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ProductSpecGroupModalComponent } from '../product-spec-group-modal/product-spec-group-modal.component';
-import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
@@ -165,6 +164,7 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
   marketPriceTypeList: any;
   amountFormat: string;
   hasInvoicedOrder: any;
+  readonly NO_OF_SIs: number = 3;
 
   get entityId(): number {
     return this._entityId;
@@ -251,6 +251,16 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
       return;
     }
     this.formValues = formValues;
+
+    for (let cfql of this.formValues.complexFormulaQuoteLines) {
+      for (var i = 0; i < this.NO_OF_SIs; i++) {
+        if(!cfql.systemInstruments[i] ||
+          (!cfql.systemInstruments[i].systemInstrument && !cfql.systemInstruments[i].marketPriceTypeId)) {
+          cfql.systemInstruments[i] = { id: 0, systemInstrument: null, marketPriceTypeId: null }
+        }
+      }
+    }
+
     if (
       this.formValues.complexFormulaQuoteLines &&
       this.formValues.complexFormulaQuoteLines.length
@@ -384,6 +394,8 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
   ngOnInit() {
     this.entityName = 'Contract';
     this.autocompleteCurrency = knownMastersAutocomplete.currency;
+    this.autocompleteSystemInstrument =
+      knownMastersAutocomplete.systemInstrument;
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
   }
 
@@ -479,6 +491,24 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
         return knowMastersAutocompleteHeaderName.currency;
       default:
         return knowMastersAutocompleteHeaderName.currency;
+    }
+  }
+  getHeaderNameSelector(): string {
+    switch (this._autocompleteType) {
+      case knownMastersAutocomplete.systemInstrument:
+        return knowMastersAutocompleteHeaderName.systemInstrument;
+      default:
+        return knowMastersAutocompleteHeaderName.systemInstrument;
+    }
+  }
+  selectorSystemInstumentSelectionChange(selection: IOrderLookupDto,key): void {
+    if (selection != null || selection != undefined) {
+      const obj = {
+        id: selection.id,
+        name: selection.name
+      };
+      this.selectSystemInstrumentFromComplexFormulaQuoteLine(obj,"0",key);
+      this.changeDetectorRef.detectChanges();
     }
   }
 

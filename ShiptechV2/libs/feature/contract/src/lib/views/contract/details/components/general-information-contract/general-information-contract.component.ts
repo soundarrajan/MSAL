@@ -498,7 +498,8 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     if (!formValues) {
       return;
     }
-
+    if(formValues?.seller?.name)
+      formValues.seller.name = this.format.htmlDecode(formValues.seller.name);
     this.formValues = formValues;
     this.selectedVal = this.formValues.evergreen ? 'evergreen' : 'dateSpecific';
   }

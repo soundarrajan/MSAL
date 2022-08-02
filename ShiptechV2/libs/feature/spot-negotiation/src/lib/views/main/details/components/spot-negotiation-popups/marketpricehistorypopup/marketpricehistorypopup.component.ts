@@ -1,9 +1,15 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-// import * as Highcharts from 'highcharts';
+import * as Highcharts from 'highcharts';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import moment from 'moment';
+import { NgxSpinnerService } from 'ngx-spinner';
+import NoDataToDisplay from 'highcharts/modules/no-data-to-display';
+import { Store } from '@ngxs/store';
+import { DecimalPipe } from '@angular/common';
+
+NoDataToDisplay(Highcharts)
 
 @Component({
   selector: 'app-marketpricehistorypopup',
@@ -15,13 +21,14 @@ export class MarketpricehistorypopupComponent implements OnInit {
   public LocationId: number;
   public RequestId: number;
   public tabledata = [];
+  public priceFormat ='';
   public priceHistoryData: any = {};
-  /* Highcharts: typeof Highcharts = Highcharts;
+  highcharts = Highcharts;
+  tenantService:any;
 
-  chartOptions: Highcharts.Options = {
+ public chartOptions: any = {
     chart: {
-      height: 500,
-      width: 800
+      type: "spline"
     },
     title: {
       text: ''
@@ -30,28 +37,16 @@ export class MarketpricehistorypopupComponent implements OnInit {
       lineWidth: 1,
       lineColor: '#364150',
       title: {
-        text: ''
+        text: 'Dates'
       },
-      categories: [
-        '20/5',
-        '21/05',
-        '24/05',
-        '25/05',
-        '26/05',
-        '27/05',
-        '02/06',
-        '03/06',
-        '05/06',
-        '07/06',
-        '08/06'
-      ]
+      categories: []
     },
     yAxis: {
       gridLineWidth: 0,
       lineWidth: 1,
       lineColor: '#364150',
       title: {
-        text: ''
+        text: 'Prices'
       },
       tickPixelInterval: 2
     },
@@ -59,53 +54,63 @@ export class MarketpricehistorypopupComponent implements OnInit {
       {
         showInLegend: false,
         type: 'line',
-        data: [
-          476.0,
-          473.0,
-          482.0,
-          485.0,
-          485.0,
-          487.0,
-          492.0,
-          496.0,
-          502.0,
-          506.0,
-          518.0
-        ]
+        data: []
       }
     ],
     credits: {
       enabled: false
     }
-  }; */
+  };
 
-  ngOnInit(): void {}
+
   constructor(
     public format: TenantFormattingService,
     private _spotNegotiationService: SpotNegotiationService,
+    private spinner: NgxSpinnerService,
     public dialogRef: MatDialogRef<MarketpricehistorypopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(DecimalPipe) private _decimalPipe,
+    public store : Store
+  ) {}
+  ngOnInit() {
+    this.store.selectSnapshot<any>((state: any) => {
+      this.tenantService = state.spotNegotiation.tenantConfigurations;
+    })
     let payload = {
       LocationId: this.data.LocationId,
       ProductId: this.data.ProductId,
       RequestId: this.data.RequestId
     };
+    this.spinner.show();
     const response = this._spotNegotiationService.getMarketPriceHistory(
       payload
     );
     response.subscribe((res: any) => {
+      this.spinner.hide();
       if (res?.message == 'Unauthorized') {
         return;
       }
-      // this.priceHistoryData =  {date : res.marketPriceHistory.map(item => item.date), price : res.marketPriceHistory.map(item => item.price)};
-      res.marketPriceHistory.forEach(item => {
-        this.tabledata.push({
-          price: item.price,
-          date: this.formatDate(item.date)
-        });
+      let dataSeries = [];
+      let categories = [];
+      res.marketPriceHistory.map(x=>{
+          //pushing data to data table
+            this.tabledata.push({
+              price: x.price,
+              date: this.formatDate(x.date)
+            });
+           dataSeries.push(x.price);  // pushing price data to dataseries
+           categories.push(this.formatDate(x.date));  // pushing date to categories
       });
+      if(dataSeries.length === 0){
+        this.highcharts.setOptions({ lang: {noData: "Market price data unavailable"}});
+        this.highcharts.chart('container', this.chartOptions);
+        return;
+       }
+     this.chartOptions.xAxis.categories = categories;
+     this.chartOptions.series[0].data = dataSeries;
+     this.highcharts.chart('container', this.chartOptions);
     });
+
   }
 
   closeDialog() {
@@ -136,6 +141,28 @@ export class MarketpricehistorypopupComponent implements OnInit {
       }
 
       return formattedDate;
+    }
+  }
+
+  priceFormatValue(value) {
+    if (typeof value == 'undefined' || value == null) {
+      return null;
+    }
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    const number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    let productPricePrecision = this.tenantService.pricePrecision;
+
+    this.priceFormat =
+      '1.' + productPricePrecision + '-' + productPricePrecision;
+    if (plainNumber) {
+      if (!productPricePrecision) {
+        plainNumber = Math.trunc(plainNumber);
+      }
+
+      return this._decimalPipe.transform(plainNumber.replace(/,/g,''), this.priceFormat);
     }
   }
 }

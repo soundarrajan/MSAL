@@ -36,6 +36,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
           class="add-icon"
           [matMenuTriggerFor]="clickmenu"
           #menuTrigger="matMenuTrigger"
+          (click)="setValuefun()">
         ></span>
         <mat-menu #clickmenu="matMenu" class="add-new-request-menu add-counterparties">
           <div class="expansion-popup" style="margin: 20px 0px;">
@@ -181,8 +182,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
               {{ params.product.uomName }}</span
             >
           </div>
+          
           <div
-            class="arrow"
+            class="arrow" matTooltipClass="lightTooltip" matTooltip="Market Price history"
+
             [ngClass]="
               params.product.status === 'Stemmed' ? 'disabled-new-events' : ''
             "
@@ -210,7 +213,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
                 : 'Pricing published on: ') +
               (this.closureDate == 'Invalid date' ? '--' : this.closureDate)
             "
-            matTooltipClass="outdated-tooltip"
+            
           >
             <div class="title">
               <span
@@ -241,7 +244,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
               black: params.product?.requestGroupProducts?.benchMark == 0
             }"
           >
-            <div class="title">Perf/BM</div>
+          <div class="title" matTooltipClass="lightTooltip" matTooltip="Performance/Benchmark">Perf/BM</div>
             <div 
               class="value" matTooltip="{{perfBM.innerText}}"
               matTooltipClass="lightTooltip"
@@ -261,9 +264,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
             </span>
             </div>
           </div>
-          <div class="label-element dashed" matTooltipClass="lightTooltip" matTooltip="{{ livePrice != undefined ? '$'+livePrice : '$--'}}">
-            <div class="title">Manual Live price</div>
-            $<input
+          <div class="label-element dashed">
+          <div class="title" matTooltipClass="lightTooltip" matTooltip="Manual Live Pricing">Manual Live price</div>
+              $<input matTooltipClass="lightTooltip" matTooltip="{{ livePrice != undefined ? '$'+livePrice : '$--'}}"
               class="value"
               
               contenteditable="true"
@@ -276,9 +279,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
             />
           </div>
           <div class="label-element green">
-            <div class="title">Target</div>
-            <div
-              class="value" matTooltip="{{(targetValue  != null && targetValue  != 0) ? '$'+targetValue : ((targetValue  == 0)? '$0' : '$--' )}}"
+          <div class="title"  matTooltipClass="lightTooltip" matTooltip="Target">Target</div>
+             <div
+             class="value" matTooltip="{{(targetValue  != null && targetValue  != 0) ? '$'+targetValue : ((targetValue  == 0)? '$0' : '$--' )}}"
               matTooltipClass="lightTooltip"
               contenteditable="false"
               (keydown)="editQty($event)"
@@ -290,9 +293,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
             class="label-element bestcontract"
             (click)="bestcontractpopup(params)"
           >
-            <div class="title">
-              Best Contract
-              <span
+               <div class="title"matTooltipClass="lightTooltip" matTooltip="Best Contract">
+               Best Contract
+                 <span
                 [style.visibility]="
                   params.product.status === 'Stemmed' ? 'hidden' : 'visible'
                 "
@@ -414,7 +417,19 @@ export class ShiptechCustomHeaderGroup {
       );
     }
   }
-
+  setValuefun(){
+    if (this.visibleCounterpartyList.length != 0) {
+      return
+    }
+    let counterparties = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 12);
+    });
+    this.counterpartyList = cloneDeep(counterparties);
+    this.counterpartyList?.forEach(element => {
+      element.name = this.tenantService.htmlDecode(element.name);
+    });
+    this.visibleCounterpartyList = this.counterpartyList.slice(0, 12);
+  }
   search(userInput: string): void {
     clearInterval(this.clrRequest);
      this.clrRequest = setTimeout(() => {
@@ -507,7 +522,7 @@ export class ShiptechCustomHeaderGroup {
             updatedProdLivePrice.requestGroupProducts.livePrice,
             'livePrice'
           );
-          this.livePrice = this.tenantService.liveformat(formattedLivePrice);
+          this.livePrice = this.tenantService.FormatPriceTrailingZero(formattedLivePrice,'livePrice');
           this.targetValue =
             updatedProdLivePrice.requestGroupProducts.targetPrice;
           this.closureValue =
@@ -556,12 +571,14 @@ export class ShiptechCustomHeaderGroup {
 
   offerpricehistorypopup(params: any) {
     const dialogRef = this.dialog.open(SpotnegoOfferpricehistoryComponent, {
-      width: '40vw',
+      width: '600vw',
+      height: '90vh',
       panelClass: 'additional-cost-popup',
       data: {
         LocationName: this.currentRequestInfo.requestLocations.find(
           x => x.id == params.requestLocationId
         )?.locationName,
+        TargerPrice: params.product.requestGroupProducts.targetPrice ,
         ProductName: params.product.productName,
         RequestLocationId: params.requestLocationId,
         RequestProductId: params.product.id
@@ -779,7 +796,7 @@ export class ShiptechCustomHeaderGroup {
     this.spinner.show();
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     this.livePrice = this.tenantService.FormatPriceTrailingZero(this.livePrice, 'livePrice');
-    this.livePrice =
+     this.livePrice =
       this.livePrice == null || this.livePrice == '--' ? 0 : this.livePrice;
     this.benchMark =
       this.benchMark == null || this.benchMark == '--' ? 0 : this.benchMark;
@@ -864,7 +881,7 @@ export class ShiptechCustomHeaderGroup {
                       productDetails,
                       updatedRow1.requestProducts[index].id
                     );
-                    updatedLocRows.push(futureRow); 
+                    updatedLocRows.push(futureRow);
                   }
                 }
               });

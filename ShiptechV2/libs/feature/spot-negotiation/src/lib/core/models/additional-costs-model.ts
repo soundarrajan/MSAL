@@ -28,6 +28,7 @@ export interface AdditionalCostViewModel {
   isAllProductsCost: boolean;
   requestProductId?: number | null;
   isLocationBased: boolean;
+  isSelected: boolean;
   isDeleted?: boolean;
   selectedApplicableForId: number | 0;
   locationAdditionalCostId: number | null;

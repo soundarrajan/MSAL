@@ -77,6 +77,7 @@ import { CustomHeader } from './core/ag-grid/custom-header.component';
 import { CustomHeaderSelectAll } from './core/ag-grid/custom-header-select-all.component';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { SpotNegotiationPriceCalcService } from './services/spot-negotiation-price-calc.service';
+import {SearchFormulaPopupComponent} from './views/main/details/components/spot-negotiation-popups/search-formula-popup/search-formula-popup.component'
 import {
   getCurrencyCode,
   isRfqSendForAnyProduct,
@@ -85,6 +86,19 @@ import {
   checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated,
   checkIfProductIsStemmedWithAnotherSeller,
   priceFormatValue } from '../lib/core/pipes/ag.pipe';
+  import{RatingModule} from 'ng-starrating';
+  import { DateRange } from './views/main/details/components/date-range/date-range.component';
+  
+import { QuantityBased } from './views/main/details/components/quantity-based/quantity-based.component';
+import { EventBasedContinuous } from './views/main/details/components/event-based-continuous/event-based-continuous.component';
+import { PricingFormulaSimple } from './views/main/details/components/pricing-formula-simple/pricing-formula-simple.component';
+import { PricingFormulaComplex } from './views/main/details/components/pricing-formula-complex/pricing-formula-complex.component';
+import { SpecificDates } from './views/main/details/components/specific-dates/specific-dates.component';
+import { EventBasedExtended } from './views/main/details/components/event-based-extended/event-based-extended.component';
+import { ProductBased } from './views/main/details/components/product-based/product-based.component';
+import { VesselLocationBased } from './views/main/details/components/vessel-location-based/vessel-location-based.component';
+import { EventBasedSimple } from './views/main/details/components/event-based-simple/event-based-simple.component';
+import { AmountTenantFormatDirective } from './views/main/details/directives/amount-tenant-format.directive';
 @NgModule({
   imports: [
     CommonModule,
@@ -116,7 +130,8 @@ import {
     NgxSpinnerModule,
     CKEditorModule,
     WunderBarModule,
-    SharedModule
+    SharedModule,
+    RatingModule
   ],
   declarations: [
     MainSpotNegotiationComponent,
@@ -140,6 +155,7 @@ import {
     SpotNegotiationHeaderComponent,
     SearchRequestPopupComponent,
     SpotnegoSearchCtpyComponent,
+    SearchFormulaPopupComponent,
     SpotNegotiationDetailsComponent,
     SpotnegoOfferpricehistoryComponent,
     MarketpricehistorypopupComponent,
@@ -168,7 +184,18 @@ import {
     NegotiationDocumentsComponent,
     NegotiationReportComponent,
     PriceTenantFormatDirective,
-    DragDropFileUploadDirective
+    AmountTenantFormatDirective,
+    DragDropFileUploadDirective,
+    EventBasedContinuous,
+    PricingFormulaSimple,
+    PricingFormulaComplex,
+    DateRange,
+    SpecificDates,
+    EventBasedExtended,
+    ProductBased,
+    VesselLocationBased,
+    EventBasedSimple,
+    QuantityBased,
   ],
   entryComponents: [
     AGGridCellActionsComponent,
@@ -195,6 +222,7 @@ import {
     SpotnegoSendRfqComponent,
     SearchRequestPopupComponent,
     SpotnegoSearchCtpyComponent,
+    SearchFormulaPopupComponent,
     RemoveCounterpartyComponent,
     SpotnegoRequestChangesComponent
   ],

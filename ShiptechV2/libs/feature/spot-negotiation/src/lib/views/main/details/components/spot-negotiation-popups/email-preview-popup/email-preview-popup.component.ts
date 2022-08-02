@@ -237,33 +237,38 @@ export class EmailPreviewPopupComponent implements OnInit {
         return;
       }
     }
-
+    var reqSelectedProds =[];
     if (!this.readonly) {
-      var reqSelectedProds = this.currentRequestInfo.requestLocations.map(
-        prod =>
-          prod.requestProducts
-            .map((e, i) =>
-              this.SelectedSellerWithProds.find(
-                y =>
-                  y['checkProd' + (i + 1)] &&
-                  prod.id == y.requestLocationId &&
-                  (!y.requestOffers ||
-                    y.requestOffers?.find(
-                      x =>
-                        (x.requestProductId == e.id &&
-                          !x.isRfqskipped &&
-                          !x.isDeleted) ||
-                        x.requestProductId != e.id
-                    ))
+      this.requestOptions.forEach((element,index)=>{
+         let reqSelectedProd = element.requestLocations.map(
+          prod =>
+            prod.requestProducts
+              .map((e, i) =>
+                this.SelectedSellerWithProds.find(
+                  y =>
+                    y['checkProd' + (i + 1)] &&
+                    prod.id == y.requestLocationId &&
+                    (!y.requestOffers ||
+                      y.requestOffers?.find(
+                        x =>
+                          (x.requestProductId == e.id &&
+                            !x.isRfqskipped &&
+                            !x.isDeleted) ||
+                          x.requestProductId != e.id
+                      ))
+                )
+                  ? e.id
+                  : undefined
               )
-                ? e.id
-                : undefined
-            )
-            .filter(x => x)
-      );
+              .filter(x => x)
+        );
+        reqSelectedProds.push(reqSelectedProd);
+      });
       let mergedReqProds = [];
-      reqSelectedProds.forEach(singleLocationPro => {
+      reqSelectedProds.forEach(multipleLocationPro => {
+        multipleLocationPro.forEach(singleLocationPro=>{
         mergedReqProds = [...mergedReqProds, ...singleLocationPro];
+        });
       });
       let rfqId = 0;
       if (this.selected != 'MultipleRfqNewRFQEmailTemplate') {
@@ -457,8 +462,24 @@ export class EmailPreviewPopupComponent implements OnInit {
     }
 
     var selectedSellers = [];
-
+    var reqSelectedProds =[];
     this.SelectedSellerWithProds.forEach((singleSeller, index) => {
+      this.requestOptions.forEach((reqLoc,index)=>{
+        let reqProds= reqLoc.requestLocations.filter(loc => loc.id === singleSeller.requestLocationId)
+        .map(prod =>
+          prod.requestProducts
+            .map((e, i) => (singleSeller['checkProd' + (i + 1)] ? e.id : ''))
+            .filter(x => x)
+            );
+          reqSelectedProds.push(reqProds);
+        })
+        let mergedReqProds = [];
+        reqSelectedProds.forEach(multipleLocationPro => {
+          multipleLocationPro.forEach(singleLocationPro=>{
+          mergedReqProds = [...mergedReqProds, ...singleLocationPro];
+          });
+        });
+        reqSelectedProds=[];/// empty to the every request loop
       var selectedSeller = {
         RequestLocationSellerId: singleSeller.id,
         RequestLocationId: singleSeller.requestLocationId,
@@ -471,13 +492,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         RequestId: singleSeller.requestId,
         PhysicalSupplierCounterpartyId:
           singleSeller.physicalSupplierCounterpartyId,
-        RequestProductIds: this.currentRequestInfo.requestLocations
-          .filter(loc => loc.id === singleSeller.requestLocationId)
-          .map(prod =>
-            prod.requestProducts
-              .map((e, i) => (singleSeller['checkProd' + (i + 1)] ? e.id : ''))
-              .filter(x => x)
-          )[0]
+        RequestProductIds: mergedReqProds
       };
       selectedSellers.push(selectedSeller);
     });

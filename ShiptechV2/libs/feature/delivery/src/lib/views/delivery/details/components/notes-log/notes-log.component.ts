@@ -83,7 +83,6 @@ import { DecimalPipe, KeyValue } from '@angular/common';
 import { MatSelect } from '@angular/material/select';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { OVERLAY_KEYBOARD_DISPATCHER_PROVIDER_FACTORY } from '@angular/cdk/overlay/dispatchers/overlay-keyboard-dispatcher';
 import { throws } from 'assert';
 import { DeliveryAutocompleteComponent } from '../delivery-autocomplete/delivery-autocomplete.component';
 import { InvoiceDetailsService } from 'libs/feature/invoice/src/lib/services/invoice-details.service';

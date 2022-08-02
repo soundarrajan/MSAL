@@ -144,7 +144,6 @@
       <mat-form-field
         class="without-search"
         appearance="legacy"
-        [ngClass]="{ 'required-field': buttonClicked }"
       >
         <mat-label>Price</mat-label>
         <input
@@ -297,7 +296,7 @@
           "
           [ngClass]="{
             'search-icon-disabled':
-              formValues.status && formValues.status.name == 'Confirmed'
+              formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
           }"
           appMasterSelectorTrigger
           [masterSelector]="masterSelector1"
@@ -508,7 +507,8 @@
                     [ngClass]="{
                       'required-field':
                         buttonClicked &&
-                        !additionalCost.value.amount &&
+                        (additionalCost.value.amount < 0 || !additionalCost.value.amount ||
+                        additionalCost.value.amount == 0) &&
                         additionalCost.value.costType &&
                         additionalCost.value.costType.id != 4 &&
                         additionalCost.value.costType.id != 5

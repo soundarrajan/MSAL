@@ -837,7 +837,19 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       }
     }
   }
-
+  
+  keyPressNumber(event) {
+    const typedChar = String.fromCharCode(event.keyCode);
+    if (typedChar == '.' || typedChar == ',') {
+      return true;
+    }
+    if (/\d{1,6}(,\d{3})*(\.\d*)?$/.test(typedChar)) {
+      return true;
+    }else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
   ngOnDestroy(): void {
     super.onDestroy();

@@ -92,6 +92,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   locationsRowsOriData: any[];
   availableContracts = {};
   initAvailableContracts: any;
+  evaluateIconDisplay: boolean = false;
   constructor(
     private store: Store,
     private route: ActivatedRoute,
@@ -134,13 +135,20 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           this.requestsAndVessels.slice(0, 7)
         );
         this.locationsRows = spotNegotiation.locationsRows;
+        
         this.bestOffIconDispaly =  false;
-        // this.locationsRows.forEach(element => {
-        //   if(element?.requestOffers?.length > 0){
-        //     this.bestOffIconDispaly =  true;
-        //     return;
-        //   }
-        // });
+        this.locationsRows.forEach(element => {
+          if(element?.requestOffers?.length > 0){
+            this.bestOffIconDispaly =  true;
+            element.requestOffers.filter(_data => {
+              if(_data.isFormulaPricing == true){
+                this.evaluateIconDisplay = true;
+              return;
+              }
+            });
+          if(this.evaluateIconDisplay == true) return;
+          }
+        });
         this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
           this.locations =
@@ -343,6 +351,21 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   refreshGrid(){
+    let locationData : any[] = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    let OfferIds = [];
+    locationData.forEach(loc =>{
+      if(loc.requestOffers){
+         let offerId = loc.requestOffers.find(x => x.isFormulaPricing == true)?.id;
+         OfferIds.push(offerId);
+      }
+    }
+    );
+    OfferIds =  OfferIds.filter(x=> x!=undefined);
+    this._spotNegotiationService.evaluatePrices({ RequestOfferIds: OfferIds}).subscribe((resp:any) =>{
+      console.log(resp);
+    })
     this._spotNegotiationService.callGridRedrawService();
   }
   addCounterpartyAcrossLocations() {
@@ -880,7 +903,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     return this.expandedSearch;
   }
 
-  searchCounterparty(userInput: string): void {
+  searchLocationCounterparty(userInput: any) {
     if (userInput.length === 0) {
       const locationsRowsOriData = this.store.selectSnapshot(
         (state: SpotNegotiationStoreModel) => {
@@ -907,8 +930,13 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  scrollPort1(el: HTMLElement) {
-    el.scrollIntoView();
+  scrollPort(scrollPlaceId) {
+    let scrollId = "scroll"+scrollPlaceId;
+    document.getElementById(scrollId).scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "nearest"
+    });
   }
 
   scrollComments(el: HTMLElement) {

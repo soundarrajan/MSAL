@@ -46,11 +46,11 @@
           Allowed Locations
         </div>
         <div
-          *ngIf="formValues.status && formValues.status.name == 'Confirmed'"
+          *ngIf="formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')"
           class="edit-allow-locations"
         ></div>
         <div
-          *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"
+          *ngIf="!(formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered'))"
           [matMenuTriggerFor]="menuAllowedLocations"
           class="edit-allow-locations"
         ></div>
@@ -134,12 +134,12 @@
           Allowed products
         </div>
         <div
-          *ngIf="!(formValues.status && formValues.status.name == 'Confirmed')"
+          *ngIf="!(formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered'))"
           [matMenuTriggerFor]="menuAllowedProducts"
           class="edit-allow-locations"
         ></div>
         <div
-          *ngIf="formValues.status && formValues.status.name == 'Confirmed'"
+          *ngIf="formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')"
           class="edit-allow-locations"
         ></div>
         <mat-menu
@@ -222,7 +222,7 @@
             panelClass="general-info-select-container"
             [compareWith]="compareUomObjects"
             [disabled]="
-              formValues.status && formValues.status.name == 'Confirmed'
+              formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
             "
           >
             <ng-container *ngIf="formValues.products[selectedTabIndex].product">
@@ -242,11 +242,11 @@
         <div
           [ngClass]="{
             'search-icon-disabled':
-              formValues.status && formValues.status.name == 'Confirmed'
+              formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
           }"
           class="search-icon"
           (click)="
-            formValues.status && formValues.status.name == 'Confirmed'
+            formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
               ? ''
               : openSpecGroupPopUp(formValues.products[selectedTabIndex])
           "
@@ -270,7 +270,7 @@
             [matAutocomplete]="auto1"
             placeholder="Supplier"
             [disabled]="
-              formValues.status && formValues.status.name == 'Confirmed'
+              formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
             "
           />
           <mat-autocomplete
@@ -290,11 +290,11 @@
           class="search-icon"
           (click)="openSupplier()"
           [disabled]="
-            formValues.status && formValues.status.name == 'Confirmed'
+            formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
           "
           [ngClass]="{
             'search-icon-disabled':
-              formValues.status && formValues.status.name == 'Confirmed'
+              formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
           }"
           appMasterSelectorTrigger
           [masterSelector]="masterSelector1"
@@ -340,7 +340,7 @@
           #validToDateField="ngModel"
           matInput
           [disabled]="
-            formValues.status && formValues.status.name == 'Confirmed'
+            formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
           "
           [matDatepicker]="dealDate"
           (focus)="dealDate.open()"

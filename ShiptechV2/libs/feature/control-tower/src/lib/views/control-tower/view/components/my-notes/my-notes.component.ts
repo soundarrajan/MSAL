@@ -207,16 +207,16 @@ export class MyNotesComponent implements OnInit {
       view: this.view,
       timeView: { id: +this.timeView }
     };
-    this.spinner.show();
+    //this.spinner.show();
     this.controlTowerService
       .getNotes(payload, this.view)
       .pipe()
       .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastr.error(response);
-          this.spinner.hide();
+          //this.spinner.hide();
         } else {
-          this.spinner.hide();
+          //this.spinner.hide();
           this.notesContent = _.cloneDeep(response);
           let index = this.getFirstIndexWithNotes();
           if (typeof index != 'undefined') {

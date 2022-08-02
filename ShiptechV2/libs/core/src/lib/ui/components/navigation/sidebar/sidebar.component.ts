@@ -53,6 +53,8 @@ export class SidebarComponent implements OnInit, AfterContentInit {
   @Input() reset: boolean;
 
   model: any[];
+  @Input() appVersion = 'Version 5.0.0';
+  @Input() version_no: string = '0.0.1';
 
   @ViewChild('layoutMenuScroller', { static: true })
   layoutMenuScrollerViewChild: ScrollPanel;
@@ -107,15 +109,18 @@ export class SidebarComponent implements OnInit, AfterContentInit {
 
   ngAfterContentInit(): void {
     setTimeout(() => {
-      this.layoutMenuScrollerViewChild.style = { height: '100%' };
-      this.layoutMenuScrollerViewChild.moveBar();
+      if (this.layoutMenuScrollerViewChild) {
+        this.layoutMenuScrollerViewChild.style = { height: '100%' };
+        this.layoutMenuScrollerViewChild.moveBar();}
     }, 100);
   }
 
   onMenuClick(event: any): void {
     if (!this.app.isHorizontal()) {
       setTimeout(() => {
-        this.layoutMenuScrollerViewChild.moveBar();
+        if (this.layoutMenuScrollerViewChild) {
+          this.layoutMenuScrollerViewChild.moveBar();
+        }
       }, 450);
     }
     this.app.onMenuClick(event);

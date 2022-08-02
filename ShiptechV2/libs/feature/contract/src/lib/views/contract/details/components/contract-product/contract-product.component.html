@@ -6,7 +6,7 @@
   <div
     class="add-contract-product-section"
     (click)="
-      formValues.status && formValues.status.name == 'Confirmed'
+      formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
         ? ''
         : addProductToContract()
     "
@@ -38,7 +38,7 @@
             class="hover-remove-icon"
             *ngIf="formValues.products && formValues.products.length > 1"
             (click)="
-              formValues.status && formValues.status.name == 'Confirmed'
+              formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
                 ? ''
                 : removeProductFromContract(contractProduct.key)
             "
@@ -91,7 +91,7 @@
                     )
                   "
                   [disabled]="
-                    formValues.status && formValues.status.name == 'Confirmed'
+                    formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
                   "
                 >
                   <div
@@ -199,7 +199,7 @@
                   selectedTabIndex == contractProduct.key,
                 'mat-form-field-disabled':
                   formValues.status &&
-                  formValues.status.name == 'Confirmed' &&
+                  (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered') &&
                   selectedTabIndex != contractProduct.key
               }"
             >
@@ -252,7 +252,7 @@
                     )
                   "
                   [disabled]="
-                    formValues.status && formValues.status.name == 'Confirmed'
+                    formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')
                   "
                 >
                   <div

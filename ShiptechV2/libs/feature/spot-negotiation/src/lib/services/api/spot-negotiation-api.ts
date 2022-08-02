@@ -78,7 +78,11 @@ export const SpotNegotiationApiPaths = {
   updateSellerComment: `RFQ/UpdateSellerComments`,
   getOfferPriceHistory: `Price/getOfferPriceHistory`,
   updateProductPrice: `RFQ/FreezeMarketPrices`,
-  isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`
+  isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`,
+  getSellerRatingsforNegotiation: `api/sellerrating/sellerratingreview/getForNegotiation`,
+  getContractFormulaList : `api/masters/formulas/listMasters`,
+  getMasterFormula : `api/masters/formulas/get`,
+  getDefaultConversionFactor : `api/masters/products/getProdDefaultConversionFactors`
 };
 
 @Injectable({
@@ -97,6 +101,12 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
 
   @ApiCallUrl()
   private _masterApiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
+
+  @ApiCallUrl()
+  private _sellerApiUrl = this.appConfig.v1.API.BASE_URL_DATA_SELLERRATING;
+
+  @ApiCallUrl()
+  private _shitechApiUrl = this.appConfig.v1.API.BASE_URL; // 'http://localhost:5021';
 
   constructor(private http: HttpClient, private appConfig: AppConfig) {}
 
@@ -844,7 +854,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       body instanceof HttpErrorResponse && body.status != 401
         ? body.error.ErrorMessage
           ? body.error.ErrorMessage
-          : body.error.errorMessage
+          : (body.error.errors)? body.error.errors : body.error.errorMessage
         : { message: 'Unauthorized' }
     );
   }
@@ -879,7 +889,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   CheckWhetherUserIsAuthorizedForReportsTab(): Observable<any> {
     return this.http
       .post<any>(
-        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.isAuthorizedForReportsTab}`, 
+        `${this._procurementApiUrl}/${SpotNegotiationApiPaths.isAuthorizedForReportsTab}`,
         { Payload: null }
       )
       .pipe(
@@ -895,6 +905,167 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         map((body: any) => body),
         catchError((body: any) => this.handleErrorMessage(body))
       );
+  }
+
+  @ObservableException()
+  getSellerRatingforNegotiation(payload:any) : Observable<any>{
+    return this.http
+      .post<any>(
+        `${this._sellerApiUrl}/${SpotNegotiationApiPaths.getSellerRatingsforNegotiation}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  getContractFormulaList(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.getContractFormulaList}`,
+        { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  getMasterFormula(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.getMasterFormula}`,
+        { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  
+}
+
+  @ObservableException()
+  addNewFormulaPrice(request: any, requestOfferId : number): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration`,
+           request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  updateFormulaPrice(request: any, requestOfferId : number, priceConfigurationId: number): Observable<any> {
+    return this.http
+      .patch<any>(
+        `${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigurationId}`,
+           request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  evaluateFormulaPrice(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/offerPriceEvaluations`,
+          request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  cloneToPriceConfiguration(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/orders/cloneToPriceconfigurations`,
+          request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  orderPriceEvaluations(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/orderPriceEvaluations`,
+          request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  evaluatePrices(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/offerPriceEvaluations/ForOffers`,
+          request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  getOfferPriceConfiguration(requestOfferId: number, priceConfigId : number): Observable<any> {
+    return this.http.get<any>(`${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigId}`)
+    .pipe(
+      map((body: any) => body),
+      catchError((body: any) => this.handleErrorMessage(body))
+    );
+  }
+
+  @ObservableException()
+  getDefaultConversionFactor(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${SpotNegotiationApiPaths.getDefaultConversionFactor}`,
+        { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  copyPriceConfigurations(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/Offers/copyPriceConfigurations`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+  @ObservableException()
+  removeFormula(requestOfferId: number, priceConfigId : number): Observable<any> {
+    return this.http.delete<any>(`${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigId}`)
+    .pipe(
+      map((body: any) => body),
+      catchError((body: any) => this.handleErrorMessage(body))
+    );
   }
 }
 
