@@ -47,7 +47,7 @@ import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningop
 import { SuccesspopupComponent } from '../successpopup/successpopup.component';
 import moment from 'moment';
 import { Subject, Subscription, forkJoin, Observable, timer } from 'rxjs';
-import { distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, debounceTime, switchMap, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-vessel-info',
@@ -133,6 +133,7 @@ export class VesselInfoComponent implements OnInit {
   offset:number;
   continueCheckingPlans: any;
   public hideFlag = 0 ;
+  unsubscribeSignal: Subject<void> = new Subject();
 
   constructor(
     private store: Store,
@@ -181,7 +182,11 @@ export class VesselInfoComponent implements OnInit {
     this.getDefaultView();
     this.offset = (new Date().getTimezoneOffset());
     // console.log('Vessel Data11111111111111 ',this.vesselData)
-    this.eventsSubscription = this.changeRole.subscribe(()=> this.currentBplan? this.currentBplan.triggerRefreshGrid(this.selectedUserRole):'');
+    this.eventsSubscription = this.changeRole
+    .pipe(
+      takeUntil(this.unsubscribeSignal.asObservable())
+    )
+    .subscribe(()=> this.currentBplan? this.currentBplan.triggerRefreshGrid(this.selectedUserRole):'');
     
     let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData)
     this.checkVesselHasNewPlan(vesseldata.vesselRef); 
@@ -196,7 +201,11 @@ export class VesselInfoComponent implements OnInit {
     this.vesselService.myDefaultViewPayload = [];
     this.vesselService.APImyDefaultView = [];
     let req = { UserId: this.store.selectSnapshot(UserProfileState.userId) };
-    this.vesselService.getmyDefaultview(req).subscribe(res => {
+    this.vesselService.getmyDefaultview(req)
+    .pipe(
+      takeUntil(this.unsubscribeSignal.asObservable())
+    )
+    .subscribe(res => {
       // debugger;
       if (res.payload.length > 0) {
         this.vesselService.myDefaultViewPayload = res.payload[0];
@@ -370,7 +379,11 @@ export class VesselInfoComponent implements OnInit {
     // forkjoin http calls to show count of BunkerPlanComment, RequestComment at same time
     let BunkerPlanComment = this.BPService.getBunkerPlanComments(payload);
     let RequestComment = this.BPService.getRequestComments(payload);
-    forkJoin([BunkerPlanComment, RequestComment]).subscribe(responseList => {
+    forkJoin([BunkerPlanComment, RequestComment])
+    .pipe(
+      takeUntil(this.unsubscribeSignal.asObservable())
+    )
+    .subscribe(responseList => {
       this.BunkerPlanCommentList = responseList[0]?.payload;
       this.RequestCommentList = responseList[1]?.payload;
 
@@ -382,20 +395,14 @@ export class VesselInfoComponent implements OnInit {
       this.triggerTitleToBind();
     });
   }
-  // loadRequestComments() {
-  //   let payload = this.vesselRef?.vesselId;
-  //   this.BPService.getRequestComments(payload).subscribe((response)=> {
-  //     this.RequestCommentList = response?.payload;
-  //     this.totalCommentCount = (this.BunkerPlanCommentList?.length? this.BunkerPlanCommentList?.length: 0)
-  //     +(this.RequestCommentList?.length? this.RequestCommentList?.length: 0);
-  //     let titleEle = document.getElementsByClassName('page-title')[0] as HTMLElement;
-  //     titleEle.click();
-
-  //   })
-  // }
+  
   public loadBunkerPlanHeader(event) {
     let vesselId = event.id? event.id: 348; 
-    this.localService.getBunkerPlanHeader(vesselId).subscribe((data)=> {
+    this.localService.getBunkerPlanHeader(vesselId)
+    .pipe(
+      takeUntil(this.unsubscribeSignal.asObservable())
+    )
+    .subscribe((data)=> {
       console.log('bunker plan header',data);
       this.bunkerPlanHeaderDetail = (data?.payload && data?.payload.length)? data.payload[0]: {};
       this.vesselData = this.bunkerPlanHeaderDetail;
@@ -436,10 +443,18 @@ export class VesselInfoComponent implements OnInit {
     let vesselId = this.vesselData?.vesselId;
     let requestPayload = { shipId: vesselId, planStatus: 'C' };
 
-    this.localService.getBunkerPlanId(requestPayload).subscribe(data => {
+    this.localService.getBunkerPlanId(requestPayload)
+    .pipe(
+      takeUntil(this.unsubscribeSignal.asObservable())
+    )
+    .subscribe(data => {
       let bunkerPlanId =
         data?.payload && data?.payload.length ? data.payload[0].planId : null;
-      this.localService.loadROBArbitrage(bunkerPlanId).subscribe(data => {
+      this.localService.loadROBArbitrage(bunkerPlanId)
+      .pipe(
+        takeUntil(this.unsubscribeSignal.asObservable())
+      )
+      .subscribe(data => {
         this.ROBArbitrageData =
           data?.payload && data?.payload.length ? data.payload[0] : {};
         /* ROB Color classes - Start */
@@ -557,7 +572,11 @@ export class VesselInfoComponent implements OnInit {
   loadCurrentBunkeringPlan(request) {
     this.loadBplan = false;
     this.statusCurrBPlan = false;
-    this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe(data => {
+    this.bunkerPlanService.getBunkerPlanIdAndStatus(request)
+    .pipe(
+      takeUntil(this.unsubscribeSignal.asObservable())
+    )
+    .subscribe(data => {
       this.currPlanIdDetails =
         data.payload && data.payload.length ? data.payload[0] : {};
       this.planId = this.currPlanIdDetails?.planId
@@ -605,7 +624,11 @@ export class VesselInfoComponent implements OnInit {
   loadPrevBunkeringPlan(request) {
     this.loadBplan = false;
     this.statusPrevBPlan = false;
-    this.bunkerPlanService.getBunkerPlanIdAndStatus(request).subscribe(data => {
+    this.bunkerPlanService.getBunkerPlanIdAndStatus(request)
+    .pipe(
+      takeUntil(this.unsubscribeSignal.asObservable())
+    )
+    .subscribe(data => {
       this.prevPlanIdDetails =
         data.payload && data.payload.length ? data.payload[0] : {};
       this.prevPlanId = this.prevPlanIdDetails?.planId
@@ -944,5 +967,7 @@ export class VesselInfoComponent implements OnInit {
     //unsubscribe to avoid memory leakage
     this.subscription.unsubscribe();
     this.observableRef$.unsubscribe();
+    this.unsubscribeSignal.next();
+    this.unsubscribeSignal.unsubscribe();
   }
 }
