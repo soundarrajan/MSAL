@@ -37,6 +37,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
 import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation-price-calc.service';
+import { ConfirmdialogComponent } from '../../views/main/details/components/spot-negotiation-popups/confirmdialog/confirmdialog.component';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -1987,21 +1988,35 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       setTimeout(() => {this.spinner.hide()}, 1000);
     });
   }
+
   removeFormulaPrice(params){
-    let requestedOffer = params.data.requestOffers[params.index];
-    var newData = _.cloneDeep(params.data);
-    newData.requestOffers.map((el,_index) => {
-      if(params.index == _index){
-        el.isFormulaPricing = false;
-        el.price = 0;
-        el.totalPrice = 0;
-        el.amount = 0;
-      }      
+    const dialogRef = this.dialog.open(ConfirmdialogComponent, {
+      width: '368px',
+      maxWidth: '80vw',
+      panelClass: 'confirm-dialog',
+      data: {
+        message: 'Are you sure you want remove this formula?'
+      }
     });
-   this._spotNegotiationService.removeFormula(requestedOffer.id,requestedOffer.offerPriceFormulaId).subscribe();
-   this.store.dispatch(new EditLocationRow(newData));
-   this._spotNegotiationService.callGridRedrawService();
+    dialogRef.afterClosed().subscribe(result =>{
+      if(result){
+        let requestedOffer = params.data.requestOffers[params.index];
+        var newData = _.cloneDeep(params.data);
+        newData.requestOffers.map((el,_index) => {
+          if(params.index == _index){
+            el.isFormulaPricing = false;
+            el.price = 0;
+            el.totalPrice = 0;
+            el.amount = 0;
+          } 
+        });
+       this._spotNegotiationService.removeFormula(requestedOffer.id,requestedOffer.offerPriceFormulaId).subscribe();
+       this.store.dispatch(new EditLocationRow(newData));
+       this._spotNegotiationService.callGridRedrawService();
+      }
+    });
   }
+  
   changeCurrencyForAdditionalCost(currencyId, exchangeRateValue) {
     this.checkAdditionalCost(
       _.cloneDeep(this.params.data),
