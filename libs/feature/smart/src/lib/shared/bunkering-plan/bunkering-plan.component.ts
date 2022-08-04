@@ -70,13 +70,17 @@ export class BunkeringPlanComponent implements OnInit {
     if (v == null) this.latestPlanId = '';
     else {
       this.latestPlanId = v;
-      this.loadBunkeringPlanDetails();
+      // Load if no bunker plan exists or the latest generated
+      if(!this.rowData || (this.rowData.length > 0
+        && this.rowData[0].plan_id?.trim().toLowerCase()
+        != this.latestPlanId?.trim().toLowerCase())) {
+        this.loadBunkeringPlanDetails();
+      }
     }
   }
   @Input('vesselRef')
   public set vesselRef(v: string) {
     this.vesselData = v;
-    //this.loadBunkeringPlanDetails();
   }
   @Input('bPlanType')
   public set bPlanType(v: any) {
@@ -158,7 +162,9 @@ export class BunkeringPlanComponent implements OnInit {
       this.eventSub = this.changeROB.subscribe(column =>
         this.calculateSOA(column)
       );
-    this.loadBunkeringPlanDetails();
+    if(!this.rowData) {
+      this.loadBunkeringPlanDetails();
+    }
   }
 
   columnDefs = [
@@ -1093,8 +1099,8 @@ export class BunkeringPlanComponent implements OnInit {
     //Stock validation : When Stock > Tank Capacity
     //1. Current HSFO Qty > HSFO Tank Capacity
     let totalHsfoCurrentROB =
-      parseInt(currentROBObj['3.5 QTY'].toString()) +
-      parseInt(currentROBObj['0.5 QTY'].toString());
+      parseInt(currentROBObj['3.5 QTY']?.toString()) +
+      parseInt(currentROBObj['0.5 QTY']?.toString());
     let isValidHsfoStock =
       totalHsfoCurrentROB > currentROBObj?.hsfoTankCapacity ? 'N' : 'Y';
     if (isValidHsfoStock == 'N') {
@@ -1166,10 +1172,17 @@ export class BunkeringPlanComponent implements OnInit {
       setTimeout(() => {
         if (_this.gridOptions?.api) {
           // _this.gridOptions.api.setRowData(this.rowData);
-          this.latestPlanId = this.vesselData?.vesselRef?.planId
+          let newPlanId = this.vesselData?.vesselRef?.planId
             ? this.vesselData.vesselRef.planId
             : '';
-          this.loadBunkeringPlanDetails();
+          // Reg. 41782: Sometimes triggerRefreshGrid is invoked after latest plan load
+          // To restrict bunkerplan load only if there is a new planId or if latestPlanId has value
+          if (newPlanId || this.latestPlanId) {
+            this.latestPlanId = newPlanId ? newPlanId : this.latestPlanId;
+            if(this.latestPlanId) {
+              this.loadBunkeringPlanDetails();
+            }
+          }
         }
       }, 500);
     }
@@ -1232,12 +1245,12 @@ export class BunkeringPlanComponent implements OnInit {
               if (i == 0) {
                 this.calculateConsumptionAndLsdisAsEca(
                   i,
-                  parseInt(currentRobLsdis.toString()),
-                  parseInt(currentRobUslfo.toString()),
+                  parseInt(currentRobLsdis?.toString()),
+                  parseInt(currentRobUslfo?.toString()),
                   rowData2,
                   estdConsEcaList,
                   estdConsLsdisList,
-                  parseInt(orig_lsdisAsSeca.toString())
+                  parseInt(orig_lsdisAsSeca?.toString())
                 );
               }
               //For Port 1 to N
@@ -1281,8 +1294,8 @@ export class BunkeringPlanComponent implements OnInit {
                 estdConsHsfoList[i].hsfo_estimated_consumption
               );
               rowData2[i].hsfo_soa =
-                parseInt(currentRobHsfo.toString()) +
-                parseInt(currentRobVlsfo.toString()) -
+                parseInt(currentRobHsfo?.toString()) +
+                parseInt(currentRobVlsfo?.toString()) -
                 estdConsHsfo;
             }
             //For Port 1 to N
