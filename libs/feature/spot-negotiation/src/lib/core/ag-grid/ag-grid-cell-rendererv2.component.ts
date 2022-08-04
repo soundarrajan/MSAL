@@ -406,7 +406,7 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
             (params && (params.data.requestOffers && params.data.requestOffers[params.index]?.isFormulaPricing) || (params.value > 0 && params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
               params.data.requestOffers[params.index]?.supplyQuantity != null))
             "
-            [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' ? 'inputFieldHighlightOff' : ''"
+            [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' || params.data.requestOffers[params.index]?.isFormulaPricing  ?'inputFieldHighlightOff' : ''"
           />
 
           <div
