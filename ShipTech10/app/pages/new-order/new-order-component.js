@@ -625,7 +625,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         function loadData(data) {
             ctrl.data = data.payload;
             ctrl.getOrderinitialSnapshot = angular.copy(ctrl.data);
-            ctrl.PortLocationEditable = false;
+            //ctrl.PortLocationEditable = false;
             $.each(ctrl.data.products, (k, v) => {
                 if ((!v.physicalSupplier || !_.get(v, 'physicalSupplier.id')) && _.get(v, 'status.name') !== 'Cancelled') {
                     ctrl.data.missingPhysicalSupplier = true;
