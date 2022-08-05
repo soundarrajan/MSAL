@@ -985,7 +985,7 @@ export class VesselMenuComponent {
     ) {
       let warnCommentMsg = 'please enter a comment';
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data: { message: warnCommentMsg, source: 'hardWarning' }
       });
       return;

@@ -975,7 +975,7 @@ export class BunkeringPlanComponent implements OnInit {
       let port_id = data[idx]?.port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: 'Please select/enter a valid Business Address for port',id: port_id, okayButton: true}
       });
       isHardValidation = 1;
@@ -996,7 +996,7 @@ export class BunkeringPlanComponent implements OnInit {
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: `The minimum HSFO SOD cannot exceed the Total HSFO tank capacity (${currentROBObj.hsfoTankCapacity}) for port `, id: port_id, okayButton: true}
       });
       isHardValidation = 1;
@@ -1018,7 +1018,7 @@ export class BunkeringPlanComponent implements OnInit {
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: 'The Total Max SOD cannot be smaller than Total min SOD for port',id: port_id, okayButton: true }
       });
       isHardValidation = 1;
@@ -1044,7 +1044,7 @@ export class BunkeringPlanComponent implements OnInit {
         currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: `The minimum ECA bunker SOD cannot exceed the Total ULSFO and LSDIS tank capacity of ${capacity} for port `, id: port_id, okayButton: true}
       });
       isHardValidation = 1;
@@ -1068,7 +1068,7 @@ export class BunkeringPlanComponent implements OnInit {
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: 'The sum min ECA bunker SOD and minimum HSFO SOD cannot exceed the Total Max SOD for port',id: port_id, okayButton: true}
       });
       isHardValidation = 1;
@@ -1090,7 +1090,7 @@ export class BunkeringPlanComponent implements OnInit {
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : { message: 'The ECA Estimated Consumption should not be smaller than LSDIS Estimated Consumption for port ', id: port_id, okayButton: true }
       });
       isHardValidation = 1;
@@ -1106,7 +1106,7 @@ export class BunkeringPlanComponent implements OnInit {
     if (isValidHsfoStock == 'N') {
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: `Current HSFO Qty should be less than HSFO Tank Capacity ${currentROBObj.hsfoTankCapacity} `, okayButton: true}
       });
       isHardValidation = 1;
@@ -1118,7 +1118,7 @@ export class BunkeringPlanComponent implements OnInit {
     if (isValidUlsfoStock == 'N') {
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: `Current ULSFO Qty should be less than ULSFO Tank Capacity ${currentROBObj.ulsfoTankCapacity} `, okayButton: true}
       });
       isHardValidation = 1;
@@ -1130,7 +1130,7 @@ export class BunkeringPlanComponent implements OnInit {
     if (isValidLsdisStock == 'N') {
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: `Current LSDIS Qty should be less than LSDIS Tank Capacity ${currentROBObj.lsdisTankCapacity} `, okayButton: true}
       });
       isHardValidation = 1;
@@ -1142,7 +1142,7 @@ export class BunkeringPlanComponent implements OnInit {
     if (isValidHsdisStock == 'N') {
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: `Current HSDIS Qty should be less than HSDIS Tank Capacity ${currentROBObj.hsdisTankCapacity} `, okayButton: true}
       });
       isHardValidation = 1;

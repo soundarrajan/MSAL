@@ -824,7 +824,7 @@ export class VesselInfoComponent implements OnInit {
       ) {
         const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
-          panelClass: 'confirmation-popup-operator',
+          panelClass: ['confirmation-popup-operator', 'bg-transparent'],
           data: {
             message: 'Please wait, a new plan is getting generated for vessel ',
             id: this.vesselData?.vesselRef?.vesselRef?.vesselCode,
@@ -842,7 +842,7 @@ export class VesselInfoComponent implements OnInit {
       } else if (data.payload && data?.payload[0]?.import_in_progress == true) {
         const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
-          panelClass: 'confirmation-popup-operator',
+          panelClass: ['confirmation-popup-operator', 'bg-transparent'],
           data: {
             message: 'Please wait, GSIS import is under process',
             okayButton: true
@@ -951,7 +951,7 @@ export class VesselInfoComponent implements OnInit {
       this.disableCurrentBPlan = true;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '450px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data: {
           message:
             'General plan generation is currently running and therefore manual plan generation is disabled. Manual plan generation will be enabled again ' +
