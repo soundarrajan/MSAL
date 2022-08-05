@@ -121,7 +121,7 @@ export class VesselInfoComponent implements OnInit {
   viewpreviousBunkeringPlan: boolean = false;
   myDefaultView: boolean = false;
   sendPlanReminder: boolean = false;
-  disableCurrentBPlan: boolean = false;
+  disableCurrentBPlan: boolean = true;
   checkAutoPlanGenInProgress: boolean = false;
   BPlanGenTrigger = [];
   observableRef$;
@@ -917,22 +917,22 @@ export class VesselInfoComponent implements OnInit {
         //unsubscribe next exec after 15 sec, if plan generate get completed
        // this.observableRef$.unsubscribe();
         let vesselCode = data.vessel_code;
-          const dialogValidRef = this.dialog.open(SuccesspopupComponent, {
-            panelClass: ['success-popup-panel'],
-            width: '350px',
-            data: {
-              message : `A plan ${data?.plan_id} is generated for vessel ${vesselCode}`,
-              hideActionbtn: true, vCode : vesselCode, 
-              observableRestartFlag : this.continueCheckingPlans--,
-              observableIniFlag : userVessalList.length
-            }
-          });
-          if(data.vessel_code.trim() == vessalCode.trim()){
-            //Refresh current bunker plan section once gen plan get completed
-            let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
-            this.loadBunkerPlanDetails(vesseldata.vesselRef);
-            this.disableCurrentBPlan = false;
+        const dialogValidRef = this.dialog.open(SuccesspopupComponent, {
+          panelClass: ['success-popup-panel'],
+          width: '350px',
+          data: {
+            message : `A plan ${data?.plan_id} is generated for vessel ${vesselCode}`,
+            hideActionbtn: true, vCode : vesselCode, 
+            observableRestartFlag : this.continueCheckingPlans--,
+            observableIniFlag : userVessalList.length
           }
+        });
+        if(data.vessel_code.trim() == vessalCode.trim()){
+          //Refresh current bunker plan section once gen plan get completed
+          let vesseldata = this.store.selectSnapshot(SaveBunkeringPlanState.getVesselData);
+          this.loadBunkerPlanDetails(vesseldata.vesselRef);
+          this.disableCurrentBPlan = false;
+        }
         if(this.BPlanGenTrigger.indexOf(this.vesselData?.vesselId)!=-1) {
           this.BPlanGenTrigger.splice(this.BPlanGenTrigger.indexOf(this.vesselData?.vesselId), 1);
         }
