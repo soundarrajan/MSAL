@@ -107,7 +107,7 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
             this.value = 0;
             const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
               width: '350px',
-              panelClass: 'confirmation-popup-operator',
+              panelClass: ['confirmation-popup-operator', 'bg-transparent'],
               data : {message: 'You should enter only one safe port value for each product type'}
             });
           }
