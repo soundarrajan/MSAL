@@ -24,6 +24,7 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
 import moment from 'moment';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { Store } from '@ngxs/store';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-vessel-popup',
@@ -69,7 +70,7 @@ export class VesselPopupComponent implements OnInit {
   @Input() status: string = 'standard-view';
   @Input('vesselData')
   public set vesselData(v: any) {
-    this.popup_data = v;
+    this.popup_data = _.cloneDeep(v);
   }
   @Output() showBPlan = new EventEmitter();
   @Output() showRoutes = new EventEmitter();
