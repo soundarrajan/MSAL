@@ -380,13 +380,13 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
           for( let i = 0; i <= selectedPlanIndex ; i++){
             switch(field){
               case 'hsfo_min_sod' : {
-                                      if(bPlanData[i]?.request_id_hsfo != ""){
+                                      if(bPlanData[i]?.request_id_hsfo != "" || bPlanData[i]?.request_id_vlsfo != "") {
                                         requestExists = 1; 
                                       }
                                       break;
                                     }
               case 'eca_min_sod' :{
-                                    if(bPlanData[i]?.request_id_lsdis == "" && bPlanData[i]?.request_id_ulsfo == ""){
+                                    if(bPlanData[i]?.request_id_lsdis == "" && bPlanData[i]?.request_id_ulsfo == "") {
                                       requestExists = 0; 
                                     }
                                     else{
@@ -395,7 +395,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                     break;
                                   }
               default :{
-                          if(bPlanData[i]?.request_id_hsdis == "" && bPlanData[i]?.request_id_hsfo == "" && bPlanData[i]?.request_id_lsdis == "" && bPlanData[i]?.request_id_ulsfo == ""){
+                          if(bPlanData[i]?.request_id_hsdis == "" && bPlanData[i]?.request_id_hsfo == "" && bPlanData[i]?.request_id_vlsfo == "" && bPlanData[i]?.request_id_lsdis == "" && bPlanData[i]?.request_id_ulsfo == "") {
                             requestExists = 0; 
                           }
                           else{
@@ -503,7 +503,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
 
           let selectedPlanIndex = bPlanData.findIndex(data => data.detail_no == this.params.data.detail_no)
             for( let i = 0; i < selectedPlanIndex ; i++){
-              if(bPlanData[i]?.request_id_hsdis =="" && bPlanData[i]?.request_id_hsfo == "" && bPlanData[i]?.request_id_lsdis == "" && bPlanData[i]?.request_id_ulsfo == ""){
+              if(bPlanData[i]?.request_id_hsdis =="" && bPlanData[i]?.request_id_hsfo == "" && bPlanData[i]?.request_id_vlsfo == "" && bPlanData[i]?.request_id_lsdis == "" && bPlanData[i]?.request_id_ulsfo == ""){
                 requestExists = 0; 
               }
               else{
@@ -571,7 +571,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   toggleOperAck() {
     if(this.isOperatorAck == true ){
       //User cannot unacknowledge/uncheck a port with request available.
-      if(!this.params.data?.request_id_hsfo && !this.params.data?.request_id_hsdis && !this.params.data?.request_id_lsdis && !this.params.data?.request_id_ulsfo)
+      if(!this.params.data?.request_id_hsfo && !this.params.data?.request_id_vlsfo && !this.params.data?.request_id_hsdis && !this.params.data?.request_id_lsdis && !this.params.data?.request_id_ulsfo)
       {
         this.isOperatorAck = true;
       }
