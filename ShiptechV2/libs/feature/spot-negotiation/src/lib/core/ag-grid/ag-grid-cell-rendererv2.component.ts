@@ -1996,7 +1996,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       maxWidth: '80vw',
       panelClass: 'confirm-dialog',
       data: {
-        message: 'Are you sure you want remove this formula?'
+        message: 'Are you sure you want to remove this formula?'
       }
     });
     dialogRef.afterClosed().subscribe(result =>{
