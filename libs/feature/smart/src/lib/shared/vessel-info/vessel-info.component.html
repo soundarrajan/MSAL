@@ -362,7 +362,7 @@
       </mat-expansion-panel-header>
       <div class="panel-body">
         <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded && loadBplan"
-          [planId]="prevPlanId" [bPlanType]="bPlanType.prev"
+          (isCellClicked)="showViewAlert($event)" [planId]="prevPlanId" [bPlanType]="bPlanType.prev"
           [selectedUserRole]="selectedUserRole"
           [vesselRef]="vesselData">
         </app-bunkering-plan>

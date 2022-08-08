@@ -962,6 +962,18 @@ export class VesselInfoComponent implements OnInit {
     }
     this.checkAutoPlanGenInProgress = false;
   }
+  
+  showViewAlert(isCellClicked) {
+    if (isCellClicked?.type == 'cellClicked') {
+      var overlay = document.querySelector('.cdk-overlay-container');
+      overlay.classList.remove('removeOverlay');
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+        width: '350px',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
+        data : {message: 'A new Plan exists for this vessel. Cannot update an old Plan'}
+      });
+    }
+  }
 
   ngOnDestroy() {
     //unsubscribe to avoid memory leakage
