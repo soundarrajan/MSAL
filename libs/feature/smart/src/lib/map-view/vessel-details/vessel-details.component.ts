@@ -170,7 +170,7 @@ export class VesselDetailsComponent implements OnInit {
             ? 'Are you sure to switch your role to Vessel?'
             : 'Are you sure to switch your role to Operator?';
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-          panelClass: 'confirmation-popup-operator', // bunkerplan-role-confirm
+          panelClass: ['confirmation-popup-operator', 'bg-transparent'], // bunkerplan-role-confirm
           data: { message: confirmMessage }
         });
 
@@ -221,7 +221,7 @@ export class VesselDetailsComponent implements OnInit {
     const warningMessage =
       'A plan has been received from the vessel but this has not yet been imported. Please generate a new plan to import the latest input from the vessel. When the latest input from the vessel has been imported you can play the role of vessel';
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      panelClass: 'confirmation-popup-operator', // bunkerplan-role-confirm
+      panelClass: ['confirmation-popup-operator', 'bg-transparent'], // bunkerplan-role-confirm
       data: { message: warningMessage, source: 'vesselHardWarning' }
     });
 
