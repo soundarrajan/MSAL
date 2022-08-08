@@ -285,11 +285,12 @@
                   <!-- <button mat-button  matTooltip="Send" [matTooltipShowDelay]="500" class="btn" (click)="sendCurrentBPlan($event)">Send</button>
                   <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
                     (click)="saveCurrentBPlan($event)" >Save</button> -->
-                    <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
-                      (click)="saveCurrentBPlan($event)" >Save</button>
-                      <button mat-button  matTooltip="Generate" [matTooltipShowDelay]="500"
-                      class="btn" [disabled]="disableCurrentBPlan" (click)="generateCurrentBPlan($event)">Generate</button>
-                      <button mat-button  matTooltip="Send" [matTooltipShowDelay]="500" class="btn" (click)="sendCurrentBPlan($event)">Send</button>
+                  <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
+                    [disabled]="disableCurrentBPlan" (click)="saveCurrentBPlan($event)" >Save</button>
+                  <button mat-button  matTooltip="Generate" [matTooltipShowDelay]="500"
+                    class="btn" [disabled]="disableCurrentBPlan" (click)="generateCurrentBPlan($event)">Generate</button>
+                  <button mat-button matTooltip="Send" [matTooltipShowDelay]="500"
+                    class="btn" [disabled]="disableCurrentBPlan" (click)="sendCurrentBPlan($event)">Send</button>
                 </div>
                 <div style="flex:0 0 4%;text-align: center;">
                   <div  *ngIf="!expandBplan; else collapseBlock" (click)="toggleBPlan($event)" class="expand-accordion-icon hand"></div>
@@ -361,7 +362,7 @@
       </mat-expansion-panel-header>
       <div class="panel-body">
         <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded && loadBplan"
-          [planId]="prevPlanId" [bPlanType]="bPlanType.prev"
+          (isCellClicked)="showViewAlert($event)" [planId]="prevPlanId" [bPlanType]="bPlanType.prev"
           [selectedUserRole]="selectedUserRole"
           [vesselRef]="vesselData">
         </app-bunkering-plan>
