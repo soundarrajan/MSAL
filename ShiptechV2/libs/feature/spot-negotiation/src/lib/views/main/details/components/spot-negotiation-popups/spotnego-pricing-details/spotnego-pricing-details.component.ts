@@ -995,8 +995,10 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.formulaValue = result.data[0].name;
-      return this.addFormula(result.data[0]);
+      if(result != true){
+        this.formulaValue = result.data[0].name;
+        return this.addFormula(result.data[0]);
+      }
     });
   }
 
@@ -1214,6 +1216,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     this.massUom = uomMassList.find(item=> item.id === priceConfig.conversionMassUomId);
     this.formValues.conversionRate = priceConfig.conversionValue;
     this.formValues.conversionVolumeUomId = priceConfig.conversionVolumeUomId;
-
+  }
+  removeFromula(){
+    this.formValues.formulaType.id = 0;
+    this.formValues.name = '';
   }
 }

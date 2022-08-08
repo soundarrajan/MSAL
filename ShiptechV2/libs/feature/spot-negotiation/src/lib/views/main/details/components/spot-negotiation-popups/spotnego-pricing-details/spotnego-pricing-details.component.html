@@ -40,10 +40,10 @@
                     </mat-autocomplete>
               </mat-form-field>
               <div class="form-field-action" style="right: 16px;top: 10px;">
-              <button class="search-icon" (click)="searchFormula();">
-                <div class="img"></div>
-              </button>
-            </div>
+                <button class="search-icon" (click)="searchFormula();">
+                  <div class="img"></div>
+                </button>
+              </div>
             </div>
           </div>
           <div class="col-md-12 formula-description-header m-b-10"> Formula Description 
@@ -58,6 +58,9 @@
           <mat-label>Formula Name</mat-label>
           <input matInput autocomplete="off" [(ngModel)]="formValues.name" name="formula-name" placeholder="Formula Name">
         </mat-form-field>
+        <div *ngIf="formValues.name" class="form-field-action" style="right: 25px; top: 14px;">
+          <button class="remove-icon" (click)="removeFromula()" style="border:none; background:transparent"></button>
+        </div>
       </div>
           </div>
         </div>
