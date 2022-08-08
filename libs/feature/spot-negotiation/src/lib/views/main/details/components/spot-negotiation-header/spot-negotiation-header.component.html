@@ -193,7 +193,7 @@
           </mat-menu>
         </div>
         <div style="display: flex; margin-left: 10px; width: 100%;">
-          <div style="float:left;" #requestContainer>
+          <div style="display: flex; width: 100%;" #requestContainer>
             <div
               class="addRemoveRequest"
               [matMenuTriggerFor]="requestDeleteMenu"
@@ -220,7 +220,7 @@
                 </span> -->
                 <div
                   class="d-flex align-items-center"
-                  style="padding-right: 5px; max-width: 143.4px;"
+                  style="padding-right: 5px; max-width:unset;"
                 >
                   <div>{{ item.name | titlecase }}</div>
                   <div class="vesselName">
