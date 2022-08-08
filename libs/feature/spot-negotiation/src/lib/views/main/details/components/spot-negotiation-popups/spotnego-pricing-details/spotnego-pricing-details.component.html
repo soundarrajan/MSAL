@@ -25,7 +25,7 @@
             <div class="custom-form-field lightTheme" style="width: 100% !important;margin:0px">
               <mat-form-field class="with-search" style="width: 100%; border-radius: 4px;">
                 <mat-label>Search Formula</mat-label>
-                <input  matInput [matAutocomplete]="auto1" name="formula-name" [value]="formulaValue" [(ngModel)]="formValues.name" placeholder="Search Formula" (keyup) ="SearchFormulaList($event.target.value)">
+                <input #searchInput  matInput [matAutocomplete]="auto1" name="formula-name" [value]="formulaValue" [(ngModel)]="formValues.name" placeholder="Search Formula" (keyup) ="SearchFormulaList($event.target.value)">
                 <mat-autocomplete
                         #auto1="matAutocomplete"
                         class="darkPanelAuto"
@@ -40,7 +40,8 @@
                     </mat-autocomplete>
               </mat-form-field>
               <div class="form-field-action" style="right: 16px;top: 10px;">
-                <button class="search-icon" (click)="searchFormula();">
+                <span *ngIf="searchInput.value.length > 0" (click)="clearInput()" style="margin: 7px 5px; color: #a5a5a5; cursor: pointer;">&#10005;</span>
+                <button class="search-icon" (click)="searchFormula();" style="margin-top: -5px;height: 40px;">
                   <div class="img"></div>
                 </button>
               </div>

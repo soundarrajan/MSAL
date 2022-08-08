@@ -1063,6 +1063,10 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     });
   }
 
+  clearInput(){
+    this.formValues.name = "";
+  }
+
   formatDate(date?: any) {
     if (date) {
       let currentFormat = this.format.dateFormat;
