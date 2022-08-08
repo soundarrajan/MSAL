@@ -77,6 +77,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   uomVolumeList: any;
   defaultConversionRate: number;
   defaultConversionVolumeUomId: number;
+  isComplexFormulaWeightEnforced: boolean;
   constructor(
     public dialogRef: MatDialogRef<SpotnegoPricingDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -102,6 +103,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     this.sessionFormulaList = JSON.parse(sessionStorage.getItem('formula'));
     this.store.selectSnapshot<any>((state: any) => {
       this.staticList = state.spotNegotiation.staticLists.otherLists;
+      this.isComplexFormulaWeightEnforced = state.tenantSettings.general.defaultValues.isComplexFormulaWeightEnforced;
     });
 
     this.getOfferPriceConfiguration();
@@ -896,10 +898,69 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   saveFormula() {
+    if(this.formValues.formulaType.id == 1){
+      if(!this.formValues.simpleFormula.priceType){
+        this.toastr.error('Price Type field is required.')
+        return;
+      }
+
+      if(!this.formValues.simpleFormula.plusMinus){
+        this.toastr.error('Premimum/Discount  field is required.')
+        return;
+      }
+      if(!this.formValues.simpleFormula.amount && this.formValues.simpleFormula?.plusMinus.name != 'None'){
+        this.toastr.error('Amount  field is required.')
+        return;
+      } 
+    }else if(this.formValues.formulaType.id == 2){
+     let _length = this.formValues.complexFormulaQuoteLines.length;
+     for(let i=1;i<=_length; i++){
+       if(this.isComplexFormulaWeightEnforced == true){
+        if(this.formValues.complexFormulaQuoteLines[i-1]?.weight > 100){
+          this.toastr.error('Complex Formula Weight Enforced so Weight should be restricted to 100 ');
+          return;
+        }
+       }
+
+      if(!this.formValues.complexFormulaQuoteLines[i-1]?.systemInstruments[0]?.systemInstrument){
+        this.toastr.error('Instument1  field is required.')
+        return;
+       }
+       
+
+       if(!this.formValues.complexFormulaQuoteLines[i-1]?.systemInstruments[0]?.marketPriceTypeId){
+        this.toastr.error('Price Type  field is required. for Instument');
+        return;
+       }
+
+       if(!this.formValues.complexFormulaQuoteLines[i-1]?.formulaPlusMinus){
+        this.toastr.error('Plus Minus field is required.')
+        return;
+       }
+        if(this.formValues.complexFormulaQuoteLines[i-1]?.formulaPlusMinus.name != 'None'){
+          if(!this.formValues.complexFormulaQuoteLines[i-1]?.amount){
+            this.toastr.error('Amount field is required.')
+            return;
+          }
+
+          if(!this.formValues.complexFormulaQuoteLines[i-1]?.formulaFlatPercentage){
+            this.toastr.error('FlatPercentage field is required.')
+            return;
+          }
+
+          if(!this.formValues.complexFormulaQuoteLines[i-1]?.uom){
+            this.toastr.error('UOM field is required.')
+            return;
+          }
+        }  
+     }
+    }
+
+
     let formulaPayload: any = this.constructPayload(this.formValues);
     
     if(!formulaPayload.name || formulaPayload.name ===''){
-        this.toastr.error('Formula name field is required.')
+        this.toastr.error('Formula name field is required.');
         return;
     }
     if(!formulaPayload.formula.simpleFormula && !formulaPayload.formula.complexFormulaQuoteLines){
