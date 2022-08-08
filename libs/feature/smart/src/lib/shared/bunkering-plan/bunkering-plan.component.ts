@@ -808,6 +808,7 @@ export class BunkeringPlanComponent implements OnInit {
         request_id_hsfo: bPlan.request_id_hsfo,
         request_id_lsdis: bPlan.request_id_lsdis,
         request_id_ulsfo: bPlan.request_id_ulsfo,
+        request_id_vlsfo: bPlan.request_id_vlsfo,
         service_code: bPlan.service_code,
         total_tank_capacity: bPlan.total_tank_capacity,
         ulsfo_est_consumption_color: bPlan.ulsfo_est_consumption_color,
