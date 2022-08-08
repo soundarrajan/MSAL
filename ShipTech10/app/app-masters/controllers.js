@@ -1413,7 +1413,7 @@
                             toastr.error('Please add Product and Product type to proceed');
                             return;
                         }
-                        if ($scope.formValues.vesselProducts[i].vesselProductTanks.some(vpt => !vpt.isDeleted && (!vpt.tankCategory || !vpt.name))) {
+                        if ($scope.formValues.vesselProducts[i].vesselProductTanks && $scope.formValues.vesselProducts[i].vesselProductTanks.some(vpt => !vpt.isDeleted && (!vpt.tankCategory || !vpt.name))) {
                             $('#Product_' + i + '_tank_Product').addClass('invalid');
                             toastr.error('Please add mandatory fields for the Product type ' + $scope.formValues.vesselProducts[i].productType?.name + ' to proceed');
                             return;
@@ -5957,8 +5957,6 @@
                 $scope.formValues.vesselProducts.push(newItem);
             else
                 $scope.formValues['vesselProducts']=[(newItem)];
-            // $scope.formValues.vesselProducts.push(newItem);
-            $scope.addnewTankDetail( $scope.formValues.vesselProducts.length-1);
         }
 
         $scope.calculateStorageCapacityM3 = function (vesselProdIdx) {
