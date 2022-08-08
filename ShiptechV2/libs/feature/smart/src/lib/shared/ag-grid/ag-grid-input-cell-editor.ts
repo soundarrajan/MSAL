@@ -103,7 +103,7 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
       
       if(this.params.colDef?.field == 'hsfo_safe_port'|| this.params.colDef?.field =='eca_safe_port' ||this.params.colDef?.field =='lsdis_safe_port'){
         isSafePortRestricted = this.checkSafePortRestriction(this.params?.colDef?.field, this.params?.data?.detail_no);
-          if(isSafePortRestricted === 'Y'){
+          if(isSafePortRestricted === 'Y' && this.params.charPress != '0'){
             this.value = 0;
             const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
               width: '350px',
