@@ -917,11 +917,15 @@ export class VesselInfoComponent implements OnInit {
         //unsubscribe next exec after 15 sec, if plan generate get completed
        // this.observableRef$.unsubscribe();
         let vesselCode = data.vessel_code;
+        let messageLine =  `A plan ${data?.plan_id} is generated for vessel ${vesselCode}`;
+        if(data.planStatus.trim() == 'INV'){
+          messageLine =  `Latest bunker plan(${data?.plan_id}) is invalid for vessel ${vesselCode}`;
+        }
         const dialogValidRef = this.dialog.open(SuccesspopupComponent, {
           panelClass: ['success-popup-panel'],
           width: '350px',
           data: {
-            message : `A plan ${data?.plan_id} is generated for vessel ${vesselCode}`,
+            message : messageLine,
             hideActionbtn: true, vCode : vesselCode, 
             observableRestartFlag : this.continueCheckingPlans--,
             observableIniFlag : userVessalList.length
