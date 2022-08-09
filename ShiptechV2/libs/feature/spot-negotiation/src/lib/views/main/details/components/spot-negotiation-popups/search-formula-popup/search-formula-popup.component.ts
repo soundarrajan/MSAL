@@ -139,8 +139,8 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
             
         },
         { 
-            headerName: 'Active', 
-            headerTooltip: 'Active', 
+            headerName: 'Status', 
+            headerTooltip: 'Status', 
             valueGetter: params => {
               return params.data.isDeleted == false? 'Active': 'Inactive' ;
           },
