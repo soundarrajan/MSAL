@@ -2,9 +2,13 @@
 <div class="success-popup">
     <div class="success-popup-header">
     
-    <div class="Success-title">
+    <div  *ngIf="!warningFlag" class="Success-title">
         <span class="success-icon" ></span><span style="padding-left: 5px;">Success</span>
     </div>
+
+    <div  *ngIf="cancelBtnFlag || warningFlag" class="warning-title"><img id="warning-icon" src="./assets/customicons/warning_o.svg" alt="list">
+      <span class="p-l-10" style="margin-top: 4px;">Warning</span></div>
+
     <div class="close-btn">
         <mat-icon class="icon" (click)="close()">close</mat-icon>
       </div>
@@ -12,8 +16,15 @@
     <hr class="line-divider">
     <div class="success-text">{{message}} {{id}}</div>
     <div class="yes-no">
-     
-      <button mat-raised-button (click)="changeVessalPlanViewFlag()" class="blue-button" [mat-dialog-close]="true">
+     <ng-container *ngIf="cancelBtnFlag">
+      <button style="float: left;" [mat-dialog-close]="true">
+        <span>Cancel</span>
+      </button>
+      <button  mat-raised-button (click)="callingSendLatestValidBPlan()" class="blue-button" [mat-dialog-close]="true">
+        <span>Confirm</span>
+      </button>
+    </ng-container>
+      <button *ngIf="!cancelBtnFlag" mat-raised-button (click)="changeVessalPlanViewFlag()" class="blue-button" [mat-dialog-close]="true">
         <span>Ok</span>
       </button>
     </div>

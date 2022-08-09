@@ -83,6 +83,9 @@ export class LocalService {
     private reCallVesselPlanReport = new Subject<any>();
     reCallVesselPlanReport$ = this.reCallVesselPlanReport.asObservable();
 
+    private callSendValidBPlan = new Subject<any>();
+    callSendValidBPlan$ = this.callSendValidBPlan.asObservable()
+
     @ApiCallUrl()
     protected _apiUrlAdmin = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
     protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_BOPS;
@@ -104,6 +107,10 @@ export class LocalService {
         this.reCallVesselPlanReport.next();
     }
 
+    SendValidBPlan(){
+        this.callSendValidBPlan.next();
+    }
+    
     changeDefaultUserRole() {
       this.changeUserRoal.next();
     }
