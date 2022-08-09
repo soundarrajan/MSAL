@@ -176,6 +176,9 @@ export class VesselInfoComponent implements OnInit {
       this.hideFlag = 0;
       //this.VesselHasNewPlanJob();
     });
+    this.localService.callSendValidBPlan$.subscribe(() => {
+      this.sendValidBPlan();
+    })
   }
 
   ngOnInit() {
@@ -403,7 +406,6 @@ export class VesselInfoComponent implements OnInit {
       takeUntil(this.unsubscribeSignal.asObservable())
     )
     .subscribe((data)=> {
-      console.log('bunker plan header',data);
       this.bunkerPlanHeaderDetail = (data?.payload && data?.payload.length)? data.payload[0]: {};
       this.vesselData = this.bunkerPlanHeaderDetail;
       this.scrubberDate = this.bunkerPlanHeaderDetail?.scrubberDate;
@@ -765,7 +767,23 @@ export class VesselInfoComponent implements OnInit {
     this.child.loadComments();
   }
 
-  sendCurrentBPlan(event) {
+
+  sendCurrentBPlan(event){
+    if(this.isLatestPlanInvalid == true){
+      let messageText = `The latest plan is unmanageable and cannot be sent. Therefore, the latest valid plan ${ this.planId } will be sent.  Please Confirm.`;
+      const dialogRef = this.dialog.open(SuccesspopupComponent, {
+        width: '435px', //sets width of dialog
+        height:'240px', //sets width of dialog
+        panelClass: ['success-popup-panel'],
+        data: { message: messageText, cancelBtnFlag : true }
+      });
+    }else{
+     this.sendValidBPlan();
+    }
+    event.stopPropagation();
+  }
+
+  sendValidBPlan(){
     let req = {
       action: '',
       ship_id: this.vesselData?.vesselId,
@@ -780,7 +798,6 @@ export class VesselInfoComponent implements OnInit {
         });
       }
     });
-    event.stopPropagation();
   }
   setImportGSIS(event) {
     this.import_gsis = this.isChecked ? 1 : 0;
@@ -929,7 +946,8 @@ export class VesselInfoComponent implements OnInit {
             message : messageLine,
             hideActionbtn: true, vCode : vesselCode, 
             observableRestartFlag : this.continueCheckingPlans--,
-            observableIniFlag : userVessalList.length
+            observableIniFlag : userVessalList.length,
+            warningFlag : true
           }
         });
         if(data.vessel_code.trim() == vessalCode.trim()){
@@ -975,7 +993,7 @@ export class VesselInfoComponent implements OnInit {
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
         panelClass: ['confirmation-popup-operator', 'bg-transparent'],
-        data : {message: 'A new Plan exists for this vessel. Cannot update an old Plan'}
+        data : {message: 'A new Plan exists for this vessel. Cannot update an old Plan 1'}
       });
     }
   }
