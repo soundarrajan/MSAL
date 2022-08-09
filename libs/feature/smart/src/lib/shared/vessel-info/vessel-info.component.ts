@@ -549,6 +549,7 @@ export class VesselInfoComponent implements OnInit {
       default:
         break;
     }
+    this.localService.setBunkerPlanState(true);
     this.store.dispatch(new UpdateCurrentROBAction(value, column));
 
     this.currentROBChange.next(column);
