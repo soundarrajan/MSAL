@@ -229,7 +229,7 @@
         </span>
     </div>
   </div>
-  <mat-menu #inputEditMenu="matMenu" class="common" xPosition="after">
+  <mat-menu #inputEditMenu="matMenu" class="common" xPosition="after" (closed)="toggleMenu1Input($event)">
     <ng-template matMenuContent >
     <div class="edit-input-menu" [ngClass]="{'light-theme':!theme}" (click)="$event.stopPropagation();">
       <div class="row header">
