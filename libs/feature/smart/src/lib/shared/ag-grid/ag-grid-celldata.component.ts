@@ -424,23 +424,29 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                 if(result) {
                   this.menuClick = true;
                   this.inputMenuTrigger.openMenu();
-                    if (document.getElementById('inputValue')) {
-                      document.getElementById('inputValue').focus();
-                    }
+                  var overlay = document.querySelector('.cdk-overlay-container');
+                  if (overlay && overlay.classList) {
+                    overlay.classList.remove('removeOverlay');
+                  }
+                  if (document.getElementById('inputValue')) {
+                    document.getElementById('inputValue').focus();
+                  }
                 } 
                 else {
-                
                 }
               });
           }
           else{
             this.menuClick = true;
             this.inputMenuTrigger.openMenu();
-              if (document.getElementById('inputValue')) {
-                document.getElementById('inputValue').focus();
-              }
+            var overlay = document.querySelector('.cdk-overlay-container');
+            if (overlay && overlay.classList) {
+              overlay.classList.remove('removeOverlay');
+            }
+            if (document.getElementById('inputValue')) {
+              document.getElementById('inputValue').focus();
+            }
           }
-          
       }
     }
   }
