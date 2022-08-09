@@ -15,11 +15,9 @@ import _ from 'lodash';
 import { SearchFormulaPopupComponent } from '../search-formula-popup/search-formula-popup.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { ComplexFormula, DateRangeDto, EventBasedContinuousDto, EventBasedExtendDto, EventBasedSimpleDto, FormValues, HolidayRuleDto, LocationDiscountRulesDto, OfferPriceFormulaDto,
-   PricingScheduleOptionDateRange, PricingScheduleOptionEventBasedContinuous, PricingScheduleOptionEventBasedExtended, PricingScheduleOptionEventBasedSimple, 
-   ProductDiscountRulesDto, 
-   QuantityDiscountRulesDto, 
-   SpecificDateDto, SystemInstrumentDto, SystemInstruments } from './spotnego-pricing-details.interface';
+import { ComplexFormula, DateRangeDto, EventBasedContinuousDto, EventBasedExtendDto, EventBasedSimpleDto, FormValues, HolidayRuleDto, OfferPriceFormulaDto,
+   PricingScheduleDto,
+   PricingScheduleOptionDateRange, PricingScheduleOptionEventBasedContinuous, PricingScheduleOptionEventBasedExtended, PricingScheduleOptionEventBasedSimple, PricingScheduleOptionSpecificDate, SystemInstrumentDto, SystemInstruments } from './spotnego-pricing-details.interface';
 import { first, switchMap, tap } from 'rxjs/operators';
 import { SetOfferPriceFormulaId } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 
@@ -308,11 +306,11 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   hideFormula() {}
 
   clearSchedules(id) {
-    this.formValues.pricingScheduleOptionDateRange = {};
-    this.formValues.pricingScheduleOptionSpecificDate = {};
-    this.formValues.pricingScheduleOptionEventBasedSimple = {};
-    this.formValues.pricingScheduleOptionEventBasedExtended = {};
-    this.formValues.pricingScheduleOptionEventBasedContinuous = {};
+    this.formValues.pricingScheduleOptionDateRange = undefined;
+    this.formValues.pricingScheduleOptionSpecificDate = undefined;
+    this.formValues.pricingScheduleOptionEventBasedSimple = undefined;
+    this.formValues.pricingScheduleOptionEventBasedExtended = undefined;
+    this.formValues.pricingScheduleOptionEventBasedContinuous = undefined;
     /* 
     4 = Date Range
     5 = Specific Dates 
@@ -321,7 +319,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     8 = Event Based Continuous
     */
     if (id == 4) {
-      this.formValues.pricingScheduleOptionDateRange = {};
+      this.formValues.pricingScheduleOptionDateRange = {} as PricingScheduleOptionDateRange;
       this.formValues.pricingScheduleOptionDateRange.sundayHolidayRule = _.cloneDeep(
         this.holidayRuleList[2]
       );
@@ -344,7 +342,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         this.holidayRuleList[2]
       );
     } else if (id == 5) {
-      this.formValues.pricingScheduleOptionSpecificDate = {};
+      this.formValues.pricingScheduleOptionSpecificDate = {} as PricingScheduleOptionSpecificDate;
       this.formValues.pricingScheduleOptionSpecificDate.sundayHolidayRule = _.cloneDeep(
         this.holidayRuleList[2]
       );
@@ -369,7 +367,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     } else if (id == 6) {
       this.formValues.pricingScheduleOptionEventBasedSimple = {
         fromNoOfBusinessDaysBefore: 0,
-        name: ' ',
+        name: '',
         toNoOfBusinessDaysAfter: 0,
         fromBusinessCalendarId: { id: 1 },
         toBusinessCalendar: { id: 1 }
@@ -400,7 +398,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         fromNoOfBusinessDaysBefore: 0,
         toNoOfBusinessDaysAfter: 0,
         fromBusinessCalendar: { id: 1 },
-        toBusinessCalendar: { id: 1 }
+        toBusinessCalendar: { id: 1 },
+        excludeFromNoOfBusinessDaysBefore: undefined,
+        excludeToNoOfBusinessDaysAfter: undefined
       };
       this.formValues.pricingScheduleOptionEventBasedExtended.sundayHolidayRule = _.cloneDeep(
         this.holidayRuleList[2]
@@ -424,7 +424,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         this.holidayRuleList[2]
       );
     } else if (id == 8) {
-      this.formValues.pricingScheduleOptionEventBasedContinuous = {};
+      this.formValues.pricingScheduleOptionEventBasedContinuous = {} as PricingScheduleOptionEventBasedContinuous;
       this.formValues.pricingScheduleOptionEventBasedContinuous.sundayHolidayRule = _.cloneDeep(
         this.holidayRuleList[2]
       );
@@ -505,7 +505,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       systemInstrumentId: simpleFormula.systemInstrument?.id? simpleFormula.systemInstrument.id : 0,
       marketPriceTypeId: simpleFormula.priceType.id? simpleFormula.priceType.id: 0,
       formulaPlusMinusId: simpleFormula.plusMinus.id? simpleFormula.plusMinus.id: 0,
-      amount: simpleFormula.amount ? simpleFormula.amount : 0, 
+      amount: simpleFormula.amount ? parseFloat(simpleFormula.amount.replace(/,/g, '')) : 0, 
       formulaFlatPercentageId: simpleFormula.flatPercentage?.id? simpleFormula.flatPercentage?.id: 0,
       uomId: simpleFormula.uom?.id? simpleFormula.uom?.id : 0
     };
@@ -588,15 +588,13 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
 
   constructSchedulePayload(formValues: any) {
     let schedulePayload = {
-      pricingScheduleId: formValues.pricingSchedule.id,
-      dateRange: formValues.pricingSchedule.id === 4? this.constructDateRange(formValues.pricingScheduleOptionDateRange) : null,
-      specificDate: formValues.pricingSchedule.id === 5? this.constructSpecificDate(formValues.pricingScheduleOptionSpecificDate) : null,
-      eventBasedSimple: formValues.pricingSchedule.id === 6? 
-          this.constructEventBasedSimple(formValues.pricingScheduleOptionEventBasedSimple) : null,
-      eventBasedExtended: formValues.pricingSchedule.id === 7? 
-        this.constructEventBasedExtended(formValues.pricingScheduleOptionEventBasedExtended) : null,
-      eventBasedContinuous: formValues.pricingSchedule.id === 8? this.constructEventBasedContinuous(formValues.pricingScheduleOptionEventBasedContinuous) : null
-    };
+      pricingScheduleId: formValues.pricingSchedule.id
+    } as PricingScheduleDto;
+    schedulePayload.dateRange = formValues.pricingSchedule.id === 4? this.constructDateRange(formValues.pricingScheduleOptionDateRange) : null,
+    schedulePayload.specificDate = formValues.pricingSchedule.id === 5? this.constructSpecificDate(formValues.pricingScheduleOptionSpecificDate) : null,
+    schedulePayload.eventBasedSimple = formValues.pricingSchedule.id === 6 ? this.constructEventBasedSimple(formValues.pricingScheduleOptionEventBasedSimple) : null,
+    schedulePayload.eventBasedExtended = formValues.pricingSchedule.id === 7 ? this.constructEventBasedExtended(formValues.pricingScheduleOptionEventBasedExtended) : null,
+    schedulePayload.eventBasedContinuous = formValues.pricingSchedule.id === 8 ? this.constructEventBasedContinuous(formValues.pricingScheduleOptionEventBasedContinuous) : null
     return schedulePayload;
   }
 
@@ -1165,7 +1163,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   getSpecificDate(scheduleSpecificDate: any){
-    var scheduleOption = this.getHolidayRule(scheduleSpecificDate as HolidayRuleDto);
+    var scheduleOption = this.getHolidayRule(scheduleSpecificDate as HolidayRuleDto) as PricingScheduleOptionSpecificDate;
     scheduleOption = {...scheduleSpecificDate};
     return scheduleOption;
   }
