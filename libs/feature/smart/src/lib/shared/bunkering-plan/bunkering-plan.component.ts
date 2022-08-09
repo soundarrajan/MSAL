@@ -70,13 +70,17 @@ export class BunkeringPlanComponent implements OnInit {
     if (v == null) this.latestPlanId = '';
     else {
       this.latestPlanId = v;
-      this.loadBunkeringPlanDetails();
+      // Load if no bunker plan exists or the latest generated
+      if(!this.rowData || (this.rowData.length > 0
+        && this.rowData[0].plan_id?.trim().toLowerCase()
+        != this.latestPlanId?.trim().toLowerCase())) {
+        this.loadBunkeringPlanDetails();
+      }
     }
   }
   @Input('vesselRef')
   public set vesselRef(v: string) {
     this.vesselData = v;
-    //this.loadBunkeringPlanDetails();
   }
   @Input('bPlanType')
   public set bPlanType(v: any) {
@@ -158,7 +162,9 @@ export class BunkeringPlanComponent implements OnInit {
       this.eventSub = this.changeROB.subscribe(column =>
         this.calculateSOA(column)
       );
-    this.loadBunkeringPlanDetails();
+    if(!this.rowData) {
+      this.loadBunkeringPlanDetails();
+    }
   }
 
   columnDefs = [
@@ -802,6 +808,7 @@ export class BunkeringPlanComponent implements OnInit {
         request_id_hsfo: bPlan.request_id_hsfo,
         request_id_lsdis: bPlan.request_id_lsdis,
         request_id_ulsfo: bPlan.request_id_ulsfo,
+        request_id_vlsfo: bPlan.request_id_vlsfo,
         service_code: bPlan.service_code,
         total_tank_capacity: bPlan.total_tank_capacity,
         ulsfo_est_consumption_color: bPlan.ulsfo_est_consumption_color,
@@ -838,9 +845,6 @@ export class BunkeringPlanComponent implements OnInit {
   }
   toggleOperAck(params) {
     this.triggerChangeEvent();
-    this.triggerRefreshGrid();
-    this.gridChanged = true;
-    this.localService.setBunkerPlanState(this.gridChanged);
   }
 
   toggleSave() {    
@@ -948,19 +952,21 @@ export class BunkeringPlanComponent implements OnInit {
     //business address validation
     let idx =
       data.findIndex(
-        data =>
-          (!data?.business_address) &&
-          data?.operator_ack == 1
+        d =>
+          (!d?.business_address) &&
+          d?.operator_ack == 1
       );
 
     if (idx == -1) {
       idx =
         data.findIndex(
-          data => {
-            let BAs: [] = data?.business_address.split(',');
-            for (let ba of BAs) {
-              if (!mailPattern.test(ba) && data?.operator_ack == 1)
-                return data;
+          d => {
+            let BAs: [] = d?.business_address?.split(',');
+            if (BAs && BAs.length > 0) {
+              for (let ba of BAs) {
+                if (!mailPattern.test(ba) && d?.operator_ack == 1)
+                  return d;
+              }
             }
           }
         );
@@ -970,7 +976,7 @@ export class BunkeringPlanComponent implements OnInit {
       let port_id = data[idx]?.port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: 'Please select/enter a valid Business Address for port',id: port_id, okayButton: true}
       });
       isHardValidation = 1;
@@ -991,7 +997,7 @@ export class BunkeringPlanComponent implements OnInit {
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: `The minimum HSFO SOD cannot exceed the Total HSFO tank capacity (${currentROBObj.hsfoTankCapacity}) for port `, id: port_id, okayButton: true}
       });
       isHardValidation = 1;
@@ -1013,7 +1019,7 @@ export class BunkeringPlanComponent implements OnInit {
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: 'The Total Max SOD cannot be smaller than Total min SOD for port',id: port_id, okayButton: true }
       });
       isHardValidation = 1;
@@ -1039,7 +1045,7 @@ export class BunkeringPlanComponent implements OnInit {
         currentROBObj?.lsdisTankCapacity + currentROBObj?.ulsfoTankCapacity;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: `The minimum ECA bunker SOD cannot exceed the Total ULSFO and LSDIS tank capacity of ${capacity} for port `, id: port_id, okayButton: true}
       });
       isHardValidation = 1;
@@ -1063,7 +1069,7 @@ export class BunkeringPlanComponent implements OnInit {
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: 'The sum min ECA bunker SOD and minimum HSFO SOD cannot exceed the Total Max SOD for port',id: port_id, okayButton: true}
       });
       isHardValidation = 1;
@@ -1085,7 +1091,7 @@ export class BunkeringPlanComponent implements OnInit {
       let port_id = data[id].port_id;
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : { message: 'The ECA Estimated Consumption should not be smaller than LSDIS Estimated Consumption for port ', id: port_id, okayButton: true }
       });
       isHardValidation = 1;
@@ -1094,14 +1100,14 @@ export class BunkeringPlanComponent implements OnInit {
     //Stock validation : When Stock > Tank Capacity
     //1. Current HSFO Qty > HSFO Tank Capacity
     let totalHsfoCurrentROB =
-      parseInt(currentROBObj['3.5 QTY'].toString()) +
-      parseInt(currentROBObj['0.5 QTY'].toString());
+      parseInt(currentROBObj['3.5 QTY']?.toString()) +
+      parseInt(currentROBObj['0.5 QTY']?.toString());
     let isValidHsfoStock =
       totalHsfoCurrentROB > currentROBObj?.hsfoTankCapacity ? 'N' : 'Y';
     if (isValidHsfoStock == 'N') {
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: `Current HSFO Qty should be less than HSFO Tank Capacity ${currentROBObj.hsfoTankCapacity} `, okayButton: true}
       });
       isHardValidation = 1;
@@ -1113,7 +1119,7 @@ export class BunkeringPlanComponent implements OnInit {
     if (isValidUlsfoStock == 'N') {
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: `Current ULSFO Qty should be less than ULSFO Tank Capacity ${currentROBObj.ulsfoTankCapacity} `, okayButton: true}
       });
       isHardValidation = 1;
@@ -1125,7 +1131,7 @@ export class BunkeringPlanComponent implements OnInit {
     if (isValidLsdisStock == 'N') {
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: `Current LSDIS Qty should be less than LSDIS Tank Capacity ${currentROBObj.lsdisTankCapacity} `, okayButton: true}
       });
       isHardValidation = 1;
@@ -1137,7 +1143,7 @@ export class BunkeringPlanComponent implements OnInit {
     if (isValidHsdisStock == 'N') {
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: `Current HSDIS Qty should be less than HSDIS Tank Capacity ${currentROBObj.hsdisTankCapacity} `, okayButton: true}
       });
       isHardValidation = 1;
@@ -1167,10 +1173,17 @@ export class BunkeringPlanComponent implements OnInit {
       setTimeout(() => {
         if (_this.gridOptions?.api) {
           // _this.gridOptions.api.setRowData(this.rowData);
-          this.latestPlanId = this.vesselData?.vesselRef?.planId
+          let newPlanId = this.vesselData?.vesselRef?.planId
             ? this.vesselData.vesselRef.planId
             : '';
-          this.loadBunkeringPlanDetails();
+          // Reg. 41782: Sometimes triggerRefreshGrid is invoked after latest plan load
+          // To restrict bunkerplan load only if there is a new planId or if latestPlanId has value
+          if (newPlanId || this.latestPlanId) {
+            this.latestPlanId = newPlanId ? newPlanId : this.latestPlanId;
+            if(this.latestPlanId) {
+              this.loadBunkeringPlanDetails();
+            }
+          }
         }
       }, 500);
     }
@@ -1233,12 +1246,12 @@ export class BunkeringPlanComponent implements OnInit {
               if (i == 0) {
                 this.calculateConsumptionAndLsdisAsEca(
                   i,
-                  parseInt(currentRobLsdis.toString()),
-                  parseInt(currentRobUslfo.toString()),
+                  parseInt(currentRobLsdis?.toString()),
+                  parseInt(currentRobUslfo?.toString()),
                   rowData2,
                   estdConsEcaList,
                   estdConsLsdisList,
-                  parseInt(orig_lsdisAsSeca.toString())
+                  parseInt(orig_lsdisAsSeca?.toString())
                 );
               }
               //For Port 1 to N
@@ -1282,8 +1295,8 @@ export class BunkeringPlanComponent implements OnInit {
                 estdConsHsfoList[i].hsfo_estimated_consumption
               );
               rowData2[i].hsfo_soa =
-                parseInt(currentRobHsfo.toString()) +
-                parseInt(currentRobVlsfo.toString()) -
+                parseInt(currentRobHsfo?.toString()) +
+                parseInt(currentRobVlsfo?.toString()) -
                 estdConsHsfo;
             }
             //For Port 1 to N
@@ -1358,8 +1371,8 @@ export class BunkeringPlanComponent implements OnInit {
 
     // ExpectedUlsfoCons = EcaEstdCons - LsdisEstdCons
     ulsfo_cons =
-      parseInt(ecaEstdConsList[index].eca_estimated_consumption) -
-      parseInt(lsdisEstdConsList[index].lsdis_estimated_consumption);
+      parseInt(ecaEstdConsList[index]?.eca_estimated_consumption) -
+      parseInt(lsdisEstdConsList[index]?.lsdis_estimated_consumption);
 
     //Ulsfo Original Stock calculation
     ulsfo_original_stock =

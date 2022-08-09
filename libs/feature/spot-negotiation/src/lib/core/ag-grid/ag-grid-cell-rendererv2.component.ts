@@ -37,6 +37,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
 import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation-price-calc.service';
+import { ConfirmdialogComponent } from '../../views/main/details/components/spot-negotiation-popups/confirmdialog/confirmdialog.component';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -405,7 +406,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             (params && (params.data.requestOffers && params.data.requestOffers[params.index]?.isFormulaPricing) || (params.value > 0 && params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
               params.data.requestOffers[params.index]?.supplyQuantity != null))
             "
-            [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' ? 'inputFieldHighlightOff' : ''"
+            [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' || params.data.requestOffers[params.index]?.isFormulaPricing  ?'inputFieldHighlightOff' : ''"
           />
 
           <div
@@ -1592,12 +1593,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   pricingdetailspopup(e, params) {
-    let requestedOffer = params.data.requestOffers[params.index];
+    let requestedOfferId = params.data.requestOffers.find(x=> x.quotedProductId == params.product.productId).id;
+    let offerPriceFormulaId = params.data.requestOffers.find(x=> x.id == requestedOfferId).offerPriceFormulaId;
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
       width: '1164px',
       data : {
-        requestOfferId : requestedOffer.id,
-        offerPriceFormulaId: requestedOffer.offerPriceFormulaId,
+        requestOfferId : requestedOfferId,
+        offerPriceFormulaId: offerPriceFormulaId,
         productId: params.product.productId
       },
       panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class'],
@@ -1987,21 +1989,36 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       setTimeout(() => {this.spinner.hide()}, 1000);
     });
   }
+
   removeFormulaPrice(params){
-    let requestedOffer = params.data.requestOffers[params.index];
-    var newData = _.cloneDeep(params.data);
-    newData.requestOffers.map((el,_index) => {
-      if(params.index == _index){
-        el.isFormulaPricing = false;
-        el.price = 0;
-        el.totalPrice = 0;
-        el.amount = 0;
-      }      
+    const dialogRef = this.dialog.open(ConfirmdialogComponent, {
+      width: '368px',
+      maxWidth: '80vw',
+      panelClass: 'confirm-dialog',
+      data: {
+        message: 'Are you sure you want to remove this formula?'
+      }
     });
-   this._spotNegotiationService.removeFormula(requestedOffer.id,requestedOffer.offerPriceFormulaId).subscribe();
-   this.store.dispatch(new EditLocationRow(newData));
-   this._spotNegotiationService.callGridRedrawService();
+    dialogRef.afterClosed().subscribe(result =>{
+      if(result){
+        let requestedOffer = params.data.requestOffers[params.index];
+        var newData = _.cloneDeep(params.data);
+        newData.requestOffers.map((el,_index) => {
+          if(params.index == _index){
+            el.isFormulaPricing = false;
+            el.price = 0;
+            el.totalPrice = 0;
+            el.amount = 0;
+          } 
+        });
+       this._spotNegotiationService.removeFormula(requestedOffer.id,requestedOffer.offerPriceFormulaId).subscribe();
+       this.toastr.success('Formula removed successfully');
+       this.store.dispatch(new EditLocationRow(newData));
+       this._spotNegotiationService.callGridRedrawService();
+      }
+    });
   }
+  
   changeCurrencyForAdditionalCost(currencyId, exchangeRateValue) {
     this.checkAdditionalCost(
       _.cloneDeep(this.params.data),

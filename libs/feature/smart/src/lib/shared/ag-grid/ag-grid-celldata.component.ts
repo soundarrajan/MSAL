@@ -368,19 +368,10 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     }
   }
 
-  toggleMenu3Input(event,field) { //onclick
-    this.bplanType = this.store.selectSnapshot(UpdateBplanTypeState.getBplanType);
+  toggleMenu3Input(event, field, triggeredGridType) { //onclick
     let requestExists = 0;
 
-    // if(this.bplanType == 'C'){
-    //   this.menuClick = true;
-    //   this.inputMenuTrigger.openMenu();
-    //   if (document.getElementById('inputValue')) {
-    //     document.getElementById('inputValue').focus();
-    //   }
-    // }
-    
-    if(this.bplanType == 'C'){
+    if(triggeredGridType == 'C'){
       //warning if previous ports have a request ID present
       let bPlanData = this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanData);
       if(this.params.data.detail_no){
@@ -389,13 +380,13 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
           for( let i = 0; i <= selectedPlanIndex ; i++){
             switch(field){
               case 'hsfo_min_sod' : {
-                                      if(bPlanData[i]?.request_id_hsfo != ""){
+                                      if(bPlanData[i]?.request_id_hsfo != "" || bPlanData[i]?.request_id_vlsfo != "") {
                                         requestExists = 1; 
                                       }
                                       break;
                                     }
               case 'eca_min_sod' :{
-                                    if(bPlanData[i]?.request_id_lsdis == "" && bPlanData[i]?.request_id_ulsfo == ""){
+                                    if(bPlanData[i]?.request_id_lsdis == "" && bPlanData[i]?.request_id_ulsfo == "") {
                                       requestExists = 0; 
                                     }
                                     else{
@@ -404,7 +395,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                                     break;
                                   }
               default :{
-                          if(bPlanData[i]?.request_id_hsdis == "" && bPlanData[i]?.request_id_hsfo == "" && bPlanData[i]?.request_id_lsdis == "" && bPlanData[i]?.request_id_ulsfo == ""){
+                          if(bPlanData[i]?.request_id_hsdis == "" && bPlanData[i]?.request_id_hsfo == "" && bPlanData[i]?.request_id_vlsfo == "" && bPlanData[i]?.request_id_lsdis == "" && bPlanData[i]?.request_id_ulsfo == "") {
                             requestExists = 0; 
                           }
                           else{
@@ -425,7 +416,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
             }
             const confirmMessage = 'Please note that there is a request in Shiptech for a prior call which BOPS will only modify next time the plan optimized, and the trader may nominate it before if no action is taken. In case it needs to be adjusted or cancelled please do so or advise responsible party.';
               const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-                panelClass: 'confirmation-popup-operator', 
+                panelClass: ['confirmation-popup-operator', 'bg-transparent'], 
                 data:  { message: confirmMessage }
               });
 
@@ -512,7 +503,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
 
           let selectedPlanIndex = bPlanData.findIndex(data => data.detail_no == this.params.data.detail_no)
             for( let i = 0; i < selectedPlanIndex ; i++){
-              if(bPlanData[i]?.request_id_hsdis =="" && bPlanData[i]?.request_id_hsfo == "" && bPlanData[i]?.request_id_lsdis == "" && bPlanData[i]?.request_id_ulsfo == ""){
+              if(bPlanData[i]?.request_id_hsdis =="" && bPlanData[i]?.request_id_hsfo == "" && bPlanData[i]?.request_id_vlsfo == "" && bPlanData[i]?.request_id_lsdis == "" && bPlanData[i]?.request_id_ulsfo == ""){
                 requestExists = 0; 
               }
               else{
@@ -526,7 +517,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
               overlay.classList.remove('removeOverlay');
               const confirmMessage = 'Please note that there is a request in Shiptech for a prior call which BOPS will only modify next time the plan optimized, and the trader may nominate it before if no action is taken. In case it needs to be adjusted or cancelled please do so or advise responsible party.';
                 const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-                  panelClass: 'confirmation-popup-operator', 
+                  panelClass: ['confirmation-popup-operator', 'bg-transparent'], 
                   data:  { message: confirmMessage }
                 });
 
@@ -580,7 +571,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
   toggleOperAck() {
     if(this.isOperatorAck == true ){
       //User cannot unacknowledge/uncheck a port with request available.
-      if(!this.params.data?.request_id_hsfo && !this.params.data?.request_id_hsdis && !this.params.data?.request_id_lsdis && !this.params.data?.request_id_ulsfo)
+      if(!this.params.data?.request_id_hsfo && !this.params.data?.request_id_vlsfo && !this.params.data?.request_id_hsdis && !this.params.data?.request_id_lsdis && !this.params.data?.request_id_ulsfo)
       {
         this.isOperatorAck = true;
       }
@@ -589,7 +580,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         // #39018 - Validation message when user unacknowledges a port with active request(s)
         this.dialog.open(WarningoperatorpopupComponent, {
           width: '350px',
-          panelClass: 'confirmation-popup-operator',
+          panelClass: ['confirmation-popup-operator', 'bg-transparent'],
           data : { message: 'Active request for the port.', okayButton: true }
         });
       }
@@ -705,14 +696,13 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       element.classList.remove('clicked');
     });
   }
-  restrictionForPrevBplan(event){
-    this.bplanType = this.store.selectSnapshot(UpdateBplanTypeState.getBplanType);
-    if(this.bplanType =='P'){
+  restrictionForPrevBplan(event, triggeredGridType){
+    if(triggeredGridType == 'P') {
       var overlay = document.querySelector('.cdk-overlay-container');
       overlay.classList.remove('removeOverlay');
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data : {message: 'A new Plan exists for this vessel. Cannot update an old Plan'}
       });
     }

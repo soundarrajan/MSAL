@@ -8,9 +8,9 @@
             </button>
         </div>
         <div class="header-btn rows" style="display: flex;">
-            <button class="blue-button" style="width:100px;border-radius:3px" [ngStyle]="formulaSelected?{'pointer-events': 'all'} : {'pointer-events': 'none'}" (click)="proceed();">Proceed</button>
-            <div class="title-divider">|</div>
-            <span class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
+            <button class="BlueButton" [ngStyle]="formulaSelected?{'pointer-events': 'all'} : {'pointer-events': 'none'}" (click)="proceed();">Proceed</button>
+            <div class="titleDivider">|</div>
+            <span class="close" style="cursor: pointer;margin: 0 10px; height: 17px;" [mat-dialog-close]="true"></span>
         </div>
     </div>
     <mat-dialog-content style="overflow: hidden;">
