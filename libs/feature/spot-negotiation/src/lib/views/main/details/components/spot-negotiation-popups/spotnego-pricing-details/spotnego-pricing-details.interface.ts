@@ -13,7 +13,7 @@ export interface FormValues{
     pricingSchedule?: PricingSchedule;
     formulaHolidayRules?: FormulaHolidayRule;
     pricingScheduleOptionDateRange? : PricingScheduleOptionDateRange;
-    pricingScheduleOptionSpecificDate? : PricingScheduleOptionSpecificDateDto;
+    pricingScheduleOptionSpecificDate? : PricingScheduleOptionSpecificDate;
     pricingScheduleOptionEventBasedSimple ?: PricingScheduleOptionEventBasedSimple;
     pricingScheduleOptionEventBasedContinuous? : PricingScheduleOptionEventBasedContinuous;
     pricingScheduleOptionEventBasedExtended? : PricingScheduleOptionEventBasedExtended;
@@ -44,7 +44,7 @@ export interface PricingScheduleOptionDateRange extends PricingScheduleOptionHol
    allowsPricingOnHoliday: boolean
 }
 
-export interface PricingScheduleOptionSpecificDateDto extends PricingScheduleOptionHolidayRule{
+export interface PricingScheduleOptionSpecificDate extends PricingScheduleOptionHolidayRule{
     allowsPricingOnHoliday: boolean
     dates: SpecificDateDatesDto[]
 }
@@ -66,6 +66,7 @@ export interface PricingScheduleOptionEventBasedSimple extends PricingScheduleOp
 export interface PricingScheduleOptionEventBasedExtended extends PricingScheduleOptionHolidayRule, PricingScheduleOptionEventBasedSimple {
     excludeFromNoOfBusinessDaysBefore: number
     excludeToNoOfBusinessDaysAfter: number
+    fromBusinessCalendar?: event;
  }
 
  export interface PricingScheduleOptionEventBasedContinuous extends PricingScheduleOptionHolidayRule {

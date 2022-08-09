@@ -139,3 +139,9 @@ export class DeleteSeller {
 
   constructor(public RequestLocationSellerId: number) {}
 }
+
+export class setFormulaList {
+  static readonly type = '[SetFormulaList] Add';
+
+  constructor(public payload: any) {}
+}
