@@ -505,7 +505,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       systemInstrumentId: simpleFormula.systemInstrument?.id? simpleFormula.systemInstrument.id : 0,
       marketPriceTypeId: simpleFormula.priceType.id? simpleFormula.priceType.id: 0,
       formulaPlusMinusId: simpleFormula.plusMinus.id? simpleFormula.plusMinus.id: 0,
-      amount: simpleFormula.amount ? simpleFormula.amount : 0, 
+      amount: simpleFormula.amount ? parseFloat(simpleFormula.amount.replace(/,/g, '')) : 0, 
       formulaFlatPercentageId: simpleFormula.flatPercentage?.id? simpleFormula.flatPercentage?.id: 0,
       uomId: simpleFormula.uom?.id? simpleFormula.uom?.id : 0
     };

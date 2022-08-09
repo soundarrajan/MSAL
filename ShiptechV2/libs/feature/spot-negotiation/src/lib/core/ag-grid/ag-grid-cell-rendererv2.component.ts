@@ -1593,13 +1593,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   pricingdetailspopup(e, params) {
-    let requestedOfferId = params.data.requestOffers.find(x=> x.quotedProductId == params.product.productId).id;
-    let offerPriceFormulaId = params.data.requestOffers.find(x=> x.id == requestedOfferId).offerPriceFormulaId;
+    let requestedOffer = params.data.requestOffers[params.index];
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
       width: '1164px',
       data : {
-        requestOfferId : requestedOfferId,
-        offerPriceFormulaId: offerPriceFormulaId,
+        requestOfferId : requestedOffer.id,
+        offerPriceFormulaId: requestedOffer.offerPriceFormulaId,
         productId: params.product.productId
       },
       panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class'],
@@ -2009,6 +2008,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             el.price = 0;
             el.totalPrice = 0;
             el.amount = 0;
+            el.offerPriceFormulaId = null;
           } 
         });
        this._spotNegotiationService.removeFormula(requestedOffer.id,requestedOffer.offerPriceFormulaId).subscribe();

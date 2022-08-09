@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Store } from '@ngxs/store';
 import { GridOptions } from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
 @Component({
@@ -42,10 +43,17 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
   constructor(
       public dialogRef: MatDialogRef<SearchFormulaPopupComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
-      private toastr : ToastrService
+      private toastr : ToastrService,
+      private store : Store
       )
       {
-      this.sessionData = JSON.parse(sessionStorage.getItem('formula'));
+      //this.sessionData = JSON.parse(sessionStorage.getItem('formula'));
+      this.store.selectSnapshot<any>((state: any) => {
+        this.sessionData = state.spotNegotiation.formulaList;
+        this.totalItems = this.sessionData.length;
+        // this.staticList = state.spotNegotiation.staticLists.otherLists;
+        // this.isComplexFormulaWeightEnforced = state.tenantSettings.general.defaultValues.isComplexFormulaWeightEnforced;
+      });
       this.dialog_gridOptions = <GridOptions>{
           defaultColDef: {
               filter: true,
@@ -187,10 +195,9 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
   
 
   getContractFormula(){
-     var requiredData = this.sessionData.payload.slice(0,25);
+     var requiredData = this.sessionData.slice(0,25);
           this.page = 1;
           this.pageSize = 25;
-          this.totalItems = this.sessionData.matchedCount;
           this.rowData = requiredData;
   }
 
@@ -198,7 +205,7 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
     var start = page * this.pageSize - this.pageSize;
     var end = this.pageSize * page; 
     this.page = page;
-    var requiredData = this.sessionData.payload.slice(start,end);
+    var requiredData = this.sessionData.slice(start,end);
     this.rowData = requiredData;
   }
 
@@ -206,19 +213,19 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
   onPageSizeChange(pageSize: number){
     this.page = 1;
     this.pageSize = pageSize;
-    var requiredData = this.sessionData.payload.slice(0,pageSize);
+    var requiredData = this.sessionData.slice(0,pageSize);
     this.rowData = requiredData;
   }
 
   searchFormula(userInput: any){
     if(userInput.length === 0){
       this.page = 1;
-      this.totalItems = this.sessionData.matchedCount;
-      this.rowData = this.sessionData.payload.slice(0,this.pageSize)
+       this.totalItems = this.sessionData.length;
+      this.rowData = this.sessionData.slice(0,this.pageSize)
       return;
     }
     let requestInput=userInput.trim().toLowerCase();
-    var filterData = this.sessionData.payload.filter(x=>
+    var filterData = this.sessionData.filter(x=>
         x.name.toLowerCase().includes(requestInput)
     )
     this.totalItems = filterData.length;
