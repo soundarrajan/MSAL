@@ -19,7 +19,7 @@ const KEY_TAB = 9;
       <input #input 
       [disabled]=" (params.colDef?.field == 'hsfo_max_lift' || params.colDef?.field == 'ulsfo_max_lift' || params.colDef?.field == 'lsdis_max_lift') &&  params?.data?.operator_ack == 0" 
       [ngClass]="params.cellClass" [(ngModel)]="value"
-      (keydown)="triggerChangeEvent();onKeyDown($event)" >
+      (keydown)="triggerChangeEvent();onKeyDown($event)" (keyup)="onKeyUp($event, params.type)">
     </div>
     <!-- <span *ngIf="showInfoIcon == true">
           <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
@@ -167,6 +167,13 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
         !this.isKeyPressedNumeric(event)
       ) {
         if (event.preventDefault) event.preventDefault();
+      }
+    }
+
+    onKeyUp(event: any, type = null): void {
+      if (type == 'edit' && this.deleteOrBackspace(event) && event.target.value == '') {
+        this.value = 0;
+        return;
       }
     }
     
