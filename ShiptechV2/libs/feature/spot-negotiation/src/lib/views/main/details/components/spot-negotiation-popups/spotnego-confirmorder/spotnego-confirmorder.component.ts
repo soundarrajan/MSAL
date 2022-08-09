@@ -587,8 +587,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                   this.FreezeMarketPricesPayload
                 );
                 resp.subscribe((result: any) => {
-                  if(result.status ) {
-                  
+                  if(result.status) {
+                    this.toaster.success('order created successfully.');
                     if(requestOfferIds.length>0){
                       this.spotNegotiationService.cloneToPriceConfiguration({RequestOfferIds:requestOfferIds})
                         .pipe(
@@ -601,7 +601,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                       `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
                       '_self'
                     );
-                    this.toaster.success('order created successfully.');
                   }
                 });
               } else if (res instanceof Object) {

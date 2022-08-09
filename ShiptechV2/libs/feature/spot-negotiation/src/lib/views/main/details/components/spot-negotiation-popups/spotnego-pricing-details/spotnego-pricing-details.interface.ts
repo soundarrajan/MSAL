@@ -12,11 +12,11 @@ export interface FormValues{
     complexFormulaQuoteLines? : ComplexFormula[];
     pricingSchedule?: PricingSchedule;
     formulaHolidayRules?: FormulaHolidayRule;
-    pricingScheduleOptionDateRange?;
-    pricingScheduleOptionSpecificDate?;
+    pricingScheduleOptionDateRange? : PricingScheduleOptionDateRange;
+    pricingScheduleOptionSpecificDate? : PricingScheduleOptionSpecificDateDto;
     pricingScheduleOptionEventBasedSimple ?: PricingScheduleOptionEventBasedSimple;
-    pricingScheduleOptionEventBasedContinuous?;
-    pricingScheduleOptionEventBasedExtended?;
+    pricingScheduleOptionEventBasedContinuous? : PricingScheduleOptionEventBasedContinuous;
+    pricingScheduleOptionEventBasedExtended? : PricingScheduleOptionEventBasedExtended;
     productDiscountRules?: [];
     quantityDiscountRules?: [];
     locationDiscountRules?: [];
@@ -42,6 +42,16 @@ export interface PricingScheduleOptionDateRange extends PricingScheduleOptionHol
    from: Date,
    to: Date, 
    allowsPricingOnHoliday: boolean
+}
+
+export interface PricingScheduleOptionSpecificDateDto extends PricingScheduleOptionHolidayRule{
+    allowsPricingOnHoliday: boolean
+    dates: SpecificDateDatesDto[]
+}
+
+export interface SpecificDateDatesDto {
+    date: Date
+    comment?: string
 }
 export interface PricingScheduleOptionEventBasedSimple extends PricingScheduleOptionHolidayRule {
     fromBusinessCalendarId?: event;
