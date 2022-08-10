@@ -993,7 +993,7 @@ export class VesselInfoComponent implements OnInit {
       const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
         width: '350px',
         panelClass: ['confirmation-popup-operator', 'bg-transparent'],
-        data : {message: 'A new Plan exists for this vessel. Cannot update an old Plan 1'}
+        data : {message: 'A new Plan exists for this vessel. Cannot update an old Plan'}
       });
     }
   }
