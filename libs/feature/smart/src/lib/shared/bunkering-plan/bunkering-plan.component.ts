@@ -1099,20 +1099,20 @@ export class BunkeringPlanComponent implements OnInit {
     }
     //Stock validation : When Stock > Tank Capacity
     //1. Current HSFO Qty > HSFO Tank Capacity
-    let totalHsfoCurrentROB =
-      parseInt(currentROBObj['3.5 QTY']?.toString()) +
-      parseInt(currentROBObj['0.5 QTY']?.toString());
-    let isValidHsfoStock =
-      totalHsfoCurrentROB > currentROBObj?.hsfoTankCapacity ? 'N' : 'Y';
-    if (isValidHsfoStock == 'N') {
-      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-        width: '350px',
-        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
-        data : {message: `Current HSFO Qty should be less than HSFO Tank Capacity ${currentROBObj.hsfoTankCapacity} `, okayButton: true}
-      });
-      isHardValidation = 1;
-      return isHardValidation;
-    }
+    // let totalHsfoCurrentROB =
+    //   parseInt(currentROBObj['3.5 QTY']?.toString()) +
+    //   parseInt(currentROBObj['0.5 QTY']?.toString());
+    // let isValidHsfoStock =
+    //   totalHsfoCurrentROB > currentROBObj?.hsfoTankCapacity ? 'N' : 'Y';
+    // if (isValidHsfoStock == 'N') {
+    //   const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+    //     width: '350px',
+    //     panelClass: ['confirmation-popup-operator', 'bg-transparent'],
+    //     data : {message: `Current HSFO Qty should be less than HSFO Tank Capacity ${currentROBObj.hsfoTankCapacity} `, okayButton: true}
+    //   });
+    //   isHardValidation = 1;
+    //   return isHardValidation;
+    // }
     // //2. Current ULSFO Qty > ULSFO Tank Capacity
     // let isValidUlsfoStock =
     //   currentROBObj.ULSFO > currentROBObj?.ulsfoTankCapacity ? 'N' : 'Y';
