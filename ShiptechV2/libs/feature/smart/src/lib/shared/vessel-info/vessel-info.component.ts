@@ -48,6 +48,7 @@ import { SuccesspopupComponent } from '../successpopup/successpopup.component';
 import moment from 'moment';
 import { Subject, Subscription, forkJoin, Observable, timer } from 'rxjs';
 import { distinctUntilChanged, debounceTime, switchMap, takeUntil } from 'rxjs/operators';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 @Component({
   selector: 'app-vessel-info',
@@ -143,7 +144,8 @@ export class VesselInfoComponent implements OnInit {
     private localService: LocalService,
     public dialog: MatDialog,
     private bunkerPlanService: BunkeringPlanService,
-    public BPService: BunkeringPlanCommentsService
+    public BPService: BunkeringPlanCommentsService,
+    private format: TenantFormattingService,
   ) {
     iconRegistry.addSvgIcon(
       'info-icon',
@@ -407,6 +409,8 @@ export class VesselInfoComponent implements OnInit {
     )
     .subscribe((data)=> {
       this.bunkerPlanHeaderDetail = (data?.payload && data?.payload.length)? data.payload[0]: {};
+      this.bunkerPlanHeaderDetail['lastPlanReceivedDate'] =this.format.dateOnly(this.bunkerPlanHeaderDetail['lastPlanReceivedDate']);
+      this.bunkerPlanHeaderDetail['lastPlanSentDate'] =this.format.dateOnly(this.bunkerPlanHeaderDetail['lastPlanSentDate']);
       this.vesselData = this.bunkerPlanHeaderDetail;
       this.scrubberDate = this.bunkerPlanHeaderDetail?.scrubberDate;
       this.scrubberDate =
@@ -938,8 +942,10 @@ export class VesselInfoComponent implements OnInit {
        // this.observableRef$.unsubscribe();
         let vesselCode = data.vessel_code;
         let messageLine =  `A plan ${data?.plan_id} is generated for vessel ${vesselCode}`;
+        let warningFlag = false;
         if(data.planStatus.trim() == 'INV'){
           messageLine =  `Latest bunker plan(${data?.plan_id}) is invalid for vessel ${vesselCode}`;
+          warningFlag  =true;
         }
         const dialogValidRef = this.dialog.open(SuccesspopupComponent, {
           panelClass: ['success-popup-panel', 'bg-transparent'],
@@ -949,7 +955,7 @@ export class VesselInfoComponent implements OnInit {
             hideActionbtn: true, vCode : vesselCode, 
             observableRestartFlag : this.continueCheckingPlans--,
             observableIniFlag : userVessalList.length,
-            warningFlag : true
+            warningFlag : warningFlag
           }
         });
         if(data.vessel_code.trim() == vessalCode.trim()){
