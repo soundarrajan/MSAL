@@ -12,6 +12,7 @@ import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction } from "../../store/b
 import { UpdateBplanTypeState, SaveBunkeringPlanState } from "../../store/bunker-plan/bunkering-plan.state";
 import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningoperatorpopup.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { HtmlDecode } from "@shiptech/core/pipes/htmlDecode/html-decode.pipe";
 const today = new Date();
 
 @Component({
@@ -48,7 +49,9 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.editableCell = v;
   };
   constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService, 
-              private bunkerPlanService:BunkeringPlanService,private store: Store ) {
+              private bunkerPlanService:BunkeringPlanService,private store: Store
+              , private htmlDecode: HtmlDecode
+              ) {
     this.shiptechUrl =  new URL(window.location.href).origin;;
     this.shiptechPortUrl = `${this.shiptechUrl}/#/masters/location/edit/`
   }
@@ -568,7 +571,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'min_sod': {commentType = 'min_sod_comment'; break}
       case 'is_min_soa': {commentType = 'min_soa_comment'; break;}
     }
-      return this.params.data[commentType];
+    return this.htmlDecode.transform(this.params.data[commentType]);
   }
   portClicked(param) {
     this.params.context.componentParent.portClicked(param);
