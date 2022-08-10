@@ -58,6 +58,7 @@ export class BunkeringPlanComponent implements OnInit {
   public editableCell: boolean;
   public type: any;
   public rowSelection;
+  public isNotSendPlanReminder: boolean;
   public dialogRef: MatDialogRef<WarningoperatorpopupComponent>;
   @Output() enableCreateReq = new EventEmitter();
   @Output() voyage_detail = new EventEmitter();
@@ -153,6 +154,9 @@ export class BunkeringPlanComponent implements OnInit {
         params.api.sizeColumnsToFit();
       }
     };
+    this.localService.isNotSendPlanReminder$.subscribe((data) => {
+      this.isNotSendPlanReminder=data;
+    });
   }
 
   ngOnInit() {
@@ -875,7 +879,8 @@ export class BunkeringPlanComponent implements OnInit {
       lsdis_current_stock: currentROBObj?.LSDIS,
       hsdis_current_stock: currentROBObj?.HSDIS,
       plan_details: dataFromStore,
-      is_vessel_role_played: storeVesselData.userRole == 'Vessel' ? 1 : 0
+      is_vessel_role_played: storeVesselData.userRole == 'Vessel' ? 1 : 0,
+      not_send_plan_reminder:this.isNotSendPlanReminder
     };
     let isHardValidated = this.checkBunkerPlanValidations(dataFromStore);
     if (isHardValidated === 0) {
