@@ -882,7 +882,7 @@ export class BunkeringPlanComponent implements OnInit {
       this.bplanService.saveBunkeringPlanDetails(req).subscribe(data => {        
         if (data?.isSuccess == true) {
           const dialogRef = this.dialog.open(SuccesspopupComponent, {
-            panelClass: ['success-popup-panel'],
+            panelClass: ['success-popup-panel', 'bg-transparent'],
             data: { message: 'Plan Details updated successfully' }
           });
           this.store.dispatch(
