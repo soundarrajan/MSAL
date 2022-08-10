@@ -22,6 +22,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import {
   AddCounterpartyToLocations,
   AppendLocationsRowsOriData,
+  EvaluatePrice,
   SetLocations,
   SetLocationsRows
 } from '../../../../../store/actions/ag-grid-row.action';
@@ -364,9 +365,15 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     );
     OfferIds =  OfferIds.filter(x=> x!=undefined);
     this._spotNegotiationService.evaluatePrices({ RequestOfferIds: OfferIds}).subscribe((resp:any) =>{
-      console.log(resp);
+      if(resp?.message == 'Unauthorized') return;
+      if(resp.offersPrices){
+        this.store.dispatch(new EvaluatePrice(resp.offersPrices));
+        this._spotNegotiationService.callGridRedrawService();
+      }
+      else{
+        this.toastr.error('An Error Occurred while evaluating price');
+      }
     })
-    this._spotNegotiationService.callGridRedrawService();
   }
   addCounterpartyAcrossLocations() {
     const selectedCounterparties = this.toBeAddedCounterparties();
