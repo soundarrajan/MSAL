@@ -98,9 +98,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     this.requestOfferId = data.requestOfferId;
     this.offerPriceFormulaId = data.offerPriceFormulaId;
     this.productId = data.productId;
-    this.sessionFormulaList = JSON.parse(sessionStorage.getItem('formula'));
     this.store.selectSnapshot<any>((state: any) => {
       this.staticList = state.spotNegotiation.staticLists.otherLists;
+      this.sessionFormulaList = state.spotNegotiation.formulaList;
       this.isComplexFormulaWeightEnforced = state.tenantSettings.general.defaultValues.isComplexFormulaWeightEnforced;
     });
 
@@ -261,7 +261,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     //this.formulaNameList = this.sessionData.payload;
     if (item != null) {
       if (this.sessionFormulaList != null) {
-        this.formulaNameList = this.sessionFormulaList.payload
+        this.formulaNameList = this.sessionFormulaList
           .filter(e => {
             if (e.name.toLowerCase().includes(item.toLowerCase())) {
               return true;
