@@ -1004,6 +1004,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       allowedLocations: [],
       priceUom: this.generalTenantSettings.tenantFormats.uom,
       currency: this.generalTenantSettings.tenantFormats.currency
+      ,pricePrecision: this.tenantService.pricePrecision
     };
     if (this.formValues) {
       if (!this.formValues.products) {
