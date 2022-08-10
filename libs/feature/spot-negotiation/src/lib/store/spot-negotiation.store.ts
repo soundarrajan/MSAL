@@ -27,7 +27,8 @@ import {
   RemoveLocationsRowsOriData,
   UpdateAdditionalCostList,
   SetOfferPriceFormulaId,
-  setFormulaList
+  setFormulaList,
+  EvaluatePrice
 } from './actions/ag-grid-row.action';
 
 import {
@@ -580,6 +581,29 @@ EditLocationRow(
             req.offerPriceFormulaId = payload.priceConfigurationId
           }
         })
+       }
+    });
+    patchState({
+      locationsRows: locationRows
+    });
+  }
+
+  @Action(EvaluatePrice)
+  EvaluateOfferPrice(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetOfferPriceFormulaId
+  ) {
+    let locRows = getState().locationsRows;
+    const locationRows = _.cloneDeep(locRows);
+    locationRows.forEach(locs =>{
+       if(locs.requestOffers){
+        locs.requestOffers.forEach(req=>{
+          payload.forEach(x=>{
+            if(req.id === x.requestOfferId){
+              req.price = x.price;
+            }
+          })
+        });
        }
     });
     patchState({

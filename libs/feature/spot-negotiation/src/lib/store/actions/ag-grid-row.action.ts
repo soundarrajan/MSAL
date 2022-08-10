@@ -145,3 +145,9 @@ export class setFormulaList {
 
   constructor(public payload: any) {}
 }
+
+export class EvaluatePrice {
+  static readonly type = '[EvaluatePrice] Set';
+
+  constructor(public payload: any) {}
+}
