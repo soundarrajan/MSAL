@@ -223,10 +223,8 @@ button:focus {
     background: $green;
     color: $white;
     text-transform: capitalize;
-    min-width: 4rem; //line-height: 4rem;
+    min-width: 4rem;
     bottom: 0;
-    position: absolute;
-    height: 69px;
   }
 }
 
