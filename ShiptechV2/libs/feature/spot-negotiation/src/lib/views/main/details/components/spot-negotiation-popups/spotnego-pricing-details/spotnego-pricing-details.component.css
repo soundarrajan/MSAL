@@ -1,0 +1,8 @@
+
+.shiptech-contract-pricing-details-popup .spot-popup-header-container .close{
+    opacity: .5;
+}
+
+.shiptech-contract-pricing-details-popup .spot-popup-header-container .close:hover{
+    opacity: 100;
+}

@@ -24,3 +24,11 @@
     margin-right: -16px;
     color: #c4c4c4;
   }
+
+  .search-request-popup .header .close{
+    opacity: .5;
+  }
+
+  .search-request-popup .header .close:hover{
+    opacity: 100;
+  }
