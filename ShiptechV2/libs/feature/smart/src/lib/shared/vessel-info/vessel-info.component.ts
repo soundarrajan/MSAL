@@ -565,6 +565,7 @@ export class VesselInfoComponent implements OnInit {
 
   public loadBunkerPlanDetails(event) {
     let Id = event.id ? event.id : 348;
+    this.planId = '', this.prevPlanId = '';
     let req = { shipId: Id, planStatus: 'C' };
     this.loadCurrentBunkeringPlan(req);
     req = { shipId: Id, planStatus: 'P' };
@@ -793,7 +794,7 @@ export class VesselInfoComponent implements OnInit {
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe(data => {
       if (data?.isSuccess == true) {
         const dialogRef = this.dialog.open(SuccesspopupComponent, {
-          panelClass: ['success-popup-panel'],
+          panelClass: ['success-popup-panel', 'bg-transparent'],
           data: { message: 'Plan will send to vessel in a short while.' }
         });
       }
@@ -940,7 +941,7 @@ export class VesselInfoComponent implements OnInit {
           messageLine =  `Latest bunker plan(${data?.plan_id}) is invalid for vessel ${vesselCode}`;
         }
         const dialogValidRef = this.dialog.open(SuccesspopupComponent, {
-          panelClass: ['success-popup-panel'],
+          panelClass: ['success-popup-panel', 'bg-transparent'],
           width: '350px',
           data: {
             message : messageLine,
