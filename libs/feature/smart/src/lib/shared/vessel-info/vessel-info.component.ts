@@ -703,6 +703,7 @@ export class VesselInfoComponent implements OnInit {
 
   TriggerdontSendPlanReminder(event) {
     this.dontSendPlanReminder.emit(event);
+    this.localService.setdontSendPlanReminder(event.checked);
   }
 
   public toggleCreateReq(event) {
