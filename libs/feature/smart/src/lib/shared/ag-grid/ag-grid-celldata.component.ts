@@ -792,6 +792,55 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         break;
     }
   }
+  getProductName(params)
+  {
+    let requestInfo = [];
+    let data = params?.data;
+    let requestSchemaModel= {request_id: '', request_product: '', estimated_lift: ''};
+    let requestModel;
+    if(params?.value==0){
+      return;
+    }
+    switch (params?.colDef?.field) {
+      case 'hsfo_estimated_lift':
+        if(data?.hsfo_estimated_lift>0) {
+          requestModel = {...requestSchemaModel};
+          requestModel.product_name =data?.suggested_product_hsfo;
+          requestInfo.push(requestModel);
+        }
+        if(data?.vlsfo_estimated_lift>0) {
+          requestModel = {...requestSchemaModel};
+          requestModel.product_name = data?.suggested_product_vlsfo;
+          requestInfo.push(requestModel);
+        }
+        return  requestInfo[0]?.product_name+' '+params?.value +' MT';
+        break;
+        case 'ulsfo_estimated_lift':
+          requestModel = {...requestSchemaModel};
+        if(data?.ulsfo_estimated_lift>0) {
+          requestModel.product_name = data?.suggested_product_ulsfo;
+          requestInfo.push(requestModel);
+        }
+        return  requestInfo[0]?.product_name+' '+params?.value +' MT';
+        break;
+      case 'lsdis_estimated_lift':
+        requestModel = {...requestSchemaModel};
+        if(data?.lsdis_estimated_lift>0) {
+          requestModel.product_name = data?.suggested_product_lsdis;
+          requestInfo.push(requestModel);
+        }
+        return  requestInfo[0]?.product_name+' '+params?.value +' MT';
+        break;
+      case 'hsdis_estimated_lift':
+        requestModel = {...requestSchemaModel};
+        if(data?.hsdis_estimated_lift>0) {
+          requestModel.product_name = data?.suggested_product_hsdis ;
+          requestInfo.push(requestModel);
+        }
+        return  requestInfo[0]?.product_name+' '+params?.value +' MT';
+        break;
+    }
+  }
   showProductRequestInfo(params) {
     let requestInfo = [];
     let data = params?.data;
