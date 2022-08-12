@@ -298,6 +298,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             ctrl.request = traverseObject(ctrl.request, nullifyId);
                             ctrl.request.requestStatus = null;
                             ctrl.request.requestDate = new Date().toJSON();
+                            // To check "Force Request on BOPS" checkbox when copying - only for operators
+                            if (ctrl.request.disableForceRequestBp) {
+                                ctrl.request.forceRequestBp = true;
+                            }
                             setTimeout(() => {
                                 if (ctrl.request.vesselDetails) {
                                     ctrl.robDetails = ctrl.request.vesselDetails.robDetails;
