@@ -502,7 +502,7 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
         return knowMastersAutocompleteHeaderName.systemInstrument;
     }
   }
-  selectorSystemInstumentSelectionChange(selection: any, line, key): void {
+  selectorSystemInstumentSelectionChange(selection: IOrderLookupDto, line, key): void {
     if (selection != null || selection != undefined) {
       const obj = {
         id: selection.id,
