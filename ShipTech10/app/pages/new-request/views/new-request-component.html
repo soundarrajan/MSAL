@@ -1163,13 +1163,11 @@
                         <div class="col-md-5">
                             <div class="row">
                                 <div class="col-md-6" ng-hide="$ctrl.requestTenantSettings.isRequestForceRequestOnBopsHidden">
-                                    <!-- ng-if="$ctrl.footerSectionFields.ForceRequestBp.visible"  -->
                                     <div class="row">
                                         <div class="form-group-sm00 mt-checkbox ">
                                             <div class="input-group">
-                                                <!-- <span ng-if="$ctrl.request.vesselDetails.service.id && $ctrl.lists"></span> -->
                                                 <span></span>
-                                                <input type="checkbox" ng-model="$ctrl.request.forceRequestBp" ng-required="$ctrl.requestTenantSettings.isRequestForceRequestOnBopsMandatory"/>
+                                                <input type="checkbox" ng-model="$ctrl.request.forceRequestBp" ng-required="$ctrl.requestTenantSettings.isRequestForceRequestOnBopsMandatory" ng-disabled="$ctrl.request.disableForceRequestBp"/>
                                                 <label style="padding-left: 5px !important;" class="control-label ">
                                                     <!-- {{ $ctrl.footerSectionFields.ForceRequestBp.caption | translate }} -->
                                                     Force Request on BOPS
