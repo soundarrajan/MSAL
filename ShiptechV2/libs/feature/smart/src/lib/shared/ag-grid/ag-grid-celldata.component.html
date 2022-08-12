@@ -90,8 +90,13 @@
     [matMenuTriggerData]="{ref: params}" [ngClass]="params.cellClass">
       <a (click)="redirectionUrl(params)" style="color: white;">Alt.port</a>  
     </div>
-    <ng-template #content><div *ngIf=" !requestAvailable(params); "matTooltip="{{params.value}}" [ngClass]="params.cellClass" style="color: white;">{{params.value}}</div></ng-template>
-    
+    <ng-template #content>
+        <div *ngIf=" !requestAvailable(params);  " [matTooltip]=" getProductName(params)" [ngClass]="params.cellClass" style="color: white;">
+          {{params.value}}
+      </div>
+    </ng-template>
+
+
       <mat-menu class="port-future-req-popup" #hoverPlanLift="matMenu" xPosition="after"  style="position: relative;bottom: 15px;left: 66px;">
         <ng-template matMenuContent let-PortReqData="ref">
         <div class="port-future-req" [ngClass]="{'dark-theme':theme,'light-theme':!theme}" style="font-size: 14px;">
