@@ -10114,13 +10114,12 @@ tr.title {
                   max-width: fit-content !important;
                   white-space: nowrap;
                   width: fit-content;
-                  position: absolute;
+                  position: fixed;
                   z-index: 1000;
                   display: flex;
                   flex-direction: column;
                   visibility: hidden;
-                  top: 2px;
-                  right: 34%;
+                  top: 25px;
                   padding: 5px 8px;
                   b{
                     padding-left: 2px;
