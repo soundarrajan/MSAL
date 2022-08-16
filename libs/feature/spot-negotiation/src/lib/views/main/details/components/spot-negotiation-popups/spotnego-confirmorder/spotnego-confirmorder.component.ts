@@ -593,14 +593,15 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                       this.spotNegotiationService.cloneToPriceConfiguration({RequestOfferIds:requestOfferIds})
                         .pipe(
                           switchMap((resp: any) => this.spotNegotiationService.orderPriceEvaluations({PriceConfigurationIds: resp.orderPriceConfigurationIds}))
-                        ).subscribe(res=> console.log(res));
+                        ).subscribe((res:any)=> {const baseOrigin = new URL(window.location.href).origin;
+                          window.open(
+                            `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
+                            '_self'
+                          );
+                          console.log(res);
+                        });
                       }
-                    //this.openEditOrder(receivedOffers.payload);
-                    const baseOrigin = new URL(window.location.href).origin;
-                    window.open(
-                      `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
-                      '_self'
-                    );
+                    //this.openEditOrder(receivedOffers.payload);                    
                   }
                 });
               } else if (res instanceof Object) {
