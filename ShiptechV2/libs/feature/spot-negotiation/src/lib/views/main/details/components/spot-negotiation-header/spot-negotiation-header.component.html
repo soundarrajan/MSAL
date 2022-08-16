@@ -157,8 +157,10 @@
                           (change)="
                             onRequestListCheckboxChange($event, element)
                           "
+                          matTooltip="{{ element.requestName }}"
+                          matTooltipClass="lightTooltip"
                         >
-                          {{ element.requestName }}
+                          {{ limitStrLength(element.requestName, 30) }} 
                         </mat-checkbox>
                       </mat-option>
                     </td>
