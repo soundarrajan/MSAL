@@ -912,9 +912,11 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       } 
     }else if(this.formValues.formulaType.id == 2){
      let _length = this.formValues.complexFormulaQuoteLines.length;
+     let weightTotal : number = 0;
      for(let i=1;i<=_length; i++){
        if(this.isComplexFormulaWeightEnforced == true){
-        if(this.formValues.complexFormulaQuoteLines[i-1]?.weight > 100){
+        weightTotal += parseFloat(this.formValues.complexFormulaQuoteLines[i-1]?.weight.toString());
+        if(weightTotal > 100){
           this.toastr.error('Complex Formula Weight Enforced so Weight should be restricted to 100 ');
           return;
         }
@@ -927,7 +929,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
        
 
        if(!this.formValues.complexFormulaQuoteLines[i-1]?.systemInstruments[0]?.marketPriceTypeId){
-        this.toastr.error('Price Type  field is required. for Instument');
+        this.toastr.error('Price Type  field is required.');
         return;
        }
 
