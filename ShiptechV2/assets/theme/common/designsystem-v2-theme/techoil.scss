@@ -3015,3 +3015,10 @@
   align-items: center;
 }
 /** Filter Chip Containers - END **/
+
+.related-invoice-details-wrapper {
+  .related-invoice-red-text
+  [col-id='amount'] {
+    color: $red !important;
+  }
+}
