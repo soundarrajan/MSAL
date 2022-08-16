@@ -84,7 +84,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                 if (ctrl.orderDataFromRequest) {
                     $.each(data.payload.orders, (ordK, ordV) => {
                         $.each(ctrl.orderDataFromRequest, (odfrK, odfrV) => {
-                            if (ordV.requestLocationId == odfrV.requestLocationId && ordV.seller?.id == odfrV.seller?.id) {
+                            if (ordV.requestLocationId == odfrV.requestLocationId && ordV.location?.id == odfrV.locationId && ordV.seller?.id == odfrV.seller?.id) {
                                 ordV.existingOrderId = odfrV.id;
                             }
                         });
@@ -208,7 +208,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
             if(ctrl.orderList && ctrl.orderList.some(x=>x.existingOrderId != null) && ctrl.isOrdertype == "2") // split order
             {
                 for (let existingorders of ctrl.orderList) {
-                    var IsResetExistingOrder = ctrl.requestOfferItems.some(y=>y.requestLocationId == existingorders.requestLocationId && y.sellerId  == existingorders.seller?.id);
+                    var IsResetExistingOrder = ctrl.requestOfferItems.some(y=>y.requestLocationId == existingorders.requestLocationId && y.locationId == existingorders.location?.id && y.sellerId  == existingorders.seller?.id);
                     if (IsResetExistingOrder) {
                         existingorders.existingOrderId = null 
                     }
@@ -245,6 +245,7 @@ angular.module('shiptech.components').controller('ConfirmOrderDialogController',
                     // alert("createOrders");
                     // return
                     toastr.info('Please wait, the order is being created');
+                    ctrl.orderList.forEach(x=>x.isOrderType = ctrl.isOrdertype);
                     orderModel.createOrders(ctrl.orderList).then(
                         (data) => {
                         	$('.modal-header .close').click();
