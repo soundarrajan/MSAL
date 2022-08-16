@@ -1010,23 +1010,29 @@ export class SpotNegotiationHomeComponent implements OnInit {
       selectedSellerRows.forEach(sellerRow => {
         requestLocationIds.push(sellerRow.RequestLocationId);
       });
-      const copyPricePayload = {
-        copyPriceDetailsRequest: sellerDetails,
-        RequestLocationIds: requestLocationIds,
-        RequestGroupId: this.currentRequestInfo.requestGroupId
-      };
       let sellerDetailsforFormula =[] ;
       sellerDetails.map(rows => rows.Offers.map(offer => {
          offer.requestOffers.map(x=> {
-          if(x.isFormulaPricing && x.offerPriceFormulaId){
-            sellerDetailsforFormula.push({
-              priceConfigurationId : x.offerPriceFormulaId,
-              requestOfferIds : [x.id]
-            })
-          }
+            if(x.isFormulaPricing && x.offerPriceFormulaId){
+              sellerDetailsforFormula.push({
+                priceConfigurationId : x.offerPriceFormulaId,
+                requestOfferIds : [x.id]
+              })
+            }
          })
       }));
+     
       if(sellerDetailsforFormula.length>0){
+        let checkForErrors = [];
+        sellerDetailsforFormula.forEach(x=>{
+          x.requestOfferIds.forEach(y=>
+            checkForErrors = this.checkQuoatedPriceAcrossLocations(y, locationsRows)
+          )
+        });
+        if(checkForErrors.length > 0){
+            this.toaster.error('Unable to copy formula as seller already quoated the price');
+        return;
+        }
         const payload = {
           copyOfferPrices : sellerDetailsforFormula
          }
@@ -1046,7 +1052,11 @@ export class SpotNegotiationHomeComponent implements OnInit {
           })
         });
       }
-       
+      const copyPricePayload = {
+        copyPriceDetailsRequest: sellerDetails,
+        RequestLocationIds: requestLocationIds,
+        RequestGroupId: this.currentRequestInfo.requestGroupId
+      };
       const response = this.spotNegotiationService.copyPriceDetails(
         copyPricePayload
       );
@@ -1106,6 +1116,20 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error('Select atlease one Request to proceed.');
       return;
     }
+  }
+
+  checkQuoatedPriceAcrossLocations(id : number, locationsRows){
+    let quoatedPrice = [];
+    locationsRows.forEach(loc=>
+      loc.requestOffers.forEach(req=>{
+         if(req.id == id){
+           if(req.price){
+              quoatedPrice.push(req);
+           }
+         }
+      })
+  );
+  return quoatedPrice;
   }
 
   getLocationRowsWithSelectedSeller(rowsArray, selectedSellerRows) {
