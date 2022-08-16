@@ -70,10 +70,9 @@ export interface PricingScheduleOptionEventBasedExtended extends PricingSchedule
  }
 
  export interface PricingScheduleOptionEventBasedContinuous extends PricingScheduleOptionHolidayRule {
-    pricingSchedulePeriod: event,
+    period: event,
     event: event,
-    date: Date,
-    weekStartsOn: number
+    weekStartsOn: event
  }
 export interface event{
     id?: number;
@@ -237,7 +236,6 @@ export interface EventBasedExtendDto extends HolidayRuleDto, EventBasedSimpleDto
 export interface EventBasedContinuousDto extends HolidayRuleDto {
     pricingSchedulePeriodId: number,
     eventId: number,
-    date: Date,
     weekStartsOn: number
 }
 
