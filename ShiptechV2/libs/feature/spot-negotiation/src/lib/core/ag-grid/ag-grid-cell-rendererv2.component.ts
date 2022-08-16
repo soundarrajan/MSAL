@@ -2383,13 +2383,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   updatePhysicalSupplier() {
     let valid = false;
     let phySupplier=this.phySupplierIdCopy ==0?this.phySupplierId:this.phySupplierIdCopy;
-    if (!phySupplier) {
+    if (phySupplier == this.phySupplierId) {
       this.toastr.warning(
         'Invalid or same physical supplier selected, Please try selecting it again.'
       );
       return;
     }
-
     this.store.selectSnapshot<any>((state: any) => {
       if (state.spotNegotiation.locationsRows.length > 0) {
         const selectItems = state.spotNegotiation.locationsRows.filter(
@@ -2419,7 +2418,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
                   updatedRow.physicalSupplierCounterpartyName =
                     PreviousPhySupplier[0].name;
                   this.store.dispatch(new EditLocationRow(updatedRow));
-
                   //this.store.dispatch(new EditCounterpartyList(updatedRow));
                   return (valid = true);
                 }
@@ -2447,6 +2445,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     const locationsRows = this.store.selectSnapshot<string>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
+   
     this.editedSeller=this.editedSellerCopy;
     this.phySupplierId=this.phySupplierIdCopy;
     let payload = {
