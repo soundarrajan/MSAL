@@ -778,8 +778,8 @@ export class VesselInfoComponent implements OnInit {
     if(this.isLatestPlanInvalid == true){
       let messageText = `The latest plan is unmanageable and cannot be sent. Therefore, the latest valid plan ${ this.planId } will be sent.  Please Confirm.`;
       const dialogRef = this.dialog.open(SuccesspopupComponent, {
-        width: '435px', //sets width of dialog
-        height:'240px', //sets width of dialog
+        width: '435px', 
+        height:'240px', 
         panelClass: ['success-popup-panel'],
         data: { message: messageText, cancelBtnFlag : true }
       });
@@ -823,6 +823,19 @@ export class VesselInfoComponent implements OnInit {
     this.BPlanGenTrigger.push(this.vesselData?.vesselId);
     this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe(data => {
+    if(data.payload[0].auto_gen_possible_time != "" && data.payload[0].gen_in_progress == true){
+      this.disableCurrentBPlan = false;
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+        width: '350px',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
+        data: {
+          message: 'General Plan generation is currently running and therefore manual plan generation is disabled. Manual plan generation will be enabled again '+ data.payload[0].auto_gen_possible_time + ' UTC time',
+          okayButton: true
+        }
+      });
+      return;
+    }
+     
       this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
       // if(data?.isSuccess == true ){
       if (
