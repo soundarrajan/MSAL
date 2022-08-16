@@ -601,6 +601,13 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                           console.log(res);
                         });
                       }
+                      else{
+                        const baseOrigin = new URL(window.location.href).origin;
+                          window.open(
+                            `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
+                            '_self'
+                          );
+                      }
                     //this.openEditOrder(receivedOffers.payload);                    
                   }
                 });
