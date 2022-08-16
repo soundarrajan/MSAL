@@ -39,8 +39,8 @@ export interface PricingScheduleOptionHolidayRule{
     wednesdayHolidayRule?: event;
 }
 export interface PricingScheduleOptionDateRange extends PricingScheduleOptionHolidayRule {
-   from: Date,
-   to: Date, 
+   from: string,
+   to: string, 
    allowsPricingOnHoliday: boolean
 }
 
@@ -50,7 +50,7 @@ export interface PricingScheduleOptionSpecificDate extends PricingScheduleOption
 }
 
 export interface SpecificDateDatesDto {
-    date: Date
+    date: string
     comment?: string
 }
 export interface PricingScheduleOptionEventBasedSimple extends PricingScheduleOptionHolidayRule {
@@ -205,8 +205,8 @@ export interface PricingScheduleDto{
 }
 
 export interface DateRangeDto extends HolidayRuleDto{
-    validFrom: Date,
-    validTo: Date,
+    validFrom: string,
+    validTo: string,
     allowsPricingOnHoliday: boolean
 }
 
@@ -216,7 +216,7 @@ export interface SpecificDateDto extends HolidayRuleDto{
 }
 
 export interface SpecificDateDatesDto {
-    date: Date
+    date: string
     comment?: string
 }
 

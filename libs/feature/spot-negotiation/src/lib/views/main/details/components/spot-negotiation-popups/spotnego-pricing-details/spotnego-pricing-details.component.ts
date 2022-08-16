@@ -20,11 +20,32 @@ import { ComplexFormula, DateRangeDto, EventBasedContinuousDto, EventBasedExtend
    PricingScheduleOptionDateRange, PricingScheduleOptionEventBasedContinuous, PricingScheduleOptionEventBasedExtended, PricingScheduleOptionEventBasedSimple, PricingScheduleOptionSpecificDate, SystemInstrumentDto, SystemInstruments } from './spotnego-pricing-details.interface';
 import { first, switchMap, tap } from 'rxjs/operators';
 import { SetOfferPriceFormulaId } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE } from '@angular/material/core';
+import { CustomDateAdapter, CustomNgxDatetimeAdapter, CUSTOM_DATE_FORMATS, MAT_MOMENT_DATE_ADAPTER_OPTIONS_1, PICK_FORMATS } from '@shiptech/core/utils/dateTime.utils';
+import {
+  NgxMatDateAdapter,
+  NGX_MAT_DATE_FORMATS
+} from '@angular-material-components/datetime-picker';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 @Component({
   selector: 'app-spotnego-pricing-details',
   templateUrl: './spotnego-pricing-details.component.html',
-  styleUrls: ['./spotnego-pricing-details.component.css']
+  styleUrls: ['./spotnego-pricing-details.component.css'],
+  providers: [
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
+    {
+      provide: NgxMatDateAdapter,
+      useClass: CustomNgxDatetimeAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS_1]
+    },
+    { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
+  ]
 })
 export class SpotnegoPricingDetailsComponent implements OnInit {
   formulaFlatPercentageList: any;
@@ -87,7 +108,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     public legacylookup: LegacyLookupsDatabase,
     private store: Store,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    @Inject(MAT_DATE_FORMATS) private dateFormats,
+    @Inject(NGX_MAT_DATE_FORMATS) private dateTimeFormats
   ) {
     iconRegistry.addSvgIcon(
       'data-picker-gray',
@@ -98,6 +121,12 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     this.requestOfferId = data.requestOfferId;
     this.offerPriceFormulaId = data.offerPriceFormulaId;
     this.productId = data.productId;
+    this.dateFormats.display.dateInput = this.format.dateFormat;
+    this.dateFormats.parse.dateInput = this.format.dateFormat;
+    this.dateTimeFormats.display.dateInput = this.format.dateFormat;
+    CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
+    PICK_FORMATS.display.dateInput = this.format.dateFormat;
+
     this.store.selectSnapshot<any>((state: any) => {
       this.staticList = state.spotNegotiation.staticLists.otherLists;
       this.sessionFormulaList = state.spotNegotiation.formulaList;
