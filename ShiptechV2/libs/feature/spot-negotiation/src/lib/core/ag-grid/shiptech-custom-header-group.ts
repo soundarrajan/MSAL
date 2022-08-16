@@ -182,10 +182,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
                   this.tenantService.quantity(params.product.maxQuantity)
                 }}
                 {{ params.product.uomName }}</span>
-                <span *ngIf="params.product.suggestedLift != null" class="info-icon-amber m-l-3"></span>
+                <span *ngIf="params.product.suggestedLift != null && !params.product.quantitiesChanged" class="info-icon-amber m-l-3"></span>
               </span>
             </div>
-            <div class="hover-tooltip" *ngIf="params.product.suggestedLift != null">
+            <div class="hover-tooltip" *ngIf="params.product.suggestedLift != null && !params.product.quantitiesChanged">
                   <span>Minimum Qty:<b>{{ this.tenantService.quantity(params.product.minQuantity) }} {{ params.product?.uomName }}</b></span>
                   <span>Maximum Qty:<b>{{this.tenantService.quantity(params.product.maxQuantity)}} {{ params.product?.uomName }}</b></span>
                   <span>Suggested Qty:<b>{{params.product.suggestedLift }} {{ params.product?.uomName }}</b></span>
