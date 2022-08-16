@@ -322,7 +322,7 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="(paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed) || (params && (requestOffers && requestOffers?.isFormulaPricing))"
+                [disabled]="(paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed) || (params && (currentRequestOffer && currentRequestOffer?.isFormulaPricing))"
               >
                 <!-- <mat-option [disabled]>Change Currency </mat-option> -->
                 <div style="padding:5px 10px;font-size:14px">Change Currency</div>
@@ -356,7 +356,7 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="(paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed) ||  (params && (requestOffers && requestOffers?.isFormulaPricing))"
+                [disabled]="(paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed) ||  (params && (currentRequestOffer && currentRequestOffer?.isFormulaPricing))"
               >
                 <mat-select-trigger overlayPanelClass="123class">
                   {{ paramsDataClone.currency | getCurrencyCode:getCurrencyCode1 }}
@@ -403,17 +403,17 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
             [matTooltip]="params.value |  priceFormatValue : priceFormatValue1"
             [disabled]="
             (params.product.status === 'Stemmed' || params.product.status === 'Confirmed') ||
-            (params && (requestOffers && requestOffers?.isFormulaPricing) || (params.value > 0 && requestOffers?.isSupplyQuantityEdited == true &&
-              requestOffers?.supplyQuantity != null))
+            (params && (currentRequestOffer && currentRequestOffer?.isFormulaPricing) || (params.value > 0 && currentRequestOffer?.isSupplyQuantityEdited == true &&
+              currentRequestOffer?.supplyQuantity != null))
             "
-            [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' || requestOffers?.isFormulaPricing  ?'inputFieldHighlightOff' : ''"
+            [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' || currentRequestOffer?.isFormulaPricing  ?'inputFieldHighlightOff' : ''"
           />
 
           <div
             class="addButton"
             (click)="otherdetailspopup($event, params)"
             *ngIf="params && params.value > 0 &&
-            requestOffers?.supplyQuantity == null
+            currentRequestOffer?.supplyQuantity == null
             "
           ></div>
           <div
@@ -422,8 +422,8 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
             (mouseenter)="hoverMenu($event)"
             [matMenuTriggerFor]="formulamenu"
             #menuTriggerHover="matMenuTrigger"
-            *ngIf="params && (requestOffers && requestOffers?.isFormulaPricing) || (params.value > 0 && requestOffers?.isSupplyQuantityEdited == true &&
-              requestOffers?.supplyQuantity != null)"
+            *ngIf="params && (currentRequestOffer && currentRequestOffer?.isFormulaPricing) || (params.value > 0 && currentRequestOffer?.isSupplyQuantityEdited == true &&
+              currentRequestOffer?.supplyQuantity != null)"
           ></div>
         </div>
       </div>
@@ -435,20 +435,19 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
         <div></div>
         <span>Add/View Formula pricing</span>
       </div>
-      <ng-container 
-      *ngIf="params && (requestOffers && requestOffers?.isFormulaPricing)"
-      >
-      <div class="divider-line"></div>
-      <div class="remove-block" (click)="removeFormulaPrice(params)">
-        <div></div>
-        <span>Remove Formula pricing</span>
-      </div>
-      </ng-container>
       <div class="divider-line"></div>
       <div class="add-block" (click)="otherdetailspopup($event, params)">
         <div></div>
         <span>Add/View Request changes</span>
       </div>
+      <br />
+      <ng-container *ngIf="params && (currentRequestOffer && currentRequestOffer?.isFormulaPricing)">
+        <div class="divider-line"></div>
+        <div class="delete-block" (click)="removeFormulaPrice(params)">
+          <div></div>
+          <span>Remove Formula pricing</span>
+        </div>
+      </ng-container>
     </mat-menu>
     <div *ngIf="params.type == 'phy-supplier'">
       <div
@@ -672,7 +671,7 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
         class="p-tb-5"
         style="display:flex;align-items:center;"
         (click)="pricingdetailspopup($event, params)"
-        *ngIf="params.data.requestOffers && params.data?.requestOffers[params.index]?.isFormulaPricing">
+        *ngIf="currentRequestOffer?.isFormulaPricing">
         <span><div class="infocircle-icon"></div></span>
         <span class="fs-13"> Formula Based Pricing</span>
         <hr class="menu-divider-line2" />
@@ -680,8 +679,8 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
       <div
         class="p-tb-5"
         style="display:flex;align-items:center;"
-        (click)="otherdetailspopup($event, params)" *ngIf="params.value > 0 && requestOffers && (requestOffers?.isSupplyQuantityEdited == true &&
-          requestOffers?.supplyQuantity != null)">
+        (click)="otherdetailspopup($event, params)" *ngIf="params.value > 0 && currentRequestOffer && (currentRequestOffer?.isSupplyQuantityEdited == true &&
+          currentRequestOffer?.supplyQuantity != null)">
         <span><div class="infocircle-icon"></div></span>
         <span class="fs-13">Other Details</span>
       </div>
@@ -775,7 +774,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   check_count = 0;
   offerOldValue : number;
   clrRequest: any = 0;
-  requestOffers: any;
+  currentRequestOffer: any;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -1002,7 +1001,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     );
 
     if (offerExists) {
-      this.requestOffers = offerExists
+      this.currentRequestOffer = offerExists
       this.isOfferAvaialble =  true;
     }
 
@@ -1595,9 +1594,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   pricingdetailspopup(e, params) {
-    console.log(this.requestOffers);
     //let requestedOffer = params.data.requestOffers[params.index];
-    let requestedOffer = this.requestOffers;
+    let requestedOffer = this.currentRequestOffer;
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
       width: '1164px',
       data : {
@@ -2004,7 +2002,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
     dialogRef.afterClosed().subscribe(result =>{
       if(result){
-        let requestedOffer = this.requestOffers;
+        let requestedOffer = this.currentRequestOffer;
         var newData = _.cloneDeep(params.data);
         newData.requestOffers.map((el) => {
           if(el.id === requestedOffer.id){
