@@ -438,6 +438,9 @@ export class RequestsDetailsComponent implements OnInit {
       width: 100,
       headerClass: ['aggrid-text-align-c'],
       filter: 'text',
+      filterParams: {
+        buttons: ['clear'],
+      },
       cellRendererFramework: AGGridCellDataComponent,
       cellRendererParams: {
         type: 'request-link',
@@ -475,6 +478,9 @@ export class RequestsDetailsComponent implements OnInit {
       headerName: 'Service',
       field: 'serviceName',
       filter: 'text',
+      filterParams: {
+        buttons: ['clear'],
+      },
       headerTooltip: 'Service',
       headerClass: ['aggrid-text-align-c'],
       cellClass: ['aggrid-content-c'],
@@ -485,6 +491,9 @@ export class RequestsDetailsComponent implements OnInit {
       headerTooltip: 'Port',
       field: 'locationName',
       filter: 'text',
+      filterParams: {
+        buttons: ['clear'],
+      },
       width: 100,
       cellClass: ['aggrid-content-c aggrid-column-splitter-left']
     },
@@ -493,6 +502,9 @@ export class RequestsDetailsComponent implements OnInit {
       headerTooltip: 'ETA',
       field: 'eta',
       filter: 'date',
+      filterParams: {
+        buttons: ['clear'],
+      },
       cellRendererFramework: AGGridCellRendererComponent,
       cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] },
       headerClass: ['aggrid-text-align-c'],
@@ -504,6 +516,9 @@ export class RequestsDetailsComponent implements OnInit {
       headerTooltip: 'ETD',
       field: 'etd',
       filter: 'date',
+      filterParams: {
+        buttons: ['clear'],
+      },
       cellRendererFramework: AGGridCellRendererComponent,
       cellRendererParams: { cellClass: ['custom-chip dark aggrid-space'] },
       headerClass: ['aggrid-text-align-c'],
@@ -516,6 +531,9 @@ export class RequestsDetailsComponent implements OnInit {
       width: 160,
       field: 'productName',
       filter: 'text',
+      filterParams: {
+        buttons: ['clear'],
+      },
       cellRendererFramework: AGGridCellDataComponent,
       cellRendererParams: {
         type: 'multiple-values',
@@ -534,6 +552,9 @@ export class RequestsDetailsComponent implements OnInit {
       headerName: 'Trader',
       field: 'buyerName',
       filter: 'text',
+      filterParams: {
+        buttons: ['clear'],
+      },
       headerTooltip: 'Trader',
       width: 100,
       cellClass: ['aggrid-content-c aggrid-column-splitter-left']
@@ -542,6 +563,9 @@ export class RequestsDetailsComponent implements OnInit {
       headerName: 'Operator',
       field: 'operatorByName',
       filter: 'text',
+      filterParams: {
+        buttons: ['clear'],
+      },
       headerTooltip: 'Operator',
       width: 100,
       cellClass: ['aggrid-content-c']
@@ -550,6 +574,9 @@ export class RequestsDetailsComponent implements OnInit {
       headerName: 'Status',
       field: 'requestStatus.displayName',
       filter: 'text',
+      filterParams: {
+        buttons: ['clear'],
+      },
       headerTooltip: 'Status',
       cellRendererFramework: AGGridCellRendererComponent,
       headerClass: ['aggrid-text-align-c'],
@@ -595,6 +622,9 @@ export class RequestsDetailsComponent implements OnInit {
       headerTooltip: 'Created by',
       field: 'createdByName',
       filter: 'text',
+      filterParams: {
+        buttons: ['clear'],
+      },
       width: 110,
       cellClass: ['aggrid-content-c']
     }
