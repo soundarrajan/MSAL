@@ -170,17 +170,26 @@ import { NgxSpinnerService } from 'ngx-spinner';
           </span>
         </div>
         <div class="optionsText">
-          <div class="qty" matTooltipClass="lightTooltip" matTooltip="Min - Max quantities">
-            <span class="title"style="font-size:12px">Qty:</span>
-            <span
-              class="value"
-              contenteditable="false"
-              (keydown)="editQty($event)"
-              >{{ this.tenantService.quantity(params.product.minQuantity) }}/{{
-                this.tenantService.quantity(params.product.maxQuantity)
-              }}
-              {{ params.product.uomName }}</span
-            >
+          <div class="qty-tooltip">
+            <div class="qty">
+              <span class="title"style="font-size:12px">Qty:</span>
+              <span>
+                <span
+                class="value"
+                contenteditable="false"
+                (keydown)="editQty($event)"
+                >{{ this.tenantService.quantity(params.product.minQuantity) }}/{{
+                  this.tenantService.quantity(params.product.maxQuantity)
+                }}
+                {{ params.product.uomName }}</span>
+                <span *ngIf="params.product.suggestedLift != null && !params.product.quantitiesChanged" class="info-icon-amber m-l-3"></span>
+              </span>
+            </div>
+            <div class="hover-tooltip" *ngIf="params.product.suggestedLift != null && !params.product.quantitiesChanged">
+                  <span>Minimum Qty:<b>{{ this.tenantService.quantity(params.product.minQuantity) }} {{ params.product?.uomName }}</b></span>
+                  <span>Maximum Qty:<b>{{this.tenantService.quantity(params.product.maxQuantity)}} {{ params.product?.uomName }}</b></span>
+                  <span>Suggested Qty:<b>{{params.product.suggestedLift }} {{ params.product?.uomName }}</b></span>
+            </div>
           </div>
           
           <div

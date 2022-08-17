@@ -48,6 +48,7 @@ import { SuccesspopupComponent } from '../successpopup/successpopup.component';
 import moment from 'moment';
 import { Subject, Subscription, forkJoin, Observable, timer } from 'rxjs';
 import { distinctUntilChanged, debounceTime, switchMap, takeUntil } from 'rxjs/operators';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 
 @Component({
   selector: 'app-vessel-info',
@@ -143,7 +144,8 @@ export class VesselInfoComponent implements OnInit {
     private localService: LocalService,
     public dialog: MatDialog,
     private bunkerPlanService: BunkeringPlanService,
-    public BPService: BunkeringPlanCommentsService
+    public BPService: BunkeringPlanCommentsService,
+    private format: TenantFormattingService,
   ) {
     iconRegistry.addSvgIcon(
       'info-icon',
@@ -176,6 +178,9 @@ export class VesselInfoComponent implements OnInit {
       this.hideFlag = 0;
       //this.VesselHasNewPlanJob();
     });
+    this.localService.callSendValidBPlan$.subscribe(() => {
+      this.sendValidBPlan();
+    })
   }
 
   ngOnInit() {
@@ -403,8 +408,9 @@ export class VesselInfoComponent implements OnInit {
       takeUntil(this.unsubscribeSignal.asObservable())
     )
     .subscribe((data)=> {
-      console.log('bunker plan header',data);
       this.bunkerPlanHeaderDetail = (data?.payload && data?.payload.length)? data.payload[0]: {};
+      this.bunkerPlanHeaderDetail['lastPlanReceivedDate'] =this.format.dateOnly(this.bunkerPlanHeaderDetail['lastPlanReceivedDate']);
+      this.bunkerPlanHeaderDetail['lastPlanSentDate'] =this.format.dateOnly(this.bunkerPlanHeaderDetail['lastPlanSentDate']);
       this.vesselData = this.bunkerPlanHeaderDetail;
       this.scrubberDate = this.bunkerPlanHeaderDetail?.scrubberDate;
       this.scrubberDate =
@@ -549,6 +555,7 @@ export class VesselInfoComponent implements OnInit {
       default:
         break;
     }
+    this.localService.setBunkerPlanState(true);
     this.store.dispatch(new UpdateCurrentROBAction(value, column));
 
     this.currentROBChange.next(column);
@@ -562,6 +569,7 @@ export class VesselInfoComponent implements OnInit {
 
   public loadBunkerPlanDetails(event) {
     let Id = event.id ? event.id : 348;
+    this.planId = '', this.prevPlanId = '';
     let req = { shipId: Id, planStatus: 'C' };
     this.loadCurrentBunkeringPlan(req);
     req = { shipId: Id, planStatus: 'P' };
@@ -699,6 +707,7 @@ export class VesselInfoComponent implements OnInit {
 
   TriggerdontSendPlanReminder(event) {
     this.dontSendPlanReminder.emit(event);
+    this.localService.setdontSendPlanReminder(event.checked);
   }
 
   public toggleCreateReq(event) {
@@ -764,7 +773,23 @@ export class VesselInfoComponent implements OnInit {
     this.child.loadComments();
   }
 
-  sendCurrentBPlan(event) {
+
+  sendCurrentBPlan(event){
+    if(this.isLatestPlanInvalid == true){
+      let messageText = `The latest plan is unmanageable and cannot be sent. Therefore, the latest valid plan ${ this.planId } will be sent.  Please Confirm.`;
+      const dialogRef = this.dialog.open(SuccesspopupComponent, {
+        width: '435px', 
+        height:'240px', 
+        panelClass: ['success-popup-panel'],
+        data: { message: messageText, cancelBtnFlag : true }
+      });
+    }else{
+     this.sendValidBPlan();
+    }
+    event.stopPropagation();
+  }
+
+  sendValidBPlan(){
     let req = {
       action: '',
       ship_id: this.vesselData?.vesselId,
@@ -774,12 +799,11 @@ export class VesselInfoComponent implements OnInit {
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe(data => {
       if (data?.isSuccess == true) {
         const dialogRef = this.dialog.open(SuccesspopupComponent, {
-          panelClass: ['success-popup-panel'],
+          panelClass: ['success-popup-panel', 'bg-transparent'],
           data: { message: 'Plan will send to vessel in a short while.' }
         });
       }
     });
-    event.stopPropagation();
   }
   setImportGSIS(event) {
     this.import_gsis = this.isChecked ? 1 : 0;
@@ -799,6 +823,19 @@ export class VesselInfoComponent implements OnInit {
     this.BPlanGenTrigger.push(this.vesselData?.vesselId);
     this.store.dispatch(new GeneratePlanAction(req.generate_new_plan));
     this.bunkerPlanService.saveBunkeringPlanDetails(req).subscribe(data => {
+    if(data.payload[0].auto_gen_possible_time != "" && data.payload[0].gen_in_progress == true){
+      this.disableCurrentBPlan = false;
+      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+        width: '350px',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
+        data: {
+          message: 'General Plan generation is currently running and therefore manual plan generation is disabled. Manual plan generation will be enabled again '+ data.payload[0].auto_gen_possible_time + ' UTC time',
+          okayButton: true
+        }
+      });
+      return;
+    }
+     
       this.checkVesselHasNewPlan(this.vesselData?.vesselRef);
       // if(data?.isSuccess == true ){
       if (
@@ -917,14 +954,21 @@ export class VesselInfoComponent implements OnInit {
         //unsubscribe next exec after 15 sec, if plan generate get completed
        // this.observableRef$.unsubscribe();
         let vesselCode = data.vessel_code;
+        let messageLine =  `A plan ${data?.plan_id} is generated for vessel ${vesselCode}`;
+        let warningFlag = false;
+        if(data.planStatus.trim() == 'INV'){
+          messageLine =  `Latest bunker plan(${data?.plan_id}) is invalid for vessel ${vesselCode}`;
+          warningFlag  =true;
+        }
         const dialogValidRef = this.dialog.open(SuccesspopupComponent, {
-          panelClass: ['success-popup-panel'],
+          panelClass: ['success-popup-panel', 'bg-transparent'],
           width: '350px',
           data: {
-            message : `A plan ${data?.plan_id} is generated for vessel ${vesselCode}`,
+            message : messageLine,
             hideActionbtn: true, vCode : vesselCode, 
             observableRestartFlag : this.continueCheckingPlans--,
-            observableIniFlag : userVessalList.length
+            observableIniFlag : userVessalList.length,
+            warningFlag : warningFlag
           }
         });
         if(data.vessel_code.trim() == vessalCode.trim()){

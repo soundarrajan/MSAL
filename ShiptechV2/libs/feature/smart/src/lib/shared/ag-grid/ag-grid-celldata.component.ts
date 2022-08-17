@@ -12,6 +12,7 @@ import { SaveBunkeringPlanAction,UpdateBunkeringPlanAction } from "../../store/b
 import { UpdateBplanTypeState, SaveBunkeringPlanState } from "../../store/bunker-plan/bunkering-plan.state";
 import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningoperatorpopup.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { HtmlDecode } from "@shiptech/core/pipes/htmlDecode/html-decode.pipe";
 const today = new Date();
 
 @Component({
@@ -48,7 +49,9 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
     this.editableCell = v;
   };
   constructor(public router: Router, public dialog: MatDialog, private elem: ElementRef,private localService:LocalService, 
-              private bunkerPlanService:BunkeringPlanService,private store: Store ) {
+              private bunkerPlanService:BunkeringPlanService,private store: Store
+              , private htmlDecode: HtmlDecode
+              ) {
     this.shiptechUrl =  new URL(window.location.href).origin;;
     this.shiptechPortUrl = `${this.shiptechUrl}/#/masters/location/edit/`
   }
@@ -424,23 +427,29 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
                 if(result) {
                   this.menuClick = true;
                   this.inputMenuTrigger.openMenu();
-                    if (document.getElementById('inputValue')) {
-                      document.getElementById('inputValue').focus();
-                    }
+                  var overlay = document.querySelector('.cdk-overlay-container');
+                  if (overlay && overlay.classList) {
+                    overlay.classList.remove('removeOverlay');
+                  }
+                  if (document.getElementById('inputValue')) {
+                    document.getElementById('inputValue').focus();
+                  }
                 } 
                 else {
-                
                 }
               });
           }
           else{
             this.menuClick = true;
             this.inputMenuTrigger.openMenu();
-              if (document.getElementById('inputValue')) {
-                document.getElementById('inputValue').focus();
-              }
+            var overlay = document.querySelector('.cdk-overlay-container');
+            if (overlay && overlay.classList) {
+              overlay.classList.remove('removeOverlay');
+            }
+            if (document.getElementById('inputValue')) {
+              document.getElementById('inputValue').focus();
+            }
           }
-          
       }
     }
   }
@@ -562,7 +571,7 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
       case 'min_sod': {commentType = 'min_sod_comment'; break}
       case 'is_min_soa': {commentType = 'min_soa_comment'; break;}
     }
-      return this.params.data[commentType];
+    return this.htmlDecode.transform(this.params.data[commentType]);
   }
   portClicked(param) {
     this.params.context.componentParent.portClicked(param);
@@ -780,6 +789,55 @@ export class AGGridCellDataComponent implements ICellRendererAngularComp {
         break;
       case 'hsdis_estimated_lift':
         return params?.data?.is_alt_port_hsdis;
+        break;
+    }
+  }
+  getProductName(params)
+  {
+    let requestInfo = [];
+    let data = params?.data;
+    let requestSchemaModel= {request_id: '', request_product: '', estimated_lift: ''};
+    let requestModel;
+    if(params?.value==0){
+      return;
+    }
+    switch (params?.colDef?.field) {
+      case 'hsfo_estimated_lift':
+        if(data?.hsfo_estimated_lift>0) {
+          requestModel = {...requestSchemaModel};
+          requestModel.product_name =data?.suggested_product_hsfo;
+          requestInfo.push(requestModel);
+        }
+        if(data?.vlsfo_estimated_lift>0) {
+          requestModel = {...requestSchemaModel};
+          requestModel.product_name = data?.suggested_product_vlsfo;
+          requestInfo.push(requestModel);
+        }
+        return  requestInfo[0]?.product_name+' '+params?.value +' MT';
+        break;
+        case 'ulsfo_estimated_lift':
+          requestModel = {...requestSchemaModel};
+        if(data?.ulsfo_estimated_lift>0) {
+          requestModel.product_name = data?.suggested_product_ulsfo;
+          requestInfo.push(requestModel);
+        }
+        return  requestInfo[0]?.product_name+' '+params?.value +' MT';
+        break;
+      case 'lsdis_estimated_lift':
+        requestModel = {...requestSchemaModel};
+        if(data?.lsdis_estimated_lift>0) {
+          requestModel.product_name = data?.suggested_product_lsdis;
+          requestInfo.push(requestModel);
+        }
+        return  requestInfo[0]?.product_name+' '+params?.value +' MT';
+        break;
+      case 'hsdis_estimated_lift':
+        requestModel = {...requestSchemaModel};
+        if(data?.hsdis_estimated_lift>0) {
+          requestModel.product_name = data?.suggested_product_hsdis ;
+          requestInfo.push(requestModel);
+        }
+        return  requestInfo[0]?.product_name+' '+params?.value +' MT';
         break;
     }
   }

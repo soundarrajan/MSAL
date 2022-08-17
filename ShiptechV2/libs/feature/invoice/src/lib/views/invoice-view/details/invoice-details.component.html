@@ -98,6 +98,8 @@
                     [disabled]="
                       formValues.documentType.name == 'Pre-claim Credit Note' ||
                       formValues.documentType.name == 'Pre-claim Debit Note'
+                      || formValues.status?.name === 'Approved'
+                      || formValues.status?.name === 'Cancelled'
                     "
                   />
                   <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
@@ -127,6 +129,7 @@
                     autocomplete="off"
                     placeholder="Invoice Date"
                     (blur)="isFormValid({ useToaster: false })"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   />
                   <mat-datepicker-toggle matSuffix [for]="invoiceDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -164,6 +167,7 @@
                       );
                       isFormValid({ useToaster: false })
                     "
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   />
                   <mat-datepicker-toggle matSuffix [for]="receivedDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -203,6 +207,7 @@
                     autocomplete="off"
                     placeholder="Payment Term"
                     required
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   />
                   <mat-autocomplete
                     #auto4="matAutocomplete"
@@ -212,6 +217,9 @@
                       setPaymentTerm($event.option.value);
                       isFormValid({ useToaster: false })
                     "
+                    [ngClass]="{
+                      disabled: formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'
+                    }"
                   >
                     <mat-option
                       *ngFor="let option of filterPaymentTermList()"
@@ -232,6 +240,7 @@
                     [masterSelector]="masterSelector4"
                     #masterSelectorTrigger4="masterSelectorTrigger"
                     [header]="getHeaderNameSelector4()"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   ></button>
                   <ng-template cdkPortal #masterSelector4="cdkPortal">
                     <shiptech-shared-master-selector
@@ -249,32 +258,6 @@
                     ></shiptech-shared-master-selector>
                   </ng-template>
                 </div>
-                <!-- <button
-                  class="search-icon"
-                  appMasterSelectorTrigger
-                  [masterSelector]="masterSelector4"
-                  #masterSelectorTrigger4="masterSelectorTrigger"
-                  [header]="getHeaderNameSelector1()"
-                >
-                  <div class="img">
-                    <ng-template cdkPortal #masterSelector4="cdkPortal">
-                      <shiptech-shared-master-selector
-                        (selectedChange)="
-                          selectorPaymentTermSelectionChange($event);
-                          masterSelectorTrigger4.close()
-                        "
-                        (shouldCloseModal)="masterSelectorTrigger4.close()"
-                        [selectorType]="autocompletePaymentTerm"
-                        [disabled]="disabled"
-                        [readonly]="readonly"
-                        [entityName]="entityName"
-                        [entityId]="entityId"
-                        [vesselId]="vesselId"
-                        [headerName]="getHeaderNameSelector4()"
-                      ></shiptech-shared-master-selector>
-                    </ng-template>
-                  </div>
-                </button> -->
               </div>
             </div>
           </div>
@@ -297,7 +280,7 @@
                     "
                     name="invoiceRateCurrencyCode"
                     required
-                    [disabled]="formValues.status?.name === 'Approved'"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   >
                     <mat-option
                       *ngFor="let currency of currencyList"
@@ -331,7 +314,7 @@
                       isFormValid({ useToaster: false })
                     "
                     required
-                    [disabled]="formValues.status?.name === 'Approved'"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   />
                   <mat-datepicker-toggle matSuffix [for]="dueDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -390,6 +373,7 @@
                     (blur)="isFormValid({ useToaster: false })"
                     name="documentNo"
                     [(ngModel)]="formValues.documentNo"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   />
                 </mat-form-field>
               </div>
@@ -409,6 +393,7 @@
                     autocomplete="off"
                     placeholder="Seller Due Date"
                     (dateChange)="formatDateForBe(formValues.sellerDueDate)"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   />
                   <mat-datepicker-toggle matSuffix [for]="sellerDueDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -437,6 +422,7 @@
                       );
                       triggerChangeFieldsAppSpecific('PaymentDate')
                     "
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   />
                   <mat-datepicker-toggle matSuffix [for]="paymentDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -464,6 +450,7 @@
                         formValues.approvedDate
                       )
                     "
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   />
                   <mat-datepicker-toggle matSuffix [for]="validationDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -525,6 +512,7 @@
                     [disableOptionCentering]="true"
                     [compareWith]="compareObjects"
                     panelClass="general-information-select-container"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   >
                     <mat-option
                       *ngFor="let list of invoiceStatusList"
@@ -549,6 +537,7 @@
                     autocomplete="off"
                     placeholder="Accountancy Date"
                     (dateChange)="formatDateForBe(formValues.accountancyDate)"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   />
                   <mat-datepicker-toggle matSuffix [for]="accountancyDate">
                     <mat-icon matDatepickerToggleIcon class="icon-date">
@@ -570,6 +559,7 @@
                     matInput
                     name="accountNumber"
                     [(ngModel)]="formValues.accountNumber"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   />
                 </mat-form-field>
               </div>
@@ -684,7 +674,7 @@
                         placeholder="Company"
                         required
                         [disabled]="
-                          formValues.status?.name === 'Approved' ? true : false
+                          formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled' ? true : false
                         "
                       />
                       <mat-autocomplete
@@ -739,38 +729,6 @@
                         ></shiptech-shared-master-selector>
                       </ng-template>
                     </div>
-                    <!-- <button
-                      [ngClass]="{
-                        'search-icon-disabled':
-                          formValues.status &&
-                          formValues.status?.name === 'Approved'
-                      }"
-                      class="search-icon"
-                      appMasterSelectorTrigger
-                      [masterSelector]="masterSelector1"
-                      #masterSelectorTrigger1="masterSelectorTrigger"
-                      [header]="getHeaderNameSelector1()"
-                    >
-                      <div class="img">
-                        <ng-template cdkPortal #masterSelector1="cdkPortal">
-                          <shiptech-shared-master-selector
-                            (selectedChange)="
-                              selectorCompanySelectionChange($event);
-                              masterSelectorTrigger1.close()
-                            "
-                            (shouldCloseModal)="masterSelectorTrigger1.close()"
-                            [selectorType]="autocompleteCompany"
-                            [disabled]="disabled"
-                            [readonly]="readonly"
-                            [entityName]="entityName"
-                            [entityId]="entityId"
-                            [vesselId]="vesselId"
-                            [headerName]="getHeaderNameSelector1()"
-                          >
-                          </shiptech-shared-master-selector>
-                        </ng-template>
-                      </div>
-                    </button> -->
                   </div>
                 </div>
               </div>
@@ -801,7 +759,7 @@
                         triggerChangeFieldsAppSpecific('DeliveryDate')
                       "
                       placeholder="Delivery Date"
-                      [disabled]="formValues.status?.name === 'Approved'"
+                      [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                       required
                     />
                     <mat-datepicker-toggle matSuffix [for]="deliveryDate">
@@ -835,6 +793,7 @@
                         [matAutocomplete]="auto2"
                         autocomplete="off"
                         placeholder="Carrier"
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                       />
                       <mat-autocomplete
                         #auto2="matAutocomplete"
@@ -843,6 +802,9 @@
                         (optionSelected)="
                           setCarrierCompany($event.option.value)
                         "
+                        [ngClass]="{
+                          disabled: formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'
+                        }"
                       >
                         <mat-option
                           *ngFor="let option of filterCarrierList()"
@@ -885,33 +847,6 @@
                         ></shiptech-shared-master-selector>
                       </ng-template>
                     </div>
-                    <!-- <button
-                      class="search-icon"
-                      appMasterSelectorTrigger
-                      [masterSelector]="masterSelector2"
-                      #masterSelectorTrigger2="masterSelectorTrigger"
-                      [header]="getHeaderNameSelector1()"
-                    >
-                      <div class="img">
-                        <ng-template cdkPortal #masterSelector2="cdkPortal">
-                          <shiptech-shared-master-selector
-                            (selectedChange)="
-                              selectorCarrierSelectionChange($event);
-                              masterSelectorTrigger2.close()
-                            "
-                            (shouldCloseModal)="masterSelectorTrigger2.close()"
-                            [selectorType]="autocompleteCarrier"
-                            [disabled]="disabled"
-                            [readonly]="readonly"
-                            [entityName]="entityName"
-                            [entityId]="entityId"
-                            [vesselId]="vesselId"
-                            [headerName]="getHeaderNameSelector2()"
-                          >
-                          </shiptech-shared-master-selector>
-                        </ng-template>
-                      </div>
-                    </button> -->
                   </div>
                 </div>
               </div>
@@ -931,6 +866,7 @@
                 (ngModelChange)="
                   formValues.orderDetails.frontOfficeComments = $event
                 "
+                [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
               ></textarea>
             </div>
           </div>
@@ -971,7 +907,7 @@
                         [compareWith]="compareObjects"
                         [disableOptionCentering]="true"
                         panelClass="general-information-select-container"
-                        [disabled]="formValues.status?.name === 'Approved'"
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                         [ngModelOptions]="{ standalone: true }"
                         [(ngModel)]="
                           formValues.counterpartyDetails.counterpartyBankAccount
@@ -1019,6 +955,7 @@
                           autocomplete="off"
                           placeholder="Customer"
                           [required]="getCustomerDateConfig().isMandatory"
+                          [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                         />
                         <mat-autocomplete
                           #auto3="matAutocomplete"
@@ -1028,6 +965,9 @@
                             setCustomer($event.option.value);
                             isFormValid({ useToaster: false })
                           "
+                          [ngClass]="{
+                            disabled: formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'
+                          }"
                         >
                           <mat-option
                             *ngFor="let option of filterCustomerList()"
@@ -1048,6 +988,7 @@
                           [masterSelector]="masterSelector3"
                           #masterSelectorTrigger3="masterSelectorTrigger"
                           [header]="getHeaderNameSelector3()"
+                          [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                         ></button>
                         <ng-template cdkPortal #masterSelector3="cdkPortal">
                           <shiptech-shared-master-selector
@@ -1065,34 +1006,6 @@
                           ></shiptech-shared-master-selector>
                         </ng-template>
                       </div>
-                      <!-- <button
-                        class="search-icon"
-                        appMasterSelectorTrigger
-                        [masterSelector]="masterSelector3"
-                        #masterSelectorTrigger3="masterSelectorTrigger"
-                        [header]="getHeaderNameSelector1()"
-                      >
-                        <div class="img">
-                          <ng-template cdkPortal #masterSelector3="cdkPortal">
-                            <shiptech-shared-master-selector
-                              (selectedChange)="
-                                selectorCustomerSelectionChange($event);
-                                masterSelectorTrigger3.close()
-                              "
-                              (shouldCloseModal)="
-                                masterSelectorTrigger3.close()
-                              "
-                              [selectorType]="autocompleteCustomer"
-                              [disabled]="disabled"
-                              [readonly]="readonly"
-                              [entityName]="entityName"
-                              [entityId]="entityId"
-                              [vesselId]="vesselId"
-                              [headerName]="getHeaderNameSelector3()"
-                            ></shiptech-shared-master-selector>
-                          </ng-template>
-                        </div>
-                      </button> -->
                     </div>
                   </div>
                 </div>
@@ -1106,6 +1019,7 @@
                       formValues.backOfficeComments | htmlDecodeReadonly
                     "
                     (ngModelChange)="formValues.backOfficeComments = $event"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                   ></textarea>
                 </div>
               </div>
@@ -1147,12 +1061,16 @@
                           )
                         "
                         placeholder="Payble to"
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                       />
                       <mat-autocomplete
                         #auto="matAutocomplete"
                         class="darkPanelAuto"
                         [displayWith]="displayFn"
                         (optionSelected)="setPaybleTo($event.option.value)"
+                        [ngClass]="{
+                          disabled: formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'
+                        }"
                       >
                         <mat-option
                           *ngFor="let option of filterPaybleToList()"
@@ -1173,6 +1091,7 @@
                         [masterSelector]="masterSelector"
                         #masterSelectorTrigger="masterSelectorTrigger"
                         [header]="getHeaderNameSelector()"
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                       ></button>
                       <ng-template cdkPortal #masterSelector="cdkPortal">
                         <shiptech-shared-master-selector
@@ -1190,33 +1109,6 @@
                         ></shiptech-shared-master-selector>
                       </ng-template>
                     </div>
-                    <!-- <button
-                      class="search-icon"
-                      appMasterSelectorTrigger
-                      [masterSelector]="masterSelector"
-                      #masterSelectorTrigger="masterSelectorTrigger"
-                      [header]="getHeaderNameSelector()"
-                    >
-                      <div class="img">
-                        <ng-template cdkPortal #masterSelector="cdkPortal">
-                          <shiptech-shared-master-selector
-                            (selectedChange)="
-                              selectorPaybleToSelectionChange($event);
-                              masterSelectorTrigger.close()
-                            "
-                            (shouldCloseModal)="masterSelectorTrigger.close()"
-                            [selectorType]="autocompletePaybleTo"
-                            [disabled]="disabled"
-                            [readonly]="readonly"
-                            [entityName]="entityName"
-                            [entityId]="entityId"
-                            [vesselId]="vesselId"
-                            [headerName]="getHeaderNameSelector()"
-                          >
-                          </shiptech-shared-master-selector>
-                        </ng-template>
-                      </div>
-                    </button> -->
                   </div>
                 </div>
 
@@ -1224,7 +1116,7 @@
                   <mat-checkbox
                     class="example-margin"
                     name="paymentProofReceived"
-                    [disabled]="!invoiceId"
+                    [disabled]="!invoiceId || formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                     [(ngModel)]="formValues.paymentDetails.paymentProofReceived"
                     >Payment proof received</mat-checkbox
                   >
@@ -1235,7 +1127,7 @@
                     cols="50"
                     placeholder="Payment Proof comments"
                     name="paymentDetailscomments"
-                    [disabled]="!formValues.paymentDetails.paymentProofReceived"
+                    [disabled]="!formValues.paymentDetails.paymentProofReceived || formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                     [ngModel]="
                       formValues.paymentDetails.comments | htmlDecodeReadonly
                     "
