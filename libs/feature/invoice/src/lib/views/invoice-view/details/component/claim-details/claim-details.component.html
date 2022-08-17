@@ -76,7 +76,8 @@
                         [(ngModel)]="claimDetail.value.invoiceAmount"
                         (ngModelChange)="invoiceAmountChange(claimDetail.key)"
                         autocomplete="off"
-                        amountFormat>
+                        amountFormat
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'">
                     </mat-form-field>
                     <mat-form-field style="width: 26%" class="claim-amount-wrapper"
                         appearance="legacy" aria-disabled="true">
