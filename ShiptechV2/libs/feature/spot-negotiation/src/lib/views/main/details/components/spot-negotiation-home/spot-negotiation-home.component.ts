@@ -1030,7 +1030,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           )
         });
         if(checkForErrors.length > 0){
-            this.toaster.error('Unable to copy formula as seller already quoated the price');
+            this.toaster.error('Formula Price cannot be copied to fixed Price');
         return;
         }
         const payload = {
