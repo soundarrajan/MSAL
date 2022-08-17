@@ -626,6 +626,18 @@ export class SpotnegoOtherdetails2Component implements OnInit {
       return false;
     }    
   }
+  otherDetailsItemsValidation(){
+    console.log(this.otherDetailsItems[this.productIndex]);
+    if (
+       this.otherDetailsItems[this.productIndex].product?.id == undefined  ||
+       this.otherDetailsItems[this.productIndex].SupplyQuantity == undefined ||
+       this.otherDetailsItems[this.productIndex].SupplyQuantity==''||
+       this.otherDetailsItems[this.productIndex].SupplyDeliveryDate==null) {
+      this.enableSave = false;
+      return;
+    }
+    this.enableSave = true;
+  }
   onChange($event, field) {
     if ($event.value) {
       let beValue = `${moment($event.value).format(
@@ -687,10 +699,6 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   }
   /// save request Change
   saveOtherDetails() {
-    // if (this.otherDetailsItems[this.productIndex].product=='' || this.otherDetailsItems[this.productIndex].product == undefined || this.otherDetailsItems[this.productIndex].SupplyQuantity == undefined || this.otherDetailsItems[this.productIndex].SupplyQuantity=='' || this.otherDetailsItems[this.productIndex].SupplyDeliveryDate=='') {
-    //   this.toastr.warning('Fill the required fields quotedProduct ,supplyQuantity & supplyDeliveryDate');
-    //   return;
-    // }
     let isAllow = false;
     /// If the user is trying to capture product same as that in the request under same location
     this.locations.forEach(ele => {
