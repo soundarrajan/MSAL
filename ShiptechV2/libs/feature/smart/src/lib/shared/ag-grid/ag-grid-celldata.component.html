@@ -79,10 +79,10 @@
     #infomenuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverPlanLift" 
     (mouseenter)="requestAvailable(params) && toggleMenuInfo($event);" (mouseleave)="toggleMenu2Info();" 
     [matMenuTriggerData]="{ref: params}" [ngClass]="params.cellClass">
-      <a (click)="redirectionUrl(params)" style="color: white;">{{params.value}}</a>
+      <a *ngIf="requestAvailable(params);" (click)="redirectionUrl(params)" style="color: white;">{{params.value}}</a> 
     </div>
     
-    <div *ngIf="checkAltPort(params) == 'N'" matTooltip="0" [ngClass]="params.cellClass" style="color: white;">0 </div>
+    <!-- <div *ngIf="checkAltPort(params) == 'N'" matTooltip="0" [ngClass]="params.cellClass" style="color: white;">0 </div> -->
       
     <div *ngIf="checkAltPort(params) == 'Y' && requestAvailable(params); else content" 
     #infomenuTrigger="matMenuTrigger" [matMenuTriggerFor]="hoverPlanLift" 
@@ -90,8 +90,13 @@
     [matMenuTriggerData]="{ref: params}" [ngClass]="params.cellClass">
       <a (click)="redirectionUrl(params)" style="color: white;">Alt.port</a>  
     </div>
-    <ng-template #content><div *ngIf="checkAltPort(params) == 'Y' && !requestAvailable(params); "matTooltip="{{params.value}}" [ngClass]="params.cellClass" style="color: white;">{{params.value}}</div></ng-template>
-    
+    <ng-template #content>
+        <div *ngIf=" !requestAvailable(params);  " [matTooltip]=" getProductName(params)" [ngClass]="params.cellClass" style="color: white;">
+          {{params.value}}
+      </div>
+    </ng-template>
+
+
       <mat-menu class="port-future-req-popup" #hoverPlanLift="matMenu" xPosition="after"  style="position: relative;bottom: 15px;left: 66px;">
         <ng-template matMenuContent let-PortReqData="ref">
         <div class="port-future-req" [ngClass]="{'dark-theme':theme,'light-theme':!theme}" style="font-size: 14px;">
@@ -229,7 +234,7 @@
         </span>
     </div>
   </div>
-  <mat-menu #inputEditMenu="matMenu" class="common" xPosition="after">
+  <mat-menu #inputEditMenu="matMenu" class="common" xPosition="after" (closed)="toggleMenu1Input($event)">
     <ng-template matMenuContent >
     <div class="edit-input-menu" [ngClass]="{'light-theme':!theme}" (click)="$event.stopPropagation();">
       <div class="row header">
