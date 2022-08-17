@@ -1456,6 +1456,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           });
           this.store.dispatch([new SetLocationsRows(reqLocationRows), new UpdateRequest(this.requestOptions)]);
           //this.spotNegotiationService.callGridRefreshService();
+          this.spotNegotiationService.callEvaluateIconDisplayCheck();
           this.spotNegotiationService.callGridRedrawService();
           this.changeDetector.detectChanges();          
         }
