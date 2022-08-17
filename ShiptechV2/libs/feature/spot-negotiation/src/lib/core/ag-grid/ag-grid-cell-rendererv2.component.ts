@@ -2372,6 +2372,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       this.params.node.rowIndex,
       this.params.api
     );
+    this._spotNegotiationService.callEvaluateIconDisplayCheck();
   }
   selectSupplier(element) {
     this.editedSellerCopy = element.name;
