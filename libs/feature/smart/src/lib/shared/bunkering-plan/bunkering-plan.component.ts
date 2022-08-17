@@ -58,6 +58,7 @@ export class BunkeringPlanComponent implements OnInit {
   public editableCell: boolean;
   public type: any;
   public rowSelection;
+  public isNotSendPlanReminder: boolean;
   public dialogRef: MatDialogRef<WarningoperatorpopupComponent>;
   @Output() enableCreateReq = new EventEmitter();
   @Output() voyage_detail = new EventEmitter();
@@ -153,6 +154,9 @@ export class BunkeringPlanComponent implements OnInit {
         params.api.sizeColumnsToFit();
       }
     };
+    this.localService.isNotSendPlanReminder$.subscribe((data) => {
+      this.isNotSendPlanReminder=data;
+    });
   }
 
   ngOnInit() {
@@ -875,14 +879,15 @@ export class BunkeringPlanComponent implements OnInit {
       lsdis_current_stock: currentROBObj?.LSDIS,
       hsdis_current_stock: currentROBObj?.HSDIS,
       plan_details: dataFromStore,
-      is_vessel_role_played: storeVesselData.userRole == 'Vessel' ? 1 : 0
+      is_vessel_role_played: storeVesselData.userRole == 'Vessel' ? 1 : 0,
+      not_send_plan_reminder:this.isNotSendPlanReminder
     };
     let isHardValidated = this.checkBunkerPlanValidations(dataFromStore);
     if (isHardValidated === 0) {
       this.bplanService.saveBunkeringPlanDetails(req).subscribe(data => {        
         if (data?.isSuccess == true) {
           const dialogRef = this.dialog.open(SuccesspopupComponent, {
-            panelClass: ['success-popup-panel'],
+            panelClass: ['success-popup-panel', 'bg-transparent'],
             data: { message: 'Plan Details updated successfully' }
           });
           this.store.dispatch(
@@ -1099,56 +1104,56 @@ export class BunkeringPlanComponent implements OnInit {
     }
     //Stock validation : When Stock > Tank Capacity
     //1. Current HSFO Qty > HSFO Tank Capacity
-    let totalHsfoCurrentROB =
-      parseInt(currentROBObj['3.5 QTY']?.toString()) +
-      parseInt(currentROBObj['0.5 QTY']?.toString());
-    let isValidHsfoStock =
-      totalHsfoCurrentROB > currentROBObj?.hsfoTankCapacity ? 'N' : 'Y';
-    if (isValidHsfoStock == 'N') {
-      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-        width: '350px',
-        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
-        data : {message: `Current HSFO Qty should be less than HSFO Tank Capacity ${currentROBObj.hsfoTankCapacity} `, okayButton: true}
-      });
-      isHardValidation = 1;
-      return isHardValidation;
-    }
-    //2. Current ULSFO Qty > ULSFO Tank Capacity
-    let isValidUlsfoStock =
-      currentROBObj.ULSFO > currentROBObj?.ulsfoTankCapacity ? 'N' : 'Y';
-    if (isValidUlsfoStock == 'N') {
-      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-        width: '350px',
-        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
-        data : {message: `Current ULSFO Qty should be less than ULSFO Tank Capacity ${currentROBObj.ulsfoTankCapacity} `, okayButton: true}
-      });
-      isHardValidation = 1;
-      return isHardValidation;
-    }
-    //3. Current LSDIS Qty > LSDIS Tank Capacity
-    let isValidLsdisStock =
-      currentROBObj.LSDIS > currentROBObj?.lsdisTankCapacity ? 'N' : 'Y';
-    if (isValidLsdisStock == 'N') {
-      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-        width: '350px',
-        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
-        data : {message: `Current LSDIS Qty should be less than LSDIS Tank Capacity ${currentROBObj.lsdisTankCapacity} `, okayButton: true}
-      });
-      isHardValidation = 1;
-      return isHardValidation;
-    }
-    //4. Current HSDIS Qty > HSDIS Tank Capacity
-    let isValidHsdisStock =
-      currentROBObj.HSDIS > currentROBObj?.hsdisTankCapacity ? 'N' : 'Y';
-    if (isValidHsdisStock == 'N') {
-      const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
-        width: '350px',
-        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
-        data : {message: `Current HSDIS Qty should be less than HSDIS Tank Capacity ${currentROBObj.hsdisTankCapacity} `, okayButton: true}
-      });
-      isHardValidation = 1;
-      return isHardValidation;
-    }
+    // let totalHsfoCurrentROB =
+    //   parseInt(currentROBObj['3.5 QTY']?.toString()) +
+    //   parseInt(currentROBObj['0.5 QTY']?.toString());
+    // let isValidHsfoStock =
+    //   totalHsfoCurrentROB > currentROBObj?.hsfoTankCapacity ? 'N' : 'Y';
+    // if (isValidHsfoStock == 'N') {
+    //   const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+    //     width: '350px',
+    //     panelClass: ['confirmation-popup-operator', 'bg-transparent'],
+    //     data : {message: `Current HSFO Qty should be less than HSFO Tank Capacity ${currentROBObj.hsfoTankCapacity} `, okayButton: true}
+    //   });
+    //   isHardValidation = 1;
+    //   return isHardValidation;
+    // }
+    // //2. Current ULSFO Qty > ULSFO Tank Capacity
+    // let isValidUlsfoStock =
+    //   currentROBObj.ULSFO > currentROBObj?.ulsfoTankCapacity ? 'N' : 'Y';
+    // if (isValidUlsfoStock == 'N') {
+    //   const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+    //     width: '350px',
+    //     panelClass: ['confirmation-popup-operator', 'bg-transparent'],
+    //     data : {message: `Current ULSFO Qty should be less than ULSFO Tank Capacity ${currentROBObj.ulsfoTankCapacity} `, okayButton: true}
+    //   });
+    //   isHardValidation = 1;
+    //   return isHardValidation;
+    // }
+    // //3. Current LSDIS Qty > LSDIS Tank Capacity
+    // let isValidLsdisStock =
+    //   currentROBObj.LSDIS > currentROBObj?.lsdisTankCapacity ? 'N' : 'Y';
+    // if (isValidLsdisStock == 'N') {
+    //   const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+    //     width: '350px',
+    //     panelClass: ['confirmation-popup-operator', 'bg-transparent'],
+    //     data : {message: `Current LSDIS Qty should be less than LSDIS Tank Capacity ${currentROBObj.lsdisTankCapacity} `, okayButton: true}
+    //   });
+    //   isHardValidation = 1;
+    //   return isHardValidation;
+    // }
+    // //4. Current HSDIS Qty > HSDIS Tank Capacity
+    // let isValidHsdisStock =
+    //   currentROBObj.HSDIS > currentROBObj?.hsdisTankCapacity ? 'N' : 'Y';
+    // if (isValidHsdisStock == 'N') {
+    //   const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
+    //     width: '350px',
+    //     panelClass: ['confirmation-popup-operator', 'bg-transparent'],
+    //     data : {message: `Current HSDIS Qty should be less than HSDIS Tank Capacity ${currentROBObj.hsdisTankCapacity} `, okayButton: true}
+    //   });
+    //   isHardValidation = 1;
+    //   return isHardValidation;
+    // }
 
     return isHardValidation;
   }

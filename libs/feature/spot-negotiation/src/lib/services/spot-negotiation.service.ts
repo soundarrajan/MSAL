@@ -34,6 +34,7 @@ export class SpotNegotiationService extends BaseStoreService
   private gridRefreshService = new Subject<any>();
   private gridRefreshServiceAll = new Subject<any>();
   private gridRedrawService = new Subject<any>();
+  private evaluateIconDisplayCheck = new Subject<any>();
   QuoteByDate: any;
   counterpartyTotalCount: any;
   physicalSupplierTotalCount: any;
@@ -66,7 +67,11 @@ export class SpotNegotiationService extends BaseStoreService
     callGridRefreshServiceAll() {
       this.gridRefreshServiceAll.next();
     }
-
+    
+    evaluateIconDisplayCheck$ = this.evaluateIconDisplayCheck.asObservable();
+    callEvaluateIconDisplayCheck(){
+      this.evaluateIconDisplayCheck.next();
+    }
   /* Gets the list of Email Logs
    * @param payload =
    */

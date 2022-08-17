@@ -1030,7 +1030,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           )
         });
         if(checkForErrors.length > 0){
-            this.toaster.error('Unable to copy formula as seller already quoated the price');
+            this.toaster.error('Formula Price cannot be copied to fixed Price');
         return;
         }
         const payload = {
@@ -1456,6 +1456,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           });
           this.store.dispatch([new SetLocationsRows(reqLocationRows), new UpdateRequest(this.requestOptions)]);
           //this.spotNegotiationService.callGridRefreshService();
+          this.spotNegotiationService.callEvaluateIconDisplayCheck();
           this.spotNegotiationService.callGridRedrawService();
           this.changeDetector.detectChanges();          
         }
