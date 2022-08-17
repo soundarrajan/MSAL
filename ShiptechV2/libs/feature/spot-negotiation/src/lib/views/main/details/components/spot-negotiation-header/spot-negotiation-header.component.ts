@@ -105,7 +105,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     private changeDetector: ChangeDetectorRef,
     private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService
   ) {
-    // Set observable;
+    this._spotNegotiationService.evaluateIconDisplayCheck$.subscribe(() => {
+      let locationsRows = _.cloneDeep(
+        this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].locationsRows;
+        })
+      );
+      this.evaluateIconDisplayCheck(locationsRows);     
+    });
   }
 
   @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();
@@ -135,21 +142,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         this.visibleRequestList = _.cloneDeep(
           this.requestsAndVessels.slice(0, 7)
         );
-        this.locationsRows = spotNegotiation.locationsRows;
-        
-        this.bestOffIconDispaly =  false;
-        this.locationsRows.forEach(element => {
-          if(element?.requestOffers?.length > 0){
-            this.bestOffIconDispaly =  true;
-            element.requestOffers.filter(_data => {
-              if(_data.isFormulaPricing == true){
-                this.evaluateIconDisplay = true;
-              return;
-              }
-            });
-          if(this.evaluateIconDisplay == true) return;
-          }
-        });
+        this.evaluateIconDisplayCheck(spotNegotiation.locationsRows);
         this.currentRequestInfo = spotNegotiation.currentRequestSmallInfo;
         if (spotNegotiation.currentRequestSmallInfo) {
           this.locations =
@@ -173,6 +166,23 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         }
       });
     }, 100);
+  }
+
+  evaluateIconDisplayCheck(locationsRows){
+    this.evaluateIconDisplay = false;
+    this.bestOffIconDispaly =  false; 
+    locationsRows.forEach(element => {
+      if(element?.requestOffers?.length > 0){
+        this.bestOffIconDispaly =  true;
+        element.requestOffers.filter(_data => {
+          if(_data.isFormulaPricing == true){
+            this.evaluateIconDisplay = true;
+          return;
+          }
+        });
+      if(this.evaluateIconDisplay == true) return;
+      }
+    });
   }
 
   delinkRequest(item) {
