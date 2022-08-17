@@ -480,7 +480,7 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
             #menuTrigger="matMenuTrigger"
             (click)="setValuefun(params.data)">
             <span
-            *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
+            *ngIf="editSeller && params.data.physicalSupplierCounterpartyId"
             >{{
               this.format.htmlDecode(
                 params.data.physicalSupplierCounterpartyName
@@ -488,16 +488,16 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
             }}</span>
           <span
             *ngIf="
-              editSeller && params.data.physicalSupplierCounterpartyName == null
+              editSeller && params.data.physicalSupplierCounterpartyId == null
             "
             >Add P. Supplier</span
           >
-          <span *ngIf="!editSeller">{{ this.editedSeller }}</span>
+          <span *ngIf="!editSeller | json">{{ this.editedSeller }}</span>
         </span>
         </ng-template>
         <ng-template #second>
         <span
-            *ngIf="!params.data.isEditable && editSeller && params.data.physicalSupplierCounterpartyName"
+            *ngIf="!params.data.isEditable && editSeller && params.data.physicalSupplierCounterpartyId"
             >{{
               this.format.htmlDecode(
                 params.data.physicalSupplierCounterpartyName
@@ -2443,8 +2443,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     const locationsRows = this.store.selectSnapshot<string>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
-   
-    this.editedSeller=this.editedSellerCopy;
     this.phySupplierId=this.phySupplierIdCopy;
     let payload = {
       requestGroupId: this.params.data.requestGroupId,
@@ -2456,6 +2454,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     };
     const response = this._spotNegotiationService.updatePhySupplier(payload);
     response.subscribe((res: any) => {
+      this.editedSeller=this.editedSellerCopy;
       if (res.status) {
         const futureLocationsRows = this.getLocationRowsAddPhySupplier(
           JSON.parse(JSON.stringify(locationsRows))
