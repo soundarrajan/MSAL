@@ -347,7 +347,17 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
   addCounterpartyAcrossLocations() {
     const selectedCounterparties = this.toBeAddedCounterparties();
-    if (selectedCounterparties.length == 0) return;
+    if (selectedCounterparties.length == 0){
+      let selectedCounterpartyNames =  this.selectedCounterparty.map(innerData => {
+        return innerData.name;
+      });
+      this.toastr.error("Counterparty "+selectedCounterpartyNames.toString()+" already added");
+      this.selectedCounterparty = _.cloneDeep([]);
+      for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
+        this.visibleCounterpartyList[i].selected = false;
+      }
+      return;
+    } 
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     let payload = {
       requestGroupId: parseInt(RequestGroupId),
@@ -364,6 +374,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     );
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
+      let checkalreadyAdded = _.cloneDeep(this.selectedCounterparty);
       this.selectedCounterparty = _.cloneDeep([]);
       if (res?.message == 'Unauthorized') {
         return;
@@ -373,7 +384,47 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
           this.visibleCounterpartyList[i].selected = false;
         }
-        this.toastr.success(res.message);
+
+        let messageList = [];
+        selectedCounterparties.forEach((data,index) => {
+          if(messageList[data.sellerCounterpartyId] == undefined){
+            messageList[data.sellerCounterpartyId]=[];  
+            messageList[data.sellerCounterpartyId]['counterpartyName'] = data.sellerCounterpartyName;
+          }
+          if(messageList[data.sellerCounterpartyId]['locations'] == undefined)
+          messageList[data.sellerCounterpartyId]['locations'] = [];
+
+          this.requestOptions[0].requestLocations.forEach(inner => {
+            if(inner.locationId == data.locationId){
+              messageList[data.sellerCounterpartyId]['locations'][index] = inner.locationName;
+              return;
+            }  
+          });
+        });
+        let alreadyAdded = '';
+        checkalreadyAdded.forEach(element => {
+          if(messageList[element.id] == undefined){
+            alreadyAdded += element.name + ", ";
+          }
+        });
+        const LOCATION_COUNT = this.requestOptions[0].requestLocations.length;
+        let allLocationMessage = '';
+        messageList.forEach(element => {
+          let addedLocations =  element.locations.filter(e => { 
+            return e.length;
+          });
+          if(LOCATION_COUNT == addedLocations.length){
+            allLocationMessage += element.counterpartyName + ", ";
+          }else{
+            this.toastr.success(element.counterpartyName + " added successfully to ("+addedLocations.length+") locations - "+ addedLocations.toString());
+          }
+        });
+        if(allLocationMessage != ''){
+          this.toastr.success(allLocationMessage + " added successfully to all ("+LOCATION_COUNT+") locations");
+        }
+        if(alreadyAdded != ''){
+          this.toastr.error(alreadyAdded + " already added in to all ("+LOCATION_COUNT+") locations");
+        }
         // Add in Store
         // this.store.dispatch(
         //   new AddCounterpartyToLocations(res.counterparties)
