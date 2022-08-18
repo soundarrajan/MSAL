@@ -38,6 +38,7 @@ export class CommentsComponent implements OnInit {
   public totalCommentCount: any = 0;
   // selectedCommentTab: number = 0;
   public newComment = '';
+  public filteredCommentsCount: any = null;
   subscription: Subscription;
   searchKey: string;
   _timer;
@@ -89,6 +90,7 @@ export class CommentsComponent implements OnInit {
     } else {
       this.searchKey = 'notes';
       this.searchText = participant;
+      this.filteredCommentsCount = this.getFilteredCommentsCount(this.BunkerPlanCommentList, this.searchKey, this.searchText);
     }
   }
   resetBPComment() {
@@ -97,11 +99,28 @@ export class CommentsComponent implements OnInit {
     this.BunkerPlanCommentList = this.BunkerPlanCommentTemp;
     this.searchKey = 'notes';
     this.searchText = '';
+    this.filteredCommentsCount = null;
   }
   searchParticipantComment(participant) {
     this.searchKey = 'createdBy.displayName';
     this.searchText = participant;
     this.searchByComment = '';
+    this.filteredCommentsCount = this.getFilteredCommentsCount(this.BunkerPlanCommentList, this.searchKey, this.searchText);
+  }
+
+  private getFilteredCommentsCount = function(itemList: any, ...args: any) {
+    if(args[1] && args[1].trim()) {
+      let pathKeys = args[0].split('.');
+      if(pathKeys.length==2) {
+        itemList = itemList.filter(item => ((item[pathKeys[0]][pathKeys[1]]).toLowerCase()==args[1].toLowerCase()));
+        return itemList.length;
+      } else {
+        itemList = itemList.filter(item => ((item[pathKeys[0]]).toLowerCase().indexOf(args[1].toLowerCase())>-1));
+        return itemList.length;
+      }
+    } else {
+      return itemList.length;
+    }
   }
 
   onTabChange(event) {
@@ -123,6 +142,10 @@ export class CommentsComponent implements OnInit {
     this.expanded = !this.expanded;
   }
   postNewComment(tabGroup) {
+    // Start - Before posting new comment reset filters
+    this.selectedIndex = null; this.searchByComment = '';
+    this.resetBPComment();
+    // End - Before posting new comment reset filters
     if (this.newComment.trim() != '' && tabGroup.selectedIndex == 0) {
       let payload = {
         shipId: this.vesselRef?.vesselId,

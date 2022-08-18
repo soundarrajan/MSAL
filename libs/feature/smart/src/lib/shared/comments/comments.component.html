@@ -42,7 +42,7 @@
       <div id="expanded-comments-wrapper" style="border-radius: 10px;">
         <div class="blue-tab" style="padding-bottom: 10px;">
           <mat-tab-group #tabGroup (selectedTabChange)="onTabChange($event)">
-            <mat-tab label="Bunker Plan({{BunkerPlanCommentList?.length}})">
+            <mat-tab label="Bunker Plan({{filteredCommentsCount ? filteredCommentsCount : BunkerPlanCommentList?.length}})">
               <div #BPCommentLength [ngStyle]="{'height':!expanded?'42vh':'46vh'}" style="overflow-y: scroll;">
                 <ng-container *ngFor="let item of BunkerPlanCommentList | filterCommentByParticipant: searchKey: searchText; let count = count">
                   <div class="comments-section" *ngIf="item!==-1">
