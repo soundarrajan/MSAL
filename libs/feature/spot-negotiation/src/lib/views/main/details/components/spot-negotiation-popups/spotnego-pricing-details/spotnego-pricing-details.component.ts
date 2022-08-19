@@ -649,7 +649,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         discountruleLocationBased.push({
           plusMinusId: rule.plusMinus?.id ? rule.plusMinus.id : 0,
           amount: rule.amount,
-          flatPercentageId: rule.formulaFlatPercentageId?.id ? rule.formulaFlatPercentageId.id : 0,
+          flatPercentageId: rule.flatPercentage?.id ? rule.flatPercentage?.id : 0,
           uomId: rule.uom?.id ? rule.uom.id : 0,
           locationId: rule.location?.id ? rule.location.id : 0
         });
