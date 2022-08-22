@@ -765,7 +765,7 @@ export class BunkeringPlanComponent implements OnInit {
         hsfo05_stock: bPlan.hsfo05_stock,
         hsfo_est_consumption_color: bPlan.hsfo_est_consumption_color,
         hsfo_estimated_consumption: bPlan.hsfo_estimated_consumption,
-        hsfo_estimated_lift: bPlan.hsfo_estimated_lift+bPlan.vlsfo_estimated_lift,
+        hsfo_estimated_lift: bPlan.is_alt_port_hsfo?.toLowerCase() != 'y' ? (bPlan.hsfo_estimated_lift + bPlan.vlsfo_estimated_lift) : 0,
         hsfo_max_lift: bPlan.hsfo_max_lift,
         hsfo_max_lift_color: bPlan.hsfo_max_lift_color,
         hsfo_min_sod: bPlan.hsfo_min_sod,
@@ -785,7 +785,7 @@ export class BunkeringPlanComponent implements OnInit {
         lsdis_as_eca: bPlan.lsdis_as_eca,
         lsdis_est_consumption_color: bPlan.lsdis_est_consumption_color,
         lsdis_estimated_consumption: bPlan.lsdis_estimated_consumption,
-        lsdis_estimated_lift: bPlan.lsdis_estimated_lift,
+        lsdis_estimated_lift: bPlan.is_alt_port_lsdis?.toLowerCase() != 'y' ? bPlan.lsdis_estimated_lift : 0,
         lsdis_max_lift: bPlan.lsdis_max_lift,
         lsdis_max_lift_color: bPlan.lsdis_max_lift_color,
         lsdis_reserve: bPlan.lsdis_reserve,
@@ -816,7 +816,7 @@ export class BunkeringPlanComponent implements OnInit {
         service_code: bPlan.service_code,
         total_tank_capacity: bPlan.total_tank_capacity,
         ulsfo_est_consumption_color: bPlan.ulsfo_est_consumption_color,
-        ulsfo_estimated_lift: bPlan.ulsfo_estimated_lift,
+        ulsfo_estimated_lift: bPlan.is_alt_port_ulsfo?.toLowerCase() != 'y' ? bPlan.ulsfo_estimated_lift : 0,
         ulsfo_max_lift: bPlan.ulsfo_max_lift,
         ulsfo_max_lift_color: bPlan.ulsfo_max_lift_color,
         ulsfo_soa: bPlan.ulsfo_soa,
@@ -1306,9 +1306,11 @@ export class BunkeringPlanComponent implements OnInit {
             }
             //For Port 1 to N
             else {
-              rowData2[i].hsfo_soa =
-                parseInt(rowData2[i - 1].hsfo_estimated_lift) + parseInt(rowData2[i - 1].vlsfo_estimated_lift) +
-                parseInt(rowData2[i - 1].hsfo_soa) -
+              // Estimated lift: Include in calc. only if not an alternate port
+              let prev_est_lift = rowData2[i - 1].is_alt_port_hsfo?.toLowerCase() != 'y' ? (
+                parseInt(rowData2[i - 1].hsfo_estimated_lift) +
+                parseInt(rowData2[i - 1].vlsfo_estimated_lift)) : 0;
+              rowData2[i].hsfo_soa = prev_est_lift + parseInt(rowData2[i - 1].hsfo_soa) -
                 parseInt(estdConsHsfoList[i].hsfo_estimated_consumption);
             }
             if (rowData2[i].hsfo_soa)
