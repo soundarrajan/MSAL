@@ -712,14 +712,11 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       } 
     }else if(this.formValues.formulaType.id == 2){
      let _length = this.formValues.complexFormulaQuoteLines.length;
+     let totalWeight = 0;
      for(let i=1;i<=_length; i++){
-       if(this.isComplexFormulaWeightEnforced == true){
-        if(this.formValues.complexFormulaQuoteLines[i-1]?.weight > 100){
-          this.toastr.error('Complex Formula Weight Enforced so Weight should be restricted to 100 ');
-          return;
+        if(this.formValues.complexFormulaQuoteLines[i-1]?.weight){
+          totalWeight += parseInt(this.formValues.complexFormulaQuoteLines[i-1].weight.toString());
         }
-       }
-
         if (!this.formValues.complexFormulaQuoteLines[i - 1]?.systemInstruments[0]?.systemInstrument) {
           this.toastr.error('Instument1  field is required in Complex Pricing formula');
           return;
@@ -744,13 +741,19 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
             this.toastr.error('FlatPercentage field is required in Complex Pricing formula');
             return;
           }
-
           if (!this.formValues.complexFormulaQuoteLines[i - 1]?.uom) {
             this.toastr.error('UOM field is required in Complex Pricing formula');
             return;
           }
         }
       }
+      if(this.isComplexFormulaWeightEnforced == true){
+        if(totalWeight > 100 ){
+          this.toastr.error('Complex Formula Weight Enforced so Weight should be restricted to 100 ');
+          return;
+        }
+      }
+      
     }
 
     if(this.formValues.pricingScheduleOptionDateRange != undefined){
