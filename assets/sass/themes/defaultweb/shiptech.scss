@@ -24012,15 +24012,13 @@ mat-form-field {
   display: inline-block;
   flex: 1;
 }
-
 .hr-line {
-  height: 2px;
-  margin-bottom: 0.5rem;
-  margin-top: 1rem;
-  border:0px;
-  border-top: 1px solid rgba(0,0,0,.1);
-  margin: 7px;
-}
+    height: 2px;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    border:0px;
+    border-top: 1px solid rgba(0,0,0,.1);
+  }
 
 .quoteByContainer{
   cursor:pointer;width: 85px;height: 40px;
