@@ -687,17 +687,28 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   saveFormula() {
     if (this.formValues.formulaType.id == 1) {
       if (!this.formValues.simpleFormula.priceType) {
-        this.toastr.error('Price Type field is required.');
+        this.toastr.error('Price Type field is required in Simple Pricing formula.');
         return;
       }
+      
 
       if (!this.formValues.simpleFormula.plusMinus) {
-        this.toastr.error('Premimum/Discount  field is required.');
+        this.toastr.error('Premimum/Discount  field is required in Simple Pricing formula');
         return;
       }
-      if (!this.formValues.simpleFormula.amount && this.formValues.simpleFormula?.plusMinus.name != 'None') {
-        this.toastr.error('Amount  field is required.');
-        return;
+      if (this.formValues.simpleFormula?.plusMinus.name != 'None') {
+        if(!this.formValues.simpleFormula.amount){
+          this.toastr.error('Amount  field is required in Simple Pricing formula');
+          return;
+        }
+        if(!this.formValues.simpleFormula.flatPercentage){
+          this.toastr.error('Flat Percentage  field is required in Simple Pricing formula');
+          return;
+        }
+        if(!this.formValues.simpleFormula.uom){
+          this.toastr.error('UOM  field is required in Simple Pricing formula');
+          return;
+        }
       } 
     }else if(this.formValues.formulaType.id == 2){
      let _length = this.formValues.complexFormulaQuoteLines.length;
@@ -710,37 +721,117 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
        }
 
         if (!this.formValues.complexFormulaQuoteLines[i - 1]?.systemInstruments[0]?.systemInstrument) {
-          this.toastr.error('Instument1  field is required.');
+          this.toastr.error('Instument1  field is required in Complex Pricing formula');
           return;
         }
 
        if(!this.formValues.complexFormulaQuoteLines[i-1]?.systemInstruments[0]?.marketPriceTypeId){
-        this.toastr.error('Price Type  field is required. for Instument');
+        this.toastr.error('Price Type  field is required in Complex Pricing formula');
         return;
        }
 
         if (!this.formValues.complexFormulaQuoteLines[i - 1]?.formulaPlusMinus) {
-          this.toastr.error('Plus Minus field is required.');
+          this.toastr.error('Plus Minus field is required in in Complex Pricing formula');
           return;
         }
         if (this.formValues.complexFormulaQuoteLines[i - 1]?.formulaPlusMinus.name != 'None') {
           if (!this.formValues.complexFormulaQuoteLines[i - 1]?.amount) {
-            this.toastr.error('Amount field is required.');
+            this.toastr.error('Amount field is required in Complex Pricing formula');
             return;
           }
 
           if (!this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage) {
-            this.toastr.error('FlatPercentage field is required.');
+            this.toastr.error('FlatPercentage field is required in Complex Pricing formula');
             return;
           }
 
           if (!this.formValues.complexFormulaQuoteLines[i - 1]?.uom) {
-            this.toastr.error('UOM field is required.');
+            this.toastr.error('UOM field is required in Complex Pricing formula');
             return;
           }
         }
       }
     }
+
+    if(this.formValues.pricingScheduleOptionDateRange != undefined){
+      if(!this.formValues.pricingScheduleOptionDateRange?.from){
+        this.toastr.error('From date  is required in Pricing schedule -> Date Range Section');
+            return;
+      }
+      if(!this.formValues.pricingScheduleOptionDateRange?.to){
+        this.toastr.error('To date  is required in Pricing schedule -> Date Range Section');
+            return;
+      }
+    }
+    
+    if(this.formValues.pricingScheduleOptionSpecificDate != undefined){
+      if(!this.formValues.pricingScheduleOptionSpecificDate?.dates){
+        this.toastr.error('Add atleast one date in Pricing schedule -> Specific Dates Section');
+        return;
+      }else{
+        this.formValues.pricingScheduleOptionSpecificDate.dates.forEach((data,index) => {
+          if(!data?.date){
+            this.toastr.error('Date  is required in row '+  (index+ 1))+' in Pricing schedule -> Specific Dates Section';
+            return;
+          }
+        });
+      }
+    }
+
+    if(this.formValues.pricingScheduleOptionEventBasedSimple != undefined){
+      if(!this.formValues.pricingScheduleOptionEventBasedSimple?.fromNoOfBusinessDaysBefore){
+        this.toastr.error('From - (From No Of Business Days Before) field is required in Pricing schedule -> Event Based Simple Section');
+        return;
+      }
+      if(!this.formValues.pricingScheduleOptionEventBasedSimple?.toNoOfBusinessDaysAfter){
+        this.toastr.error('To - (To No Of Business Days After) field is required in Pricing schedule -> Event Based Simple Section');
+        return;
+      }
+      if(!this.formValues.pricingScheduleOptionEventBasedSimple?.event){
+        this.toastr.error('Event field is required in Pricing schedule -> Event Based Simple Section');
+        return;
+      }
+      if(!this.formValues.pricingScheduleOptionEventBasedSimple?.isEventIncluded){
+        this.toastr.error('Where Event date field is required in Pricing schedule -> Event Based Simple Section');
+        return;
+      }
+    }
+
+
+    if(this.formValues.pricingScheduleOptionEventBasedExtended != undefined){
+      if(!this.formValues.pricingScheduleOptionEventBasedExtended?.fromNoOfBusinessDaysBefore){
+        this.toastr.error('From - (From No Of Business Days Before) field is required in Pricing schedule -> Event Based Extended Section');
+        return;
+      }
+      if(!this.formValues.pricingScheduleOptionEventBasedExtended?.toNoOfBusinessDaysAfter){
+        this.toastr.error('To - (To No Of Business Days After) field is required in Pricing schedule -> Event Based Extended Section');
+        return;
+      }
+      if(!this.formValues.pricingScheduleOptionEventBasedExtended?.event){
+        this.toastr.error('Event field is required in Pricing schedule -> Event Based Extended Section');
+        return;
+      }
+      if(!this.formValues.pricingScheduleOptionEventBasedExtended?.isEventIncluded){
+        this.toastr.error('Where Event date field is required in Pricing schedule -> Event Based Extended Section');
+        return;
+      }
+    }
+
+    if(this.formValues.pricingScheduleOptionEventBasedContinuous != undefined){
+      if(!this.formValues.pricingScheduleOptionEventBasedContinuous?.period){
+        this.toastr.error('Type - (Period) field is required in Pricing schedule -> Event Based Continuous Section');
+        return;
+      }
+      if(!this.formValues.pricingScheduleOptionEventBasedContinuous?.event){
+        this.toastr.error('Average of the Event field is required in Pricing schedule -> Event Based Continuous Section');
+        return;
+      }
+      if(!this.formValues.pricingScheduleOptionEventBasedContinuous?.weekStartsOn){
+        this.toastr.error('Where the Week Starts From field is required in Pricing schedule -> Event Based Continuous Section');
+        return;
+      }
+    }
+    
 
     let formulaPayload: any = this.constructPayload(this.formValues);
 
