@@ -53,7 +53,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="(key, value) in $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach" ng-if="value.isDeleted != true"
+                                        <tr ng-repeat="(key, value) in $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach | orderBy: $ctrl.sortMinimumQuantityToReach" ng-if="value.isDeleted != true"
                                             class="ng-scope">
                                             <td style="width:2%">
                                                 <span class="remove"                                                 

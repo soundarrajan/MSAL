@@ -42,6 +42,7 @@ APP_MASTERS.controller('Controller_Datatables', [
         $scope.gridScope = $scope;
         $scope.dataTableTemplates = {
             text: $templateCache.get('app-general-components/views/data-table-formatters/text.html'),
+            textarea: $templateCache.get('app-general-components/views/data-table-formatters/textarea.html'),
             textUOM: $templateCache.get('app-general-components/views/data-table-formatters/textUOM.html'),
             simpleTextUOM: $templateCache.get('app-general-components/views/data-table-formatters/simpleTextUOM.html'),
             date: $templateCache.get('app-general-components/views/data-table-formatters/date.html'),
@@ -1380,23 +1381,27 @@ APP_MASTERS.controller('Controller_Datatables', [
                     },
                     {
                         name: 'note',
+                        width: '75%',
                         displayName: 'Notes',
-                        cellTemplate: $scope.dataTableTemplates.text,
+                        cellTemplate: $scope.dataTableTemplates.textarea,
                         ChangeAction : 'updateDateAndTime(grid.appScope.fVal().formValues.notes[grid.appScope.rowIdx(row)])',
                         BlurAction: 'autoSaveNotes()',
                         cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.notes, grid.appScope.rowIdx(row))',
                         Disabled: 'grid.appScope.fVal().formValues.status.name == \'Closed\' || grid.appScope.fVal().formValues.status.name == \'Cancelled\'',
-                        enableSorting: false
-                        
+                        enableSorting: false,
+                        hideOverflow: true,
+                        textLimit: 160
                     },
                     {
                         name: 'createdBy.displayName',
+                        width: '15%',
                         displayName: 'Added By',
                         enableCellEdit: false,
                         enableSorting: false
                     },
                     {
                         name: 'createdAt',
+                        width: '10%',
                         displayName: 'Date & Time',
                         cellTemplate: $scope.dataTableTemplates.dateDisplay,
                         enableCellEdit: false,
@@ -3273,9 +3278,11 @@ APP_MASTERS.controller('Controller_Datatables', [
                     {
                         name: 'note',
                         displayName: 'Claim Notes',
-                        cellTemplate: $scope.dataTableTemplates.text,
+                        cellTemplate: $scope.dataTableTemplates.textarea,
                         cellTemplateCondition: 'detectCurrentUser(grid.appScope.fVal().formValues.claimNotes, grid.appScope.rowIdx(row))',
-                        Disabled: 'grid.appScope.fVal().formValues.status.name == \'Cancelled\''
+                        Disabled: 'grid.appScope.fVal().formValues.status.name == \'Cancelled\'',
+                        hideOverflow: true,
+                        textLimit: 40
                     },
                     {
                         name: 'createdBy.displayName',

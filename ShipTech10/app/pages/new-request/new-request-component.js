@@ -4708,6 +4708,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             else
             ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.splice(key, 1);
         }
+        ctrl.sortMinimumQuantityToReach = function (value) {
+            if (value.id > 0) {
+                return value.eta;
+            }
+            return null;
+        }
         ctrl.changeValue=function(key){
             $('#'+key).removeClass('ng-cus-invalidcolor');
         }
