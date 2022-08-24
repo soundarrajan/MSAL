@@ -92,6 +92,9 @@ export class MarketpricehistorypopupComponent implements OnInit {
       }
       let dataSeries = [];
       let categories = [];
+      res.marketPriceHistory.sort(function(a,b){
+       return +new Date(b.date) - +new Date(a.date)
+      });
       res.marketPriceHistory.map(x=>{
           //pushing data to data table
             this.tabledata.push({
@@ -106,8 +109,8 @@ export class MarketpricehistorypopupComponent implements OnInit {
         this.highcharts.chart('container', this.chartOptions);
         return;
        }
-     this.chartOptions.xAxis.categories = categories;
-     this.chartOptions.series[0].data = dataSeries;
+     this.chartOptions.xAxis.categories = categories.reverse();
+     this.chartOptions.series[0].data = dataSeries.reverse();
      this.highcharts.chart('container', this.chartOptions);
     });
 
