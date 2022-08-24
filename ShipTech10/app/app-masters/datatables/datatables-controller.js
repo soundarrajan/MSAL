@@ -1632,7 +1632,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                         cellObject: {
                             Name: 'TransactionType',
                             Type: 'dropdown',
-                            masterSource: 'TransactionType'
+                            masterSource: 'TransactionType',
+                            required: true
                         }
                     },
                     {
@@ -1646,7 +1647,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Type: 'lookup',
                             clc_id: 'masters_documenttypetemplates',
                             masterSource: 'EmailDocumentTypeTemplatesTemplate',
-                            filter: 'filter__master_documenttypetemplates'
+                            filter: 'filter__master_documenttypetemplates',
+                            required: true
                         }
                     }
                 ],
@@ -1669,9 +1671,8 @@ APP_MASTERS.controller('Controller_Datatables', [
                         });
                         api.core.handleWindowResize();
                         if (angular.equals($scope.formValues, {}) || !$scope.formValues.templates) {
-                            $scope.formValues.templates = [ {} ];
+                            $scope.formValues.templates = [];
                         } else if (angular.equals($scope.formValues.templates, [])) {
-                            $scope.formValues.templates.push({});
                         }
                     }, 10);
                 }
