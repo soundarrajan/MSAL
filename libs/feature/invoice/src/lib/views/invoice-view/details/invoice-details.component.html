@@ -681,7 +681,7 @@
                         #auto1="matAutocomplete"
                         class="darkPanelAuto"
                         [ngClass]="{
-                          disabled: formValues.status?.name === 'Approved'
+                          disabled: formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'
                         }"
                         [displayWith]="displayFn"
                         (optionSelected)="
@@ -712,6 +712,7 @@
                         [masterSelector]="masterSelector1"
                         #masterSelectorTrigger1="masterSelectorTrigger"
                         [header]="getHeaderNameSelector1()"
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                       ></button>
                       <ng-template cdkPortal #masterSelector1="cdkPortal">
                         <shiptech-shared-master-selector
@@ -830,6 +831,7 @@
                         [masterSelector]="masterSelector2"
                         #masterSelectorTrigger2="masterSelectorTrigger"
                         [header]="getHeaderNameSelector2()"
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                       ></button>
                       <ng-template cdkPortal #masterSelector2="cdkPortal">
                         <shiptech-shared-master-selector
