@@ -3,13 +3,11 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  Input,
-  ViewChild
+  Input
 } from '@angular/core';
 import { GridOptions } from '@ag-grid-community/core';
 import { AGGridCellDataComponent } from '../ag-grid/ag-grid-celldata.component';
 import { AgGridInputCellEditor } from '../ag-grid/ag-grid-input-cell-editor';
-import { AGGridCellRendererComponent } from '../ag-grid/ag-grid-cell-renderer.component';
 import { Store } from '@ngxs/store';
 import {
   BunkeringPlanColmGroupLabels,
@@ -27,15 +25,14 @@ import {
 import {
   SaveBunkeringPlanState,
   SaveCurrentROBState,
-  UpdateBplanTypeState,
-  GeneratePlanState
+  UpdateBplanTypeState
 } from '../../store/bunker-plan/bunkering-plan.state';
 import { WarningoperatorpopupComponent } from '../warningoperatorpopup/warningoperatorpopup.component';
 import { SuccesspopupComponent } from '../successpopup/successpopup.component';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { Select } from '@ngxs/store';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-bunkering-plan',
@@ -43,6 +40,7 @@ import { Observable, Subscription } from 'rxjs';
   styleUrls: ['./bunkering-plan.component.scss']
 })
 export class BunkeringPlanComponent implements OnInit {
+  private _destroy$ = new Subject();
   public gridOptions: GridOptions;
   public colResizeDefault;
   public rowCount: Number;
@@ -163,8 +161,13 @@ export class BunkeringPlanComponent implements OnInit {
     this.editableCell =
       this.type == 'C' && this.selectedUserRole?.id === 1 ? true : false;
     if (this.store.selectSnapshot(UpdateBplanTypeState.getBplanType) == 'C')
-      this.eventSub = this.changeROB.subscribe(column =>
-        this.calculateSOA(column)
+      this.eventSub = this.changeROB
+      .pipe(
+        takeUntil(this._destroy$)
+      )
+      .subscribe(column => {
+        this.calculateSOA(column);
+      }
       );
     if(!this.rowData) {
       this.loadBunkeringPlanDetails();
@@ -303,8 +306,8 @@ export class BunkeringPlanComponent implements OnInit {
               },
               valueGetter: params => {
                 return (
-                  params?.data?.hsfo_estimated_lift +
-                  params?.data?.vlsfo_estimated_lift
+                  (params?.data?.hsfo_estimated_lift ?? 0) +
+                  (params?.data?.vlsfo_estimated_lift ?? 0)
                 );
               }
             },
@@ -765,7 +768,7 @@ export class BunkeringPlanComponent implements OnInit {
         hsfo05_stock: bPlan.hsfo05_stock,
         hsfo_est_consumption_color: bPlan.hsfo_est_consumption_color,
         hsfo_estimated_consumption: bPlan.hsfo_estimated_consumption,
-        hsfo_estimated_lift: bPlan.hsfo_estimated_lift+bPlan.vlsfo_estimated_lift,
+        hsfo_estimated_lift: bPlan.is_alt_port_hsfo?.toLowerCase() != 'y' ? (bPlan.hsfo_estimated_lift + bPlan.vlsfo_estimated_lift) : 0,
         hsfo_max_lift: bPlan.hsfo_max_lift,
         hsfo_max_lift_color: bPlan.hsfo_max_lift_color,
         hsfo_min_sod: bPlan.hsfo_min_sod,
@@ -785,7 +788,7 @@ export class BunkeringPlanComponent implements OnInit {
         lsdis_as_eca: bPlan.lsdis_as_eca,
         lsdis_est_consumption_color: bPlan.lsdis_est_consumption_color,
         lsdis_estimated_consumption: bPlan.lsdis_estimated_consumption,
-        lsdis_estimated_lift: bPlan.lsdis_estimated_lift,
+        lsdis_estimated_lift: bPlan.is_alt_port_lsdis?.toLowerCase() != 'y' ? bPlan.lsdis_estimated_lift : 0,
         lsdis_max_lift: bPlan.lsdis_max_lift,
         lsdis_max_lift_color: bPlan.lsdis_max_lift_color,
         lsdis_reserve: bPlan.lsdis_reserve,
@@ -816,7 +819,7 @@ export class BunkeringPlanComponent implements OnInit {
         service_code: bPlan.service_code,
         total_tank_capacity: bPlan.total_tank_capacity,
         ulsfo_est_consumption_color: bPlan.ulsfo_est_consumption_color,
-        ulsfo_estimated_lift: bPlan.ulsfo_estimated_lift,
+        ulsfo_estimated_lift: bPlan.is_alt_port_ulsfo?.toLowerCase() != 'y' ? bPlan.ulsfo_estimated_lift : 0,
         ulsfo_max_lift: bPlan.ulsfo_max_lift,
         ulsfo_max_lift_color: bPlan.ulsfo_max_lift_color,
         ulsfo_soa: bPlan.ulsfo_soa,
@@ -1160,21 +1163,26 @@ export class BunkeringPlanComponent implements OnInit {
 
   triggerRefreshGrid() {
     let _this = this;
-    this.rowData = JSON.parse(
+    let vesselData = this.store.selectSnapshot(
+      SaveBunkeringPlanState.getVesselData
+    );
+    let gridData = JSON.parse(
       JSON.stringify(
         this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanData)
       )
     );
-    let vesselData = this.store.selectSnapshot(
-      SaveBunkeringPlanState.getVesselData
-    );
+    let vesselCode = this.vesselData?.vesselRef?.vesselRef?.vesselCode ?? this.vesselData?.vesselRef?.vesselRef?.code;
+    if (vesselCode) {
+      this.rowData = gridData && gridData.length > 0 &&
+        gridData[0]?.plan_id?.toLowerCase().startsWith(vesselCode.trim()?.toLowerCase()) ? gridData : null;
+    }
     if (vesselData?.userRole == 'Vessel' && this.type == 'C')
       this.editableCell = true;
     else this.editableCell = false;
 
     this.selectedUserRole = vesselData?.userRole == 'Vessel' ? 1 : 2;
     var event = { force: true };
-    if (this.type == 'C' && this.gridOptions.api && this.rowData) {
+    if (this.type == 'C' && this.gridOptions.api) {
       setTimeout(() => {
         if (_this.gridOptions?.api) {
           // _this.gridOptions.api.setRowData(this.rowData);
@@ -1219,7 +1227,7 @@ export class BunkeringPlanComponent implements OnInit {
           this.store.selectSnapshot(SaveBunkeringPlanState.getBunkeringPlanData)
         )
       );
-      rowData2.map(planItem => {
+      rowData2?.map(planItem => {
         let planItemByIndex = BPlanExistData.findIndex(
           data => data.detail_no == planItem.detail_no
         );
@@ -1243,7 +1251,7 @@ export class BunkeringPlanComponent implements OnInit {
           );
           let currentRobLsdis = currentROB.LSDIS ? currentROB.LSDIS : 0;
           let currentRobUslfo = currentROB.ULSFO ? currentROB.ULSFO : 0;
-          if (rowData2.length > 0) {
+          if (rowData2?.length > 0) {
             for (let i = 0; i < rowData2.length; i++) {
               let orig_lsdisAsSeca = this.orig_bPlanData?.find(x => x.detail_no == rowData2[i].detail_no).lsdis_as_eca;
 
@@ -1293,32 +1301,36 @@ export class BunkeringPlanComponent implements OnInit {
           let currentRobVlsfo = currentROB['0.5 QTY']
             ? currentROB['0.5 QTY']
             : 0;
-          for (let i = 0; i < rowData2.length; i++) {
-            //For Port 0
-            if (i == 0) {
-              let estdConsHsfo = parseInt(
-                estdConsHsfoList[i].hsfo_estimated_consumption
-              );
-              rowData2[i].hsfo_soa =
-                parseInt(currentRobHsfo?.toString()) +
-                parseInt(currentRobVlsfo?.toString()) -
-                estdConsHsfo;
+          if (rowData2?.length > 0) {
+            for (let i = 0; i < rowData2.length; i++) {
+              //For Port 0
+              if (i == 0) {
+                let estdConsHsfo = parseInt(
+                  estdConsHsfoList[i].hsfo_estimated_consumption
+                );
+                rowData2[i].hsfo_soa =
+                  parseInt(currentRobHsfo?.toString()) +
+                  parseInt(currentRobVlsfo?.toString()) -
+                  estdConsHsfo;
+              }
+              //For Port 1 to N
+              else {
+                // Estimated lift: Include in calc. only if not an alternate port
+                let prev_est_lift = rowData2[i - 1].is_alt_port_hsfo?.toLowerCase() != 'y' ? (
+                  parseInt(rowData2[i - 1].hsfo_estimated_lift) +
+                  parseInt(rowData2[i - 1].vlsfo_estimated_lift)) : 0;
+                rowData2[i].hsfo_soa = prev_est_lift + parseInt(rowData2[i - 1].hsfo_soa) -
+                  parseInt(estdConsHsfoList[i].hsfo_estimated_consumption);
+              }
+              if (rowData2[i].hsfo_soa)
+                this.store.dispatch(
+                  new UpdateBunkeringPlanAction(
+                    rowData2[i].hsfo_soa,
+                    'hsfo_soa',
+                    rowData2[i].detail_no
+                  )
+                );
             }
-            //For Port 1 to N
-            else {
-              rowData2[i].hsfo_soa =
-                parseInt(rowData2[i - 1].hsfo_estimated_lift) + parseInt(rowData2[i - 1].vlsfo_estimated_lift) +
-                parseInt(rowData2[i - 1].hsfo_soa) -
-                parseInt(estdConsHsfoList[i].hsfo_estimated_consumption);
-            }
-            if (rowData2[i].hsfo_soa)
-              this.store.dispatch(
-                new UpdateBunkeringPlanAction(
-                  rowData2[i].hsfo_soa,
-                  'hsfo_soa',
-                  rowData2[i].detail_no
-                )
-              );
           }
           if (this.gridOptions.api && rowData2) {
             setTimeout(() => {
@@ -1479,5 +1491,10 @@ export class BunkeringPlanComponent implements OnInit {
     }
 
     this.rowData = rowData;
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }
