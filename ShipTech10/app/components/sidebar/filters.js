@@ -139,6 +139,9 @@ angular.module('shiptech.components').controller('FiltersController', [
         }
 
         $scope.applyFilters = function (data, noSlide, fromcol, column, defaultConf) {
+            if(data && data.length > 0 && data[0].value ) {
+                data[0].value['0'] = data[0]?.value['0'].toString();
+            }
             // $scope.currentList = $state.current.url.replace(":screen_id", $state.params.screen_id).replace("/", "");
             if ($scope.currentList === 'schedule-dashboard-calendar' || $scope.currentList === 'schedule-dashboard-table' || $scope.currentList === 'schedule-dashboard-timeline'){
                 data = $scope.CombineGlobalAndPrecedenceData(data);
@@ -1235,18 +1238,17 @@ angular.module('shiptech.components').controller('FiltersController', [
                 });
             });
         };
+
         $rootScope.getGlobalFilters = function() {
             return $q((resolve, reject) => {
                 // send default config to table build
                 // no default config, send false
                 $scope.$watchGroup(['globalFilters','precedenceFilters'], (newVal) => {
-                    // if (newVal != null) {
-                    // console.log(newVal)
                     console.log($rootScope.rawFilters);
                     $.each($rootScope.rawFilters, (k, v) => {
-                    	if (v.fromTreasurySummary) {
-                    		newVal.push(v);
-                    	}
+                        if (v.fromTreasurySummary) {
+                            newVal.push(v);
+                        }
                     });
                     if(newVal.length > 0)
                     {
@@ -1256,7 +1258,6 @@ angular.module('shiptech.components').controller('FiltersController', [
                         newVal = newVal.filter(x => x.column != null) // remove empty objects
                     }
                     resolve(newVal);
-                    // }
                 });
             });
         };
@@ -1372,6 +1373,9 @@ angular.module('shiptech.components').controller('FiltersController', [
 
             $.each(filters, (k, v) => {
                 if (v.column.columnValue == column) {
+                    if (v.column.columnType == 'Bool' && v.value && ['0', '1'].includes(v.value['0'])) {
+                        v.value['0'] = parseInt(v.value['0']);
+                    }
                     $scope.columnFilters[column].push(v);
                 }
             });

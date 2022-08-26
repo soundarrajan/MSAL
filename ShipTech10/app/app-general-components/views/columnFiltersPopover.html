@@ -125,13 +125,21 @@
                                             <span class="hidden">
                                                 {{verifyValue(columnFilters[column][key])}}
                                             </span>
-                                            <select ng-disabled="columnFilters[column][key].fromTreasurySummary" name="enumConditions{{key}}" id="enumConditions{{key}}" ng-if="columnFilters[column][key].column.columnType == 'Bool'"
-                                                    ng-model="columnFilters[column][key].value[0]" class="form-control bs-select">
-                                                    <option value="{{vl.databaseValue}}" ng-repeat="(key, vl) in listsCache.TrueFalseOptions">
-                                                    	{{column != 'IsDeleted' ? vl.name : (vl.name == 'Yes' ? 'Inactive' : 'Active')}}
-                                                    </option>
-                                                </select>
+                                            <select ng-disabled="columnFilters[column][key].fromTreasurySummary"
+                                            ng-model="columnFilters[column][key].value[0]"
+                                            class="form-control bs-select"
+                                            name="enumConditions{{key}}"
+                                            id="enumConditions{{key}}"
+                                            ng-if="columnFilters[column][key].column.columnType == 'Bool'"
+                                            ng-options="vl.databaseValue as vl.name for (k, vl) in (listsCache.TrueFalseOptions)"
+                                            ></select>
 
+                                            <!-- <select ng-disabled="columnFilters[column][key].fromTreasurySummary" name="enumConditions{{key}}" id="enumConditions{{key}}" ng-if="columnFilters[column][key].column.columnType == 'Bool'"
+                                                ng-model="columnFilters[column][key].value[0]" class="form-control bs-select">
+                                                <option value="{{vl.databaseValue}}" ng-repeat="(key, vl) in listsCache.TrueFalseOptions">
+                                                    {{column != 'IsDeleted' ? vl.name : (vl.name == 'Yes' ? 'Inactive' : 'Active')}}
+                                                </option>
+                                            </select> -->
 
                                                 <span ng-if="columnFilters[column][key].column.columnType == 'Date' || columnFilters[column][key].column.columnType == 'DateOnly'" >
                                                     <input
