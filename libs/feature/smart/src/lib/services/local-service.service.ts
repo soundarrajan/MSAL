@@ -83,12 +83,6 @@ export class LocalService {
     private reCallVesselPlanReport = new Subject<any>();
     reCallVesselPlanReport$ = this.reCallVesselPlanReport.asObservable();
 
-    private callSendValidBPlan = new Subject<any>();
-    callSendValidBPlan$ = this.callSendValidBPlan.asObservable()
-
-    private isNotSendPlanReminder = new Subject<any>();
-    isNotSendPlanReminder$ = this.isNotSendPlanReminder.asObservable();
-
     @ApiCallUrl()
     protected _apiUrlAdmin = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
     protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_BOPS;
@@ -110,10 +104,6 @@ export class LocalService {
         this.reCallVesselPlanReport.next();
     }
 
-    SendValidBPlan(){
-        this.callSendValidBPlan.next();
-    }
-    
     changeDefaultUserRole() {
       this.changeUserRoal.next();
     }
@@ -125,9 +115,6 @@ export class LocalService {
         return this.isDarkTheme.value;
     }
 
-    setdontSendPlanReminder(flag) {
-        this.isNotSendPlanReminder.next(flag);
-    }
     setBunkerPlanState(flag) {
         this.bunkerPlanChanged.next(flag);
     }

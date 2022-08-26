@@ -42,20 +42,21 @@
       <div id="expanded-comments-wrapper" style="border-radius: 10px;">
         <div class="blue-tab" style="padding-bottom: 10px;">
           <mat-tab-group #tabGroup (selectedTabChange)="onTabChange($event)">
-            <mat-tab label="Bunker Plan({{filteredCommentsCount ? filteredCommentsCount : BunkerPlanCommentList?.length}})">
+            <mat-tab label="Bunker Plan({{BPCommentsCount}})">
               <div #BPCommentLength [ngStyle]="{'height':!expanded?'42vh':'46vh'}" style="overflow-y: scroll;">
                 <ng-container *ngFor="let item of BunkerPlanCommentList | filterCommentByParticipant: searchKey: searchText; let count = count">
+                  <div [attr.counttrigger]="(item!==-1)? BPCommentsCountFn(count): BPCommentsCountFn(0)"></div>
                   <div class="comments-section" *ngIf="item!==-1">
                     <!-- Single Comment Start -->
                     <div class="dark-comment"> <!-- [ngClass]="{'blue-comment':item.placeholder == loginUser}" -->
                       <div class="row">
                         <div style="flex:0 0 5%">
-                          <div class="comment-user">{{item?.createdBy?.displayName | commentDPFormat | htmlDecode}}</div>
+                          <div class="comment-user">{{item?.createdBy?.displayName | commentDPFormat}}</div>
                         </div>
                         <div>
                           <div class="row pl5">
-                            <div class="name float-left" [matTooltip]="item?.createdBy?.displayName | htmlDecode" matTooltipShowDelay="700">
-                              <div class="truncate-180">{{item?.createdBy?.displayName | htmlDecode}}</div>
+                            <div class="name float-left" [matTooltip]="item?.createdBy?.displayName" matTooltipShowDelay="700">
+                              <div class="truncate-180">{{item?.createdBy?.displayName}}</div>
                             </div>
                             <!-- <div class="date float-left" [matTooltip]="item?.plan_id" matTooltipShowDelay="700">
                               <div class="truncate-180">{{item?.plan_id}}</div>
@@ -69,7 +70,7 @@
                           </div>
                           <div class="row pl5">
                             <div class="comment">
-                              {{item.notes | htmlDecode}}
+                              {{item.notes}}
                             </div>
                           </div>
                           <!-- <div class="row pl5" style="padding: 5px 3px;">
@@ -99,12 +100,12 @@
                     <div class="dark-comment" [ngClass]="{'blue-comment':item.placeholder == loginUser}">
                       <div class="row">
                         <div style="flex:0 0 5%">
-                          <div class="comment-user">{{item.createdBy_DisplayName | commentDPFormat | htmlDecode}}</div>
+                          <div class="comment-user">{{item.createdBy_DisplayName | commentDPFormat}}</div>
                         </div>
                         <div>
                           <div class="row pl5">
-                            <div class="name float-left" [matTooltip]="item.createdBy_DisplayName | htmlDecode" matTooltipShowDelay="700">
-                              <div class="truncate-180">{{item.createdBy_DisplayName | htmlDecode}}</div>
+                            <div class="name float-left" [matTooltip]="item.createdBy_DisplayName" matTooltipShowDelay="700">
+                              <div class="truncate-180">{{item.createdBy_DisplayName}}</div>
                             </div>
                             <div class="date ml-auto">{{item.requestId}}
                             </div> | 
@@ -114,7 +115,7 @@
                           </div>
                           <div class="row pl5">
                             <div class="comment">
-                              {{item.note | htmlDecode}}
+                              {{item.note}}
                             </div>
                           </div>
                           <!-- <div class="row pl5" style="padding: 5px 3px;">

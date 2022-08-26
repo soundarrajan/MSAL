@@ -57,7 +57,6 @@ import { CountByPriorityPipe } from './pipes/count-by-priority.pipe';
 import { UtcDatePipePipe } from './pipes/UtcDatePipe/utc-date-pipe.pipe';
 import { CurrentRobArbitSectionComponent } from './current-rob-arbit-section/current-rob-arbit-section.component';
 import { SelectTextOnFocusDirectiveModule } from '@shiptech/core/ui/directives/default/select-text-on-focus.directive';
-import { SharedModule as sharedMod } from '@shiptech/core/shared/shared.module';
 
 @NgModule({
   declarations: [HeaderComponent, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, VesselDetailsComponent, HeaderPanelComponent,
@@ -84,8 +83,7 @@ import { SharedModule as sharedMod } from '@shiptech/core/shared/shared.module';
     OwlDateTimeModule, OwlNativeDateTimeModule,
     MatDatepickerModule,
     SelectTextOnFocusDirectiveModule,
-    AgGridModule.withComponents([AGGridCellRendererComponent,AGGridDownloadFileComponent, AGGridCellDataComponent, AgGridInputCellEditor]),
-    sharedMod
+    AgGridModule.withComponents([AGGridCellRendererComponent,AGGridDownloadFileComponent, AGGridCellDataComponent, AgGridInputCellEditor])
   ],
   exports: [ReactiveFormsModule, FormsModule, FilterchipsComponent, MapPanelComponent, SmartOperatorComponent, OlMapComponent, HeaderPanelComponent,
     VesselInfoComponent, AuditLogComponent, RequestsDetailsComponent, CommentsComponent, NewRequestComponent, VesselPopupComponent, PortPopupComponent, NotificationsComponent, ConfirmationPopupComponent, TableLegendComponent,

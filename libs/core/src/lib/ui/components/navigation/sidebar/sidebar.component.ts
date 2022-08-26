@@ -53,6 +53,9 @@ export class SidebarComponent implements OnInit, AfterContentInit {
   @Input() reset: boolean;
 
   model: any[];
+  @Input() appVersion = 'Version 5.0.0';
+  @Input() version_no: string = '0.0.1';
+
   @ViewChild('layoutMenuScroller', { static: true })
   layoutMenuScrollerViewChild: ScrollPanel;
 

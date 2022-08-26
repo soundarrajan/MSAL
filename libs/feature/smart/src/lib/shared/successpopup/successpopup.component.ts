@@ -19,8 +19,6 @@ export class SuccesspopupComponent implements OnInit {
   public id ?: any;
   public ViewFlagPayload : any;
   observableIniFlag: any;
-  cancelBtnFlag: boolean = false;
-  warningFlag: boolean = false;
   
   constructor(
       public dialogRef: MatDialogRef<SuccesspopupComponent>,
@@ -32,10 +30,6 @@ export class SuccesspopupComponent implements OnInit {
     //dialogRef.disableClose = true;
     this.message = data?.message;
     this.vessalId = data?.vCode;
-    this.cancelBtnFlag = data?.cancelBtnFlag;
-    if(data?.warningFlag == true ||  data?.cancelBtnFlag == true){
-      this.warningFlag = true;
-    }
     this.observableRestartFlag = data?.observableRestartFlag;
     this.observableIniFlag = data?.observableIniFlag;
     if(this.data?.id)
@@ -51,9 +45,6 @@ export class SuccesspopupComponent implements OnInit {
         this.localService.checkVesselNewPlanJob();
       }, 1500);
     }
-  }
-  callingSendLatestValidBPlan(){
-    this.localService.SendValidBPlan();
   }
   close() {
     this.dialogRef.close();

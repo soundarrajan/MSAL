@@ -157,10 +157,8 @@
                           (change)="
                             onRequestListCheckboxChange($event, element)
                           "
-                          matTooltip="{{ element.requestName }}"
-                          matTooltipClass="lightTooltip"
                         >
-                          {{ limitStrLength(element.requestName, 30) }} 
+                          {{ element.requestName }}
                         </mat-checkbox>
                       </mat-option>
                     </td>
@@ -195,7 +193,7 @@
           </mat-menu>
         </div>
         <div style="display: flex; margin-left: 10px; width: 100%;">
-          <div style="display: flex; width: 100%;" #requestContainer>
+          <div style="float:left;" #requestContainer>
             <div
               class="addRemoveRequest"
               [matMenuTriggerFor]="requestDeleteMenu"
@@ -222,7 +220,7 @@
                 </span> -->
                 <div
                   class="d-flex align-items-center"
-                  style="padding-right: 5px; max-width:unset;"
+                  style="padding-right: 5px; max-width: 143.4px;"
                 >
                   <div>{{ item.name | titlecase }}</div>
                   <div class="vesselName">

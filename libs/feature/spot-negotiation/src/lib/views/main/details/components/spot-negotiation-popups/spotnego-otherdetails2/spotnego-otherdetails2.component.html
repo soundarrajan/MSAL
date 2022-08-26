@@ -224,10 +224,10 @@
                                 type="text"
                                 matInput
                                 [(ngModel)]="otherDetailsItems[productIndex].product"
-                                (ngModelChange)="otherDetailsItemsValidation()"
+                                (ngModelChange)="this.enableSave = true;"
                                 [matAutocomplete]="auto"
                                 placeholder="Quoted Product"
-                                
+                                required
                               />
                               <mat-autocomplete
                                 #auto="matAutocomplete"
@@ -287,8 +287,9 @@
                               autocomplete="off"
                               placeholder="Supply Qty"
                               quantityFormat
-                              (ngModelChange)="otherDetailsItemsValidation()"
+                              (ngModelChange)="this.enableSave = true;"
                               (keypress)="keyPressNumber($event)"
+                              required
                             />
                           </mat-form-field>
                           <mat-form-field style="width: 36%" appearance="legacy">
@@ -356,7 +357,7 @@
                              <mat-label>Supply Date</mat-label>
                                 <input name="Supply date" 
                                 [(ngModel)]="otherDetailsItems[productIndex].SupplyDeliveryDate"
-                                (ngModelChange)="otherDetailsItemsValidation()"
+                              
                             (onInput)="onChange($event, 'supplyDeliveryDate')"
                             (dateChange)="
                             otherDetailsItems[productIndex].SupplyDeliveryDate = formatDateForBe(otherDetailsItems[productIndex].SupplyDeliveryDate, false)
