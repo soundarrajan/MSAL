@@ -7,3 +7,28 @@
     background-color: #e7505a;
     color: #ffffff !important;
   }
+
+  .BlueButton{
+    width: 100px;
+    border-radius: 3px;
+    background-color: #1d9fff!important;;
+    border: none;
+    margin-top: 14px;
+    color: white;
+    height: 25px;
+    margin-right: 10px;
+  }
+
+  .titleDivider{
+    margin-top: 15px;
+    margin-right: -16px;
+    color: #c4c4c4;
+  }
+
+  .search-request-popup .header .close{
+    opacity: .5;
+  }
+
+  .search-request-popup .header .close:hover{
+    opacity: 100;
+  }

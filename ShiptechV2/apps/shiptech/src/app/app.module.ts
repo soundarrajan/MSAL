@@ -67,6 +67,7 @@ import {
   bootstrapForAdalApplication,
   BootstrapForAdalService
 } from '@shiptech/core/bootstrap-for-adal.service';
+import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
 
 export function getLegacySettings(): string {
   var hostName = window.location.hostname;
@@ -161,6 +162,7 @@ export function MSALInterceptConfigFactory() {
       deps: [DOCUMENT]
     },
     DecimalPipe,
+    HtmlDecode,
     !environment.useAdal
       ? {
           provide: APP_INITIALIZER,

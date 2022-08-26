@@ -25,7 +25,8 @@ import {
   SetLocationsRowsOriData,
   // SetLocationsRowsPriceDetails,
   SetPhysicalSupplierCounterpartyList,
-  UpdateAdditionalCostList
+  UpdateAdditionalCostList,
+  setFormulaList
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -449,8 +450,8 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     };
     const response =  this.spotNegotiationService.getContractFormulaList(payload)
     response.subscribe((data: any)=>{
-      sessionStorage.setItem('formula', JSON.stringify(data));
-    })
+      this.store.dispatch(new setFormulaList(data.payload));
+    });
   }
 
   getStaticLists(): void {

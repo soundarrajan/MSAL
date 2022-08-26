@@ -25,7 +25,7 @@
             <div class="custom-form-field lightTheme" style="width: 100% !important;margin:0px">
               <mat-form-field class="with-search" style="width: 100%; border-radius: 4px;">
                 <mat-label>Search Formula</mat-label>
-                <input  matInput [matAutocomplete]="auto1" name="formula-name" [value]="formulaValue" [(ngModel)]="formValues.name" placeholder="Search Formula" (keyup) ="SearchFormulaList($event.target.value)">
+                <input #searchInput  matInput [matAutocomplete]="auto1" name="formula-name" [value]="formulaValue" [(ngModel)]="formValues.name" placeholder="Search Formula" (keyup) ="SearchFormulaList($event.target.value)">
                 <mat-autocomplete
                         #auto1="matAutocomplete"
                         class="darkPanelAuto"
@@ -40,7 +40,10 @@
                     </mat-autocomplete>
               </mat-form-field>
               <div class="form-field-action" style="right: 16px;top: 10px;">
-                <button class="search-icon" (click)="searchFormula();">
+                <div *ngIf="formValues.name" class="form-field-action" style="right: 25px; top: 14px;">
+                  <button class="remove-icon" (click)="removeFromula()" style="border:none; background:transparent; margin: -8px 6px"></button>
+                </div>
+                <button class="search-icon" (click)="searchFormula();" style="margin-top: -5px;height: 40px;">
                   <div class="img"></div>
                 </button>
               </div>
@@ -58,9 +61,9 @@
           <mat-label>Formula Name</mat-label>
           <input matInput autocomplete="off" [(ngModel)]="formValues.name" name="formula-name" placeholder="Formula Name">
         </mat-form-field>
-        <div *ngIf="formValues.name" class="form-field-action" style="right: 25px; top: 14px;">
+        <!-- <div *ngIf="formValues.name" class="form-field-action" style="right: 25px; top: 14px;">
           <button class="remove-icon" (click)="removeFromula()" style="border:none; background:transparent"></button>
-        </div>
+        </div> -->
       </div>
           </div>
         </div>
