@@ -90,6 +90,7 @@ export class AgGridDatetimePickerToggleComponent
   oldCellValue: string;
   timeValue: any = '12:12';
   timerValue: any;
+  intervalTimer: any;
   newFormattedValue: string;
   matDateFieldWidth = '100px';
   initialDate = new FormControl(moment());
@@ -97,6 +98,10 @@ export class AgGridDatetimePickerToggleComponent
   @Input() dark: any;
   constructor(private spotNegotiationService: SpotNegotiationService) {
     //this.appContext = appContext || AppContext.instance;
+    this.intervalTimer =setInterval(()=>{
+      this.initialDate = new FormControl(moment());
+      this.timeValue = moment().format("HH:mm");
+    }, 1000) //update every time every second
   }
   @ViewChild('dateInputFlde', { read: ViewContainerRef }) public input;
   @ViewChild('picker') picker;
@@ -127,10 +132,10 @@ export class AgGridDatetimePickerToggleComponent
     //alert("");
     this.timeValue = event.value.getHours() + ':' + event.value.getMinutes();
     let h = (event.value.getHours() < 10 ? '0' : '') + event.value.getHours();
-    let m =
-      (event.value.getMinutes() < 10 ? '0' : '') + event.value.getMinutes();
+    let m =(event.value.getMinutes() < 10 ? '0' : '') + event.value.getMinutes();
     this.timeValue = h + ':' + m;
     //this.timeValue = "10:15";
+    clearInterval(this.intervalTimer);
     this.spotNegotiationService.QuoteByDate = this.getValue();
   }
   dateChanged(event) {

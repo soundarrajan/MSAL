@@ -204,7 +204,9 @@ input.BPInNumField::-webkit-input-placeholder {
 }
 
 .ag-theme-material .ag-filter .ag-filter-apply-panel {
-  padding-right: unset !important;
+  // padding-right: unset !important;
+  display: flex;
+  justify-content: space-between;
 }
 
 .ag-theme-material .ag-filter .ag-filter-apply-panel button + button {

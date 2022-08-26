@@ -37,6 +37,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { SpotNegotiationStoreModel } from '../../store/spot-negotiation.store';
 import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation-price-calc.service';
+import { ConfirmdialogComponent } from '../../views/main/details/components/spot-negotiation-popups/confirmdialog/confirmdialog.component';
 @Component({
   selector: 'ag-grid-cell-renderer',
   template: `
@@ -321,7 +322,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="(paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed) || (params && (params.data.requestOffers && params.data.requestOffers[params.index]?.isFormulaPricing))"
+                [disabled]="(paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed) || (params && (currentRequestOffer && currentRequestOffer?.isFormulaPricing))"
               >
                 <!-- <mat-option [disabled]>Change Currency </mat-option> -->
                 <div style="padding:5px 10px;font-size:14px">Change Currency</div>
@@ -355,7 +356,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
                 [(ngModel)]="paramsDataClone.currency"
                 panelClass="currencyselecttrigger"
                 (selectionChange)="onCurrencyChange($event, params)"
-                [disabled]="(paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed) ||  (params && (params.data.requestOffers && params.data.requestOffers[params.index]?.isFormulaPricing))"
+                [disabled]="(paramsDataClone.hasAnyProductStemmed && paramsDataClone.isOfferConfirmed) ||  (params && (currentRequestOffer && currentRequestOffer?.isFormulaPricing))"
               >
                 <mat-select-trigger overlayPanelClass="123class">
                   {{ paramsDataClone.currency | getCurrencyCode:getCurrencyCode1 }}
@@ -402,17 +403,17 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             [matTooltip]="params.value |  priceFormatValue : priceFormatValue1"
             [disabled]="
             (params.product.status === 'Stemmed' || params.product.status === 'Confirmed') ||
-            (params && (params.data.requestOffers && params.data.requestOffers[params.index]?.isFormulaPricing) || (params.value > 0 && params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
-              params.data.requestOffers[params.index]?.supplyQuantity != null))
+            (params && (currentRequestOffer && currentRequestOffer?.isFormulaPricing) || (params.value > 0 && currentRequestOffer?.isSupplyQuantityEdited == true &&
+              currentRequestOffer?.supplyQuantity != null))
             "
-            [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' ? 'inputFieldHighlightOff' : ''"
+            [ngClass]="params.product.status === 'Stemmed' || params.product.status === 'Confirmed' || currentRequestOffer?.isFormulaPricing  ?'inputFieldHighlightOff' : ''"
           />
 
           <div
             class="addButton"
             (click)="otherdetailspopup($event, params)"
             *ngIf="params && params.value > 0 &&
-              params.data.requestOffers[params.index]?.supplyQuantity == null
+            currentRequestOffer?.supplyQuantity == null
             "
           ></div>
           <div
@@ -421,8 +422,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             (mouseenter)="hoverMenu($event)"
             [matMenuTriggerFor]="formulamenu"
             #menuTriggerHover="matMenuTrigger"
-            *ngIf="params && (params.data.requestOffers && params.data.requestOffers[params.index]?.isFormulaPricing) || (params.value > 0 && params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
-              params.data.requestOffers[params.index]?.supplyQuantity != null)"
+            *ngIf="params && (currentRequestOffer && currentRequestOffer?.isFormulaPricing) || (params.value > 0 && currentRequestOffer?.isSupplyQuantityEdited == true &&
+              currentRequestOffer?.supplyQuantity != null)"
           ></div>
         </div>
       </div>
@@ -434,20 +435,19 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         <div></div>
         <span>Add/View Formula pricing</span>
       </div>
-      <ng-container 
-      *ngIf="params && (params.data.requestOffers && params.data.requestOffers[params.index]?.isFormulaPricing)"
-      >
-      <div class="divider-line"></div>
-      <div class="remove-block" (click)="removeFormulaPrice(params)">
-        <div></div>
-        <span>Remove Formula pricing</span>
-      </div>
-      </ng-container>
       <div class="divider-line"></div>
       <div class="add-block" (click)="otherdetailspopup($event, params)">
         <div></div>
         <span>Add/View Request changes</span>
       </div>
+      <br />
+      <ng-container *ngIf="params && (currentRequestOffer && currentRequestOffer?.isFormulaPricing)">
+        <div class="divider-line"></div>
+        <div class="delete-block" (click)="removeFormulaPrice(params)">
+          <div></div>
+          <span>Remove Formula pricing</span>
+        </div>
+      </ng-container>
     </mat-menu>
     <div *ngIf="params.type == 'phy-supplier'">
       <div
@@ -480,7 +480,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             #menuTrigger="matMenuTrigger"
             (click)="setValuefun(params.data)">
             <span
-            *ngIf="editSeller && params.data.physicalSupplierCounterpartyName"
+            *ngIf="editSeller && params.data.physicalSupplierCounterpartyId"
             >{{
               this.format.htmlDecode(
                 params.data.physicalSupplierCounterpartyName
@@ -488,16 +488,16 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
             }}</span>
           <span
             *ngIf="
-              editSeller && params.data.physicalSupplierCounterpartyName == null
+              editSeller && params.data.physicalSupplierCounterpartyId == null
             "
             >Add P. Supplier</span
           >
-          <span *ngIf="!editSeller">{{ this.editedSeller }}</span>
+          <span *ngIf="!editSeller | json">{{ this.editedSeller }}</span>
         </span>
         </ng-template>
         <ng-template #second>
         <span
-            *ngIf="!params.data.isEditable && editSeller && params.data.physicalSupplierCounterpartyName"
+            *ngIf="!params.data.isEditable && editSeller && params.data.physicalSupplierCounterpartyId"
             >{{
               this.format.htmlDecode(
                 params.data.physicalSupplierCounterpartyName
@@ -671,7 +671,7 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
         class="p-tb-5"
         style="display:flex;align-items:center;"
         (click)="pricingdetailspopup($event, params)"
-        *ngIf="params.data.requestOffers && params.data?.requestOffers[params.index]?.isFormulaPricing">
+        *ngIf="currentRequestOffer?.isFormulaPricing">
         <span><div class="infocircle-icon"></div></span>
         <span class="fs-13"> Formula Based Pricing</span>
         <hr class="menu-divider-line2" />
@@ -679,8 +679,8 @@ import { SpotNegotiationPriceCalcService } from '../../services/spot-negotiation
       <div
         class="p-tb-5"
         style="display:flex;align-items:center;"
-        (click)="otherdetailspopup($event, params)" *ngIf="params.value > 0 && params.data.requestOffers && (params.data.requestOffers[params.index]?.isSupplyQuantityEdited == true &&
-              params.data.requestOffers[params.index]?.supplyQuantity != null)">
+        (click)="otherdetailspopup($event, params)" *ngIf="params.value > 0 && currentRequestOffer && (currentRequestOffer?.isSupplyQuantityEdited == true &&
+          currentRequestOffer?.supplyQuantity != null)">
         <span><div class="infocircle-icon"></div></span>
         <span class="fs-13">Other Details</span>
       </div>
@@ -774,6 +774,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   check_count = 0;
   offerOldValue : number;
   clrRequest: any = 0;
+  currentRequestOffer: any;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -1000,6 +1001,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     );
 
     if (offerExists) {
+      this.currentRequestOffer = offerExists
       this.isOfferAvaialble =  true;
     }
 
@@ -1592,7 +1594,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   pricingdetailspopup(e, params) {
-    let requestedOffer = params.data.requestOffers[params.index];
+    //let requestedOffer = params.data.requestOffers[params.index];
+    let requestedOffer = this.currentRequestOffer;
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
       width: '1164px',
       data : {
@@ -1987,21 +1990,37 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       setTimeout(() => {this.spinner.hide()}, 1000);
     });
   }
+
   removeFormulaPrice(params){
-    let requestedOffer = params.data.requestOffers[params.index];
-    var newData = _.cloneDeep(params.data);
-    newData.requestOffers.map((el,_index) => {
-      if(params.index == _index){
-        el.isFormulaPricing = false;
-        el.price = 0;
-        el.totalPrice = 0;
-        el.amount = 0;
-      }      
+    const dialogRef = this.dialog.open(ConfirmdialogComponent, {
+      width: '368px',
+      maxWidth: '80vw',
+      panelClass: 'confirm-dialog',
+      data: {
+        message: 'Are you sure you want to remove this formula?'
+      }
     });
-   this._spotNegotiationService.removeFormula(requestedOffer.id,requestedOffer.offerPriceFormulaId).subscribe();
-   this.store.dispatch(new EditLocationRow(newData));
-   this._spotNegotiationService.callGridRedrawService();
+    dialogRef.afterClosed().subscribe(result =>{
+      if(result){
+        let requestedOffer = this.currentRequestOffer;
+        var newData = _.cloneDeep(params.data);
+        newData.requestOffers.map((el) => {
+          if(el.id === requestedOffer.id){
+            el.isFormulaPricing = false;
+            el.price = 0;
+            el.totalPrice = 0;
+            el.amount = 0;
+            el.offerPriceFormulaId = null;
+          } 
+        });
+       this._spotNegotiationService.removeFormula(requestedOffer.id,requestedOffer.offerPriceFormulaId).subscribe();
+       this.toastr.success('Formula removed successfully');
+       this.store.dispatch(new EditLocationRow(newData));
+       this._spotNegotiationService.callGridRedrawService();
+      }
+    });
   }
+  
   changeCurrencyForAdditionalCost(currencyId, exchangeRateValue) {
     this.checkAdditionalCost(
       _.cloneDeep(this.params.data),
@@ -2353,6 +2372,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       this.params.node.rowIndex,
       this.params.api
     );
+    this._spotNegotiationService.callEvaluateIconDisplayCheck();
   }
   selectSupplier(element) {
     this.editedSellerCopy = element.name;
@@ -2362,13 +2382,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   updatePhysicalSupplier() {
     let valid = false;
     let phySupplier=this.phySupplierIdCopy ==0?this.phySupplierId:this.phySupplierIdCopy;
-    if (!phySupplier) {
+    if (phySupplier == this.phySupplierId) {
       this.toastr.warning(
         'Invalid or same physical supplier selected, Please try selecting it again.'
       );
       return;
     }
-
     this.store.selectSnapshot<any>((state: any) => {
       if (state.spotNegotiation.locationsRows.length > 0) {
         const selectItems = state.spotNegotiation.locationsRows.filter(
@@ -2398,7 +2417,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
                   updatedRow.physicalSupplierCounterpartyName =
                     PreviousPhySupplier[0].name;
                   this.store.dispatch(new EditLocationRow(updatedRow));
-
                   //this.store.dispatch(new EditCounterpartyList(updatedRow));
                   return (valid = true);
                 }
@@ -2426,7 +2444,6 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     const locationsRows = this.store.selectSnapshot<string>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
-    this.editedSeller=this.editedSellerCopy;
     this.phySupplierId=this.phySupplierIdCopy;
     let payload = {
       requestGroupId: this.params.data.requestGroupId,
@@ -2438,6 +2455,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     };
     const response = this._spotNegotiationService.updatePhySupplier(payload);
     response.subscribe((res: any) => {
+      this.editedSeller=this.editedSellerCopy;
       if (res.status) {
         const futureLocationsRows = this.getLocationRowsAddPhySupplier(
           JSON.parse(JSON.stringify(locationsRows))
