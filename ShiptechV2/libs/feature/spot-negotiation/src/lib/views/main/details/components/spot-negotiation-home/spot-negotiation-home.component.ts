@@ -227,7 +227,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     //  }
   }
 
- async confirmorderpopup() {
+  confirmorderpopup() {
     this.isOrderexisting = false;
     let selectedFinalData = this.FilterselectedRowForRFQ();
     let requestOffers = [];
@@ -298,7 +298,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       }
     });
-  await this.checkorderexists();
+    this.checkorderexists();
     if (!isallow) {
       setTimeout(() => {
         const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
@@ -316,7 +316,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
   }
 
-  async checkorderexists(){
+  checkorderexists(){
     let RequestProductIds = [];
     let filters: ServerQueryFilter[] = [];
     RequestProductIds = this.selectedSellerList.map(
@@ -342,9 +342,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
         if (res?.message == 'Unauthorized') {
           return;
         }
+
         if (res.payload.length > 0 && res.payload.some(x=>x.id !=null)) {
           for (let existingorders of res.payload) {
-            this.isOrderexisting = this.selectedSellerList.some(y=>y.RequestLocationId == existingorders.requestLocationId && ((y.LocationID > 0 && existingorders.locationId > 0) ? y.LocationID == existingorders.locationId : true) && y.SellerId  == existingorders.seller?.id);
+            this.isOrderexisting = this.selectedSellerList.some(y=>y.RequestLocationId == existingorders.requestLocationId && y.SellerId  == existingorders.seller?.id);
             if (this.isOrderexisting == true) {
                 return;
             }
@@ -1010,29 +1011,23 @@ export class SpotNegotiationHomeComponent implements OnInit {
       selectedSellerRows.forEach(sellerRow => {
         requestLocationIds.push(sellerRow.RequestLocationId);
       });
+      const copyPricePayload = {
+        copyPriceDetailsRequest: sellerDetails,
+        RequestLocationIds: requestLocationIds,
+        RequestGroupId: this.currentRequestInfo.requestGroupId
+      };
       let sellerDetailsforFormula =[] ;
       sellerDetails.map(rows => rows.Offers.map(offer => {
          offer.requestOffers.map(x=> {
-            if(x.isFormulaPricing && x.offerPriceFormulaId){
-              sellerDetailsforFormula.push({
-                priceConfigurationId : x.offerPriceFormulaId,
-                requestOfferIds : [x.id]
-              })
-            }
+          if(x.isFormulaPricing && x.offerPriceFormulaId){
+            sellerDetailsforFormula.push({
+              priceConfigurationId : x.offerPriceFormulaId,
+              requestOfferIds : [x.id]
+            })
+          }
          })
       }));
-     
       if(sellerDetailsforFormula.length>0){
-        let checkForErrors = [];
-        sellerDetailsforFormula.forEach(x=>{
-          x.requestOfferIds.forEach(y=>
-            checkForErrors = this.checkQuoatedPriceAcrossLocations(y, locationsRows)
-          )
-        });
-        if(checkForErrors.length > 0){
-            this.toaster.error('Formula Price cannot be copied to fixed Price');
-        return;
-        }
         const payload = {
           copyOfferPrices : sellerDetailsforFormula
          }
@@ -1052,11 +1047,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           })
         });
       }
-      const copyPricePayload = {
-        copyPriceDetailsRequest: sellerDetails,
-        RequestLocationIds: requestLocationIds,
-        RequestGroupId: this.currentRequestInfo.requestGroupId
-      };
+       
       const response = this.spotNegotiationService.copyPriceDetails(
         copyPricePayload
       );
@@ -1116,20 +1107,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
       this.toaster.error('Select atlease one Request to proceed.');
       return;
     }
-  }
-
-  checkQuoatedPriceAcrossLocations(id : number, locationsRows){
-    let quoatedPrice = [];
-    locationsRows.forEach(loc=>
-      loc.requestOffers.forEach(req=>{
-         if(req.id == id){
-           if(req.price){
-              quoatedPrice.push(req);
-           }
-         }
-      })
-  );
-  return quoatedPrice;
   }
 
   getLocationRowsWithSelectedSeller(rowsArray, selectedSellerRows) {
@@ -1456,7 +1433,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
           });
           this.store.dispatch([new SetLocationsRows(reqLocationRows), new UpdateRequest(this.requestOptions)]);
           //this.spotNegotiationService.callGridRefreshService();
-          this.spotNegotiationService.callEvaluateIconDisplayCheck();
           this.spotNegotiationService.callGridRedrawService();
           this.changeDetector.detectChanges();          
         }

@@ -10,10 +10,6 @@
               additionalSearch = null;
               getAdditionalCostsPerPort(this.formValues.orderDetails?.portId)
             "
-            [ngStyle]="{
-              pointerEvents:
-              formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled' ? 'none' : 'auto'
-            }"
           >
             <a class="add-icon"></a>
           </div>
@@ -175,10 +171,6 @@
               class="remove-icon"
               style="margin-left: 10px;"
               (click)="removeAdditionalCostLine(additionalCost.key)"
-              [ngStyle]="{
-                pointerEvents:
-                formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled' ? 'none' : 'auto'
-              }"
             ></a>
           </td>
           <td class="padding" style="max-width: initial;min-width: 200px">
@@ -415,11 +407,6 @@
                         invoiceConvertUom('cost', additionalCost.key)
                       "
                       quantityFormat
-                      [disabled]="
-                        (formValues.status &&
-                          (formValues.status.name == 'Cancelled' ||
-                            formValues.status.name == 'Approved'))
-                      "
                     />
                   </mat-form-field>
                   <mat-form-field style="width: 36%" appearance="legacy">
@@ -432,11 +419,6 @@
                       [compareWith]="compareUomObjects"
                       [disableOptionCentering]="true"
                       panelClass="general-information-select-container"
-                      [disabled]="
-                      (formValues.status &&
-                        (formValues.status.name == 'Cancelled' ||
-                          formValues.status.name == 'Approved'))
-                    "
                     >
                       <mat-option *ngFor="let uom of uomList" [value]="uom">{{
                         uom.name
@@ -504,10 +486,6 @@
                         );
                         invoiceConvertUom('cost', additionalCost.key)
                       "
-                      [disabled]="
-                        (formValues.status &&
-                          (formValues.status.name == 'Cancelled' ||
-                            formValues.status.name == 'Approved'))"
                     />
                   </mat-form-field>
                   <mat-form-field
@@ -527,10 +505,6 @@
                       [compareWith]="compareUomObjects"
                       [disableOptionCentering]="true"
                       panelClass="general-information-select-container"
-                      [disabled]="
-                        (formValues.status &&
-                          (formValues.status.name == 'Cancelled' ||
-                            formValues.status.name == 'Approved'))"
                     >
                       <mat-option
                         *ngFor="let option of uomList"
@@ -584,11 +558,7 @@
                       (ngModelChange)="
                         invoiceConvertUom('cost', additionalCost.key)
                       "
-                      amountFormat
-                      [disabled]="
-                        (formValues.status &&
-                          (formValues.status.name == 'Cancelled' ||
-                            formValues.status.name == 'Approved'))"
+                      amountFormat 
                     />
                   </mat-form-field>
                 </div>
@@ -620,10 +590,6 @@
                         invoiceConvertUom('cost', additionalCost.key)
                       "
                       quantityFormat
-                      [disabled]="
-                        (formValues.status &&
-                          (formValues.status.name == 'Cancelled' ||
-                            formValues.status.name == 'Approved'))"
                     />
                   </mat-form-field>
                 </div>

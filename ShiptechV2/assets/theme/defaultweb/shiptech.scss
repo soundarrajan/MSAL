@@ -24449,10 +24449,3 @@ mat-form-field {
   border:0px;
   border-top: 1px solid rgba(0,0,0,.1);
 }
-
-.related-invoice-details-wrapper {
-  .related-invoice-red-text
-  [col-id='amount'] {
-    color: $red !important;
-  }
-}

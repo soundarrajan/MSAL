@@ -274,7 +274,7 @@
                 <ng-template cdkPortal #masterSelector="cdkPortal">
                   <shiptech-shared-master-selector
                     (selectedChange)="
-                      selectorSystemInstumentSelectionChange($event, complexFormulaQuoteLine.key, 0);
+                      selectorSystemInstumentSelectionChange($event,0);
                       masterSelectorTrigger.close()
                     "
                     (shouldCloseModal)="masterSelectorTrigger.close()"
@@ -380,7 +380,7 @@
                 <ng-template cdkPortal #masterSelector1="cdkPortal">
                   <shiptech-shared-master-selector
                     (selectedChange)="
-                      selectorSystemInstumentSelectionChange($event, complexFormulaQuoteLine.key, 1);
+                      selectorSystemInstumentSelectionChange($event,1);
                       masterSelectorTrigger1.close()
                     "
                     (shouldCloseModal)="masterSelectorTrigger1.close()"
@@ -486,7 +486,7 @@
               <ng-template cdkPortal #masterSelector2="cdkPortal">
                 <shiptech-shared-master-selector
                   (selectedChange)="
-                    selectorSystemInstumentSelectionChange($event, complexFormulaQuoteLine.key, 2);
+                    selectorSystemInstumentSelectionChange($event,2);
                     masterSelectorTrigger2.close()
                   "
                   (shouldCloseModal)="masterSelectorTrigger2.close()"

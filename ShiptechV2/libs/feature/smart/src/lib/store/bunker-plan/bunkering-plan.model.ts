@@ -56,7 +56,6 @@
     request_id_hsfo: any;
     request_id_lsdis: any;
     request_id_ulsfo: any;
-    request_id_vlsfo: any;
     service_code: string;
     total_tank_capacity: number;
     ulsfo_est_consumption_color: any;

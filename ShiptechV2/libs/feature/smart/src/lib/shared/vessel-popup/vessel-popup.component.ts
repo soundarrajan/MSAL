@@ -24,7 +24,6 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
 import moment from 'moment';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { Store } from '@ngxs/store';
-import _ from 'lodash';
 
 @Component({
   selector: 'app-vessel-popup',
@@ -70,7 +69,7 @@ export class VesselPopupComponent implements OnInit {
   @Input() status: string = 'standard-view';
   @Input('vesselData')
   public set vesselData(v: any) {
-    this.popup_data = _.cloneDeep(v);
+    this.popup_data = v;
   }
   @Output() showBPlan = new EventEmitter();
   @Output() showRoutes = new EventEmitter();
@@ -211,86 +210,20 @@ export class VesselPopupComponent implements OnInit {
       let req = { VesselId: vesselId };
       this.vesselService.getVesselBasicInfo(req).subscribe(res => {
         if (res.payload.length > 0) {
-          Object.defineProperties(this.popup_data, {
-            serviceCode: {
-              value: res.payload[0].serviceCode,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            },
-            deptId: {
-              value: res.payload[0].deptId,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            },
-            ownership: {
-              value: res.payload[0].ownership,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            },
-            destination: {
-              value: res.payload[0].destination,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            },
-            next_destination: {
-              value: res.payload[0].nextDestination,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            },
-            eta1: {
-              value: res.payload[0].destinationEta,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            },
-            eta2: {
-              value: res.payload[0].nextDestinationEta,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            },
-            hsfo: {
-              value: res.payload[0].hsfo_current_stock,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            },
-            ulsfo: {
-              value: res.payload[0].ulsfo_current_stock,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            },
-            vlsfo: {
-              value: res.payload[0].vlsfo_current_stock,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            },
-            lsdis: {
-              value: res.payload[0].lsdis_current_stock,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            },
-            dis: {
-              value: res.payload[0].hsdis_current_stock,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            },
-            routeAvailable: {
-              value: res.payload[0].isRouteAvailable,
-              writable: true,
-              configurable: true,
-              enumerable: true
-            }
-          });
+          //this.popup_data.serviceId = res.payload[0].serviceId;
+          this.popup_data.serviceCode = res.payload[0].serviceCode;
+          this.popup_data.deptId = res.payload[0].deptId;
+          this.popup_data.ownership = res.payload[0].ownership;
+          this.popup_data.destination = res.payload[0].destination;
+          this.popup_data.next_destination = res.payload[0].nextDestination;
+          this.popup_data.eta1 = res.payload[0].destinationEta;
+          this.popup_data.eta2 = res.payload[0].nextDestinationEta;
+          this.popup_data.hsfo = res.payload[0].hsfo_current_stock;
+          this.popup_data.ulsfo = res.payload[0].ulsfo_current_stock;
+          this.popup_data.vlsfo = res.payload[0].vlsfo_current_stock;
+          this.popup_data.lsdis = res.payload[0].lsdis_current_stock;
+          this.popup_data.dis = res.payload[0].hsdis_current_stock;
+          this.popup_data.routeAvailable = res.payload[0].isRouteAvailable;
 
           this.triggerClickEvent();
         }
@@ -474,53 +407,37 @@ export class VesselPopupComponent implements OnInit {
           Object.defineProperties(this.popup_data, {
             vesselExpDate: {
               value: res.payload[0].expiryDate,
-              writable: true,
-              configurable: true,
-              enumerable: true
+              writable: true
             },
             redeliveryDays: {
               value: res.payload[0].redeliveryDays
                 ? res.payload[0].redeliveryDays + ' Days'
                 : '',
-              writable: true,
-              configurable: true,
-              enumerable: true
+              writable: true
             },
             hfo: {
               value: res.payload[0].hsfoRedeliveryQty,
-              writable: true,
-              configurable: true,
-              enumerable: true
+              writable: true
             },
             lshfo: {
               value: res.payload[0].lsfoRedeliveryQty,
-              writable: true,
-              configurable: true,
-              enumerable: true
+              writable: true
             },
             lsmdo: {
               value: res.payload[0].lsmdoRedeliveryQty,
-              writable: true,
-              configurable: true,
-              enumerable: true
+              writable: true
             },
             mdo: {
               value: res.payload[0].mdoRedeliveryQty,
-              writable: true,
-              configurable: true,
-              enumerable: true
+              writable: true
             },
             mgo: {
               value: res.payload[0].mgoRedeliveryQty,
-              writable: true,
-              configurable: true,
-              enumerable: true
+              writable: true
             },
             lsmgo: {
               value: res.payload[0].lsmgoRedeliveryQty,
-              writable: true,
-              configurable: true,
-              enumerable: true
+              writable: true
             }
           });
 
@@ -985,7 +902,7 @@ export class VesselMenuComponent {
     ) {
       let warnCommentMsg = 'please enter a comment';
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
+        panelClass: 'confirmation-popup-operator',
         data: { message: warnCommentMsg, source: 'hardWarning' }
       });
       return;

@@ -26,9 +26,7 @@ import {
   AppendLocationsRowsOriData,
   RemoveLocationsRowsOriData,
   UpdateAdditionalCostList,
-  SetOfferPriceFormulaId,
-  setFormulaList,
-  EvaluatePrice
+  SetOfferPriceFormulaId
 } from './actions/ag-grid-row.action';
 
 import {
@@ -69,7 +67,7 @@ export class SpotNegotiationStoreModel {
   marketPriceHistory: object | null;
   offerPriceHistory: object | null;
   additionalCostList: Array<any>;
-  formulaList : any;
+
   constructor() {
     // Initialization inside the constructor
     this.staticLists = {};
@@ -96,7 +94,6 @@ export class SpotNegotiationStoreModel {
     this.groupOfRequestsId = null;
     this.offerPriceHistory = null;
     this.additionalCostList = [];
-    this.formulaList = {};
   }
 }
 
@@ -127,8 +124,7 @@ export class SpotNegotiationStoreModel {
     physicalSupplierCounterpartyList: [],
     requestList: [],
     counterparties: [],
-    additionalCostList: [],
-    formulaList:{}
+    additionalCostList: []
   }
 })
 export class SpotNegotiationStore {
@@ -380,16 +376,6 @@ export class SpotNegotiationStore {
     });
   }
 
-  @Action(setFormulaList)
-  setFormulaList(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-    { payload }: setFormulaList
-  ) {
-    patchState({
-      formulaList: payload
-    });
-  }
-
 // Rows lists
 @Action(EditLocationRow)
 EditLocationRow(
@@ -581,29 +567,6 @@ EditLocationRow(
             req.offerPriceFormulaId = payload.priceConfigurationId
           }
         })
-       }
-    });
-    patchState({
-      locationsRows: locationRows
-    });
-  }
-
-  @Action(EvaluatePrice)
-  EvaluateOfferPrice(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
-    { payload }: SetOfferPriceFormulaId
-  ) {
-    let locRows = getState().locationsRows;
-    const locationRows = _.cloneDeep(locRows);
-    locationRows.forEach(locs =>{
-       if(locs.requestOffers){
-        locs.requestOffers.forEach(req=>{
-          payload.forEach(x=>{
-            if(req.id === x.requestOfferId){
-              req.price = x.price;
-            }
-          })
-        });
        }
     });
     patchState({

@@ -12,11 +12,11 @@ export interface FormValues{
     complexFormulaQuoteLines? : ComplexFormula[];
     pricingSchedule?: PricingSchedule;
     formulaHolidayRules?: FormulaHolidayRule;
-    pricingScheduleOptionDateRange? : PricingScheduleOptionDateRange;
-    pricingScheduleOptionSpecificDate? : PricingScheduleOptionSpecificDate;
+    pricingScheduleOptionDateRange?;
+    pricingScheduleOptionSpecificDate?;
     pricingScheduleOptionEventBasedSimple ?: PricingScheduleOptionEventBasedSimple;
-    pricingScheduleOptionEventBasedContinuous? : PricingScheduleOptionEventBasedContinuous;
-    pricingScheduleOptionEventBasedExtended? : PricingScheduleOptionEventBasedExtended;
+    pricingScheduleOptionEventBasedContinuous?;
+    pricingScheduleOptionEventBasedExtended?;
     productDiscountRules?: [];
     quantityDiscountRules?: [];
     locationDiscountRules?: [];
@@ -39,19 +39,9 @@ export interface PricingScheduleOptionHolidayRule{
     wednesdayHolidayRule?: event;
 }
 export interface PricingScheduleOptionDateRange extends PricingScheduleOptionHolidayRule {
-   from: string,
-   to: string, 
+   from: Date,
+   to: Date, 
    allowsPricingOnHoliday: boolean
-}
-
-export interface PricingScheduleOptionSpecificDate extends PricingScheduleOptionHolidayRule{
-    allowsPricingOnHoliday: boolean
-    dates: SpecificDateDatesDto[]
-}
-
-export interface SpecificDateDatesDto {
-    date: string
-    comment?: string
 }
 export interface PricingScheduleOptionEventBasedSimple extends PricingScheduleOptionHolidayRule {
     fromBusinessCalendarId?: event;
@@ -66,13 +56,13 @@ export interface PricingScheduleOptionEventBasedSimple extends PricingScheduleOp
 export interface PricingScheduleOptionEventBasedExtended extends PricingScheduleOptionHolidayRule, PricingScheduleOptionEventBasedSimple {
     excludeFromNoOfBusinessDaysBefore: number
     excludeToNoOfBusinessDaysAfter: number
-    fromBusinessCalendar?: event;
  }
 
  export interface PricingScheduleOptionEventBasedContinuous extends PricingScheduleOptionHolidayRule {
-    period: event,
+    pricingSchedulePeriod: event,
     event: event,
-    weekStartsOn: event
+    date: Date,
+    weekStartsOn: number
  }
 export interface event{
     id?: number;
@@ -204,8 +194,8 @@ export interface PricingScheduleDto{
 }
 
 export interface DateRangeDto extends HolidayRuleDto{
-    validFrom: string,
-    validTo: string,
+    validFrom: Date,
+    validTo: Date,
     allowsPricingOnHoliday: boolean
 }
 
@@ -215,7 +205,7 @@ export interface SpecificDateDto extends HolidayRuleDto{
 }
 
 export interface SpecificDateDatesDto {
-    date: string
+    date: Date
     comment?: string
 }
 
@@ -236,6 +226,7 @@ export interface EventBasedExtendDto extends HolidayRuleDto, EventBasedSimpleDto
 export interface EventBasedContinuousDto extends HolidayRuleDto {
     pricingSchedulePeriodId: number,
     eventId: number,
+    date: Date,
     weekStartsOn: number
 }
 

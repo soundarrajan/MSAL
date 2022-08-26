@@ -26,7 +26,7 @@
   <!-- </div> -->
   <!-- <div  style="flex:0 0 13%;display: flex;align-items: center; justify-content: space-evenly;"> -->
   <div  style="display: flex;align-items: center; justify-content: space-evenly;padding: 0px 20px;">
-    <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [(ngModel)]="bunkerPlanHeaderDetail.notSendPlanReminder" class="dark-bg-checkbox dark-checkbox noborder" style="padding-right: 10px;"></mat-checkbox>
+    <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [(ngModel)]="this.sendPlanReminder" class="dark-bg-checkbox dark-checkbox noborder" style="padding-right: 10px;"></mat-checkbox>
     <div [ngClass]="(bunkerPlanHeaderDetail.dockPortFlag)? 'default-view': 'reminder-view'">Do not send plan reminder</div>
     <!-- <mat-icon matTooltip="Plan reminder disabled since vessel is Dry Dock" *ngIf="bunkerPlanHeaderDetail?.dockPortFlag">info</mat-icon> -->
     <mat-icon *ngIf="bunkerPlanHeaderDetail?.dockPortFlag" matTooltip="Plan reminder disabled since vessel is Dry Dock" svgIcon="info-icon" style="width: 18px;padding-right: 5px;"></mat-icon>
@@ -35,7 +35,7 @@
   <div class="border-l-r" style="flex:0 0 24%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;">
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan received</div><span class="label-text">:</span>
-      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.lastPlanReceivedDate  }} <div class="m-l-r-5">|</div>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.lastPlanReceivedDate | date: 'dd/MM/yyyy' :'UTC' + offset }} <div class="m-l-r-5">|</div>
         ID:{{bunkerPlanHeaderDetail?.lastPlanReceivedId}}</div>
       <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')>-1">N/A <div class="m-l-r-5">|</div>
         ID:N/A</div>
@@ -43,7 +43,7 @@
     <div style="display:flex;align-items: center;justify-content: space-between;">
       <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan sent
       </div><span class="label-text">:</span>
-      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')==-1"> {{bunkerPlanHeaderDetail.lastPlanSentDate }} <div class="m-l-r-5">|</div>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')==-1"> {{bunkerPlanHeaderDetail.lastPlanSentDate | date: 'dd/MM/yyyy' :'UTC' + offset }} <div class="m-l-r-5">|</div>
         ID:{{bunkerPlanHeaderDetail.lastPlanSentId}}</div>
       <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')>-1"> N/A <div class="m-l-r-5">|</div>
         ID:N/A</div>
@@ -285,12 +285,11 @@
                   <!-- <button mat-button  matTooltip="Send" [matTooltipShowDelay]="500" class="btn" (click)="sendCurrentBPlan($event)">Send</button>
                   <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
                     (click)="saveCurrentBPlan($event)" >Save</button> -->
-                  <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
-                    [disabled]="disableCurrentBPlan" (click)="saveCurrentBPlan($event)" >Save</button>
-                  <button mat-button  matTooltip="Generate" [matTooltipShowDelay]="500"
-                    class="btn" [disabled]="disableCurrentBPlan" (click)="generateCurrentBPlan($event)">Generate</button>
-                  <button mat-button matTooltip="Send" [matTooltipShowDelay]="500"
-                    class="btn" [disabled]="disableCurrentBPlan" (click)="sendCurrentBPlan($event)">Send</button>
+                    <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
+                      (click)="saveCurrentBPlan($event)" >Save</button>
+                      <button mat-button  matTooltip="Generate" [matTooltipShowDelay]="500"
+                      class="btn" [disabled]="disableCurrentBPlan" (click)="generateCurrentBPlan($event)">Generate</button>
+                      <button mat-button  matTooltip="Send" [matTooltipShowDelay]="500" class="btn" (click)="sendCurrentBPlan($event)">Send</button>
                 </div>
                 <div style="flex:0 0 4%;text-align: center;">
                   <div  *ngIf="!expandBplan; else collapseBlock" (click)="toggleBPlan($event)" class="expand-accordion-icon hand"></div>
@@ -362,7 +361,7 @@
       </mat-expansion-panel-header>
       <div class="panel-body">
         <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded && loadBplan"
-          (isCellClicked)="showViewAlert($event)" [planId]="prevPlanId" [bPlanType]="bPlanType.prev"
+          [planId]="prevPlanId" [bPlanType]="bPlanType.prev"
           [selectedUserRole]="selectedUserRole"
           [vesselRef]="vesselData">
         </app-bunkering-plan>

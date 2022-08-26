@@ -16,7 +16,7 @@
             (click)="addTransaction()"
             [ngStyle]="{
               pointerEvents:
-                formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled' ? 'none' : 'auto'
+                formValues.status?.name === 'Approved' ? 'none' : 'auto'
             }"
           >
             <a class="add-icon"></a>
@@ -166,7 +166,7 @@
               (click)="removeProductDetailLine(productDetail.key)"
               [ngStyle]="{
                 pointerEvents:
-                  formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled' ? 'none' : 'auto'
+                  formValues.status?.name === 'Approved' ? 'none' : 'auto'
               }"
             ></a>
           </td>
@@ -257,7 +257,6 @@
                       [matAutocomplete]="auto"
                       autocomplete="off"
                       required
-                      [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                     />
                     <mat-autocomplete
                       #auto="matAutocomplete"
@@ -302,7 +301,6 @@
                       [masterSelector]="masterSelector1"
                       #masterSelectorTrigger1="masterSelectorTrigger"
                       [header]="getHeaderNameSelector1()"
-                      [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                     ></button>
                     <ng-template cdkPortal #masterSelector1="cdkPortal">
                       <shiptech-shared-master-selector
@@ -323,6 +321,35 @@
                       ></shiptech-shared-master-selector>
                     </ng-template>
                   </div>
+                  <!-- <button
+                    class="search-icon btn-invoice"
+                    appMasterSelectorTrigger
+                    [masterSelector]="masterSelector1"
+                    #masterSelectorTrigger1="masterSelectorTrigger"
+                    [header]="getHeaderNameSelector1()"
+                  >
+                    <div class="img">
+                      <ng-template cdkPortal #masterSelector1="cdkPortal">
+                        <shiptech-shared-master-selector
+                          (selectedChange)="
+                            selectorInvoicedProductSelectionChange(
+                              $event,
+                              productDetail.key
+                            );
+                            masterSelectorTrigger1.close()
+                          "
+                          (shouldCloseModal)="masterSelectorTrigger1.close()"
+                          [selectorType]="autocompleteInvoiceProduct"
+                          [disabled]="disabled"
+                          [readonly]="readonly"
+                          [entityName]="entityName"
+                          [entityId]="_entityId"
+                          [vesselId]="vesselId"
+                          [headerName]="getHeaderNameSelector1()"
+                        ></shiptech-shared-master-selector>
+                      </ng-template>
+                    </div>
+                  </button> -->
                 </div>
               </div>
             </div>
@@ -347,8 +374,7 @@
                       matInput
                       [(ngModel)]="productDetail.value.invoiceQuantity"
                       [disabled]="formValues.status &&
-                          (formValues.status?.name === 'Cancelled'
-                          || formValues.status?.name === 'Approved')"
+                          formValues.status?.name === 'Cancelled'"
                       autocomplete="off"
                       (blur)="
                         productDetail.value.invoiceQuantity = roundDownValue(
@@ -366,8 +392,7 @@
                       disableRipple
                       [(ngModel)]="productDetail.value.invoiceQuantityUom"
                       [disabled]="formValues.status &&
-                          (formValues.status?.name === 'Cancelled'
-                          || formValues.status?.name === 'Approved')"
+                          formValues.status?.name === 'Cancelled'"
                       (ngModelChange)="
                         invoiceConvertUom('product', productDetail.key)
                       "
@@ -425,8 +450,7 @@
                       [(ngModel)]="productDetail.value.invoiceRate"
                       priceFormat
                       [disabled]="formValues.status &&
-                          (formValues.status?.name === 'Cancelled'
-                          || formValues.status?.name === 'Approved')"
+                          formValues.status?.name === 'Cancelled'"
                       [attr.precision]="productDetail.value.pricePrecision"
                       (blur)="
                         productDetail.value.invoiceRate = roundDownValue(
@@ -446,8 +470,7 @@
                         invoiceConvertUom('product', productDetail.key)
                       "
                       [disabled]="formValues.status &&
-                          (formValues.status?.name === 'Cancelled'
-                          || formValues.status?.name === 'Approved')"
+                          formValues.status?.name === 'Cancelled'"
                       [compareWith]="compareUomObjects"
                       [disableOptionCentering]="true"
                       panelClass="general-information-select-container"
@@ -519,7 +542,6 @@
                     <input
                       matInput
                       [(ngModel)]="productDetail.value.sulphurContent"
-                      [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                     />
                   </mat-form-field>
                 </div>
@@ -560,7 +582,6 @@
                       [matAutocomplete]="auto1"
                       autocomplete="off"
                       required
-                      [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                     />
                     <mat-autocomplete
                       #auto1="matAutocomplete"
@@ -607,7 +628,6 @@
                       [masterSelector]="masterSelector2"
                       #masterSelectorTrigger2="masterSelectorTrigger"
                       [header]="getHeaderNameSelector()"
-                      [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                     ></button>
                     <ng-template cdkPortal #masterSelector2="cdkPortal">
                       <shiptech-shared-master-selector
@@ -628,6 +648,35 @@
                       ></shiptech-shared-master-selector>
                     </ng-template>
                   </div>
+                  <!-- <button
+                    class="search-icon-supplier"
+                    appMasterSelectorTrigger
+                    [masterSelector]="masterSelector2"
+                    #masterSelectorTrigger2="masterSelectorTrigger"
+                    [header]="getHeaderNameSelector1()"
+                  >
+                    <div class="img">
+                      <ng-template cdkPortal #masterSelector2="cdkPortal">
+                        <shiptech-shared-master-selector
+                          (selectedChange)="
+                            selectorPhysicalSupplierSelectionChange(
+                              $event,
+                              productDetail.key
+                            );
+                            masterSelectorTrigger2.close()
+                          "
+                          (shouldCloseModal)="masterSelectorTrigger2.close()"
+                          [selectorType]="autocompletePhysicalSupplier"
+                          [disabled]="disabled"
+                          [readonly]="readonly"
+                          [entityName]="entityName"
+                          [entityId]="_entityId"
+                          [vesselId]="vesselId"
+                          [headerName]="getHeaderNameSelector()"
+                        ></shiptech-shared-master-selector>
+                      </ng-template>
+                    </div>
+                  </button> -->
                 </div>
               </div>
             </div>
@@ -732,7 +781,7 @@
                       <input
                         matInput
                         [(ngModel)]="productDetail.value.pricingDate"
-                        [disabled]="!isPricingDateEditable || formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                        [disabled]="!isPricingDateEditable"
                         (dateChange)="
                           formatDate(productDetail.value.pricingDate)
                         "
@@ -833,7 +882,6 @@
                               (ngModelChange)="
                                 productDetail.value.description = $event
                               "
-                              [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                             />
                           </mat-form-field>
                         </div>
