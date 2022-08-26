@@ -162,9 +162,9 @@
           >
             <div class="increment-circle">
               <div class="plus" (click)="addNewAdditionalCostLine()">+</div>
-              <div class="" style="padding-left: 15px ;">
+              <div class="change-color" style="padding-left: 15px ;">
                 <mat-checkbox
-                   style="padding-left: 4px;"
+                   style="margin-left: 4px;"
                    #checkbox
                    class="mat-checkbox"
                    [(ngModel)]="isCheckedMain"
@@ -208,8 +208,9 @@
                   *ngIf="!offerAdditionalCost.hasStemmedProduct"
                 >
                   <div class="minus"  (click)="removeAdditionalCost(j)">-</div>
-                  <div
-                  class="" style="padding-left: 15px;"
+                  </div>
+                <div
+                  class="location-cost-inner-checkbox" 
                 >
                 <mat-checkbox
                  style="padding-left: 4px;"
@@ -218,7 +219,6 @@
                  (change)="checkUncheckAll($event, j)"
                  >
              </mat-checkbox>
-                </div>
                 </div>
               </td>
 
