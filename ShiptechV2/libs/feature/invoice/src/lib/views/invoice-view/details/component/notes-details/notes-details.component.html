@@ -16,11 +16,7 @@
     <thead>
       <tr>
         <td class="padding" style="width: 30px;">
-          <a class="add-icon" (click)="addNotesLine()"
-          [ngStyle]="{
-            pointerEvents:
-            this.formValues.status?.name === 'Approved' || this.formValues.status?.name === 'Cancelled' ? 'none' : 'auto'
-          }"></a>
+          <a class="add-icon" (click)="addNotesLine()"></a>
         </td>
         <td class="padding" style="width:33%">
           <b>Notes</b>
@@ -41,11 +37,7 @@
           <ng-container  *ngFor="let noteLine of formValues.invoiceNotes | keyvalue : originalOrder">
             <tr *ngIf="!noteLine.value.isDeleted">
               <td class="padding" style="width:30px; padding-left: 0px  !important; padding-right: 0px  !important;">
-                <a *ngIf ="!detectCurrentUser(noteLine.value)" class="remove-icon" style="margin-left: 10px;" (click)="deleteNotesLine(noteLine.key)"
-                [ngStyle]="{
-                  pointerEvents:
-                  this.formValues.status?.name === 'Approved' || this.formValues.status?.name === 'Cancelled' ? 'none' : 'auto'
-                }"></a>
+                <a *ngIf ="!detectCurrentUser(noteLine.value)" class="remove-icon" style="margin-left: 10px;" (click)="deleteNotesLine(noteLine.key)"></a>
               </td>
               <td style="width:33%">
                 <div class="custom-form-field-invoice-notes" style="height: 30px;" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
@@ -55,7 +47,7 @@
                       [ngModel]="noteLine.value.note | htmlDecodeReadonly"
                       (ngModelChange)="noteLine.value.note = $event"
                       (blur)="updateNotes($event, noteLine.key)"
-                      [disabled]="detectCurrentUser(noteLine.value) || this.formValues.status?.name == 'Approved' || this.formValues.status?.name === 'Cancelled'"
+                      [disabled]="detectCurrentUser(noteLine.value)"
                       matInput
                       autocomplete="off">
                   </mat-form-field>

@@ -130,7 +130,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "5mb",
-                  "maximumError": "9mb"
+                  "maximumError": "7mb"
                 }
               ],
               "fileReplacements": [

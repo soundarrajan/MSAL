@@ -19,7 +19,7 @@ const KEY_TAB = 9;
       <input #input 
       [disabled]=" (params.colDef?.field == 'hsfo_max_lift' || params.colDef?.field == 'ulsfo_max_lift' || params.colDef?.field == 'lsdis_max_lift') &&  params?.data?.operator_ack == 0" 
       [ngClass]="params.cellClass" [(ngModel)]="value"
-      (keydown)="triggerChangeEvent();onKeyDown($event)" (keyup)="onKeyUp($event, params.type)">
+      (keydown)="triggerChangeEvent();onKeyDown($event)" >
     </div>
     <!-- <span *ngIf="showInfoIcon == true">
           <img class="infoIcon" src="./assets/customicons/info_amber.svg" alt="info">
@@ -100,13 +100,14 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
   
     getValue(): any {
       let isSafePortRestricted;
+      
       if(this.params.colDef?.field == 'hsfo_safe_port'|| this.params.colDef?.field =='eca_safe_port' ||this.params.colDef?.field =='lsdis_safe_port'){
         isSafePortRestricted = this.checkSafePortRestriction(this.params?.colDef?.field, this.params?.data?.detail_no);
-          if(isSafePortRestricted === 'Y' && this.value != 0){
+          if(isSafePortRestricted === 'Y'){
             this.value = 0;
             const dialogRef = this.dialog.open(WarningoperatorpopupComponent, {
               width: '350px',
-              panelClass: ['confirmation-popup-operator', 'bg-transparent'],
+              panelClass: 'confirmation-popup-operator',
               data : {message: 'You should enter only one safe port value for each product type'}
             });
           }
@@ -167,13 +168,6 @@ export class AgGridInputCellEditor implements ICellEditorAngularComp {
         !this.isKeyPressedNumeric(event)
       ) {
         if (event.preventDefault) event.preventDefault();
-      }
-    }
-
-    onKeyUp(event: any, type = null): void {
-      if (type == 'edit' && this.deleteOrBackspace(event) && event.target.value == '') {
-        this.value = 0;
-        return;
       }
     }
     

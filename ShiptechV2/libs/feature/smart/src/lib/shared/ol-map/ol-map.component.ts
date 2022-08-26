@@ -1729,14 +1729,13 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         anchor: [0.47, 0.47],
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        // rotation: this.getRotationForVessel(
-        //   vesselDetail.vesselLatitude,
-        //   vesselDetail.vesselLongitude,
-        //   vesselDetail.destinationLatitude,
-        //   vesselDetail.destinationLongitude
-        // ),
-        //src: './assets/customicons/vessel/hover-blue.svg', //vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/customicons/vessel/hover-amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/customicons/vessel/hover-red.svg" : "./assets/customicons/vessel/hover-blue.svg",
-        src: './assets/customicons/vessel/location-hover.png'
+        rotation: this.getRotationForVessel(
+          vesselDetail.vesselLatitude,
+          vesselDetail.vesselLongitude,
+          vesselDetail.destinationLatitude,
+          vesselDetail.destinationLongitude
+        ),
+        src: './assets/customicons/vessel/hover-blue.svg' //vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/customicons/vessel/hover-amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/customicons/vessel/hover-red.svg" : "./assets/customicons/vessel/hover-blue.svg",
       })
     });
     return iconStyle;
@@ -1751,7 +1750,6 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
         src: './assets/customicons/port/hover' + '-blue' + '.svg' //+ (portDetail.flag == 'higher-warning-view' ? '-red' : (portDetail.flag == 'minor-warning-view' ? '-amber' : '-blue')) + '.svg', //portType -major:minor
-      
       })
     });
     return iconStyle;
@@ -1766,15 +1764,15 @@ export class OlMapComponent implements OnInit, AfterViewInit {
         // anchorXUnits: 'pixels',
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
-        // rotation: this.getRotationForVessel(
-        //   vesselDetail.vesselLatitude,
-        //   vesselDetail.vesselLongitude,
-        //   vesselDetail.destinationLatitude,
-        //   vesselDetail.destinationLongitude
-        // ),
+        rotation: this.getRotationForVessel(
+          vesselDetail.vesselLatitude,
+          vesselDetail.vesselLongitude,
+          vesselDetail.destinationLatitude,
+          vesselDetail.destinationLongitude
+        ),
         // src: "http://cdn.mapmarker.io/api/v1/pin?text=P&size=50&hoffset=1",
         // src: vesselDetail.ColorFlag == 0 ? "./assets/icon/ROB_blue.svg" : vesselDetail.ColorFlag == 1 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_amber.svg",
-        src: './assets/customicons/vessel/location.png' //vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
+        src: './assets/customicons/vessel/ROB_blue.svg' //vesselDetail.ROB.Color.indexOf('orange') > 0 ? "./assets/icon/ROB_amber.svg" : vesselDetail.ROB.Color.indexOf('red') > 0 ? "./assets/icon/ROB_red.svg" : "./assets/icon/ROB_blue.svg",
       })
     });
     return iconStyle;

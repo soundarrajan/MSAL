@@ -22,7 +22,7 @@ export enum SystemInstrumentListColumnsLabels {
   lastModifiedBy = 'Last Modified By',
   lastModifiedOn = 'Last Modified On',
   hasNoMoreChildren = 'Has No More Children',
-  isDeleted = 'Status'
+  isDeleted = 'Active'
 
 }
 

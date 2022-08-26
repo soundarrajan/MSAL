@@ -1,6 +1,6 @@
 import { Observable, pipe } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, Inject, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChildren } from '@angular/core';
 import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -48,7 +48,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
                 <div class="search-product-container col-md-10">
                   <span class="search-product-lookup"> </span>
                   <input
-                  #searchName
                     matInput
                     placeholder="Search and select counterparty"
                     class="search-product-input"
@@ -75,7 +74,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
                     <mat-option [value]="element">
                       <mat-checkbox class="single_column_label"
                         [value]="element"
-                        [checked]="element.selected"
                         (change)="onCounterpartyCheckboxChange($event, element)"
                         matTooltip="{{ element.name }}"
                         matTooltipClass="lightTooltip"
@@ -172,26 +170,17 @@ import { NgxSpinnerService } from 'ngx-spinner';
           </span>
         </div>
         <div class="optionsText">
-          <div class="qty-tooltip">
-            <div class="qty">
-              <span class="title"style="font-size:12px">Qty:</span>
-              <span>
-                <span
-                class="value"
-                contenteditable="false"
-                (keydown)="editQty($event)"
-                >{{ this.tenantService.quantity(params.product.minQuantity) }}/{{
-                  this.tenantService.quantity(params.product.maxQuantity)
-                }}
-                {{ params.product.uomName }}</span>
-                <span *ngIf="params.product.suggestedLift != null && !params.product.quantitiesChanged" class="info-icon-amber m-l-3"></span>
-              </span>
-            </div>
-            <div class="hover-tooltip" *ngIf="params.product.suggestedLift != null && !params.product.quantitiesChanged">
-                  <span>Minimum Qty:<b>{{ this.tenantService.quantity(params.product.minQuantity) }} {{ params.product?.uomName }}</b></span>
-                  <span>Maximum Qty:<b>{{this.tenantService.quantity(params.product.maxQuantity)}} {{ params.product?.uomName }}</b></span>
-                  <span>Suggested Qty:<b>{{params.product.suggestedLift }} {{ params.product?.uomName }}</b></span>
-            </div>
+          <div class="qty" matTooltipClass="lightTooltip" matTooltip="Min - Max quantities">
+            <span class="title"style="font-size:12px">Qty:</span>
+            <span
+              class="value"
+              contenteditable="false"
+              (keydown)="editQty($event)"
+              >{{ this.tenantService.quantity(params.product.minQuantity) }}/{{
+                this.tenantService.quantity(params.product.maxQuantity)
+              }}
+              {{ params.product.uomName }}</span
+            >
           </div>
           
           <div
@@ -351,7 +340,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class ShiptechCustomHeaderGroup {
   //@ViewChildren('resieIcon') el:ElementRef;
   @ViewChildren('resieIcon') resieIcons: ElementRef<HTMLInputElement>;
-  @ViewChild('searchName') searchName;
   public params: any;
   selected = 'eur';
   selected1 = 'bbl';
@@ -430,10 +418,9 @@ export class ShiptechCustomHeaderGroup {
     }
   }
   setValuefun(){
-    this.searchName.nativeElement.value = '';
-    for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
-      this.visibleCounterpartyList[i].selected = false;
-    }  
+    if (this.visibleCounterpartyList.length != 0) {
+      return
+    }
     let counterparties = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 12);
     });
@@ -1003,7 +990,6 @@ export class ShiptechCustomHeaderGroup {
 
     const response = this._spotNegotiationService.addCounterparties(payload);
     response.subscribe((res: any) => {
-      this.selectedCounterparty = _.cloneDeep([]);
       if (res.status) {
         this.toastr.success(res.message);
         // Add in Store
