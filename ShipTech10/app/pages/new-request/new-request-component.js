@@ -1365,6 +1365,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         }
                     ).finally(() => {
                         ctrl.buttonsDisabled = false;
+                        $state.reload();
                     });
                 }
             });
@@ -4196,6 +4197,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     }
                 }
             });
+           
             if (etaStatusOrder <= currentStatusOrder) {
                 return true;
             } // freeze

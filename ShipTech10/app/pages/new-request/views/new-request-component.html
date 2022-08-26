@@ -657,7 +657,7 @@
                                                             <div class="input-group col-md-8 col-sm-12">
                                                                       
                                                                 <input ng-model="$ctrl.request.locations[locationIdx].eta"
-                                                                       ng-disabled="$ctrl.disableAllFields"
+                                                                       ng-disabled="ctrl.disableAllFields"
                                                                        ng-change="$ctrl.etaChanged(location, locationIdx); $ctrl.validateRequestDateFields(location, locationIdx)"
                                                                        name="{{ locationIdx }}_eta"
                                                                        id="{{ locationIdx }}_eta"
