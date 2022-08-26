@@ -473,18 +473,18 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         if (res?.message == 'Unauthorized') {
           return;
         }
-        
         let errorMessages = [];
         this.selectedOffers.forEach((rqV, rqK) => {
           let hasOrder = false;
           let hasError = false;
+          rqV.ExistingOrderId = null;
           if (res.payload.length > 0) {
             this.responseOrderData = res.payload;
             this.responseOrderData.forEach((rodV, rodK) => {
               hasError = false;
               let productsWithErrors = [];
               rodV.products.forEach((rodProdV, rodProdK) => {
-                if (rodV.requestLocationId == rqV.RequestLocationId) {
+                if (rodV.requestLocationId == rqV.RequestLocationId && rodV.locationId == rqV.LocationId) {
                   //&& rodProdV.requestProductId == rqV.RequestProductId
                   hasOrder = true;
                   let errorType = [];
@@ -533,7 +533,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               });
             });
           }
-          if (foundRelatedOrder && this.isOrdertype == "1") {
+          if (hasOrder && foundRelatedOrder && this.isOrdertype == "1") {
             rqV.ExistingOrderId = foundRelatedOrder;
           }
         });
@@ -562,7 +562,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
           QuoteByDate: this.selectedOffers[0].QuoteByDate,
           QuoteByCurrencyId: this.selectedOffers[0].QuoteByCurrencyId,
           QuoteByTimeZoneId: this.selectedOffers[0].QuoteByTimeZoneId, //this.requestOffers.Select(off => off.QuoteByTimeZoneId).FirstOrDefault()
-          Comments: ''
+          Comments: '',
+          IsOrderType: this.isOrdertype
         };
         //this.toaster.info('Please wait while the offer is confirmed');
         
@@ -586,21 +587,28 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                   this.FreezeMarketPricesPayload
                 );
                 resp.subscribe((result: any) => {
-                  if(result.status ) {
-                  
+                  if(result.status) {
+                    this.toaster.success('order created successfully.');
                     if(requestOfferIds.length>0){
                       this.spotNegotiationService.cloneToPriceConfiguration({RequestOfferIds:requestOfferIds})
                         .pipe(
                           switchMap((resp: any) => this.spotNegotiationService.orderPriceEvaluations({PriceConfigurationIds: resp.orderPriceConfigurationIds}))
-                        ).subscribe(res=> console.log(res));
+                        ).subscribe((res:any)=> {const baseOrigin = new URL(window.location.href).origin;
+                          window.open(
+                            `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
+                            '_self'
+                          );
+                          console.log(res);
+                        });
                       }
-                    //this.openEditOrder(receivedOffers.payload);
-                    const baseOrigin = new URL(window.location.href).origin;
-                    window.open(
-                      `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
-                      '_self'
-                    );
-                    this.toaster.success('order created successfully.');
+                      else{
+                        const baseOrigin = new URL(window.location.href).origin;
+                          window.open(
+                            `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
+                            '_self'
+                          );
+                      }
+                    //this.openEditOrder(receivedOffers.payload);                    
                   }
                 });
               } else if (res instanceof Object) {

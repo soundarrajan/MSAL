@@ -485,14 +485,14 @@ export class PortPopupComponent implements OnInit {
     if (!this.description || this.description.trim() == '') {
       let descWarnMsg = 'please enter description for the remark';
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data: { message: descWarnMsg, source: 'hardWarning' }
       });
       return;
     } else if (!this.severity?.id) {
       let severityWarnMsg = 'select severity of the remark';
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data: { message: severityWarnMsg, source: 'hardWarning' }
       });
       return;
@@ -2134,7 +2134,7 @@ export class PortMenuComponent {
     ) {
       let warnCommentMsg = 'please enter a comment';
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        panelClass: 'confirmation-popup-operator',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],
         data: { message: warnCommentMsg, source: 'hardWarning' }
       });
       return;

@@ -175,7 +175,7 @@ export class SaveBunkeringPlanState{
                               BPlanData[BPlanDataIndex].hsfo_safe_port = payload;
                               break;
                             }
-      case 'hsfo_soa':{ if(BPlanData[BPlanDataIndex]?.hsfo_soa)
+      case 'hsfo_soa':{ if(BPlanData[BPlanDataIndex]?.hsfo_soa != 'undefined' && BPlanData[BPlanDataIndex]?.hsfo_soa != null)
                         BPlanData[BPlanDataIndex].hsfo_soa = payload;
                         break;
                       }
@@ -199,7 +199,7 @@ export class SaveBunkeringPlanState{
                                     BPlanData[BPlanDataIndex].ulsfo_estimated_lift = payload;
                                     break;
                                   }
-      case 'ulsfo_soa':{  if(BPlanData[BPlanDataIndex]?.ulsfo_soa)
+      case 'ulsfo_soa':{  if(BPlanData[BPlanDataIndex]?.ulsfo_soa != 'undefined' && BPlanData[BPlanDataIndex]?.ulsfo_soa != null)
                           BPlanData[BPlanDataIndex].ulsfo_soa = payload;
                           break;
                         }
@@ -216,12 +216,12 @@ export class SaveBunkeringPlanState{
                                 BPlanData[BPlanDataIndex].lsdis_safe_port = payload;
                                 break;
                               }
-      case 'lsdis_as_eca':{ if(BPlanData[BPlanDataIndex]?.lsdis_as_eca)
+      case 'lsdis_as_eca':{ if(BPlanData[BPlanDataIndex]?.lsdis_as_eca != 'undefined' && BPlanData[BPlanDataIndex]?.lsdis_as_eca != null)
                             BPlanData[BPlanDataIndex].lsdis_as_eca = payload;
                             break;
                           }
                           
-      case 'lsdis_soa':{  if(BPlanData[BPlanDataIndex]?.lsdis_soa)
+      case 'lsdis_soa':{  if(BPlanData[BPlanDataIndex]?.lsdis_soa != 'undefined' && BPlanData[BPlanDataIndex]?.lsdis_soa != null)
                           BPlanData[BPlanDataIndex].lsdis_soa = payload;
                           break;
                         }

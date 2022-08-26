@@ -30,7 +30,7 @@
                 <div style="max-height:427px; overflow-y:scroll; overflow-x:hidden">
                   <div *ngFor="let items of specificPortRatingData">
                     <div class="row second-header"  style="padding: 0px 4px; justify-content: space-between;">
-                        <div class="col-7 bold-text" style="padding-left: 1.5vw;">{{items.categoriesName | htmlDecodeReadonly}}</div>
+                        <div class="col-7 bold-text" style="padding-left: 32px;">{{items.categoriesName | htmlDecodeReadonly}}</div>
                         <div class="col-5 text-right" style="padding-right: 1.4vw;" >
                             <span class="unbold-text">Rated by </span>
                             <span class="bold-text">{{items.ratedBy}}</span>
@@ -40,7 +40,7 @@
                        </div>
                     <div class="row" *ngFor="let item of items.details; let i = index">
                         <span class="rating-star align-center" style="display: inline-flex; width: 100%;">
-                            <span class="w-50"  style="padding-left: 0.8vw;" >{{i+1}}. {{item.name | htmlDecodeReadonly}}</span>
+                            <span class="w-50"  style="padding-left: 15px;" >{{i+1}}. {{item.name | htmlDecodeReadonly}}</span>
                             <div class="rate l-h-46" *ngIf="item.rating != null">
                               <star-rating value="{{item.rating}}" [totalstars]='5' checkedcolor="#364150" uncheckedcolor="#EAEAEA" size="3em" readonly="true"></star-rating>
                             </div>
@@ -78,7 +78,7 @@
                 <div style="max-height: 426px; overflow-y:scroll; overflow-x:hidden">
                   <div *ngFor="let items of allLocationRatingData">
                     <div class="row second-header" style="padding: 0px 4px; justify-content: space-between;">
-                        <div class="col-7 bold-text"  style="padding-left: 1.5vw;">{{items.categoriesName | htmlDecodeReadonly}}</div>
+                        <div class="col-7 bold-text"  style="padding-left: 32px;">{{items.categoriesName | htmlDecodeReadonly}}</div>
                         <div class="col-5 text-right"  style="padding-right: 1.4vw;">
                             <span class="unbold-text">Rated by </span>
                             <span class="bold-text">{{items.ratedBy}}</span>
@@ -88,7 +88,7 @@
                     </div>
                     <div class="row"  *ngFor="let item of items.details; let i = index">
                         <span class="rating-star align-center" style="display: inline-flex; width: 100%;">
-                            <span class="w-50" style="padding-left: 0.8vw; padding-top: 15px;" >{{i+1}}. {{item.name | htmlDecodeReadonly}}</span>
+                            <span class="w-50" style="padding-left: 15px; padding-top: 15px;" >{{i+1}}. {{item.name | htmlDecodeReadonly}}</span>
                             <div class="rate l-h-46" *ngIf="item.rating != null">
                               <star-rating value="{{item.rating}}" [totalstars]='5' checkedcolor="#364150" uncheckedcolor="#EAEAEA" size="3em" readonly="true"></star-rating>
                             </div>

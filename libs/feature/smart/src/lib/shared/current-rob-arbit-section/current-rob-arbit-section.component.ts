@@ -35,7 +35,7 @@ export class CurrentRobArbitSectionComponent implements OnInit {
       overlay.classList.remove('removeOverlay');
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         width: '350px',
-        panelClass: 'confirmation-popup-operator',// confirmation-popup',
+        panelClass: ['confirmation-popup-operator', 'bg-transparent'],// confirmation-popup',
         data: {message : 'A new Plan exists for this vessel. Cannot update an old Plan', source: 'vesselHardWarning'}
       });
     }
