@@ -592,7 +592,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
           ? moment(etaDate).format(this.dateFormat_rel_SupplyDate)
           : '',
         product:
-          requestOffers.quotedProductId == reqProd[0].productId
+        (reqProd && reqProd[0] && requestOffers.quotedProductId == reqProd[0]?.productId)
             ? ''
             : {
                 id: requestOffers.quotedProductId,
