@@ -540,12 +540,14 @@ export class SpotnegoOtherdetails2Component implements OnInit {
               reqProd = ele.requestProducts.filter(
                 item => item.id === reqOff.requestProductId
               );
-              otherDetailsPayload = this.ConstructOtherDetailsPayload(
-                reqOff,
-                etaDate,
-                reqProd
-              );
-              this.otherDetailsItems.push(otherDetailsPayload[0]);
+              if (reqProd && reqProd.length > 0) {
+                otherDetailsPayload = this.ConstructOtherDetailsPayload(
+                  reqOff,
+                  etaDate,
+                  reqProd
+                );
+                this.otherDetailsItems.push(otherDetailsPayload[0]);
+              }
             }
           });
         }
@@ -592,7 +594,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
           ? moment(etaDate).format(this.dateFormat_rel_SupplyDate)
           : '',
         product:
-        (reqProd && reqProd[0] && requestOffers.quotedProductId == reqProd[0]?.productId)
+        requestOffers.quotedProductId == reqProd[0].productId
             ? ''
             : {
                 id: requestOffers.quotedProductId,
