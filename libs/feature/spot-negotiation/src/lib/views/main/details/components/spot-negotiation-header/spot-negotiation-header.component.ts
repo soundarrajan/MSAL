@@ -391,11 +391,15 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       let selectedCounterpartyNames =  this.selectedCounterparty.map(innerData => {
         return innerData.name;
       });
+      if(selectedCounterpartyNames.length > 0)
       this.toastr.error("Counterparty "+selectedCounterpartyNames.toString()+" already added");
+      else
+      this.toastr.error("Please Select atleast One Counterparty");
       this.selectedCounterparty = _.cloneDeep([]);
       for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
         this.visibleCounterpartyList[i].selected = false;
       }
+      this.selectedCounterparty = _.cloneDeep([]);
       return;
     } 
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
@@ -483,6 +487,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         );
       } else {
         this.toastr.error(res.message);
+        this.selectedCounterparty = _.cloneDeep([]);
         return;
       }
     });
