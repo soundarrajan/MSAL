@@ -972,7 +972,10 @@ export class ShiptechCustomHeaderGroup {
     const selectedCounterparties = this.toBeAddedCounterparties(
       requestLocation
     );
-    if (selectedCounterparties.length == 0) return;
+    if (selectedCounterparties.length == 0) {
+      this.toastr.error("Please Select atleast One Counterparty");
+      return;
+    }
 
     let payload = {
       requestGroupId: parseInt(RequestGroupId),
@@ -1002,6 +1005,7 @@ export class ShiptechCustomHeaderGroup {
         this.changeDetector.markForCheck();
       } else {
         this.toastr.error(res.message);
+        this.selectedCounterparty = _.cloneDeep([]);
         return;
       }
     });
