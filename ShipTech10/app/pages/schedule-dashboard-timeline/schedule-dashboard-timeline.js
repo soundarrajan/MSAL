@@ -1607,7 +1607,7 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
         };
 
         $scope.$on(CUSTOM_EVENTS.BREADCRUMB_REFRESH_PAGE, function (event) {
-            $rootScope.$broadcast("clearUnsavedFilters");
+            $rootScope.$broadcast("clearUnsavedFilters_SD");
         });
 
         document.addEventListener('contextmenu', function(e) {

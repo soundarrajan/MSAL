@@ -259,7 +259,7 @@ angular.module('shiptech.pages').controller('ScheduleCalendarController', [ '$ro
 
         $scope.$on(CUSTOM_EVENTS.BREADCRUMB_REFRESH_PAGE, (event) => {
             // loadData(ctrl.startDate, ctrl.endDate);
-            $rootScope.$broadcast('clearUnsavedFilters');
+            $rootScope.$broadcast('clearUnsavedFilters_SD');
         });
         // Get UI settings from server. When complete, get business data from server.
         uiApiModel.get(SCREEN_LAYOUTS.SCHEDULE_DASHBOARD)

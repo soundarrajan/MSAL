@@ -140,7 +140,7 @@ angular.module('shiptech.components').controller('FiltersController', [
 
         $scope.applyFilters = function (data, noSlide, fromcol, column, defaultConf) {
             if(data && data.length > 0 && data[0].value ) {
-                data[0].value['0'] = data[0]?.value['0'].toString();
+                data[0].value['0'] = data[0]?.value['0']?.toString();
             }
             // $scope.currentList = $state.current.url.replace(":screen_id", $state.params.screen_id).replace("/", "");
             if ($scope.currentList === 'schedule-dashboard-calendar' || $scope.currentList === 'schedule-dashboard-table' || $scope.currentList === 'schedule-dashboard-timeline'){
@@ -436,7 +436,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             });
         };
 
-        $scope.$on('clearUnsavedFilters', (event) => {
+        $scope.$on('clearUnsavedFilters_SD', (event) => {
             // This should only be applied from schedule dashboard calendar
             if ($scope.selectedConfig && $scope.selectedConfig.id != 0) {
 	            $scope.loadSelectedConfig();
@@ -1250,12 +1250,13 @@ angular.module('shiptech.components').controller('FiltersController', [
                             newVal.push(v);
                         }
                     });
-                    if(newVal.length > 0)
+                    if(newVal?.length > 0)
                     {
                         newVal[0] = newVal[0] ? newVal[0] : [];
                         newVal[1] = newVal[1] ? newVal[1] : [];
                         newVal = [...newVal[0], ...newVal[1]]; //merge
                         newVal = newVal.filter(x => x.column != null) // remove empty objects
+                        newVal = newVal.length > 0 ? newVal : undefined;
                     }
                     resolve(newVal);
                 });
