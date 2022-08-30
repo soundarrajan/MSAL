@@ -52,6 +52,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   @ViewChild('headerContainer') container: ElementRef;
   @ViewChild('requestContainer') requestcontainer: ElementRef;
   @ViewChild('inputSearch') inputSearch: ElementRef;
+  @ViewChild('searchCounterparty') searchCounterparty;
 
   // Current request;
   locations = [];
@@ -451,6 +452,20 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         return;
       }
     });
+  }
+  setValuefun(){
+    this.searchCounterparty.nativeElement.value = '';
+    for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
+      this.visibleCounterpartyList[i].selected = false;
+    }  
+    let counterparties = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 12);
+    });
+    this.counterpartyList = cloneDeep(counterparties);
+    this.counterpartyList?.forEach(element => {
+      element.name = this.tenantService.htmlDecode(element.name);
+    });
+    this.visibleCounterpartyList = this.counterpartyList.slice(0, 12);
   }
 
   UpdateProductsSelection(requestLocations, row) {
@@ -936,7 +951,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     return this.expandedSearch;
   }
 
-  searchCounterparty(userInput: string): void {
+  searchCounterpartyDet(userInput: string): void {
     if (userInput.length === 0) {
       const locationsRowsOriData = this.store.selectSnapshot(
         (state: SpotNegotiationStoreModel) => {

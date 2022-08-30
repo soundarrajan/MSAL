@@ -7,6 +7,7 @@
         matTooltipClass="lightTooltip"
         [matMenuTriggerFor]="clickmenu"
         #menuTrigger="matMenuTrigger"
+        (click)="setValuefun()"
       ></span>
       <mat-menu #clickmenu="matMenu" class="add-new-request-menu  add-counterparties">
         <div class="expansion-popup" style="margin: 20px 0px;">
@@ -91,7 +92,7 @@
           type="search"
           name="inputSearch"
           #inputSearch
-          (input)="searchCounterparty($event.target.value)"
+          (input)="searchCounterpartyDet($event.target.value)"
           placeholder="Search counterparty" 
           matTooltip="{{inputSearch.value? inputSearch.value : 'Search counterparty' }}"
           matTooltipClass="lightTooltip"
