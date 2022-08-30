@@ -1,6 +1,6 @@
 import { Observable, pipe } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, Inject, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild, ViewChildren } from '@angular/core';
 import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -48,6 +48,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
                 <div class="search-product-container col-md-10">
                   <span class="search-product-lookup"> </span>
                   <input
+                  #searchName
                     matInput
                     placeholder="Search and select counterparty"
                     class="search-product-input"
@@ -338,6 +339,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class ShiptechCustomHeaderGroup {
   //@ViewChildren('resieIcon') el:ElementRef;
   @ViewChildren('resieIcon') resieIcons: ElementRef<HTMLInputElement>;
+  @ViewChild('searchName') searchName;
   public params: any;
   selected = 'eur';
   selected1 = 'bbl';
@@ -416,6 +418,10 @@ export class ShiptechCustomHeaderGroup {
     }
   }
   setValuefun(){
+    this.searchName.nativeElement.value = '';
+    for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
+      this.visibleCounterpartyList[i].selected = false;
+    }  
     let counterparties = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 12);
     });
