@@ -3893,7 +3893,7 @@ APP_MASTERS.controller('Controller_Datatables', [
                         pricetypesNew[key].marketPriceType = val.marketPriceType;
                     });
                     if (!$scope.isEdit) {
-                        angular.merge({},$scope.formValues.marketPrices, pricetypesNew);
+                        angular.merge($scope.formValues.marketPrices,$scope.formValues.marketPrices, pricetypesNew); 
                     }
                 }
             });
