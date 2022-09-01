@@ -748,7 +748,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         }
       }
       if(this.isComplexFormulaWeightEnforced == true){
-        if(totalWeight > 100 ){
+        if(totalWeight != 100 ){
           this.toastr.error('Complex Formula Weight Enforced so Weight should be restricted to 100 ');
           return;
         }
