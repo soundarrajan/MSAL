@@ -344,28 +344,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   refreshGrid(){
-    let locationData : any[] = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.locationsRows;
-    });
-    let OfferIds = [];
-    locationData.forEach(loc =>{
-      if(loc.requestOffers){
-         let offerId = loc.requestOffers.find(x => x.isFormulaPricing == true)?.id;
-         OfferIds.push(offerId);
-      }
-    }
-    );
-    OfferIds =  OfferIds.filter(x=> x!=undefined);
-    this._spotNegotiationService.evaluatePrices({ RequestOfferIds: OfferIds}).subscribe((resp:any) =>{
-      if(resp?.message == 'Unauthorized') return;
-      if(resp.offersPrices){
-        this.store.dispatch(new EvaluatePrice(resp.offersPrices));
-        this._spotNegotiationService.callGridRedrawService();
-      }
-      else{
-        this.toastr.error('An Error Occurred while evaluating price');
-      }
-    })
+    this._spotNegotiationService.callGridRedrawService();
   }
   addCounterpartyAcrossLocations() {
     const selectedCounterparties = this.toBeAddedCounterparties();
