@@ -531,7 +531,13 @@ export class EmailPreviewPopupComponent implements OnInit {
         isSendEmail &&
         res['validationMessage'].length == 0
       ) {
+        
         this.toaster.success('Mail sent successfully.');
+        setTimeout(() => {
+          this.spotNegotiationService.callGridRedrawService();
+        }, 500);
+        
+
         this.dialogRef.close();
       } else if (
         res instanceof Object &&
@@ -539,6 +545,10 @@ export class EmailPreviewPopupComponent implements OnInit {
         res['validationMessage'].length == 0
       ) {
         this.toaster.success('Template saved successfully.');
+        this.toaster.success('Mail sent successfully.');
+        setTimeout(() => {
+          this.spotNegotiationService.callGridRedrawService();
+        }, 500);
         this.previewTemplate = res['previewResponse'];
       } else if (res instanceof Object) {
         this.toaster.warning(res.Message);
@@ -640,10 +650,10 @@ export class EmailPreviewPopupComponent implements OnInit {
           let requestLocations = e.requestLocations.map(reqLoc => {
             let requestProducts = null;
             if (
-              futureLocationsRows.filter(
+              futureLocationsRows?.filter(
                 lr => lr.requestLocationId == reqLoc.id && lr.requestOffers
               ).length == 0 ||
-              futureLocationsRows.filter(
+              futureLocationsRows?.filter(
                 lr =>
                   lr.requestLocationId == reqLoc.id &&
                   lr.requestOffers?.find(x => !x.isRfqskipped)
