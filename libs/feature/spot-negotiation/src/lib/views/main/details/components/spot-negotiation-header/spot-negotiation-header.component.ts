@@ -122,10 +122,10 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           localStorage.removeItem('reqIdx');
         }
         this.requestOptions = spotNegotiation.requests;
-        if (this.requestOptions.length > 6) {
+        if (this.requestOptions?.length > 6) {
           this.displayVessel = true;
         }
-        if (spotNegotiation.requestList.length > 0) {
+        if (spotNegotiation.requestList?.length > 0) {
           this.requestsAndVessels = this.removeDuplicatesRequest(
             spotNegotiation.requestList,
             'requestName'
@@ -147,7 +147,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           this.locations =
             spotNegotiation.currentRequestSmallInfo.requestLocations;
           if (
-            this.counterpartyList.length === 0 &&
+            this.counterpartyList?.length === 0 &&
             spotNegotiation.counterpartyList
           ) {
             this.counterpartyList = _.cloneDeep(spotNegotiation.counterpartyList);
@@ -186,7 +186,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    if (this.requestOptions.length <= 1) {
+    if (this.requestOptions?.length <= 1) {
       this.toastr.error('You cannot delink the last request in the group');
       return;
     }
@@ -291,7 +291,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             return row.requestLocationId == reqLoc.id;
           });
           let perLocationCtpys = [];
-          for (let i = 0; i < this.selectedCounterparty.length; i++) {
+          for (let i = 0; i < this.selectedCounterparty?.length; i++) {
             let val = this.selectedCounterparty[i];
             let checkIfSelectedCounterpartyExist = _.findIndex(
               currentLocationRows,
@@ -344,20 +344,41 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   refreshGrid(){
-    this._spotNegotiationService.callGridRedrawService();
+    let locationData : any[] = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    let OfferIds = [];
+    locationData.forEach(loc =>{
+      if(loc.requestOffers){
+         let offerId = loc.requestOffers.find(x => x.isFormulaPricing == true)?.id;
+         OfferIds.push(offerId);
+      }
+    }
+    );
+    OfferIds =  OfferIds.filter(x=> x!=undefined);
+    this._spotNegotiationService.evaluatePrices({ RequestOfferIds: OfferIds}).subscribe((resp:any) =>{
+      if(resp?.message == 'Unauthorized') return;
+      if(resp.offersPrices){
+        this.store.dispatch(new EvaluatePrice(resp.offersPrices));
+        this._spotNegotiationService.callGridRedrawService();
+      }
+      else{
+        this.toastr.error('An Error Occurred while evaluating price');
+      }
+    })
   }
   addCounterpartyAcrossLocations() {
     const selectedCounterparties = this.toBeAddedCounterparties();
-    if (selectedCounterparties.length == 0){
+    if (selectedCounterparties?.length == 0){
       let selectedCounterpartyNames =  this.selectedCounterparty.map(innerData => {
         return innerData.name;
       });
-      if(selectedCounterpartyNames.length > 0)
-      this.toastr.error("Counterparty "+selectedCounterpartyNames.toString()+" already added");
+      if(selectedCounterpartyNames?.length > 0)
+      this.toastr.error("Counterparty "+selectedCounterpartyNames?.toString()+" already added");
       else
       this.toastr.error("Please Select atleast One Counterparty");
       this.selectedCounterparty = _.cloneDeep([]);
-      for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
+      for (let i = 0; i < this.visibleCounterpartyList?.length; i++) {
         this.visibleCounterpartyList[i].selected = false;
       }
       this.selectedCounterparty = _.cloneDeep([]);
@@ -386,7 +407,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       }
 
       if (res.status) {
-        for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
+        for (let i = 0; i < this.visibleCounterpartyList?.length; i++) {
           this.visibleCounterpartyList[i].selected = false;
         }
 
@@ -412,16 +433,16 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             alreadyAdded += element.name + ", ";
           }
         });
-        const LOCATION_COUNT = this.requestOptions[0].requestLocations.length;
+        const LOCATION_COUNT = this.requestOptions[0].requestLocations?.length;
         let allLocationMessage = '';
         messageList.forEach(element => {
           let addedLocations =  element.locations.filter(e => { 
-            return e.length;
+            return e?.length;
           });
-          if(LOCATION_COUNT == addedLocations.length){
+          if(LOCATION_COUNT == addedLocations?.length){
             allLocationMessage += element.counterpartyName + ", ";
           }else{
-            this.toastr.success(element.counterpartyName + " added successfully to ("+addedLocations.length+") locations - "+ addedLocations.toString());
+            this.toastr.success(element.counterpartyName + " added successfully to ("+addedLocations?.length+") locations - "+ addedLocations?.toString());
           }
         });
         if(allLocationMessage != ''){
@@ -469,8 +490,8 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   UpdateProductsSelection(requestLocations, row) {
-    if (requestLocations.length != 0) {
-      let currentLocProdCount = requestLocations[0].requestProducts.length;
+    if (requestLocations?.length != 0) {
+      let currentLocProdCount = requestLocations[0].requestProducts?.length;
       for (let index = 0; index < currentLocProdCount; index++) {
         let indx = index + 1;
         let val = 'checkProd' + indx;
@@ -495,7 +516,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if (reqLocation && reqLocation.requestProducts) {
           for (
             let index = 0;
-            index < reqLocation.requestProducts.length;
+            index < reqLocation.requestProducts?.length;
             index++
           ) {
             let indx = index + 1;
@@ -550,14 +571,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             this.currentRequestData?.length > 0
           ) {
             if (
-              currentLocProd.length > 0 &&
-              currentLocProd[0].requestProducts.length > 0
+              currentLocProd?.length > 0 &&
+              currentLocProd[0].requestProducts?.length > 0
             ) {
               let FilterProdut = currentLocProd[0].requestProducts.filter(
                 col => col.id == element1.requestProductId
               );
               if (
-                FilterProdut.length > 0 &&
+                FilterProdut?.length > 0 &&
                 FilterProdut[0].status != undefined &&
                 FilterProdut[0].status == 'Stemmed'
               ) {
@@ -586,7 +607,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
-        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts?.length > 0);
         row.requestOffers = row.requestOffers?.sort((a, b) =>
           a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
@@ -614,14 +635,14 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
               this.currentRequestData?.length > 0
             ) {
               if (
-                currentLocProd.length > 0 &&
-                currentLocProd[0].requestProducts.length > 0
+                currentLocProd?.length > 0 &&
+                currentLocProd[0].requestProducts?.length > 0
               ) {
                 let FilterProdut = currentLocProd[0].requestProducts.filter(
                   col => col.id == element1.requestProductId
                 );
                 if (
-                  FilterProdut.length > 0 &&
+                  FilterProdut?.length > 0 &&
                   FilterProdut[0].status != undefined &&
                   FilterProdut[0].status == 'Stemmed'
                 ) {
@@ -650,7 +671,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
           });
           row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
-          row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+          row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts?.length > 0);
           row.requestOffers = row.requestOffers?.sort(
             (a, b) =>
               a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
@@ -671,7 +692,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   addToRequestListCheckboxOptions() {
-    if (this.selectedRequestList.length > 0) {
+    if (this.selectedRequestList?.length > 0) {
       let selectedreqId = [];
       const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
       const requests = this.store.selectSnapshot(
@@ -683,7 +704,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         let filterduplicaterequest = requests.filter(
           e => e.id == element.requestId
         );
-        if (filterduplicaterequest.length > 0) {
+        if (filterduplicaterequest?.length > 0) {
           let ErrorMessage =
             filterduplicaterequest[0].name +
             ' - ' +
@@ -694,7 +715,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           selectedreqId.push(element.requestId);
         }
       });
-      if (this.selectedRequestList.length > 0) {
+      if (this.selectedRequestList?.length > 0) {
         let payload = {
           groupId: parseInt(RequestGroupId),
           requestIds: selectedreqId
@@ -707,7 +728,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           if (res?.message == 'Unauthorized') {
             return;
           }
-          if (res.error) {
+          if (res?.error) {
             alert('Handle Error');
             return;
           } else {
@@ -744,7 +765,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                   return state['spotNegotiation'].requests;
                 }
               );
-              if (requests.length > 6) {
+              if (requests?.length > 6) {
                 this.displayVessel = true;
               }
             }, 500);
@@ -788,7 +809,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         if (res.payload) {
           this.availableContracts[`request_${selectedRequestId}`] = res.payload;          
 
-          if (res.payload.length > 0) {
+          if (res.payload?.length > 0) {
             const futurerequestContract = this.getRequestAddContract(
               JSON.parse(JSON.stringify(this.requestOptions)),
               res.payload
@@ -818,7 +839,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       requests.forEach(req => {
         req.requestLocations.forEach(reqLoc => {
           if (
-            reqLoc.requestProducts.length > 0 &&
+            reqLoc.requestProducts?.length > 0 &&
             reqLoc.id == row.requestLocationId
           ) {
             reqLoc.requestProducts.forEach(reqProd => {
@@ -911,7 +932,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         })
         .slice(0, 7)
     );
-    if (this.visibleRequestList.length === 0) {
+    if (this.visibleRequestList?.length === 0) {
       const response = this._spotNegotiationService.getRequestresponse(
         null,
         { Filters: [] },
@@ -935,7 +956,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   limitStrLength = (text, max_length) => {
-    if (text.length > max_length - 3) {
+    if (text?.length > max_length - 3) {
       return text.substring(0, max_length).trimEnd() + '...';
     }
 
@@ -951,8 +972,8 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     return this.expandedSearch;
   }
 
-  searchCounterpartyDet(userInput: string): void {
-    if (userInput.length === 0) {
+  searchLocationCounterparty(userInput: any) {
+    if (userInput?.length === 0) {
       const locationsRowsOriData = this.store.selectSnapshot(
         (state: SpotNegotiationStoreModel) => {
           return state['spotNegotiation'].LocationsOriData;

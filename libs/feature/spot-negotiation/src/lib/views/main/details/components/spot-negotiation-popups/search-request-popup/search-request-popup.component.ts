@@ -86,7 +86,7 @@ export class SearchRequestPopupComponent implements OnInit {
           this.pageSize = 25;
           this.totalItems = this.requestRowCount;
           this.dialog_gridOptions.api.setRowData(this.requestList);
-          this.requestListLength = this.requestList.length;
+          this.requestListLength = this.requestList?.length;
         });
       },
       getRowStyle: function(params) {
@@ -96,7 +96,7 @@ export class SearchRequestPopupComponent implements OnInit {
       },
       onColumnResized: function(params) {
         if (
-          params.columnApi.getAllDisplayedColumns().length <= 5 &&
+          params.columnApi.getAllDisplayedColumns()?.length <= 5 &&
           params.type === 'columnResized' &&
           params.finished === true &&
           params.source === 'uiColumnDragged'
@@ -151,7 +151,7 @@ export class SearchRequestPopupComponent implements OnInit {
 
   onCounterpartyChange(value) {
     this.searchingRequest = value;
-    if (this.searchingRequest.length === 0) {
+    if (this.searchingRequest?.length === 0) {
       this.totalItems = this.requestRowCount;
       this.dialog_gridOptions.api.setRowData(this.requestList);
     } else {
@@ -301,7 +301,7 @@ export class SearchRequestPopupComponent implements OnInit {
 
   addToRequestList() {
     this.selectedRequestList = this.dialog_gridOptions.api.getSelectedRows();
-    if (this.selectedRequestList.length > 0) {
+    if (this.selectedRequestList?.length > 0) {
       const requests = this.store.selectSnapshot(
         (state: SpotNegotiationStoreModel) => {
           return state['spotNegotiation'].requests;
@@ -312,7 +312,7 @@ export class SearchRequestPopupComponent implements OnInit {
         let filterduplicaterequest = requests.filter(
           e => e.id == element.requestId
         );
-        if (filterduplicaterequest.length > 0) {
+        if (filterduplicaterequest?.length > 0) {
           let ErrorMessage =
             filterduplicaterequest[0].name +
             ' - ' +
@@ -323,7 +323,7 @@ export class SearchRequestPopupComponent implements OnInit {
           selectedreqId.push(element.requestId);
         }
       });
-      if (this.selectedRequestList.length > 0) {
+      if (this.selectedRequestList?.length > 0) {
         let payload = {
           groupId: parseInt(this.RequestGroupId),
           requestIds: selectedreqId
@@ -335,7 +335,7 @@ export class SearchRequestPopupComponent implements OnInit {
           if (res?.message == 'Unauthorized') {
             return;
           }
-          if (res.error) {
+          if (res?.error) {
             alert('Handle Error');
             return;
           } else {
@@ -382,7 +382,7 @@ export class SearchRequestPopupComponent implements OnInit {
             return false;
           }
         });
-        if (this.rowData.length > 0) {
+        if (this.rowData?.length > 0) {
           this.dialog_gridOptions.api.setRowData(this.rowData);
         }
       }
@@ -473,7 +473,7 @@ export class SearchRequestPopupComponent implements OnInit {
             ? 'custom-chip medium-amber'
             : 'custom-chip dark';
         classArray.push(newClass);
-        return { cellClass: classArray.length > 0 ? classArray : null };
+        return { cellClass: classArray?.length > 0 ? classArray : null };
       }
     },
     {
@@ -497,7 +497,7 @@ export class SearchRequestPopupComponent implements OnInit {
             ? 'custom-chip medium-amber'
             : 'custom-chip dark';
         classArray.push(newClass);
-        return { cellClass: classArray.length > 0 ? classArray : null };
+        return { cellClass: classArray?.length > 0 ? classArray : null };
       }
     },
     {
