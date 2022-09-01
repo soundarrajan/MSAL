@@ -3621,7 +3621,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         };
 
         ctrl.removeInvalidMTRs = function(locIdx, prodIdx) {
-            if(ctrl.request.locations[locIdx].products[prodIdx].minimumQuantitiesToReach.length>0){
+            if(ctrl?.request?.locations[locIdx]?.products[prodIdx]?.minimumQuantitiesToReach?.length > 0) {
                 for(let i=0;ctrl.request.locations[locIdx].products[prodIdx].minimumQuantitiesToReach.length>i;i++){
                     if(ctrl.request.locations[locIdx].products[prodIdx].minimumQuantitiesToReach[i].port.id==0
                         || ctrl.request.locations[locIdx].products[prodIdx].minimumQuantitiesToReach[i].eta==null
