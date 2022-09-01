@@ -977,7 +977,33 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       this.store.dispatch(new SetLocationsRows(result));
     }
   }
-
+  
+  searchCounterpartyDet(userInput: string): void {
+    if (userInput.length === 0) {
+      const locationsRowsOriData = this.store.selectSnapshot(
+        (state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].LocationsOriData;
+        }
+      );
+      this.store.dispatch(new SetLocationsRows(locationsRowsOriData));
+    } else {
+      let result = this.store
+        .selectSnapshot((state: SpotNegotiationStoreModel) => {
+          return state['spotNegotiation'].LocationsOriData;
+        })
+        .filter(e => {
+          if (
+            e.sellerCounterpartyName
+              .toLowerCase()
+              .includes(userInput.toLowerCase())
+          ) {
+            return true;
+          }
+          return false;
+        });
+      this.store.dispatch(new SetLocationsRows(result));
+    }
+  }
   scrollPort1(el: HTMLElement) {
     el.scrollIntoView();
   }

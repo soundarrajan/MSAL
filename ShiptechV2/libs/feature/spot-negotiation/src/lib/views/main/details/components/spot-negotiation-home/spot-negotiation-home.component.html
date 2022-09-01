@@ -26,7 +26,8 @@
             
             <div class="header-buttons">
             <div class="header-btn-icons"> 
-                <span  matTooltip="No Quote" matTooltipClass="lightTooltip"  (click)="noQuoteAction('no-quote')" class="no-quote-header-icon"></span>
+              <div class="set-border">
+                <div  matTooltip="No Quote" matTooltipClass="lightTooltip"  (click)="noQuoteAction('no-quote')" class="no-quote-header-icon"></div>
                 <span
                   class="duplicate-price"
                   [matMenuTriggerFor]="clickmenu"
@@ -85,6 +86,41 @@
                 </mat-menu>
                 <!-- <span class="duplicate-cost" matTooltip="Duplicate Cost" matTooltipClass="blueTooltip"></span>-->
              </div>
+             <div class="quote-by-date d-flex">
+              <div *ngIf="expand_quoteDate" class="quote-by-content d-flex">
+                 <div class="date-time-picker">
+                    <div class="p-r-2">Quote by:</div>
+                    <div class="by-datePicker">
+                       <div id="custom-form-field">
+                          <app-date-time-toggle  [dark]="true"></app-date-time-toggle>
+                       </div>
+                       <span class="dropdown-icon" (click)="dateTimePicker($event)"></span>
+                    </div>
+                 </div>
+                 <div class="location-picker">
+                    {{quoteByTimeZone}}
+                 </div>
+                 <span class="dropdown-icon" [matMenuTriggerFor]="locpopup" #menuTrigger="matMenuTrigger" (click)="loadTimeZone()"></span>
+                 <mat-menu #locpopup="matMenu" class="menu-panel-location small-menu darkPanel">
+                    <mat-select
+                    *ngIf="timeZones"
+                      (selectionChange)="
+                      selectedQuoteByTimeZone($event.value)"
+                      [disableOptionCentering]="true"
+                      panelClass="general-info-select-container"
+                      [compareWith]="compareQuoteByTimeZoneIdObjects">
+                      <ng-container  class="loc-data selected"  *ngFor=" let timezone of timeZones ">
+                      <mat-option  class="loc-data" [value]="timezone" >
+                      {{ timezone.name }}
+                    </mat-option>
+                      </ng-container>
+                    </mat-select>
+                 </mat-menu>
+              </div>
+              <span class="quote-by-icon" (click)="expand_quoteDate = !expand_quoteDate;"
+              [matTooltip]="expand_quoteDate?'Hide Quote by Info':'Show Quote by Info'" matTooltipClass="lightTooltip"></span>
+             </div>
+            </div>
               <div style="position: fixed;right: 35px;">
                 <button
                   matTooltip="Send RFQ"

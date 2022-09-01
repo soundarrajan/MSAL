@@ -517,7 +517,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     //Change with new value
     switch (field) {
       case 'offPrice':
-        productDetails.price = Number(newValue.toString().replace(/,/g, ''));
+        productDetails.price = Number(newValue?.toString().replace(/,/g, ''));
         break;
 
       default:
