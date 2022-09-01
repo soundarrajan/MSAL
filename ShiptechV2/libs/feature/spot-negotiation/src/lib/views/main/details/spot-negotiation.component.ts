@@ -75,7 +75,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.spinner.show();
     const requestIdFromUrl = this.route.snapshot.params.requestId;
     if(requestIdFromUrl && isNumeric(requestIdFromUrl)){
-      localStorage.setItem('activeRequestId', requestIdFromUrl.toString());
+      localStorage.setItem('activeRequestId', requestIdFromUrl?.toString());
     }
     this.getStaticLists();
     this.getAdditionalCosts();
@@ -118,7 +118,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if(res?.message == 'Unauthorized'){
         return;
       }
-      if (res.error) {
+      if (res?.error) {
         alert('Handle Error');
         return;
       }
@@ -178,11 +178,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         row1 => row1.id == row.requestId
       );
       let requestProducts = requests.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
-      if(rowrelatedrequest.length > 0 && rowrelatedrequest[0]["requestLocations"]){
+      if(rowrelatedrequest?.length > 0 && rowrelatedrequest[0]["requestLocations"]){
         currentLocProd = rowrelatedrequest[0]["requestLocations"].filter(
           row1 => row1.locationId == row.locationId
         );
-      if (currentLocProd.length != 0) {
+      if (currentLocProd?.length != 0) {
         let currentLocProdCount = currentLocProd[0].requestProducts.length;
         for (let index = 0; index < currentLocProdCount; index++) {
           let indx = index + 1;
@@ -208,14 +208,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             this.currentRequestData?.length > 0
           ) {
             if (
-              currentLocProd.length > 0 &&
-              currentLocProd[0].requestProducts.length > 0
+              currentLocProd?.length > 0 &&
+              currentLocProd[0].requestProducts?.length > 0
             ) {
               let FilterProdut = currentLocProd[0].requestProducts.filter(
                 col => col.id == element1.requestProductId
               );
               if (
-                FilterProdut.length > 0 &&
+                FilterProdut?.length > 0 &&
                 FilterProdut[0].status != undefined &&
                 FilterProdut[0].status == 'Stemmed'
               ) {
@@ -236,7 +236,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
-        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts?.length > 0);
         row.requestOffers = row.requestOffers?.sort((a,b)=>
         a.requestProductTypeOrderBy  === b.requestProductTypeOrderBy ?
         (a.requestProductId > b.requestProductId ? 1 : -1) :
@@ -246,13 +246,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       }
 
       // Else if not in the same index
-      if (priceDetailsArray != undefined && priceDetailsArray.length > 0) {
+      if (priceDetailsArray != undefined && priceDetailsArray?.length > 0) {
         const detailsForCurrentRow = priceDetailsArray.filter(
           e => e.requestLocationSellerId === row.id
         );
 
         // We found something
-        if (detailsForCurrentRow.length > 0) {
+        if (detailsForCurrentRow?.length > 0) {
           detailsForCurrentRow[0].requestOffers.forEach(element1 => {
             if (
               element1.requestProductId != undefined &&
@@ -260,14 +260,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               this.currentRequestData?.length > 0
             ) {
               if (
-                currentLocProd.length > 0 &&
-                currentLocProd[0].requestProducts.length > 0
+                currentLocProd?.length > 0 &&
+                currentLocProd[0].requestProducts?.length > 0
               ) {
                 let FilterProdut = currentLocProd[0].requestProducts.filter(
                   col => col.id == element1.requestProductId
                 );
                 if (
-                  FilterProdut.length > 0 &&
+                  FilterProdut?.length > 0 &&
                   FilterProdut[0].status != undefined &&
                   FilterProdut[0].status == 'Stemmed'
                 ) {
@@ -287,7 +287,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
           });
           row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
-          row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+          row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts?.length > 0);
           row.requestOffers = row.requestOffers?.sort((a,b)=>
           a.requestProductTypeOrderBy  === b.requestProductTypeOrderBy ?
           (a.requestProductId > b.requestProductId ? 1 : -1) :
@@ -314,7 +314,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if(res?.message == 'Unauthorized'){
         return;
       }
-      if (res.error) {
+      if (res?.error) {
         alert('Handle Error');
         return;
       }
@@ -349,7 +349,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if(res?.message == 'Unauthorized'){
         return;
       }
-      if (res.error) {
+      if (res?.error) {
         alert('Handle Error');
         return;
       } else {
@@ -373,7 +373,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if(res?.message == 'Unauthorized'){
         return;
       }
-      if (res.error) {
+      if (res?.error) {
         alert('Handle Error');
         return;
       } else {
@@ -393,7 +393,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   getPhysicalSupplierList(): void{
     const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], null, { Skip:0 , Take: 25 } );
     response.subscribe((res: any) => {
-      if (res.error) {
+      if (res?.error) {
         alert('Handle Error');
         return;
       } else {
@@ -416,7 +416,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if(res?.message == 'Unauthorized'){
         return;
       }
-      if (res.error) {
+      if (res?.error) {
         alert('Handle Error');
         return;
       } else {

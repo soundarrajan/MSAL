@@ -85,7 +85,7 @@ export class NegotiationToolbarComponent
       if (res?.message == 'Unauthorized') {
         return;
       }
-      if (res.error) {
+      if (res?.error) {
         this.toastr.error(res.error);
         return;
       } else {
