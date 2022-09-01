@@ -1209,6 +1209,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 }
             }
 
+            $.each(ctrl.request.locations, (key, val) => {
+                $.each(val.products, (key2, val2) => {
+                    ctrl.removeInvalidMTRs(key, key2);
+                });
+            });
+
             if (ctrl.showVesselExpiryWarningMessage && !ctrl.request.id) {
                 toastr.warning(ctrl.showVesselExpiryWarningMessage);
             }
@@ -3460,6 +3466,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             // call function to see required fields
             var valid = ctrl.checkValidQuantities();
             var validMQTR = ctrl.checkValidMQTRs();
+            $.each(ctrl.request.locations, (key, val) => {
+                $.each(val.products, (key2, val2) => {
+                    ctrl.removeInvalidMTRs(key, key2);
+                });
+            });
             if (ctrl.request.isMTRRequired) {
                 for (let location of ctrl.request.locations) {
                     for (let product of location.products) {
@@ -3608,6 +3619,19 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 return text;
             }
         };
+
+        ctrl.removeInvalidMTRs = function(locIdx, prodIdx) {
+            if(ctrl.request.locations[locIdx].products[prodIdx].minimumQuantitiesToReach.length>0){
+                for(let i=0;ctrl.request.locations[locIdx].products[prodIdx].minimumQuantitiesToReach.length>i;i++){
+                    if(ctrl.request.locations[locIdx].products[prodIdx].minimumQuantitiesToReach[i].port.id==0
+                        || ctrl.request.locations[locIdx].products[prodIdx].minimumQuantitiesToReach[i].eta==null
+                        || ctrl.request.locations[locIdx].products[prodIdx].minimumQuantitiesToReach[i].minQtyToReachPretest==undefined
+                        || ctrl.request.locations[locIdx].products[prodIdx].minimumQuantitiesToReach[i].minQtyToReach==undefined){
+                        ctrl.request.locations[locIdx].products[prodIdx].minimumQuantitiesToReach.splice(i,1);
+                    }
+                }
+            }
+        }
 
         ctrl.checkInactiveSpecGroup = function() {
             let firstLocationWithInactiveSpecGroup = true;
@@ -4798,21 +4822,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     return
                 }
                 ctrl.captureReasonModal(ctrl.selectedLocationIdx, ctrl.selectedProductIdx, 'REQUEST_PRODUCT_MTR', 'minimumQuantitiesToReach');
+                $scope.PopupprettyCloseFrom = 'success';
                 $scope.prettyCloseModal();
             }
         };
         /*MinimumQuantitytoReach Popup Close Modal start*/
         $scope.PopupprettyCloseModal = function(){
-            if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length>0){
-                for(let i=0;ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length>i;i++){
-                    if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].port.id==0
-                        || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].eta==null
-                        || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].minQtyToReachPretest==undefined
-                        || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[i].minQtyToReach==undefined){
-                        ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.splice(i,1);
-                    }
-                }
-            }
+            ctrl.removeInvalidMTRs(ctrl.selectedLocationIdx, ctrl.selectedProductIdx);
+            $scope.PopupprettyCloseFrom = 'dismiss';
             $scope.prettyCloseModal();
         };
         ctrl.getVesselSchedules = function(param, locationObj, portCall) {
@@ -4973,6 +4990,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 {
                     $rootScope.RootTempMinQtyToReach = angular.copy(currProd.products[ctrl.selectedProductIdx].minimumQuantitiesToReach);
                 }
+                $rootScope.mtrOnModalOpen = angular.copy(currProd.products[ctrl.selectedProductIdx].minimumQuantitiesToReach);
             }
             if(ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach== undefined || ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach.length==0 ){
                 ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach=[];
@@ -4985,6 +5003,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 appendTo: angular.element(document.getElementsByClassName('page-container')),
                 windowTopClass: 'fullWidthModal',
                 scope: $scope // passed current scope to the modal
+            });
+            // On modal close, if it is not from 'close' button click (ex: 'ESC' key press, 'x' button click), then retain previous valid data
+            $scope.modalInstance.closed.then(function() {
+                if (!['success'].includes($scope.PopupprettyCloseFrom)) {
+                    ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach = angular.copy($rootScope.mtrOnModalOpen);
+                }
+                $scope.PopupprettyCloseFrom = undefined;
             });
         };
 

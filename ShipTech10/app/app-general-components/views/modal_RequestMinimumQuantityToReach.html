@@ -53,7 +53,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="(key, value) in $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach | orderBy: $ctrl.sortMinimumQuantityToReach" ng-if="value.isDeleted != true"
+                                        <tr ng-repeat="(key, value) in $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach" ng-if="value.isDeleted != true"
                                             class="ng-scope">
                                             <td style="width:2%">
                                                 <span class="remove"                                                 
@@ -97,7 +97,7 @@
                                             </td>
                                             <td style="width:12%">
                                                 <div class="input-group" style="width: 100%;">
-                                                    <input id="minQtyToReachPretest{{key}}" ng-change="$ctrl.changeValue('minQtyToReachPretest{{key}}')"  name="minQtyToReachPretest{{key}}" type="text" class="form-control"
+                                                    <input id="minQtyToReachPretest{{key}}" ng-change="$ctrl.changeValue('minQtyToReachPretest{{key}}')"  name="minQtyToReachPretest{{key}}" type="text" ng-class="value.quantityColor ? 'form-control mtrColor-' + value.quantityColor : 'form-control'"
                                                     ng-model="value.minQtyToReachPretest" 
                                                     format="number"                         
                                                     />
@@ -105,7 +105,7 @@
                                             </td>
                                             <td style="width:12%">
                                                 <div class="input-group" style="width: 100%;">
-                                                    <input id="minQtyToReach{{key}}" ng-change="$ctrl.changeValue('minQtyToReach{{key}}')" name="minQtyToReach"  type="text" class="form-control" 
+                                                    <input id="minQtyToReach{{key}}" ng-change="$ctrl.changeValue('minQtyToReach{{key}}')" name="minQtyToReach"  type="text" ng-class="value.quantityColor ? 'form-control mtrColor-' + value.quantityColor : 'form-control'"
                                                     ng-model="value.minQtyToReach"
                                                     format="number"     
                                                     />
