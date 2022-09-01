@@ -78,7 +78,8 @@ export const SpotNegotiationApiPaths = {
   updateSellerComment: `RFQ/UpdateSellerComments`,
   getOfferPriceHistory: `Price/getOfferPriceHistory`,
   updateProductPrice: `RFQ/FreezeMarketPrices`,
-  isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`
+  isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`,
+  updateQuoteDateGroup: `groups/updateQuoteGroup`,
 };
 
 @Injectable({
@@ -891,6 +892,18 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   updateGroupComments(request: any): Observable<any> {
     return this.http
       .put<any>(`${this._negotiationApiUrl}/groups/${request}/updateGroupComments`, {})
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+  @ObservableException()
+  updateQuoteDateGroup(request: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updateQuoteDateGroup}`,
+        request
+      )
       .pipe(
         map((body: any) => body),
         catchError((body: any) => this.handleErrorMessage(body))

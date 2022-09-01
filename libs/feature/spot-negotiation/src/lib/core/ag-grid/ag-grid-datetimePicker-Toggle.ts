@@ -16,7 +16,8 @@ const moment = _rollupMoment || _moment;
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FormControl } from '@angular/forms';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
-
+import { Store } from '@ngxs/store';
+import { SetQuoteDateAndTimeZoneId } from '../../store/actions/request-group-actions';
 @Component({
   selector: 'app-date-time-toggle',
   template: `
@@ -28,7 +29,7 @@ import { SpotNegotiationService } from '../../services/spot-negotiation.service'
       <div class="quoteByContainer">
       <mat-form-field class="quoteByMatfield">
         <input
-          style="cursor:pointer;width:65px;float:left;height: 17px !important;text-align:left;color:white"
+          style="cursor:pointer;width:65px;float:left;height: 17px !important;text-align:left;color:black"
           matInput
           class="date-trigger"
           [ngModel]="initialDate.value"
@@ -90,12 +91,14 @@ export class AgGridDatetimePickerToggleComponent
   oldCellValue: string;
   timeValue: any = '12:12';
   timerValue: any;
+  currentRequestInfo: any;
+  quoteByTimeZoneId:number|null;
   newFormattedValue: string;
   matDateFieldWidth = '100px';
   initialDate = new FormControl(moment());
   public dateTime;
   @Input() dark: any;
-  constructor(private spotNegotiationService: SpotNegotiationService) {
+  constructor(    private store: Store,private spotNegotiationService: SpotNegotiationService) {
     //this.appContext = appContext || AppContext.instance;
   }
   @ViewChild('dateInputFlde', { read: ViewContainerRef }) public input;
@@ -132,6 +135,7 @@ export class AgGridDatetimePickerToggleComponent
     this.timeValue = h + ':' + m;
     //this.timeValue = "10:15";
     this.spotNegotiationService.QuoteByDate = this.getValue();
+    this.updateQuoteByGroup();
   }
   dateChanged(event) {
     this.initialDate = new FormControl(moment(event.value));
@@ -144,6 +148,7 @@ export class AgGridDatetimePickerToggleComponent
       this.picker.close = closeFn;
     });
     this.spotNegotiationService.QuoteByDate = this.getValue();
+    this.updateQuoteByGroup();
   }
 
   timepickerClosed() {
@@ -260,6 +265,36 @@ export class AgGridDatetimePickerToggleComponent
     //     .format(this.appContext.tenantSettingsContext.dateFormat) +
     //   ' ' +
     //   this.oldCellValue.substring(11, 16);
+  }
+  ///Update the QuoteByDate and TimeZone by requestGroups
+  updateQuoteByGroup(){
+
+    this.currentRequestInfo =this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.currentRequestSmallInfo;
+      }); 
+      this.quoteByTimeZoneId= this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.quoteTimeZoneIdByGroup;
+      }); 
+    let payload={
+      QuoteByTimeZoneId:this.quoteByTimeZoneId, 
+      RequestGroupId:this.currentRequestInfo.requestGroupId, 
+      QuoteByDate:this.spotNegotiationService.QuoteByDate 
+    }
+    this.spotNegotiationService
+    .updateQuoteDateGroup(payload)
+    .subscribe((response: any) => {
+      if (response?.message == 'Unauthorized') {
+        return;
+      }
+      if (response.status) {
+        let setQuoteByGroup={
+          quoteTimeZoneIdByGroup:payload.QuoteByTimeZoneId,
+          quoteDateByGroup: payload.QuoteByDate
+        };
+        payload.QuoteByTimeZoneId;
+        this.store.dispatch(new SetQuoteDateAndTimeZoneId(setQuoteByGroup));
+      }
+    });
   }
   onBlur(): any {
     var selectedCell = this.params.column.colId;

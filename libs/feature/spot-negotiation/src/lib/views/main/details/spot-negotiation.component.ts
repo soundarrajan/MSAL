@@ -15,7 +15,8 @@ import {
   SetRequests,
   SetTenantConfigurations,
   SetStaticLists,
-  SetCounterparties
+  SetCounterparties,
+  SetQuoteDateAndTimeZoneId
 } from '../../../store/actions/request-group-actions';
 import {
   SetLocations,
@@ -122,8 +123,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         alert('Handle Error');
         return;
       }
+      this.spotNegotiationService.QuoteByDate =res.payload?.quoteByDate;
       // Set all request inside store
       if (res['requests']) {
+        // set QuoteByDate and TimeZoneID
+        this.store.dispatch(new SetQuoteDateAndTimeZoneId(res));
         this.store.dispatch(new SetRequests(res['requests']));
         this.getGroupOfSellers(); 
       }
@@ -433,13 +437,15 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       { currencies: this.legacyLookupsDatabase.getTableByName('currency'),
         products: this.legacyLookupsDatabase.getTableByName('product'),
         // inactiveProducts: this.legacyLookupsDatabase.getTableByName('inactiveProducts'),
-        uoms: this.legacyLookupsDatabase.getTableByName('uom')
+        uoms: this.legacyLookupsDatabase.getTableByName('uom'),
+        timeZones: this.legacyLookupsDatabase.getTableByName('timeZone')
       }
     ).subscribe((res: any)=>{
       staticLists = {'currency': res.currencies };
       staticLists = { ...staticLists, 'product': res.products};
       // staticLists = { ...staticLists, 'inactiveProducts': res.inactiveProducts};
       staticLists = { ...staticLists, 'uom': res.uoms};
+      staticLists = { ...staticLists, 'timeZone': res.timeZones};
       this.store.dispatch(new SetStaticLists(staticLists));
     });
   }

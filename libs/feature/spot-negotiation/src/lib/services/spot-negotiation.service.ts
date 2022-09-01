@@ -557,6 +557,13 @@ export class SpotNegotiationService extends BaseStoreService
   updateGroupComments(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.updateGroupComments(payload);
   }
+
+    /**
+   * @param payload
+   */
+     updateQuoteDateGroup(payload: any): Observable<unknown> {
+      return this.spotNegotiationApi.updateQuoteDateGroup(payload);
+    }
   ngOnDestroy(): void {
     super.onDestroy();
   }

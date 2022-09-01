@@ -16,6 +16,7 @@ import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from '../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
   SetLocationsRows,
+  SetStaticLists,
   UpdateRequest
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotnegoemaillogComponent } from '../spotnegoemaillog/spotnegoemaillog.component';
@@ -27,6 +28,9 @@ import _ from 'lodash';
 import { NegotiationDetailsToolbarComponent } from '../../../toolbar/spot-negotiation-details-toolbar.component';
 import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
 import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { forkJoin } from 'rxjs';
+import { SetQuoteDateAndTimeZoneId } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -38,9 +42,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
   navigationItems: any[];
   navBar: any;
   requestOptions: any;
+  switchTheme; //false-Light Theme, true- Dark Theme
+  quoteByTimeZoneId:number|null;
+  quoteByTimeZone:any;
   requestOptionsToDuplicatePrice: any;
   isOpen: boolean = false;
-
+  public expand_quoteDate:boolean = true;
+  private legacyLookupsDatabase: LegacyLookupsDatabase;
+  staticLists: any;
+  timeZones:any;
   @ViewChild(NegotiationDetailsToolbarComponent)
   negoNavBarChild: NegotiationDetailsToolbarComponent;
 
@@ -136,7 +146,25 @@ export class SpotNegotiationHomeComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.spotNegotiationService.QuoteByDate = this.child.getValue();
+    setTimeout(() => {
+      let initDate;
+      initDate=this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.quoteDateByGroup;
+      });
+      this.quoteByTimeZoneId=this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.quoteTimeZoneIdByGroup;
+      });
+      this.staticLists = this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.staticLists;
+      });
+      this.timeZones=this.staticLists['timeZone'];
+      if(this.timeZones!=undefined && this.quoteByTimeZoneId!=null){
+        this.quoteByTimeZone=this.timeZones?.find(x => x.id == this.quoteByTimeZoneId).name;
+      }
+    
+      this.spotNegotiationService.QuoteByDate= initDate?? this.child.getValue();
+    },1000);
+    // this.spotNegotiationService.QuoteByDate = this.child.getValue();
   }
 
   setTabItems() {
@@ -201,7 +229,37 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
     ];
   }
-
+  compareQuoteByTimeZoneIdObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
+  selectedQuoteByTimeZone(value){
+    debugger;
+    this.quoteByTimeZoneId=value.id;
+    this.quoteByTimeZone =value.name;
+    this.updateQuoteByGroup();
+  }
+  updateQuoteByGroup(){
+    let payload={
+      QuoteByTimeZoneId:this.quoteByTimeZoneId, 
+      RequestGroupId:this.currentRequestInfo.requestGroupId, 
+      QuoteByDate:this.spotNegotiationService.QuoteByDate 
+    }
+    this.spotNegotiationService
+    .updateQuoteDateGroup(payload)
+    .subscribe((response: any) => {
+      if (response?.message == 'Unauthorized') {
+        return;
+      }
+      if (response.status) {
+        let setQuoteByGroup={
+          quoteTimeZoneIdByGroup:payload.QuoteByTimeZoneId,
+          quoteDateByGroup: payload.QuoteByDate
+        };
+        payload.QuoteByTimeZoneId;
+        this.store.dispatch(new SetQuoteDateAndTimeZoneId(setQuoteByGroup));
+      }
+    });
+  }
   setActiveRequest() {
     (<any>window).activeRequest = {
       i: this.headerDetailsComponent.selReqIndex
@@ -223,7 +281,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
     //    this.spotEmailComp.getEmailLogs();
     //  }
   }
-
+loadTimeZone(){
+    this.staticLists = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists;
+    });
+    this.timeZones=this.staticLists['timeZone'];
+}
   confirmorderpopup() {
     let selectedFinalData = this.FilterselectedRowForRFQ();
     let requestOffers = [];
