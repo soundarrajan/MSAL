@@ -100,6 +100,9 @@ export class AgGridDatetimePickerToggleComponent
   @Input() dark: any;
   constructor(    private store: Store,private spotNegotiationService: SpotNegotiationService) {
     //this.appContext = appContext || AppContext.instance;
+    if(this.spotNegotiationService.QuoteByDate!=undefined){
+      this.initialDate = new FormControl(this.spotNegotiationService.QuoteByDate);
+    }
   }
   @ViewChild('dateInputFlde', { read: ViewContainerRef }) public input;
   @ViewChild('picker') picker;
@@ -251,9 +254,12 @@ export class AgGridDatetimePickerToggleComponent
   ngAfterViewInit() {
     //this.matDate.setValue('1/1/2021');
     setTimeout(() => {
+      if(this.spotNegotiationService.QuoteByDate!=undefined){
+        this.initialDate = new FormControl(this.spotNegotiationService.QuoteByDate);
+      }
       //this.input.element.nativeElement.focus();
       //this.picker.open();
-    });
+    },1000);
   }
 
   getDateValue(event: MatDatepickerInputEvent<Date>) {
@@ -287,6 +293,8 @@ export class AgGridDatetimePickerToggleComponent
         return;
       }
       if (response.status) {
+        this.spotNegotiationService.QuoteByTimeZoneId=payload.QuoteByTimeZoneId;
+        this.spotNegotiationService.QuoteByDate=payload.QuoteByDate;
         let setQuoteByGroup={
           quoteTimeZoneIdByGroup:payload.QuoteByTimeZoneId,
           quoteDateByGroup: payload.QuoteByDate
