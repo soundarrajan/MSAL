@@ -34,6 +34,7 @@ export class SpotNegotiationService extends BaseStoreService
   private gridRefreshServiceAll = new Subject<any>();
   private gridRedrawService = new Subject<any>();
   QuoteByDate: any;
+  QuoteByTimeZoneId: any;
   counterpartyTotalCount: any;
   physicalSupplierTotalCount: any;
   requestCount: any;

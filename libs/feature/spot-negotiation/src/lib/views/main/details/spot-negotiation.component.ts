@@ -5,7 +5,8 @@ import {
   ChangeDetectorRef,
   Component,
   OnDestroy,
-  OnInit
+  OnInit,
+  ViewChild
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
@@ -35,6 +36,8 @@ import { isNumeric } from 'rxjs/internal-compatibility';
 import { SpotNegotiationPriceCalcService } from '../../../services/spot-negotiation-price-calc.service';
 import _ from 'lodash';
 import { forkJoin } from 'rxjs';
+import { AgGridDatetimePickerToggleComponent } from '../../../core/ag-grid/ag-grid-datetimePicker-Toggle';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
 @Component({
   selector: 'spot-negotiation-main-component',
@@ -53,11 +56,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   staticLists: any;
   CurrentProductLength: any;
   CurrentLocationprduct: any[];
+  generalTenantSettings:any;
   currentRequestData: any[];
   allRequest: any[];
   totalCounterpartyCount: number;
   additionalCostList: any = [];
-
+  @ViewChild(AgGridDatetimePickerToggleComponent)
+  child: AgGridDatetimePickerToggleComponent;
   constructor(
     private store: Store,
     private route: ActivatedRoute,
@@ -67,9 +72,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private spinner: NgxSpinnerService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
-    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService
+    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService,
+    private tenantSettingsService: TenantSettingsService,
   ) {
     this.entityName = 'Spot negotiation';
+    this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
   }
 
   ngOnInit(): void {
@@ -97,18 +104,38 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
 
-
-  getRequestGroup(): void {
+  UpdateCommentAndGetQuote(){
     // Get current id from url and make a request with that data.
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
-    this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
-    // Get response from server and populate store
     const responseGroupComment = this.spotNegotiationService.updateGroupComments(
       groupRequestIdFromUrl
     );
 
     responseGroupComment.subscribe((res: any) => {
-    if(res.status){
+      if(res.status){
+        this.spotNegotiationService.QuoteByDate =res?.quoteByDate??this.child.getValue();
+        this.spotNegotiationService.QuoteByTimeZoneId=res?.quoteByTimeZoneId??this.generalTenantSettings.tenantFormats.timeZone.id;
+        // set QuoteByDate and TimeZoneID
+        this.store.dispatch(new SetQuoteDateAndTimeZoneId(res));
+      }
+    });
+  }
+  
+  getRequestGroup(): void {
+    // Get current id from url and make a request with that data.
+    const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
+    this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
+    // Get response from server and populate store
+    // const responseGroupComment = this.spotNegotiationService.updateGroupComments(
+    //   groupRequestIdFromUrl
+    // );
+
+    // responseGroupComment.subscribe((res: any) => {
+    // if(res.status){
+    //   this.spotNegotiationService.QuoteByDate =res?.quoteByDate??this.child.getValue();
+    //   this.spotNegotiationService.QuoteByTimeZoneId=res?.quoteByTimeZoneId??this.generalTenantSettings.tenantFormats.timeZone.id;
+    //   // set QuoteByDate and TimeZoneID
+    //   this.store.dispatch(new SetQuoteDateAndTimeZoneId(res));
     // Get response from server and populate store
     const responseGetRequestGroup = this.spotNegotiationService.getRequestGroup(
       groupRequestIdFromUrl
@@ -123,11 +150,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         alert('Handle Error');
         return;
       }
-      this.spotNegotiationService.QuoteByDate =res.payload?.quoteByDate;
+      
       // Set all request inside store
       if (res['requests']) {
-        // set QuoteByDate and TimeZoneID
-        this.store.dispatch(new SetQuoteDateAndTimeZoneId(res));
         this.store.dispatch(new SetRequests(res['requests']));
         this.getGroupOfSellers(); 
       }
@@ -162,8 +187,8 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           this.changeDetector.detectChanges();
         }
       }
-    });}
-    });
+    })//};
+    // });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     this.currentRequestData = this.store.selectSnapshot<any>((state: any) => {
@@ -432,6 +457,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
   getStaticLists(): void {
+    this.UpdateCommentAndGetQuote();
     let staticLists = {};
     forkJoin(
       { currencies: this.legacyLookupsDatabase.getTableByName('currency'),

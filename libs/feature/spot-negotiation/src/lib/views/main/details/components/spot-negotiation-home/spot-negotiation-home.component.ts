@@ -31,6 +31,7 @@ import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/s
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { forkJoin } from 'rxjs';
 import { SetQuoteDateAndTimeZoneId } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -67,6 +68,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   currentRequestInfo: any;
   tenantConfiguration: any;
   RequestGroupID: number;
+  generalTenantSettings:any;
   negotiationId: any;
   requestId: any;
   emailLogUrl: string;
@@ -82,11 +84,13 @@ export class SpotNegotiationHomeComponent implements OnInit {
     private store: Store,
     private spinner: NgxSpinnerService,
     private spotNegotiationService: SpotNegotiationService,
+    private tenantSettingsService: TenantSettingsService,
     private router: Router,
     private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService,
     private myMonitoringService: MyMonitoringService
   ) {
     this.baseOrigin = new URL(window.location.href).origin;
+    this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
   }
 
   ngOnInit(): void {
@@ -147,10 +151,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      let initDate;
-      initDate=this.store.selectSnapshot<any>((state: any) => {
-        return state.spotNegotiation.quoteDateByGroup;
-      });
       this.quoteByTimeZoneId=this.store.selectSnapshot<any>((state: any) => {
         return state.spotNegotiation.quoteTimeZoneIdByGroup;
       });
@@ -158,11 +158,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return state.spotNegotiation.staticLists;
       });
       this.timeZones=this.staticLists['timeZone'];
-      if(this.timeZones!=undefined && this.quoteByTimeZoneId!=null){
-        this.quoteByTimeZone=this.timeZones?.find(x => x.id == this.quoteByTimeZoneId).name;
+      if(this.timeZones!=undefined && this.spotNegotiationService.QuoteByTimeZoneId!=undefined){
+        this.quoteByTimeZone=this.timeZones?.find(x => x.id == this.spotNegotiationService.QuoteByTimeZoneId).name;
       }
-    
-      this.spotNegotiationService.QuoteByDate= initDate?? this.child.getValue();
+      this.spotNegotiationService.QuoteByDate= this.spotNegotiationService.QuoteByDate?? this.child.getValue();
     },1000);
     // this.spotNegotiationService.QuoteByDate = this.child.getValue();
   }
@@ -251,6 +250,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
         return;
       }
       if (response.status) {
+        this.spotNegotiationService.QuoteByTimeZoneId=payload.QuoteByTimeZoneId;
+        this.spotNegotiationService.QuoteByDate=payload.QuoteByDate;
         let setQuoteByGroup={
           quoteTimeZoneIdByGroup:payload.QuoteByTimeZoneId,
           quoteDateByGroup: payload.QuoteByDate
