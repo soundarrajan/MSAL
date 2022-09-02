@@ -100,22 +100,19 @@
                  <div class="location-picker">
                     {{quoteByTimeZone}}
                  </div>
-                 <span class="dropdown-icon" [matMenuTriggerFor]="locpopup" #menuTrigger="matMenuTrigger" (click)="loadTimeZone()"></span>
-                 <mat-menu #locpopup="matMenu" class="menu-panel-location small-menu darkPanel">
-                    <mat-select
-                    *ngIf="timeZones"
-                      (selectionChange)="
-                      selectedQuoteByTimeZone($event.value)"
-                      [disableOptionCentering]="true"
-                      panelClass="general-info-select-container"
-                      [compareWith]="compareQuoteByTimeZoneIdObjects">
-                      <ng-container  class="loc-data selected"  *ngFor=" let timezone of timeZones ">
-                      <mat-option  class="loc-data" [value]="timezone" >
-                      {{ timezone.name }}
-                    </mat-option>
-                      </ng-container>
-                    </mat-select>
-                 </mat-menu>
+                 <mat-select style="width:18px;"
+                 *ngIf="timeZones"
+                   (selectionChange)="
+                   selectedQuoteByTimeZone($event.value)"
+                   [disableOptionCentering]="true"
+                   panelClass="general-info-select-container"
+                   [compareWith]="compareQuoteByTimeZoneIdObjects">
+                   <ng-container  class="loc-data selected"  *ngFor=" let timezone of timeZones ">
+                   <mat-option  class="loc-data" [value]="timezone" matTooltip="{{timezone.name}}">
+                     {{ timezone.name }}
+                   </mat-option>
+                   </ng-container>
+                 </mat-select>
               </div>
               <span class="quote-by-icon" (click)="expand_quoteDate = !expand_quoteDate;"
               [matTooltip]="expand_quoteDate?'Hide Quote by Info':'Show Quote by Info'" matTooltipClass="lightTooltip"></span>

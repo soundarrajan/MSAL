@@ -424,7 +424,7 @@ loadTimeZone(){
     );
     var FinalAPIdata = {
       RequestGroupId: this.currentRequestInfo.requestGroupId,
-      quoteByDate: new Date(this.child.getValue()),
+      quoteByDate: new Date(this.spotNegotiationService.QuoteByDate ),
       selectedSellers: this.selectedSellerList
     };
     this.spinner.show();
@@ -723,7 +723,7 @@ loadTimeZone(){
       RequestOffers: Seller.requestOffers?.filter(row =>
         selectedproductIds.includes(row.requestProductId)
       ),
-      QuoteByDate: new Date(this.child.getValue())
+      QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate )
     };
   }
 
@@ -1162,7 +1162,7 @@ loadTimeZone(){
       );
       var FinalAPIPayload = {
         RequestGroupId: this.currentRequestInfo.requestGroupId,
-        quoteByDate: new Date(this.child.getValue()),
+        quoteByDate: new Date(this.spotNegotiationService.QuoteByDate ),
         selectedSellers: this.selectedSellerList
       };
       this.spinner.show();
