@@ -859,6 +859,12 @@ td.mat-cell {
   font-size: 14px;
   line-height: 16px;
   color: #ffffff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: table-cell;
+  white-space: nowrap;
+  max-width: 90px;
+  width: 100%;
 }
 
 .move-trigger .mat-select-trigger {
