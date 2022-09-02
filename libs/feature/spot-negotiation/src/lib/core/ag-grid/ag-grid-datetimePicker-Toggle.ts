@@ -134,7 +134,8 @@ export class AgGridDatetimePickerToggleComponent
       (event.value.getMinutes() < 10 ? '0' : '') + event.value.getMinutes();
     this.timeValue = h + ':' + m;
     //this.timeValue = "10:15";
-    this.spotNegotiationService.QuoteByDate = this.getValue();
+    this.initialDate=new FormControl(moment(this.spotNegotiationService.QuoteByDate));
+    this.initialDate = this.getValue();
     this.updateQuoteByGroup();
   }
   dateChanged(event) {
