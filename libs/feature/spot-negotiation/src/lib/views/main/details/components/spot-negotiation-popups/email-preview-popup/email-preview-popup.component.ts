@@ -304,7 +304,7 @@ export class EmailPreviewPopupComponent implements OnInit {
           this.previewTemplate = res['previewResponse'];
           //this.rfqTemplate = this.previewTemplate
           this.to = this.previewTemplate.to;
-          this.cc = this.previewTemplate.cc.map(cc => cc.name);
+          this.cc = this.previewTemplate.cc;
           this.subject = this.previewTemplate.subject;
           this.content = this.previewTemplate.content;
           this.from = this.previewTemplate.From;
@@ -418,7 +418,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   addCc(item, selectedFromLookup) {
-    this.cc.push(item);
+   
     if (this.previewTemplate == null) {
       this.previewTemplate = [];
     }
@@ -433,6 +433,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     } else {
       this.previewTemplate.cc.push({ IdEmailAddress: item });
     }
+    this.cc = this.previewTemplate.cc;
     this.ccEmail = '';
     this.ccList2 = this.ccList;
   }
