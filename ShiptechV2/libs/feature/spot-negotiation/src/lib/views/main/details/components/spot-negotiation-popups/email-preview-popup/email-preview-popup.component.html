@@ -130,10 +130,10 @@
             <div
               class="recipientClass"
               style="margin: 5px;"
-              *ngFor="let item of cc"
+              *ngFor="let item of previewTemplate.cc"
             >
-              <div class="cust-input-field" matTooltip="{{ item }}">
-                {{ item }}
+              <div class="cust-input-field" matTooltip="{{ item.idEmailAddress}}">
+                {{ item.name }}
               </div>
               <!-- <input
                 [readonly]="readonly"
