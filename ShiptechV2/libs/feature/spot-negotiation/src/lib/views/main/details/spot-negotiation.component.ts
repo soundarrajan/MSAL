@@ -113,7 +113,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
 
     responseGroupComment.subscribe((res: any) => {
       if(res.status){
-        this.spotNegotiationService.QuoteByDate =res?.quoteByDate??this.child.getValue();
+        this.spotNegotiationService.QuoteByDate =res?.quoteByDate;
         this.spotNegotiationService.QuoteByTimeZoneId=res?.quoteByTimeZoneId??this.generalTenantSettings.tenantFormats.timeZone.id;
         // set QuoteByDate and TimeZoneID
         this.store.dispatch(new SetQuoteDateAndTimeZoneId(res));

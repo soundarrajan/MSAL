@@ -148,22 +148,23 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     
   }
-
+  ngDoCheck(){
+    this.quoteByTimeZoneId=this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.quoteTimeZoneIdByGroup;
+    });
+    this.staticLists = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists;
+    });
+    this.timeZones=this.staticLists['timeZone'];
+    if(this.timeZones!=undefined && this.spotNegotiationService.QuoteByTimeZoneId!=undefined){
+      this.quoteByTimeZone=this.timeZones?.find(x => x.id == this.spotNegotiationService.QuoteByTimeZoneId).name;
+    }
+    this.spotNegotiationService.QuoteByDate= this.spotNegotiationService.QuoteByDate;
+  }
+  
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.quoteByTimeZoneId=this.store.selectSnapshot<any>((state: any) => {
-        return state.spotNegotiation.quoteTimeZoneIdByGroup;
-      });
-      this.staticLists = this.store.selectSnapshot<any>((state: any) => {
-        return state.spotNegotiation.staticLists;
-      });
-      this.timeZones=this.staticLists['timeZone'];
-      if(this.timeZones!=undefined && this.spotNegotiationService.QuoteByTimeZoneId!=undefined){
-        this.quoteByTimeZone=this.timeZones?.find(x => x.id == this.spotNegotiationService.QuoteByTimeZoneId).name;
-      }
-      this.spotNegotiationService.QuoteByDate= this.spotNegotiationService.QuoteByDate?? this.child.getValue();
-    },1000);
-    // this.spotNegotiationService.QuoteByDate = this.child.getValue();
+    });
   }
 
   setTabItems() {

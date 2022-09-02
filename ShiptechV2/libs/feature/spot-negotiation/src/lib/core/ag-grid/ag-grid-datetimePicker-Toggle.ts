@@ -95,14 +95,11 @@ export class AgGridDatetimePickerToggleComponent
   quoteByTimeZoneId:number|null;
   newFormattedValue: string;
   matDateFieldWidth = '100px';
-  initialDate = new FormControl(moment());
+  initialDate = new FormControl(moment()); 
   public dateTime;
   @Input() dark: any;
   constructor(    private store: Store,private spotNegotiationService: SpotNegotiationService) {
     //this.appContext = appContext || AppContext.instance;
-    if(this.spotNegotiationService.QuoteByDate!=undefined){
-      this.initialDate = new FormControl(this.spotNegotiationService.QuoteByDate);
-    }
   }
   @ViewChild('dateInputFlde', { read: ViewContainerRef }) public input;
   @ViewChild('picker') picker;
@@ -249,17 +246,18 @@ export class AgGridDatetimePickerToggleComponent
     // .format(this.appContext.tenantSettingsContext.dateTimeFormat)
     // .substring(0, 19);
   }
-
+  ngDoCheck() {
+    if(this.spotNegotiationService.QuoteByDate!=undefined){
+      this.initialDate = new FormControl(this.spotNegotiationService.QuoteByDate);
+    }
+  }
   // dont use afterGuiAttached for post gui events - hook into ngAfterViewInit instead for this
   ngAfterViewInit() {
     //this.matDate.setValue('1/1/2021');
     setTimeout(() => {
-      if(this.spotNegotiationService.QuoteByDate!=undefined){
-        this.initialDate = new FormControl(this.spotNegotiationService.QuoteByDate);
-      }
       //this.input.element.nativeElement.focus();
       //this.picker.open();
-    },1000);
+    });
   }
 
   getDateValue(event: MatDatepickerInputEvent<Date>) {
