@@ -303,7 +303,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         if (res['previewResponse']) {
           this.previewTemplate = res['previewResponse'];
           //this.rfqTemplate = this.previewTemplate
-          this.to = this.previewTemplate.to.map(to => to.name);
+          this.to = this.previewTemplate.to;
           this.cc = this.previewTemplate.cc.map(cc => cc.name);
           this.subject = this.previewTemplate.subject;
           this.content = this.previewTemplate.content;
@@ -355,7 +355,6 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   addTo(item, selectedFromLookup) {
-    this.to.push(item);
     if (this.previewTemplate == null) {
       this.previewTemplate = [];
     }
@@ -371,6 +370,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     } else {
       this.previewTemplate.to.push({ IdEmailAddress: item });
     }
+    this.to = this.previewTemplate.to;
     this.toEmail = '';
     this.toList2 = this.toList;
   }
