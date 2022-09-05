@@ -42,7 +42,7 @@
               <tbody id="tableSecondBody" >
                 <tr *ngFor="let items of offerPriceList">
                   <td class="text-left with-ellipsis" style="width: 5vw" *ngFor="let item of items">
-                     <span  *ngIf="item != undefined" matTooltipClass="lightTooltip" matTooltip="{{formatService.FormatPriceTrailingZero(item)}}">&nbsp;$ {{formatService.FormatPriceTrailingZero(item)}} &nbsp;</span>
+                     <span  *ngIf="item != undefined" matTooltipClass="lightTooltip" matTooltip="{{+priceFormatValue(formatService.FormatPriceTrailingZero(item))}}">&nbsp;$ {{+priceFormatValue(formatService.FormatPriceTrailingZero(item))}} &nbsp;</span>
                      <span *ngIf="item == undefined">&nbsp;-&nbsp;</span>
                   </td>
                 </tr>

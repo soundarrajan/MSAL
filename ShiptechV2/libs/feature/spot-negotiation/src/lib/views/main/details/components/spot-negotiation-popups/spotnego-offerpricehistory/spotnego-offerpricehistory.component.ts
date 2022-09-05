@@ -196,12 +196,14 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
            if(x.oldPrices.length >= this.maxNumberOfOffers){
                this.maxNumberOfOffers = x.oldPrices.length;
            }
+           let oldPriceList = [];
+           x.oldPrices.forEach(x=> oldPriceList.push(+this.priceFormatValue(x)));
             dataSeries.push({
               name: this.format.htmlDecode(x.sellerCounterpartyName),
               marker: {
                  symbol: 'circle'
                 },
-              data: x.oldPrices.reverse()
+              data: oldPriceList.reverse()
             })
          })
          res.marketPriceHistory.map(x=> 
