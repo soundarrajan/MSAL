@@ -18,6 +18,7 @@ import { FormControl } from '@angular/forms';
 import { SpotNegotiationService } from '../../services/spot-negotiation.service';
 import { Store } from '@ngxs/store';
 import { SetQuoteDateAndTimeZoneId } from '../../store/actions/request-group-actions';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 @Component({
   selector: 'app-date-time-toggle',
   template: `
@@ -87,9 +88,10 @@ export class AgGridDatetimePickerToggleComponent
   private params: any;
   public matDate = new Date();
   // matDate.setValue('1/1/2021');
+  timeFlag:Boolean=true;
   valueField: any;
   oldCellValue: string;
-  timeValue: any = '12:12';
+  timeValue: any ;
   timerValue: any;
   currentRequestInfo: any;
   quoteByTimeZoneId:number|null;
@@ -98,7 +100,10 @@ export class AgGridDatetimePickerToggleComponent
   initialDate = new FormControl(moment()); 
   public dateTime;
   @Input() dark: any;
-  constructor(    private store: Store,private spotNegotiationService: SpotNegotiationService) {
+  constructor(    
+    private store: Store,
+    private format: TenantFormattingService,
+    private spotNegotiationService: SpotNegotiationService) {
     //this.appContext = appContext || AppContext.instance;
   }
   @ViewChild('dateInputFlde', { read: ViewContainerRef }) public input;
@@ -113,10 +118,10 @@ export class AgGridDatetimePickerToggleComponent
     this.valueField = '12/12/2018 10:10';
     this.oldCellValue = params.value;
     this.initialDate.setValue(new Date(this.valueField));
-    this.timeValue = this.valueField.slice(-6);
+    //this.timeValue = this.valueField.slice(-6);
     //var timervalue = this.timeValue;
-    var showTime = this.timeValue.split(':');
-    this.timerValue = new Date(0, 0, 0, showTime[0], showTime[1]);
+    //var showTime = this.timeValue.split(':');
+    //this.timerValue = new Date(0, 0, 0, showTime[0], showTime[1]);
     // let d = new Date(this.valueField);
     // let h = (d.getHours()<10?'0':'') + d.getHours();
     // let m = (d.getMinutes()<10?'0':'') + d.getMinutes();
@@ -136,7 +141,7 @@ export class AgGridDatetimePickerToggleComponent
     //this.timeValue = "10:15";
     this.initialDate=new FormControl(moment(this.spotNegotiationService.QuoteByDate));
     this.initialDate = this.getValue();
-    this.updateQuoteByGroup();
+    this.updateQuoteByGroup(this.initialDate);
   }
   dateChanged(event) {
     this.initialDate = new FormControl(moment(event.value));
@@ -149,7 +154,25 @@ export class AgGridDatetimePickerToggleComponent
       this.picker.close = closeFn;
     });
     this.spotNegotiationService.QuoteByDate = this.getValue();
-    this.updateQuoteByGroup();
+    this.updateQuoteByGroup(this.spotNegotiationService.QuoteByDate);
+  }
+  formatDate(date?: any) {
+    if (date) {
+      let currentFormat = this.format.dateFormat;
+      let hasDayOfWeek;
+      if (currentFormat.startsWith('DDD ')) {
+        hasDayOfWeek = true;
+        currentFormat = currentFormat.split('DDD ')[1];
+      }
+      currentFormat = currentFormat.replace(/d/g, 'D');
+      currentFormat = currentFormat.replace(/y/g, 'Y');
+      let elem = moment(date, 'YYYY-MM-DDTHH:mm:ss');
+      let formattedDate = moment(elem).format(currentFormat);
+      if (hasDayOfWeek) {
+        formattedDate = `${moment(date).format('ddd')} ${formattedDate}`;
+      }
+      return formattedDate;
+    }
   }
 
   timepickerClosed() {
@@ -250,7 +273,26 @@ export class AgGridDatetimePickerToggleComponent
   ngDoCheck() {
     if(this.spotNegotiationService.QuoteByDate!=undefined){
       this.initialDate = new FormControl(this.spotNegotiationService.QuoteByDate);
+      if(this.timeFlag){//update page load
+        this.updateTimeValue(this.spotNegotiationService.QuoteByDate);
+      }else{
+        this.getHrsMins(this.spotNegotiationService.QuoteByDate);
+      }     
     }
+  }
+  updateTimeValue(valueField){
+    let d = new Date(valueField);
+    let h =  d.getHours();
+    let m =  d.getMinutes();
+    let i = h + ':' + m;
+    this.timeValue = i;
+  }
+  getHrsMins(valueField){
+    let d = new Date(valueField._i);
+    let h =  d.getHours();
+    let m =  d.getMinutes();
+    let i = h + ':' + m;
+    this.timeValue = i;
   }
   // dont use afterGuiAttached for post gui events - hook into ngAfterViewInit instead for this
   ngAfterViewInit() {
@@ -272,18 +314,15 @@ export class AgGridDatetimePickerToggleComponent
     //   this.oldCellValue.substring(11, 16);
   }
   ///Update the QuoteByDate and TimeZone by requestGroups
-  updateQuoteByGroup(){
+  updateQuoteByGroup(updateDateTime){
 
     this.currentRequestInfo =this.store.selectSnapshot<any>((state: any) => {
         return state.spotNegotiation.currentRequestSmallInfo;
       }); 
-      this.quoteByTimeZoneId= this.store.selectSnapshot<any>((state: any) => {
-        return state.spotNegotiation.quoteTimeZoneIdByGroup;
-      }); 
     let payload={
-      QuoteByTimeZoneId:this.quoteByTimeZoneId, 
+      QuoteByTimeZoneId:this.spotNegotiationService.QuoteByTimeZoneId, 
       RequestGroupId:this.currentRequestInfo.requestGroupId, 
-      QuoteByDate:this.spotNegotiationService.QuoteByDate 
+      QuoteByDate:updateDateTime 
     }
     this.spotNegotiationService
     .updateQuoteDateGroup(payload)
@@ -293,12 +332,13 @@ export class AgGridDatetimePickerToggleComponent
       }
       if (response.status) {
         this.spotNegotiationService.QuoteByTimeZoneId=payload.QuoteByTimeZoneId;
-        this.spotNegotiationService.QuoteByDate=payload.QuoteByDate;
+        this.spotNegotiationService.QuoteByDate=updateDateTime;
         let setQuoteByGroup={
           quoteTimeZoneIdByGroup:payload.QuoteByTimeZoneId,
-          quoteDateByGroup: payload.QuoteByDate
+          quoteDateByGroup: updateDateTime
         };
         payload.QuoteByTimeZoneId;
+        this.timeFlag=false; ///only update time /date changed 
         this.store.dispatch(new SetQuoteDateAndTimeZoneId(setQuoteByGroup));
       }
     });
