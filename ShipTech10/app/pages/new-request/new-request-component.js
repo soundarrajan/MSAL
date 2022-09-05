@@ -574,6 +574,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             });
 
                         });
+                        $timeout(() => {
+                            ctrl.isEnabledEta();
+                        });
                     } else {
                         newRequestModel.getEmptyRequest().then((newRequestData) => {
                             ctrl.request = newRequestData.payload;
@@ -833,6 +836,9 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         }
                     });
 
+                });
+                $timeout(() => {
+                    ctrl.isEnabledEta();
                 });
             }
         };
@@ -3522,6 +3528,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         ctrl.buttonsDisabled = false;
                        // $state.reload();
                         ctrl.getResponse();
+                        //we need to disable ETA after validating 
+                       ctrl.etaEnabled =  ctrl.etaEnabled.map((value) => {
+                        return value ? !value : value;
+                       });
+                       $state.reload();
                     },
                     () => {
                         ctrl.buttonsDisabled = false;
