@@ -202,7 +202,8 @@
             "
           >
             <tr class="border-bottom" *ngIf="!offerAdditionalCost.isDeleted">
-              <td class="decrement-circle-button" style="width: 50px;">
+              <td class="decrement-circle-button" style="width: 60px; cursor: pointer;
+    padding-top: 5px;">
                 <div
                   class="decrement-circle"
                   *ngIf="!offerAdditionalCost.hasStemmedProduct"
@@ -213,7 +214,7 @@
                   class="location-cost-inner-checkbox" 
                 >
                 <mat-checkbox
-                 style="padding-left: 4px;"
+                style="padding-left: 6px;"
                  class="mat-checkbox"
                  [(ngModel)]="offerAdditionalCost.isSelected"
                  (change)="checkUncheckAll($event, j)"
