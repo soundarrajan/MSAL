@@ -279,10 +279,10 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 return String.fromCharCode(dec);
             });
         };
-        ctrl.$onInit = function() {
+        ctrl.$onInit = function() {            
             screenLoader.showLoader();
             ctrl.checkedProducts = [];
-            ctrl.productIds = [];
+            ctrl.productIds = [];            
             // Get the UI settings from server. When complete, get business data.
             uiApiModel
                 .get(SCREEN_LAYOUTS.NEW_REQUEST)
@@ -1989,14 +1989,19 @@ angular.module('shiptech.pages').controller('NewRequestController', [
          * Returns a promise so we can do extra work afterwards
          */
         function addLocation(locationId, voyageId, vesselVoyageDetailId, extraInfo) {
-
+           // debugger;
+            if(!ctrl?.request?.company?.name){
+                if(extraInfo?.company?.name){
+                    ctrl.request.company.name = extraInfo.company.name;
+                    ctrl.request.company.id = extraInfo.company.id;
+                }
+            }
             let location, productList,locationTerminal;
             let agent = null;
             let deferred = $q.defer();
             ctrl.notesExpanded = false;
             lookupModel.getForRequest(LOOKUP_TYPE.LOCATIONS, locationId).then(
                 (server_data) => {
-
                     if($scope.locationTerminal == undefined){
                         $scope.locationTerminal = [];
                         $scope.locationTerminal.push(angular.copy(server_data.payload.terminals));
@@ -2382,23 +2387,26 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         companyToDefault = vessel.operatingCompany;                         
                     } else if (vessel.voyages.length > 0) {
                             if (vessel.voyages[0].voyageDetails) {
-                                if (vessel.voyages[0].voyageDetails[0].company) {                                    
+                                if (vessel.voyages[0].voyageDetails[0].company) {                                  
                                     companyToDefault = vessel.voyages[0].voyageDetails[0].company;
                                 }  
                             }
                         }
 
-                    //if (ctrl.requestTenantSettings.displayOfCompany.id == 2) {
+                        //if (ctrl.requestTenantSettings.displayOfCompany.id == 2) {
                         if (!ctrl.request.company) {
                             ctrl.request.company = {};
                         }
                        // if (!preventUpdateCompany) {
-                        if (vessel.operatingCompany){
-                            ctrl.request.company.name = companyToDefault.name;
-                            ctrl.request.company.id = companyToDefault.id;}
-                            if(ctrl.request.locations.length > 0 && !ctrl.request.id > 0) 
-                            {ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.name = companyToDefault.name:'';
-                             ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.id = companyToDefault.id:0}
+                        //debugger;
+                            ctrl.request.company.name = companyToDefault?.name;
+                            ctrl.request.company.id = companyToDefault?.id;
+
+                        if(ctrl.request.locations.length > 0 && !ctrl.request.id > 0) 
+                        {
+                            ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.name = companyToDefault.name:'';
+                            ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.id = companyToDefault.id:0;
+                        }
                        // }
                     //}
 
@@ -5394,14 +5402,14 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 vesselVoyageDetailIdList.push(v.vesselVoyageDetailId); 
             }
         })
-        
+
         payload = {
             "payload" : {
                 "VesselVoyageDetailIdList":vesselVoyageDetailIdList,
                 "RequestIdList":[ctrl.request.originalRequestId ? ctrl.request.originalRequestId : ctrl.request.id],
                 "isVesselManagable": ctrl.request.isVesselManagable
             }
-        }
+        } 
         $http.post(`${API.BASE_URL_DATA_PROCUREMENT}/api/procurement/request/getRequestNotes`, payload).then((response) => {
             if (response) {
                 if (response.data) {
