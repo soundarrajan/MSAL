@@ -64,7 +64,8 @@
                 <mat-label *ngIf="!contractProduct.value.location"
                   >Add location</mat-label
                 >
-                <span
+                <span 
+                class="form-field-value"
                   [ngClass]="{
                     'white-color':
                       contractProduct.value.location &&
@@ -227,6 +228,7 @@
                 >
                 <span
                   *ngIf="contractProduct.value.product"
+                  class="form-field-value"
                   [ngClass]="{
                     'white-color':
                       contractProduct.value.product &&
