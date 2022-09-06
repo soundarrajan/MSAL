@@ -852,19 +852,21 @@ td.mat-cell {
   display: none !important;
 }
 
-.white-color {
+.form-field-value {
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-  color: #ffffff;
   text-overflow: ellipsis;
   overflow: hidden;
   display: table-cell;
   white-space: nowrap;
   max-width: 90px;
   width: 100%;
+}
+.white-color{
+  color: #ffffff;
 }
 
 .move-trigger .mat-select-trigger {
