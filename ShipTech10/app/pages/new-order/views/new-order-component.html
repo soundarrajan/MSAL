@@ -1487,7 +1487,7 @@
                                         <span class="hidden">
                                             {{!product.contract.id ? (disabledPricingType[product.id] = true) : (
                                             disabledPricingType[product.id] = false) }}
-                                            {{!product.contract.id && product.pricingType?.id != 2 ? (product.pricingType.id = 1) : '' }}
+                                            {{(!product.contract.id && product.pricingType.id != 2) ? (product.pricingType.id = 1) : '' }}
                                         </span>
                                         <select class="form-control" disabled id="product_pricingType_{{ $index }}"
                                                 name="{{ $ctrl.productColumns.pricingType.name }}"
