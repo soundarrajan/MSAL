@@ -523,8 +523,9 @@ timeline-right-click-popover .contextmenu {
 }
 
 .expand-icon {
-    content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxjaXJjbGUgY3g9IjgiIGN5PSI4IiByPSI4IiBmaWxsPSIjMzY0MTUwIi8+DQo8cGF0aCBkPSJNMyA2TDguMjAwMDIgMTEuMkwxMy40IDZIM1oiIGZpbGw9IndoaXRlIi8+DQo8L3N2Zz4NCg==");
+    /* content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCjxjaXJjbGUgY3g9IjgiIGN5PSI4IiByPSI4IiBmaWxsPSIjMzY0MTUwIi8+DQo8cGF0aCBkPSJNMyA2TDguMjAwMDIgMTEuMkwxMy40IDZIM1oiIGZpbGw9IndoaXRlIi8+DQo8L3N2Zz4NCg=="); */
     position: relative;
+     content : url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAASCAYAAABb0P4QAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAHmSURBVHgBpZS9S/NQFMafe/Pa94VXoS6igtiKQhGhIiIODrEgDjrE3cVFcBCrg06lSicdRHBwrX+BERR0sXEQtC66iR80g2LRwYIfYNFcz62tmBir1geSnJx78+M84ZzL4KJWVfOWARrnCMKC12LwyTwXMJ+BwydAPzB00+1b5kx0hLSoEAjTghfFxKBnLYw7wcxWFcMKJVR8XxkIFk4aK8uFBC8EHobED2FSXjARb1c11QbsULWoLBIlipMz6VDGCgU+hf7HZ5sryv+jJ9SFu7sHuu4/2/ZP4Xi8SB0Zf8qK2JSwpfkYmhr9uCVYbHYR2zt77psFxug+rdQ1BKTdQDGY1F+PJ1dpOn2N47OUa5X1Dc1xLvvsK9h7RaZG0d8bcgMia1l+LthHYGRy9A0mrQ4OT2BtY8sGbQu2uEI5YzCdydrqqjfYyEQEJ6cpxOYWbdBycuEUtV2GUctMUxR9v1BDwL7ebqxvJnCZvrJ91Je3u7655eSZyYTuZ7J/qKlv8EsxgfieoQ9xmkUaHyzjlyK7M/KZm5QsEKaHiRJF1Y3v5g+JHFBWSUdTd0lQhhmyulB4VQrBuXmUqfMFVgVQSZu+M9emJTCwn9Djdr6LOmm+xetvCIr84ZpXhuwd0Npq0tBd5/8F9NmmMZi8HO0AAAAASUVORK5CYII=');
     top: 3px;
 }
 
@@ -636,10 +637,11 @@ timeline-right-click-popover .contextmenu {
 }
 
 .border-line {
-    border-right: 1px solid #252a32;
-    height: 15px;
+    border-right: 1px solid #c4c4c4;
+    height: 12px;
     margin-left: 5px;
     margin-right: 5px;
+    width : 1px;
 }
 
 
@@ -864,9 +866,11 @@ timeline-right-click-popover .contextmenu {
 .content-right-click .action-btn-container {
    display: flex;
    float: right; 
-   margin-left: 20px !important; 
+   /* margin-left: 20px !important;  */
    margin-top: 6px;
    align-items: center;
+   padding: 2px 5px;
+   margin: 10px 0;
 }
 
 
