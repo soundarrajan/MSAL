@@ -25,7 +25,7 @@ export class TopbarComponent {
   ) {
     this.pageTitle$ = titleService.title$;
     this.smartOperatorURL = this.store.selectSnapshot<any>((state: any) => {
-      return state.tenantSettings.general.smartTraderLink;
+      return state.tenantSettings.general?.smartTraderLink;
     });
   }
 }
