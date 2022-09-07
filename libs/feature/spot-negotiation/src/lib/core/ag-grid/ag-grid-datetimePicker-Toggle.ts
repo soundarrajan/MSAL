@@ -430,7 +430,6 @@ export class AgGridDatetimePickerToggleComponent
   private params: any;
   public matDate = new Date();
   // matDate.setValue('1/1/2021');
-  timeFlag:Boolean=true;
   valueField: any;
   oldCellValue: string;
   timeValue: any ;
@@ -622,22 +621,11 @@ export class AgGridDatetimePickerToggleComponent
   ngDoCheck() {
     if(this.spotNegotiationService.QuoteByDate!=undefined){
       this.initialDate = new FormControl(this.spotNegotiationService.QuoteByDate);
-      if(this.timeFlag){//update page load
-        this.updateTimeValue(this.spotNegotiationService.QuoteByDate);
-      }else{
-        this.getHrsMins(this.spotNegotiationService.QuoteByDate);
-      }     
+      this.getHrsMins(this.initialDate.value);  
     }
   }
-  updateTimeValue(valueField){
-    let d = new Date(valueField);
-    let h =  d.getHours();
-    let m =  d.getMinutes();
-    let i = h + ':' + m;
-    this.timeValue = i;
-  }
   getHrsMins(valueField){
-    let d = new Date(valueField._i);
+    let d = new Date(valueField._i??valueField);
     let h =  d.getHours();
     let m =  d.getMinutes();
     let i = h + ':' + m;
@@ -687,7 +675,6 @@ export class AgGridDatetimePickerToggleComponent
           quoteDateByGroup: updateDateTime
         };
         payload.QuoteByTimeZoneId;
-        this.timeFlag=false; ///only update time /date changed 
         this.store.dispatch(new SetQuoteDateAndTimeZoneId(setQuoteByGroup));
       }
     });

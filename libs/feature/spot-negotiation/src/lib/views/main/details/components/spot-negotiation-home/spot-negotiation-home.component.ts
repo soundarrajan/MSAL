@@ -233,7 +233,6 @@ export class SpotNegotiationHomeComponent implements OnInit {
     return object1 && object2 && object1.id == object2.id;
   }
   selectedQuoteByTimeZone(value){
-    debugger;
     this.quoteByTimeZoneId=value.id;
     this.quoteByTimeZone =value.name;
     this.updateQuoteByGroup();
