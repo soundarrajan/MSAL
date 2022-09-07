@@ -362,7 +362,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
       <div class="quoteByContainer">
       <mat-form-field class="quoteByMatfield">
         <input
-          style="cursor:pointer;width:65px;float:left;height: 17px !important;text-align:left;color:black"
+          style="cursor:pointer;width:98px;float:left;height: 17px !important;text-align:left;color:black; margin-left:-18px;"
           matInput
           class="date-trigger"
           [ngModel]="initialDate.value"
@@ -372,7 +372,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
         />
        </mat-form-field>
         <div
-          style="height:24px;float:right;line-height:15px;width:25px;position: absolute;
+          style="height:24px;float:right;line-height:15px;width:30px;position: absolute;
     right: -6px;"
         >
           {{ timeValue }}
