@@ -685,6 +685,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   saveFormula() {
+    console.log(this.formValues);
+          debugger;
+
     if (this.formValues.formulaType.id == 1) {
       if (!this.formValues.simpleFormula.priceType) {
         this.toastr.error('Price Type field is required in Simple Pricing formula.');
@@ -696,7 +699,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         this.toastr.error('Premimum/Discount  field is required in Simple Pricing formula');
         return;
       }
-      if (this.formValues.simpleFormula?.plusMinus.name != 'None') {
+      if (this.formValues.simpleFormula?.plusMinus.id !=3) {
         if(!this.formValues.simpleFormula.amount){
           this.toastr.error('Amount  field is required in Simple Pricing formula');
           return;
@@ -706,8 +709,10 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           return;
         }
         if(!this.formValues.simpleFormula.uom){
+          if(this.formValues?.simpleFormula?.flatPercentage?.name != 'Percentage'){
           this.toastr.error('UOM  field is required in Simple Pricing formula');
           return;
+          }
         }
       } 
     }else if(this.formValues.formulaType.id == 2){
@@ -741,10 +746,11 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
             this.toastr.error('FlatPercentage field is required in Complex Pricing formula');
             return;
           }
-          if (!this.formValues.complexFormulaQuoteLines[i - 1]?.uom) {
-            this.toastr.error('UOM field is required in Complex Pricing formula');
-            return;
-          }
+          
+            if (!this.formValues.complexFormulaQuoteLines[i - 1]?.uom) {
+              this.toastr.error('UOM field is required in Complex Pricing formula');
+              return;
+            }
         }
       }
       if(this.isComplexFormulaWeightEnforced == true){
@@ -768,16 +774,20 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     }
     
     if(this.formValues.pricingScheduleOptionSpecificDate != undefined){
+      let errorCkeck = 0;
       if(!this.formValues.pricingScheduleOptionSpecificDate?.dates){
         this.toastr.error('Add atleast one date in Pricing schedule -> Specific Dates Section');
         return;
       }else{
-        this.formValues.pricingScheduleOptionSpecificDate.dates.forEach((data,index) => {
+        this.formValues.pricingScheduleOptionSpecificDate.dates.some((data,index) => {
           if(!data?.date){
-            this.toastr.error('Date  is required in row '+  (index+ 1))+' in Pricing schedule -> Specific Dates Section';
-            return;
+            this.toastr.error('Date  is required in row '+  (index+ 1) +' in Pricing schedule -> Specific Dates Section');
+            errorCkeck = 1;
           }
         });
+      }
+      if(errorCkeck == 1){
+        return;
       }
     }
 
