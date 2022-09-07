@@ -44,7 +44,7 @@ body {
     padding: 0px !important;
     margin: 0px !important;
     direction: "ltr";
-    font-size: 14px;
+    font-size: 12px;
 }
 
 
@@ -1232,7 +1232,7 @@ h1.block, h2.block, h3.block, h4.block, h5.block, h6.block {
 
 a {
     text-shadow: none;
-    color: #337ab7;
+    color: #3D78EB;
 }
 
 a:hover {

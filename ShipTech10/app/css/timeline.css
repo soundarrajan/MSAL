@@ -866,6 +866,7 @@ timeline-right-click-popover .contextmenu {
    float: right; 
    margin-left: 20px !important; 
    margin-top: 6px;
+   align-items: center;
 }
 
 
