@@ -1369,7 +1369,7 @@
                                                    name="{{ $ctrl.productColumns.price.name }}"
                                                    ng-change="$ctrl.productPriceChanged(product)"
                                                    ng-blur="$ctrl.prodPriceChanged('input', product); $ctrl.captureReasonModal($index, 'ORDER_PRODUCT_PRICE', 'price')"
-                                                   ng-disabled="product.formula.id || product.contract.id || $ctrl.disabledProduct[product.id]"
+                                                   ng-disabled="product.formula.id || product.contract.id || $ctrl.disabledProduct[product.id] || product.pricingType.id == 2"
                                                    ng-model="product.originalPrice"
                                                    ng-required="true && product.status.id != $ctrl.STATUS['Cancelled'].id && !(product.contractProductId != null  || product.agreementType.name.toLowerCase() == 'contract' || product.pricingType.id == 1 || $ctrl.disabledProduct[product.id])"
                                                    style="min-width:80px" type="text" 
@@ -1383,7 +1383,7 @@
                                                 <select class="bs-select pull-right uomWidth" id=""
                                                         id="product_priceUom_{{ $index }}" name=""
                                                         ng-change="$ctrl.productUomChanged(product, true)"
-                                                        ng-disabled="product.contractProductId != null  || $ctrl.disabledProduct[product.id]"
+                                                        ng-disabled="product.contractProductId != null  || $ctrl.disabledProduct[product.id] || product.pricingType.id == 2"
                                                         ng-model="product.priceUom"
                                                         ng-options="item as item.name for item in $ctrl.lists.Uom | decodeReadOnly track by item.id"></select>
                                             </div>
