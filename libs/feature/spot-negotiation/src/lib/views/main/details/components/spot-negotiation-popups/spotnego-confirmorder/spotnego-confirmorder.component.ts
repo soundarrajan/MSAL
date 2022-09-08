@@ -873,12 +873,13 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   productPricePayload(selectedOffers) {
     let selectedOffs = [];
     for( let i = 0; i < selectedOffers.length ; i++){
+      debugger;
       let selectOff = {
         RequestGroupId: selectedOffers[i].RequestGroupId,
         RequestLocationId: selectedOffers[i].RequestLocationId,
         RequestProductId: selectedOffers[i].RequestProductId,
         ClosurePrice: selectedOffers[i].ClosurePrice ? selectedOffers[i].ClosurePrice : 0,
-        BestContract: selectedOffers[i].BestContract ? selectedOffers[i].BestContract : 0,
+        BestContract: selectedOffers[i].BestContract ? selectedOffers[i].BestContract == 'NaN' ? null : selectedOffers[i].BestContract : 0,
         BestContractId: selectedOffers[i].BestContractId,
         BenchMark: selectedOffers[i].BenchMark ? selectedOffers[i].BenchMark : 0,
         ClosureDate: selectedOffers[i].ClosureDate ? selectedOffers[i].ClosureDate : null
