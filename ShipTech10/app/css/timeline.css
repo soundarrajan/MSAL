@@ -569,7 +569,7 @@ timeline-right-click-popover .contextmenu {
 }
 
 .right-popup-table thead tr {
-    height: 40px;
+    height: 31px;
     background: #F1F1F2;
     border: 1px solid #E0E1E4;
     box-sizing: border-box;
@@ -910,6 +910,7 @@ timeline-right-click-popover {
 
 .sendQuesBtn:hover .send-questionnaires{
     content:  url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAxCAYAAACcXioiAAAACXBIWXMAACxLAAAsSwGlPZapAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAIXSURBVHgB7ZiLccIwDIaVTsAIGYERwgZlgtIJoBOUDegGsEHbCegGsEGyAWygyuAUEWw5Jg+Hnr87HcEo8i/byHEAIpFIJNKAxNSIiBl9vJBlEJ4j2Z7sO0mSL9GThI/Itjhc1mQjrjmpJLCFYYy6xA/NxKT88lRekPgZDF+8ItNaT/zNgGH01bp7IysgLCnZimzM2q5m4YRhva1gIOi1zzmYnEzkZCkEQvVNtjMJMzlLLKBnqM+5GmmbINMNLj77mA096luXGNONdciRVYAOxD+jMOq+Ccy0YBNrrGwoDYWrDXRl6eugtfgloNuk6czJxtAQipGhfaC2qJetSZ8zAfbbEu28w52gPOqLuvpqOeB5NnJLh6o9hZqgUB51+9hXn9vh4ifNhrPcolweP9Dy32otAe0rrVtjuUX3/ylz9NleAkzQRhA0Y75SeVQxnBWt9QTYfa5yK5ZHj366SUDfW2v3ZCjf1LOP7hJgMZYO4Tfl0SN29wnoOLZyayyPHnH7SYDF47NhLY8e8Yz6+InsSjSdeBJoSCmaQh2hITZ9nSbQJjZ9T/DgxARCExMIzf9NAFs88zZF0sITKCq/3X1U7IB55fu+vOAb2RJuRR+1hWSkjbOhfexVXfAElNMOzi9Th0xBNqEE1OdlCennlSmEfxstUZBNS/FG8HJUrPWGrCeUFvVEm1b1ig9sGPDNNEcc8Ugk8tj8Ap0b5uW87LMjAAAAAElFTkSuQmCC")
+
 }
 .sendQuesBtn > a{
     text-decoration: none;
