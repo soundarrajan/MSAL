@@ -790,11 +790,10 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                 var container = document.getElementById('timeline');
 
                 // Create a Timeline
-                timeline = new vis.Timeline(container, null, getTimelineOptions());  
+                timeline = new vis.Timeline(container, null, getTimelineOptions());
                 window.mytimeline = timeline;
                 timeline.setGroups(groups);
                 timeline.setItems(voyages);
-
 
                 ctrl.lastStartDate = false;
                 ctrl.lastEndDate = false;
@@ -1371,7 +1370,11 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                             getData().then(function(data) {
                                 createFilters();
                                 $rootScope.timelineStatusList = timelineStatusList;
-                                buildTimeline(data);
+                                var timelineElem = document.getElementById('timeline');
+                                // To not build timeline if element not available - Occurs when landing page is different than timeline
+                                if(timelineElem) {
+                                    buildTimeline(data);
+                                }
                             });
                
                         });

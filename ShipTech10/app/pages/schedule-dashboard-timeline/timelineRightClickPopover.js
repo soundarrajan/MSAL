@@ -657,9 +657,22 @@ angular.module('shiptech.components')
                 $("schedule-dashboard-timeline .contextmenu").remove();
                 $('timeline-right-click-popover').hide();
             }
-            ctrl.sendQuestionnaires =function(voyageId){
+            ctrl.sendQuestionnaires =function(voyageId) {
+                let payload = {
+                    Filters: [
+                        {
+                            ColumnName: 'productTypeViewId',
+                            Value: $rootScope.productTypeView?.id
+                        },
+                        {
+                            ColumnName: 'voyageId',
+                            Value: voyageId
+                        }
+                    ],
+                    pagination: {}
+                }
                 screenLoader.showLoader();
-                newRequestModel.sendQuestionnaire(voyageId).then((newRequestData) => {
+                newRequestModel.sendQuestionnaire(payload).then((newRequestData) => {
                     ctrl.request = newRequestData.payload;
                     if(newRequestData.isSuccess){
                         //ctrl.$onChanges($scope.changesData); 
