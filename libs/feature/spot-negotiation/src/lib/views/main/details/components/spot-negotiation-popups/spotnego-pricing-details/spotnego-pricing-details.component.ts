@@ -616,8 +616,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           flatPercentageId: rules.flatPercentage?.id ? rules.flatPercentage?.id : 0,
           uomId: rules.uom?.id ? rules.uom.id : 0,
           quantityTypeId: rules.quantityType?.id ? rules.quantityType.id : 0,
-          quantityRangeFrom: rules.quantityRangeFrom,
-          quantityRangeTo: rules.quantityRangeTo
+          quantityRangeFrom: rules.quantityRangeFrom.toString().replace(/,/g, ''),
+          quantityRangeTo: rules.quantityRangeTo.toString().replace(/,/g, '')
         });
       }
     });
