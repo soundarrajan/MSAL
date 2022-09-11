@@ -873,7 +873,6 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   productPricePayload(selectedOffers) {
     let selectedOffs = [];
     for( let i = 0; i < selectedOffers.length ; i++){
-      debugger;
       let selectOff = {
         RequestGroupId: selectedOffers[i].RequestGroupId,
         RequestLocationId: selectedOffers[i].RequestLocationId,
