@@ -24,6 +24,7 @@ import _ from 'lodash';
 import {MatDialog} from '@angular/material/dialog';
 import { DecimalPipe, KeyValue } from '@angular/common';
 import { MatSelect } from '@angular/material/select';
+import { Store } from '@ngxs/store';
 @Component({
   selector: 'shiptech-pricing-formula-simple',
   templateUrl: './pricing-formula-simple.component.html',
@@ -97,6 +98,7 @@ export class PricingFormulaSimple implements OnInit {
   massUomName : any;
   volumeUomName : string;
   conversionFactor : number;
+  checkRequestStatus: boolean = false;
 
   get entityId(): number {
     return this._entityId;
@@ -240,6 +242,8 @@ export class PricingFormulaSimple implements OnInit {
     this.hasInvoicedOrder = hasInvoicedOrder;
   }
 
+ 
+
   index = 0;
   expandLocationPopUp = false;
   array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -252,6 +256,7 @@ export class PricingFormulaSimple implements OnInit {
     public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
+    private store: Store
   ) {
     this.autocompletePhysicalSupplier =
       knownMastersAutocomplete.physicalSupplier;
@@ -268,6 +273,14 @@ export class PricingFormulaSimple implements OnInit {
       knownMastersAutocomplete.systemInstrument;
     this.entityName = 'Contract';
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
+
+    this.store.selectSnapshot<any>((state: any) => {
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.checkRequestStatus = true;
+        this.hasInvoicedOrder = true;
+      }
+    });
+
   }
 
   setContractForm(form) {

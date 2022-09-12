@@ -23,6 +23,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { KeyValue } from '@angular/common';
 import { MatSelect } from '@angular/material/select';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'shiptech-specific-dates',
@@ -286,6 +287,7 @@ export class SpecificDates implements OnInit {
     private toastr: ToastrService,
     public dialog: MatDialog,
     private tenantService: TenantFormattingService,
+    private store: Store
   ) {
     this.autocompletePhysicalSupplier =
       knownMastersAutocomplete.physicalSupplier;
@@ -300,6 +302,11 @@ export class SpecificDates implements OnInit {
   ngOnInit() {
     this.entityName = 'Contract';
     this.autocompleteCurrency = knownMastersAutocomplete.currency;
+    this.store.selectSnapshot<any>((state: any) => {
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.hasInvoicedOrder = true;
+      }
+    });
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
   }
 

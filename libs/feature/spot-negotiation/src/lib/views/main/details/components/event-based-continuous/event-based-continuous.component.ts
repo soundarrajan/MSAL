@@ -17,6 +17,7 @@ import {
 } from '@angular/material/dialog';
 import { KeyValue } from '@angular/common';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'shiptech-event-based-continuous',
@@ -44,7 +45,8 @@ export class EventBasedContinuous implements OnInit {
   dayOfWeekList: any;
   holidayRuleList: any;
   isValidFromDateInvalid: boolean;
-  hasInvoicedOrder: any;
+  hasInvoicedOrder: any = false;
+  checkRequestStatus: boolean = false;
 
   get entityId(): number {
     return this._entityId;
@@ -187,10 +189,17 @@ export class EventBasedContinuous implements OnInit {
     public gridViewModel: OrderListGridViewModel,
     private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog,
+    private store: Store
   ) {}
 
   ngOnInit() {
     this.entityName = 'Contract';
+    this.store.selectSnapshot<any>((state: any) => {
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.checkRequestStatus = true;
+        this.hasInvoicedOrder = true;
+      }
+    });
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
   }
 

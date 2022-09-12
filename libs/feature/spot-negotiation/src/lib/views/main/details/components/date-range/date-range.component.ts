@@ -31,6 +31,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Observable } from 'rxjs';
 import moment from 'moment';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'shiptech-date-range',
@@ -108,6 +109,7 @@ export class DateRange implements OnInit {
   isValidFromDateInvalid: boolean;
   isValidToDateInvalid: boolean;
   hasInvoicedOrder: any;
+  checkRequestStatus: boolean = false;
 
   get entityId(): number {
     return this._entityId;
@@ -295,6 +297,7 @@ export class DateRange implements OnInit {
     public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
+    private store: Store
   ) {
     this.quantityFormat =
       '1.' +
@@ -307,6 +310,12 @@ export class DateRange implements OnInit {
     this.entityName = 'Contract';
     this.autocompleteCurrency = knownMastersAutocomplete.currency;
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
+    this.store.selectSnapshot<any>((state: any) => {
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.checkRequestStatus = true;
+        this.hasInvoicedOrder = true;
+      }
+    });
   }
 
   setContractForm(form) {

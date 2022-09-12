@@ -13,6 +13,7 @@ import _ from 'lodash';
 import {MatDialog} from '@angular/material/dialog';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { KeyValue } from '@angular/common';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'shiptech-event-based-simple',
@@ -202,11 +203,17 @@ export class EventBasedSimple implements OnInit {
   constructor(
     public gridViewModel: OrderListGridViewModel,
     public dialog: MatDialog,
+    private store: Store
   ) {
   }
 
   ngOnInit() {
     this.entityName = 'Contract';
+    this.store.selectSnapshot<any>((state: any) => {
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.hasInvoicedOrder = true;
+      }
+    });
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
   }
 

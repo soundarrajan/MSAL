@@ -1,5 +1,5 @@
 <div class="col-md-12 formula-description-header">
-  Formula definition
+  Formula definition 
 </div>
 <div class="col-md-12 d-flex" style="margin-top: 15px;">
   <div class="custom-form-field create-new-formula-form-field" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}" style="width: 50%  !important;">
@@ -9,7 +9,7 @@
           [(ngModel)]="formValues.pricingScheduleOptionDateRange.name"
           placeholder="Description"
           autocomplete="off"
-          [disabled]="!formValues.isEditable || hasInvoicedOrder">
+          [disabled]="!formValues.isEditable || hasInvoicedOrder || checkRequestStatus">
       </mat-form-field>
   </div>
   <div class="custom-form-field create-new-formula-form-field" 
@@ -28,7 +28,7 @@
               (dateInput)="onChange($event, 'from')"
               (dateChange)="formValues.pricingScheduleOptionDateRange.from = formatDateForBe(formValues.pricingScheduleOptionDateRange.from )"
               required
-              [disabled]="!formValues.isEditable || hasInvoicedOrder">
+              [disabled]="!formValues.isEditable || hasInvoicedOrder || checkRequestStatus">
               <mat-datepicker-toggle matSuffix [for]="from">
                 <mat-icon matDatepickerToggleIcon class="icon-date">
                 </mat-icon>
@@ -52,7 +52,7 @@
             (dateInput)="onChange($event, 'to')"
             (dateChange)="formValues.pricingScheduleOptionDateRange.to = formatDateForBe(formValues.pricingScheduleOptionDateRange.to )"
             required
-            [disabled]="!formValues.isEditable || hasInvoicedOrder">
+            [disabled]="!formValues.isEditable || hasInvoicedOrder || checkRequestStatus">
             <mat-datepicker-toggle matSuffix [for]="to">
               <mat-icon matDatepickerToggleIcon class="icon-date">
               </mat-icon>
@@ -64,14 +64,14 @@
 <div  class="col-md-12 formula-description-header d-flex" style="margin-top: 15px;">
   <div class="checkbox">
     <mat-checkbox
-    [disabled]="!formValues.isEditable || hasInvoicedOrder || (formValues.formulaType && formValues.formulaType.id != 2)"
+    [disabled]="!formValues.isEditable || hasInvoicedOrder || (formValues.formulaType && formValues.formulaType.id != 2) || checkRequestStatus"
     [(ngModel)]="formValues.pricingScheduleOptionDateRange.assumeHolidayOnInstruments">
     Assume holiday if any one instrument is on holiday</mat-checkbox>
   </div>
   <div class="border_line"></div>
   <div class="checkbox" style="margin-left: 10px;">
     <mat-checkbox
-    [disabled]="!formValues.isEditable || hasInvoicedOrder"
+    [disabled]="!formValues.isEditable || hasInvoicedOrder || checkRequestStatus"
     [(ngModel)]="formValues.pricingScheduleOptionDateRange.allowsPricingOnHoliday">
     Allow Pricing on Holidays</mat-checkbox>
   </div>
