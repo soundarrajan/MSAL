@@ -16,6 +16,7 @@ import {
   MatDialog
 } from '@angular/material/dialog';
 import { DecimalPipe, KeyValue } from '@angular/common';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'shiptech-quantity-based',
@@ -229,6 +230,7 @@ export class QuantityBased
     public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
+    private store: Store
   ) {
    
     this.amountFormat =
@@ -245,6 +247,11 @@ export class QuantityBased
 
   ngOnInit() {
     this.entityName = 'Contract';
+    this.store.selectSnapshot<any>((state: any) => {
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.hasInvoicedOrder = true;
+      }
+    });
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
   }
 

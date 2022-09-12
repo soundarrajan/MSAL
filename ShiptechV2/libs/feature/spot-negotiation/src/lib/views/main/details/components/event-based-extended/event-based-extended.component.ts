@@ -13,6 +13,7 @@ import { OrderListGridViewModel } from '@shiptech/core/ui/components/delivery/vi
 import _ from 'lodash';
 import {  KeyValue } from '@angular/common';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'shiptech-event-based-extended',
@@ -201,11 +202,17 @@ export class EventBasedExtended implements OnInit {
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
+    private store: Store
   ) {
   }
 
   ngOnInit() {
     this.entityName = 'Contract';
+    this.store.selectSnapshot<any>((state: any) => {
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.hasInvoicedOrder = true;
+      }
+    });
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
   }
 

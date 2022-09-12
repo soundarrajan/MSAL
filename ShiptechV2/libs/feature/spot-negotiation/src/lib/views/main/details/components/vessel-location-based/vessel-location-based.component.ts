@@ -15,6 +15,7 @@ import _ from 'lodash';
 import {MatDialog} from '@angular/material/dialog';
 
 import { DecimalPipe, KeyValue } from '@angular/common';
+import { Store } from '@ngxs/store';
 
 
 @Component({
@@ -237,6 +238,7 @@ export class VesselLocationBased
    public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
+    private store: Store
     
   ) {
     this.amountFormat =
@@ -248,6 +250,11 @@ export class VesselLocationBased
 
   ngOnInit() {
     this.entityName = 'Contract';
+    this.store.selectSnapshot<any>((state: any) => {
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.hasInvoicedOrder = true;
+      }
+    });
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
   }
 
