@@ -1204,8 +1204,8 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   setDeliveredQuantityUomList(deliveryProductIndex) {
-    const bdnUom = this.formValues.deliveryProducts[deliveryProductIndex]
-      .bdnQuantityUom;
+    const bdnUom = (this.formValues.deliveryProducts[deliveryProductIndex])?this.formValues.deliveryProducts[deliveryProductIndex]
+      .bdnQuantityUom : false;
     if (bdnUom) {
       const verifyIfBdnUomIsMassUom = _.find(this.uomMass, function(object) {
         return object.name == bdnUom.name && object.id == bdnUom.id;
