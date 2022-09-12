@@ -15,6 +15,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import _ from 'lodash';
 import {MatDialog} from '@angular/material/dialog';
 import { DecimalPipe, KeyValue } from '@angular/common';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'shiptech-product-based',
@@ -235,6 +236,7 @@ export class ProductBased implements OnInit {
     public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
+    private store: Store
   ) {
     this.amountFormat =
       '1.' +
@@ -245,6 +247,11 @@ export class ProductBased implements OnInit {
 
   ngOnInit() {
     this.entityName = 'Contract';
+    this.store.selectSnapshot<any>((state: any) => {
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.hasInvoicedOrder = true;
+      }
+    });
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
   }
 

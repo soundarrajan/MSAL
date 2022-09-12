@@ -97,6 +97,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   defaultConversionRate: number;
   defaultConversionVolumeUomId: number;
   isComplexFormulaWeightEnforced: boolean;
+  checkRequestStatus: boolean = false;
+  
   constructor(
     public dialogRef: MatDialogRef<SpotnegoPricingDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -126,6 +128,10 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       this.staticList = state.spotNegotiation.staticLists.otherLists;
       this.sessionFormulaList = state.spotNegotiation.formulaList;
       this.isComplexFormulaWeightEnforced = state.tenantSettings.general.defaultValues.isComplexFormulaWeightEnforced;
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.checkRequestStatus = true;
+      }
+      
     });
 
     this.getOfferPriceConfiguration();
