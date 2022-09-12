@@ -1,0 +1,129 @@
+.documents-container {
+  background-color: white;
+}
+
+.drag-drop-upload-v2 {
+  margin: 0px;
+  padding: 15px !important;
+}
+
+.mid-blue-button {
+  background: #1d9fff;
+  height: 27px;
+  line-height: 21px !important;
+  border-radius: 5px !important;
+  font-weight: 400;
+  font-size: 14px;
+  color: #fff !important;
+  border: none;
+}
+
+.cust-header-btn {
+  cursor: pointer;
+  width: 115px;
+  height: 30px;
+  margin: 0 5px;
+}
+
+.container-modal {
+  background: #364150;
+  border: 1px solid #364150;
+  box-sizing: border-box;
+  box-shadow: 0 6px 7px rgb(0 0 0 / 25%);
+  padding: 10px;
+}
+
+.container-modal-expand {
+  background: #364150;
+  border: 1px solid #364150;
+  box-sizing: border-box;
+  box-shadow: 0 6px 7px rgb(0 0 0 / 25%);
+  padding: 10px;
+  width: 50vw;
+}
+
+.header-container {
+  display: inline-flex;
+  padding-right: unset !important;
+  padding-left: unset !important;
+}
+
+.select-container {
+  height: 40px;
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  border-radius: 4px;
+  display: inline-flex;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.search-lookup {
+  width: 15%;
+  padding: 12px;
+}
+
+.search-input {
+  position: relative;
+  height: 40px;
+  width: 90%;
+  float: right;
+  color: #fff;
+}
+
+.expand-img {
+  float: right;
+}
+
+input.search-input::placeholder {
+  color: white !important;
+}
+
+.document-type-container-header {
+  padding-top: 10px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #fff;
+}
+
+.mat-menu-panel {
+  max-width: max-content !important;
+  max-height: 50vh;
+}
+
+.file-name {
+  margin-top: 10px;
+}
+
+.upload-negotiation-document {
+  flex: 0 0 565px;
+  max-width: 565px;
+  position: relative;
+  width: 100%;
+}
+
+.lookup-negotiation-container .with-search {
+  padding: 7px !important;
+  cursor: pointer !important;
+  border-radius: 0 4px 4px 0 !important;
+  width: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  background: #f1f1f2 !important;
+}
+
+.lookup-negotiation-container .search-icon .img {
+  position: relative;
+  left: -5px !important;
+}
+
+.lookup-negotiation-container .with-search .mat-form-field-infix {
+  display: none !important;
+}
+
+.file-drop-container {
+  background: #f1f1f2 !important;
+}

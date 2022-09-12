@@ -1,0 +1,91 @@
+<div class="dialog-container">
+    <div class="header">
+        <div class="title">Filters and Preferences</div>
+        <div class="header-btn">
+            <button class="blue-button" (click)="enableEdit = true;">Edit</button>
+            <button [disabled]="!enableEdit" (click)="saveFilterChips()" class="blue-button">Save</button>
+            <mat-divider [vertical]="true"></mat-divider>
+            <span id="dialogCloseButton" class="close" (click)="closeDialog()"></span>
+        </div>
+    </div>
+    <div *ngIf="!enableEdit; else editableBlock" cdkDropListGroup>
+        <div class="filter-container">
+            <ng-container *ngFor="let filter of filterList;let i=index">
+                <!-- <div cdkDropList #placeholder></div> -->
+                <div class="available-filters-chips" [cdkDropListData]="{item:filter,index:i}" cdkDropList
+                    (cdkDropListDropped)="drop($event)" [cdkDropListEnterPredicate]="enter"
+                    cdkDropListOrientation="horizontal"
+                    [ngClass]="{'removeFilterChip':filter?.deleted && filter.deleted==true}">
+                    <div class="filter-chip" [ngClass]="filter.selected?'active-chip':'inactive-chip'" cdkDrag
+                        cdkDragBoundary=".dialog-container"
+                        [cdkDragDisabled]="enableEdit || filter.defaultFilter|| !filter.pinned">
+                        <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                        <div class="chip-container">
+                            <div class="filter-name" matTooltip="{{filter.name}}"
+                                (click)="filter.pinned && applyFilter(i)">
+                                {{filter.name}}
+                            </div>
+                            <div class="filter-pin" (click)="!filter.defaultFilter && toggleChipSelection(filter,i)">
+                                <div
+                                    [ngClass]="filter.defaultFilter?'filter-default-icon':(filter.pinned?'filter-pin-icon':'filter-unselected')">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+        </div>
+    </div>
+    <!-- <div class="filter-container" *ngIf="!enableEdit; else editableBlock">
+        <div cdkDropListGroup>
+            <div cdkDropList (cdkDropListDropped)="chipDrop()" #placeholder></div>
+            <div cdkDropList *ngFor="let filter of filterList;let i=index" [cdkDropListEnterPredicate]="enter"
+                (cdkDropListDropped)="chipDrop()">
+                <div class="available-filters-chips"
+                    [ngClass]="{'removeFilterChip':filter?.deleted && filter.deleted==true}" cdkDrag
+                    cdkDragBoundary=".dialog-container" [cdkDragDisabled]="enableEdit || filter.defaultFilter">
+                    <div class="filter-chip" [ngClass]="filter.selected?'active-chip':'inactive-chip'">
+                        <div class="chip-container">
+                            <div class="filter-name" matTooltip="{{filter.name}}"
+                                (click)="filter.pinned && applyFilter(i)">
+                                {{filter.name}}
+                            </div>
+                            <div class="filter-pin" (click)="!filter.defaultFilter && toggleChipSelection(filter)">
+                                <div
+                                    [ngClass]="filter.defaultFilter?'filter-default-icon':(filter.pinned?'filter-pin-icon':'filter-unselected')">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <ng-template #editableBlock>
+        <div class="filter-container">
+            <div *ngFor="let filter of filterList;let i=index">
+                <div class="available-filters-chips"
+                    [ngClass]="{'removeFilterChip':filter?.deleted && filter.deleted==true}">
+                    <!-- Set chip to disabled or user wont be able to change chip text properly -->
+                    <div disabled [ngClass]="filter.defaultFilter?'inactive-chip':'editable-chip'" class="filter-chip">
+                        <div class="chip-container">
+                            <div class="filter-name" matTooltip="{{filter.name}}">
+                                <input matInput [(ngModel)]="filter.name" type="text">
+                            </div>
+                            <div class="filter-pin" [ngStyle]="{'cursor':filter.defaultFilter?'unset':'pointer'}"
+                                (click)="!filter.defaultFilter && deleteFilterChip(filter)">
+                                <div [ngClass]="filter.defaultFilter?'filter-default-icon':'delete-chip-icon'">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+
+
+</div>

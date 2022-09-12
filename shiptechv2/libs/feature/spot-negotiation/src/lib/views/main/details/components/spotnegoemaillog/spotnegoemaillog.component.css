@@ -1,0 +1,14 @@
+::ng-deep .bg-failed-grid {
+  background-color: #ed6161;
+  color: #ffffff !important;
+}
+
+::ng-deep .bg-pending-grid {
+  background-color: #e4c381;
+  color: #ffffff !important;
+}
+
+::ng-deep .bg-success-grid {
+  background-color: #27ae60;
+  color: #ffffff !important;
+}

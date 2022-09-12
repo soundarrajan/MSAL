@@ -1,0 +1,96 @@
+.mat-dialog-container {
+  padding: unset !important;
+  height: fit-content !important;
+  overflow: unset !important;
+  max-width: fit-content;
+  min-width: 400px;
+  background: #364150;
+  border: 1px solid #364150;
+  box-sizing: border-box;
+  box-shadow: 0px 6px 7px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+}
+
+.container-modal {
+  padding: 10px;
+  //background: #364150;
+}
+.mat-dialog-content  {
+  margin: 0px;
+  padding: 0px;
+}
+.company-container {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.company-container-radio-button {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #FFFFFF;
+}
+
+.company-container .mat-radio-button.mat-accent .mat-radio-inner-circle, .company-container .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+  background: #00AAE2;
+}
+ 
+.mat-radio-outer-circle {
+  border-color: unset !important;
+}
+
+.company-container-header {
+  padding-top: 10px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #FFFFFF;
+}
+
+.header-container-company {
+  display: inline-flex;
+  padding-right: unset !important;
+  padding-left: unset !important;
+}
+
+
+.search-company-lookup {
+  width: 15%;
+  padding: 12px;
+}
+
+.select-company-container {
+  height: 40px;
+  border: 1px solid #FFFFFF;
+  box-sizing: border-box;
+  border-radius: 4px;
+  display: inline-flex;
+}
+
+.search-company-input::placeholder {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #A5A5A5;
+}
+
+.search-company-input {
+  position: relative;
+  height: 40px;
+  width: 90%;
+  float: right;
+  color: white;
+}
+
+.search-company-lookup::before {
+  content: url(../../../../../../../../../../assets/layout/images/pages/search.svg);
+}

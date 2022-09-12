@@ -1,0 +1,36 @@
+.ui-corner-all {
+    border-radius: 0px !important;
+  }
+  
+  .ui-dropdown .ui-dropdown-trigger {
+    color: #555555;
+    border-left: 1px solid $searchcolor;
+    background-color: $bg-white-shade;
+  }
+  
+  .ui-dropdown:not(.ui-state-disabled):hover {
+    border-color: $searchcolor !important;
+  }
+  
+  .ui-dropdown:not(.ui-state-disabled).ui-state-focus {
+    -webkit-box-shadow: none !important;
+     box-shadow: none !important;
+  }
+  
+  .ui-dropdown:focus {
+    outline: none;
+    box-shadow: none !important;
+  }
+  
+  .ui-dropdown-panel {
+    padding: 0;
+    border: none !important;
+    background-color: $bg-white;
+  }
+  
+  .ui-dropdown {
+    width: 100%;
+  }
+  textarea:focus {
+    outline: none;
+}

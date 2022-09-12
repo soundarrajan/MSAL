@@ -1,0 +1,550 @@
+<div id="port-popup">
+  <div class="port-popup-header" [ngClass]="status">
+    <div class="row align-items-center" style="justify-content: space-around;height: 100%;">
+      <div class="col-1 highlight-icon">
+        <div class="port-icon">
+          <div class=" circle circle1">
+            <div class=" circle circle2">
+              <div class=" circle circle3">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <span class="port-name-popup" matTooltip={{popup_data.name}}>{{popup_data.name}}</span>
+      </div>
+      <div class="col-4 pd-0 ">
+        <div class="default-view-checkbox">
+          <mat-checkbox class="m-l-r-5" (ngModelChange)="CheckDefaultView($event)" [ngModel]="myDefaultView"></mat-checkbox>
+          <!-- <mat-checkbox class="m-l-r-5" [checked]="defaultView"></mat-checkbox> -->
+          <div>My Default View</div>
+        </div>
+        <!-- <div class="default-view-checkbox">
+          My Default View
+          <mat-checkbox class="m-l-r-5" (click)="savePreference()" [checked]="defaultView"></mat-checkbox>
+        </div> -->
+      </div>
+      <div style="margin-right:20px;" class="close" title="Close" (click)="closePopup.emit(popup_data.name)">
+        <div class="inactive"></div>
+        <div class="active"></div>
+        <!-- <img class="inactive" src="./assets/customicons/close-disable.svg" alt="close-icon">
+        <img class="active" src="./assets/customicons/close-active.svg" alt="close-icon"> -->
+      </div>
+    </div>
+    <div style="float: right;position: relative;" (click)="setPortInfo(popup_data)">
+      <div class="side-nav">
+        <div class="side-nav-icon"><img src="./assets/customicons/vessel_arrival.svg" alt="expand-icon">
+          Vessel Arrivals
+        </div>
+      </div>
+    </div>
+    <!-- <div style="float: right;position: relative;top:54px">
+      <div class="side-nav">
+        <div class="side-nav-icon"><img src="./assets/customicons/message.svg" alt="expand-icon">Message
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <div class="port-popup-container">
+    <div class="port-popup-wrapper">
+      <div class="port-details">
+        <div class="port-info-wrapper">
+          <div id="port-info">
+            <div class="basic-info-title">
+              Port Basic Information
+            </div>
+            <div class="basic-info-body">
+              <div class="voyage-details">
+
+                <div class="voyage-details-header popup-header-icon">
+                  <div>
+                    <img class="icon-circle-background" src="./assets/customicons/calendar.svg"
+                      alt="community-icon">
+                  </div>
+                  <div
+                    style="flex:0 0 28%;display: flex;align-items: flex-start;flex-direction: column;margin-left: 4px;">
+                    <div class="label">Earliest Trading Time </div>
+                    <div class="value">
+                      {{popup_data.earliestTradingTime}} Days</div>
+                  </div>
+                  <div class="icon-seperator" style="padding-right: 5px;">|</div>
+                  <div>
+                    <img class="icon-circle-background" src="./assets/customicons/calendar.svg"
+                      alt="community-icon">
+                  </div>
+                  <div
+                    style="flex:0 0 28%;display: flex;align-items: flex-start;flex-direction: column;margin-left: 4px;">
+                    <div class="label">Latest Trading Time </div>
+                    <div class="value">
+                      {{popup_data.latestTradingTime}} Days</div>
+                  </div>
+                  <div class="icon-seperator" style="padding-right: 5px;">|</div>
+                  <div class="link" style="flex:0 0 16%;">
+                    <a href="{{shiptechUrl}}/#/masters/location/edit/{{popup_data.locationId}}" target="_blank" rel="noopener">Link to <br> Port Master</a>    
+                  </div>
+                </div>
+              </div>
+
+              <div class="row product-category">
+                <div class="col-12 row available m-0 pd-0">
+                  <div class="col-12 label">Available product category</div>
+                  <ng-container *ngIf="popup_data?.avlProdCategory?.length; else NotAvailable">
+                    <div style="width: 100%; display: flex;padding-left: 15px;">
+                        <div *ngFor="let prod of popup_data.avlProdCategory" class="value">
+                          {{prod}}
+                        </div>
+                    </div>
+                    </ng-container>
+                    <ng-template #NotAvailable>
+                      <div style="width: 100%; display: flex;padding-left: 15px;flex-direction: column;">
+                        <div class="not-avail">Not Available</div>
+                      </div>
+                    </ng-template>
+                </div>
+                <!-- <div class="col-5 not-available m-0 pd-0">
+                  <div class="col-12 label">Non Available</div>
+                  <div style="width: 100%; display: flex;padding-left: 15px;">
+                    <div *ngFor="let prod of popup_data.notavlProdCategory" class="value">
+                      {{prod}}
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <mat-accordion>
+            <mat-expansion-panel #second id="alerts" hideToggle="true" [expanded]="viewportRemarks" (closed)="changeDefault('portRemarksClose')"
+              (opened)="changeDefault('portRemarksOpen')">
+              <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
+                <mat-panel-title>
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+                  <div>Port Remarks</div>
+                  <div class="count">{{(portRemarkList?.length)? portRemarkList.length: 0}}
+                  </div>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div>
+                <div class="alerts-container">
+                  <div class="single-alert" *ngFor="let item of portRemarkList">
+                    <!-- Single Alert Start -->
+                    <div class="alert-notif">
+                      <div class="alert-title">
+                        <div class="d-flex align-items-center">
+                          <ng-container [ngSwitch]="item?.remarkSeverity?.name">
+                            <img *ngSwitchCase="'High'" class="icon" src="./assets/customicons/red-warning-o.svg"
+                              alt="warning-icon">
+                            <img *ngSwitchCase="'Medium'" class="icon" src="./assets/customicons/amber-warning-o.svg"
+                              alt="warning-icon">
+                            <img *ngSwitchDefault class="icon" src="./assets/customicons/green-warning-o.svg"
+                              alt="warning-icon">
+                          </ng-container>
+                          <div>{{item?.remarkTypes?.name}}</div>
+                        </div>
+                        <div class="alert-action">
+                          <ng-container *ngIf="item?.remarkStatus?.name!='Pending' && item?.remarkStatus?.name!='Resolved'" class="alert-action">
+                            <div style="flex: 0 0 78%;text-align: center;">{{item?.remarkStatus?.name}}</div>
+                          </ng-container>
+                          <ng-container *ngIf="item?.remarkStatus?.name=='Pending'" class="alert-status">
+                            <img style="flex: 0 0 22%;" class="status-icon"
+                              src="./assets/customicons/seen-icon.svg" alt="seen-icon">
+                            <div style="flex: 0 0 56%;">{{item?.remarkStatus?.name}}</div>
+                          </ng-container>
+                          <ng-container *ngIf="item?.remarkStatus?.name=='Resolved'" class="alert-status">
+                            <img style="flex: 0 0 22%;" class="tick-icon" src="./assets/customicons/tick.svg"
+                              alt="tick-icon">
+                            <div style="flex: 0 0 56%;">{{item?.remarkStatus?.name}}</div>
+                          </ng-container>
+                          <port-menu #menu [item]="item" [remarkLogs]="portRemarkLogs" (refreshPortRemark)="refreshPortRemark($event)"></port-menu>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Single Alert End -->
+                  </div>
+                </div>
+                <!-- Add Alert Start -->
+                <div class="alert-notif">
+                  <div class="alert-title">
+                    <div class="d-flex align-items-center">
+                      <img class="disable-icon icon" src="./assets/customicons/disable-warning.svg"
+                        alt="warning-icon">
+                      <div class="newRemark">New Port Remarks</div>
+                    </div>
+                    <div>
+                      <div style="position: absolute;right: 0px;" [matMenuTriggerFor]="newRemarksMenu"
+                        #newRemarksMenuTrigger="matMenuTrigger" xPosition="after"></div>
+                      <div class="add-new-remark" [matMenuTriggerFor]="remarksListMenu"
+                        #remarksMenuTrigger="matMenuTrigger">
+                        <div>+</div>
+                        <div>Add New Remark</div>
+                        <mat-icon>
+                          arrow_drop_down</mat-icon>
+                      </div>
+                      <mat-menu #remarksListMenu="matMenu" xPosition="before" class="common" yPosition="below">
+                        <div class="remarks-list-menu">
+                          <div class="remark-type-list"
+                            [ngClass]="{'remark-type-list-light':!theme,'remark-type-list':theme}"
+                            *ngFor="let remark of remarkTypes"
+                            (click)="newRemarksMenuTrigger.openMenu();selectedType=remark;">
+                            {{remark?.displayName}}
+                          </div>
+                        </div>
+
+                      </mat-menu>
+                      <mat-menu #newRemarksMenu="matMenu" class="common" xPosition="after">
+                        <div class="new-remarks-menu" [ngClass]="{'dark-theme':theme,'light-theme':!theme}" (click)="$event.stopPropagation();">
+                          <div class="warning-header">
+                            <div>
+                              <ng-container [ngSwitch]="severity?.name">
+                                <img *ngSwitchCase="'High'" class="warning-icon"
+                                  src="./assets/customicons/red-warning-o.svg" alt="warning-icon">
+                                <img *ngSwitchCase="'Medium'" class="warning-icon"
+                                  src="./assets/customicons/amber-warning-o.svg" alt="warning-icon">
+                                <!-- <img *ngSwitchDefault class="warning-icon"
+                                  src="./assets/customicons/green-warning-o.svg" alt="warning-icon"> -->
+                              </ng-container>
+                            </div>
+                            <div class="warning-title">
+                              {{selectedType?.displayName}}
+                            </div>
+                            <div (click)="closeMenu()">
+                              <mat-icon class="close">close</mat-icon>
+                            </div>
+                          </div>
+                          <div class="description">
+                            <div>Description</div>
+                            <mat-form-field appearance="fill">
+                              <textarea style="caret-color:#fff !important;" matInput [(ngModel)]="description" (keydown)="selectionChange=true"
+                                (click)="$event.stopPropagation();"></textarea>
+                            </mat-form-field>
+                          </div>
+                          <div class="severity">
+                            <span style="padding-right: 15px">Severity</span>
+                            <mat-radio-group aria-label="Severity" [(ngModel)]="severity">
+                              <mat-radio-button style="margin-right: 5px;" *ngFor="let severityObj of portSeverities" (click)="$event.stopPropagation();"
+                                [value]="severityObj">{{severityObj?.displayName}}</mat-radio-button>
+                              <!-- <mat-radio-button style="margin-right: 5px;" (click)="$event.stopPropagation();"
+                                [value]="2">MEDIUM</mat-radio-button> -->
+                            </mat-radio-group>
+                          </div>
+                          <div class="actions">
+                            <button mat-button class="cancel" (click)="closeMenu()">CANCEL</button>
+                            <button mat-raised-button [ngClass]="{'active':selectionChange}" class="save"
+                              (click)="saveRemark()">SAVE</button>
+                          </div>
+                        </div>
+                      </mat-menu>
+                    </div>
+                  </div>
+                </div>
+                <!-- Add Alert End -->
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel #third id="product-availability" hideToggle="true" [expanded]="viewPortProductAvailability"  (closed)="changeDefault('PortProductAvailabilityClose')"
+              (opened)="changeDefault('PortProductAvailabilityOpen')">
+              <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
+                <mat-panel-title>
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+                  Product Availability
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngIf="third.expanded" style="border-bottom: 2px solid rgba(13, 18, 24, 0.2);">
+                <div class="row">
+                  <div class="col-3">
+                    <div class="label link">HSFO</div>
+                    <div class="product-list">
+                      <ul *ngIf="this.PortGradeList?.HSFO.length > 0;else emptyBlock">
+                        <li *ngFor="let item of this.PortGradeList?.HSFO">
+                          <span [title]="item">{{item}}</span></li>
+                      </ul>
+                      <ng-template #emptyBlock>
+                        <ul>
+                          <li>-</li>
+                        </ul>
+                      </ng-template>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="label link">VLSFO</div>
+                    <div class="product-list">
+                      <ul *ngIf="this.PortGradeList?.ULSFO.length > 0;else emptyBlock">
+                        <li *ngFor="let item of this.PortGradeList?.ULSFO">
+                          <span [title]="item">{{item}}</span></li>
+                      </ul>
+                      <ng-template #emptyBlock>
+                        <ul>
+                          <li>-</li>
+                        </ul>
+                      </ng-template>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="label link">DIS</div>
+                    <div class="product-list">
+                      <ul *ngIf="this.PortGradeList?.DIS.length > 0;else emptyBlock">
+                        <li *ngFor="let item of this.PortGradeList?.DIS">
+                          <span [title]="item">{{item}}</span></li>
+                      </ul>
+                      <ng-template #emptyBlock>
+                        <ul>
+                          <li>-</li>
+                        </ul>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="third.expanded" style="width:100%;position: relative;">
+                <ag-grid-angular class="product-grid" [gridOptions]="gridOptions"
+                  class="ag-theme-balham-dark"></ag-grid-angular>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel #fourth id="bops-prices" hideToggle="true" [expanded]="viewbopsPrice" (closed)="changeDefault('bopsPriceClose')"
+              (opened)="changeDefault('bopsPriceOpen')">
+              <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
+                <mat-panel-title>
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+                  BOPS Prices
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div style="display: flex;flex-direction: column;max-height: 34vh;">
+                <div style="flex: 1 0 80%;max-height: 26vh;overflow-y: scroll;">
+                  <table *ngIf="fourth.expanded" class="price-header">
+                    <thead style="display: flex;justify-content: center;height: 22px;">
+                      <th style="flex:0 0 30%;">Fuel Type</th>
+                      <th style="flex:0 0 35%;">Today's Price</th>
+                      <th style="flex:0 0 35%;">Yesterday's Price</th>
+                    </thead>
+                  </table>
+                  <div *ngIf="fourth.expanded" class="price-header-height">
+                    <mat-accordion class="price-container" multi="true">
+                      <!-- Single Panel Start -->
+                      <ng-container *ngFor="let BopsPriceObj of portBopsPrice | keyvalue">
+                        <!-- quoteDateCost is not looping array object. So we just skip this quoteDateCost prop-->
+                        <mat-expansion-panel hideToggle="true" [expanded]="true" *ngIf="BopsPriceObj.key!=='quoteDateCost'">
+                          <mat-expansion-panel-header collapsedHeight="25px" expandedHeight="25px">
+                            <mat-panel-title>
+                              <table class="header-table">
+                                <tr style="display: flex;justify-content: center;align-items: center;">
+                                  <td style="flex:0 0 10%;">
+                                    <img class="expand-popup-icon" src="./assets/customicons/expand-popup.svg"
+                                      alt="icon">
+                                  </td>
+                                  <td style="flex:0 0 18%;">
+                                    <div>{{BopsPriceObj.key | uppercase}}</div>
+                                  </td>
+                                  <!-- <div class="icon-seperator">|</div> -->
+                                  <td style="flex:0 0 18%;">
+                                    <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                      <!-- <div>$489.00</div> -->
+                                    </div>
+                                  </td>
+                                  <td style="flex:0 0 15%;">
+                                    <div class="d-flex align-items-center">
+                                      <!-- <div class="d-flex align-items-center">
+                                        <mat-icon class="red red-down">arrow_drop_down</mat-icon>
+                                        <div class="red">1.5</div>
+                                      </div> -->
+                                    </div>
+                                  </td>
+                                  <!-- <div class="icon-seperator">|</div> -->
+                                  <td style="flex:0 0 18%;">
+                                    <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                      <!-- <div>$489.00</div> -->
+                                    </div>
+                                  </td>
+                                  <td style="flex:0 0 15%;">
+                                    <div class="d-flex align-items-center">
+                                      <div class="d-flex align-items-center">
+                                        <!-- <mat-icon class="green green-down">arrow_drop_down</mat-icon>
+                                        <div class="green">1.5</div> -->
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+
+                          <table class="sub-table">
+                            <ng-container *ngIf="BopsPriceObj?.value?.length; else NoRowFound">
+                              <tr style="display: flex;justify-content: center;align-items: center;" *ngFor="let BopsPrice of BopsPriceObj?.value">
+                                <td style="flex:0 0 10%;">
+                                </td>
+                                <td style="flex:0 0 18%;">
+                                  <div>{{BopsPrice?.productGrade}}</div>
+                                </td>
+                                <div class="icon-seperator">|</div>
+                                <td style="flex:0 0 18%;">
+                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                    <div>{{BopsPrice?.todaysPrice}}</div>
+                                  </div>
+                                </td>
+                                <td style="flex:0 0 15%;">
+                                  <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center">
+                                      <mat-icon [ngClass]="BopsPrice.todaysPriceIndex=='Green'? 'green green-down': 'red red-down'">arrow_drop_down</mat-icon>
+                                      <div [ngClass]="BopsPrice.todaysPriceIndex=='Green'? 'green': 'red'">{{BopsPrice?.todaysPriceDiff}}</div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <div class="icon-seperator">|</div>
+                                <td style="flex:0 0 18%;">
+                                  <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                    <div>{{BopsPrice?.yesterdayPrice}}</div>
+                                  </div>
+                                </td>
+                                <td style="flex:0 0 15%;">
+                                  <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center">
+                                      <mat-icon [ngClass]="BopsPrice.yesterdayPriceIndex=='Green'? 'green green-down': 'red red-down'">arrow_drop_down</mat-icon>
+                                      <div [ngClass]="BopsPrice.yesterdayPriceIndex=='Green'? 'green': 'red'">{{BopsPrice?.yesterdayPriceDiff}}</div>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            </ng-container>
+                            <ng-template #NoRowFound>
+                              <tr style="display: flex;justify-content: center;align-items: center;">
+                                <td style="flex:0 0 80%;" class="text-center">
+                                  No Rows To Show
+                                </td>
+                              </tr>
+                            </ng-template>
+                            <!-- <tr style="display: flex;justify-content: center;">
+                              <td style="flex:0 0 10%;">
+                              </td>
+                              <td style="flex:0 0 18%;">
+                                <div>RMG18005</div>
+                              </td>
+                              <div class="icon-seperator">|</div>
+                              <td style="flex:0 0 18%;">
+                                <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                  <div>$482.00</div>
+                                </div>
+                              </td>
+                              <td style="flex:0 0 15%;">
+                                <div class="d-flex align-items-center">
+                                  <div class="d-flex align-items-center">
+                                    <mat-icon class="green green-down">arrow_drop_down</mat-icon>
+                                    <div class="green">3.5</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <div class="icon-seperator">|</div>
+                              <td style="flex:0 0 18%;">
+                                <div class="d-flex align-items-center" style="justify-content:flex-end;">
+                                  <div>$482.00</div>
+                                </div>
+                              </td>
+                              <td style="flex:0 0 15%;">
+                                <div class="d-flex align-items-center">
+                                  <div class="d-flex align-items-center">
+                                    <mat-icon class="green green-down">arrow_drop_down</mat-icon>
+                                    <div class="green">3.5</div>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr> -->
+                          </table>
+                        </mat-expansion-panel>
+                      </ng-container>
+                      <!-- Single Panel End -->
+
+                    </mat-accordion>
+                  </div>
+                </div>
+                <div *ngIf="fourth.expanded" class="price-footer">
+                  <div style="display: flex;align-items: center;padding: 0px 5px 5px 10px;">
+                    <div style="flex: 40%;">
+                      Price as on:
+                    </div>
+                    <div class="date" style="flex: 60%;" *ngIf="(portBopsPrice?.quoteDateCost[0]?.priceAsOn.indexOf('0001')==-1); else NotAvailable">
+                      {{portBopsPrice?.quoteDateCost[0]?.priceAsOn | date: 'dd/MM/yyyy'}}
+                    </div>
+                    <ng-template #NotAvailable>
+                      <div class="date" style="flex: 60%;">N/A</div>
+                    </ng-template>
+                  </div>
+                  <div style="display: flex;align-items: center;padding: 5px 10px 10px 10px;">
+                    <div>
+                      Barge Charges included:
+                    </div>
+                    <div style="margin-left: 20px;" class="yes-or-no">
+                      <span class="yes">{{portBopsPrice?.quoteDateCost[0]?.bargeChargeIncluded? 'YES': 'NO'}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel #fifth id="agents-info" hideToggle="true" [expanded]="viewportsAgents" (closed)="changeDefault('portsAgentsClose')"
+            (opened)="changeDefault('portsAgentsOpen')">
+            <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
+              <mat-panel-title>
+                <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+                Agents Information
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngIf="fifth.expanded">
+              <div class="agents-info-panel" *ngFor="let item of agentsInfo">                                                      
+                  <div>
+                    <img src="./assets/customicons/mail.svg" alt="mail-icon" style="margin-right: 7px; vertical-align: middle;"><span class="link">{{item.email}}</span>
+                  </div>                  
+              </div>
+              <div class="agents-info-panel" *ngIf="agentsInfo && agentsInfo.length == 0">                                                      
+                <div>
+                  <span class="link" style = "text-decoration-line:none !important">No agents information available</span>
+                </div>                  
+            </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel #sixth id="other-port" hideToggle="true" [expanded]="viewotherDetails" (closed)="changeDefault('otherDetailsClose')"
+          (opened)="changeDefault('otherDetailsOpen')">
+          <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
+            <mat-panel-title>
+              <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+              Other Details
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div *ngIf="sixth.expanded" class="otherport-details">
+            <ng-container>
+              <div class="single-detail">
+                <div class="detail">
+                  <div>Pretest Available</div>
+                  <div class="yes-or-no" [ngClass]="otherPorts.pretestAvailable == 'NO'? 'no': 'yes'">{{otherPorts.pretestAvailable == 'NO'? 'NO': 'YES'}}</div>
+                </div>
+                <div class="detail"
+                  *ngIf="otherPorts.ecaRegion =='YES';else elseBlock">
+                  <div style = "width : 250px">ECA Region<span class="subdata">{{otherPorts.region}}</span>
+                    <span class="subdata">{{otherPorts.distanceSECAArea}} Nms away</span></div>
+                  <div class="yes-or-no yes">YES</div>
+                </div>
+                <div class="detail">
+                  <div>Mandatory LSDIS port</div>
+                  <div class="yes-or-no" [ngClass]="otherPorts.mandatoryLSDISPort == 'NO'? 'no': 'yes'">{{otherPorts.mandatoryLSDISPort == 'NO'? 'NO': 'YES'}}</div>
+                </div>
+                <div class="detail">
+                  <div>Scrubber not Allowed</div>
+                  <div class="yes-or-no" [ngClass]="otherPorts.scrubberNotAllowed == 'NO'? 'no': 'yes'">{{otherPorts.scrubberNotAllowed == 'NO'? 'NO': 'YES'}}</div>
+                </div>
+              </div>
+            </ng-container>
+            <ng-template #elseBlock>
+              <div class="detail">
+                <div>ECA Region</div>
+                <div class="yes-or-no no">NO</div>
+              </div>
+            </ng-template>
+          </div>
+        </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="port-popup-footer">
+    <!-- <hr> -->
+  </div>
+</div>

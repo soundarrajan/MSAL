@@ -1,0 +1,31 @@
+<div class="filters-wrapper">
+  <ng-container *ngIf="filterParts?.length > 0">Filtered by: </ng-container>
+  <ng-container *ngFor="let filterPart of filterParts">
+    <span [ngSwitch]="filterPart.type">
+      <span class="filter-item-wrap" *ngSwitchCase="filterPartType"
+        >
+        {{ filterPart.column }}
+        {{
+          filterPart.condition == 'is null'
+            ? 'is empty'
+            : filterPart.condition == 'is not null'
+            ? 'is not empty '
+            : filterPart.condition == 'is true'? 'Yes'
+            : filterPart.condition == 'is false'? 'No'
+            : filterPart.condition
+        }}
+        <span *ngIf="filterPart.value" class="filter-value"
+          >{{ filterPart.value }} &nbsp;<span
+            *ngIf="filterPart.column == 'No Response'"
+            >Days&nbsp;</span
+          ></span
+        ></span
+      >
+      <span *ngSwitchCase="logicalOpPartType">
+        <span class="bullet-separator" *ngIf="filterPart.value == 'bullet'"></span>
+        <span *ngIf="filterPart.value != 'bullet'">&nbsp;{{ filterPart.value }} &nbsp;</span>        
+      </span>
+    </span>
+  </ng-container>
+  <span class="close-icon" (click)="hideFilters()">close</span>
+</div>

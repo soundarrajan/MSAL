@@ -1,0 +1,35 @@
+<shiptech-breadcrumbs> </shiptech-breadcrumbs>
+<shiptech-negotiation-toolbar
+  [activeTab]="'email'"
+></shiptech-negotiation-toolbar>
+<div class="agGrid-v2" style="margin: 0">
+  <div style="width:100%;height:100%">
+    <ag-grid-angular
+      style="width: 100%;height: calc( 100vh - 154px );"
+      [gridOptions]="gridOptions_data"
+      class="ag-theme-material ag-grid-v2 angular-v9 spot-nego-emaillog "
+      (rowClicked)="onrowClicked($event)"
+      [enableBrowserTooltips]="true"
+      (gridReady)="getEmailLogs()"
+      [overlayLoadingTemplate]="overlayLoadingTemplate"
+      [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+    >
+    </ag-grid-angular>
+  </div>
+  <div class="footer">
+    <app-ag-footer-new
+    [gridViewModel]="gridOptions_data"
+    [page]="page"
+    [size]="pageSize"
+    [count]="totalItems"
+    [singleGrid]="true"
+    [doublePagination]="true"
+    [maxSize]="765"
+    id="{{ gridId }}"
+    (pageChange)="onPageChange($event.page)"
+    (newPageSize) = "onPageSizeChange($event.pageSize)"
+    [enabler] = "true"
+  >
+  </app-ag-footer-new>
+  </div>
+</div>

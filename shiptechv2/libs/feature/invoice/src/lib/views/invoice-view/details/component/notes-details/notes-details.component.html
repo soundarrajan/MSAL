@@ -1,0 +1,83 @@
+<div class="header-product-details col-md-12 no-padding notes-section" style="margin-top: 10px;">
+  <span *ngIf="expandInvoiceNotes" (click)="expandInvoiceNotes = !expandInvoiceNotes">
+    <a class="expand-icon">
+    </a>
+  </span>
+  <span  *ngIf="!expandInvoiceNotes" (click)="expandInvoiceNotes = !expandInvoiceNotes">
+    <a class="collapse-icon">
+    </a>
+  </span>
+  <div class="title">
+    Notes
+  </div>
+</div>
+<div class="col-md-12 no-padding" *ngIf="expandInvoiceNotes">
+  <table class="notes-details-table table table-stripped table-hover" style="width:100%">
+    <thead>
+      <tr>
+        <td class="padding" style="width: 30px;">
+          <a class="add-icon" (click)="addNotesLine()"
+          [ngStyle]="{
+            pointerEvents:
+            this.formValues.status?.name === 'Approved' || this.formValues.status?.name === 'Cancelled' ? 'none' : 'auto'
+          }"></a>
+        </td>
+        <td class="padding" style="width:33%">
+          <b>Notes</b>
+        </td>
+        <td class="padding" style="width:33%">
+          <b>Added By	</b>
+        </td>
+        <td class="padding" style="width:33%">
+          <b>Date & Time</b>
+        </td>
+      </tr>
+    </thead>
+  </table>
+  <div class="table-with-scroll">
+    <table class="notes-details-table table table-stripped table-hover" style="width:100%">
+      <tbody>
+
+          <ng-container  *ngFor="let noteLine of formValues.invoiceNotes | keyvalue : originalOrder">
+            <tr *ngIf="!noteLine.value.isDeleted">
+              <td class="padding" style="width:30px; padding-left: 0px  !important; padding-right: 0px  !important;">
+                <a *ngIf ="!detectCurrentUser(noteLine.value)" class="remove-icon" style="margin-left: 10px;" (click)="deleteNotesLine(noteLine.key)"
+                [ngStyle]="{
+                  pointerEvents:
+                  this.formValues.status?.name === 'Approved' || this.formValues.status?.name === 'Cancelled' ? 'none' : 'auto'
+                }"></a>
+              </td>
+              <td style="width:33%">
+                <div class="custom-form-field-invoice-notes" style="height: 30px;" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
+                  <mat-form-field class="without-search"
+                    appearance="legacy" style="height: 30px;">
+                    <input
+                      [ngModel]="noteLine.value.note | htmlDecodeReadonly"
+                      (ngModelChange)="noteLine.value.note = $event"
+                      (blur)="updateNotes($event, noteLine.key)"
+                      [disabled]="detectCurrentUser(noteLine.value) || this.formValues.status?.name == 'Approved' || this.formValues.status?.name === 'Cancelled'"
+                      matInput
+                      autocomplete="off">
+                  </mat-form-field>
+                </div>
+              </td>
+              <td style="width:33%">
+                {{noteLine.value.createdBy ? (noteLine.value.createdBy.displayName | htmlDecodeReadonly) : ''}}
+              </td>
+              <td style="width:33%">
+                {{noteLine.value.createdAt ? formatDate(noteLine.value.createdAt) : ''}}
+              </td>
+
+          </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade">
+</ngx-spinner>
+

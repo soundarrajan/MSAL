@@ -1,0 +1,189 @@
+<!--  Legend 1 Start-->
+<div *ngIf="type=='legend1'" class="mr-0-20">
+    <div class="legend1-component-v2">
+        <div class="legend-values" [ngClass]="{'darkTheme':switchTheme}">
+            <div>
+                <div class="color-circle green"></div>
+                <span>ITM</span>
+            </div>
+            <div>
+                <div class="color-circle blue"></div>
+                <span>ATM</span>
+            </div>
+            <div>
+                <div class="color-circle red"></div>
+                <span>OTM</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  Legend 1 End-->
+
+<!--  Legend 2 Start-->
+<div *ngIf="type=='legend2'" class="mr-0-20">
+    <div class="legend2-component-v2" [ngClass]="{'darkTheme':switchTheme}">
+        <div>
+            <div class="text">DTE (Days)</div>
+            <div class="value">25</div>
+        </div>
+        <div>
+            <div class="text">DTE (Years)</div>
+            <div class="value">0.07</div>
+        </div>
+        <div class="dropdown">
+            <div class="text">Currency</div>
+            <mat-form-field>
+                <mat-select value="usd" disableOptionCentering [panelClass]="{'darkPanel':darkThemeOn}">
+                    <mat-option value="usd">USD</mat-option>
+                    <mat-option value="eur">EUR</mat-option>
+                    <mat-option value="inr">INR</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+<!--  Legend 2 End-->
+
+<!--  Summary Start-->
+<div *ngIf="type=='summaryLabel'">
+    <div class="summaryLabel-component-v2">
+        <div class="row">
+            <div class="col-md-9" style="display: flex;justify-content: flex-start;">
+                <div class="badge-header">
+                    <div><span class="label">Trade Date</span>
+                        <div class="value">11/09/2020</div>
+                    </div>
+                    <div class="border_line"></div>
+                    <div> <span class="label">Index</span>
+                        <div class="value">ICE Brent Oct 2020</div>
+                    </div>
+                    <div class="border_line"></div>
+                    <div><span class="label">Period</span>
+                        <div class="value">Oct 2020</div>
+                    </div>
+                    <div class="border_line"></div>
+                    <div><span class="label">Expiry Date</span>
+                        <div class="value">11/09/2020</div>
+                    </div>
+                </div>
+                <div class="total-exposure">
+                    <div><span class="label">Total Exposure</span>
+                        <div class="value">42,000 GAL</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  Summary End-->
+
+<!--  Readonly Information Start-->
+<div *ngIf="type=='readonlyInfoLabel'" class="mr-0-20">
+    <div class="readonlyInfoLabel">
+        <div class="label-block">
+            <div class="title">Total Quantity</div>
+            <div class="value">42,000 GAL</div>
+        </div>
+        <div class="divider"></div>
+        <div class="label-block">
+            <div class="title">Total Exposure</div>
+            <div class="value">42,000 GAL</div>
+        </div>
+        <div class="divider"></div>
+        <div class="label-block">
+            <div class="title">Expiry count down</div>
+            <div class="value">65 Days</div>
+        </div>
+    </div>
+</div>
+<!--  Readonly Information End-->
+
+<!--  Converter Start-->
+<div *ngIf="type=='conversionLabel'" class="mr-0-20">
+    <div class="convertor-component-v2">
+        <div class="quantity">1 Lot</div>
+        <div class="convert-img"></div>
+        <div class="unit">42,000 GAL</div>
+    </div>
+</div>
+<!--  Converter End-->
+
+<!--  Converter Editable Start-->
+<div *ngIf="type=='conversionEditable'" class="mr-0-20">
+    <div class="convertorEditable-component-v2">
+        <div class="block">
+            <div class="title">Mass UOM</div>
+            <div class="inline-dropdown">
+                <mat-form-field appearance="legacy">
+                    <mat-select value="mt" disableOptionCentering>
+                        <mat-option value="mt">MT</mat-option>
+                        <mat-option value="gal">GAL</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="convert-img">
+        </div>
+        <div class="block dashed-border">
+            <div class="title">Conversion Rate</div>
+            <div class="value">2500</div>
+        </div>
+        <div class="block m-l-15">
+            <div class="title">Volume UOM</div>
+            <div class="inline-dropdown">
+                <mat-form-field appearance="legacy">
+                    <mat-select value="mt" disableOptionCentering>
+                        <mat-option value="mt">MT</mat-option>
+                        <mat-option value="gal">GAL</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  Converter Editable End-->
+
+<!--  Summary with Popup Start-->
+<div *ngIf="type=='summarywithPopup'" class="mr-0-20">
+    <div class="badge-header-withpopup-v2">
+        <div *ngFor="let content of labellist;let i = index" class="border_line title">
+            {{content.title}}
+            <div class="value">{{content.data}}
+            </div>
+        </div>
+        <div class="popup-holder">
+            <div class="popup-icon" [ngClass]="{'popup-icon-active':popupOpen}" (click)="popupOpen = !popupOpen;"></div>
+            <div class="popup-label">Spec Parameter</div>
+        </div>
+    </div>
+</div>
+<!--  Summary with Popup End-->
+
+<!--  Movement Id with different status Start-->
+<div *ngIf="type=='datawithStatus'" class="mr-0-20 d-flex" style="justify-content: space-evenly;">
+    <!-- Empty -->
+    <div class="badge-header-v2">
+        <div *ngFor="let content of contentMap1;let i = index"
+            [ngClass]="i !== (contentMap1.length - 1) ? 'border_line ' + content?.titleClass : content?.titleClass">
+            {{content.title}}
+            <div [ngClass]="content?.dataKeyClass">{{content.dataKey}}</div>
+        </div>
+    </div>
+    <!-- Planned -->
+    <div class="badge-header-v2">
+        <div *ngFor="let content of contentMap2;let i = index"
+            [ngClass]="i !== (contentMap2.length - 1) ? 'border_line ' + content?.titleClass : content?.titleClass">
+            {{content.title}}
+            <div [ngClass]="content?.dataKeyClass">{{content.dataKey}}</div>
+        </div>
+    </div>
+    <!-- Verified -->
+    <div class="badge-header-v2">
+        <div *ngFor="let content of contentMap3;let i = index"
+            [ngClass]="i !== (contentMap3.length - 1) ? 'border_line ' + content?.titleClass : content?.titleClass">
+            {{content.title}}
+            <div [ngClass]="content?.dataKeyClass">{{content.dataKey}}</div>
+        </div>
+    </div>
+</div>
+<!--  Movement Id with different status End-->

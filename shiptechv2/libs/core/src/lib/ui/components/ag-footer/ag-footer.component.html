@@ -1,0 +1,18 @@
+<div class="row mt-2">
+  <div class="col-md-6">
+    Showing {{((page - 1) * size) + 1}}
+    to {{page * size > count ?  count : page * size }} of {{count}} entries
+  </div>
+  <div class="col-md-6">
+    <div style="float:right">
+      <span class="f-s-10">Page</span>
+      <app-ag-paging style="width: 150px;" [pagerLeftArrowIcon]="'fa fa-chevron-left'"
+                     [pagerRightArrowIcon]="'fa fa-chevron-right'" [count]="count" [page]="page"
+                     [size]="size" [useInputAsPageSelect]="true" (pageChange)="onPageChange($event.page)">
+      </app-ag-paging>
+      <span class="f-s-10">
+        of {{ totalPages }}
+      </span>
+    </div>
+  </div>
+</div>

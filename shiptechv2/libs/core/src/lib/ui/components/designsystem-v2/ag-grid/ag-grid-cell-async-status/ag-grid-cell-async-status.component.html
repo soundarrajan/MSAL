@@ -1,0 +1,10 @@
+<div
+  [style.background-color]="initParamsValues.code | async"
+  class="ag-async-background"
+  [ngClass]="{
+    'color-loaded': initParamsValues.code | async,
+    'color-not-loaded': !initParamsValues.code
+  }"
+>
+  {{ initParamsValues.displayName }}
+</div>

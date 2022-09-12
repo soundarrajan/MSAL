@@ -1,0 +1,82 @@
+<div class="offer-price-history-popup">
+  <div class="spot-popup-header-container"><div class="spot-nego-title">Offer Price History</div>
+  <div class="spot-dialog-title-right">
+     <span class="close" style="cursor: pointer;" type="button" [mat-dialog-close]="true" ></span>
+    </div>
+  </div>
+  <hr class="hr-line">
+<div class="row1">
+  <div class="col-6">
+    <div class="row">
+      <div class="p-l-15">
+
+        <span class="location-main-heading">Tabular Representation</span>
+      </div>
+    </div>
+
+    <div class="product-terms p-b-5 p-l-15">
+      <div class="operations-details-block offerprice-history" style="height:75vh; max-height: 75vh; display: flex; overflow-y: scroll;">
+        <table style="width: 18vw; left: 0; z-index: 1; position: sticky;">
+          <thead>
+            <tr style="border-radius: 0px !important;">
+              <th class="text-left with-ellipsis" style="width: 50%;" matTooltipClass="lightTooltip" matTooltip="CounterParty">CounterParty</th>
+              <th class="text-left with-ellipsis" style="width: 25%;" matTooltipClass="lightTooltip" matTooltip="Diff">Diff</th>
+              <th class="text-left with-ellipsis" style="width: 25%;" matTooltipClass="lightTooltip" matTooltip="Curr. offer">Curr. offer</th>
+            </tr>
+          </thead>
+            <tbody id="tableBody">
+               <tr *ngFor="let items of locationData">
+                <td class="text-left w-157 with-ellipsis" style="width: 50%;" matTooltipClass="lightTooltip" matTooltip="{{items.sellerCounterpartyName| htmlDecodeReadonly}}" >{{items.sellerCounterpartyName| htmlDecodeReadonly }}</td>
+                <td class="text-left w-95 with-ellipsis" style="width: 25%;" matTooltipClass="lightTooltip" matTooltip="{{formatService.FormatPriceTrailingZero(items.priceDiff)}}">$ {{formatService.FormatPriceTrailingZero(items.priceDiff)}}</td>
+                <td class="text-left w-95 with-ellipsis" style="width: 25%;" matTooltipClass="lightTooltip" matTooltip="{{formatService.FormatPriceTrailingZero(items.price)}}">$ {{formatService.FormatPriceTrailingZero(items.price)}}</td>
+               </tr>
+            </tbody>
+          </table>
+          <div style="width: 35vw; max-width: 20vw; height:100%;">
+             <table style="width: 28vw; overflow-x: scroll;">
+              <thead >
+                <tr style="border-radius: 0px !important; margin-left: -0.5vw;">
+                  <th class="text-left with-ellipsis" style="width: 30%;">Past off </th>
+                </tr>
+              </thead>
+              <tbody id="tableSecondBody" >
+                <tr *ngFor="let items of offerPriceList">
+                  <td class="text-left with-ellipsis" style="width: 5vw" *ngFor="let item of items">
+                     <span  *ngIf="item != undefined" matTooltipClass="lightTooltip" matTooltip="{{+priceFormatValue(formatService.FormatPriceTrailingZero(item))}}">&nbsp;$ {{+priceFormatValue(formatService.FormatPriceTrailingZero(item))}} &nbsp;</span>
+                     <span *ngIf="item == undefined">&nbsp;-&nbsp;</span>
+                  </td>
+                </tr>
+              </tbody>
+             </table>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6" >
+    <div class="row">
+      <div class="col-4" style="margin-left: -15px;">
+        <span class="location-main-heading">Graphical Representation</span>
+
+      </div>
+      <div class="col-8 text-right">
+
+        <span class="location-title-marketprice">Location:</span>
+        <span class="location-value-marketprice m-r-5"> {{locationName}}</span>
+        <span class="location-title-marketprice"> Product: </span>
+        <span class="location-value-marketprice m-r-5">{{productName}}</span>
+      </div>
+    </div>
+    <div id="container" style="height: 75vh;border: 4px solid #E0E1E4;">
+    <highcharts-chart
+       [Highcharts]="highcharts"
+       [options]="chartOptions"
+       >
+    </highcharts-chart>
+  </div>
+  </div>
+  </div>
+
+</div>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-spin-clockwise-fade">
+</ngx-spinner>

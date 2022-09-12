@@ -1,0 +1,30 @@
+<div class="supplier-comments-popup applicable-cost-popup-header">
+    <div class="spot-popup-header-container">
+        <div class="spot-nego-title">Counterparty comments</div>
+        <div class="spot-dialog-title-right">
+            <button class="blue-button proceed-btn" style="cursor: pointer;" (click)="saveSellerComment('S')" >Save</button>
+            <div class="title-divider">|</div>
+            <span class="close" style="cursor:pointer; display: inline;"  (click)="closeSellerComment('C')" ></span>
+        </div>
+    </div>
+
+    <div class="seperator-line"></div>
+    <mat-dialog-content>
+        <div class="spot-seller-comments-section">
+            <div class="spot-comments-container">
+                <div class="spot-seller-comments">
+                    <div>
+                        <span class="circle internal"></span>
+                        <span class="label">{{requestInfo.sellerCounterpartyName}}</span>
+                    </div>
+                    <textarea
+                    class="comments-text"
+                    [(ngModel)]="requestInfo.sellerComments"
+                    placeholder="Type notes here.."
+                    maxlength="1000">
+                    </textarea>
+                </div>
+            </div>
+        </div>
+    </mat-dialog-content>
+</div>

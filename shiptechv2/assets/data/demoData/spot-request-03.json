@@ -1,0 +1,22 @@
+[
+    {
+        "location-name": "Shanghai",
+        "location-id": "1234",
+        "port-id": "1"
+    },
+    {
+        "location-name": "Shenzhen",
+        "location-id": "1234",
+        "port-id": "1"
+    },
+    {
+        "location-name": "Singapore",
+        "location-id": "1234",
+        "port-id": "1"
+    },
+    {
+        "location-name": "Busan",
+        "location-id": "1234",
+        "port-id": "1"
+    }
+]

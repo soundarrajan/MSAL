@@ -1,0 +1,45 @@
+@import '../../sass/layout/_layout';
+
+body, h1, h2, h3, h4, h5, h6 {
+  font-family: "Open Sans",sans-serif;
+}
+
+.layout-wrapper.layout-menu-dark .layout-menu-container {
+  background-color: #364150;
+}
+
+.layout-wrapper {
+  .layout-menu-container {
+    .layout-menu {
+      li {
+        a {
+          border-top: 1px solid #484848;
+          color: #fff;
+          span {
+            color: white!important;
+          }
+        }
+      }
+    }
+  }
+}
+p-fileUpload{
+  position: absolute;
+  top: 0;
+  left: 15px;
+  right: 15px;
+  bottom: 0;
+  opacity: 0;
+  .ui-fileupload .ui-fileupload-buttonbar .ui-button.ui-fileupload-choose{
+    background-color: #fff !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+.p-t-4 {
+  padding-top: 4px;
+}

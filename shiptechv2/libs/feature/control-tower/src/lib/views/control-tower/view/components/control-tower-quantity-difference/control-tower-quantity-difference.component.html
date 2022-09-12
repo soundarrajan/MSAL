@@ -1,0 +1,60 @@
+<div
+  class="controlTower-content"
+  [ngClass]="[theme ? 'dark-theme' : 'light-theme', newScreen ? 'new' : '']"
+  style="position: relative;"
+>
+  <div id="custom-tabs-v2" class="level-2">
+    <mat-tab-group
+      mat-align-tabs="end"
+      (selectedTabChange)="selectedTabChange($event)"
+    >
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="custom-label-holder">
+            <div
+              [ngClass]="newScreen ? 'custom-tab-ui-new' : 'custom-tab-ui'"
+              class="rob-difference"
+            ></div>
+            <div class="custom-label">ROB Difference</div>
+          </div>
+        </ng-template>
+        <ng-container>
+          <shiptech-control-tower-general-view-list
+            *ngIf="gridTitle === 'ROB Difference'"
+            [selectorType]="'Quantity ROB Difference'"
+            [groupId]="
+              'control-tower-quantity-rob-difference-v2-list-filter-presets-9'
+            "
+            [gridId]="'control-tower-quantity-rob-list-grid-9'"
+            [theme]="theme"
+            [newScreen]="newScreen"
+          ></shiptech-control-tower-general-view-list>
+        </ng-container>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="custom-label-holder">
+            <div
+              [ngClass]="newScreen ? 'custom-tab-ui-new' : 'custom-tab-ui'"
+              class="supply-difference"
+            ></div>
+            <div class="custom-label">Supply Difference</div>
+          </div>
+        </ng-template>
+        <ng-container>
+          <shiptech-control-tower-general-view-list
+            *ngIf="gridTitle === 'Supply Difference'"
+            [selectorType]="'Quantity Supply Difference'"
+            [groupId]="
+              'control-tower-quantity-supply-difference-v2-list-filter-presets-5'
+            "
+            [gridId]="'control-tower-quantity-supply-list-grid-5'"
+            [theme]="theme"
+            [newScreen]="newScreen"
+          ></shiptech-control-tower-general-view-list>
+        </ng-container>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+<div class="mainFooterWhiteSpace" [ngClass]="newScreen ? 'new' : ''"></div>

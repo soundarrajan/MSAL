@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="row">
+  <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+    <div class="custom-form-field-with-search lightTheme">
+        <div class="d-flex">
+          <mat-form-field class="without-search" appearance="legacy">
+            <mat-label>Search</mat-label>
+            <input matInput name="search" [(ngModel)]="searchText">
+          </mat-form-field>
+          <div class="search-icon" (click)="applyFilter()">
+            <div class="img"></div>
+          </div>
+          <img [ngClass]="{'expand-img': true}" alt="expand"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+      </div>
+    </div>
+  </div>
+<div class="row">
+  <table>
+    <thead>
+      <th></th>
+      <th>Product</th>
+      <th>Related Deliveries</th>
+    </thead>
+    <tbody>
+      <!-- <mat-radio-group> -->
+      <tr *ngFor="let data of productData">
+        <td><input type="radio" name="2" id="2" class="with-gap" (click)="onSelectedItem(data)" [(ngModel)]="selectedRow" [value]="selectedRow?.name == data?.product" ></td>
+        <td> {{data.product}}</td>
+        <td> {{data.deliveries}}</td>
+      </tr>
+    <!-- </mat-radio-group> -->
+</table>
+</div>
+
+</div>

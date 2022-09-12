@@ -1,0 +1,52 @@
+<div style="display: flex; flex-direction: row; min-height: 50px">
+  <!-- Note: We need at least  200px for the grid in order for the column filter panel not to be cut. See more options here: https://www.ag-grid.com/javascript-grid-width-and-height/#min-height-with-auto-height -->
+  <!-- Grid also uses domLayout: 'autoHeight', see css file for: ag-layout-auto-height. Depends on number of column tool panel items -->
+  <div style=" overflow-y: hidden; flex-grow: 1">
+    <app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display>
+    <ag-grid-angular
+      #agGridAngular
+      [gridOptions]="gridViewModel.gridOptions"
+      style="width: 100%; height: 100%;"
+      appAgGridFirstColumnLocked
+      appAgGridSizeToFit
+      class="ag-theme-balham  shiptech-blue-header"
+      id="quantityControlEventsLog">
+    </ag-grid-angular>
+  </div>
+</div>
+
+<ng-template [columnDef]="[gridViewModel.actionsColumn]"
+             appAgColumnHeaderTemplate>
+  <ng-container>
+    <div fxLayout="row" fxLayoutAlign="center center " class="event-add">
+      <p-button (onClick)="add()" icon="fa fa-plus" iconPos="left" [disabled]="isReadOnly$ | async"></p-button>
+    </div>
+  </ng-container>
+</ng-template>
+
+
+<ng-template [columnDef]="[gridViewModel.actionsColumn]"
+             appAgCellTemplate let-item="data">
+  <ng-container>
+    <div fxLayout="row" fxLayoutAlign="center center"  class="event-minus cell-minus">
+      <p-button (onClick)="remove(item)" icon="fa fa-minus" iconPos="left" [disabled]="isReadOnly$ | async"></p-button>
+    </div>
+  </ng-container>
+</ng-template>
+
+<ng-template [columnDef]="[gridViewModel.eventDetailsCol]"
+             appAgCellTemplate
+             let-model="data.model" let-value="value" let-item="data" let-rowIndex="rowIndex">
+  <ng-container>
+    <div fxLayout="row">
+      <textarea fxFlexFill [rows]="2" [cols]="30"
+                (ngModelChange)="update(item, $event)"
+                [ngModelOptions]="{updateOn: 'blur'}"
+                [ngModel]="value"
+                [disabled]="isReadOnly$ | async"
+                class="editable-textarea"
+      ></textarea>
+    </div>
+
+  </ng-container>
+</ng-template>

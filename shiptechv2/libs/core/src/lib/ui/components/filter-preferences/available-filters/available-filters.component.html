@@ -1,0 +1,148 @@
+<div class="header">
+  <div class="title">Filters and Preferences</div>
+  <div class="header-btn">
+    <button class="blue-button" (click)="toggleEditing()">{{ isEditing ? "Done" : "Edit" }}</button
+    ><button
+      class="blue-button"
+      (click)="updateAllFilters()"
+    >
+      Apply
+    </button>
+    <div class="mat-divider"></div>
+
+    <span id="dialogCloseButton" class="close" (click)="cancelEditing()"></span>
+  </div>
+</div>
+<mat-dialog-content [ngClass]="isEditing ? 'isEditing' : ''">
+  <div id="available-filter-content">
+    <mat-chip-list>
+      <!-- start system filters -->
+      <div *ngFor="let filter of systemFilters" class="system-filter" >
+        <!-- NOTE: Add track by -->
+        <div
+          [matTooltip]="filter.label"      
+          [ngClass]="[
+            (filter.isActive && !isEditing
+              ? 'chip-look-alike text-center'
+              : ' chip-look-alike inactive-chip text-center'),
+            filter.isActive ? 'active-selected' : ''              
+          ]"
+
+        >
+          <div class="truncate-f85 text-center chip-label"
+          (click)="setActive(filter)">
+            {{ filter.label }}
+          </div>
+
+          <div matSuffix class="chip-circle chip-icon">
+            <i class="fas fa-circle"></i>
+          </div>
+        </div>
+      </div>
+      <!-- end system filters -->
+
+      <div *ngFor="let filter of filterItems">
+        <!-- NOTE: Add track by -->
+        <div
+          *ngIf="!filter.isDefault && !filter.isClear"
+          [matTooltip]="filter.name"
+          [ngClass]="[
+            (filter.isActive && !isEditing
+              ? 'chip-look-alike text-center'
+              : ' chip-look-alike inactive-chip text-center'),
+              filter.isActive ? 'active-selected' : ''
+          ]"
+        >
+          <div class="truncate-f85 text-center" (click)="setActive(filter)">
+            <input
+              matInput
+              required
+              type="text"
+              class=""
+              [ngClass]="{
+                'text-ellipsis': !isEditing,
+                'text-underline': isEditing
+              }"
+              [(ngModel)]="filter.name"
+              [readonly]="!isEditing"
+              placeholder="{{ filter.name }}{{ filter.hasChanges ? '*' : '' }}"
+            />
+          </div>
+
+          <div
+            matSuffix
+            *ngIf="!isEditing"
+            class="chip-circle chip-icon"
+            (click)="setPinned(filter.id)"
+          >
+            <i *ngIf="filter.isPinned" class="filter-pin-icon"></i>
+          </div>
+          <div
+            matSuffix
+            *ngIf="isEditing"
+            (click)="removeFilter(filter.id)"
+            class="chip-circle chip-icon"
+          >
+            <span class="delete-chip"></span>
+          </div>
+        </div>
+      </div>
+    </mat-chip-list>
+    <div *ngIf="hasAvailableFilterItems">
+      <h5 mat-dialog-title class="m-b-0">No Available Filters</h5>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<ng-template #deleteFilter>
+  <div id="deleteFilterPopup">
+    <h2 mat-dialog-title class="m-b-0">
+      Are you sure want to delete
+      <mat-icon
+        matSuffix
+        id="dialogCloseButtonDl"
+        (click)="deleteFilterDialog.close()"
+        class="float-right cursor-pointer"
+        >close
+      </mat-icon>
+    </h2>
+    <hr />
+    <mat-dialog-content>
+      <div id="filter-delete-confirmation">
+        <mat-chip-list>
+          <mat-chip
+            class="chip-look-alike"
+            [matTooltip]="filterToBeDeleted.name"
+            [matTooltipShowDelay]="500"
+            style="pointer-events:none;"
+          >
+            <div class="truncate-f85 text-center">
+              {{ filterToBeDeleted.name }}
+            </div>
+            <div matSuffix class="chip-circle">
+              <i *ngIf="filterToBeDeleted.isPinned" class="filter-pin-icon"></i>
+            </div>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button
+        class="red-button"
+        mat-button
+        cdkFocusInitial
+        (click)="removeFilter(filterToBeDeleted.id)"
+      >
+        DELETE
+      </button>
+      <button
+        class="blue-button"
+        mat-button
+        cdkFocusInitial
+        (click)="deleteFilterDialog.close()"
+      >
+        CANCEL
+      </button>
+    </mat-dialog-actions>
+  </div>
+</ng-template>

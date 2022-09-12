@@ -1,0 +1,69 @@
+
+// mat-icon-stepper selected color change 
+// .mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
+//   background-color: #252A32!important;
+// }
+
+//input outline color
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color:  #A5A5A5!important;
+  // opacity: 1!important;
+}
+
+//mat-input focused color
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #252A32!important;
+}
+
+// mat-input carent color
+// .mat-input-element {
+//   caret-color: #252A32!important;
+// }
+
+
+// mat-label normal state style
+ .mat-form-field-label {
+  color: #252A32!important;
+}
+
+.mat-form-field-label::placeholder {
+  color: red  !important;
+}
+
+
+.mat-select-panel {
+  background-color: #364150 !important;
+  font-size: 14px;
+  max-height: 200px;
+  max-width: 190px;
+}
+
+.mat-select-panel-wrap{
+  position: relative;
+  top: 26px;
+}
+
+.mat-select-panel-wrap .mat-select-panel{
+  min-width: calc(100% + 12px) !important;
+  transform: translateX(4px) !important
+}
+
+
+// .mat-select-trigger { min-width: 50px; }
+
+
+.custom-color option {
+  background-color: #364150 !important;
+  color: white;
+  position: relative !important;
+  display: inline-flex !important;
+}
+
+.box:focus {
+  width: 200px !important; 
+  max-width: 200px !important;
+}
+
+.dropdown-delivery  .ui-dropdown{
+  border: unset !important;
+}

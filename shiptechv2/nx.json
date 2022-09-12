@@ -1,0 +1,45 @@
+{
+  "npmScope": "shiptech",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "shiptech": {
+      "tags": []
+    },
+    "core": {
+      "tags": []
+    },
+    "quantity-control": {
+      "tags": []
+    },
+    "lazy-load-poc": {
+      "tags": []
+    },
+    "feature-invoice": {
+      "tags": []
+    },
+    "feature-ete": {
+      "tags": []
+    },
+    "feature-delivery": {
+      "tags": []
+    },
+    "feature-contract": {
+      "tags": []
+    },
+    "feature-smart": {
+      "tags": []
+    },
+    "feature-control-tower": {
+      "tags": []
+    },
+    "feature-spot-negotiation": {
+      "tags": []
+    }
+  }
+}

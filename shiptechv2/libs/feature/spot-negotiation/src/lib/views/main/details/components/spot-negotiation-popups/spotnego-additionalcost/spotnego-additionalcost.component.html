@@ -1,0 +1,767 @@
+<div class="spot-popup-header-container applicable-cost-popup-header">
+  <div class="spot-nego-title">Additional Costs</div>
+
+  <div class="spot-dialog-title-right popup-header-form">
+    <!-- <mat-checkbox
+      class="check-text"
+      [(ngModel)]="duplicateCost"
+      (change)="onRequestListCheckboxChange($event)"
+      [disabled]="!requestListToDuplicate.length"
+      [matTooltip]="!requestListToDuplicate.length? 'No request to copy': ''"
+    >Duplicate Costs to:</mat-checkbox>
+    <ng-container *ngIf="!duplicateCost">
+      <div class="vessels_req">
+        All Vessels <span class="down-arrow"></span>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="duplicateCost">
+      <div
+        [matMenuTriggerFor]="clickmenu"
+        #menuTrigger="matMenuTrigger"
+        class="vessels_req"
+      >
+        All Vessels <span class="down-arrow"></span>
+      </div>
+      <mat-menu
+        #clickmenu="matMenu"
+        class="more-options-menu-panel menu-panel-requestOptionsDuplicateComments menu-panel-requestOptionsPanel"
+        xPosition="after"
+        style="position: relative;bottom: 15px;left: 66px;min-height: unset !important;"
+      >
+        <div class="duplicate-comments-menu">
+          <div
+            *ngIf="!requestListToDuplicate.length"
+            class="more-options-menu-inv no-border p-lr-0"
+            style="margin: 7px 5px;"
+          >
+            <div class="checkboxOptions">No request found</div>
+          </div>
+          <div
+            class="more-options-menu-inv no-border p-lr-0"
+            (click)="$event.stopPropagation()"
+            style="margin: 7px 5px;"
+          >
+            <div
+              class="checkboxOptions"
+              *ngFor="let request of requestListToDuplicate"
+            >
+              <mat-checkbox
+                [value]="request"
+                [checked]="request.isSelected"
+                (change)="onRequestListSelectionChange($event, request)"
+                matTooltip="  {{ request.name }} -
+            {{ request.vesselName }}"
+                matTooltipClass="lightTooltip"
+              >
+                {{ request.name }} - {{ request.vesselName }}</mat-checkbox
+              >
+            </div>
+          </div>
+        </div>
+      </mat-menu></ng-container
+    > -->
+    <ng-container >
+      <div
+        class = "header-btn-icons"
+      >
+         <span class="duplicate-price" [matMenuTriggerFor]="clickmenu"
+               #menuTrigger="matMenuTrigger"></span>
+      </div>
+      <mat-menu
+        #clickmenu="matMenu"
+        class="more-options-menu-panel menu-panel-requestOptionsDuplicateComments menu-panel-requestOptionsPanel"
+        xPosition="after"
+        style="position: relative;bottom: 15px;left: 66px;min-height: unset !important;"
+      >
+        <div class="duplicate-comments-menu">
+          <div
+            *ngIf="!requestListToDuplicate.length"
+            class="more-options-menu-inv no-border p-lr-0"
+            style="margin: 7px 5px;"
+          >
+            <div class="checkboxOptions">No request found</div>
+          </div>
+          <div class="text">
+            <span>Copy To</span>
+          </div>
+          <div class="divider-line"></div>
+          <div
+            class="more-options-menu-inv no-border p-lr-0"
+            (click)="$event.stopPropagation()"
+            style="margin: 7px 5px;"
+          >
+            <div
+              class="checkboxOptions"
+              *ngFor="let request of requestListToDuplicate"
+            >
+              <mat-checkbox
+                [value]="request"
+                [checked]="request.isSelected"
+                (change)="onRequestListSelectionChange($event, request)"
+                matTooltip="  {{ request.name }} -
+            {{ request.vesselName }}"
+                matTooltipClass="lightTooltip"
+              >
+                {{ request.name }} - {{ request.vesselName }}</mat-checkbox
+              >
+            </div>
+          </div>
+          <div class="proceed-div" style="margin: 0px;">
+            <button
+              mat-button
+              class="mid-blue-button proceed-btn"
+              style="left: 116px;"
+              (click)="addLocationCostToAllRequests()"
+            >
+              Proceed
+            </button>
+          </div>
+        </div>
+      </mat-menu></ng-container
+    >
+    <button
+      [ngClass]="{
+        'save-btn': !enableSave,
+        'mid-blue-button': enableSave
+      }"
+      mat-button
+      (click)="saveAdditionalCosts('isSave')"
+    >
+      Save
+    </button>
+
+    <div class="title-divider">|</div>
+    <span class="close" style="cursor: pointer;" (click)="closeDialog(false)" type="button"  ></span>
+    <!-- <div class="close-circle" style="padding:0px;">
+      <mat-icon
+        id="dialogCloseButton"
+        matSuffix
+        class=""
+        (click)="closeDialog(false)"
+        style="font-size: 14px; display: inline; "
+        >close</mat-icon
+      >
+    </div> -->
+  </div>
+</div>
+<hr class="hr-line" />
+<div class="p-r-15 p-l-15 additional-cost-subheading1">
+  Offer Additional Costs
+</div>
+<div class="product-terms p-b-5 p-r-15 p-l-15">
+  <div
+    class="operations-details-block additional-cost-table-container"
+    style="height: auto;"
+  >
+    <table>
+      <thead>
+        <tr>
+          <th
+            class="increment-circle-button"
+            style="width: 50px;"
+          >
+            <div class="increment-circle">
+              <div class="plus" (click)="addNewAdditionalCostLine()">+</div>
+              <div class="change-color" style="padding-left: 15px ;">
+                <mat-checkbox
+                   style="margin-left: 4px;"
+                   #checkbox
+                   class="mat-checkbox"
+                   [(ngModel)]="isCheckedMain"
+                   (change)="checkUncheckAll($event, -1)"
+                >
+                </mat-checkbox>
+              
+              </div>
+            </div>
+          </th>
+          <th class="text-left" style="width: 115px;">Cost Name</th>
+          <th class="text-left" style="width: 115px;">Cost Type</th>
+          <th class="text-left " style="width: 115px;">Max Qty</th>
+          <th class="text-left" style="width: 115px">
+            Price
+          </th>
+          <th class="text-left" style="width: 115px">Applicable for</th>
+          <th class="text-left" style="width: 115px">Extra(%)</th>
+          <th class="text-left" style="width: 115px">Extra Amt</th>
+          <th class="text-left" style="width: 115px">Total Amt</th>
+          <th class="text-left" style="width: 115px">Rate/MT</th>
+          <!-- <th class=" text-left">Comments</th> -->
+        </tr>
+      </thead>
+    </table>
+    <div
+      style="min-height: 107px; max-height: 355px; overflow-y: scroll; background: #ffffff;"
+    >
+      <table>
+        <tbody>
+          <ng-container
+            *ngFor="
+              let offerAdditionalCost of offerAdditionalCostList;
+              let j = index
+            "
+          >
+            <tr class="border-bottom" *ngIf="!offerAdditionalCost.isDeleted">
+              <td class="decrement-circle-button" style="width: 60px; cursor: pointer;
+    padding-top: 5px;">
+                <div
+                  class="decrement-circle"
+                  *ngIf="!offerAdditionalCost.hasStemmedProduct"
+                >
+                  <div class="minus"  (click)="removeAdditionalCost(j)">-</div>
+                  </div>
+                <div
+                  class="location-cost-inner-checkbox" 
+                >
+                <mat-checkbox
+                style="padding-left: 6px;"
+                 class="mat-checkbox"
+                 [(ngModel)]="offerAdditionalCost.isSelected"
+                 (change)="checkUncheckAll($event, j)"
+                 >
+             </mat-checkbox>
+                </div>
+              </td>
+
+              <td
+              style="width: 115px"
+                class="text-left cell-dashed-border"
+                [ngClass]="{
+                  'required-field':
+                    saveButtonClicked && !offerAdditionalCost.additionalCostId
+                }"
+              >
+                <div class="custom-form-field">
+                  <mat-form-field
+                    class="without-search spot-dropdown-component"
+                    appearance="none"
+                  >
+                    <mat-select
+                    [(ngModel)]="offerAdditionalCost.additionalCostId"
+                    (ngModelChange)="
+                      additionalCostNameChanged(
+                        offerAdditionalCost,
+                        false,
+                        false
+                      )
+                    "
+                      [disableOptionCentering]="true"
+                      panelClass="spot-select-panel-container"
+                      [disabled]="
+                        offerAdditionalCost.hasStemmedProduct ||
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          offerAdditionalCost
+                        )
+                      "
+                    >
+                      <mat-option
+                        *ngFor="let option of additionalCostList"
+                        [value]="option.id"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border " style="width: 115px">
+                <div class="custom-form-field">
+                  <mat-form-field
+                    class="without-search spot-dropdown-component"
+                    appearance="none"
+                  >
+                    <mat-select
+                      [(ngModel)]="offerAdditionalCost.costTypeId"
+                      (ngModelChange)="
+                        additionalCostNameChanged(
+                          offerAdditionalCost,
+                          true,
+                          false
+                        )
+                      "
+                      [disableOptionCentering]="true"
+                      panelClass="spot-select-panel-container"
+                      [disabled]="
+                        offerAdditionalCost.hasStemmedProduct ||
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          offerAdditionalCost
+                        )
+                      "
+                    >
+                      <mat-option
+                        *ngFor="
+                          let option of offerAdditionalCost.allowedCostTypes
+                        "
+                        [value]="option.id"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td style="width: 115px">
+                <div class="non-editable-container">
+                  <div class="non-editable-container-text-left">
+                    {{
+                      offerAdditionalCost.maxQuantity
+                        ? quantityFormatValue(offerAdditionalCost.maxQuantity)
+                        : ' '
+                    }}
+                  </div>
+                  <div class="non-editable-container-text-right">
+                    {{
+                      offerAdditionalCost.maxQuantityUomId
+                        ? getUomName(offerAdditionalCost.maxQuantityUomId)
+                        : ''
+                    }}
+                  </div>
+                </div>
+              </td>
+              <td style="width: 115px" class="text-left cell-dashed-border"
+              [matTooltip]= "offerAdditionalCost.price"
+              matTooltipClass="lightTooltip"
+              >
+                <div class="dotted-container">
+                  <div style="width: 200px;">
+                    <div class="split-field">
+                      <mat-form-field
+                        class="without-search"
+                        style="border: none;"
+                        appearance="none"
+                        [ngClass]="{
+                          'required-field':
+                            saveButtonClicked && !offerAdditionalCost.price,
+                          'not-unit-container': !additionalCostPriceUomEnabled(
+                            offerAdditionalCost
+                          ),
+                          'unit-container': additionalCostPriceUomEnabled(
+                            offerAdditionalCost
+                          )
+                        }"
+                      >
+                        <input
+                          matInput
+                          (keypress)="OfferPricekeyPressNumber($event, offerAdditionalCost)"
+                          (change)="validateNumber(offerAdditionalCost)"
+                          autocomplete="off"
+                          priceFormat
+                          [(ngModel)]="offerAdditionalCost.price"
+                          (ngModelChange)="
+                            checkIfItsEmptyString(j, 'price');
+                            additionalCostNameChanged(
+                              offerAdditionalCost,
+                              true,
+                              true
+                            )
+                          "
+                          [disabled]="
+                            offerAdditionalCost.hasStemmedProduct ||
+                            !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                              offerAdditionalCost
+                            )
+                          "
+                        />
+                      </mat-form-field>
+                      <mat-form-field
+                        class="without-search spot-dropdown-component"
+                        appearance="none"
+                        style="width: 50%"
+                        *ngIf="
+                          additionalCostPriceUomEnabled(offerAdditionalCost)
+                        "
+                      >
+                        <mat-select
+                          disableRipple
+                          [disableOptionCentering]="true"
+                          panelClass="spot-select-panel-container"
+                          [(ngModel)]="offerAdditionalCost.priceUomId"
+                          (ngModelChange)="
+                            additionalCostNameChanged(
+                              offerAdditionalCost,
+                              true,
+                              true
+                            )
+                          "
+                          [disabled]="
+                            offerAdditionalCost.hasStemmedProduct ||
+                            !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                              offerAdditionalCost
+                            )
+                          "
+                        >
+                          <mat-option
+                            *ngFor="let option of uomList"
+                            [value]="option.id"
+                            >{{ option.name }}</mat-option
+                          >
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border" style="width: 115px">
+                <mat-form-field
+                  appearance="none"
+                  class="without-search spot-dropdown-component"
+                  *ngIf="!offerAdditionalCost.hasStemmedProduct"
+                 >
+                  <mat-select
+                    [(ngModel)]="offerAdditionalCost.selectedApplicableForId"
+                    (ngModelChange)="
+                      onApplicableForChange($event, j);
+                      additionalCostNameChanged(offerAdditionalCost, true, true)
+                    "
+                    disableRipple
+                    [disableOptionCentering]="true"
+                    panelClass="spot-select-panel-container"
+                    [disabled]="
+                      !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                        offerAdditionalCost
+                      )
+                    "
+                  >
+                    <mat-option
+                      *ngFor="let applicableFor of applicableForItems"
+                      [value]="applicableFor.id"
+                    >
+                      {{ applicableFor.name }}
+                    </mat-option>
+                    <mat-option
+                      *ngIf="
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          offerAdditionalCost
+                        )
+                      "
+                      [value]="0"
+                    >
+                      All
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="offerAdditionalCost.hasStemmedProduct">
+                  {{ offerAdditionalCost.product?.name }}
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border" style="width: 115px"
+              [matTooltip]= "offerAdditionalCost.extras"
+              matTooltipClass="lightTooltip"
+              >
+                <div class="custom-form-field">
+                  <mat-form-field class="without-search" appearance="none">
+                    <input
+                      matInput
+                      autocomplete="off"
+                      priceFormat
+                      (keypress)="keyPressNumber($event)"
+                      [(ngModel)]="offerAdditionalCost.extras"
+                      (ngModelChange)="
+                        checkIfItsEmptyString(j, 'extras');
+                        additionalCostNameChanged(
+                          offerAdditionalCost,
+                          true,
+                          true
+                        )
+                      "
+                      [disabled]="
+                        offerAdditionalCost.hasStemmedProduct ||
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          offerAdditionalCost
+                        )
+                      "
+                    />
+                  </mat-form-field>
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border" style="width: 115px"
+              matTooltip= "{{amountFormatValue(offerAdditionalCost.extraAmount)}}"
+              matTooltipClass="lightTooltip"
+              >
+                <div class="non-editable-container-text-left">
+                  {{ amountFormatValue(offerAdditionalCost.extraAmount) }}
+                </div>
+                <div class="non-editable-container-text-right">
+                  {{
+                    offerAdditionalCost.currencyId
+                      ? getCurrencyCode(offerAdditionalCost.currencyId)
+                      : ''
+                  }}
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border"  style="width: 115px"
+              matTooltip= "{{amountFormatValue(offerAdditionalCost.totalAmount)}}"
+              matTooltipClass="lightTooltip"
+              >
+                <div class="non-editable-container-text-left">
+                  {{ amountFormatValue(offerAdditionalCost.totalAmount) }}
+                </div>
+                <div class="non-editable-container-text-right">
+                  {{
+                    offerAdditionalCost.currencyId
+                      ? getCurrencyCode(offerAdditionalCost.currencyId)
+                      : ''
+                  }}
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border"  style="width: 115px"
+              matTooltip= "{{
+                priceFormatValue(
+                  offerAdditionalCost.totalAmount /
+                    offerAdditionalCost.maxQuantity
+                )
+              }}"
+              matTooltipClass="lightTooltip"
+              >
+                <div class="non-editable-container-text-left">
+                  {{
+                    priceFormatValue(
+                      offerAdditionalCost.totalAmount /
+                        offerAdditionalCost.maxQuantity
+                    )
+                  }}
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="p-r-15 p-l-15 additional-cost-subheading1">
+  Location Based Costs
+</div>
+<div class="product-terms p-b-5 p-r-15 p-l-15">
+  <div
+    class="operations-details-block additional-cost-table-container"
+    style="height: auto;"
+  >
+    <table>
+      <thead>
+        <tr>
+          <th class="text-left">Cost Name</th>
+          <th class="text-left">Cost Type</th>
+          <th class="text-left ">Max Qty</th>
+          <th class="text-left" style="width: 215px;">
+            Price
+          </th>
+          <th class="text-left">Applicable for</th>
+          <th class="text-left">Extra(%)</th>
+          <th class="text-left">Extra Amt</th>
+          <th class="text-left">Total Amt</th>
+          <th class="text-left">Rate/MT</th>
+          <!-- <th class=" text-left">Comments</th> -->
+        </tr>
+      </thead>
+    </table>
+    <div
+      style="min-height: 107px; max-height: 355px; overflow-y: scroll; background: #ffffff;"
+    >
+      <table class="table table-striped w-auto">
+        <tbody>
+          <ng-container
+            *ngFor="
+              let locationAdditionalCost of locationAdditionalCostsList;
+              let j = index
+            "
+          >
+            <tr class="border-bottom" *ngIf="!locationAdditionalCost.isDeleted">
+              <!-- <td style="width: 30px;"></td> -->
+              <td
+                class="text-left"
+                [matTooltip]="locationAdditionalCost.costName"
+              >
+                <div
+                  class="d-inline-block text-truncate"
+                  style="max-width: 100px;text-overflow: ellipsis;overflow-x: hidden;"
+                >
+                  {{ locationAdditionalCost.costName }}
+                </div>
+              </td>
+              <td class="text-left">
+                <div class="non-editable-container-text-left">
+                  <mat-form-field
+                    class="without-search spot-dropdown-component"
+                    appearance="none"
+                  >
+                    <mat-select
+                      [(ngModel)]="locationAdditionalCost.costTypeId"
+                      [disableOptionCentering]="true"
+                      panelClass="spot-select-panel-container"
+                      [disabled]="true"
+                    >
+                      <mat-option
+                        *ngFor="
+                          let option of locationAdditionalCost.allowedCostTypes
+                        "
+                        [value]="option.id"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+              <td>
+                <div class="non-editable-container">
+                  <div class="non-editable-container-text-left">
+                    {{
+                      locationAdditionalCost.maxQuantity
+                        ? quantityFormatValue(
+                            locationAdditionalCost.maxQuantity
+                          )
+                        : ' '
+                    }}
+                  </div>
+                  <div class="non-editable-container-text-right">
+                    {{
+                      locationAdditionalCost.maxQuantityUomId
+                        ? getUomName(locationAdditionalCost.maxQuantityUomId)
+                        : ''
+                    }}
+                  </div>
+                </div>
+              </td>
+              <td style="width: 215px" class="text-left">
+                <div class="dotted-container">
+                  <div style="width: 200px;">
+                    <div class="split-field">
+                      <mat-form-field
+                        class="without-search"
+                        [ngClass]="{
+                          'not-unit-container': !additionalCostPriceUomEnabled(
+                            locationAdditionalCost
+                          ),
+                          'unit-container': additionalCostPriceUomEnabled(
+                            locationAdditionalCost
+                          )
+                        }"
+                        appearance="none"
+                      >
+                        <input
+                          matInput
+                          autocomplete="off"
+                          priceFormat
+                          [(ngModel)]="locationAdditionalCost.price"
+                          [disabled]="true"
+                        />
+                      </mat-form-field>
+                      <mat-form-field
+                        class="without-search spot-dropdown-component"
+                        appearance="none"
+                        style="width: 50%"
+                        *ngIf="
+                          additionalCostPriceUomEnabled(locationAdditionalCost)
+                        "
+                      >
+                        <mat-select
+                          disableRipple
+                          [disableOptionCentering]="true"
+                          panelClass="spot-select-panel-container"
+                          [(ngModel)]="locationAdditionalCost.priceUomId"
+                          [disabled]="true"
+                        >
+                          <mat-option
+                            *ngFor="let option of uomList"
+                            [value]="option.id"
+                            >{{ option.name }}</mat-option
+                          >
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-left">
+                <mat-form-field
+                  appearance="none"
+                  class="without-search spot-dropdown-component"
+                  *ngIf="!locationAdditionalCost.hasStemmedProduct"
+                >
+                  <mat-select
+                    [(ngModel)]="locationAdditionalCost.selectedApplicableForId"
+                    disableRipple
+                    [disableOptionCentering]="true"
+                    panelClass="spot-select-panel-container"
+                    [disabled]="true"
+                  >
+                    <mat-option
+                      *ngFor="let applicableFor of applicableForItems"
+                      [value]="applicableFor.id"
+                    >
+                      {{ applicableFor.name }}
+                    </mat-option>
+                    <mat-option
+                      *ngIf="
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          locationAdditionalCost
+                        )
+                      "
+                      [value]="0"
+                    >
+                      All
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="locationAdditionalCost.hasStemmedProduct">
+                  {{ locationAdditionalCost.product?.name }}
+                </div>
+              </td>
+              <td class="text-left">
+                <div class="custom-form-field">
+                  <mat-form-field class="without-search" appearance="none">
+                    <input
+                      matInput
+                      autocomplete="off"
+                      priceFormat
+                      [(ngModel)]="locationAdditionalCost.extras"
+                      [disabled]="true"
+                    />
+                  </mat-form-field>
+                </div>
+              </td>
+              <td class="text-left">
+                <div class="non-editable-container-text-left">
+                  {{ amountFormatValue(locationAdditionalCost.extraAmount) }}
+                </div>
+                <div class="non-editable-container-text-right">
+                  {{
+                    locationAdditionalCost.currencyId
+                      ? getCurrencyCode(locationAdditionalCost.currencyId)
+                      : ''
+                  }}
+                </div>
+              </td>
+              <td class="text-left">
+                <div class="non-editable-container-text-left">
+                  {{ amountFormatValue(locationAdditionalCost.totalAmount) }}
+                </div>
+                <div class="non-editable-container-text-right">
+                  {{
+                    locationAdditionalCost.currencyId
+                      ? getCurrencyCode(locationAdditionalCost.currencyId)
+                      : ''
+                  }}
+                </div>
+              </td>
+              <td class="text-left">
+                <div class="non-editable-container-text-left">
+                  {{ priceFormatValue(locationAdditionalCost.ratePerUom) }}
+                </div>
+              </td>
+            </tr></ng-container
+          >
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade"
+>
+</ngx-spinner>

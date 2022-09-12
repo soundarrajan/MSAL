@@ -1,0 +1,362 @@
+<div class="shiptech-contract-pricing-details-popup contract-shiptech">
+  <div class="spot-popup-header-container">
+    <div class="spot-nego-title">Formula pricing details</div>
+    <div class="spot-dialog-title-right">
+      <!-- <button class="cancel-btn w-104" mat-button [mat-dialog-close]="true">Cancel</button> -->
+      <button class="proceed-btn w-104" mat-button  (click)="saveFormula()" [disabled]="">Save</button>
+      <div class="title-divider">|</div>
+      <span class="close" style="cursor:pointer;" (click)="closePopup()"></span>
+      <!-- <div class="close-circle">
+        <mat-icon id="dialogCloseButton" matSuffix class="" (click)="closeDialog() "
+          style="font-size: 14px; display: inline; position:relative; top:-1px; ">close</mat-icon>
+      </div> -->
+    </div>
+  
+  </div>
+  <hr class="hr-line mb-0" style="height: 0.1px;">
+  
+  <div id="custom-tabs-v2" class="" [@.disabled]="true">
+    <ng-container>
+      <div class="custom-tab-container pricing-details-tab-container">
+        <div class="row d-flex col-md-12">
+          <div class="col-md-12 m-b-10" style="height: 50px;
+                align-items: center;
+                display: flex;">
+            <div class="custom-form-field lightTheme" style="width: 100% !important;margin:0px">
+              <mat-form-field class="with-search" style="width: 100%; border-radius: 4px;">
+                <mat-label>Search Formula</mat-label>
+                <input #searchInput  matInput [matAutocomplete]="auto1" name="formula-name" [value]="formulaValue" [(ngModel)]="formValues.name" placeholder="Search Formula" (keyup) ="SearchFormulaList($event.target.value)">
+                <mat-autocomplete
+                        #auto1="matAutocomplete"
+                        class="darkPanelAuto"
+                        [displayWith]="displayFn"
+                        (optionSelected)="addFormula($event.option.value)">
+                        <mat-option
+                          *ngFor="let option of formulaNameList"
+                          [value]="option"
+                        >
+                          {{ option.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+              </mat-form-field>
+              <div class="form-field-action" style="right: 16px;top: 10px;">
+                <div *ngIf="formValues.name" class="form-field-action" style="right: 25px; top: 14px;">
+                  <button class="remove-icon" (click)="removeFromula()" style="border:none; background:transparent; margin: -8px 6px"></button>
+                </div>
+                <button class="search-icon" (click)="searchFormula();" style="margin-top: -5px;height: 40px;">
+                  <div class="img"></div>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 formula-description-header m-b-10"> Formula Description 
+            <span class="toggle-arrow"></span>
+          </div>
+          <div class="col-md-12" style="height: 50px;
+          align-items: center;
+          display: flex;">
+          
+      <div class="custom-form-field lightTheme" style="width: 100% !important;margin:0px">
+        <mat-form-field class="without-search" style="width:100%;border-radius: 4px;">
+          <mat-label>Formula Name</mat-label>
+          <input matInput autocomplete="off" [(ngModel)]="formValues.name" name="formula-name" placeholder="Formula Name">
+        </mat-form-field>
+        <!-- <div *ngIf="formValues.name" class="form-field-action" style="right: 25px; top: 14px;">
+          <button class="remove-icon" (click)="removeFromula()" style="border:none; background:transparent"></button>
+        </div> -->
+      </div>
+          </div>
+        </div>
+        
+        <div class="row d-flex col-md-12" style="padding: 15px 30px 0;">
+          <div class="col-md-12" style="background: #F5F5F5;padding: 0;">
+          <div class="col-md-6 pricing-formula-tab" style="display: flex;justify-content: flex-start;padding: 0;">
+            <div class="pricing-formula-tab-header col-md-12">
+              <div [ngClass]="{'selected-tab': selectedFormulaTab == 'Pricing formula', 
+                                'unselected-tab': selectedFormulaTab != 'Pricing formula'}"
+                (click)="selectedFormulaTab = 'Pricing formula'; initialized = 1">
+                <div class="value">Pricing formula</div>
+              </div>
+              <div class="border_line"></div>
+              <div [ngClass]="{'selected-tab': selectedFormulaTab == 'Pricing schedule', 
+                                'unselected-tab': selectedFormulaTab != 'Pricing schedule'}"
+                (click)="selectedFormulaTab = 'Pricing schedule'; 
+                initialized = 2;
+                setPricingType();
+                setHolidayRules()">
+                <div class="value">Pricing schedule</div>
+              </div>
+              <div class="border_line"></div>
+              <div [ngClass]="{'selected-tab': selectedFormulaTab == 'Discount rules',
+                                'unselected-tab': selectedFormulaTab != 'Discount rules'}"
+                (click)="selectedFormulaTab = 'Discount rules'; initialized = 3">
+                <div class="value">Discount rules</div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        <div class="row d-flex col-md-12" *ngIf="initialized == 1" >
+          <div class="col-md-12">
+            <div class="pricing-type-container">
+              <div class="col-md-12 pricing-container" style="padding-bottom:10px;">
+                <div class="row no-padding">
+                  <div class="col-md-3 pricing-container-formula-list" style="height: auto;margin-top:12px">
+                    <div class="col-md-12 pricing-container-formula-list-header">
+                      Pricing Type
+                    </div>
+                    <div class="col-md-12">
+                      <mat-radio-group class="pricing-container-radio-group" [(ngModel)]="formValues.formulaType.id"
+                        (ngModelChange)="setFormulaTypeSelected($event)" style="display: flex;
+                                                          justify-content: space-between;width: 75%;">
+                        <mat-radio-button class="pricing-container-radio-button col-md-3" *ngFor="let option of formulaTypeList"
+                          [value]="option.id">
+                          {{option.name}}
+                        </mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="custom-form-field create-new-formula-form-field" style="margin-top: 15px; flex-wrap: wrap;">
+                      <div class="convertorEditable-component-v2">
+                        <div class="block">
+                          <div class="title">Mass UOM</div>
+                          <div class="inline-dropdown">
+                            <span style="font-weight: 500;">1 {{massUom?.name}}</span>
+                          </div>
+                        </div>
+                        <div class="convert-img">
+                        </div>
+                        <div style="padding:2px;">
+                          <div class="block dashed-border">
+                            <div class="title">Conversion Rate</div>
+                            <div class="value"><input matInput name="formula-converion-rate" 
+                              [disabled]="!formValues.formulaType.id"    
+                              [(ngModel)]="formValues.conversionRate"/></div>
+                          </div>
+                        </div>
+                        <div class="block m-l-15">
+                          <div class="title">Volume UOM</div>
+                          <div class="inline-dropdown">
+                            <mat-form-field style="background: none !important;border: none !important;">
+                              <mat-select style="height: 18px;" [(ngModel)]="formValues.conversionVolumeUomId">
+                                <mat-option *ngFor="let option of uomVolumeList" [value]="option.id">
+                                  {{option.name}}
+                                </mat-option>
+                
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="row" *ngIf="formValues.formulaType && formValues.formulaType.id == 1">
+                  <div class="col-md-12 d-flex pd-0" style="margin-left: 1vw; flex-wrap: wrap;">
+                    <shiptech-pricing-formula-simple
+                      [model]="formValues"
+                      [formulaFlatPercentageList]="formulaFlatPercentageList"
+                      [formulaPlusMinusList]="formulaPlusMinusList"
+                      [marketPriceList]="marketPriceList"
+                      [systemInstumentList]="systemInstumentList"
+                      [uomList]="uomList"
+                      [uomVolumeList] = "uomVolumeList"
+                      [hasInvoicedOrder]="false"
+                    >
+                    </shiptech-pricing-formula-simple>
+                  </div>
+                </div>
+                <div class="col-md-12" style="padding:inherit;" *ngIf="formValues.formulaType && formValues.formulaType.id == 2">
+                  <shiptech-pricing-formula-complex
+                    [model]="formValues"
+                    [formulaFlatPercentageList]="formulaFlatPercentageList"
+                    [formulaPlusMinusList]="formulaPlusMinusList"
+                    [marketPriceList]="marketPriceList"
+                    [systemInstumentList]="systemInstumentList"
+                    [uomList]="uomList"
+                    [currencyList]="currencyList"
+                    [formulaOperationList]="formulaOperationList"
+                    [formulaFunctionList]="formulaFunctionList"
+                    [marketPriceTypeList]="marketPriceTypeList"
+            >
+            </shiptech-pricing-formula-complex>
+              </div>
+                </div>
+                <div class="col-md-12 no-padding">
+                  <mat-form-field appearance="outline" class="custom-form-field-comments">
+                    <mat-label>Comments</mat-label>
+                    <textarea matInput rows="4" cols="60" [(ngModel)] = "comment" placeholder="Comments"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+                   <!-- Pricing schedule section start -->
+  <div class="row d-flex col-md-12" *ngIf="initialized == 2" >
+             
+       <div class="col-md-12">
+          <div class="pricing-type-container">
+            <div class="col-md-12 pricing-container" style="padding-top: 10px;padding-bottom: 10px;max-height: 365px;overflow:auto">
+              <div class="pricing-container-formula-list no-padding" style="padding-left: 15px !important;width: fit-content;margin-top: 0px;">
+                <div class="pricing-container-formula-list-header">
+                    Event Type
+                </div>
+                <div class="">
+                    <mat-radio-group class="pricing-container-radio-group" 
+                                     [(ngModel)]="formValues.pricingSchedule.id" 
+                                     (ngModelChange)="clearSchedules(formValues.pricingSchedule.id)"
+                    >
+                    <mat-radio-button class="pricing-container-radio-button" *ngFor="let option of pricingScheduleList" [value]="option.id">
+                        {{option.name}}
+                      </mat-radio-button>
+                        
+                    </mat-radio-group>
+                </div>
+              </div>
+              <div >
+                 
+                  <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 4" >
+                    <shiptech-date-range
+                      class="row"
+                      [model]="formValues"
+                      [hasInvoicedOrder]="false"
+                  >
+                  </shiptech-date-range>
+                  </div>
+                  
+              </div>
+              <div >
+                  <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 5">
+                    <shiptech-specific-dates
+                      class="row"
+                      [model]="formValues" 
+                      [hasInvoicedOrder]="false"
+                  >
+                  </shiptech-specific-dates>
+                  </div>
+              </div>
+              <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 6" >
+                <shiptech-event-based-simple
+                  class="row"
+                  [model]="formValues"
+                  [businessCalendarList]="businessCalendarList"
+                  [eventList]="eventList"
+                  [formulaEventIncludeList]="formulaEventIncludeList"
+                >
+                </shiptech-event-based-simple>
+            </div>
+            <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 7" >
+            <shiptech-event-based-extended
+            class="row"
+            [model]="formValues"
+            [businessCalendarList]="businessCalendarList"
+            [eventList]="eventList"
+            [formulaEventIncludeList]="formulaEventIncludeList"
+            
+          >
+          </shiptech-event-based-extended>
+            </div> 
+            <div *ngIf="formValues.pricingSchedule && formValues.pricingSchedule.id == 8"> 
+            <shiptech-event-based-continuous
+            class="row"
+            [model]="formValues"
+            [pricingSchedulePeriodList]="pricingSchedulePeriodList"
+            [eventList]="eventList"
+            [dayOfWeekList]="dayOfWeekList"
+            [holidayRuleList]="holidayRuleList"
+            
+          >
+          </shiptech-event-based-continuous>
+            </div>
+                                  
+            <div *ngIf="expressType !=''"style="margin-top: 15px;padding: 0 5px !important" class="col-md-12 lightTheme">
+                <mat-form-field appearance="outline" class="custom-form-field-comments">
+                    <mat-label>Comments</mat-label>
+                    <textarea  matInput autocomplete="off" [(ngModel)]="formValues.comment">
+                    </textarea>
+                </mat-form-field>
+            </div>
+              </div>
+          </div>
+      </div>
+  </div>
+<!-- Pricing schedule section end -->
+<!-- Discount Rules-- Start -->
+<div class="row d-flex col-md-12 discount-rules" *ngIf="initialized == 3">
+    <div class="col-md-12">
+        <div class="pricing-type-container">
+            <div class="col-md-12 pricing-container" style="max-height: 365px;overflow:auto">
+                <div style="margin-top: 15px;">
+                    <div class="col-md-12 pricing-formula-tab no-padding"
+                        style="display: flex;justify-content: flex-start;">
+                        <div class="pricing-formula-tab-header flexi-row col-md-6">
+                            <div [ngClass]="{'selected-tab': rules == 1, 
+                  'unselected-tab grey-bg': rules != 1}" (click)="rules = 1">
+                                <div class="value">Quantity Based</div>
+                            </div>
+                            <div class="border_line"></div>
+                            <div [ngClass]="{'selected-tab': rules == 2, 
+            'unselected-tab grey-bg': rules != 2}" (click)="rules = 2">
+                                <div class="value">Product Based</div>
+                            </div>
+                            <div class="border_line"></div>
+                            <div [ngClass]="{'selected-tab': rules == 3,
+            'unselected-tab grey-bg': rules != 3}" (click)="rules = 3">
+                                <div class="value">Vessel Location Based</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="rules == 1">
+                  <shiptech-quantity-based
+                  [model]="formValues"
+                  [formulaFlatPercentageList]="formulaFlatPercentageList"
+                  [quantityTypeList]="quantityTypeList"
+                  [formulaPlusMinusList]="formulaPlusMinusList"
+                  [uomList]="uomList"
+                  
+              >
+              </shiptech-quantity-based>
+                    
+                </div>
+                <div *ngIf="rules == 2">
+                  <shiptech-product-based
+                    [model]="formValues"
+                    [formulaFlatPercentageList]="formulaFlatPercentageList"
+                    [quantityTypeList]="quantityTypeList"
+                    [formulaPlusMinusList]="formulaPlusMinusList"
+                    [uomList]="uomList"
+                    [productList]="productList"
+                    
+                  >
+                  </shiptech-product-based>
+                </div>
+                <div *ngIf="rules == 3">
+                  <shiptech-vessel-location-based
+                  [model]="formValues"
+                  [formulaFlatPercentageList]="formulaFlatPercentageList"
+                  [quantityTypeList]="quantityTypeList"
+                  [formulaPlusMinusList]="formulaPlusMinusList"
+                  [uomList]="uomList"
+                  [locationList]="locationList"
+                  
+                >
+                </shiptech-vessel-location-based>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                <!-- Discount Rules -- END -->
+  
+      </div>
+    </ng-container>
+  </div>
+  </div>
+
+  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-spin-clockwise-fade">
+  </ngx-spinner>

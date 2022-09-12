@@ -1,0 +1,55 @@
+<div id="menu-button" [matMenuTriggerFor]="togglecolumn" class="mr-2">
+  <div id="menu-button-dots">
+    <div id="dot1" class="dot"></div>
+    <div id="dot2" class="dot"></div>
+    <div id="dot3" class="dot"></div>
+    <div id="dot4" class="dot"></div>
+    <div id="dot5" class="dot"></div>
+    <div id="dot6" class="dot"></div>
+    <div id="dot7" class="dot"></div>
+    <div id="dot8" class="dot"></div>
+    <div id="dot9" class="dot"></div>
+  </div>
+</div>
+
+<mat-menu
+  class="hideshow no-boxshadow mat-menu-position Preference-menu"
+  #togglecolumn
+  yPosition="below"
+  xPosition="before"
+  [overlapTrigger]="false"
+>
+  <div class="tbl-context no-border">
+    <div class="p-tb-10" (click)="createFilter()">
+      <span>
+        <img
+          class="p-r-10"
+          src="/v2/assets/customicons/context-save-as-new.svg"
+          alt="Save icon"
+        />
+      </span>
+      <span><i class="fas fa-downlaod"></i>Save New Preference</span>
+    </div>
+    <div class="p-tb-10" (click)="updateFilter()">
+      <span>
+        <img
+          class="p-r-10"
+          src="/v2/assets/customicons/context-update.svg"
+          alt="Save As icon"
+        />
+      </span>
+      <span>Update Preference</span>
+    </div>
+    <div class="b-top p-0 m-b-5"></div>
+    <div class="p-tb-10" (click)="showFilters()">
+      <span>
+        <img
+          class="p-r-10"
+          src="/v2/assets/customicons/filter-desc-light.svg"
+          alt="Save As icon"
+        />
+      </span>
+      <span>Show filter description</span>
+    </div>    
+  </div>
+</mat-menu>

@@ -1,0 +1,107 @@
+<div class="dark-wrapper info-bar">
+  <div style="display: flex;align-items: center; flex: 0 0 25%;justify-content: center;">
+    <div class="label-title"> Currently viewing:</div>
+    <div class="label-text" style="margin: 0px 5px;">Vessel</div>
+    <app-search-vessel (changeVessel)="changeVesselTrigger($event)" [vesselList]="vesselList" [vesselData]="vesselData"></app-search-vessel>
+  </div>
+  <div class="view-all-bunker-header" style="margin:0 5px;display:flex;align-items: center;">
+    <div class="label-text"> Bunker Log</div>
+    <shiptech-date-picker-from-to
+         [selectedFromDate]="defaultFromDate"
+         [selectedToDate]="selectedToDate"
+         (onDateChange)="onFromToDateChange($event)"
+         >
+        </shiptech-date-picker-from-to>
+  </div>
+  <div style="display: flex;align-items: center; justify-content: center;">
+    <div class="label-text" style="margin: 0px 5px;">Plan Status</div>
+  </div>
+
+<div class="plan-status" style="display: flex;align-items: center; flex: 0 0 2%;justify-content: center;">
+  <mat-form-field appearance="fill">
+    <mat-select [(value)]="planStatus" (selectionChange)="onStatusChange($event)">
+      <mat-option value="all">All Status</mat-option>
+      <mat-option value="invalid">Invalid</mat-option>
+      <mat-option value="valid">Valid</mat-option>
+    </mat-select>
+  </mat-form-field> 
+</div>
+
+<div class="plan-id-search right-border" style="display: flex;align-items: center; flex: 0 0 2%;justify-content: center;">
+  <div id="dark-filter-search" class="d-flex justify-content-between align-items-center">
+    <button mat-icon-button style="width:24px;outline: none;">
+        <mat-icon id="searchIcon" matPrefix>search</mat-icon>
+    </button>
+    <div style="display: flex;align-items: center;justify-content:space-between;width: 125px;">
+        <input id="vesselSearch" 
+        type="text" 
+        placeholder="Search Bunker Plan Id" 
+        aria-label="Number"
+        [(ngModel)]="inputModel" >
+        <div id="clear" *ngIf="inputModel?.length">
+            <div class="clear-icon" (click)="inputModel=''"></div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+</div>
+<!-- BUNKERING PLANS -->
+<div *ngIf="bunkerPlanLogDetail.length > 0" id="accordion-container-dark-view-all">  
+  <mat-accordion multi="false">
+    <mat-expansion-panel #panel *ngFor="let item of bunkerPlanLogDetail | filter: inputModel" hideToggle="true" id="bunker-plan"
+      [ngClass]="{'fullheight':item.expanded}" [expanded]="false" 
+      (closed)="item.expanded = false">
+      <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
+        <mat-panel-title>
+          <div class="">
+            <div *ngIf="!panel.expanded;else collapseBlock" class="expand-accordion-icon2 expand-collapse-icon"></div>
+            <!-- <img *ngIf="!panel.expanded;else collapseBlock" src="./assets/customicons/expand-icon2.svg"
+              alt="expand-icon"> -->
+            <ng-template #collapseBlock>
+              <div class="collapse-accordion-icon2 expand-collapse-icon"></div>
+              <!-- <img src="./assets/customicons/collapse-icon2.svg" alt="collapse-icon"> -->
+            </ng-template>
+          </div>
+          <div style="display: flex;align-items: center;width: 100%;">
+            <div style="flex: 0 0 25%;"><span style="margin-left: 10px;">Bunker Plan ID: {{item.planId}}</span></div>
+            <div style="flex:0 0 75%;display: flex;align-items: center;">
+              <div id="plan-date" class="border-l-rightside" style="flex:0 0 20%;text-align: center;">
+                <span class="title">Plan Date :</span>
+                <span class="content">{{item.createdOn | date: 'dd/MM/yyyy'}}</span>
+               </div>
+               <div id="plan-status" class="border-l-rightside" style="flex:0 0 18%;text-align: center;">
+                <span class="title">Status : </span>
+                <span [ngClass]="(item.planStatus).trim() == undefined?'content': ((item.planStatus).trim() =='Invalid'? 'content content_invalid' : 'content content_valid')" style="padding: 3% 16% !important; ">{{item.planStatus}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="border-l-r latest-plan-container">
+            <div style="display:flex;align-items: center;justify-content: space-between;">
+              <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan received</div><span class="label-text">:</span>
+              <div class="sml-txt" style="display:flex" *ngIf="(item?.last_plan_received_date)?.indexOf('0001')==-1">{{moment.utc(item?.last_plan_received_date).format("DD/MM/YYYY")}} <div class="m-l-r-5">|</div>
+                ID:{{item?.last_plan_received_id}}</div>
+              <div class="sml-txt" style="display:flex" *ngIf="(item?.last_plan_received_date)?.indexOf('0001')>-1">N/A <div class="m-l-r-5">|</div>
+                ID:N/A</div>
+            </div>
+            <div style="display:flex;align-items: center;justify-content: space-between;">
+              <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan sent
+              </div><span class="label-text">:</span>
+              <div class="sml-txt" style="display:flex" *ngIf="(item?.last_plan_sent_date)?.indexOf('0001')==-1"> {{moment.utc(item?.last_plan_sent_date).format("DD/MM/YYYY")}} <div class="m-l-r-5">|</div>
+                ID:{{item.last_plan_sent_id}}</div>
+              <div class="sml-txt" style="display:flex" *ngIf="(item?.last_plan_sent_date)?.indexOf('0001')>-1"> N/A <div class="m-l-r-5">|</div>
+                ID:N/A</div>
+            </div>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="panel-body">
+        <shiptech-current-rob-arbit-section [planId]="item.planId" *ngIf="panel.expanded"></shiptech-current-rob-arbit-section>
+        <app-bunkering-plan *ngIf="panel.expanded"  [isExpanded]="panel.expanded" [planId]="item.planId" [vesselRef]="vesselData" [bPlanType]="bPlanType" (isCellClicked)="showViewAlert($event)"></app-bunkering-plan>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<!-- ------------------- -->

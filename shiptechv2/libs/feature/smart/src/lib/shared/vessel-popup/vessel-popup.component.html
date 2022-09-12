@@ -1,0 +1,546 @@
+<div id="vessel-popup">
+  <div class="vessel-popup-header" [ngClass]="status">
+    <div class="row align-items-center" style="justify-content: space-around;height: 100%;">
+      <div class="col-1 highlight-icon">
+        <div class="vessel-icon"></div>
+      </div>
+      <div class="col-4">
+        <span class="vessel-name-popup" matTooltip={{popup_data.name}}>{{popup_data.name}}</span>
+      </div>
+      <div class="col-4 pd-0 ">
+        <div class="default-view-checkbox">
+          <mat-checkbox class="m-l-r-5" (ngModelChange)="CheckDefaultView($event)" [ngModel]="myDefaultView"></mat-checkbox>
+          <div>My Default View</div>
+        </div>
+      </div>
+      <div style="margin-right:20px;" class="close" title="Close" (click)="closePopup.emit()">
+        <div class ="inactive"></div>
+        <div class ="active"></div>
+        <!-- <img class="inactive" src="./assets/customicons/close-disable.svg" alt="close-icon">
+        <img class="active" src="./assets/customicons/close-active.svg" alt="close-icon"> -->
+      </div>
+    </div>
+    <div style="float: right;">
+      <div class="side-nav">
+        <div class="side-nav-icon" (click)="showBPlan.emit(true)"><img src="./assets/customicons/checklist.svg"
+            alt="expand-icon">B Plan
+        </div>
+      </div>
+    </div>
+    <div style="float: right;position: relative;top: 54px;">
+      <div class="side-nav" [ngStyle]="{'opacity':popup_data.routeAvailable?'1':'0.5'}">
+        <div class="side-nav-icon" (click)="popup_data.routeAvailable && showRoutes.emit(true)"><img
+            src="./assets/customicons/route.svg" alt="expand-icon">Route
+        </div>
+      </div>
+    </div>
+    <!-- <div style="float: right;position: relative;top:108px">
+      <div class="side-nav">
+        <div class="side-nav-icon"><img src="./assets/customicons/create-request.svg" alt="expand-icon">Create
+          Request
+        </div>
+      </div>
+    </div>
+    <div style="float: right;position: relative;top:162px">
+      <div class="side-nav">
+        <div class="side-nav-icon"><img src="./assets/customicons/message.svg" alt="expand-icon">Message
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <div class="vessel-popup-container">
+    <div class="vessel-popup-wrapper">
+      <div class="vessel-details">
+        <div class="vessel-info-wrapper">
+          <div id="vessel-info">
+            <div class="basic-info-title">
+              Vessel Basic Information
+            </div>
+            <div class="basic-info-body">
+              <div class="voyage-details">
+
+                <div class="voyage-details-header popup-header-icon">
+                  <div>
+                    <img class="icon-circle-background" src="./assets/customicons/loader.png" alt="loader-icon">
+                  </div>
+                  <div style="flex:0 0 20%;display: flex;flex-direction: column;">
+                    <div class="label">Service Code</div>
+                    <div class="value">{{popup_data.serviceCode}}</div>
+                  </div>
+                  <div class="icon-seperator" style="padding-right: 5px;">|</div>
+                  <div>
+                    <img class="icon-circle-background" src="./assets/customicons/community.svg" alt="community-icon">
+                  </div>
+                  <div style="flex:0 0 20%;display: flex;flex-direction: column;">
+                    <div class="label">Dept ID</div>
+                    <div class="value">{{popup_data.deptId}}</div>
+                  </div>
+                  <div class="icon-seperator" style="padding-right: 5px;">|</div>
+                  <div>
+                    <img class="icon-circle-background" src="./assets/customicons/shield.svg" alt="shield-icon">
+                  </div>
+                  <div style="flex:0 0 20%;display: flex;flex-direction: column;">
+                    <div class="label">Ownership</div>
+                    <div class="value">{{popup_data.ownership}}</div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="destination">
+                <div class="row" style="position: relative;">
+                  <div class="col-1">
+                    <img src="./assets/customicons/pin.svg" style="padding:0px 8px;margin-top: -12px;"
+                      alt="pin-icon">
+                    <img class="dot-icon" style="margin-top: -25px;" src="./assets/customicons/dot.svg"
+                      alt="dot-icon">
+                  </div>
+                  <div class="col-3" style="padding-right: 0px;">
+                    <div class="caption-header">Destination</div>
+                    <div class="caption-details" matTooltip={{popup_data.destination}}>{{popup_data.destination}}</div>
+                  </div>
+                  <span class="icon-seperator">|</span>
+                  <div class="col-4" style="padding-right: 0px;">
+                    <div class="caption-header">ETA</div>
+                    <div *ngIf="popup_data?.eta1 > '1900-01-01T00:00:00Z'" class="caption-details" matTooltip="{{popup_data.eta1 | utcDatePipe}}">{{popup_data.eta1 | utcDatePipe}}</div>
+                  </div>
+                  <span class="icon-seperator" style="padding: 0px 8px;">|</span>
+                  <div class="col-3 pd-0 vessel-master-link" style="line-height: 22px;">
+                    <a href="{{shiptechUrl}}/#/new-request/{{popup_data.voyageDetailId}}" target="_blank" rel="noopener">Create Request</a>   
+                  </div>
+                </div>
+
+                <div class="row" style="position: relative;">
+                  <div class="col-1">
+                    <img class="dot-icon" style="margin-top: -15px;" src="./assets/customicons/dot.svg"
+                      alt="dot-icon">
+                    <img src="./assets/customicons/location.svg" style="padding:0px 8px;margin-top: -25px;"
+                      alt="location-icon">
+                  </div>
+                  <div class="col-3" style="padding-right: 0px;">
+                    <div class="caption-header">Next Destination</div>
+                    <div class="caption-details" matTooltip={{popup_data.next_destination}}>{{popup_data.next_destination}}</div>
+                  </div>
+                  <span class="icon-seperator">|</span>
+                  <div class="col-4" style="padding-right: 0px;">
+                    <div class="caption-header">ETA</div>
+                    <div *ngIf="popup_data?.eta2 > '1900-01-01T00:00:00Z'" class="caption-details" matTooltip="{{popup_data.eta2  | utcDatePipe}}" >{{popup_data.eta2  | utcDatePipe}}</div>
+                  </div>
+                  <span class="icon-seperator" style="padding: 0px 8px;">|</span>
+                  <div class="col-3 pd-0 vessel-master-link">
+                    <a href="{{shiptechUrl}}/#/masters/vessel/edit/{{popup_data.vesselId}}" target="_blank" rel="noopener">Link to <br> Vessel Master</a>    
+                  </div>
+                </div>
+              </div>
+
+              <div class="fuel-footer">
+                <div class="row fuel-info-footer">
+                  <div class="col-3">
+                    <div class="value">
+                      {{popup_data.hsfo}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      HSFO
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="value">
+                      {{popup_data.lsdis}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      LSDIS
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="value higher-warning-border">
+                      {{popup_data.ulsfo}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      ULSFO
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="value minor-warning-border">
+                      {{popup_data.vlsfo}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      VLSFO
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="value minor-warning-border">
+                      {{popup_data.dis}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      DIS
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <mat-accordion>
+            <mat-expansion-panel #second id="alerts" hideToggle="true" [expanded]="viewVesselAlerts" (closed)="changeDefault('VAClose')"
+              (opened)="changeDefault('VAOpen')">
+              <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
+                <mat-panel-title>
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+                  <div>Vessel Alerts</div>
+                  <div class="alerts-count">
+                    <div class="red-alerts">
+                      <div>{{VesselAlertList | countByPriority: 'alertColorFlag_Name': 'red'}}</div>
+                    </div>
+                    <div class="amber-alerts">
+                      <div>{{VesselAlertList | countByPriority: 'alertColorFlag_Name': 'amber'}}</div>
+                    </div>
+                  </div>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div>
+
+                <div class="alerts-container">
+                  <ng-container *ngIf="VesselAlertList?.length; else NotAvailable"></ng-container>
+                  <div class="single-alert" *ngFor="let item of VesselAlertList">
+                    <div *ngIf="!(item.isDeleted)">
+                      <!-- Single Alert Start -->
+                      <div class="alert-notif">
+                        <div class="alert-title">
+                          <div class="d-flex align-items-center">
+                            <ng-container [ngSwitch]="item.alertColorFlag_Name">
+                              <img *ngSwitchCase="'Red'" class="icon" src="./assets/customicons/red-warning-o.svg"
+                                alt="warning-icon">
+                              <img *ngSwitchCase="'Amber'" class="icon" src="./assets/customicons/amber-warning-o.svg"
+                                alt="warning-icon">
+                              <img *ngSwitchDefault class="icon" src="./assets/customicons/green-warning-o.svg"
+                                alt="warning-icon">
+                            </ng-container>
+                            <div>{{item?.alertTypes?.name}}</div>
+                          </div>
+                          <div class="alert-action">
+                            <ng-container *ngIf="item?.alertStatus?.name!='Pending' && item?.alertStatus?.name!='Resolved'"
+                              class="alert-action">
+                              <div style="flex: 0 0 78%;text-align: center;">{{item?.alertStatus?.name}}</div>
+                            </ng-container>
+                            <ng-container *ngIf="item?.alertStatus?.name=='Pending'" class="alert-status">
+                              <img style="flex: 0 0 22%;" class="status-icon"
+                                src="./assets/customicons/seen-icon.svg" alt="seen-icon">
+                              <div style="flex: 0 0 56%;">Pending</div>
+                            </ng-container>
+                            <ng-container *ngIf="item?.alertStatus?.name=='Resolved'" class="alert-status">
+                              <img style="flex: 0 0 22%;" class="tick-icon" src="./assets/customicons/tick.svg"
+                                alt="tick-icon">
+                              <div style="flex: 0 0 56%;">Resolved</div>
+                            </ng-container>
+                            <vessel-menu #menu 
+                              [item]="item" 
+                              (refreshVesselAlert)="refreshVesselAlert($event)" 
+                              [alerts]="VesselAlertList" 
+                              [changeLog]="VesselAlertLogs">
+                          </vessel-menu>
+                            <!-- <mat-icon class="dropdown-icon" [ngClass]="{'active':!menuClick}" style="z-index: 1050;" [matMenuTriggerFor]="clickalertsmenu"
+                              [matMenuTriggerData]="menuData" #menuTrigger="matMenuTrigger"
+                              (mouseenter)="!menuClick && toggleMenu($event,{data: item.alert,priority:item.priority, status:item.status, changeLog:item.changeLog,comments:item.comments});"
+                              (mouseleave)="!menuClick && toggleMenu2();" 
+                              (click)="toggleMenu3($event)"
+                              (menuClosed)="toggleMenu1($event);">more_vert</mat-icon> -->
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Single Alert End -->
+                    </div>
+                  </div>
+                  <ng-template #NotAvailable>
+                    <div class="text-center" style="font-size: 12px;">No Rows To Show</div>
+                  </ng-template>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel #third id="outstanding-request" [expanded]="viewFutureRequest" hideToggle="true" (closed)="changeDefault('FRClose')"
+              (opened)="changeDefault('FROpen')">
+              <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
+                <mat-panel-title>
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+                  <div>Future Requests</div>
+                  <div class="count">{{(FutureRequest?.matchedCount)>0? FutureRequest.matchedCount: 0}}
+                  </div>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngIf="third.expanded" style="width:100%;position: relative;">
+                <!-- <ag-grid-angular class="popup-grid" style="height:155px;margin-top:2px;" [gridOptions]="gridOptions"
+                  class="ag-theme-balham-dark"></ag-grid-angular> -->
+                  <ag-grid-angular class="popup-grid" style="height:155px;margin-top:2px;" [gridOptions]="gridOptions"
+                [suppressRowTransform]="true" class="ag-theme-balham-dark"></ag-grid-angular>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel #fourth id="vessel-redelivery" [expanded]="viewVesselRedelivery" hideToggle="true" (closed)="changeDefault('VRClose')"
+              (opened)="changeDefault('VROpen')">
+              <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
+                <mat-panel-title>
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+                  Vessel redelivery information
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngIf="fourth.expanded" class="vessel-redelivery-info">
+
+                <div class="popup-header-icon">
+                  <div>
+                    <img class="icon-circle-background"  src="./assets/customicons/shield.svg" alt="shield-icon">
+                  </div>
+                  <div style="flex:0 0 20%;display: flex;flex-direction: column;align-items: self-start;">
+                    <div class="label">Vessel Code</div>
+                    <div class="value">{{popup_data.vesselCode}}</div>
+                  </div>
+                  <div class="icon-seperator" style="padding-right: 5px;">|</div>
+                  <div>
+                    <img class="icon-circle-background" src="./assets/customicons/calendar.svg" alt="calendar-icon">
+                  </div>
+                  <div style="flex:0 0 25%;display: flex;flex-direction: column;align-items: self-start;">
+                    <div class="label">Vessel Expiry Date</div>
+                    <div class="value">{{popup_data.vesselExpDate |date: "dd/MM/yyyy"}}</div>
+                  </div>
+                  <div class="icon-seperator" style="padding-right: 5px;">|</div>
+                  <div>
+                    <img class="icon-circle-background" src="./assets/customicons/countdown.svg" alt="time-icon">
+                  </div>
+                  <div style="flex:0 0 20%;display: flex;flex-direction: column;align-items: self-start;">
+                    <div class="label">Redelivery</div>
+                    <div class="value">{{popup_data.redeliveryDays}}</div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="fourth.expanded" class="fuel-footer">
+                <div class="row fuel-info-footer">
+                  <div class="col-12 label">Redelivery Quantity Details</div>
+                  <div class="col-3">
+                    <div class="value">
+                      {{popup_data.hfo}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      HSFO
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="value">
+                      {{popup_data.mdo}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      MDO
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="value ">
+                      {{popup_data.lsmdo}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      LSMDO
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="value">
+                      {{popup_data.mgo}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      MGO
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="value">
+                      {{popup_data.lsmgo}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      LSMGO
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="value">
+                      {{popup_data.lshfo}}
+                      <span class="unit">MT</span>
+                    </div>
+                    <div class="name">
+                      LSFO
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel #fifth id="vessel-schedule" [expanded]="viewVesselSchedule" hideToggle="true" (closed)="changeDefault('VSClose')"
+              (opened)="changeDefault('VSOpen')">
+              <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="31px">
+                <mat-panel-title>
+                  <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+                  <div>Vessel schedule list</div>
+                  <div class="count">{{scheduleCount}}
+                  </div>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngIf="fifth.expanded && this.scheduleList" class="schedule">
+
+                <div class="row" *ngFor="let schedule of scheduleList; let i = index">
+                  
+                  <div class="col-3" style="line-height: 9px;display: flex;">
+                    <ng-container *ngIf="i < scheduleCount-1 && i != 1">
+                    <div class="grey">
+                      <img src="./assets/customicons/location.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                    </div>
+                    <div class="white">
+                      <img src="./assets/customicons/location-w.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="i == 1">
+                    <div class="grey current-location">
+                      <img src="./assets/customicons/location-blue.svg" width="11" height="10" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                    </div>
+                    <div class="white">
+                      <img src="./assets/customicons/location-w.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="i == scheduleCount-1">
+                    <img class="grey" src="./assets/customicons/pin.svg" style="margin-top: -8px;"
+                      alt="pin-icon">
+                    <img class="white" src="./assets/customicons/pin-w.svg" style="margin-top: -8px;"
+                      alt="pin-icon">
+                  </ng-container>
+                    <!-- </div>
+                  <div class="col-2 pd-0"> -->
+                    <div class="caption-details-port" [ngClass]="{'current-location': i==1}" (click)="openPort(schedule.vesselPorts,schedule.locationId)" matTooltip="{{schedule.vesselPorts}}">{{schedule.vesselPorts}}
+                    </div>
+                  </div>
+                  <span class="col-1 icon-seperator">|</span>
+                  <div class="col-5 pd-0">
+                    <div class="caption-header" [ngClass]="{'current-location': i==1}">ETA:
+                      <span class="caption-details" [ngClass]="{'current-location': i==1}" matTooltip="{{schedule.eta | utcDatePipe}}">{{schedule.eta | utcDatePipe}}</span>
+                    </div>
+                  </div>
+                  <span class="col-1 icon-seperator pd-0">|</span>
+                  <div class="days" [ngClass]="{'current-location': i==1}">{{schedule.daysLeft}} Days</div>
+                </div>
+                <!-- <div class="row">
+                  <div class="col-3" style="line-height: 9px;display: flex;">
+                    <div class="grey">
+                      <img src="./assets/customicons/location.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                    </div>
+                    <div class="white">
+                      <img src="./assets/customicons/location-w.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                    </div> -->
+                    <!-- </div>
+                  <div class="col-2 pd-0"> -->
+                    <!-- <div class="caption-details-port current-location" (click)="openPort('Daesan')" matTooltip="Daesan">
+                      Daesan</div>
+                  </div>
+                  <span class="col-1 icon-seperator">|</span>
+                  <div class="col-5 pd-0">
+                    <div class="caption-header current-location">ETA:
+                      <span class="caption-details current-location" matTooltip="2020-04-14 10:00">2020-04-14
+                        10:00</span>
+                    </div>
+                  </div>
+                  <span class="col-1 icon-seperator pd-0">|</span>
+                  <div class="days current-location">3 Days</div>
+                </div>
+                <div class="row">
+                  <div class="col-3" style="line-height: 9px;display: flex;">
+                    <div class="grey">
+                      <img src="./assets/customicons/location.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                    </div>
+                    <div class="white">
+                      <img src="./assets/customicons/location-w.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                    </div> -->
+
+                    <!-- </div>
+                  <div class="col-2 pd-0"> -->
+                    <!-- <div class="caption-details-port" (click)="openPort('Loke')" matTooltip="Loke">
+                      Loke </div>
+                  </div>
+                  <span class="col-1 icon-seperator">|</span>
+                  <div class="col-5 pd-0">
+                    <div class="caption-header">ETA:
+                      <span class="caption-details" matTooltip="2020-04-14 10:00">2020-04-14 10:00</span>
+                    </div>
+                  </div>
+                  <span class="col-1 icon-seperator pd-0">|</span>
+                  <div class="days">6 Days</div>
+                </div>
+                <div class="row">
+                  <div class="col-3" style="line-height: 9px;display: flex;">
+                    <div class="grey">
+                      <img src="./assets/customicons/location.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                    </div>
+                    <div class="white">
+                      <img src="./assets/customicons/location-w.svg" alt="location">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                      <img class="dot-icon" src="./assets/customicons/dot.svg" alt="dot-icon">
+                    </div> -->
+
+                    <!-- </div>
+                  <div class="col-2 pd-0 "> -->
+                    <!-- <div class="caption-details-port" (click)="openPort('Cristobal')" matTooltip="Cristobal">Cristobal
+                    </div>
+                  </div>
+                  <span class="col-1 icon-seperator">|</span>
+                  <div class="col-5 pd-0">
+                    <div class="caption-header">ETA:
+                      <span class="caption-details" matTooltip="2020-04-14 10:00">2020-04-14
+                        10:00</span>
+                    </div>
+                  </div>
+                  <span class="col-1 icon-seperator pd-0">|</span>
+                  <div class="days">10 Days</div>
+                </div> -->
+                <!-- <div class="row">
+                  <div class="col-3" style="display: flex;">
+                    <img class="grey" src="./assets/customicons/pin.svg" style="margin-top: -8px;"
+                      alt="pin-icon">
+                    <img class="white" src="./assets/customicons/pin-w.svg" style="margin-top: -8px;"
+                      alt="pin-icon"> -->
+                    <!-- </div>
+                  <div class="col-2 pd-0"> -->
+                    <!-- <div class="caption-details-port" (click)="openPort('New York', 1)" matTooltip="New York">NewYork</div>
+                  </div>
+                  <span class="col-1 icon-seperator">|</span>
+                  <div class="col-5 pd-0">
+                    <div class="caption-header">ETA
+                      <span class="caption-details" matTooltip="2020-04-14 10:00">2020-03-14 10:00</span>
+                    </div>
+                  </div>
+                  <span class="col-1 icon-seperator pd-0">|</span>
+                  <div class="days">15 Days</div>
+                </div> -->
+              </div>
+
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </div>
+    <div class="vessel-popup-footer">
+      <!-- <hr> -->
+    </div>
+  </div>

@@ -1,0 +1,52 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom", "es2018.promise"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@shiptech/core": ["libs/core/src/index.ts"],
+      "@shiptech/core/*": ["libs/core/src/lib/*"],
+      "@shiptech/environment": [
+        "apps/shiptech/src/environments/environment.ts"
+      ],
+      "@shiptech/feature/quantity-control": [
+        "libs/feature/quantity-control/src/index.ts"
+      ],
+      "@shiptech/feature/lazy-load-poc": [
+        "libs/feature/lazy-load-poc/src/index.ts"
+      ],
+      "@shiptech/feature/invoice": ["libs/feature/invoice/src/index.ts"],
+      "@shiptech/feature/delivery": ["libs/feature/delivery/src/index.ts"],
+      "@shiptech/feature/ete": ["libs/feature/ete/src/index.ts"],
+      "@shiptech/feature/smart": [
+        "libs/feature/smart/src/index.ts"
+      ],
+      "@shiptech/feature/contract": ["libs/feature/contract/src/index.ts"],
+      "@shiptech/feature/spot-negotiation": ["libs/feature/spot-negotiation/src/index.ts"],
+      "@shiptech/feature/control-tower": ["libs/feature/control-tower/src/index.ts"]
+
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "types": ["reflect-metadata"]
+  },
+  "exclude": ["node_modules", "tmp", "**/*.mock.ts"],
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "disableTypeScriptVersionCheck": true,
+    //"enableIvy": false
+    "compilationMode": "full"
+  }
+}

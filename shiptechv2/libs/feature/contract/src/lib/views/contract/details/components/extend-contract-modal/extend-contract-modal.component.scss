@@ -1,0 +1,68 @@
+.extend-contract-modal-header {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #364150;
+  position: relative;
+  top: 15px;
+}
+
+.mat-dialog-content {
+  overflow: unset !important;
+  position: relative;
+  padding: 15px;
+  margin: unset !important;
+}
+
+.extend-contract-modal-top {
+  padding-bottom: 15px;
+  border-bottom: 1px solid  #E5E4E4;
+}
+
+.extend-contract-modal-top .mat-raised-button {
+    background: #00AAE2;
+    border-radius: 3px;
+    opacity: 1;
+    width: 80%;
+    .mat-button-wrapper {
+        color: white;
+    }
+}
+
+.mat-dialog-container {
+    padding: 15px !important;
+    overflow: unset !important;
+}
+
+
+
+
+.invalid-input-extend-contract {
+  border-color: #e73d4a!important;
+  .mat-form-field-label mat-label {
+    color: #e73d4a!important;
+  }
+}
+
+.extend-contract-close-button {
+  float: right;
+  color: #65656a;
+}
+
+.extend-contract-close-button:hover {
+  color: #313133;
+}
+
+.extend-contract-buttons {
+  padding-right: 0px !important;
+  margin-top: 10px;
+}
+
+.date-invalid {
+  border-color: #e73d4a!important;
+  .mat-form-field-label mat-label {
+    color: #e73d4a!important;
+  }
+}

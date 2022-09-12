@@ -1,0 +1,4 @@
+.input-disabled-comments {
+    pointer-events: none;
+    background-color: #eee;
+  }

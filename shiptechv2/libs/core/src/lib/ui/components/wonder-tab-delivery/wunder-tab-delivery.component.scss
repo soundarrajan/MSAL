@@ -1,0 +1,16 @@
+.st-main-content-menu {
+  background: #FCFDFF;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-bottom: 10px;
+  border-bottom: 4px solid #d5d5d5;
+  position: relative;
+}
+
+@media print
+{
+  .no-print, .no-print *
+  {
+    display: none !important;
+  }
+}

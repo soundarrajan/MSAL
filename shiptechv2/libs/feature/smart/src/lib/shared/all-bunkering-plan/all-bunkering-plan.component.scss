@@ -1,0 +1,39 @@
+.right-border {
+    height:32px;
+    margin:0 10px;
+    display:flex;
+    align-items: center;
+    border-left: solid #54617A 3px;
+    padding-left: 10px;
+}
+
+.plan-status {
+    .mat-select-value {
+        color: #fff !important;
+    }       
+}
+.view-all-bunker-header {
+    .custom-date-picker {
+        .from-to-value {
+            max-width: 55% !important;
+            width: 100% !important;
+        }
+    }
+}
+.mat-expansion-panel-header {
+    .latest-plan-container {
+        flex:0 0 23%;
+        display:flex;
+        flex-direction:column;
+        padding:0 10px;
+        font-weight: 400;
+        font-size: 11px;
+        margin-top: 11px;
+        line-height: 16px;
+    }
+    &.mat-expanded {
+        .latest-plan-container {
+            margin-top: 0;
+        }
+    }
+}

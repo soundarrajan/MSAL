@@ -1,0 +1,30 @@
+
+<div class="w-100 px-3 py-4  m-r-5 m-b-7" style="background: white;">
+  <div class="row mb-2">
+    <div class="col-1 d-flex">
+      <app-page-size-selector (selectedOptionChange)="onPageSizeChange($event)"
+                              [options]="gridViewModel.pageSizeOptions" [selectedOption]="gridViewModel.pageSize">
+      </app-page-size-selector>
+    </div>
+    <div class="col-5 d-flex p-t-4">
+      <app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display>
+    </div>
+  </div>
+
+  <ag-grid-angular
+    #agGridAngular
+    appAgGridFirstColumnLocked
+    appAgGridFilterPresets
+    appAgGridSizeToFit
+    appAgGridEmptyFilterOption
+    (search)="gridViewModel.onSearch($event)"
+    id="audit-log-grid" class="ag-theme-balham ag-shiptech-theme" style="height:calc( 100vh - 352px );"
+    [gridOptions]="gridViewModel.gridOptions">
+  </ag-grid-angular>
+  <app-ag-footer
+    [page]="gridViewModel.page"
+    [size]="gridViewModel.pageSize"
+    [count]="gridViewModel.totalItems"
+    (pageChange)="onPageChange($event.page)">
+  </app-ag-footer>
+</div>

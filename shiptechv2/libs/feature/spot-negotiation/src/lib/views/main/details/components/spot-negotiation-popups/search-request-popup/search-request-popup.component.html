@@ -1,0 +1,45 @@
+<div class="search-request-popup">
+    <div class="header">
+        <div class="title">Search Request</div>
+        <div style="display:flex">
+            <input #requestInput type="text" placeholder="Search request here" [(ngModel)]="searchingRequest" (keydown.enter)="search($event.target.value)" class="search-box" (ngModelChange)="onCounterpartyChange($event)" >
+            <button class="searchButton" type="submit" (click)="search(requestInput.value)">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+        <div class="header-btn">
+            <button class="blue-button h-25" [mat-dialog-close]="true" (click)="addToRequestList()">Proceed</button>
+            <span class="seperator-line"></span>
+            <span class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
+        </div>
+    </div>
+    <mat-dialog-content style="overflow: hidden;">
+        <ag-grid-angular id="tradelistgrid" style="height: calc(100vh - 156px);"
+            [gridOptions]="dialog_gridOptions"
+            class="ag-theme-material angular-v9"
+            [overlayLoadingTemplate]="overlayLoadingTemplate"
+            [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+            >
+        </ag-grid-angular>
+        <div class="footer-popup">
+          <app-ag-footer-new
+          [gridViewModel]="dialog_gridOptions"
+          [page]="page"
+          [size]="pageSize"
+          [count]="totalItems"
+          [singleGrid]="true"
+          [doublePagination]="true"
+          [maxSize]="765"
+          id="{{ gridId }}"
+          (pageChange)="onPageChange($event.page)"
+          (newPageSize) = "onPageSizeChange($event.pageSize)"
+          [enabler] = "true"
+        >
+        </app-ag-footer-new>
+        </div>
+
+    </mat-dialog-content>
+</div>
+
+<div class="mainFooterWhiteSpace"></div>
+

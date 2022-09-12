@@ -1,0 +1,22 @@
+<!-- <div class="pagination"> -->
+
+<ul class="pagination-container">
+  <li
+    *ngFor="
+      let item of collection
+        | paginate
+          : {
+              id: id,
+              itemsPerPage: size,
+              currentPage: page,
+              totalItems: count
+            }
+    "
+  ></li>
+</ul>
+<pagination-controls
+  id="{{ id }}"
+  previousLabel=""
+  nextLabel=""
+  (pageChange)="selectPage($event)"
+></pagination-controls>

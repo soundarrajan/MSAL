@@ -1,0 +1,373 @@
+<div class="dark-wrapper info-bar">
+  <div style="display: flex;align-items: center; width: 25%;">
+    <div class="label-title"> Currently viewing:</div>
+    <div class="label-text" style="margin: 0px 5px;">Vessel</div>
+    <div class="search-vessel">
+      <app-search-vessel (changeVessel)="changeVesselTrigger($event)" [vesselList]="vesselList" [vesselData]="vesselData">
+      </app-search-vessel>
+    </div>
+  </div>
+  <!-- <table class=" table-noborder tbl-shadow border-l-r" style="width: 30%;"> -->
+  <table class=" table-noborder tbl-shadow border-l-r" style="width: 37%;">
+    <tbody>
+      <tr>
+        <td class="label-text">Scrubber Date:</td>
+        <td class="value" *ngIf="scrubberDate">{{scrubberDate | enUsDatePipe | date: 'dd/MM/yyyy'}}</td>
+        <td class="value" *ngIf="!scrubberDate">N/A</td>
+        <td class="separator">|</td>
+        <td class="label-text">Ownership:</td>
+        <td class="value">{{bunkerPlanHeaderDetail?.ownership}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- <div  class="border-r" style="display: flex;flex:0 0 11%;align-items: center;justify-content: space-evenly;"> -->
+    <!-- <mat-checkbox (ngModelChange)="CheckDefaultView($event)" [ngModel]="vesselService.defaultView" (change)="saveDefaultView($event)" [checked]="vesselService.defaultView" class="dark-bg-checkbox dark-checkbox noborder"></mat-checkbox>
+    <div [ngClass]="(bunkerPlanHeaderDetail.myDefaultView)? 'default-view': 'reminder-view'">My Default View</div> -->
+  <!-- </div> -->
+  <!-- <div  style="flex:0 0 13%;display: flex;align-items: center; justify-content: space-evenly;"> -->
+  <div  style="display: flex;align-items: center; justify-content: space-evenly;padding: 0px 20px;">
+    <mat-checkbox (change)="TriggerdontSendPlanReminder($event)" [(ngModel)]="bunkerPlanHeaderDetail.notSendPlanReminder" class="dark-bg-checkbox dark-checkbox noborder" style="padding-right: 10px;"></mat-checkbox>
+    <div [ngClass]="(bunkerPlanHeaderDetail.dockPortFlag)? 'default-view': 'reminder-view'">Do not send plan reminder</div>
+    <!-- <mat-icon matTooltip="Plan reminder disabled since vessel is Dry Dock" *ngIf="bunkerPlanHeaderDetail?.dockPortFlag">info</mat-icon> -->
+    <mat-icon *ngIf="bunkerPlanHeaderDetail?.dockPortFlag" matTooltip="Plan reminder disabled since vessel is Dry Dock" svgIcon="info-icon" style="width: 18px;padding-right: 5px;"></mat-icon>
+  </div>
+  <!-- <div class="border-l-r" style="flex:0 0 20%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;"> -->
+  <div class="border-l-r" style="flex:0 0 24%;display:flex;flex-direction:column;padding:0 10px;font-weight: lighter;">
+    <div style="display:flex;align-items: center;justify-content: space-between;">
+      <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan received</div><span class="label-text">:</span>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')==-1">{{bunkerPlanHeaderDetail?.lastPlanReceivedDate  }} <div class="m-l-r-5">|</div>
+        ID:{{bunkerPlanHeaderDetail?.lastPlanReceivedId}}</div>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanReceivedDate)?.indexOf('0001')>-1">N/A <div class="m-l-r-5">|</div>
+        ID:N/A</div>
+    </div>
+    <div style="display:flex;align-items: center;justify-content: space-between;">
+      <div class="sml-txt" style="display:flex;flex: 10%;">Latest plan sent
+      </div><span class="label-text">:</span>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')==-1"> {{bunkerPlanHeaderDetail.lastPlanSentDate }} <div class="m-l-r-5">|</div>
+        ID:{{bunkerPlanHeaderDetail.lastPlanSentId}}</div>
+      <div class="sml-txt" style="display:flex" *ngIf="(bunkerPlanHeaderDetail?.lastPlanSentDate)?.indexOf('0001')>-1"> N/A <div class="m-l-r-5">|</div>
+        ID:N/A</div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ACCORDION -->
+<div id="accordion-container-dark">
+  <mat-accordion multi="true">
+    <!-- <mat-expansion-panel *ngIf="!expandComments" hideToggle="true"
+    [expanded]="vesselService.currentROBandArbitragedetails" (closed)="changeDefault('currentROBandArbitragedetailsClose')"
+    (opened)="changeDefault('currentROBandArbitragedetailsOpen')"> -->
+    <mat-expansion-panel *ngIf="!expandComments" hideToggle="true" [expanded]="'true'" >
+      <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
+        <mat-panel-title>
+          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+          Current ROB & Arbitrage details
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="panel-body">
+        <div id="currentRequestDetails" class="popup-body">
+          <div class="row">
+            <div class="col-6 pd-0">
+              <!-- Market Prices Section -->
+              <div class="row">
+                <div class="col-12 p-0">
+                  <section id="robDetails">
+                    <div class="dark-table-title">Current ROB Details</div>
+                    <div class="dark-table">
+                      <div class="dark-table-body">
+                        <table class="table">
+                          <tr>
+                            <th></th>
+                            <th>3.5 QTY</th>
+                            <th>0.5 QTY</th>
+                            <th>ULSFO</th>
+                            <th>LSDIS</th>
+                            <th>HSDIS</th>
+                          </tr>
+                          <tr>
+                            <th scope="row">Current ROB</th>
+                              <td>
+                                <div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" [textContent]="ROBArbitrageData?.hsfoCurrentStock" (input)="ROBOnChange($event,$event.target.textContent, '3.5 QTY');ROBArbitrageData.hsfoCurrentStock=$event.target.textContent" [ngClass]="hsfoRobClasses">
+                                  {{ROBArbitrageData?.hsfoCurrentStock? (ROBArbitrageData?.hsfoCurrentStock): 0}}
+                                </div>
+                              </td>
+                              <td><div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" [textContent]="ROBArbitrageData?.hsfO05CurrentStock" (input)="ROBOnChange($event,$event.target.textContent, '0.5 QTY');ROBArbitrageData.hsfO05CurrentStock=$event.target.textContent" [ngClass]="hsfo05RobClasses">{{ROBArbitrageData?.hsfO05CurrentStock? (ROBArbitrageData?.hsfO05CurrentStock): 0}}</div></td>
+                              <td><div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" [textContent]="ROBArbitrageData?.ulsfoCurrentStock" (input)="ROBOnChange($event,$event.target.textContent, 'ULSFO');ROBArbitrageData.ulsfoCurrentStock=$event.target.textContent" [ngClass]="ulsfoRobClasses">{{ROBArbitrageData?.ulsfoCurrentStock? (ROBArbitrageData?.ulsfoCurrentStock): 0}}</div></td>
+                              <td><div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" [textContent]="ROBArbitrageData?.lsdisCurrentStock" (input)="ROBOnChange($event,$event.target.textContent, 'LSDIS');ROBArbitrageData.lsdisCurrentStock=$event.target.textContent" [ngClass]="lsdisRobClasses">{{ROBArbitrageData?.lsdisCurrentStock? (ROBArbitrageData?.lsdisCurrentStock): 0}}</div></td>
+                              <td><div oncopy="return false" oncut="return false" onpaste="return false" contentEditable="{{(selectedUserRole?.name=='Vessel')? 'true': 'false'}}" (keypress)="validateOnlyInt($event)" [textContent]="ROBArbitrageData?.hsdisCurrentStock" (input)="ROBOnChange($event,$event.target.textContent, 'HSDIS');ROBArbitrageData.hsdisCurrentStock=$event.target.textContent" [ngClass]="hsdisRobClasses">{{ROBArbitrageData?.hsdisCurrentStock? (ROBArbitrageData?.hsdisCurrentStock): 0}}</div></td>
+                            </tr>
+                          <tr>
+                            <th scope="row">MSPS <span>(dt: {{ (!ROBArbitrageData?.mspsestdate || (ROBArbitrageData?.mspsestdate | date: 'dd/MM/yyyy') == '01/01/0001') ? '' : (ROBArbitrageData?.mspsestdate | date: 'dd/MM/yyyy') }})</span></th>
+                            <td colspan=2>{{ROBArbitrageData?.mspshsfo? (ROBArbitrageData?.mspshsfo): 0}}</td>
+                            <td>{{ROBArbitrageData?.mspsulsfo? (ROBArbitrageData?.mspsulsfo): 0}}</td>
+                            <td>{{ROBArbitrageData?.mspslsdis? (ROBArbitrageData?.mspslsdis): 0}}</td>
+                            <td>{{ROBArbitrageData?.mspsdis? (ROBArbitrageData?.mspsdis): 0}}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Unpumpables</th>
+                            <td colspan=2>{{ROBArbitrageData?.uphsfo? (ROBArbitrageData?.uphsfo): 0}}</td>
+                            <td>{{ROBArbitrageData?.upulsfo? (ROBArbitrageData?.upulsfo): 0}}</td>
+                            <td>{{ROBArbitrageData?.uplsdis? (ROBArbitrageData?.uplsdis): 0}}</td>
+                            <td>{{ROBArbitrageData?.uphsdis? (ROBArbitrageData?.uphsdis): 0}}</td>
+
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 pr-0">
+              <div class="row">
+                <div class="col-12 p-0">
+                  <section id="arbitrageDetails">
+                    <div class="dark-table-title">Arbitrage Details</div>
+                    <div class="dark-table">
+                      <div class="dark-table-body">
+                        <div class="row fz-12 p-t-5">
+                          <div class="col-5 p-0">
+                            <div><span class="text-white">Arbitrage Volume : </span>
+                              <span class="text-gray">{{ROBArbitrageData?.arbitrageVolume}} MT</span></div>
+                            <div><span class="text-white">Contango Volume : </span>
+                              <span class="text-gray">{{ROBArbitrageData?.contangoVolume}}</span></div>
+                            <div><span class="text-white">Arbitrage Bunker port : </span>
+                              <span class="text-gray">{{ROBArbitrageData?.arbitrageBunkerPort}}</span></div>
+                          </div>
+                          <div class="col-7 p-0">
+                            <div><span class="text-white">Arbitrage Bunker Port ETA : </span>
+                              <span class="text-gray">{{ROBArbitrageData?.arbitrageBunkerPortETA}}</span></div>
+                            <div><span class="text-white">Arbitrage Discharge Port : </span>
+                              <span class="text-gray">{{ROBArbitrageData?.arbitrageDischargePort}}</span></div>
+                            <div><span class="text-white">Arbitrage Discharge Port ETA : </span>
+                              <span class="text-gray">{{ROBArbitrageData?.arbitrageDischargePortETA}}</span></div>
+                          </div>
+                        </div>
+                        <!-- <table class="table">
+                          <tr>
+                            <th>
+                              <div>Fuel Grade</div>
+                            </th>
+                            <th style="text-align: right;">
+                              <div style="padding-right: 10px;">Quantity</div>
+                            </th>
+                            <th>
+                              <div>Delv. After
+                              </div>
+                            </th>
+                            <th>
+                              <div>Delv. Before</div>
+                            </th>
+                            <th>
+                              <div>Status</div>
+                            </th>
+                          </tr>
+                          <tr>
+                            <td>DMA</td>
+                            <td style="text-align: right;">150</td>
+                            <td>09/02/2020</td>
+                            <td>09/02/2020</td>
+                            <td>Stemmed</td>
+                          </tr>
+                          <tr>
+                            <td>+ Add New</td>
+                            <td style="text-align: right;"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                        </table> -->
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+    <!-- <mat-expansion-panel #commentpanel
+      [ngClass]="{'fullheight':expandComments}" hideToggle="true" [expanded]="vesselService.comments" (closed)="changeDefault('commentsClose');expandComments = false"
+      (opened)="changeDefault('commentsOpen')"> -->
+    <mat-expansion-panel #commentpanel
+      [ngClass]="{'fullheight':expandComments}" hideToggle="true" [expanded]="'false'" (closed)="expandComments = false">
+      <mat-expansion-panel-header #panelCommentH collapsedHeight="31px" expandedHeight="34px" (click)="commentpanel.expanded ? loadComments() : ''">
+        <mat-panel-title>
+          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+          <div style="flex: 0 0 17%;">Comments({{totalCommentCount}})</div>
+          <div style="flex:0 0 80%;display: flex;align-items: center;justify-content: flex-end;">
+            <ng-container *ngIf="commentpanel.expanded">
+              <div style="text-align: center;">
+                <div  *ngIf="!expandComments; else collapseBlock" (click)="toggleComments($event)" class="expand-accordion-icon hand"></div>
+                <!-- <img *ngIf="!expandComments; else collapseBlock" class="hand" (click)="toggleComments($event)"
+                  src="./assets/customicons/expand-icon.svg" alt="expand-icon"> -->
+                <ng-template #collapseBlock>
+                  <div  (click)="toggleComments($event)" class="collapse-accordion-icon hand"></div>
+                  <!-- <img class="hand" (click)="toggleComments($event)" src="./assets/customicons/collapse-icon.svg"
+                    alt="collapse-icon"> -->
+                </ng-template>
+              </div>
+            </ng-container>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="panel-body">
+        <app-comments [hidden]="!commentpanel.expanded" (ShowCommentCount)="TotalCommentCount($event)"></app-comments>
+      </div>
+
+    </mat-expansion-panel>
+    <!-- <mat-expansion-panel *ngIf="!expandComments && !expandPrevBPlan" [ngClass]="{'fullheight':expandBplan}" #panel
+      id="current-bunker-plan" hideToggle="true"
+       [expanded]="vesselService.currentBunkeringPlan" (closed)="currentBplan?.gridChanged && togglecurrentBPlan(panel);changeDefault('currentBunkeringPlanClose')"
+      (opened)="changeDefault('currentBunkeringPlanOpen')"> -->
+    <mat-expansion-panel *ngIf="!expandComments && !expandPrevBPlan" [ngClass]="{'fullheight':expandBplan}" #panel
+      id="current-bunker-plan" hideToggle="true"
+       [expanded]="'true'" (closed)="currentBplan?.gridChanged && togglecurrentBPlan(panel);"
+      (opened)="changeDefault('currentBunkeringPlanOpen')">
+      <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
+        <mat-panel-title>
+          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+          <div style="display: flex;align-items: center;width: 100%;">
+            <div style="flex: 0 0 17%;">Latest Valid Bunker Plan</div>
+            <div style="flex:0 0 80%;display: flex;align-items: center;">
+              <div id="plan-id" class="border-leftside" style="flex:0 0 10%;text-align: center;"><span class="title">Plan ID :
+              </span><span class="content">{{this.planId}}</span></div>
+              <div id="plan-date"  class="border-leftside" style="flex:0 0 13%;text-align: center;">
+                <span class="title">Plan Date :</span>
+                <span class="content">{{this.planDate}}</span>
+              </div>
+              <div *ngIf="isLatestPlanInvalid == false" style="flex:0 0 13%;display: flex;align-items: center;">
+                <div id="plan-date" class="border-l-rightside" style="flex:0 0 96%;text-align: center;">
+                  <span class="title">Status : </span>
+                <span *ngIf="this.statusCurr != ''" [ngClass]="[this.statusCurr =='InValid'? 'invalid-status' : 'valid-status']">{{this.statusCurr}}</span>
+                </div>
+              </div>
+              <div *ngIf="isLatestPlanInvalid == true" style="flex:0 0 13%;display: flex;align-items: center;">
+                <div id="plan-date" class="border-l-rightside" style="flex:0 0 96%;text-align: center;"
+                      [ngClass]="{'createReqEnable':enableCreateReq,'createReqDisable':!enableCreateReq}"
+                      (click)="$event.stopPropagation()">
+                      <a style="padding-left:20px"(click)="createRequest()">Create Request </a>
+                </div>
+              </div>
+
+
+              <ng-container *ngIf="panel.expanded">
+                <div class="border-rightside"
+                  style="display: flex;flex: 0 0 40%;justify-content: space-between;padding: 0px 5px;">
+                  <!-- <button [disabled]="!enableCreateReq" matTooltip="Create Request" [matTooltipShowDelay]="500"
+                    class="create-btn">
+                    <img class="disablePlus" src="./assets/customicons/plus-noborder.svg" alt="create">
+                    <img class="activePlus" src="./assets/customicons/plus-noborder-white.svg" alt="create">
+                    <span class="createReq">Create Request</span>
+                  </button> -->
+                  <div *ngIf="isLatestPlanInvalid == false" class="border-rightside" style="padding-right: 5px;"
+                    [ngClass]="{'createReqEnable':enableCreateReq,'createReqDisable':!enableCreateReq}"
+                    (click)="$event.stopPropagation()">
+                    <a (click)="createRequest()">Create Request </a>
+                  </div>
+                  <div *ngIf="isLatestPlanInvalid == true" style="padding-right: 5px;">
+                    <div class="newplan-notification" style="width: 180px;margin-top: 8px !important;"><span class="newplan-notification-icon"></span>Latest Bunkering Plan is invalid</div>
+                  </div>
+                  <!-- <button mat-button matTooltip="Import GSIS" [matTooltipShowDelay]="500" class="import-btn" (click)="setImportGSIS()">Import
+                    GSIS</button> -->
+                    <div *ngIf="isLatestPlanInvalid == false" style="position: relative; margin-left: 50%;"> <mat-checkbox [disabled]="disableCurrentBPlan" [(ngModel)]="isChecked" (click)="setImportGSIS($event)" class="dark-bg-checkbox dark-checkbox-v2 noborder"></mat-checkbox></div>
+                    <div *ngIf="isLatestPlanInvalid == false" class="import-gsis"> Import GSIS</div>
+                    <div *ngIf="isLatestPlanInvalid == true" style="margin-left: 90px;margin-top: 5px;"> <mat-checkbox [disabled]="disableCurrentBPlan" [(ngModel)]="isChecked" (click)="setImportGSIS($event)" class="dark-bg-checkbox dark-checkbox-v2 noborder"></mat-checkbox></div>
+                    <div *ngIf="isLatestPlanInvalid == true" style="margin-top: 5px;" class="import-gsis"> Import GSIS</div>
+                </div>
+                <div style="flex:0 0 23%;display: flex;align-items: center;justify-content: space-around;"
+                  class="border-rightside">
+                  <!-- <button mat-button  matTooltip="Generate" [matTooltipShowDelay]="500"
+                    class="btn" [disabled]="disableCurrentBPlan" (click)="generateCurrentBPlan($event)">Generate</button> -->
+                  <!-- <button mat-button  matTooltip="Send" [matTooltipShowDelay]="500" class="btn" (click)="sendCurrentBPlan($event)">Send</button>
+                  <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
+                    (click)="saveCurrentBPlan($event)" >Save</button> -->
+                  <button mat-button matTooltip="Save" [matTooltipShowDelay]="500" class="btn savebtn"
+                    [disabled]="disableCurrentBPlan" (click)="saveCurrentBPlan($event)" >Save</button>
+                  <button mat-button  matTooltip="Generate" [matTooltipShowDelay]="500"
+                    class="btn" [disabled]="disableCurrentBPlan" (click)="generateCurrentBPlan($event)">Generate</button>
+                  <button mat-button matTooltip="Send" [matTooltipShowDelay]="500"
+                    class="btn" [disabled]="disableCurrentBPlan" (click)="sendCurrentBPlan($event)">Send</button>
+                </div>
+                <div style="flex:0 0 4%;text-align: center;">
+                  <div  *ngIf="!expandBplan; else collapseBlock" (click)="toggleBPlan($event)" class="expand-accordion-icon hand"></div>
+                  <!-- <img *ngIf="!expandBplan; else collapseBlock" class="hand" (click)="toggleBPlan($event)"
+                    src="./assets/customicons/expand-icon.svg" alt="expand-icon"> -->
+                  <ng-template #collapseBlock>
+                    <div  (click)="toggleBPlan($event)" class="collapse-accordion-icon hand"></div>
+                    <!-- <img class="hand" (click)="toggleBPlan($event)" src="./assets/customicons/collapse-icon.svg"
+                      alt="collapse-icon"> -->
+                  </ng-template>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="panel-body">
+        <app-bunkering-plan *ngIf="panel.expanded && loadBplan" [isExpanded]="expandBplan"
+          (enableCreateReq)="toggleCreateReq($event)" [planId]="planId" [bPlanType]="bPlanType.curr" [selectedUserRole]="selectedUserRole"
+          [vesselRef]="vesselData"
+          [changeROB]="this.currentROBChange.asObservable()"
+          (voyage_detail)="getVoyageDetail($event)"
+          (bunkerPlanSaved)="bunkerPlanSaved()">
+        </app-bunkering-plan>
+      </div>
+    </mat-expansion-panel>
+    <!-- <mat-expansion-panel #panel1 *ngIf="!expandBplan && !expandComments" [ngClass]="{'fullheight':expandPrevBPlan}"
+      hideToggle="true" id="bunker-plan" [expanded]="vesselService.previousBunkeringPlan" (closed)="changeDefault('previousBunkeringPlanClose');expandPrevBPlan = false"
+      (opened)="changeDefault('previousBunkeringPlanOpen')"> -->
+    <mat-expansion-panel #panel1 *ngIf="!expandBplan && !expandComments" [ngClass]="{'fullheight':expandPrevBPlan}"
+      hideToggle="true" id="bunker-plan" [expanded]="'false'" (closed)="expandPrevBPlan = false">
+      <mat-expansion-panel-header collapsedHeight="31px" expandedHeight="34px">
+        <mat-panel-title>
+          <img class="expand-icon" src="./assets/customicons/expand.svg" alt="expand-icon">
+          <div style="display: flex;align-items: center;width: 100%;">
+            <div style="flex: 0 0 17%;">Previous Bunker Plan</div>
+            <div style="flex:0 0 80%;display: flex;align-items: center;">
+              <div id="plan-id" class="border-leftside" style="flex:0 0 10%;text-align: center;">
+                <span class="title">Plan ID :</span>
+                <span class="content">{{this.prevPlanId}}</span>
+              </div>
+              <div id="plan-date" class="border-leftside" style="flex:0 0 13%;text-align: center;">
+                <span class="title">Plan Date :</span>
+                <span class="content">{{this.prevPlanDate}}</span>
+              </div>
+              <div style="flex:0 0 13%;display: flex;align-items: center;">
+                <div id="plan-date" class="border-l-rightside" style="flex:0 0 96%;text-align: center;">
+                  <span class="title">Status : </span>
+                  <span *ngIf="this.statusPrev != ''" [ngClass]="[this.statusPrev =='InValid'? 'invalid-status' : 'valid-status']">{{this.statusPrev}}</span>
+                </div>
+              </div>
+            </div>
+
+
+            <ng-container *ngIf="panel1.expanded">
+              <div style="flex:0 0 4%;text-align: center;">
+                <div  *ngIf="!expandPrevBPlan; else collapseBlock"  (click)="togglePrevBPlan($event)" class="expand-accordion-icon hand"></div>
+                <!-- <img *ngIf="!expandPrevBPlan; else collapseBlock" class="hand" (click)="togglePrevBPlan($event)"
+                  src="./assets/customicons/expand-icon.svg" alt="expand-icon"> -->
+                <ng-template #collapseBlock>
+                  <div  (click)="togglePrevBPlan($event)" class="collapse-accordion-icon hand"></div>
+                  <!-- <img class="hand" (click)="togglePrevBPlan($event)"
+                    src="./assets/customicons/collapse-icon.svg" alt="collapse-icon"> -->
+                </ng-template>
+              </div>
+            </ng-container>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="panel-body">
+        <app-bunkering-plan [isExpanded]="expandPrevBPlan" *ngIf="panel1.expanded && loadBplan"
+          (isCellClicked)="showViewAlert($event)" [planId]="prevPlanId" [bPlanType]="bPlanType.prev"
+          [selectedUserRole]="selectedUserRole"
+          [vesselRef]="vesselData">
+        </app-bunkering-plan>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<!-- ------------------- -->

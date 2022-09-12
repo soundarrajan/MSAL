@@ -1,0 +1,23 @@
+<div
+  fxLayout="row"
+  fxLayoutAlign="start center"
+  class="page-bar h-40 toolbar-fixed"
+>
+  <shiptech-breadcrumbs class="col-md-6"> </shiptech-breadcrumbs>
+  <div class="st-breadcrumbs-progress-bar col-md-6" style="margin: 0px 15px;">
+    <ul class="page-breadcrumb">
+      <li
+        *ngFor="let navItem of navigationItems"
+        class="btn btn-fit-height {{ navItem.indexStatus }}"
+        title="{{ navItem.entityId }}"
+      >
+        <a *ngIf="navItem.url" href="{{ navItem.url }}" class="breadcrumb-a">
+          {{ navItem.displayName }}
+        </a>
+        <span *ngIf="!navItem.url">
+          {{ navItem.displayName }}
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>

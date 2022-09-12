@@ -1,0 +1,97 @@
+<div class="accordion-detail">
+  <div class="open-close-arrow"></div>
+  <span class="panel-title" style="margin-left: 3px;"
+    ><span>Location:</span><span>{{ title }}</span></span
+  >
+</div>
+
+<div class="header-content" (click)="$event.stopPropagation()">
+
+<!-- <div mattooltip="View/edit location additional costs" mattooltipclass="lightTooltip" class="location-cost" (click)="additionalcostpopup()">
+  <span class="eye-icon"></span>
+  <span class="title">View location cost</span>
+</div> -->
+
+
+
+  <div class="location-cost" (click)="additionalcostpopup()"> 
+      
+      <span class="eye-icon" ></span>
+    <span class="title" matTooltip="View/edit location additional costs" matTooltipClass="lightTooltip" style="margin-left: 3px; opacity: .7;">View location cost</span>
+    
+  </div>
+  
+  <!-- <div class="terminal">
+    <span class="title">Terminal:</span>
+    <div class="location w-180" style="margin-bottom: 3px;">
+      <div id="custom-form-field">
+        <mat-form-field class="without-search terminal-select" appearance="none">
+          <mat-select
+            disableOptionCentering
+            disabled
+            [(ngModel)]="terminal"
+            (click)="$event.stopPropagation()">
+            <mat-option value="{{ terminal }}">{{ terminal }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="terminal">
+    <span class="title">Terminal:</span>
+    <!-- <div class="location w-160" style="margin-bottom: 2px;"> -->
+        <span class="terminal-name" *ngIf='terminal'>{{ terminal }}</span>
+        <span class="terminal-name" *ngIf='!terminal'>--</span>
+    <!-- </div> -->
+  </div>
+
+  <!-- Eta -->
+  <div class="date" [matMenuTriggerFor]="clickmenu" #menuTrigger="matMenuTrigger">
+    <span class="title">ETA:</span>
+    <span class="text">{{ formatDate(ETAdatetime.value) }}</span>
+    <span class="dropdown-icon"></span>
+  </div>
+  <mat-menu #clickmenu="matMenu" class="more-options-menu-panel menu-panel-eta" xPosition="after"
+    style="position: relative;bottom: 15px;left: 66px;min-height: unset !important;">
+    <div>
+      <div class="more-options-menu-inv no-border p-lr-0">
+        <div class="date" (click)="ETASelected()">
+          <span class="title">ETA:</span>
+          <!-- <div class="by-datePicker">
+            <div id="custom-form-field">
+              <app-date-time-toggle (onDatePicked)="doSomething($event)"></app-date-time-toggle>
+            </div>
+          </div> -->
+          <span class="text">{{ formatDate(ETAdatetime.value) }}</span>
+        </div>
+        <div class="date" (click)="ETASelected()">
+          <span class="title">ETB:</span>
+          <!-- <div class="by-datePicker">
+            <div id="custom-form-field">
+              <app-date-time-toggle></app-date-time-toggle>
+            </div>
+          </div> -->
+          <span class="text">{{ formatDate(ETBdatetime.value) }}</span>
+        </div>
+        <div class="date" (click)="ETASelected()">
+          <span class="title">ETD:</span>
+          <!-- <div class="by-datePicker">
+            <div id="custom-form-field">
+              <app-date-time-toggle></app-date-time-toggle>
+            </div>
+          </div> -->
+          <span class="text">{{ formatDate(ETDdatetime.value) }}</span>
+        </div>
+      </div>
+    </div>
+  </mat-menu>
+
+  <div class="labels">
+    <div class="content">
+      <span class="title">Delivery Window:</span>
+      <span class="text" *ngIf='deliveryFrom'>{{ formatDate(deliveryFrom) }} - {{ formatDate(deliveryTo) }}</span>
+      <span class="text" *ngIf='!deliveryFrom'>--</span>
+    </div>
+  </div>
+</div>

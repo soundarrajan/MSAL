@@ -1,0 +1,356 @@
+<div class="spot-popup-header-container applicable-cost-popup-header">
+  <div class="spot-nego-title">
+    Applicable Location Costs - {{ requestLocation.locationName }}
+  </div>
+  <div class="spot-dialog-title-right popup-header-form">
+    <!-- <mat-checkbox
+      class="check-text"
+      [(ngModel)]="duplicateCost"
+      (change)="onRequestListCheckboxChange($event)"
+      [disabled]="!requestListToDuplicateLocationBasedCost.length"
+      [matTooltip]="!requestListToDuplicateLocationBasedCost.length? 'No request to copy': ''"
+    >Duplicate Costs to:</mat-checkbox> -->
+
+    <!-- <ng-container *ngIf="!duplicateCost">
+      <div class="header-btn-icons">
+        <span  matTooltip="No Quote" matTooltipClass="lightTooltip"  class="no-quote-header-icon"></span>
+      </div>
+    </ng-container> -->
+    <ng-container >
+      <div
+        class = "header-btn-icons"
+      >
+         <span class="duplicate-price" [matMenuTriggerFor]="clickmenu"
+               #menuTrigger="matMenuTrigger"></span>
+      </div>
+      <mat-menu
+        #clickmenu="matMenu"
+        class="more-options-menu-panel menu-panel-requestOptionsDuplicateComments menu-panel-requestOptionsPanel"
+        xPosition="after"
+        style="position: relative;bottom: 15px;left: 66px;min-height: unset !important;"
+      >
+        <div class="duplicate-comments-menu">
+          <div
+            *ngIf="!requestListToDuplicateLocationBasedCost.length"
+            class="more-options-menu-inv no-border p-lr-0"
+            style="margin: 7px 5px;"
+          >
+            <div class="checkboxOptions">No request found</div>
+          </div>
+          <div class="text">
+            <span>Copy To</span>
+          </div>
+          <div class="divider-line"></div>
+          <div
+            class="more-options-menu-inv no-border p-lr-0"
+            (click)="$event.stopPropagation()"
+            style="margin: 7px 5px;"
+          >
+            <div
+              class="checkboxOptions"
+              *ngFor="let request of requestListToDuplicateLocationBasedCost"
+            >
+              <mat-checkbox
+                [value]="request"
+                [checked]="request.isSelected"
+                (change)="onRequestListSelectionChange($event, request)"
+                matTooltip="  {{ request.name }} -
+            {{ request.vesselName }}"
+                matTooltipClass="lightTooltip"
+              >
+                {{ request.name }} - {{ request.vesselName }}</mat-checkbox
+              >
+            </div>
+          </div>
+          <div class="proceed-div" style="margin: 0px;">
+            <button
+              mat-button
+              class="mid-blue-button proceed-btn"
+              style="left: 116px;"
+              (click)="saveLocationAdditionalCosts('isProceed')"
+            >
+              Proceed
+            </button>
+          </div>
+        </div>
+      </mat-menu>
+      </ng-container>
+    
+    <button
+      mat-button
+      [ngClass]="{ 'mid-blue-button': enableSave }"
+      (click)="saveLocationAdditionalCosts('isSave')"
+    >
+      Save
+    </button>
+    <div class="title-divider">|</div>
+    <span class="close" style="cursor: pointer;" (click)="closeDialog()" type="button"  ></span>
+    <!-- <div class="close-circle" style="padding:0px;">
+      <mat-icon
+        id="dialogCloseButton"
+        matSuffix
+        class=""
+        (click)="closeDialog()"
+        style="font-size: 14px; display: inline; "
+        >close</mat-icon
+      >
+    </div> -->
+  </div>
+</div>
+<hr class="hr-line" />
+<div class="product-terms p-b-5 p-r-15 p-l-15">
+  <div class="operations-details-block" style="height: auto;">
+    <table>
+      <thead>
+        <tr>
+          <th
+            class="increment-circle-button"
+            style="width: 50px;"
+          >
+          <div class="row" style="padding-left: 10px;">
+            <div class="increment-circle">
+              <div class="plus"  (click)="addNewLocationCost()">+</div>
+            </div>
+            <div class="change-color" style="padding-left: 3px ;">
+              <mat-checkbox
+                 #checkbox
+                 style="margin-left: 4px;"
+                 class="mat-checkbox"
+                 [(ngModel)]="isCheckedMain"
+                 (change)="checkUncheckAll($event, -1)"
+              >
+              </mat-checkbox>
+            
+            </div>
+          </div>
+          </th>
+          <th class="text-left">Cost Name</th>
+          <th class="text-left">Cost Type</th>
+          <th class="text-left">Max Qty</th>
+          <th class="text-left">Price</th>
+          <th class="text-left">Applicable for</th>
+          <th class="text-left">Extra(%)</th>
+          <th class="text-left">Extra Amt</th>
+          <th class="text-left">Total Amt</th>
+          <th class="text-left">Rate/MT</th>
+          <!-- <th class=" text-left">Comments</th> -->
+        </tr>
+      </thead>
+    </table>
+    <div
+      style="min-height: 107px; max-height: 355px; overflow-y: scroll; background: #ffffff;"
+    >
+      <table>
+        <tbody>
+          <ng-container
+            *ngFor="let locationCost of locationBasedCosts; let j = index"
+          >
+            <tr class="border-bottom" *ngIf="!locationCost.isDeleted">
+              <td class="decrement-circle-button" style="width: 50px;">
+                <div class="row" style="padding-left: 10px;">
+                  <div
+                  class="decrement-circle"
+                  *ngIf="!locationCost.hasStemmedProduct"
+                  (click)="removeLocationCost(j)"
+                >
+                  <div class="minus">-</div>
+                </div>
+                <div
+                  class="" style="padding-left: 3px;"
+                >
+                <mat-checkbox
+                style="padding-left: 4px;"
+                 class="mat-checkbox"
+                 [(ngModel)]="locationCost.isSelected"
+                 (change)="checkUncheckAll($event, j)"
+                 >
+             </mat-checkbox>
+                </div>
+                </div>
+                
+              </td>
+              <td
+                class="text-left "
+                [ngClass]="{
+                  'required-field':
+                    saveButtonClicked && !locationCost.additionalCostId,
+                  'cell-dashed-border': !saveButtonClicked
+                }"
+              >
+                <mat-form-field
+                  class="without-search spot-dropdown-component applicable-location-based"
+                  appearance="none"
+                >
+                  <mat-select
+                    [ngModel]="locationCost.locationAdditionalCostId"
+                    (ngModelChange)="
+                      locationCost.locationAdditionalCostId = $event;
+                      onCostSelectionChange($event, j)
+                    "
+                    [disableOptionCentering]="true"
+                    panelClass="spot-select-panel-container"
+                    [disabled]="
+                      locationCost.hasStemmedProduct ||
+                      !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                        locationCost
+                      )
+                    "
+                  >
+                    <mat-option
+                      *ngFor="let locationCost of locationCosts"
+                      [value]="locationCost.id"
+                    >
+                      {{ locationCost.costDescription | htmlDecodeReadonly }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td class="">{{ locationCost.costType }}</td>
+              <td>
+                <div class="non-editable-container">
+                  <div class="non-editable-container-text-left">
+                    {{
+                      locationCost.maxQuantity
+                        ? quantityFormatValue(locationCost.maxQuantity)
+                        : ' '
+                    }}
+                  </div>
+                  <div class="non-editable-container-text-left">
+                    &nbsp;{{
+                      locationCost.maxQuantityUomId
+                        ? getUomName(locationCost.maxQuantityUomId)
+                        : ''
+                    }}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="non-editable-container">
+                  <div class="non-editable-container-text-left">
+                    {{
+                      locationCost.price
+                        ? tenantService.FormatPriceTrailingZero(locationCost.price)
+                        : ' '
+                    }}
+                  </div>
+                  <div class="non-editable-container-text-left">
+                    &nbsp;{{
+                      locationCost.costTypeId == 2 && locationCost.priceUomId
+                        ? getUomName(locationCost.priceUomId)
+                        : ''
+                    }}
+                  </div>
+                </div>
+              </td>
+              <td class="text-left cell-dashed-border">
+                <mat-form-field
+                  class="without-search spot-dropdown-component applicable-location-based"
+                  appearance="none"
+                  *ngIf="!locationCost.hasStemmedProduct"
+                >
+                  <mat-select
+                    [ngModel]="locationCost.selectedApplicableForId"
+                    (ngModelChange)="
+                      locationCost.selectedApplicableForId = $event
+                    "
+                    (selectionChange)="onApplicableForChange($event.value, j)"
+                    [disableOptionCentering]="true"
+                    panelClass="spot-select-panel-container"
+                    [disabled]="
+                      !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                        locationCost
+                      )
+                    "
+                  >
+                    <mat-option
+                      *ngFor="let applicableFor of applicableForItems"
+                      [value]="applicableFor.id"
+                    >
+                      {{ applicableFor.name }}
+                    </mat-option>
+                    <mat-option
+                      *ngIf="
+                        !checkIfSelectedApplicableIdExistsInapplicableForItems(
+                          locationCost
+                        )
+                      "
+                      [value]="0"
+                    >
+                      All
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="locationCost.hasStemmedProduct">
+                  {{ locationCost.product?.name }}
+                </div>
+              </td>
+              <td class="text-left">
+                {{
+                  locationCost.extras
+                    ? tenantService.FormatPriceTrailingZero(locationCost.extras)
+                    : ' '
+                }}
+              </td>
+              <td>
+                <div class="non-editable-container">
+                  <div class="non-editable-container-text-left">
+                    {{
+                      locationCost.extraAmount &&
+                      locationCost.costType !== 'Percent'
+                        ? amountFormatValue(locationCost.extraAmount)
+                        : ' '
+                    }}
+                  </div>
+                  <div class="non-editable-container-text-left">
+                    &nbsp;{{
+                      locationCost.currencyId
+                        ? getCurrencyCode(locationCost.currencyId)
+                        : ''
+                    }}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="non-editable-container">
+                  <div class="non-editable-container-text-left">
+                    <span *ngIf="locationCost.costType !== 'Percent'">
+                        {{amountFormatValue(locationCost?.totalAmount)}}
+                    </span>
+                    <!-- {{
+                      locationCost.totalAmount &&
+                      locationCost.costType !== 'Percent'
+                        ? amountFormatValue(locationCost.totalAmount)
+                        : ' '
+                    }} -->
+                  </div>
+                  <div class="non-editable-container-text-left">
+                    &nbsp;{{
+                      locationCost.currencyId
+                        ? getCurrencyCode(locationCost.currencyId)
+                        : ''
+                    }}
+                  </div>
+                </div>
+              </td>
+              <td class="text-left">
+                {{
+                  locationCost.ratePerUom && locationCost.costType !== 'Percent'
+                    ? tenantService.FormatPriceTrailingZero(locationCost.ratePerUom)
+                    : ''
+                }}
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade"
+>
+</ngx-spinner>

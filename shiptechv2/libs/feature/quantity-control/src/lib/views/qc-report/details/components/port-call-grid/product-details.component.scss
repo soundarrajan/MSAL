@@ -1,0 +1,51 @@
+::ng-deep {
+  #quantity-control-product-details-grid > div > div.ag-root-wrapper-body.ag-layout-auto-height > div.ag-root.ag-unselectable.ag-layout-auto-height > div.ag-body-viewport.ag-layout-auto-height.ag-row-animation > div.ag-center-cols-clipper {
+    height: auto !important;
+  }
+  .ag-header-cell-label .ag-header-cell-text {
+    text-overflow: clip;
+    overflow: visible;
+    white-space: normal;
+  }
+
+  shiptech-uom-selector {
+    overflow: visible;
+    z-index: 9999
+  }
+
+  .ag-header {
+    overflow: visible !important;
+
+    .ag-header-viewport {
+      overflow: visible !important;
+    }
+  }
+
+  .ag-header-row {
+    overflow: visible !important;
+
+    .ag-header-group-cell {
+      overflow: visible;
+      z-index: 1000;
+
+      .ag-header-group-cell-label {
+        overflow: visible;
+        z-index: 1000;
+      }
+    }
+  }
+
+  .ui-dropdown-items-wrapper {
+    // overflow: visible !important;
+    z-index: 9999
+  }
+
+  button.ui-spinner-button {
+    display: none;
+  }
+
+  .ag-header-group-text {
+    text-align: center;
+  }
+}
+

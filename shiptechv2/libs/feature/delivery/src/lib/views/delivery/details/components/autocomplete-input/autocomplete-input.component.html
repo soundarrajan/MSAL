@@ -1,0 +1,19 @@
+
+<mat-form-field  appearance="outline">
+    <mat-label>Number</mat-label>
+    {{inputModel.name}}
+    <input type="text"
+           placeholder="Pick one"
+           aria-label="Number"
+           matInput
+           [formControl] = "inputModel.name"
+           [matAutocomplete]="auto"
+           autocomplete="off"
+           (ngModelChange)="onModelChanged($event)"
+           >
+    <mat-autocomplete  #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filterOptionsList()" [value]="option">
+        {{option.name}}
+      </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

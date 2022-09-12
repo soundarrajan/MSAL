@@ -1,0 +1,102 @@
+.container-fluid-delivery {
+  //padding-left: 10px;
+  //padding-right: 10px;
+  padding: 0px;
+}
+.bdn-container {
+  background-color: white;
+}
+
+.delivery-products-container {
+  background: #fcfcfc;
+}
+
+.container-delivery-screen {
+  padding-left: unset;
+  padding-right: unset;
+}
+
+.split-deliveries:before {
+  content: url(/assets/layout/images/pages/splitDeliveries.svg);
+}
+
+.raise-claim:before {
+  content: url(/assets/layout/images/pages/raiseClaim.svg);
+}
+
+.label-for-delivery-menu {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #ffffff;
+  position: relative;
+  top: -18px;
+  left: 5px;
+}
+
+.label-for-delete-delivery-menu {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #ffffff;
+  position: relative;
+  top: -18px;
+  left: 22px;
+}
+
+#raise-claim {
+  position: relative;
+  width: 39px;
+  height: 39px;
+  left: 2px;
+}
+
+.save-button {
+  background: #00aae2;
+  border-radius: 3px;
+}
+
+.btn-i-blue-color {
+  color: #ffffff !important;
+  background: #00aae2 !important;
+  border-radius: 3px !important;
+  margin-right: 10px;
+  height: 30px;
+  min-width: 85px;
+  font-size: 12px !important;
+}
+
+.cust-btn {
+  cursor: pointer;
+  border: 1px solid #cccccc;
+  width: 100px;
+  height: 30px;
+  margin: 0px 5px;
+  &.small {
+    height: 25px;
+  }
+}
+
+.cust-menu-btn {
+  min-width: 100px !important;
+  width: 100px;
+  height: 31px !important;
+  border: 1px solid #cccccc;
+  border-radius: 0px;
+  margin: 0px 5px;
+  &.small {
+    height: 25px !important;
+    line-height: 0 !important;
+  }
+}
+
+#delete-delivery {
+  position: relative;
+  width: 20px;
+  height: 39px;
+  left: 10px;
+}

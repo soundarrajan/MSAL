@@ -1,0 +1,25 @@
+.mat-form-field{
+  background-color: transparent !important;
+}
+mat-label{
+  background-color: transparent !important;
+  color: white !important;
+}
+
+.mat-table{
+  background-color: transparent !important;
+  color: white !important;
+}
+
+.mat-header-cell{
+  color: white !important;
+}
+
+::ng-deep .mat-menu-panel {
+  max-width: none !important;
+  max-height: none !important;
+  min-width: none !important;
+  min-height: none !important;
+  width: auto !important;
+  height: auto !important;
+}

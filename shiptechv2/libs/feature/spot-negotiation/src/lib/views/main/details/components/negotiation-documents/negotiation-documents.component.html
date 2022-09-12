@@ -1,0 +1,184 @@
+<shiptech-breadcrumbs> </shiptech-breadcrumbs>
+<shiptech-negotiation-toolbar
+  [activeTab]="'documents'"
+></shiptech-negotiation-toolbar>
+<div class="documents-container">
+  <div class="drag-drop-upload-v2">
+    <div class="drag-drop-upload">
+      <div class="title">Add New Document</div>
+      <div class="header-buttons">
+        <div style="position: fixed;right: 35px;">
+          <button
+            matTooltip="Verify"
+            matTooltipShowDelay="500"
+            mat-button
+            class="mid-blue-button cust-header-btn"
+            (click)="updateIsVerifiedDocument()"
+          >
+            Verify
+          </button>
+        </div>
+      </div>
+      <div
+        appDragDropFileUpload
+        class="file-drop-container"
+        (fileDropped)="onFileDropped($event)"
+      >
+        <div id="custom-form-field" class="lightTheme select-doc">
+          <div class="form-fields" style="padding: 0px 20px;">
+            <div class="custom-form-field-with-search lightTheme">
+              <form>
+                <div
+                  class="custom-form-field lookup-delivery-container d-flex"
+                  [ngClass]="{ darkTheme: false, lightTheme: true }"
+                >
+                  <mat-form-field class="with-search">
+                    <mat-label>Document Type</mat-label>
+                    <input
+                      class="free-text-field"
+                      type="text"
+                      placeholder="Document Type"
+                      aria-label="name"
+                      matInput
+                      [(ngModel)]="selectedDocumentType"
+                      [matAutocomplete]="auto"
+                      name="document-type"
+                    />
+                    <mat-autocomplete
+                      #auto="matAutocomplete"
+                      [displayWith]="displayFn"
+                      (optionSelected)="selectDocumentType($event)"
+                    >
+                      <mat-option
+                        *ngFor="let option of filterDocumentTypeList()"
+                        [value]="option"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <button
+                    [disabled]="false"
+                    [ngClass]="{ 'search-icon-disabled': false }"
+                    class="search-icon search-icon-bg"
+                    [matMenuTriggerFor]="documentTypeMenu"
+                    (click)="resetDocumentData()"
+                  >
+                    <div class="img"></div>
+                  </button>
+                  <mat-menu
+                    #documentTypeMenu="matMenu"
+                    class="document-type-modal"
+                  >
+                    <div
+                      [ngClass]="{
+                        'container-modal': !expandDocumentTypePopUp,
+                        'container-modal-expand': expandDocumentTypePopUp
+                      }"
+                    >
+                      <div class="col-md-12 header-container">
+                        <div class="select-container col-md-10">
+                          <span class="search-lookup"> </span>
+                          <input
+                            type="text"
+                            matInput
+                            placeholder="Document Type"
+                            name="document-type-search"
+                            class="search-input"
+                            autocomplete="off"
+                            [(ngModel)]="searchDocumentTypeModel"
+                            (click)="
+                              $event.stopPropagation(); $event.preventDefault()
+                            "
+                            (input)="
+                              searchDocumentTypeList($event.target.value)
+                            "
+                          />
+                        </div>
+                        <div
+                          class="col-md-2"
+                          (click)="
+                            $event.stopPropagation(); $event.preventDefault()
+                          "
+                        >
+                          <img
+                            [ngClass]="{
+                              'expand-img': expandDocumentTypePopUp
+                            }"
+                            (click)="
+                              expandDocumentTypePopUp = !expandDocumentTypePopUp
+                            "
+                            alt="Shiptech"
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII="
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-12 row document-type-container-header">
+                        Document Type
+                      </div>
+                      <mat-radio-group
+                        class="document-type-container"
+                        [(ngModel)]="documentTypePopUp"
+                        name="selected-document-type"
+                        (change)="
+                          radioDocumentTypeChange($event);
+                          searchDocumentTypeModel = null
+                        "
+                      >
+                        <mat-radio-button
+                          class="document-type-container-radio-button"
+                          *ngFor="let documentType of documentTypeListForSearch"
+                          [value]="documentType"
+                        >
+                          {{ documentType.name }}
+                        </mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </mat-menu>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="upload-options">
+          <div class="text">Drag and Drop files here</div>
+          <div class="light-text">or</div>
+          <label class="add-doc" for="getFile"
+            ><span class="add-doc-plus">+</span>Add doc</label
+          >
+          <input
+            type="file"
+            id="getFile"
+            class="get-file"
+            single
+            #inputContent
+            (change)="fileBrowseHandler($event.target.files)"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="title">Documents List</div>
+    <div class="uploaded-files-grid">
+      <div class="agGrid-v2" style="margin: 0px;">
+        <div>
+          <ag-grid-angular
+            style="width: 100%; height: calc( 100vh - 390px );"
+            [gridOptions]="gridOptions_data"
+            [rowData]="rowData_grid"
+            (gridReady)="getDocumentsList()"
+            class="ag-theme-material ag-grid-v2 angular-v9 documents-list"
+            [rowSelection]="rowSelection"
+          ></ag-grid-angular>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade"
+>
+</ngx-spinner>

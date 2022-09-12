@@ -1,0 +1,15 @@
+.dark-table-body {
+    .row {
+        line-height: 31px;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    background-color: transparent;
+}
+
+.mat-tab-label-active {
+    font-weight: 500 !important; 
+  }

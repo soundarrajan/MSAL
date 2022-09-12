@@ -1,0 +1,134 @@
+<div class="sellerrating-popup confirmorder-popup">
+  <div class="spot-popup-header-container" style="padding: 10px 12px 18px 15px;">
+    <div class="spot-nego-title">Confirm Offer</div>
+    <div class="spot-dialog-title-right">
+     <span style="margin: 0px 10px 10px; font-weight: 700;display: inline;" *ngIf="isOrderexisting">Order Type</span> 
+    <div id="custom-form-field" style="margin-right: 10px; width: 110px;" *ngIf="isOrderexisting">
+     
+    <mat-form-field class="without-search" appearance="none">
+      <mat-select
+        [(ngModel)]="isOrdertype"
+        (selectionChange)="changeStatus($event.value)">
+        <mat-option value="1">Consolidated</mat-option>
+        <mat-option value="2">Individual</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+      <button class="proceed-btn" mat-button (click)="confirmOffers(true)"[mat-dialog-close]="true">Proceed</button>
+      <div class="title-divider">|</div>
+      <span class="close" style="cursor: pointer;" type="button" [mat-dialog-close]="true" ></span>
+    </div>
+  </div>
+  <hr class="hr-line" style="margin: -8px 0px 0px 0px  !important;">
+  <div class="m-l-20 m-t-10 m-b-10" style="font-weight: 500;">
+    You are about to confirm below offers.
+    <span *ngIf="isOrderexisting">Please note that some of these offers have already confirmed from the same supplier</span>
+  </div>
+  <div class="spot-nego-comments pl15 pr15" style="height: 450px; overflow-y: scroll;">
+    <div class="grid-in-accordion">
+       <!-- Expansion for each request -->
+      <mat-expansion-panel [expanded]="true" *ngFor="let request of requestByLocation; let i = index" class="sellerrating-expansion-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="accordion-detail confirmorder-checkbox">
+              <div class="open-close-arrow"></div>
+              <span class="panel-title m-l-9" (click)="$event.stopPropagation();">
+                <mat-checkbox
+                [value]="request.id"
+                checked="true"
+                (change)="onConfirmOfferALLCheckboxChange($event, request, requestOfferItems)"
+                class="mat-checkbox header-checkbox mat-accent"
+              ></mat-checkbox> <span>Request {{ request.id }} - {{request.vesselName}}</span>
+              </span>
+              <div class="comments-type"> </div>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+         <!-- Expansion for each location in this current request -->
+        <ng-template matExpansionPanelContent>
+          <div *ngFor="let location of request.requestLocations" style="height: auto; overflow-y: scroll; padding:18px;">
+
+          <div class="row second-header" style="padding: 0px 4px; justify-content: space-between;">
+            <div class="col-12 bold-text">{{location.locationName}}</div>
+            <div class=" ">
+
+              <table>
+                <thead>
+                  <tr>
+                    <!-- <th class="text-left w-80">Request</th>-->
+                    <th class="text-left" style="width:30px;"></th>
+                    <th class="text-left w-125">Seller</th>
+                    <!-- <th class="text-left">Port</th> -->
+                    <th class="text-left">Offer Product</th>
+                    <th class="text-left">Min Qty</th>
+                    <th class="text-left">Max Qty</th>
+                    <th class="text-left">Confirmed Qty</th>
+                    <th class="text-left">UOM</th>
+                    <th class="text-left">Offer Price</th>
+                    <!-- <th class="text-left">Amount</th> -->
+                    <th class="text-left w-125">Phy.Supplier</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+
+          <!--  //getSelectedLocationRowsForLocation(location.locationId, request.id) -->
+          <div class="row " *ngFor="let requestOfferItem of requestOfferItems | keyvalue: originalOrder" [attr.data-index]="i">
+            <div class="product-terms ">
+              <div class="operations-details-block" style="height: auto;">
+                <div style="height: auto;">
+                  <table *ngIf="location.id==requestOfferItem.value.RequestLocationId && requestOfferItem.value.OfferPrice != null">
+                    <tbody >
+                      <!-- #scrollMe1 [scrollTop]="scrollMe1.scrollHeight" -->
+                      <tr id="commentList">
+                        <!-- <td class="w-80">12321</td>-->
+                        <td class="table-checkbox" >
+                          <mat-checkbox
+                          [checked]="requestOfferItem.value.isCheckBox"
+                          (change)="onConfirmOfferCheckboxChange($event,requestOfferItem.value)"
+                        >
+                        </mat-checkbox></td>
+                        <td class="w-125" matTooltip="{{this.format.htmlDecode(requestOfferItem.value.SellerName)}}">{{this.format.htmlDecode(requestOfferItem.value.SellerName)}}</td>
+                        <!-- <td class="">Rotterdam</td> -->
+                        <td class=""> {{requestOfferItem.value.ProductName}}</td>
+                        <td class="">{{format.quantity(requestOfferItem.value.minQuantity)}} {{requestOfferItem.value.UomName}}</td>
+                        <td class="">{{format.quantity(requestOfferItem.value.MaxQuantity)}} {{requestOfferItem.value.UomName}}</td>
+                        <td class="text-left  cell-dashed-border"  contenteditable="true" >
+                          <input
+                          matInput
+                          [(ngModel)]="requestOfferItem.value.ConfirmedQuantity"
+                          autocomplete="off"
+                          (blur)="totalprice(requestOfferItem.key)"
+                        /></td>
+                        <td class=""> {{requestOfferItem.value.UomName}}</td>
+                        <td class="">{{requestOfferItem.value.currencyName}} {{tenantService.FormatPriceTrailingZero(requestOfferItem.value.OfferPrice)||0}}</td>
+                       <!--  <td class="">{{requestOfferItem.value.currencyName}} {{tenantService.FormatPriceTrailingZero(requestOfferItem.value.Amount)}}</td> -->
+                        <td class="w-125" matTooltip="{{this.format.htmlDecode(requestOfferItem.value.SellerName)}}">{{this.format.htmlDecode(requestOfferItem.value.PhysicalSupplierName)}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </ng-template>
+      </mat-expansion-panel>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <!-- <div class="p-l-15">
+  <div class="confirm-order-subheader-text">Related Confirmed Order</div>
+
+    <div class="mtb-2"><i class="fas fa-circle dot-icon-solid"></i>Req 12321 - Al Mashrab</div>
+
+  <div class="row p-l-20">
+    <div class="col-12">1.<span class="confirm-order-bold-text"> RMD 80 0.1% </span>- 600.00 MT : BP Nederland BV</div>
+    <div class="col-12">2.<span class="confirm-order-bold-text"> RMK 500 </span>- 600.00 MT : Shell North America</div>
+  </div>
+</div> -->
+</div>
+<!-- </mat-dialog-content> -->

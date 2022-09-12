@@ -1,0 +1,11 @@
+.negotiation-report {
+  display: block;
+  width: calc(100% - 30px);
+  margin-left: 15px !important;
+}
+
+.iframes {
+  height: 85vh;
+  border: none;
+  width: 100%;
+}

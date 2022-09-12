@@ -1,0 +1,279 @@
+import {
+  AfterViewInit,
+  Component,
+  ViewChild,
+  ViewContainerRef,
+  ElementRef,
+  Output,
+  EventEmitter,
+  Input
+} from '@angular/core';
+import { ICellEditorAngularComp } from 'ag-grid-angular';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import _moment from 'moment';
+import { default as _rollupMoment } from 'moment';
+const moment = _rollupMoment || _moment;
+import { MatMenuTrigger } from '@angular/material/menu';
+import { FormControl } from '@angular/forms';
+import { SpotNegotiationService } from '../../services/spot-negotiation.service';
+
+@Component({
+  selector: 'app-date-time-toggle',
+  template: `
+    <div
+      (click)="$event.stopPropagation(); picker.open()"
+      style="cursor:pointer;float: left;position:relative;font-size: 12px;color: #ffffff;
+  font-weight: 500;"
+    >
+      <div class="quoteByContainer">
+      <mat-form-field class="quoteByMatfield">
+        <input
+          style="cursor:pointer;width:65px;float:left;height: 17px !important;text-align:left;color:white"
+          matInput
+          class="date-trigger"
+          [ngModel]="initialDate.value"
+          [matDatepicker]="picker"
+          (dateChange)="dateChanged($event)"
+          #datetrigger
+        />
+       </mat-form-field>
+        <div
+          style="height:24px;float:right;line-height:15px;width:25px;position: absolute;
+    right: -6px;"
+        >
+          {{ timeValue }}
+        </div>
+      </div>
+    </div>
+    <mat-datepicker-toggle matSuffix [for]="picker">
+      <mat-icon matDatepickerToggleIcon class="mini-dateIcon"></mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker
+      [panelClass]="
+        dark ? 'new-datepicker datepicker-darktheme' : 'new-datepicker'
+      "
+      #picker
+      (opened)="opened()"
+    ></mat-datepicker>
+    <input
+      #timepicker
+      [(ngModel)]="timerValue"
+      (dateTimeChange)="onChange($event)"
+      [owlDateTimeTrigger]="dt"
+      [owlDateTime]="dt"
+      style="position: relative;top: -19px;
+               width: 100px;visibility:hidden;border: none"
+    />
+
+    <!-- <span
+      [owlDateTimeTrigger]="dt"
+      style="position: absolute;top: 7px;left: 116px;"
+      ><i class="fa">&#xf017;</i></span
+    > -->
+    <div class="time-pick-container">
+    <owl-date-time
+      [pickerType]="'timer'"
+      #dt
+      [panelClass]="dark ? ['timerPanelClass', 'darktheme'] : 'timerPanelClass'"
+      (afterPickerClosed)="timepickerClosed()"
+      (afterPickerOpen)="timepickerOpened()"
+    ></owl-date-time>
+        </div>
+  `
+})
+export class AgGridDatetimePickerToggleComponent
+  implements ICellEditorAngularComp, AfterViewInit {
+  private params: any;
+  public matDate = new Date();
+  // matDate.setValue('1/1/2021');
+  valueField: any;
+  oldCellValue: string;
+  timeValue: any = '12:12';
+  timerValue: any;
+  intervalTimer: any;
+  newFormattedValue: string;
+  matDateFieldWidth = '100px';
+  initialDate = new FormControl(moment());
+  public dateTime;
+  @Input() dark: any;
+  constructor(private spotNegotiationService: SpotNegotiationService) {
+    //this.appContext = appContext || AppContext.instance;
+    this.intervalTimer =setInterval(()=>{
+      this.initialDate = new FormControl(moment());
+      this.timeValue = moment().format("HH:mm");
+    }, 1000) //update every time every second
+  }
+  @ViewChild('dateInputFlde', { read: ViewContainerRef }) public input;
+  @ViewChild('picker') picker;
+  @ViewChild('dt') dt;
+  @ViewChild('timepicker') timepicker: ElementRef<HTMLElement>;
+  @ViewChild('datetrigger') datetrigger: ElementRef<HTMLElement>;
+  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
+  @Output() onDatePicked = new EventEmitter();
+  agInit(params: any): void {
+    this.params = params;
+    this.valueField = '12/12/2018 10:10';
+    this.oldCellValue = params.value;
+    this.initialDate.setValue(new Date(this.valueField));
+    this.timeValue = this.valueField.slice(-6);
+    //var timervalue = this.timeValue;
+    var showTime = this.timeValue.split(':');
+    this.timerValue = new Date(0, 0, 0, showTime[0], showTime[1]);
+    // let d = new Date(this.valueField);
+    // let h = (d.getHours()<10?'0':'') + d.getHours();
+    // let m = (d.getMinutes()<10?'0':'') + d.getMinutes();
+    // let i = h + ':' + m;
+    // this.timeValue = i;
+    this.newFormattedValue = params.value;
+    this.matDateFieldWidth = params.matDateFieldWidth - 16 + 'px';
+  }
+
+  onChange(event) {
+    //alert("");
+    this.timeValue = event.value.getHours() + ':' + event.value.getMinutes();
+    let h = (event.value.getHours() < 10 ? '0' : '') + event.value.getHours();
+    let m =(event.value.getMinutes() < 10 ? '0' : '') + event.value.getMinutes();
+    this.timeValue = h + ':' + m;
+    //this.timeValue = "10:15";
+    clearInterval(this.intervalTimer);
+    this.spotNegotiationService.QuoteByDate = this.getValue();
+  }
+  dateChanged(event) {
+    this.initialDate = new FormControl(moment(event.value));
+    const closeFn = this.picker.close;
+    this.picker.close = () => {};
+    this.picker[
+      '_popupComponentRef'
+    ].instance._calendar.monthView._createWeekCells();
+    setTimeout(() => {
+      this.picker.close = closeFn;
+    });
+    this.spotNegotiationService.QuoteByDate = this.getValue();
+  }
+
+  timepickerClosed() {
+    //alert("");
+    //var elements = document.getElementsByClassName('owl-dt-control')[1] as HTMLElement;
+    //elements.click();
+    //alert(this.timeValue);
+    this.onDatePicked.emit({ date: this.initialDate, time: this.timeValue });
+  }
+
+  timepickerOpened() {
+    /*var arrowclick = document.getElementsByClassName('owl-dt-control-arrow-button');
+    let i;
+    for (i = 0; i < arrowclick.length; i++) {
+      arrowclick[i].addEventListener("click",function() {
+        var elements = document.getElementsByClassName('owl-dt-control')[1] as HTMLElement;
+        elements.click();
+        event.stopPropagation();
+        //this.dt.open();
+        });
+    }*/
+    var div = document.createElement('div');
+    div.classList.add('calendar-picker-toggle');
+    //div.classList.add("calendar-picker-toggless");
+    div.onclick = () => {
+      //alert("blabla");
+      //this.picker.open();
+      //this.trigger.openMenu();
+      //this.time.open();
+      //this.timepicker.nativeElement.click();
+      var elements = document.getElementsByClassName(
+        'owl-dt-control'
+      )[1] as HTMLElement;
+      //elements.click();
+      this.dt.close();
+      this.picker.open();
+      //   setTimeout(() => {
+      //   let el: HTMLElement = this.datetrigger.nativeElement;
+      //   el.click();
+      //  })
+      //  setTimeout(() => {
+      //   let el1: HTMLElement = this.timepicker.nativeElement;
+      //   el1.click();
+      //   },3000)
+    };
+    //setTimeout(() => {
+    var element = document.getElementsByClassName('owl-dt-container-inner');
+    element[0].appendChild(div);
+    //})
+  }
+
+  opened() {
+    var div = document.createElement('div');
+    div.classList.add('time-picker-toggle');
+    var div1 = document.createElement('div');
+    div1.classList.add('time-picker-toggle-container');
+    div1.appendChild(div);
+    div.onclick = () => {
+      //alert("blabla");
+      this.picker.close();
+      //this.trigger.openMenu();
+      //this.time.open();
+      let el: HTMLElement = this.timepicker.nativeElement;
+      el.click();
+    };
+
+    if (this.dark) {
+      var element = document.getElementsByTagName('mat-datepicker-content');
+      element[0].classList.add('darktheme');
+      element[0].appendChild(div1);
+    } else {
+      //setTimeout(() => {
+      var element = document.getElementsByTagName('mat-datepicker-content');
+      element[0].appendChild(div1);
+    }
+    //})
+  }
+
+  getValue(): any {
+    this.valueField = this.initialDate.value;
+
+    // adjust 0 before single digit date
+    let date = ('0' + this.valueField.date()).slice(-2);
+
+    // current month
+    let month = ('0' + (this.valueField.month() + 1)).slice(-2);
+
+    // current year
+    let year = this.valueField.year();
+    if (this.timeValue) {
+      return moment.utc(month + '/' + date + '/' + year + ' ' + this.timeValue, 'MM/DD/YYYY HH:mm:ss')
+      //return( month + "/" + date+ "/" + year);
+    } else return moment.utc(month + '/' + date + '/' + year, 'MM/DD/YYYY')
+    //return(this.valueField.getMonth()+'/'+this.valueField.getDate()+'/'+this.valueField.getFullYear()+" "+this.timeValue.getHours()+":"+this.timeValue.getMinutes())
+    // .format(this.appContext.tenantSettingsContext.dateTimeFormat)
+    // .substring(0, 19);
+  }
+
+  // dont use afterGuiAttached for post gui events - hook into ngAfterViewInit instead for this
+  ngAfterViewInit() {
+    //this.matDate.setValue('1/1/2021');
+    setTimeout(() => {
+      //this.input.element.nativeElement.focus();
+      //this.picker.open();
+    });
+  }
+
+  getDateValue(event: MatDatepickerInputEvent<Date>) {
+    alert('');
+    // this.newFormattedValue =
+    //   moment
+    //     .utc(event.value)
+    //     .local()
+    //     .format(this.appContext.tenantSettingsContext.dateFormat) +
+    //   ' ' +
+    //   this.oldCellValue.substring(11, 16);
+  }
+  onBlur(): any {
+    var selectedCell = this.params.column.colId;
+    //this.params.data[selectedCell] = moment(this.valueField).format(this.appContext.tenantSettingsContext.dateTimeFormat).substring(0, 19);
+    //this.objJSF.send('refreshSelectedRow');
+  }
+
+  pickerOpen() {
+    //alert("");
+    this.picker.open();
+  }
+}

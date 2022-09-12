@@ -1,0 +1,12 @@
+<div class="d-flex" style="height: inherit;">
+    <div style="overflow: hidden;">
+        <app-header-filter-chip *ngFor="let item of selectedFilterList" [filter]="item"
+            (toggleChipPinning)="toggleChip($event)">
+        </app-header-filter-chip>
+    </div>
+    <div>
+        <app-more-filter-chip *ngIf="filterList.enableMoreFilters" [filterList]="filterList.filters"
+            (updateFilter)="updateFilterList($event)">
+        </app-more-filter-chip>
+    </div>
+</div>

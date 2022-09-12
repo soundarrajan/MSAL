@@ -1,0 +1,187 @@
+.product-quality-header {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: #252A32;
+    display: flex;
+    justify-content: space-between;
+}
+
+.product-quality-header-container {
+    display: inline-flex;
+}
+
+.product-quality-table {
+    display: table !important;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    min-width: 900px;
+    border: 1px solid #E0E1E4;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+.product-quality-table thead tr {
+    height: 40px;
+    background: #F1F1F2;
+    border: 1px solid #E0E1E4;
+    box-sizing: border-box;
+    border-radius: 4px 4px 0px 0px;
+}
+
+.product-quality-table thead tr td {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #252A32;
+    padding: 10px;
+}
+
+.product-quality-table tbody tr td {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #252A32;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.product-quality-field-container {
+    width: 13%;
+    margin-right: 20px !important;
+}
+
+.quality-table-data-true {
+    background-color: #99cb82;
+    color: #fff;
+    width: 60%;
+    text-align: center;
+    padding: 10px 5px;
+    display: inline-block;
+}
+
+.quality-table-data-false {
+    background-color: #c33939;
+    color: #fff;
+    width: 60%;
+    text-align: center;
+    padding: 10px 5px;
+    display: inline-block;
+}
+
+td .custom-form-field{
+    width: 100% !important;
+}
+
+.product-quality-comments {
+    padding: 15px;
+    width: 100%;
+}
+
+.custom-form-field.product-quality-comments.lightTheme .mat-form-field.without-search {
+    height: 50px  !important;
+}
+
+.product-quality-header-name {
+    padding-right: 20px;
+}
+
+.email-to-labs {
+    border: none;
+    box-shadow: none !important;
+    color: gray;
+    display: flex;
+    align-items: center;
+    transition: 0.3s;
+
+    .mat-icon {
+        margin-right: 8px;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    &:hover {
+        text-decoration: none;
+        cursor: not-allowed;
+    }
+
+    &.active {
+        color:#00AAE2;
+
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+
+
+}
+
+.custom-form-field-comments {
+    width: 100% !important;
+}
+
+textarea.mat-input-element {
+    height: 80px;
+    overflow-y: scroll  !important;
+}
+
+
+
+
+.custom-form-field-comments.mat-form-field-appearance-outline .mat-form-field-outline {
+    background: #ffffff;
+    box-sizing: border-box;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #a5a5a5;
+}
+
+
+.custom-form-field-comments.mat-form-field-disabled   {
+    background-color: unset !important;
+}
+
+.custom-form-field-comments.mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline {
+    background-color: #EEEEEE !important;
+}
+mat-form-field {
+    .mat-form-field-label {
+        box-sizing: border-box;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+        color: #37414f !important;
+    }
+ }
+
+
+.quality-comments-container {
+    margin-top: 10px;
+}
+
+.productQualityComments textarea, .productQuantityReconciliationComments textarea {
+    width: 100% !important;
+    height: 80px;
+    min-height: 80px !important;
+    border: 1px solid #a5a5a5;
+    overflow: auto;
+    resize: vertical;
+    border-radius: 4px;
+}

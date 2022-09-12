@@ -1,0 +1,1290 @@
+<div class="invoice-details-component">
+  <form>
+    <!-- Invoice Informaiton -->
+    <div class="section1">
+      <div class="row">
+        <div
+          class="col-md-6 col-sm-12 col-12 pt-4"
+          style="line-height: 55px; padding: 0px 20px; margin: 0px;"
+        >
+          <div class="row">
+            <div class="col-md-3">
+              <div id="custom-btn-toggle-v2">
+                <mat-button-toggle-group
+                  style="width:100%;"
+                  #btnToggle
+                  (change)="formValues.documentType.id = $event.value"
+                >
+                  <mat-button-toggle
+                    style="width:100%;"
+                    [disabled]="true"
+                    [checked]="true"
+                  >
+                    <span class="toggle-icon"></span>
+                    {{ formValues?.documentType?.name }}
+                  </mat-button-toggle>
+                  <!-- <div class="more-dots" (click)="openMoreButtons($event)"></div> -->
+                </mat-button-toggle-group>
+              </div>
+              <div class="more-button-options" *ngIf="showMoreButtons">
+                <span>Invoice Type</span>
+                <mat-radio-group class="inv-radio-group">
+                  <mat-radio-button
+                    *ngFor="let inv of more_invoice_types"
+                    [value]="inv"
+                  >
+                    {{ inv.displayName }}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="badge-header-v2">
+                <span
+                  class="label_text"
+                  matTooltip="{{
+                    formValues.createdByUser?.displayName | htmlDecodeReadonly
+                  }}"
+                  >Created by:
+                  <b>{{
+                    formValues.createdByUser?.displayName | htmlDecodeReadonly
+                  }}</b></span
+                >
+                <span class="border_line"></span>
+                <span
+                  class="label_text"
+                  matTooltip="{{
+                    formValues.createdAt | date: this.dateFormat
+                  }}"
+                  >On:
+                  <b>{{
+                    formValues.createdByUser
+                      ? (formValues.createdAt | date: this.dateFormat)
+                      : ''
+                  }}</b></span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row pt-3">
+            <div class="col-md-3">
+              <div
+                id="custom-form-field"
+                class="custom-form-field"
+                class="lightTheme"
+              >
+                <mat-form-field
+                  class="without-search"
+                  appearance="legacy"
+                  [ngClass]="{
+                    'invalid-field':
+                      formErrors.sellerInvoiceNo &&
+                      getSupplierInvoiceNumberDateConfig().isMandatory
+                  }"
+                >
+                  <mat-label>Seller Invoice No.</mat-label>
+                  <input
+                    [(ngModel)]="formValues.sellerInvoiceNo"
+                    name="sellerInvoiceNo"
+                    matInput
+                    [required]="
+                      getSupplierInvoiceNumberDateConfig().isMandatory
+                    "
+                    (ngModelChange)="
+                      formValues.sellerInvoiceNo = $event.toUpperCase()
+                    "
+                    placeholder="Seller Invoice No"
+                    (blur)="isFormValid({ useToaster: false })"
+                    [disabled]="
+                      formValues.documentType.name == 'Pre-claim Credit Note' ||
+                      formValues.documentType.name == 'Pre-claim Debit Note'
+                      || formValues.status?.name === 'Approved'
+                      || formValues.status?.name === 'Cancelled'
+                    "
+                  />
+                  <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-md-3" *ngIf="getInvoiceDateConfig().isVisible">
+              <div id="custom-form-field" class="lightTheme">
+                <mat-form-field
+                  class="without-search"
+                  appearance="legacy"
+                  [ngClass]="{
+                    'invalid-field':
+                      formErrors.invoiceDate &&
+                      getInvoiceDateConfig().isMandatory
+                  }"
+                >
+                  <mat-label>Invoice Date</mat-label>
+                  <input
+                    [(ngModel)]="formValues.invoiceDate"
+                    name="invoiceDate"
+                    #validToDateField="ngModel"
+                    matInput
+                    [matDatepicker]="invoiceDate"
+                    (focus)="invoiceDate.open()"
+                    [required]="getInvoiceDateConfig().isMandatory"
+                    autocomplete="off"
+                    placeholder="Invoice Date"
+                    (blur)="isFormValid({ useToaster: false })"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="invoiceDate">
+                    <mat-icon matDatepickerToggleIcon class="icon-date">
+                    </mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #invoiceDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-md-3" *ngIf="getReceivedDateConfig().isVisible">
+              <div id="custom-form-field" class="lightTheme">
+                <mat-form-field
+                  class="without-search"
+                  appearance="legacy"
+                  [ngClass]="{
+                    'invalid-field':
+                      formErrors.receivedDate &&
+                      getReceivedDateConfig().isMandatory
+                  }"
+                >
+                  <mat-label>Received Date</mat-label>
+                  <input
+                    [(ngModel)]="formValues.receivedDate"
+                    name="receivedDate"
+                    #validToDateField="ngModel"
+                    matInput
+                    [required]="getReceivedDateConfig().isMandatory"
+                    [matDatepicker]="receivedDate"
+                    (focus)="receivedDate.open()"
+                    autocomplete="off"
+                    placeholder="Received Date"
+                    (dateChange)="
+                      formValues.receivedDate = formatDateForBe(
+                        formValues.receivedDate
+                      );
+                      isFormValid({ useToaster: false })
+                    "
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="receivedDate">
+                    <mat-icon matDatepickerToggleIcon class="icon-date">
+                    </mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #receivedDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div
+              class="col-md-3 custom-form-field-with-search lightTheme"
+              style="margin-top: 8px !important; padding-left: 15px;"
+            >
+              <div class="d-flex">
+                <mat-form-field
+                  class="with-search"
+                  [ngClass]="{
+                    'invalid-field':
+                      formErrors.counterpartyDetails?.paymentTerm?.name
+                  }"
+                  appearance="legacy"
+                >
+                  <mat-label>Payment Term</mat-label>
+                  <input
+                    class="free-text-field"
+                    type="text"
+                    matInput
+                    [matTooltip]="
+                      formValues.counterpartyDetails.paymentTerm?.name
+                    "
+                    [matTooltipPosition]="'above'"
+                    matTooltipClass="custom-tooltip"
+                    [(ngModel)]="formValues.counterpartyDetails.paymentTerm"
+                    [ngModelOptions]="{ standalone: true }"
+                    (dateChange)="triggerChangeFieldsAppSpecific('PaymentTerm')"
+                    [matAutocomplete]="auto4"
+                    autocomplete="off"
+                    placeholder="Payment Term"
+                    required
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  />
+                  <mat-autocomplete
+                    #auto4="matAutocomplete"
+                    class="darkPanelAuto"
+                    [displayWith]="displayFn"
+                    (optionSelected)="
+                      setPaymentTerm($event.option.value);
+                      isFormValid({ useToaster: false })
+                    "
+                    [ngClass]="{
+                      disabled: formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'
+                    }"
+                  >
+                    <mat-option
+                      *ngFor="let option of filterPaymentTermList()"
+                      [value]="option"
+                    >
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <div class="ui-inputgroup shiptech-searchbox">
+                  <ng-content></ng-content>
+                  <button
+                    pButton
+                    type="button"
+                    icon="pi pi-search"
+                    class="ui-button-warn search-square-button search-btn-for-invoice"
+                    appMasterSelectorTrigger
+                    [masterSelector]="masterSelector4"
+                    #masterSelectorTrigger4="masterSelectorTrigger"
+                    [header]="getHeaderNameSelector4()"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  ></button>
+                  <ng-template cdkPortal #masterSelector4="cdkPortal">
+                    <shiptech-shared-master-selector
+                      (selectedChange)="
+                        selectorPaymentTermSelectionChange($event);
+                        masterSelectorTrigger4.close()
+                      "
+                      (shouldCloseModal)="masterSelectorTrigger4.close()"
+                      [selectorType]="autocompletePaymentTerm"
+                      [disabled]="disabled"
+                      [readonly]="readonly"
+                      [entityName]="entityName"
+                      [entityId]="entityId"
+                      [headerName]="getHeaderNameSelector4()"
+                    ></shiptech-shared-master-selector>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row pt-3">
+            <div class="col-md-3">
+              <div
+                id="custom-form-field"
+                class="custom-form-field lightTheme can-be-disabled"
+              >
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Invoice rate currency</mat-label>
+                  <mat-select
+                    [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
+                    disableOptionCentering
+                    [(ngModel)]="formValues.invoiceRateCurrency"
+                    [compareWith]="compareCurrencyObjects"
+                    (selectionChange)="
+                      triggerChangeFieldsAppSpecific('InvoiceRateCurrency')
+                    "
+                    name="invoiceRateCurrencyCode"
+                    required
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  >
+                    <mat-option
+                      *ngFor="let currency of currencyList"
+                      [value]="currency"
+                    >
+                      {{ currency.name }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div id="custom-form-field" class="lightTheme">
+                <mat-form-field
+                  [ngClass]="{ 'invalid-field': formErrors.dueDate }"
+                  class="without-search invoice-form-field"
+                  appearance="legacy"
+                >
+                  <mat-label>Due Date</mat-label>
+                  <input
+                    [(ngModel)]="formValues.dueDate"
+                    name="dueDate"
+                    #validToDateField="ngModel"
+                    matInput
+                    [matDatepicker]="dueDate"
+                    autocomplete="off"
+                    placeholder="Due Date"
+                    (dateChange)="
+                      formValues.dueDate = formatDateForBe(formValues.dueDate);
+                      triggerChangeFieldsAppSpecific('DueDate');
+                      isFormValid({ useToaster: false })
+                    "
+                    required
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="dueDate">
+                    <mat-icon matDatepickerToggleIcon class="icon-date">
+                    </mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #dueDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div id="custom-form-field" class="lightTheme">
+                <mat-form-field
+                  class="without-search"
+                  appearance="legacy"
+                  [ngClass]="{ 'invalid-field': formErrors.workingDueDate }"
+                >
+                  <mat-label>Working due date</mat-label>
+                  <input
+                    [(ngModel)]="formValues.workingDueDate"
+                    name="workingDueDate"
+                    #validToDateField="ngModel"
+                    matInput
+                    [matDatepicker]="workingDueDate"
+                    autocomplete="off"
+                    placeholder="Working Due Date"
+                    (dateChange)="
+                      formatDateForBe(formValues.workingDueDate);
+                      isFormValid({ useToaster: false })
+                    "
+                    required
+                    [disabled]="true"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="workingDueDate">
+                    <mat-icon matDatepickerToggleIcon class="icon-date">
+                    </mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #workingDueDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div
+                id="custom-form-field"
+                class="custom-form-field"
+                class="lightTheme"
+              >
+                <mat-form-field
+                  class="without-search"
+                  appearance="legacy"
+                  [ngClass]="{ 'invalid-field': formErrors.documentNo }"
+                >
+                  <mat-label>Document No.</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    (blur)="isFormValid({ useToaster: false })"
+                    name="documentNo"
+                    [(ngModel)]="formValues.documentNo"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="row pt-3">
+            <div class="col-md-3">
+              <div id="custom-form-field" class="lightTheme">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Seller Due Date</mat-label>
+                  <input
+                    [(ngModel)]="formValues.sellerDueDate"
+                    name="sellerDueDate"
+                    #validToDateField="ngModel"
+                    matInput
+                    [matDatepicker]="sellerDueDate"
+                    autocomplete="off"
+                    placeholder="Seller Due Date"
+                    (dateChange)="formatDateForBe(formValues.sellerDueDate)"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="sellerDueDate">
+                    <mat-icon matDatepickerToggleIcon class="icon-date">
+                    </mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #sellerDueDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div id="custom-form-field" class="lightTheme">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Payment Date</mat-label>
+                  <input
+                    [(ngModel)]="formValues.paymentDate"
+                    name="paymentDate"
+                    #validToDateField="ngModel"
+                    matInput
+                    [matDatepicker]="paymentDate"
+                    (focus)="paymentDate.open()"
+                    autocomplete="off"
+                    placeholder="Payment Date"
+                    (dateChange)="
+                      formValues.paymentDate = formatDateForBe(
+                        formValues.paymentDate
+                      );
+                      triggerChangeFieldsAppSpecific('PaymentDate')
+                    "
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="paymentDate">
+                    <mat-icon matDatepickerToggleIcon class="icon-date">
+                    </mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #paymentDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div id="custom-form-field" class="lightTheme">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Validation Date</mat-label>
+                  <input
+                    [(ngModel)]="formValues.approvedDate"
+                    name="approvedDate"
+                    #validToDateField="ngModel"
+                    matInput
+                    [matDatepicker]="validationDate"
+                    (focus)="validationDate.open()"
+                    autocomplete="off"
+                    placeholder="Validation Date"
+                    (dateChange)="
+                      formValues.approvedDate = formatDateForBe(
+                        formValues.approvedDate
+                      )
+                    "
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="validationDate">
+                    <mat-icon matDatepickerToggleIcon class="icon-date">
+                    </mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #validationDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div id="custom-form-field" class="lightTheme can-be-disabled">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Payment Status</mat-label>
+                  <mat-select
+                    [compareWith]="compareObjects"
+                    [(ngModel)]="formValues.paymentDetails.paymentStatus"
+                    name="paymentStatus"
+                    [disableOptionCentering]="true"
+                    panelClass="general-information-select-container"
+                    [disabled]="formValues.status?.name !== 'Approved'"
+                  >
+                    <mat-option
+                      *ngFor="let list of paymentStatusList"
+                      [value]="list"
+                      >{{ list.name }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-md-6 col-sm-12"
+          style="line-height: 55px; margin: 3px -12px;     padding-top: 1rem!important;"
+        >
+          <div class="row" style="padding-left: 15px;">
+            <div id="custom-btn-toggle-v2">
+              <div class="chip-container">
+                <div *ngFor="let cData of chipData">
+                  <m-chip
+                    [info]="cData"
+                    [formValues]="formValues"
+                    (amountChanged)="updateAmountValues($event)"
+                  >
+                  </m-chip>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row pt-3">
+            <div class="col-md-3">
+              <div id="custom-form-field" class="lightTheme">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Invoice Status</mat-label>
+                  <mat-select
+                    [(ngModel)]="formValues.customStatus"
+                    name="customInvoice"
+                    [disableOptionCentering]="true"
+                    [compareWith]="compareObjects"
+                    panelClass="general-information-select-container"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  >
+                    <mat-option
+                      *ngFor="let list of invoiceStatusList"
+                      [value]="list"
+                      >{{ list.name }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div id="custom-form-field" class="lightTheme">
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Accountancy Date</mat-label>
+                  <input
+                    [(ngModel)]="formValues.accountancyDate"
+                    name="accountancyDate"
+                    #validToDateField="ngModel"
+                    matInput
+                    [matDatepicker]="accountancyDate"
+                    (focus)="accountancyDate.open()"
+                    autocomplete="off"
+                    placeholder="Accountancy Date"
+                    (dateChange)="formatDateForBe(formValues.accountancyDate)"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="accountancyDate">
+                    <mat-icon matDatepickerToggleIcon class="icon-date">
+                    </mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #accountancyDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div
+                id="custom-form-field"
+                class="custom-form-field"
+                class="lightTheme"
+              >
+                <mat-form-field class="without-search" appearance="legacy">
+                  <mat-label>Account No.</mat-label>
+                  <input
+                    matInput
+                    name="accountNumber"
+                    [(ngModel)]="formValues.accountNumber"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="row pt-3">
+            <div class="col-md-3">
+              <div
+                id="custom-form-field"
+                class="custom-form-field lightTheme can-be-disabled"
+              >
+                <mat-form-field
+                  class="without-search"
+                  appearance="legacy"
+                  [ngClass]="{
+                    'invalid-field': formErrors.paymentDetails?.paidAmount
+                  }"
+                >
+                  <mat-label>Paid Amount</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    [disabled]="paidAmmoutDisabled"
+                    (blur)="isFormValid({ useToaster: false })"
+                    name="paidAmount"
+                    [(ngModel)]="formValues.paymentDetails.paidAmount"
+                    (ngModelChange)="calculateGrand(formValues)"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+            <div *ngIf="getDebunkerCheckboxConfig().isVisible" class="col-md-3">
+              <div class="checkbox">
+                <mat-checkbox
+                  disabled
+                  [checked]="getDebunkerCheckboxConfig().value"
+                  >Debunker</mat-checkbox
+                >
+              </div>
+            </div>
+            <div class="border_line"></div>
+            <div class="col-md-3">
+              <div class="checkbox whithheld-amount">
+                <mat-checkbox
+                  disabled
+                  [checked]="formValues.orderDetails.hasWithheldAmount"
+                  >Withheld Amount
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Order and Counterparty Details -->
+    <div class="section1 mt-4">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="section-header">
+            <div class="header-label">
+              Order Details:
+              <a
+                href="{{
+                  urlService.editOrder(formValues.orderDetails?.order?.id)
+                }}"
+                class="order-id"
+                target="_blank"
+                >{{ formValues.orderDetails?.order?.id }}</a
+              >
+            </div>
+            <div class="header-data">
+              Order Date:
+              <span>{{
+                formatDateOnly(formValues.orderDetails?.orderDate)
+              }}</span>
+            </div>
+          </div>
+          <div class="section-content order-details">
+            <div style="display: flex;">
+              <readonly-details
+                style="flex-basis:50%"
+                [options]="orderDetails"
+              ></readonly-details>
+              <span style="flex-basis:10px"></span>
+              <readonly-details
+                style="flex-basis:50%"
+                [options]="orderDetails2"
+              ></readonly-details>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <div
+                  class="custom-form-field-with-search lightTheme"
+                  style="margin: 15px 0px;"
+                >
+                  <div class="d-flex can-be-disabled">
+                    <mat-form-field class="with-search" appearance="legacy">
+                      <mat-label>Payment Company</mat-label>
+                      <input
+                        class="free-text-field"
+                        type="text"
+                        matInput
+                        [matTooltip]="
+                          formValues.orderDetails?.paymentCompany?.name
+                        "
+                        [matTooltipPosition]="'above'"
+                        matTooltipClass="custom-tooltip"
+                        [(ngModel)]="formValues.orderDetails.paymentCompany"
+                        [ngModelOptions]="{ standalone: true }"
+                        [matAutocomplete]="auto1"
+                        autocomplete="off"
+                        placeholder="Company"
+                        required
+                        [disabled]="
+                          formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled' ? true : false
+                        "
+                      />
+                      <mat-autocomplete
+                        #auto1="matAutocomplete"
+                        class="darkPanelAuto"
+                        [ngClass]="{
+                          disabled: formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'
+                        }"
+                        [displayWith]="displayFn"
+                        (optionSelected)="
+                          setPaymentCompany($event.option.value)
+                        "
+                      >
+                        <mat-option
+                          *ngFor="let option of filterCompanyList()"
+                          [value]="option"
+                        >
+                          {{ option.name }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    <div class="ui-inputgroup shiptech-searchbox">
+                      <ng-content></ng-content>
+                      <button
+                        [ngClass]="{
+                          'search-icon-disabled':
+                            formValues.status &&
+                            formValues.status?.name === 'Approved'
+                        }"
+                        pButton
+                        type="button"
+                        icon="pi pi-search"
+                        class="ui-button-warn search-square-button search-btn-for-invoice"
+                        appMasterSelectorTrigger
+                        [masterSelector]="masterSelector1"
+                        #masterSelectorTrigger1="masterSelectorTrigger"
+                        [header]="getHeaderNameSelector1()"
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                      ></button>
+                      <ng-template cdkPortal #masterSelector1="cdkPortal">
+                        <shiptech-shared-master-selector
+                          (selectedChange)="
+                            selectorCompanySelectionChange($event);
+                            masterSelectorTrigger1.close()
+                          "
+                          (shouldCloseModal)="masterSelectorTrigger1.close()"
+                          [selectorType]="autocompleteCompany"
+                          [disabled]="disabled"
+                          [readonly]="readonly"
+                          [entityName]="entityName"
+                          [entityId]="entityId"
+                          [headerName]="getHeaderNameSelector1()"
+                        ></shiptech-shared-master-selector>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div
+                  id="custom-form-field"
+                  class="lightTheme can-be-disabled"
+                  style="margin: 15px 0px;"
+                >
+                  <mat-form-field
+                    class="without-search"
+                    appearance="legacy"
+                    [ngClass]="{ 'invalid-field': formErrors.deliveryDate }"
+                  >
+                    <mat-label>Delivery Date</mat-label>
+                    <input
+                      [(ngModel)]="formValues.deliveryDate"
+                      name="deliveryDate"
+                      #validToDateField="ngModel"
+                      matInput
+                      [matDatepicker]="deliveryDate"
+                      (focus)="deliveryDate.open()"
+                      autocomplete="off"
+                      (dateChange)="
+                        formValues.deliveryDate = formatDateForBe(
+                          formValues.deliveryDate
+                        );
+                        triggerChangeFieldsAppSpecific('DeliveryDate')
+                      "
+                      placeholder="Delivery Date"
+                      [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                      required
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="deliveryDate">
+                      <mat-icon matDatepickerToggleIcon class="icon-date">
+                      </mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #deliveryDate></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div
+                  class="custom-form-field-with-search lightTheme"
+                  style="margin: 15px 0px;"
+                >
+                  <div class="d-flex">
+                    <mat-form-field class="with-search" appearance="legacy">
+                      <mat-label>Carrier</mat-label>
+                      <input
+                        class="free-text-field"
+                        type="text"
+                        matInput
+                        [matTooltip]="
+                          formValues.orderDetails?.carrierCompany?.name
+                        "
+                        [matTooltipPosition]="'above'"
+                        matTooltipClass="custom-tooltip"
+                        [(ngModel)]="formValues.orderDetails.carrierCompany"
+                        [ngModelOptions]="{ standalone: true }"
+                        [matAutocomplete]="auto2"
+                        autocomplete="off"
+                        placeholder="Carrier"
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                      />
+                      <mat-autocomplete
+                        #auto2="matAutocomplete"
+                        class="darkPanelAuto"
+                        [displayWith]="displayFn"
+                        (optionSelected)="
+                          setCarrierCompany($event.option.value)
+                        "
+                        [ngClass]="{
+                          disabled: formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'
+                        }"
+                      >
+                        <mat-option
+                          *ngFor="let option of filterCarrierList()"
+                          [value]="option"
+                        >
+                          {{ option.name }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    <div class="ui-inputgroup shiptech-searchbox">
+                      <ng-content></ng-content>
+                      <button
+                        [ngClass]="{
+                          'search-icon-disabled':
+                            formValues.status &&
+                            formValues.status?.name === 'Approved'
+                        }"
+                        pButton
+                        type="button"
+                        icon="pi pi-search"
+                        class="ui-button-warn search-square-button search-btn-for-invoice"
+                        appMasterSelectorTrigger
+                        [masterSelector]="masterSelector2"
+                        #masterSelectorTrigger2="masterSelectorTrigger"
+                        [header]="getHeaderNameSelector2()"
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                      ></button>
+                      <ng-template cdkPortal #masterSelector2="cdkPortal">
+                        <shiptech-shared-master-selector
+                          (selectedChange)="
+                            selectorCarrierSelectionChange($event);
+                            masterSelectorTrigger2.close()
+                          "
+                          (shouldCloseModal)="masterSelectorTrigger2.close()"
+                          [selectorType]="autocompleteCarrier"
+                          [disabled]="disabled"
+                          [readonly]="readonly"
+                          [entityName]="entityName"
+                          [entityId]="entityId"
+                          [headerName]="getHeaderNameSelector2()"
+                        ></shiptech-shared-master-selector>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field-textarea">
+              <textarea
+                rows="4"
+                cols="50"
+                [disabled]="true"
+                placeholder="Type Front office comments here"
+                name="frontOfficeComments"
+                [ngModel]="
+                  formValues.orderDetails.frontOfficeComments
+                    | htmlDecodeReadonly
+                "
+                (ngModelChange)="
+                  formValues.orderDetails.frontOfficeComments = $event
+                "
+                [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="section-header">
+            <div class="header-label">Counterparty Details</div>
+          </div>
+          <div class="section-content order-details">
+            <div class="row" style="margin: 0px;">
+              <div class="col-md-6 pd-0">
+                <readonly-details
+                  [options]="counterpartyDetails"
+                ></readonly-details>
+                <div class="form-fields">
+                  <div
+                    id="custom-form-field"
+                    class="lightTheme"
+                    style="margin: 15px 15px 15px 0px"
+                    *ngIf="getBankAccountNumberDateConfig().isVisible"
+                  >
+                    <mat-form-field
+                      class="without-search"
+                      appearance="legacy"
+                      [ngClass]="{
+                        'invalid-field':
+                          formErrors.counterpartyDetails
+                            ?.counterpartyBankAccount &&
+                          getBankAccountNumberDateConfig().isMandatory
+                      }"
+                    >
+                      <mat-label>Bank account no.</mat-label>
+                      <mat-select
+                        disableOptionCentering
+                        [required]="
+                          getBankAccountNumberDateConfig().isMandatory
+                        "
+                        [compareWith]="compareObjects"
+                        [disableOptionCentering]="true"
+                        panelClass="general-information-select-container"
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                        [ngModelOptions]="{ standalone: true }"
+                        [(ngModel)]="
+                          formValues.counterpartyDetails.counterpartyBankAccount
+                        "
+                      >
+                        <mat-option
+                          *ngFor="let bank of bankAccountNumbers"
+                          [value]="bank"
+                        >
+                          {{ bank.accountnumber }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div
+                    class="custom-form-field-with-search lightTheme"
+                    style="margin: 15px 0px;"
+                  >
+                    <div
+                      class="d-flex"
+                      *ngIf="getCustomerDateConfig().isVisible"
+                    >
+                      <mat-form-field
+                        class="with-search"
+                        [ngClass]="{
+                          'invalid-field':
+                            formErrors.counterpartyDetails?.customer &&
+                            getCustomerDateConfig().isMandatory
+                        }"
+                        appearance="legacy"
+                      >
+                        <mat-label>Customer</mat-label>
+                        <input
+                          class="free-text-field"
+                          type="text"
+                          matInput
+                          [(ngModel)]="formValues.counterpartyDetails.customer"
+                          [ngModelOptions]="{ standalone: true }"
+                          [matTooltip]="
+                            formValues.counterpartyDetails.customer?.name
+                          "
+                          [matTooltipPosition]="'above'"
+                          matTooltipClass="custom-tooltip"
+                          [matAutocomplete]="auto3"
+                          autocomplete="off"
+                          placeholder="Customer"
+                          [required]="getCustomerDateConfig().isMandatory"
+                          [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                        />
+                        <mat-autocomplete
+                          #auto3="matAutocomplete"
+                          class="darkPanelAuto"
+                          [displayWith]="displayFn"
+                          (optionSelected)="
+                            setCustomer($event.option.value);
+                            isFormValid({ useToaster: false })
+                          "
+                          [ngClass]="{
+                            disabled: formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'
+                          }"
+                        >
+                          <mat-option
+                            *ngFor="let option of filterCustomerList()"
+                            [value]="option"
+                          >
+                            {{ option.name }}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <div class="ui-inputgroup shiptech-searchbox">
+                        <ng-content></ng-content>
+                        <button
+                          pButton
+                          type="button"
+                          icon="pi pi-search"
+                          class="ui-button-warn search-square-button search-btn-for-invoice"
+                          appMasterSelectorTrigger
+                          [masterSelector]="masterSelector3"
+                          #masterSelectorTrigger3="masterSelectorTrigger"
+                          [header]="getHeaderNameSelector3()"
+                          [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                        ></button>
+                        <ng-template cdkPortal #masterSelector3="cdkPortal">
+                          <shiptech-shared-master-selector
+                            (selectedChange)="
+                              selectorCustomerSelectionChange($event);
+                              masterSelectorTrigger3.close()
+                            "
+                            (shouldCloseModal)="masterSelectorTrigger3.close()"
+                            [selectorType]="autocompleteCustomer"
+                            [disabled]="disabled"
+                            [readonly]="readonly"
+                            [entityName]="entityName"
+                            [entityId]="entityId"
+                            [headerName]="getHeaderNameSelector3()"
+                          ></shiptech-shared-master-selector>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="field-textarea">
+                  <textarea
+                    rows="4"
+                    cols="50"
+                    placeholder="Type back office comments here"
+                    name="backOfficeComments"
+                    [ngModel]="
+                      formValues.backOfficeComments | htmlDecodeReadonly
+                    "
+                    (ngModelChange)="formValues.backOfficeComments = $event"
+                    [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                  ></textarea>
+                </div>
+              </div>
+              <span class="seperator-line"></span>
+              <div
+                class="col-md-5 pd-0"
+                style="margin: -10px 0px; line-height: 35px;"
+              >
+                <div
+                  class="custom-form-field-with-search lightTheme"
+                  style="margin: 15px 0px;"
+                >
+                  <div class="d-flex">
+                    <mat-form-field class="with-search" appearance="legacy">
+                      <mat-label>Payble to</mat-label>
+                      <input
+                        class="free-text-field"
+                        type="text"
+                        matInput
+                        [ngModel]="
+                          formValues.counterpartyDetails.payableTo
+                            | htmlDecodeReadonly: 'name'
+                        "
+                        (ngModelChange)="
+                          formValues.counterpartyDetails.payableTo = $event
+                        "
+                        [ngModelOptions]="{ standalone: true }"
+                        [matTooltip]="
+                          this.formValues.counterpartyDetails.payableTo?.name
+                            | htmlDecodeReadonly
+                        "
+                        [matTooltipPosition]="'above'"
+                        matTooltipClass="custom-tooltip"
+                        [matAutocomplete]="auto"
+                        autocomplete="off"
+                        (blur)="
+                          verifyPayableToIsNull(
+                            this.formValues.counterpartyDetails.payableTo
+                          )
+                        "
+                        placeholder="Payble to"
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                      />
+                      <mat-autocomplete
+                        #auto="matAutocomplete"
+                        class="darkPanelAuto"
+                        [displayWith]="displayFn"
+                        (optionSelected)="setPaybleTo($event.option.value)"
+                        [ngClass]="{
+                          disabled: formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'
+                        }"
+                      >
+                        <mat-option
+                          *ngFor="let option of filterPaybleToList()"
+                          [value]="option"
+                        >
+                          {{ option.name }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    <div class="ui-inputgroup shiptech-searchbox">
+                      <ng-content></ng-content>
+                      <button
+                        pButton
+                        type="button"
+                        icon="pi pi-search"
+                        class="ui-button-warn search-square-button search-btn-for-invoice"
+                        appMasterSelectorTrigger
+                        [masterSelector]="masterSelector"
+                        #masterSelectorTrigger="masterSelectorTrigger"
+                        [header]="getHeaderNameSelector()"
+                        [disabled]="formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                      ></button>
+                      <ng-template cdkPortal #masterSelector="cdkPortal">
+                        <shiptech-shared-master-selector
+                          (selectedChange)="
+                            selectorPaybleToSelectionChange($event);
+                            masterSelectorTrigger.close()
+                          "
+                          (shouldCloseModal)="masterSelectorTrigger.close()"
+                          [selectorType]="autocompletePaybleTo"
+                          [disabled]="disabled"
+                          [readonly]="readonly"
+                          [entityName]="entityName"
+                          [entityId]="entityId"
+                          [headerName]="getHeaderNameSelector()"
+                        ></shiptech-shared-master-selector>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="padding-top: 5px;">
+                  <mat-checkbox
+                    class="example-margin"
+                    name="paymentProofReceived"
+                    [disabled]="!invoiceId || formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                    [(ngModel)]="formValues.paymentDetails.paymentProofReceived"
+                    >Payment proof received</mat-checkbox
+                  >
+                </div>
+                <div class="field-textarea sizing">
+                  <textarea
+                    rows="4"
+                    cols="50"
+                    placeholder="Payment Proof comments"
+                    name="paymentDetailscomments"
+                    [disabled]="!formValues.paymentDetails.paymentProofReceived || formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                    [ngModel]="
+                      formValues.paymentDetails.comments | htmlDecodeReadonly
+                    "
+                    (ngModelChange)="
+                      formValues.paymentDetails.comments = $event
+                    "
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Product Details -->
+    <div
+      class="container-fluid-invoice"
+      style="padding-left: 10px;padding-right: 10px;"
+    >
+      <div class="row m-b-4">
+        <div class="col-12">
+          <p-panel [showHeader]="false">
+            <div fxLayout="row">
+              <shiptech-invoice-product-details
+                *ngIf="!(formValues.invoiceClaimDetails.length > 0)"
+                [model]="formValues"
+                [productList]="productList"
+                [uomList]="uomList"
+                [isPricingDateEditable]="isPricingDateEditable"
+                [currencyList]="currencyList"
+                [physicalSupplierList]="physicalSupplierList"
+                [entityId]="entityId"
+                (productDetailChanged)="productDetailChanged($event)"
+                (costDetailsChanged)="updateCostDetails($event)"
+                [eventsFormValues]="eventsSubject5.asObservable()"
+                class="col-12"
+                style="padding-left: 0px; padding-right: 0px;"
+              >
+              </shiptech-invoice-product-details>
+              <shiptech-invoice-claim-details
+                *ngIf="formValues.invoiceClaimDetails.length > 0"
+                [model]="formValues"
+                [currencyList]="currencyList"
+                (claimDetailChanged)="claimDetailChanged($event)"
+                class="col-12"
+                style="padding-left: 0px; padding-right: 0px;"
+              >
+              </shiptech-invoice-claim-details>
+            </div>
+          </p-panel>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Cost Details -->
+    <div
+      class="section1 mt-4"
+      style="margin: 0px;"
+      *ngIf="!(formValues.invoiceClaimDetails.length > 0)"
+    >
+      <div class="match-grid" style="border-bottom: 4px solid #e5e5e5;">
+        <div class="title">Additional Costs</div>
+        <!-- <div class="agGrid-v2" style="margin: 0">
+            <div style="width:100%;height: 250px;">
+                <ag-grid-angular style="width: 100%;height: 100%;" [gridOptions]="gridOptions_ac"
+                    class="ag-theme-material ag-grid-v2 angular-v9 add-cost"></ag-grid-angular>
+            </div>
+        </div> -->
+        <shiptech-additional-cost-modal
+          [formValues]="formValues"
+          [uomList]="uomList"
+          [currencyList]="currencyList"
+          [costTypeList]="costTypeList"
+          (changedAdditonalcost)="changedAdditonalcost($event)"
+          (amountChanged)="updateAmountValues($event)"
+          (additionalCostRemoved)="additionalCostRemovedLine($event)"
+          [events]="eventsSubject.asObservable()"
+        ></shiptech-additional-cost-modal>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div
+      class="container-fluid-invoice"
+      style="padding-left: 10px;padding-right: 10px; border-bottom: 4px solid #e5e5e5;"
+    >
+      <div class="row m-b-4">
+        <div class="col-12">
+          <p-panel [showHeader]="false">
+            <div fxLayout="row">
+              <shiptech-invoice-notes-details
+                [model]="formValues"
+                [entityId]="entityId"
+                class="col-12"
+                style="padding-left: 0px; padding-right: 0px;"
+              >
+              </shiptech-invoice-notes-details>
+            </div>
+          </p-panel>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Invoice Details -->
+    <div
+      class="container-fluid-invoice related-invoice-details-wrapper"
+      style="padding-left: 10px;padding-right: 10px;"
+    >
+      <div class="row m-b-4">
+        <div class="col-12">
+          <div class="match-grid">
+            <div
+              class="header-details col-md-12 no-padding related-inv-section"
+              style="margin-top: 10px;"
+            >
+              <span
+                *ngIf="expandRelatedInvoice"
+                (click)="expandRelatedInvoice = !expandRelatedInvoice"
+              >
+                <a class="expand-icon"> </a>
+              </span>
+              <span
+                *ngIf="!expandRelatedInvoice"
+                (click)="expandRelatedInvoice = !expandRelatedInvoice"
+              >
+                <a class="collapse-icon"> </a>
+              </span>
+              <div class="title">Related Invoice Details</div>
+            </div>
+            <div
+              class="agGrid-v2"
+              style="margin: 0"
+              *ngIf="expandRelatedInvoice"
+            >
+              <div style="width:100%;height: 250px;">
+                <ag-grid-angular
+                  style="width: 100%;height: 100%;"
+                  [gridOptions]="gridOptions_rel_invoice"
+                  class="ag-theme-material ag-grid-v2 angular-v9 prod-details"
+                  (cellClicked)="onCellClicked($event)"
+                >
+                </ag-grid-angular>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-spin-clockwise-fade"
+>
+</ngx-spinner>

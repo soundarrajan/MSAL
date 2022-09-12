@@ -1,0 +1,109 @@
+{
+  "id": 0,
+  "isSuccess": true,
+  "message": null,
+  "error": null,
+  "errorMessage": "Successful",
+  "requests": [
+    {
+      "requestId": 0,
+      "requestName": "string",
+      "vesselId": 0,
+      "vesselName": "string",
+      "generalComment": "string",
+      "performanceComment": "string",
+      "supplyComment": "string",
+      "vesselAndAgentsComment": "string",
+      "negotiationComments": {
+        "generalComment": "comment 1 asd",
+        "performanceComment": "string",
+        "supplyComment": "string",
+        "vesselAndAgentsComment": "string"
+      },
+      "locations": [
+        {
+          "requestLocationId": 0,
+          "locationId": 0,
+          "locationName": "string",
+          "terminal": "string",
+          "deliveryFrom": "2019-08-24T14:15:22Z",
+          "deliveryTo": "2019-08-24T14:15:22Z",
+          "counterparties":[],
+          "products": [
+            {
+              "requestProductId": 0,
+              "productId": 0,
+              "productName": "string",
+              "minQuantity": 0,
+              "maxQuantity": 0,
+              "uom": {
+                "uomId": 0,
+                "uomName": "string"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "requestId": 1,
+      "requestName": "Test",
+      "vesselId": 0,
+      "vesselName": "Vesel name here",
+      "generalComment": "string",
+      "performanceComment": "string",
+      "supplyComment": "string",
+      "vesselAndAgentsComment": "string",
+      "negotiationComments": {
+        "generalComment": "comment 2 asdddd",
+        "performanceComment": "string",
+        "supplyComment": "string",
+        "vesselAndAgentsComment": "string"
+      },
+      "locations": [
+        {
+          "requestLocationId": 0,
+          "locationId": 0,
+          "locationName": "string",
+          "terminal": "string",
+          "deliveryFrom": "2019-08-24T14:15:22Z",
+          "deliveryTo": "2019-08-24T14:15:22Z",
+          "products": [
+            {
+              "requestProductId": 0,
+              "productId": 0,
+              "productName": "string",
+              "minQuantity": 0,
+              "maxQuantity": 0,
+              "uom": {
+                "uomId": 0,
+                "uomName": "string"
+              }
+            }
+          ]
+        },
+        {
+          "requestLocationId": 1,
+          "locationId": 1,
+          "locationName": "Rotterdam",
+          "terminal": "Terminal A",
+          "deliveryFrom": "2019-08-24T14:15:22Z",
+          "deliveryTo": "2019-08-24T14:15:22Z",
+          "products": [
+            {
+              "requestProductId": 0,
+              "productId": 0,
+              "productName": "string",
+              "minQuantity": 0,
+              "maxQuantity": 0,
+              "uom": {
+                "uomId": 0,
+                "uomName": "string"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
