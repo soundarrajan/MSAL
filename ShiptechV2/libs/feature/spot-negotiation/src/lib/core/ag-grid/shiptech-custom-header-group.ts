@@ -34,6 +34,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
       <div class="title">
         <span
           class="add-icon"
+          (menuClosed)="onCounterPartyMenuClose()" 
           [matMenuTriggerFor]="clickmenu"
           #menuTrigger="matMenuTrigger"
           (click)="setValuefun()">
@@ -1202,5 +1203,9 @@ export class ShiptechCustomHeaderGroup {
     });
 
     return rowsArray;
+  }
+
+  onCounterPartyMenuClose() {
+    this.selectedCounterparty = [];
   }
 }
