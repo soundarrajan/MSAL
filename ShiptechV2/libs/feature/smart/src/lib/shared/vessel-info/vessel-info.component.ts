@@ -902,11 +902,17 @@ export class VesselInfoComponent implements OnInit {
     if (this.selectedPort.length > 1) {
       this.selectedPort.forEach((port, index) => {
         _this.shiptechRequestUrl = `${baseOrigin}/#/new-request/${port.voyage_detail_id}`;
+        if (port.voyage_detail_id != undefined && port.voyage_detail_id != null) {
+          _this.shiptechRequestUrl = _this.shiptechRequestUrl + '/1';
+        }
         window.open(_this.shiptechRequestUrl, '_blank');
       });
     } else if (this.selectedPort.length == 1) {
       let voyage_id = this.selectedPort[0].voyage_detail_id;
       let url = `${baseOrigin}/#/new-request/${voyage_id}`;
+      if (voyage_id != undefined && voyage_id != null) {
+        url = url + '/1';
+      }
       window.open(url, '_blank');
     }
   }
