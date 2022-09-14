@@ -691,16 +691,12 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   saveFormula() {
-    console.log(this.formValues);
-          debugger;
-
     if (this.formValues.formulaType.id == 1) {
       if (!this.formValues.simpleFormula.priceType) {
         this.toastr.error('Price Type field is required in Simple Pricing formula.');
         return;
       }
       
-
       if (!this.formValues.simpleFormula.plusMinus) {
         this.toastr.error('Premimum/Discount  field is required in Simple Pricing formula');
         return;
@@ -742,6 +738,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           this.toastr.error('Plus Minus field is required in in Complex Pricing formula');
           return;
         }
+
         if (this.formValues.complexFormulaQuoteLines[i - 1]?.formulaPlusMinus.name != 'None') {
           if (!this.formValues.complexFormulaQuoteLines[i - 1]?.amount) {
             this.toastr.error('Amount field is required in Complex Pricing formula');
@@ -754,8 +751,10 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           }
           
             if (!this.formValues.complexFormulaQuoteLines[i - 1]?.uom) {
-              this.toastr.error('UOM field is required in Complex Pricing formula');
-              return;
+              if(this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage.name != 'Percentage'){
+                this.toastr.error('UOM field is required in Complex Pricing formula');
+                return;
+              }
             }
         }
       }
