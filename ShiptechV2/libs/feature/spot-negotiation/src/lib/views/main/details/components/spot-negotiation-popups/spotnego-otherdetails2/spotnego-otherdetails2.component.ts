@@ -574,6 +574,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   }
   //Construct UI Value's to bind the popup grid
   ConstructOtherDetailsPayload(requestOffers, etaDate, reqProd) {
+    debugger;
     let QtyUomId;
     if (requestOffers.supplyQuantityUomId == null) {
       QtyUomId =
@@ -585,9 +586,9 @@ export class SpotnegoOtherdetails2Component implements OnInit {
       {
         OfferId: requestOffers.offerId,
         RequestOfferId: requestOffers.id,
-        SupplyQuantity: this.tenantFormat.quantity(requestOffers.supplyQuantity)
-          ? this.tenantFormat.quantity(requestOffers.supplyQuantity)
-          : '',
+        SupplyQuantity: requestOffers.isSupplyQuantityEdited ?
+            this.tenantFormat.quantity(requestOffers.supplyQuantity) :
+            this.tenantFormat.quantity(reqProd[0].maxQuantity),
         SupplyDeliveryDate: etaDate
           ? moment(etaDate).format(this.dateFormat_rel_SupplyDate)
           : '',
