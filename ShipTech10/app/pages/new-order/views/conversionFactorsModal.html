@@ -43,7 +43,7 @@
                             </tr>
                             <tr>
                                 <td>MWH</td>
-                                <td ng-if="$ctrl.conversionFactorData.conversionFactorToMWHUom != 0">{{($ctrl.conversionFactorData.confirmedQuantity * $ctrl.conversionFactorData.conversionFactorToMT) * $ctrl.conversionFactorData.conversionFactorToMWHUom | number: $ctrl.numberPrecision.quantityPrecision}}</td>
+                                <td ng-if="$ctrl.conversionFactorData.conversionFactorToMWHUom != 0">{{($ctrl.conversionFactorData.confirmedQuantity * $ctrl.conversionFactorData.conversionFactorToMT) / $ctrl.conversionFactorData.conversionFactorToMWHUom | number: $ctrl.numberPrecision.quantityPrecision}}</td>
                                 <td ng-if="$ctrl.conversionFactorData.conversionFactorToMWHUom == 0">-</td>
                             </tr>
                         </tbody>
@@ -59,7 +59,7 @@
                             </tr>
                             <tr>
                                 <td>{{$ctrl.conversionFactorData.currency.code}}/MWH</td>
-                                <td ng-if="$ctrl.conversionFactorData.conversionFactorToMWHUom != 0">{{$ctrl.conversionFactorData.priceValueConveredToMT / $ctrl.conversionFactorData.conversionFactorToMWHUom | number: $ctrl.conversionFactorData.pricePrecision}}</td>
+                                <td ng-if="$ctrl.conversionFactorData.conversionFactorToMWHUom != 0">{{$ctrl.conversionFactorData.priceValueConveredToMT * $ctrl.conversionFactorData.conversionFactorToMWHUom | number: $ctrl.conversionFactorData.pricePrecision}}</td>
                                 <td ng-if="$ctrl.conversionFactorData.conversionFactorToMWHUom == 0">-</td>
                             </tr>
                         </tbody>

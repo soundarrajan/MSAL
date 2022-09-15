@@ -3183,7 +3183,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     {
                         if(!isUnitPriConvFac && (ctrl.conversionFactorData.quantityUom.id == metricMillionBritishThermalUnitUom?.id || ctrl.conversionFactorData.quantityUom.id == mWHUom?.id))
                         {
-                            ctrl.conversionFactorData.conversionFactorToMT = 1 / cv.conversionFactor;
+                            ctrl.conversionFactorData.conversionFactorToMT = ctrl.conversionFactorData.quantityUom.id == metricMillionBritishThermalUnitUom?.id ? 1 / cv.conversionFactor : 1 * cv.conversionFactor;
                             ctrl.conversionFactorData.isConvertMmbtuMwhToMT = true;
                         }
                         else
@@ -3193,7 +3193,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     {
                         if(isUnitPriConvFac && (ctrl.conversionFactorData.priceUom.id == metricMillionBritishThermalUnitUom?.id || ctrl.conversionFactorData.priceUom.id == mWHUom?.id))
                         {
-                            ctrl.conversionFactorData.conversionFactorToMT = 1 / cv.conversionFactor;
+                            ctrl.conversionFactorData.conversionFactorToMT = ctrl.conversionFactorData.priceUom.id == metricMillionBritishThermalUnitUom?.id ? 1 / cv.conversionFactor : 1 * cv.conversionFactor;
                             ctrl.conversionFactorData.isConvertMmbtuMwhToMT = true;
                         }
                         else
