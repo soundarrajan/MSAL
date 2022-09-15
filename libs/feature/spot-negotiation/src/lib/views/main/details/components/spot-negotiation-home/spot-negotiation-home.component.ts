@@ -421,13 +421,9 @@ loadTimeZone(){
     let requestProductIds = this.selectedSellerList.map(
       x => x.RequestProductIds
     );
-    this.quoteByTimeZoneId= this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.quoteTimeZoneIdByGroup;
-    }); 
     var FinalAPIdata = {
       RequestGroupId: this.currentRequestInfo.requestGroupId,
       quoteByDate: new Date(this.spotNegotiationService.QuoteByDate ),
-      quoteByTimeZoneId: this.quoteByTimeZoneId,
       selectedSellers: this.selectedSellerList
     };
     this.spinner.show();
