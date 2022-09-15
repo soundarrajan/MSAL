@@ -10458,7 +10458,7 @@
             let length = window.location.href.split('/#/')[1].split('/').length - 1;
             let id = parseFloat(window.location.href.split('/#/')[1].split('/')[length]);
             if (!isNaN(id)) {
-                if (window.location.href.indexOf('request/') != -1) {
+                if (window.location.href.indexOf('request/') != -1 && window.location.href.indexOf('new-request/') == -1) {
                     payload = { Payload: {
                         "requestId": id,
                         "requestNotes": generalNotesScope.formValues.notes

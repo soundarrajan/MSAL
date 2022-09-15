@@ -1075,7 +1075,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         }
         let treeList = [];
         let lookup = {};
-        list.forEach((obj) => {
+        list?.forEach((obj) => {
             let findElement = _.find(values, function(object) {
                 return object.id == obj.id && object.name == obj.name;
             });
@@ -1085,7 +1085,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             lookup[obj[idAttr]] = obj;
             obj[childrenAttr] = [];
         });
-        list.forEach((obj) => {
+        list?.forEach((obj) => {
             if (obj[parentAttr] != null) {
                 if (obj[parentAttr].id) {
                     lookup[obj[parentAttr].id][childrenAttr].push(obj);

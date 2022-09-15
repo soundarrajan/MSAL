@@ -11,7 +11,7 @@
         <div class="tab-pane fade" ng-repeat="(key, value) in entities" id="tab_{{  value.id  }}" ng-class="$index == 0 ? 'active in ' : ''">
         <div class="">
             <div class="col-md-12">
-                <button class="btn btn-default btn-outline orange" ng-if="value.id == 'vessel_access' && !vesselAccessLoaded" ng-click="getTabData(value)">Fetch Vessels</button>
+                <button class="btn btn-default btn-outline orange" ng-if="value.id == 'vessel_access' && !vesselAccessLoaded && formValues.customNonMandatoryAttribute3 != 'Maersk'" ng-click="getTabData(value)">Fetch Vessels</button>
                 <div ng-show="vesselAccessLoaded || value.id != 'vessel_access'" class="hierarchy-header row">
                     <div class="col-md-9">
                         <div class="form-group  form-inline row ">

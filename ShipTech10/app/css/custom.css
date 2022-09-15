@@ -4991,6 +4991,7 @@ table.energyCalculationBlade tr.border-green-jungle {
     box-sizing: border-box;
     min-height: 20px;
     line-height: 20px;
+    color: #686161;
 }
 .tree-selection {
     margin-left: 10px !important;
