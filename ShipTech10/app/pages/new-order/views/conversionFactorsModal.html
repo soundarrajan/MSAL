@@ -38,7 +38,8 @@
                             </tr>
                             <tr>
                                 <td>CBM</td>
-                                <td>{{$ctrl.conversionFactorData.confirmedQuantity * $ctrl.conversionFactorData.conversionFactorToCBE | number: $ctrl.numberPrecision.quantityPrecision}}</td>
+                                <td ng-if="$ctrl.conversionFactorData.isConvertMmbtuMwhToMT">{{($ctrl.conversionFactorData.confirmedQuantity * $ctrl.conversionFactorData.conversionFactorToMT) * $ctrl.conversionFactorData.conversionFactorToCBE | number: $ctrl.numberPrecision.quantityPrecision}}</td>
+                                <td ng-if="!$ctrl.conversionFactorData.isConvertMmbtuMwhToMT">{{$ctrl.conversionFactorData.confirmedQuantity * $ctrl.conversionFactorData.conversionFactorToCBE | number: $ctrl.numberPrecision.quantityPrecision}}</td>
                             </tr>
                             <tr>
                                 <td>MWH</td>
