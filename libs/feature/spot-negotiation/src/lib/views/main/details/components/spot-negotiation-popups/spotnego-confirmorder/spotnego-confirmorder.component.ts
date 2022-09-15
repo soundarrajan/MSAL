@@ -332,8 +332,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         RequestOfferId: requestOffer.id,
         RfqId: requestOffer.rfqId,
         OrderFields: {
-          ConfirmedQuantity:
-          this.format.quantity(requestOffer.supplyQuantity) ??
+          ConfirmedQuantity: requestOffer.isSupplyQuantityEdited ? 
+          this.format.quantity(requestOffer.supplyQuantity) :
           this.format.quantity(requestProducts.maxQuantity)
         },
         ClosurePrice: requestProducts.requestGroupProducts.closurePrice,
