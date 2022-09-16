@@ -3179,7 +3179,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             lookupModel.getUOMConversionFactor(request_payload).then((server_data) => {
                 server_data.payload.forEach((cv) => { 
-                    if(!isUnitPriConvFac && (cv.id == ctrl.conversionFactorData.quantityUom.id || cv.id == metricTonUom?.id))
+                    if(!isUnitPriConvFac && ((cv.id == ctrl.conversionFactorData.quantityUom.id && !ctrl.conversionFactorData.conversionFactorToMT) || cv.id == metricTonUom?.id))
                     {
                         if(!isUnitPriConvFac && (ctrl.conversionFactorData.quantityUom.id == metricMillionBritishThermalUnitUom?.id || ctrl.conversionFactorData.quantityUom.id == mWHUom?.id))
                         {
@@ -3189,7 +3189,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                         else
                         ctrl.conversionFactorData.conversionFactorToMT = cv.conversionFactor;
                     }
-                    else if(isUnitPriConvFac && (cv.id == ctrl.conversionFactorData.priceUom.id|| cv.id == metricTonUom?.id))
+                    else if(isUnitPriConvFac && ((cv.id == ctrl.conversionFactorData.priceUom.id && !ctrl.conversionFactorData.conversionFactorToMT) || cv.id == metricTonUom?.id))
                     {
                         if(isUnitPriConvFac && (ctrl.conversionFactorData.priceUom.id == metricMillionBritishThermalUnitUom?.id || ctrl.conversionFactorData.priceUom.id == mWHUom?.id))
                         {
