@@ -332,21 +332,16 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             res['requestLocationSellers'],
             res['sellerOffers']
           );
+          let locationIds=this.allRequest.map(e=>e.requestLocations.map(rl=>rl.locationId));
+          let productIds=this.allRequest.map(rl=>rl.requestLocations.map(reql=>reql.requestProducts.map(reql=>reql.productId)));
+          let physicalSupplierIds=res['requestLocationSellers'].map(phy=>phy.physicalSupplierCounterpartyId);
           let payload=  {
-            locationIds:this.allRequest.map(e=>e.requestLocations.map(rl=>rl.locationId!=null)),
-            productIds:this.allRequest.map(rl=>rl.requestLocations.map(reql=>reql.requestProducts.map(reql=>reql.productId))),
-            physicalSupplierIds :res['requestLocationSellers'].map(phy=>phy.physicalSupplierCounterpartyId),
+            locationIds:locationIds.reduce((acc, val) => acc.concat(val), []),
+            productIds:productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []),
+            physicalSupplierIds:physicalSupplierIds.reduce((acc, val) => acc.concat(val), []),
             requestGroupId:groupRequestIdFromUrl
           }
-
-
-          const respon = this.spotNegotiationService.getEnergy6MHistorys(payload);
-          respon.subscribe((resp: any) => {
-            if (resp?.message == 'Unauthorized') {
-              return;
-            }
-              this.store.dispatch([new SetNetEnergySpecific(resp.payload)]);
-          });       
+          this.getEnergy6MHistory(payload);
           // Demo format data
           let reqLocationRows : any =[];
           for (const locRow of futureLocationsRows) {
@@ -361,7 +356,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
     this.changeDetector.detectChanges();
   }
-
+  getEnergy6MHistory(payload){
+    
+    const response = this.spotNegotiationService.getEnergy6MHistorys(payload);
+    response.subscribe((data: any)=>{
+      this.store.dispatch(new SetNetEnergySpecific(data.payload));
+    });
+  }
   getRequestList(): void {
     const response = this.spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip: 0, Take: 25 })
     response.subscribe((res: any) => {
