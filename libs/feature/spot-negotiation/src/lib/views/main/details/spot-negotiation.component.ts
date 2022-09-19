@@ -26,7 +26,8 @@ import {
   // SetLocationsRowsPriceDetails,
   SetPhysicalSupplierCounterpartyList,
   UpdateAdditionalCostList,
-  setFormulaList
+  setFormulaList,
+  SetNetEnergySpecific
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -331,6 +332,21 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             res['requestLocationSellers'],
             res['sellerOffers']
           );
+          let payload=  {
+            locationIds:this.allRequest.map(e=>e.requestLocations.map(rl=>rl.locationId!=null)),
+            productIds:this.allRequest.map(rl=>rl.requestLocations.map(reql=>reql.requestProducts.map(reql=>reql.productId))),
+            physicalSupplierIds :res['requestLocationSellers'].map(phy=>phy.physicalSupplierCounterpartyId),
+            requestGroupId:groupRequestIdFromUrl
+          }
+
+
+          const respon = this.spotNegotiationService.getEnergy6MHistorys(payload);
+          respon.subscribe((resp: any) => {
+            if (resp?.message == 'Unauthorized') {
+              return;
+            }
+              this.store.dispatch([new SetNetEnergySpecific(resp.payload)]);
+          });       
           // Demo format data
           let reqLocationRows : any =[];
           for (const locRow of futureLocationsRows) {

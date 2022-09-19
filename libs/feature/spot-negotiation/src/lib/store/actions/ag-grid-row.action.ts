@@ -87,6 +87,12 @@ export class SetLocationsRows {
   constructor(public payload: any) {}
 }
 
+export class SetNetEnergySpecific {
+  static readonly type = '[NetEnergySpecific] Set';
+
+  constructor(public payload: any) {}
+}
+
 export class SetOfferPriceFormulaId {
   static readonly type = '[SetOfferPriceFormulaId] Set';
 
