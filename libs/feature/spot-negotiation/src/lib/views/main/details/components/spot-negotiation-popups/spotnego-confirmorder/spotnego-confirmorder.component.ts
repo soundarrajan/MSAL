@@ -408,7 +408,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
-  confirmOffers(shouldValidate) {
+  async confirmOffers(shouldValidate) {
     let RequestProductIds = [];
     let requestOfferIds = [];
     let errorMessages = [];
@@ -467,13 +467,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
 
     (<any>window).startConfirmOfferTime = Date.now();
     this.spinner.show();
-    const response = this.spotNegotiationService.GetExistingOrders(payload);
-    response.subscribe(
-      (res: any) => {
+    const res = await this.spotNegotiationService.GetExistingOrders(payload);
         if (res?.message == 'Unauthorized') {
           return;
         }
-        let errorMessages = [];
+        // let errorMessages = [];
         this.selectedOffers.forEach((rqV, rqK) => {
           let hasOrder = false;
           let hasError = false;
@@ -523,7 +521,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                     foundRelatedOrder = rodV.id;
                   } else {
                     errorMessages.push(
-                      this.createOrderErrorMessage(
+                       this.createOrderErrorMessage(
                         rqV.RequestProductId,
                         errorType
                       )
@@ -629,11 +627,9 @@ export class SpotnegoConfirmorderComponent implements OnInit {
             }
           );
         }, 200);
-      },
       response => {
         this.buttonsDisabled = true;
       }
-    );
   }
   getPriceDetails() {
     // Get current id from url and make a request with that data.
