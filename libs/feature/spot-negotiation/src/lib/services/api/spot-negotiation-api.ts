@@ -1070,8 +1070,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
   @ObservableException()
   getEnergy6MHistorys(payload: any): Observable<any> {
-    return this.http
-      .post<any>(
+    return this.http.post<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getEnergy6MonthHistory}`,
         payload
       )
