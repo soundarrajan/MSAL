@@ -82,7 +82,8 @@ export const SpotNegotiationApiPaths = {
   getSellerRatingsforNegotiation: `api/sellerrating/sellerratingreview/getForNegotiation`,
   getContractFormulaList : `api/masters/formulas/listMasters`,
   getMasterFormula : `api/masters/formulas/get`,
-  getDefaultConversionFactor : `api/masters/products/getProdDefaultConversionFactors`
+  getDefaultConversionFactor : `api/masters/products/getProdDefaultConversionFactors`,
+  getEnergy6MonthHistory:`groups/getEnergy6MonthHistorys`
 };
 
 @Injectable({
@@ -1067,6 +1068,19 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       catchError((body: any) => this.handleErrorMessage(body))
     );
   }
+  @ObservableException()
+  getEnergy6MHistorys(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getEnergy6MonthHistory}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
 }
 
 export const SPOT_NEGOTIATION_API_SERVICE = new InjectionToken<

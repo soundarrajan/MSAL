@@ -563,6 +563,15 @@ export class SpotNegotiationService extends BaseStoreService
   updateGroupComments(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.updateGroupComments(payload);
   }
+  /**
+ * Get Net Energy specific details
+ * @param payload =
+ */
+  @ObservableException()
+  getEnergy6MHistorys(payload: any): Observable<unknown> {
+    return this.spotNegotiationApi.getEnergy6MHistorys(payload);
+  }
+  
   ngOnDestroy(): void {
     super.onDestroy();
   }

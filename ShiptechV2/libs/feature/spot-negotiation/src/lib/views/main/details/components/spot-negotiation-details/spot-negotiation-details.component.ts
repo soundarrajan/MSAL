@@ -778,10 +778,19 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           lockVisible: true
         },
         {
-          headerName: 'MJ/KJ',
+          headerName: 'Energy(MJ/KJ)',
           headerTooltip: 'MJ/KJ',
           field: `mj$`,
-          columnGroupShow: 'open',
+          flex: 5,
+          width: 135,
+          minWidth: 94,
+          valueGetter: params => {
+            const details = this.spotNegotiationService.getRowProductDetails(
+              params.data,
+              product.id
+            );
+            return  this.tenantService.amount(details.amount);
+          },
           cellClass: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
               params.data,
@@ -792,30 +801,52 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             }
             return 'grey-opacity-cell pad-lr-0';
           },
+          cellRendererFramework: AGGridCellRendererV2Component,
+          cellRendererParams: { type: 'mj$', cellClass: '', index: index },
+          lockVisible: true
+        },
+        {
+          headerName: 'Energy($/mt)',
+          headerTooltip: 'mt',
+          field: `mt$`,
+          flex: 5,
+          width: 135,
+          minWidth: 94,
+          valueGetter: params => {
+            const details = this.spotNegotiationService.getRowProductDetails(
+              params.data,
+              product.id
+            );
+            return  this.tenantService.amount(details.amount);
+          },
+          cellClass: params => {
+            const details = this.spotNegotiationService.getRowProductDetails(
+              params.data,
+              product.id
+            );
+            if (details.hasNoQuote) {
+              return 'display-no-quote grey-opacity-cell pad-lr-0';
+            }
+            return 'grey-opacity-cell pad-lr-0';
+          },
+          cellRendererFramework: AGGridCellRendererV2Component,
+          cellRendererParams: { type: 'mt$', cellClass: '', index: index },
           lockVisible: true
         },
         {
           headerName: 'TCO ($)',
           headerTooltip: 'TCO ($)',
           field: `tco$`,
-          columnGroupShow: 'open',
-          cellClass: params => {
+          flex: 5,
+          width: 135,
+          minWidth: 94,
+          valueGetter: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
               params.data,
               product.id
             );
-            if (details.hasNoQuote) {
-              return 'display-no-quote grey-opacity-cell pad-lr-0';
-            }
-            return 'grey-opacity-cell pad-lr-0';
+            return  this.tenantService.amount(details.amount);
           },
-          lockVisible: true
-        },
-        {
-          headerName: 'E. diff',
-          headerTooltip: 'E. diff',
-          field: `ediff`,
-          columnGroupShow: 'open',
           headerClass: 'border-right',
           cellClass: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
@@ -823,10 +854,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               product.id
             );
             if (details.hasNoQuote) {
-              return 'display-no-quote line-seperator grey-opacity-cell pad-lr-5';
+              return 'display-no-quote line-seperator grey-opacity-cell pad-lr-0';
             }
-            return 'line-seperator grey-opacity-cell pad-lr-5';
+            return 'line-seperator grey-opacity-cell pad-lr-0';
           },
+          cellRendererFramework: AGGridCellRendererV2Component,
+          cellRendererParams: { type: 'tco$', cellClass: '', index: index },
           lockVisible: true
         }
       ]

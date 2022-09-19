@@ -4,6 +4,7 @@ import {
   SetStaticLists,
   SetCounterpartyList,
   SetLocationsRows,
+  SetNetEnergySpecific,
   AddCounterpartyToLocations,
   AddRequest,
   DelinkRequest,
@@ -52,6 +53,7 @@ export class SpotNegotiationStoreModel {
   groupOfRequestsId: number | null;
   locations: Array<any>;
   locationsRows: Array<any>;
+  netEnergySpecific: Array<any>;
   locationsRowsPriceDetails: Array<any>;
   selectedSellerList: Array<any>;
   additionalCost: Array<any>;
@@ -80,6 +82,7 @@ export class SpotNegotiationStoreModel {
     this.locations = [];
     this.selectedSellerList = [];
     this.locationsRows = [];
+    this.netEnergySpecific=[];
     this.locationsRowsPriceDetails = [];
     this.additionalCost = [];
     this.sellerRating = [];
@@ -112,6 +115,7 @@ export class SpotNegotiationStoreModel {
     selectedSellerList: [],
     currentRequest: null,
     locationsRows: [],
+    netEnergySpecific:[],
     locationsRowsPriceDetails: [],
     additionalCost: [],
     availableTermContracts: [],
@@ -610,7 +614,15 @@ EditLocationRow(
       locationsRows: locationRows
     });
   }
-  
+  @Action(SetNetEnergySpecific)
+  SetNetEnergySpecific(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetNetEnergySpecific
+  ) {
+    patchState({
+      netEnergySpecific: payload
+    });
+  }
 
   @Selector()
   static locationRows(state: SpotNegotiationStoreModel) {
