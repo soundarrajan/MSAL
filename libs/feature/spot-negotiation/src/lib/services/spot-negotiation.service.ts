@@ -263,8 +263,8 @@ export class SpotNegotiationService extends BaseStoreService
    * @param payload =
    */
   @ObservableException()
-  GetExistingOrders(payload: any): Observable<unknown> {
-    return this.spotNegotiationApi.GetExistingOrders(payload);
+  GetExistingOrders(payload: any): Promise<any> {
+    return this.spotNegotiationApi.GetExistingOrders(payload).toPromise();
   }
 
   /**
