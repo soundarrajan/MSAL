@@ -1007,6 +1007,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       selectedSellerRows.forEach(sellerRow => {
         requestLocationIds.push(sellerRow.RequestLocationId);
       });
+
       let sellerDetailsforFormula =[] ;
       sellerDetails.map(rows => rows.Offers.map(offer => {
          offer.requestOffers.map(x=> {
@@ -1018,18 +1019,48 @@ export class SpotNegotiationHomeComponent implements OnInit {
             }
          })
       }));
+
+      // Stop the copy the formula price to fixed price and fixed price to formula price - Start 
+      let checkLocation = [];
+      this.selectedRequestList.forEach(element => {
+       checkLocation =  [...checkLocation, ...locationsRows.filter(arr => arr.requestId == element.id && arr?.requestOffers)];
+      });
+
+      let copyFlag = true;
+      selectedSellerRows.forEach(el => { 
+        checkLocation.filter(res => {
+          if(el.SellerId == res.sellerCounterpartyId){
+            el.RequestOffers.forEach(element => {
+              res.requestOffers.filter(inner => {
+                if(inner.quotedProductId == element.quotedProductId){
+                  if(inner.isFormulaPricing != element.isFormulaPricing && inner.price != null){
+                    copyFlag = false;
+                    return;
+                  }
+                }
+              })
+            });
+          }
+        });
+      });
+
+      if(!copyFlag){
+        this.toaster.warning('Copy price rule mismatched');
+        return;
+      }
+      // Stop the copy the formula price to fixed price and fixed price to formula price - End
      
       if(sellerDetailsforFormula.length>0){
-        let checkForErrors = [];
-        sellerDetailsforFormula.forEach(x=>{
-          x.requestOfferIds.forEach(y=>
-            checkForErrors = this.checkQuoatedPriceAcrossLocations(y, locationsRows)
-          )
-        });
-        if(checkForErrors.length > 0){
-            this.toaster.error('Formula Price cannot be copied to fixed Price');
-        return;
-        }
+        // let checkForErrors = [];
+        // sellerDetailsforFormula.forEach(x=>{
+        //   x.requestOfferIds.forEach(y=>
+        //     checkForErrors = this.checkQuoatedPriceAcrossLocations(y, locationsRows)
+        //   )
+        // });
+        // if(checkForErrors.length > 0){
+        //     this.toaster.error('Formula Price cannot be copied to fixed Price');
+        // return;
+        // }
         const payload = {
           copyOfferPrices : sellerDetailsforFormula
          }
@@ -1040,7 +1071,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           if (res?.message == 'Unauthorized') {
             return;
           }
-          res.copyOfferPrices.forEach(off=>{
+          res?.copyOfferPrices?.forEach(off=>{
             let payload = {
               RequestOfferId: off.requestOfferId,
               priceConfigurationId: off.priceConfigurationId
@@ -1115,19 +1146,20 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
   }
 
-  checkQuoatedPriceAcrossLocations(id : number, locationsRows){
-    let quoatedPrice = [];
-    locationsRows.forEach(loc=>
-      loc.requestOffers.forEach(req=>{
-         if(req.id == id){
-           if(req.price){
-              quoatedPrice.push(req);
-           }
-         }
-      })
-  );
-  return quoatedPrice;
-  }
+  // checkQuoatedPriceAcrossLocations(id : number, locationsRows){
+  //   debugger;
+  //   let quoatedPrice = [];
+  //   locationsRows.forEach(loc=>
+  //     loc?.requestOffers?.forEach(req=>{
+  //        if(req.id == id){
+  //          if(req.price){
+  //             quoatedPrice.push(req);
+  //          }
+  //        }
+  //     })
+  // );
+  // return quoatedPrice;
+  // }
 
   getLocationRowsWithSelectedSeller(rowsArray, selectedSellerRows) {
     rowsArray.forEach(row => {
