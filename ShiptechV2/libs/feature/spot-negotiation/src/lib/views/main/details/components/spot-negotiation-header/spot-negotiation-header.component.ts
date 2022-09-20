@@ -531,7 +531,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         }
       }
     });
-    let locRowsArray = [...this.locationsRows, ...rowsArray];
+    let locationsRows = _.cloneDeep(
+      this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+        return state['spotNegotiation'].locationsRows;
+      })
+    );
+    let locRowsArray = [...locationsRows, ...rowsArray];
     return locRowsArray;    
   }
 
