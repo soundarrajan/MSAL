@@ -465,13 +465,14 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         this.selectedOffers.forEach((rqV, rqK) => {
           let hasOrder = false;
           let hasError = false;
+          rqV.ExistingOrderId = null;
           if (res.payload.length > 0) {
             this.responseOrderData = res.payload;
             this.responseOrderData.forEach((rodV, rodK) => {
               hasError = false;
               let productsWithErrors = [];
               rodV.products.forEach((rodProdV, rodProdK) => {
-                if (rodV.requestLocationId == rqV.RequestLocationId) {
+                if (rodV.requestLocationId == rqV.RequestLocationId && rodV.locationId == rqV.LocationId) {
                   //&& rodProdV.requestProductId == rqV.RequestProductId
                   hasOrder = true;
                   let errorType = [];
@@ -520,7 +521,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
               });
             });
           }
-          if (foundRelatedOrder) {
+          if (hasOrder && foundRelatedOrder) {
             rqV.ExistingOrderId = foundRelatedOrder;
           }
         });
