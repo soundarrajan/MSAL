@@ -22,6 +22,7 @@ import {
   RemoveCounterparty,
   RemoveLocationsRowsOriData,
   SetLocationsRows,
+  SetNetEnergySpecific,
   UpdateAdditionalCostList,
   UpdateRequest
 } from '../../../../../store/actions/ag-grid-row.action';
@@ -457,6 +458,16 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
     // Update the store
     const response = this.spotNegotiationService.updatePrices(payload);
+    let locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    let pay=  {
+      locationIds:[locationsRows.find(l=>l.id==payload.RequestLocationSellerId).locationId],
+      productIds:[product.productId],
+      physicalSupplierIds:[locationsRows.find(l=>l.id==payload.RequestLocationSellerId).physicalSupplierCounterpartyId],
+      requestGroupId:locationsRows.find(l=>l.id==payload.RequestLocationSellerId).requestGroupId
+    }
+    this.getEnergy6MHistory(pay);
     response.subscribe((res: any) => {
       if (res?.message == 'Unauthorized') {
         return;
@@ -483,7 +494,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
     element.parentNode.classList.add("focus-price-highlight");
   }
+  /// get avg netEnergy6MonthHistory
+  getEnergy6MHistory(payload){   
 
+    const response = this.spotNegotiationService.getEnergy6MHistorys(payload);
+    response.subscribe((data: any)=>{
+      
+      this.store.dispatch(new SetNetEnergySpecific(data.energy6MonthHistories));
+    });
+  }
   redrawGridDetails() {
     if (this.interval) {
       clearInterval(this.interval);

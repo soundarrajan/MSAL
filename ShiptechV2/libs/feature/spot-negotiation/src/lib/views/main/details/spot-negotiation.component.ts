@@ -360,7 +360,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     
     const response = this.spotNegotiationService.getEnergy6MHistorys(payload);
     response.subscribe((data: any)=>{
-      this.store.dispatch(new SetNetEnergySpecific(data.payload));
+      this.store.dispatch(new SetNetEnergySpecific(data.energy6MonthHistories));
     });
   }
   getRequestList(): void {
