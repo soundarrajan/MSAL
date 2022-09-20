@@ -692,7 +692,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
 
   saveFormula() {
     if (!this.formValues.conversionRate) {
-      this.toastr.error('Coversion Rate field is required.');
+      this.toastr.error('Conversion Rate field is required.');
       return;
     }
 
