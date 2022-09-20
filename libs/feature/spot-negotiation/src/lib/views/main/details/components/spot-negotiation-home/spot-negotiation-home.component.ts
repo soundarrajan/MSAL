@@ -1045,7 +1045,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       });
 
       if(!copyFlag){
-        this.toaster.warning('Copy price rule mismatched');
+        this.toaster.warning('Unable to copy price from "Fixed to Formula price" or "Formula to Fixed price"');
         return;
       }
       // Stop the copy the formula price to fixed price and fixed price to formula price - End
