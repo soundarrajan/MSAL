@@ -81,7 +81,7 @@
                       "
                     >
                       <mat-radio-button [value]="element">
-                        {{ element.product.name }}
+                        {{ element.costName?.name ? element.costName?.name : element.product?.name }}
                       </mat-radio-button>
                     </mat-radio-group>
                   </td>
