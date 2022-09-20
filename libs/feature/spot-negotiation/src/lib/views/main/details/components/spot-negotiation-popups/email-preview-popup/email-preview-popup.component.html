@@ -83,7 +83,7 @@
             <div
               class="recipientClass"
               style="margin: 5px;"
-              *ngFor="let item of previewTemplate.to"
+              *ngFor="let item of previewTemplate?.to"
             >
               <div class="cust-input-field" matTooltip="{{ item.idEmailAddress }}">
                 {{ item.name }}
@@ -130,7 +130,7 @@
             <div
               class="recipientClass"
               style="margin: 5px;"
-              *ngFor="let item of previewTemplate.cc"
+              *ngFor="let item of previewTemplate?.cc"
             >
               <div class="cust-input-field" matTooltip="{{ item.idEmailAddress}}">
                 {{ item.name }}
