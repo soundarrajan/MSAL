@@ -373,7 +373,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
        </mat-form-field>
         <div
           style="height:24px;float:right;line-height:15px;width:30px;position: absolute;
-    right: -6px;"
+    right: 1px;"
         >
           {{ timeValue }}
         </div>
