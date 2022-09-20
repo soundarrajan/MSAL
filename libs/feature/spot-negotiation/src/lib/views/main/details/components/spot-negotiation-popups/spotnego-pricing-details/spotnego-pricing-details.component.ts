@@ -691,7 +691,17 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   saveFormula() {
+    if (!this.formValues.conversionRate) {
+      this.toastr.error('Coversion Rate field is required.');
+      return;
+    }
+
     if (this.formValues.formulaType.id == 1) {
+      if (!this.formValues.simpleFormula.systemInstrument) {
+        this.toastr.error('System Instrument field is required in Simple Pricing formula.');
+        return;
+      }
+
       if (!this.formValues.simpleFormula.priceType) {
         this.toastr.error('Price Type field is required in Simple Pricing formula.');
         return;
