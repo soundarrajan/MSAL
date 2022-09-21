@@ -495,13 +495,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     element.parentNode.classList.add("focus-price-highlight");
   }
   /// get avg netEnergy6MonthHistory
-  getEnergy6MHistory(payload){   
-
-    const response = this.spotNegotiationService.getEnergy6MHistorys(payload);
-    response.subscribe((data: any)=>{
-      
-      this.store.dispatch(new SetNetEnergySpecific(data.energy6MonthHistories));
-    });
+  async getEnergy6MHistory(payload){   
+    const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
+    if (response.energy6MonthHistories.length > 0){
+      this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+    }
   }
   redrawGridDetails() {
     if (this.interval) {

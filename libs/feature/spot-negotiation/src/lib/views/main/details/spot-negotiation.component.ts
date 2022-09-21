@@ -356,12 +356,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
     this.changeDetector.detectChanges();
   }
-  getEnergy6MHistory(payload){
-    
-    const response = this.spotNegotiationService.getEnergy6MHistorys(payload);
-    response.subscribe((data: any)=>{
-      this.store.dispatch(new SetNetEnergySpecific(data.energy6MonthHistories));
-    });
+  async getEnergy6MHistory(payload){   
+    const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
+    if (response.energy6MonthHistories.length > 0){
+      this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+    }
   }
   getRequestList(): void {
     const response = this.spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip: 0, Take: 25 })
