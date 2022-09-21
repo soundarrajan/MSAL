@@ -27,7 +27,8 @@ import {
   EditLocationRow,
   SetLocationsRows,
   EditCounterpartyList,
-  UpdateSpecificRequests
+  UpdateSpecificRequests,
+  SetNetEnergySpecific
 } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
@@ -2460,7 +2461,15 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         const futureLocationsRows = this.getLocationRowsAddPhySupplier(
           JSON.parse(JSON.stringify(locationsRows))
         );
-
+        //TODO
+          let productIds=this.currentRequestSmallInfo.map(rl=>rl.requestLocations.map(reql=>reql.requestProducts.map(reql=>reql.productId)));
+          let payload=  {
+            locationIds: [this.params.data.requestLocationId],
+            productIds:productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []),
+            physicalSupplierIds:[this.phySupplierId],
+            requestGroupId:this.params.data.requestGroupId
+          }
+          this.getEnergy6MHistory(payload);
         if (this.phySupplierId && this.params?.value) {
           const counterpartyList = this.store.selectSnapshot<any>(
             (state: any) => {
@@ -2520,7 +2529,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
     return locationrow;
   }
-
+  /// get avg netEnergy6MonthHistory
+  async getEnergy6MHistory(payload){   
+    const response = await this._spotNegotiationService.getEnergy6MHistorys(payload);
+    if (response.energy6MonthHistories.length > 0){
+        this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+      }
+  }
   openCostMenu(event: any, totalOfferValue: any) {
     event.preventDefault();
     event.stopPropagation();

@@ -568,8 +568,8 @@ export class SpotNegotiationService extends BaseStoreService
  * @param payload =
  */
   @ObservableException()
-  getEnergy6MHistorys(payload: any): Observable<unknown> {
-    return this.spotNegotiationApi.getEnergy6MHistorys(payload);
+  getEnergy6MHistorys(payload: any):  Promise<any> {
+    return this.spotNegotiationApi.getEnergy6MHistorys(payload).toPromise();
   }
   
   ngOnDestroy(): void {
