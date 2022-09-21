@@ -438,7 +438,7 @@ export class AdditionalCostModalComponent implements OnInit {
   getRangeTotalAmount(additionalCost, rowIndex) {
     additionalCost.deliveryId = additionalCost.product.deliveryNumber;
     additionalCost.invoiceQuantity = this.quantityFormatValue(additionalCost.product.finalQuantityAmount);
-    additionalCost.invoiceQuantityUom = this.uomList.filter(item => item.Id == additionalCost.product.finalQuantityAmountUomId)[0];
+    additionalCost.invoiceQuantityUom = this.uomList.find(item => item.id === additionalCost.product.finalQuantityAmountUomId);
     if (!additionalCost.locationAdditionalCostId) {
       return;
     }
