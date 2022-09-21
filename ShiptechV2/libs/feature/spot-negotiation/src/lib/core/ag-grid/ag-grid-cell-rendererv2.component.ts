@@ -441,10 +441,10 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
         <div></div>
         <span>Add/View Request changes</span>
       </div>
-      <br />
       <ng-container *ngIf="params && (currentRequestOffer && currentRequestOffer?.isFormulaPricing)">
         <div class="divider-line"></div>
-        <div class="delete-block" (click)="removeFormulaPrice(params)">
+        <div class="delete-block" [ngStyle]="{'opacity': (params.product.status === 'Stemmed' || params.product.status === 'Confirmed') ? 0.5 : 1}"
+        (click)="(params.product.status === 'Stemmed' || params.product.status === 'Confirmed') ? false : removeFormulaPrice(params);">
           <div></div>
           <span>Remove Formula pricing</span>
         </div>
