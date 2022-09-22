@@ -32,6 +32,7 @@ import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookup
 import { forkJoin } from 'rxjs';
 import { SetQuoteDateAndTimeZoneId } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -423,7 +424,7 @@ loadTimeZone(){
     );
     var FinalAPIdata = {
       RequestGroupId: this.currentRequestInfo.requestGroupId,
-      quoteByDate: new Date(this.spotNegotiationService.QuoteByDate ),
+      quoteByDate: this.spotNegotiationService.QuoteByDate,
       selectedSellers: this.selectedSellerList
     };
     this.spinner.show();

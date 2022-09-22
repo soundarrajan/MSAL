@@ -62,9 +62,9 @@ export class CustomDateAdapter extends MomentDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let formattedDate = moment.utc(value).format(currentFormat);
+    let formattedDate = moment(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment.utc(value).format('ddd')} ${formattedDate}`;
+      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -611,9 +611,9 @@ export class AgGridDatetimePickerToggleComponent
     // current year
     let year = this.valueField.year();
     if (this.timeValue) {
-      return moment.utc(month + '/' + date + '/' + year + ' ' + this.timeValue, 'MM/DD/YYYY HH:mm:ss')
+      return moment(month + '/' + date + '/' + year + ' ' + this.timeValue, 'MM/DD/YYYY HH:mm:ss')
       //return( month + "/" + date+ "/" + year);
-    } else return moment.utc(month + '/' + date + '/' + year, 'MM/DD/YYYY')
+    } else return moment(month + '/' + date + '/' + year, 'MM/DD/YYYY')
     //return(this.valueField.getMonth()+'/'+this.valueField.getDate()+'/'+this.valueField.getFullYear()+" "+this.timeValue.getHours()+":"+this.timeValue.getMinutes())
     // .format(this.appContext.tenantSettingsContext.dateTimeFormat)
     // .substring(0, 19);
@@ -659,7 +659,7 @@ export class AgGridDatetimePickerToggleComponent
     let payload={
       QuoteByTimeZoneId:this.spotNegotiationService.QuoteByTimeZoneId, 
       RequestGroupId:this.currentRequestInfo.requestGroupId, 
-      QuoteByDate:updateDateTime 
+      QuoteByDate: moment.utc(updateDateTime._i) 
     }
     this.spotNegotiationService
     .updateQuoteDateGroup(payload)
@@ -667,7 +667,7 @@ export class AgGridDatetimePickerToggleComponent
       if (response?.message == 'Unauthorized') {
         return;
       }
-      if (response.status) {
+      if (response?.status) {
         this.spotNegotiationService.QuoteByTimeZoneId=payload.QuoteByTimeZoneId;
         this.spotNegotiationService.QuoteByDate=updateDateTime;
         let setQuoteByGroup={
