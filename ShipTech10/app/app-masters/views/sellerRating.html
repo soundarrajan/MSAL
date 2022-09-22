@@ -127,7 +127,7 @@
 			                                                	ng-if="!value3.ratingRequired"
 			                                                    class="form-control"
 			                                                    maxlength="500"
-			                                                    ng-model="value3.comments"
+			                                                    ng-model="value3.comments" ng-model-options="{updateOn:'blur'}"
 			                                                    placeholder="Type your answer..."
 			                                                    ng-change="changeNameAndDate(value2)"
 			                                                    ></textarea>
