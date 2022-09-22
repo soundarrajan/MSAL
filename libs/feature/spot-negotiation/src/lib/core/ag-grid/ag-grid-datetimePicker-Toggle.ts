@@ -611,9 +611,9 @@ export class AgGridDatetimePickerToggleComponent
     // current year
     let year = this.valueField.year();
     if (this.timeValue) {
-      return moment(month + '/' + date + '/' + year + ' ' + this.timeValue, 'MM/DD/YYYY HH:mm:ss')
+      return moment.utc(month + '/' + date + '/' + year + ' ' + this.timeValue, 'MM/DD/YYYY HH:mm:ss')
       //return( month + "/" + date+ "/" + year);
-    } else return moment(month + '/' + date + '/' + year, 'MM/DD/YYYY')
+    } else return moment.utc(month + '/' + date + '/' + year, 'MM/DD/YYYY')
     //return(this.valueField.getMonth()+'/'+this.valueField.getDate()+'/'+this.valueField.getFullYear()+" "+this.timeValue.getHours()+":"+this.timeValue.getMinutes())
     // .format(this.appContext.tenantSettingsContext.dateTimeFormat)
     // .substring(0, 19);
@@ -659,7 +659,7 @@ export class AgGridDatetimePickerToggleComponent
     let payload={
       QuoteByTimeZoneId:this.spotNegotiationService.QuoteByTimeZoneId, 
       RequestGroupId:this.currentRequestInfo.requestGroupId, 
-      QuoteByDate: moment.utc(updateDateTime._i) 
+      QuoteByDate: updateDateTime 
     }
     this.spotNegotiationService
     .updateQuoteDateGroup(payload)
