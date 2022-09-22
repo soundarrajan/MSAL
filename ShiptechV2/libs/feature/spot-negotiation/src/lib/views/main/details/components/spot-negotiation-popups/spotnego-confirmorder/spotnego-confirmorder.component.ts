@@ -587,25 +587,25 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                 resp.subscribe((result: any) => {
                   if(result.status) {
                     this.toaster.success('order created successfully.');
-                    if(requestOfferIds.length>0){
-                      this.spotNegotiationService.cloneToPriceConfiguration({RequestOfferIds:requestOfferIds})
-                        .pipe(
-                          switchMap((resp: any) => this.spotNegotiationService.orderPriceEvaluations({PriceConfigurationIds: resp.orderPriceConfigurationIds}))
-                        ).subscribe((res:any)=> {const baseOrigin = new URL(window.location.href).origin;
-                          window.open(
-                            `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
-                            '_self'
-                          );
-                          console.log(res);
-                        });
-                      }
-                      else{
+                    // if(requestOfferIds.length>0){
+                    //   this.spotNegotiationService.cloneToPriceConfiguration({RequestOfferIds:requestOfferIds})
+                    //     .pipe(
+                    //       switchMap((resp: any) => this.spotNegotiationService.orderPriceEvaluations({PriceConfigurationIds: resp.orderPriceConfigurationIds}))
+                    //     ).subscribe((res:any)=> {const baseOrigin = new URL(window.location.href).origin;
+                    //       window.open(
+                    //         `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
+                    //         '_self'
+                    //       );
+                    //       console.log(res);
+                    //     });
+                    //   }
+                    //   else{
                         const baseOrigin = new URL(window.location.href).origin;
                           window.open(
                             `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
                             '_self'
                           );
-                      }
+                      //}
                     //this.openEditOrder(receivedOffers.payload);                    
                   }
                 });
