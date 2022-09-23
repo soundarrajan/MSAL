@@ -351,7 +351,16 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         catchError((body: any) => this.handleErrorMessage(body))
       );
   }
-
+  //updateEnegryPrices
+  @ObservableException()
+  updateEnegryPrices(payload: any):  Observable<any> {
+    return this.http
+      .put<any>(`${this._negotiationApiUrl}/Price/updateEnegry`, payload)
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
   @ObservableException()
   copyPriceDetails(payload: any): Observable<any> {
     return this.http

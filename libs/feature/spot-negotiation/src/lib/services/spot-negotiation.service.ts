@@ -222,6 +222,14 @@ export class SpotNegotiationService extends BaseStoreService
   updatePrices(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.updatePrices(payload);
   }
+
+    /**
+   * @param payload = True
+   */
+     @ObservableException()
+     updateEnegryPrices(payload: any): Promise<any> {
+       return this.spotNegotiationApi.updateEnegryPrices(payload).toPromise();
+     }
   /**
    * @param payload = True
    */
