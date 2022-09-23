@@ -1060,7 +1060,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
 
   getSpecificDate(scheduleSpecificDate: any) {
     var scheduleOption = this.getHolidayRule(scheduleSpecificDate as HolidayRuleDto) as PricingScheduleOptionSpecificDate;
-    scheduleOption = { ...scheduleSpecificDate };
+    scheduleOption = {...scheduleOption, ...scheduleSpecificDate };
     return scheduleOption;
   }
 
