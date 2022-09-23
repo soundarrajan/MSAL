@@ -2397,11 +2397,11 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         //if (ctrl.requestTenantSettings.displayOfCompany.id == 2) {
                         if (!ctrl.request.company) {
                             ctrl.request.company = {};
-                        }
-                       // if (!preventUpdateCompany) {
-                       // debugger;
                             ctrl.request.company.name = companyToDefault?.name;
                             ctrl.request.company.id = companyToDefault?.id;
+                        }
+                       // if (!preventUpdateCompany) {
+                       // debugger;                           
 
                         if(ctrl.request.locations.length > 0 && !ctrl.request.id > 0) 
                         {
@@ -2470,7 +2470,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             if (ctrl.companyInLocationIndex != null) {
                 ctrl.selectCompanyInLocation(companyId, ctrl.companyInLocationIndex);
                 ctrl.companyInLocationIndex = null;
-                return;
+                return;              
             }
             let company;
             lookupModel.get(LOOKUP_TYPE.COMPANY, companyId).then((server_data) => {

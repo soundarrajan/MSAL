@@ -145,7 +145,7 @@
         $scope.reloadPage = false;
 
         $(document).on('click',  function (event) {
-            if ($(event.target).parent()[0].nodeName != 'LI' && $(event.target).parents('.st-main-content-menu').length && ($(event.target).hasClass('btn') || $(event.target).hasClass('ladda-label'))) {
+            if ($(event.target).parent()[0]?.nodeName != 'LI' && $(event.target).parents('.st-main-content-menu').length && ($(event.target).hasClass('btn') || $(event.target).hasClass('ladda-label'))) {
                 window.actionLevel = event.target.outerText.trim();
                 if (event.target.outerText == 'Save') {
                     let length = window.location.href.split('/#/')[1].split('/').length - 1;
@@ -1047,7 +1047,7 @@
                 console.log($rootScope.listOfVesselTypes);
                 _.forEach(types, function(type) {
                     $scope.formValues[dataSrcs[type]] = [];
-                    for (let i = 0; i < $rootScope.tabData[type].length; i++) {
+                    for (let i = 0; i < $rootScope.tabData[type]?.length; i++) {
                         console.log($rootScope.tabData[type][i]);
                         setAllChild($rootScope.tabData[type][i], dataSrcs[type]);
                     }
@@ -10458,7 +10458,7 @@
             let length = window.location.href.split('/#/')[1].split('/').length - 1;
             let id = parseFloat(window.location.href.split('/#/')[1].split('/')[length]);
             if (!isNaN(id)) {
-                if (window.location.href.indexOf('request/') != -1) {
+                if (window.location.href.indexOf('request/') != -1 && window.location.href.indexOf('new-request/') == -1) {
                     payload = { Payload: {
                         "requestId": id,
                         "requestNotes": generalNotesScope.formValues.notes

@@ -722,72 +722,102 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             $('#dateTo').datetimepicker('setStartDate', new Date(dateFrom));
         }, 20);
     };
-    $scope.getTabData = function() {
+    $scope.getTabData = function(value = null) {
         console.log($scope.formValues);
-        $scope.checkData = {
-            vessel_access: 'accessVessels',
-            buyer_access: 'accessBuyers',
-            company_access: 'accessCompanies'
-        };
-        $scope.tabInitalData = {
-            vessel_access: 'accessVessels',
-            buyer_access: 'accessBuyers',
-            company_access: 'accessCompanies'
+        if (value && value.id == 'vessel_access') {
+            $scope.vesselAccessLoaded = true;
+            $scope.formValues.isVesselAccessClicked = true;
+            initTabData(value);
         }
-        if (!$scope.delayAccessRendering) {
-            $scope.delayAccessRendering = [];
+        else {
+            $scope.vesselAccessLoaded = false;
+            $scope.checkData = {
+                vessel_access: 'accessVessels',
+                buyer_access: 'accessBuyers',
+                company_access: 'accessCompanies'
+            };
+            $scope.tabInitalData = {
+                vessel_access: 'accessVessels',
+                buyer_access: 'accessBuyers',
+                company_access: 'accessCompanies'
+            }
+            if (!$scope.delayAccessRendering) {
+                $scope.delayAccessRendering = [];
+            }
+            $rootScope.listOfVesselTypes = [];
+            $.each($scope.entities.filter(e => e.id != 'vessel_access'), (key, val) => {
+                initTabData(val);
+            });
         }
+    };
+
+    function initTabData(val) {
         let userId = !$rootScope.entity_id || $rootScope.entity_id == '' ? '0' : $rootScope.entity_id;
-        $rootScope.listOfVesselTypes = [];
-        $.each($scope.entities, (key, val) => {
-            Factory_Admin.getTabData(val.id, userId, (response) => {
-                if (response) {
-                    if (val.id == 'vessel_access') {
-                        if (response.payload.length == 1) {
-                            $scope.tabData[val.id] = $scope.buildTree(response.payload[0].children, $scope.formValues.accessVessels);
-                            $scope.checkData[val.id] = false;
-                            $scope.tabData['buyer_access'] = $scope.buildTree($scope.tabInitalData['buyer_access'], $scope.formValues.accessBuyers);
-                            $scope.tabData['company_access'] = $scope.buildTree($scope.tabInitalData['company_access'], $scope.formValues.accessCompanies);
-                            
-                            $scope.delayAccessRendering[val.id] = 500;
-                            $scope.delayAccessRendering['buyer_access'] = 100;
-                            $scope.delayAccessRendering['company_access'] = 100;
-                            
-                            $scope.detectInitialAllSelected();
-                        } else {
-                            var aligendObject = $scope.setParentUnselectable(response.payload, $scope.formValues.accessVessels);
-                            for (let i = 0; i < aligendObject.length; i++) {
-                                let vesselType = {
-                                    'id': aligendObject[i].id,
-                                    'name': aligendObject[i].name
-                                };
-                                $rootScope.listOfVesselTypes.push(vesselType);
-                            }
-                            $scope.tabData[val.id] = aligendObject;
-                            $scope.checkData[val.id] = false;
-                            if(val.id == 'buyer_access'){
-                             $scope.tabData['buyer_access'] = $scope.buildTree($scope.tabInitalData['buyer_access'], $scope.formValues.accessBuyers);
-                            }
-                            if(val.id == 'accessCompanies'){
-                            $scope.tabData['company_access'] = $scope.buildTree($scope.tabInitalData['company_access'], $scope.formValues.accessCompanies);
-                            }
-                            $scope.detectInitialAllSelected();
-                        }
-                    } else {
+        Factory_Admin.getTabData(val.id, userId, (response) => {
+            if (response) {
+                if (val.id == 'vessel_access') {
+                    if (response.payload.length == 1) {
+                        $scope.tabData[val.id] = $scope.buildTree(response.payload[0].children, $scope.formValues.accessVessels);
                         $scope.checkData[val.id] = false;
-                        $scope.tabData[val.id] = response.payload
-                        $scope.tabInitalData[val.id] = response.payload;
-                        if (val.id == 'buyer_access') {
-                            $scope.tabData[val.id] = $scope.buildTree($scope.tabInitalData[val.id], $scope.formValues.accessBuyers);
-                        } else if (val.id == 'company_access') {
-                            $scope.tabData[val.id] = $scope.buildTree($scope.tabInitalData[val.id], $scope.formValues.accessCompanies);
+                        if (!$scope.tabData['buyer_access']) {
+                            $scope.tabData['buyer_access'] = $scope.buildTree($scope.tabInitalData['buyer_access'], $scope.formValues.accessBuyers);
+                        }
+                        if (!$scope.tabData['company_access']) {
+                            $scope.tabData['company_access'] = $scope.buildTree($scope.tabInitalData['company_access'], $scope.formValues.accessCompanies);
+                        }
+                        
+                        $scope.delayAccessRendering[val.id] = 500;
+                        $scope.delayAccessRendering['buyer_access'] = 100;
+                        $scope.delayAccessRendering['company_access'] = 100;
+                        
+                        $scope.detectInitialAllSelected();
+                    } else {
+                        var aligendObject = $scope.setParentUnselectable(response.payload, $scope.formValues.accessVessels);
+                        for (let i = 0; i < aligendObject.length; i++) {
+                            let vesselType = {
+                                'id': aligendObject[i].id,
+                                'name': aligendObject[i].name
+                            };
+                            $rootScope.listOfVesselTypes.push(vesselType);
+                        }
+                        $scope.tabData[val.id] = aligendObject;
+                        $scope.checkData[val.id] = false;
+                        if (!$scope.tabData['buyer_access']) {
+                            $scope.tabData['buyer_access'] = $scope.buildTree($scope.tabInitalData['buyer_access'], $scope.formValues.accessBuyers);
+                        }
+                        if (!$scope.tabData['company_access']) {
+                            $scope.tabData['company_access'] = $scope.buildTree($scope.tabInitalData['company_access'], $scope.formValues.accessCompanies);
                         }
                         $scope.detectInitialAllSelected();
                     }
+                } else {
+                    $scope.checkData[val.id] = false;
+                    $scope.tabData[val.id] = response.payload
+                    $scope.tabInitalData[val.id] = response.payload;
+                    if (val.id == 'buyer_access' && $scope.formValues.accessBuyers) {
+                        $scope.tabData[val.id] = $scope.buildTree($scope.tabInitalData[val.id], $scope.formValues.accessBuyers);
+                    } else if (val.id == 'company_access' && $scope.formValues.accessCompanies) {
+                        $scope.tabData[val.id] = $scope.buildTree($scope.tabInitalData[val.id], $scope.formValues.accessCompanies);
+                    }
+                    $scope.detectInitialAllSelected();
                 }
-            });
+            }
         });
-    };
+    }
+
+    $scope.$watch('formValues.accessBuyers', function() {
+        if ($scope.formValues.accessBuyers && $scope.tabInitalData && $scope.tabData && $scope.tabInitalData['buyer_access'] && $scope.tabInitalData['buyer_access']?.length >= 0) {
+            $scope.tabData['buyer_access'] = $scope.buildTree($scope.tabInitalData['buyer_access'], $scope.formValues.accessBuyers);
+            $scope.detectInitialAllSelected();
+        }
+    });
+
+    $scope.$watch('formValues.accessCompanies', function() {
+        if ($scope.formValues.accessCompanies && $scope.tabInitalData && $scope.tabData && $scope.tabInitalData['company_access'] && $scope.tabInitalData['company_access']?.length >= 0) {
+            $scope.tabData['company_access'] = $scope.buildTree($scope.tabInitalData['company_access'], $scope.formValues.accessCompanies);
+            $scope.detectInitialAllSelected();
+        }
+    });
 
     $scope.getAgreementTypeIndividualList = function() {
         Factory_Admin.getAgreementTypeIndividualList(true, (response) => {
@@ -826,8 +856,6 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
     $scope.$watch('tabData', function(scope){
        $rootScope.tabData = $scope.tabData;
     }, true);
-
-
 
     $scope.setParentUnselectable = function(list, values) {
         list.forEach((obj) => {
@@ -1024,14 +1052,15 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             company_access: 'accessCompanies'
         };
         $scope.isAll = true;
-        for (let i = 0; i < $scope.tabData[type].length; i++) {
-            tree($scope.tabData[type][i], detail, $scope.tabData[type][i]);
-            detectAllSelected($scope.tabData[type][i], $scope.checkData[type]);
+        if ($scope.tabData[type]) {
+            for (let i = 0; i < $scope.tabData[type].length; i++) {
+                tree($scope.tabData[type][i], detail, $scope.tabData[type][i]);
+                detectAllSelected($scope.tabData[type][i], $scope.checkData[type]);
+            }
+            $scope.checkData[type] = $scope.isAll ? true : false;
+            $scope.$apply();
+            console.log($scope.tabData[type]);
         }
-        $scope.checkData[type] = $scope.isAll ? true : false;
-        $scope.$apply();
-        console.log($scope.tabData[type]);
-        
     }
 
     $scope.buildTree = function(list, values, idAttr, parentAttr, childrenAttr) {
@@ -1046,7 +1075,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
         }
         let treeList = [];
         let lookup = {};
-        list.forEach((obj) => {
+        list?.forEach((obj) => {
             let findElement = _.find(values, function(object) {
                 return object.id == obj.id && object.name == obj.name;
             });
@@ -1056,7 +1085,7 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             lookup[obj[idAttr]] = obj;
             obj[childrenAttr] = [];
         });
-        list.forEach((obj) => {
+        list?.forEach((obj) => {
             if (obj[parentAttr] != null) {
                 if (obj[parentAttr].id) {
                     lookup[obj[parentAttr].id][childrenAttr].push(obj);
