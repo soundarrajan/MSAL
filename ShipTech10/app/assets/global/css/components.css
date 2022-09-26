@@ -44,7 +44,7 @@ body {
     padding: 0px !important;
     margin: 0px !important;
     direction: "ltr";
-    font-size: 12px;
+    font-size: 13px !important;
 }
 
 
@@ -29396,3 +29396,6 @@ Color library demo
     background: rgba(238, 238, 238, 0.9);
     color: #333;
 }
+.bottom-menu-item:hover{
+    background-color: #21282e;
+    }
