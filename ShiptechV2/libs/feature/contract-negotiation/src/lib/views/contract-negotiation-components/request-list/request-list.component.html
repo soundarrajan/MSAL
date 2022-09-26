@@ -1,0 +1,41 @@
+<div class="contract-negotiation-wrapper">
+  <div class="contract-requestDetails-container">
+    <div class="shiptech-layout-content">
+        <div class="page-bar" style="position: fixed; width: 100%;">
+            <div class="col-md-4">
+            <div class="breadcrumbs-container">
+                <div class="ui-breadcrumb">
+                    <ul>
+                        <li class="home" id="Home001"></li>
+                        <li class="link" id="BrdSrm02">Contract</li>
+                        <li class="arrow">></li>
+                        <li class="link" id="BrdSrm03">Contracts Request List</li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="w-100 st-main-content-menu no-print" id="wunderbar" style="height:40px;margin-bottom: 0 !important; position: fixed; width: 100%; top: 84px;">
+            <div>
+                <div style="height:40px">
+                  <mat-tab-group class="shiptech-tab-bar" #subTab>
+                    <mat-tab label="Request List" id="ReqTab04">
+                      <div style="z-index: 9999;padding: 0px 0px 0px 0px;position: fixed; width: 100%;">
+                        <app-contract-request-details></app-contract-request-details>
+                      </div>
+                      <div style="margin-top: -40px;">
+                        <div class="header-buttons">
+                          <div style="position: fixed;right: 15px;">
+                            <button *ngIf="isBuyer" id="CRBt22" matTooltip="Create Request"  matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button class="mid-blue-button cust-header-btn" (click)="createContractRequest()">+ Create Request</button>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+
+                  </mat-tab-group>
+                </div>
+        </div>
+        </div>
+    </div>
+  </div>
+</div>

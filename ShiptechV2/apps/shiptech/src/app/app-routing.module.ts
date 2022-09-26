@@ -75,6 +75,21 @@ const routes: Routes = environment.useAdal
               import('@shiptech/feature/contract').then(m => m.ContractModule)
           }
         ]
+      },{
+        path: '',
+        data: {
+          breadcrumb: 'Contract Requests List',
+          breadcrumbUrl: '/v2/contract-requests/request',
+          breadcrumbIcon: 'fa fa-home'
+        },
+        children: [
+          {
+            path: KnownPrimaryRoutes.ContractNegotiation,
+            canActivate: [AuthenticationGuard],
+            loadChildren: () =>
+              import('@shiptech/feature/contract-negotiation').then(m => m.ContractNegotiationModule)
+          }
+        ]
       },
       {
         path: '',
@@ -229,6 +244,25 @@ const routes: Routes = environment.useAdal
             canActivate: [MsalGuard],
             loadChildren: () =>
               import('@shiptech/feature/contract').then(m => m.ContractModule),
+            resolve: {
+              data: BootstrapResolver
+            }
+          }
+        ]
+      },
+      {
+        path: '',
+        data: {
+          breadcrumb: 'Contract Requests List',
+          breadcrumbUrl: '/v2/contract-requests',
+          breadcrumbIcon: 'fa fa-home'
+        },
+        children: [
+          {
+            path: KnownPrimaryRoutes.ContractNegotiation,
+            canActivate: [MsalGuard],
+            loadChildren: () =>
+              import('@shiptech/feature/contract-negotiation').then(m => m.ContractNegotiationModule),
             resolve: {
               data: BootstrapResolver
             }

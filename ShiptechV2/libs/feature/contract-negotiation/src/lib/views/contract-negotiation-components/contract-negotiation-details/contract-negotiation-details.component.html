@@ -1,0 +1,200 @@
+<div class="contract-nego-content">
+    <div class="grid-in-accordion">
+        <div id=port{{i+1}} #port{{i+1}} class="panel-container"
+            *ngFor="let loc of requests[selectedRequestIndex]?.locations;let i = index">
+            <mat-expansion-panel [expanded]="i==portIndex?true:false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <!-- <app-details-table-header [title]="loc['location-name']"></app-details-table-header> -->
+                        <div class="details-table-header">
+                            <div class="accordion-detail" [ngStyle]="pinnedColumnWidth">
+                                <div class="panel-title">
+                                    <div>Location:</div>
+                                    <div class="title" [matTooltip]="loc['location-name']"
+                                        matTooltipClass="lightTooltip">{{loc['location-name']}}</div>
+                                </div>
+                                <div class="counter-title">
+                                    <div class="plus-icon" [matMenuTriggerFor]="clickmenu"
+                                        (click)="$event.stopPropagation();"></div>
+                                    <div class="title">Counterparties</div>
+                                </div>
+                                
+                            </div>
+                            <mat-menu #clickmenu="matMenu" class="add-counterparties">
+                                <div class="expansion-popup" style="margin: 20px 0px;">
+                                    <div class="select-product-container">
+                                        <div class="col-md-12 header-container-product"
+                                            (click)="$event.stopPropagation(); $event.preventDefault()">
+                                            <div class="search-product-container col-md-10">
+                                                <span class="search-product-lookup">
+                                                </span>
+                                                <input matInput #inputBox
+                                                    placeholder="Search and select counterparty"
+                                                    class="search-product-input">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <span class="expand-img"></span>
+                                            </div>
+                                        </div>
+                                        <table
+                                            class="delivery-products-pop-up counterpartyList col-md-12 no-padding"
+                                            mat-table (click)="$event.stopPropagation()"
+                                            [dataSource]="counterpartyList">
+
+                                            <ng-container matColumnDef="counterparty">
+                                                <th mat-header-cell *matHeaderCellDef> Counterparty </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <mat-option [value]="element">
+                                                        <mat-checkbox class="single_column_label" [value]="element"
+                                                            [(ngModel)]="element.selected"
+                                                            matTooltipClass="lightTooltip"
+                                                            matTooltip="{{element.counterparty}}">
+                                                            {{element.counterparty}}
+                                                        </mat-checkbox>
+                                                    </mat-option>
+                                                </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="blank">
+                                                <th mat-header-cell *matHeaderCellDef></th>
+                                                <td mat-cell *matCellDef="let element">
+                                                </td>
+                                            </ng-container>
+                                            <tr mat-header-row *matHeaderRowDef="counterpartyColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: counterpartyColumns;"></tr>
+                                        </table>
+                                        <div class="proceed-div">
+                                            <button mat-button class="mid-blue-button proceed-btn">Proceed</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-menu>
+
+                            <div class="header-content" (click)="$event.stopPropagation();">
+                                <div class="details-left">
+                                    <div class="count-circle" *ngFor="let status of statusList">
+                                        <div class="d-flex align-items-center">
+                                            <div class="count m-l-5" [ngClass]="status.className">
+                                                <div class="count-value">{{status.count}}</div>
+                                            </div>
+                                            <div class="ellipsis m-l-5 m-r-5 fs-12" matTooltip="{{status.name}}"
+                                                matTooltipClass="lightTooltip">{{status.name}}</div>
+                                        </div>
+                                        <!-- <div class="d-flex align-items-center">
+                                            <div class="count approved m-l-5">
+                                                <div class="count-value">0</div>
+                                            </div>
+                                            <div class="ellipsis m-l-5 m-r-5 fs-12" [matTooltip]="'Approved'"
+                                                matTooltipClass="lightTooltip">Approved</div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="count rejected m-l-5">
+                                                <div class="count-value">0</div>
+                                            </div>
+                                            <div class="ellipsis m-l-5 m-r-5 fs-12" [matTooltip]="'Rejected'"
+                                                matTooltipClass="lightTooltip">Rejected</div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="count contracted m-l-5">
+                                                <div class="count-value">0</div>
+                                            </div>
+                                            <div class="ellipsis m-l-5 m-r-5 fs-12" [matTooltip]="'Contracted'"
+                                                matTooltipClass="lightTooltip">Contracted</div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="details-right">
+                                <div class="product">
+                                    <div class="title">M. Prdt:</div>
+                                    <div class="w-65">
+                                        <div class="product-name" matTooltip="RMK 500" matTooltipClass="lightTooltip">
+                                            RMK 500</div>
+                                    </div>
+                                </div>
+                                <div class="b-r"></div>
+                                <div class="qty">
+                                    <div class="title">Qty:</div>
+                                    <div class="qty-value" matTooltip="1000MT Min-1000MT Max"
+                                        matTooltipClass="lightTooltip">1000MT Min-1000MT Max </div>
+                                </div>
+                                <div class="b-r"></div>
+                                <div class="qty-tooltip">
+                                    <div class="qty">
+                                        <span class="title">M. Price:</span>
+                                        <span class="qty-value">620.40 </span>
+                                    </div>
+                                    <div class="hover-tooltip">
+                                        <span><b>ICE Gasoil</b> as on 20/06/2022 : <b>$620.40</b></span>
+                                    </div>
+                                </div>
+
+                                <div class="b-r"></div>
+                                <div class="periodicity">
+                                    <div class="icon"></div>
+                                    <div class="custom-select-field darkTheme">
+                                        <mat-form-field>
+                                            <mat-select #per disableOptionCentering panelClass="darkPanel-period"
+                                                [(value)]="loc.period" (openedChange)="togglePanel(per.panelOpen,per.value)">
+                                                <mat-option value="M">Monthly</mat-option>
+                                                <mat-option value="Q">Quarterly</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="toggleButtons">
+                                    <mat-chip-list>
+                                        <mat-chip #chip class="toggle-chip active-chip chip1"
+                                            [ngClass]="{'active-chip':chipSelected=='1','inactive-chip':chipSelected=='2'}"
+                                            value="1" (click)="onChipSelection('1')">
+                                            <div class="ellipsis" matTooltip="Forecast" matTooltipClass="lightTooltip">
+                                                Forecast</div>
+                                        </mat-chip>
+                                        <mat-chip #chip class="toggle-chip inactive-chip chip2" value="2"
+                                            [ngClass]="{'active-chip':chipSelected=='2','inactive-chip':chipSelected=='1'}"
+                                            value="2" (click)="onChipSelection('2')">
+                                            <div class="ellipsis" matTooltip="Formula Description"
+                                                matTooltipClass="lightTooltip">Formula Description</div>
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="open-close-arrow"></div>
+                        </div>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ng-template matExpansionPanelContent>
+                    <div class="aggrid-container">
+                        <div appResizable style="position: relative;width: 100%;">
+                            <div class="grid-content" [style.width.px]="fullHeaderWidth">
+                                <div class="grid-container">
+                                    <div style="margin:0px">
+                                        <div style="width:100%;height: 100%;">
+
+                                            <!-- AG-GRID component -->
+                                            <app-contract-nego-grid style="width: 100%;height: 100%;"
+                                                [contractData]="loc.data" 
+                                                [locationId]="loc['location-id']" [rfqSent]="rfqSent"
+                                                [noQuote]="noQuote" [periodicity]="per.value"
+                                                (sendNodeData)="getNodeData($event)"
+                                                (pinnedColumnsWidth)="getPinnedColumnWidth($event)">
+                                            </app-contract-nego-grid>
+                                            <!-- HTML Grid component Start- *************IMPORTANT NOT TO DELETE***************** -->
+                                            <!-- <app-contract-nego-table style="width: 100%;height: 100%;"
+                                                [contractData]="loc.data" 
+                                                [locationId]="loc['location-id']" [rfqSent]="rfqSent"
+                                                [noQuote]="noQuote" [periodicity]="per.value">
+                                            </app-contract-nego-table> -->
+                                            <!-- HTML Grid component End- ***************IMPORTANT NOT TO DELETE****************** -->
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-expansion-panel>
+        </div>
+
+    </div>
+</div>

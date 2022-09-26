@@ -1,0 +1,23 @@
+<div class="search-request-popup grid-ui">
+    <div class="header">
+        <div class="title">Search Formula</div>
+        <div style="display:flex">
+            <input type="text" placeholder="Search formula here" class="search-box">
+            <button class="searchButton" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+        <div class="header-btn">
+            <button class="blue-button h-25" style="width:100px;border-radius:3px" [ngStyle]="formulaSelected?{'pointer-events': 'all'} : {'pointer-events': 'none'}" (click)="proceed();">Proceed</button>
+            <span class="seperator-line"></span>
+            <span class="closeBtn" style="cursor:pointer;" [mat-dialog-close]="true"></span>
+        </div>
+    </div>
+    <mat-dialog-content style="overflow: hidden;">
+        <ag-grid-angular id="tradelistgrid" style="height: calc(100vh - 235px);"
+            [gridOptions]="dialog_gridOptions"  
+            class="ag-theme-material angular-v9" (selectionChanged)="onSelectionChanged($event)">
+        </ag-grid-angular>
+        <app-footer-v2 class="footer-popup" [id]="'inv-report-popup'"  [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>  
+    </mat-dialog-content>
+</div>

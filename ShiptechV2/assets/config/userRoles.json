@@ -1,0 +1,198 @@
+[
+    {
+        "role": "ADMIN",
+        "pages": [],
+        "ex_pages": []
+    },
+    {
+        "role": "RnD",
+        "pages": [],
+        "ex_pages": []
+    },
+    {
+        "role": "24S",
+        "pages": [
+            {
+                "url": "shiptech",
+                "pages": [
+                    {
+                        "url": "shiptechcomponents",
+                        "pages": []
+                    },
+                    {
+                        "url": "invoice",
+                        "pages": []
+                    },
+                    {
+                        "url": "delivery",
+                        "pages": []
+                    },
+                    {
+                        "url": "contract",
+                        "pages": []
+                    },
+                    {
+                        "url": "controlTower",
+                        "pages": []
+                    },
+                    {
+                        "url": "controlTowerNew",
+                        "pages": []
+                    },
+                    {
+                        "url": "spotnegotiation",
+                        "pages": []
+                    },
+                    {
+                        "url": "contractnegotiation",
+                        "pages": [
+                            {
+                                "url": "buyer",
+                                "pages": []
+                            },
+                            {
+                                "url": "approver",
+                                "pages": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "ex_pages": []
+    },
+    {
+        "role": "Test",
+        "pages": [],
+        "ex_pages": [
+            {
+                "url": "dsComponents",
+                "pages": [
+                    {
+                        "url": "v2Components",
+                        "pages": []
+                    },
+                    {
+                        "url": "v1Components",
+                        "pages": [
+                            {
+                                "url": "tradecomps",
+                                "pages": []
+                            },
+                            {
+                                "url": "rackothercomponents",
+                                "pages": []
+                            },
+                            {
+                                "url": "filterchips",
+                                "pages": []
+                            },
+                            {
+                                "url": "newheaderv2",
+                                "pages": []
+                            },
+                            {
+                                "url": "scrolltest",
+                                "pages": []
+                            }
+                        ]
+                    },
+                    {
+                        "url": "mapComponents",
+                        "pages": [
+                            {
+                                "url": "porthover",
+                                "pages": []
+                            },
+                            {
+                                "url": "vesselinfo",
+                                "pages": []
+                            },
+                            {
+                                "url": "vessel2info",
+                                "pages": []
+                            },
+                            {
+                                "url": "locationhover",
+                                "pages": []
+                            },
+                            {
+                                "url": "location2info",
+                                "pages": []
+                            },
+                            {
+                                "url": "port2tab",
+                                "pages": []
+                            },
+                            {
+                                "url": "ai",
+                                "pages": []
+                            },
+                            {
+                                "url": "ai-q2-design",
+                                "pages": []
+                            },
+                            {
+                                "url": "smarttrader",
+                                "pages": []
+                            },
+                            {
+                                "url": "darkfilter",
+                                "pages": []
+                            },
+                            {
+                                "url": "Vessel&locationpopups-newdesign",
+                                "pages": []
+                            },
+                            {
+                                "url": "mappanel",
+                                "pages": []
+                            },
+                            {
+                                "url": "news",
+                                "pages": []
+                            },
+                            {
+                                "url": "comments",
+                                "pages": []
+                            },
+                            {
+                                "url": "filterchips",
+                                "pages": []
+                            },
+                            {
+                                "url": "shippopup",
+                                "pages": []
+                            },
+                            {
+                                "url": "fullshippopup",
+                                "pages": []
+                            },
+                            {
+                                "url": "tableview",
+                                "pages": []
+                            },
+                            {
+                                "url": "filterpopup",
+                                "pages": []
+                            },
+                            {
+                                "url": "others",
+                                "pages": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "url": "shiptech",
+                "pages": [
+                    {
+                        "url": "shiptechcomponents",
+                        "pages": []
+                    }
+                ]
+            }
+        ]
+    }
+]

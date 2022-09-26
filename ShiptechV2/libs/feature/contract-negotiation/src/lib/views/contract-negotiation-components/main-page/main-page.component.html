@@ -1,0 +1,217 @@
+<div class="contract-negotiation-wrapper">
+    <div class="shiptech-layout-content contract-nego-home">
+        <div class="page-bar" style="position: fixed; width: 100%;">
+            <div class="col-md-4">
+                <div class="breadcrumbs-container">
+                    <div class="ui-breadcrumb">
+                        <ul>
+                            <li class="home"></li>
+                            <li class="link">Procurement</li>
+                            <li class="arrow">></li>
+                            <li class="link">Request List</li>
+                            <li class="arrow">></li>
+                            <li class="link">Negotiation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="st-breadcrumbs-progress-bar col-md-8" style="margin: 0px 30px;">
+                <ul class="page-breadcrumb">
+                    <li class="btn btn-fit-height {{navItem.indexStatus}}" title="{{navItem.entityId}}"
+                        *ngFor="let navItem of navigationItems">
+                        <a href="{{navItem.url}}" class="breadcrumb-a">
+                            {{navItem.displayName}}
+                        </a>
+                    </li>
+                </ul>
+            </div> -->
+        </div>
+        <div class="w-100 st-main-content-menu" id="wunderbar">
+
+            <div style="height:40px">
+                <mat-tab-group class="shiptech-tab-bar" #subTab
+                    (selectedIndexChange)="onSubTabChange(subTab,subTab.selectedIndex)">
+                    <mat-tab label="Main Page">
+                        <div class="" style="z-index: 9999;position: fixed; width: 100%;background-color: #F5F7FB;">
+                            <app-contract-negotiation-header [rfqSent]="rfqSent" [noQuote]="noQuote">
+                            </app-contract-negotiation-header>
+                        </div>
+                        <div style="margin-top: -39px;">
+                            <div class="tab-header-buttons">
+                                <div *ngIf="isNegotiationClosed" class="tabheader-btn-icons ht-100">
+                                    <div class="header-icons ht-100 d-flex align-items-center">
+                                        <!-- <div class="calculate-icon-btn">
+                                                <span class="calculate-icon"></span>
+                                            </div> -->
+                                        <div class="email-icon-btn" matTooltip="Preview approval"
+                                            *ngIf="showPreviewEmail" matTooltipClass="lightTooltip"
+                                            (click)="emailPreviewApproval()">
+                                            <span class="email-icon"></span>
+                                        </div>
+                                        <div class="no-quote-btn" matTooltip="No Quote" *ngIf="showNoQuote && rfqSent"
+                                            matTooltipClass="lightTooltip" (click)="onClickNoQuote()">
+                                            <span class="no-quote-icon"></span>
+                                        </div>
+                                        <div class="calculate-icon-btn" *ngIf="isBuyer" matTooltip="Calculate"
+                                            matTooltipClass="lightTooltip" (click)="calculatePrice()">
+                                            <span class="calculate-icon"></span>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="isBuyer" class="ht-100 d-flex align-items-center">
+                                        <button matTooltip="Send RFQ" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button
+                                            (click)="sendRFQ()" class="mid-blue-button cust-header-btn">Send
+                                            RFQ</button>
+                                        <button matTooltip="Send to Approve" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button
+                                            class="mid-blue-button cust-header-btn" (click)="sendToApproval()">Send
+                                            to
+                                            Approve</button>
+                                        <button matTooltip="Create Contract" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button
+                                            (click)="createContract()" class="mid-blue-button cust-header-btn">Create
+                                            Contract</button>
+                                    </div>
+                                    <div *ngIf="!isBuyer" class="ht-100 d-flex align-items-center">
+                                        <button matTooltip="Approve" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button
+                                            class="w-104 mid-blue-button cust-header-btn"
+                                            (click)="toApprove()">Approve</button>
+                                        <button matTooltip="Reject" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button
+                                            (click)="toReject()"
+                                            class="w-104 mid-blue-button cust-header-btn">Reject</button>
+                                    </div>
+                                    <div class="menu-icon" matTooltip="View more options" matTooltipClass="lightTooltip"
+                                        [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger">
+
+                                    </div>
+                                </div>
+                                <div class="close-negotiation" *ngIf="!isNegotiationClosed">
+                                    <span class="">Negotiation <b>Closed</b> on <b>12/06/2022</b></span>
+                                </div>
+                                <mat-menu #clickmenupopup="matMenu" class="menu-panel-eta small-menu darkPanel">
+                                    <div class="p-tb-5" style="display:flex;align-items:center;">
+                                        <span>
+                                            <div class="contract-resend-icon"></div>
+                                        </span>
+                                        <span class="fs-12">Update RFQ</span>
+                                    </div>
+                                    <div class="p-tb-5" style="display:flex;align-items:center;">
+                                        <span>
+                                            <div class="contract-requote-icon"></div>
+                                        </span>
+                                        <span class="fs-12">Requote</span>
+                                    </div>
+                                    <hr class="menu-divider-line">
+                                    <div class="p-tb-5" (click)="duplicateRequest()"
+                                        style="display:flex;align-items:center;">
+                                        <span>
+                                            <div class="duplicate-nego-icon"></div>
+                                        </span>
+                                        <span class="fs-12">Duplicate Request</span>
+                                    </div>
+                                    <hr class="menu-divider-line">
+                                    <div class="p-tb-5"
+                                        style="display:flex;align-items:center;">
+                                        <span>
+                                            <div class="add-nego-icon"></div>
+                                        </span>
+                                        <span class="fs-12">Add to another Nego</span>
+                                    </div>
+                                    <div class="p-tb-5" (click)="closeNegotiation()"
+                                        style="display:flex;align-items:center;padding-left: 2px;">
+                                        <span>
+                                            <div class="close-nego-icon"></div>
+                                        </span>
+                                        <span class="fs-12">Close Negotiation</span>
+                                    </div>
+                                </mat-menu>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Document">
+                        <ng-template mat-tab-label>
+                            <div class="custom-label-holder">
+                                <div class="custom-tab-ui"></div>
+                                <div class="custom-label">Documents</div>
+                            </div>
+                        </ng-template>
+                        <section *ngIf="tab2">
+                            <ng-container *ngTemplateOutlet="documents"></ng-container>
+                        </section>
+                    </mat-tab>
+                    <mat-tab label="Email Log">
+                        <div style="margin-top: -40px;">
+                            <div class="tab-header-buttons">
+                                <div class="tabheader-btn-icons ht-100">
+                                    <div class="d-flex align-items-centerht-100">
+                                        <button matTooltip="Send RFQ" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button
+                                            class="mid-blue-button cust-header-btn" style="width:100px">Resend
+                                        </button>
+
+                                    </div>
+                                    <div class="menu-icon" matTooltip="View more options" matTooltipClass="lightTooltip"
+                                        [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-template mat-tab-label>
+                            <div class="custom-label-holder">
+                                <div class="custom-tab-ui"></div>
+                                <div class="custom-label">Email Log</div>
+                            </div>
+                        </ng-template>
+                        <section *ngIf="tab3">
+                            <ng-container *ngTemplateOutlet="emaillog"></ng-container>
+                        </section>
+                    </mat-tab>
+                    <mat-tab label="Audit Log">
+                        <ng-template mat-tab-label>
+                            <div class="custom-label-holder">
+                                <div class="custom-tab-ui"></div>
+                                <div class="custom-label">Audit Log</div>
+                            </div>
+                        </ng-template>
+                        <section *ngIf="tab4">
+                            <ng-container *ngTemplateOutlet="auditlog"></ng-container>
+                        </section>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+
+        </div>
+    </div>
+
+    <ng-template #emaillog>
+        <app-contract-nego-emaillog></app-contract-nego-emaillog>
+    </ng-template>
+    <ng-template #auditlog>
+        <app-contract-nego-auditlog></app-contract-nego-auditlog>
+    </ng-template>
+    <ng-template #documents>
+        <div style="margin-top: -40px;">
+            <div class="tab-header-buttons">
+                <div class="tabheader-btn-icons ht-100">
+                    <div class="d-flex align-items-centerht-100">
+                        <button matTooltip="Verify" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button
+                            class="mid-blue-button cust-header-btn" style="width:110px">Verify</button>
+                    </div>
+                    <div class="menu-icon"></div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 60px;z-index: 9999;
+        padding: 0px;
+        position: fixed;
+        width: 100%;">
+            <app-doc-drag-drop-upload></app-doc-drag-drop-upload>
+        </div>
+    </ng-template>
+
+
+    <!-- /************************** FOOTER ****************************/ -->
+    <div class="details-footer">
+        <div matTooltip="Back to list" matTooltipClass="lightTooltip" matTooltipShowDelay="500">
+            <button mat-raised-button class="footer-button" (click)="goBack()">
+                <span style="top: -1px;position: relative;">Back to list</span>
+            </button>
+        </div>
+    </div>
+</div>

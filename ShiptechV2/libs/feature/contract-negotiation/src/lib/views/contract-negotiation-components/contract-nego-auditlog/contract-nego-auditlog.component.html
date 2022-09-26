@@ -1,0 +1,58 @@
+<div class="auditLog-content list-page">
+    <div class="grid-in-accordion">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <div class="details-table-header">
+                        <div class="accordion-detail">
+                            <div class="panel-title">
+                                <div>Negotiation History</div>
+                            </div>                        
+                        </div>    
+                        <div class="open-close-arrow"></div>
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+                <div class="grid-container">
+                    <div class="agGrid-v2" style="margin: 0">
+                        <div style="width:100%;height: 100%;">
+                            <ag-grid-angular
+                                [ngStyle]="{'height': 'calc( 50vh - 25px'}"
+                                style="width: 100%;" [gridOptions]="gridOptions_nego_history" domLayout='normal'
+                                class="ag-theme-material ag-grid-v2 angular-v9"></ag-grid-angular>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </mat-expansion-panel>
+    </div>
+    <div class="grid-in-accordion">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <div class="details-table-header">
+                        <div class="accordion-detail">
+                            <div class="panel-title">
+                                <div>Chat History</div>
+                            </div>                        
+                        </div>    
+                        <div class="open-close-arrow"></div>
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+                <div class="grid-container">
+                    <div class="agGrid-v2" style="margin: 0">
+                        <div style="width:100%;height: 100%;">
+                            <ag-grid-angular
+                                [ngStyle]="{'height': 'calc( 50vh - 25px'}"
+                                style="width: 100%;" [gridOptions]="gridOptions_chat_history" domLayout='normal'
+                                class="ag-theme-material ag-grid-v2 angular-v9"></ag-grid-angular>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </mat-expansion-panel>
+    </div>
+</div>

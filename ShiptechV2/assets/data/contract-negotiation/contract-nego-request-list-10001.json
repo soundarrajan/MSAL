@@ -1,0 +1,1333 @@
+[
+  {
+    "RequestId": 1234,
+    "CreatedDate": "12/02/2022",
+    "Status": "Open",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "14/06/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name1",
+            "Offers": 10,
+            "AwaitingApproval": 0,
+            "Approved": 0,
+            "Rejected": 0,
+            "ContractCreated": 0,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name1",
+            "Offers": 10,
+            "AwaitingApproval": 0,
+            "Approved": 0,
+            "Rejected": 0,
+            "ContractCreated": 0,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 2234,
+    "CreatedDate": "12/02/2022",
+    "Status": "Open",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Amsterdam",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 2,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name1",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name2",
+            "Offers": 10,
+            "AwaitingApproval": 1,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 3,
+        "LocationName": "Location 3",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name 2",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 3,
+            "ProductName": "Product Name 3",
+            "Offers": 10,
+            "AwaitingApproval": 0,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 2454,
+    "CreatedDate": "12/02/2022",
+    "Status": "Closed",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Rotterdam",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "RMK 500",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 324,
+    "CreatedDate": "12/02/2022",
+    "Status": "Open",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 2,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name1",
+            "Offers": 10,
+            "AwaitingApproval": 0,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name2",
+            "Offers": 10,
+            "AwaitingApproval": 0,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 3,
+        "LocationName": "Location 3",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name 1",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name 2",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 6588,
+    "CreatedDate": "12/02/2022",
+    "Status": "Closed",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 2,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name2",
+            "Offers": 10,
+            "AwaitingApproval": 1,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 3,
+        "LocationName": "Location 3",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name 2",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 3,
+            "ProductName": "Product Name 3",
+            "Offers": 10,
+            "AwaitingApproval": 0,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 1234,
+    "CreatedDate": "12/02/2022",
+    "Status": "Open",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 0,
+            "Approved": 5,
+            "Rejected": 1,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 2234,
+    "CreatedDate": "12/02/2022",
+    "Status": "Open",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 2,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name1",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name2",
+            "Offers": 10,
+            "AwaitingApproval": 1,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 3,
+        "LocationName": "Location 3",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name 2",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 3,
+            "ProductName": "Product Name 3",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 2454,
+    "CreatedDate": "12/02/2022",
+    "Status": "Closed",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 324,
+    "CreatedDate": "12/02/2022",
+    "Status": "Open",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 2,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name1",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name2",
+            "Offers": 10,
+            "AwaitingApproval": 1,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 3,
+        "LocationName": "Location 3",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name 1",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name 2",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 3,
+            "ProductName": "Product Name 3",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 6588,
+    "CreatedDate": "12/02/2022",
+    "Status": "Closed",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 2,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name2",
+            "Offers": 10,
+            "AwaitingApproval": 1,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 3,
+        "LocationName": "Location 3",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name 2",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 3,
+            "ProductName": "Product Name 3",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 1234,
+    "CreatedDate": "12/02/2022",
+    "Status": "Open",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 0,
+            "Approved": 5,
+            "Rejected": 1,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 2234,
+    "CreatedDate": "12/02/2022",
+    "Status": "Open",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 2,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name1",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name2",
+            "Offers": 10,
+            "AwaitingApproval": 1,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 3,
+        "LocationName": "Location 3",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name 2",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 3,
+            "ProductName": "Product Name 3",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 2454,
+    "CreatedDate": "12/02/2022",
+    "Status": "Closed",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 324,
+    "CreatedDate": "12/02/2022",
+    "Status": "Open",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 2,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name1",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name2",
+            "Offers": 10,
+            "AwaitingApproval": 1,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 3,
+        "LocationName": "Location 3",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name 1",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name 2",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 3,
+            "ProductName": "Product Name 3",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 6588,
+    "CreatedDate": "12/02/2022",
+    "Status": "Closed",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 2,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name2",
+            "Offers": 10,
+            "AwaitingApproval": 1,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 3,
+        "LocationName": "Location 3",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name 2",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 3,
+            "ProductName": "Product Name 3",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 1234,
+    "CreatedDate": "12/02/2022",
+    "Status": "Open",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 1,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 2234,
+    "CreatedDate": "12/02/2022",
+    "Status": "Open",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 2,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name1",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name2",
+            "Offers": 10,
+            "AwaitingApproval": 1,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 3,
+        "LocationName": "Location 3",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name 2",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 3,
+            "ProductName": "Product Name 3",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 2454,
+    "CreatedDate": "12/02/2022",
+    "Status": "Closed",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 324,
+    "CreatedDate": "12/02/2022",
+    "Status": "Open",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 2,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name1",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name2",
+            "Offers": 10,
+            "AwaitingApproval": 1,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 3,
+        "LocationName": "Location 3",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name 1",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name 2",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 3,
+            "ProductName": "Product Name 3",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "RequestId": 6588,
+    "CreatedDate": "12/02/2022",
+    "Status": "Closed",
+    "Buyer": "Buyer 1",
+    "StartDate": "14/03/2022",
+    "EndDate": "05/08/2022",
+    "Locations": [
+      {
+        "RequestLocationId": 1,
+        "LocationId": 1,
+        "LocationName": "Location 1",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 1,
+            "ProductName": "Product Name",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 2,
+        "LocationName": "Location 2",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name2",
+            "Offers": 10,
+            "AwaitingApproval": 1,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      },
+      {
+        "RequestLocationId": 1,
+        "LocationId": 3,
+        "LocationName": "Location 3",
+        "Products": [
+          {
+            "RequestProductId": 1,
+            "ProductId": 2,
+            "ProductName": "Product Name 2",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          },
+          {
+            "RequestProductId": 1,
+            "ProductId": 3,
+            "ProductName": "Product Name 3",
+            "Offers": 10,
+            "AwaitingApproval": 3,
+            "Approved": 5,
+            "Rejected": 0,
+            "ContractCreated": 2,
+            "MinQuantity": 100,
+            "MaxQuantity": 200
+          }
+        ]
+      }
+    ]
+  }
+]

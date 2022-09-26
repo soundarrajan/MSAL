@@ -1,0 +1,23 @@
+[
+  {
+    "UserName":"Gokul",
+    "label":"GS",
+    "type":"received",
+    "CreatedOn":"05/08/2022 09:49",
+    "Message":"Offer has valid offer price to choose."
+  },
+  {
+    "UserName":"Sam",
+    "label":"SS",
+    "type":"sent",
+    "CreatedOn":"05/08/2022 09:49",
+    "Message":"Yes the offer should be fine."
+  },
+  {
+    "UserName":"Sam",
+    "label":"SS",
+    "type":"sent",
+    "CreatedOn":"05/08/2022 09:49",
+    "Message":"Yes, Thanks."
+  }
+]

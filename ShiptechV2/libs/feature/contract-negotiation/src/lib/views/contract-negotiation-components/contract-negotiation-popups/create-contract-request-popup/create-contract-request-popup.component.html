@@ -1,0 +1,752 @@
+<div class="create-contract-request-popup" >
+  <div class="header-container">
+    <div class="title">Contract Request Details</div>
+    <div class="title-right">
+      <button class="custom-button" id="CRWS23" [ngClass]="enableSaveBtn ? 'blue-btn' : 'grey-btn'" [disabled]="!enableSaveBtn"
+        (click)="enableSaveBtn=false;enableRFQBtn=true;">Save</button>
+      <button class="custom-button" id="SRFQ24" *ngIf="!enableUpdateRfqBtn" [disabled]="!enableRFQBtn"
+        [ngClass]="enableRFQBtn ? 'blue-btn' : 'grey-btn'" (click)="sendRFQ()">Send RFQ</button>
+      <button class="custom-button" *ngIf="enableUpdateRfqBtn" [disabled]="!enableRFQBtn"
+        [ngClass]="enableRFQBtn ? 'blue-btn' : 'grey-btn'" (click)="updateRFQ()">Update RFQ</button>
+      <div class="seperator-line">|</div>
+      <span class="close-icon" id="CLS66" style="cursor:pointer;" [mat-dialog-close]="true"></span>
+    </div>
+  </div>
+  <div class="divider-line"></div>
+  <mat-dialog-content>
+    <div class="section1 form-fields-with-flex">
+      <div id="custom-form-field" class="lightTheme darkBorder">
+        <mat-form-field class="without-search" appearance="legacy" [matMenuTriggerFor]="clickmenu"
+          #menuTrigger="matMenuTrigger">
+          <mat-label *ngIf="selectedPlanValue==''">Plan Period</mat-label>
+          <mat-label *ngIf="selectedPlanValue!=''">{{selectedPlanValue}}</mat-label>
+          <mat-select>
+            <!-- <mat-option value="Option1">Option1</mat-option>
+                        <mat-option value="Option2">Option2</mat-option> -->
+          </mat-select>
+        </mat-form-field>
+        <mat-menu #clickmenu="matMenu" class="plan-period-menu">
+          <div class="header-section">
+            <span class="title">Select Your Plan Period</span>
+            <button class="blue-button proceed-btn" (click)="menuTrigger.closeMenu()">Proceed</button>
+          </div>
+          <div class="plan-period-section">
+            <div class="period-types">
+              <mat-option *ngFor="let element of planPeriod" [value]="element.type">
+                <mat-radio-button [value]="element.type" [checked]="element.selected"
+                  (change)="onSelectPlanPeriod(element)" (click)="$event.stopPropagation();">
+                  {{element.type}}
+                </mat-radio-button>
+              </mat-option>
+            </div>
+            <div class="period-seperator">
+
+            </div>
+            <div class="period-values">
+              <div *ngIf="selectedPlanPeriod == 'Quarter'">
+                <div *ngFor="let item of quarterlyPeriod; let i = index;" class="plan-period-flex">
+                  <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
+                    (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
+                </div>
+              </div>
+              <div *ngIf="selectedPlanPeriod == 'Month'">
+                <div *ngFor="let item of monthlyPeriod" class="plan-period-flex">
+                  <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
+                    (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
+                </div>
+              </div>
+              <div *ngIf="selectedPlanPeriod == 'Year'">
+                <div *ngFor="let item of yearlyPeriod" class="plan-period-flex">
+                  <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
+                    (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
+                </div>
+              </div>
+              <div *ngIf="selectedPlanPeriod == 'Semester'">
+                <div *ngFor="let item of semesterPeriod" class="plan-period-flex">
+                  <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
+                    (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-menu>
+        <!-- <mat-menu #clickmenu="matMenu" class="add-new-request-menu">
+                  <div class="expansion-popup" style="margin: 20px 0px;">
+                      <div class="select-product-container" style="min-width: 235px !important;">                    
+                          <table class="delivery-products-pop-up col-md-12 no-padding" mat-table
+                              (click)="$event.stopPropagation()" [dataSource]="contractQuarterList">
+  
+                              <ng-container matColumnDef="quarter">
+                                  <th mat-header-cell *matHeaderCellDef> Selected Quarters </th>
+                                  <td mat-cell *matCellDef="let element">
+                                      <mat-option [value]="element">
+                                          <mat-checkbox [value]="element" [(ngModel)]="element.selected">
+                                              {{element.quarter}}
+                                          </mat-checkbox>
+                                      </mat-option>
+                                  </td>
+                              </ng-container>
+                              <ng-container matColumnDef="blank">
+                                  <th mat-header-cell *matHeaderCellDef></th>
+                                  <td mat-cell *matCellDef="let element">
+                                  </td>
+                              </ng-container>
+                              <tr mat-header-row *matHeaderRowDef="contractQuarterColumns"></tr>
+                              <tr mat-row *matRowDef="let row; columns: contractQuarterColumns;"></tr>
+                          </table>
+                          <div class="proceed-div">
+                              <button mat-button class="mid-blue-button proceed-btn">Proceed</button>
+                          </div>
+                      </div>
+                  </div>
+                </mat-menu> -->
+      </div>
+      <div id="custom-form-field" class="lightTheme darkBorder">
+        <mat-form-field class="without-search" appearance="legacy">
+          <mat-label>Start Date</mat-label>
+          <input name="startDate" matInput [matDatepicker]="startDate" [formControl]="setStartDate"
+            (focus)="startDate.open()" autocomplete="off" placeholder="Invoice Date" required>
+          <mat-datepicker-toggle matSuffix [for]="startDate">
+            <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'" style="margin-top: -3px !important;">
+            </mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #startDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div id="custom-form-field" class="lightTheme darkBorder">
+        <mat-form-field class="without-search" appearance="legacy">
+          <mat-label>End Date</mat-label>
+          <input name="endDate" matInput [matDatepicker]="endDate" [formControl]="setEndDate" (focus)="endDate.open()"
+            autocomplete="off" placeholder="Invoice Date" required>
+          <mat-datepicker-toggle matSuffix [for]="endDate">
+            <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'" style="margin-top: -3px !important;">
+            </mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #endDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div id="custom-form-field" class="lightTheme darkBorder">
+        <mat-form-field class="without-search" appearance="legacy">
+          <mat-label>Quote by date</mat-label>
+          <input name="quoteByDate" matInput [matDatepicker]="quoteByDate" (focus)="quoteByDate.open()"
+            autocomplete="off" placeholder="Quote by Date" required>
+          <mat-datepicker-toggle matSuffix [for]="quoteByDate">
+            <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'" style="margin-top: -3px !important;">
+            </mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #quoteByDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div id="custom-form-field" class="lightTheme darkBorder">
+        <mat-form-field class="without-search" appearance="legacy">
+          <mat-label>Min Validity</mat-label>
+          <input name="minValidity" matInput [matDatepicker]="minValidity" (focus)="minValidity.open()"
+            autocomplete="off" placeholder="Min Validity" required>
+          <mat-datepicker-toggle matSuffix [for]="minValidity">
+            <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'" style="margin-top: -3px !important;">
+            </mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #minValidity></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="section-divider-line"></div>
+    <div class="section2">
+      <div id="ADPls25" (click)="addContractQuantityDetail()" class="add-contract-quantity-section">
+        <a class="add-icon"></a>
+      </div>
+      <div class="contract-quantity-section row">
+        <ng-container *ngFor="let contractDetail of details">
+          <div class="contract-quantity-container col-md-12"
+            [ngClass]="{'no-padding-right': contractDetail.key % 2 == 1}">
+            <a id="ADMI26" class="remove-contract-quantity-icon" (click)="removeContractQuantityDetail(contractDetail.key)"></a>
+            <div class="quantity-header">
+              <div class="label-content">
+                Quantity:
+              </div>
+              <div style="display: flex; align-items: center;max-width: 170px;margin-right: 15px;">
+                <div class="select-contract-quantity-container value">
+                  <div id="QtyDD27" class="dropdown">
+                    <mat-form-field appearance="legacy" class="contract-quantity-select-container">
+                      <mat-select required disableOptionCentering [ngModel]="selectedContractualQuantity"
+                        [panelClass]="'contract-quantity-select-container'">
+                        <mat-option *ngFor="let option of contractualQuantityOptionList" [value]="option.name">
+                          <mat-radio-button [value]="option.name">
+                            {{ option.name }}
+                          </mat-radio-button>
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div class="border_line"></div>
+              <div class="col-md-2 p-lr-5" (click)="enableSaveBtn=true;enableRFQBtn=false;">
+                <div class="minInputFocus" style="width:100%;padding: 5px 10px 0;">
+                  <span class="label">Min
+                    <span style="position: absolute;font-size: 10px;margin-left: 2px;">*</span>
+                  </span>
+                  <div class="value" id="MIN28">
+                    <div class="custom-form-field custom-field-contract-quantity lightTheme">
+                      <mat-form-field class="without-search quantity-container" appearance="legacy">
+                        <input matInput (focus)="focus($event, 'min')" value="{{minQuantity}}" autocomplete="off" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="border_line"></div>
+              <div class="col-md-2 p-lr-5">
+                <div class="maxInputFocus" style="width:100%;padding: 5px 10px 0;">
+                  <span class="label">Max
+                    <span style="position: absolute;font-size: 10px;margin-left: 2px;">*</span>
+                  </span>
+                  <div id="MAX29" class="value">
+                      <div class="custom-form-field custom-field-contract-quantity lightTheme">
+                        <mat-form-field class="without-search quantity-container" appearance="legacy">
+                          <input matInput (focus)="focus($event, 'max')" value="{{maxQuantity}}" autocomplete="off" />
+                        </mat-form-field>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="border_line"></div>
+              <div class="col-md-2 p-lr-5">
+                <div class="uomInputFocus" style="width:100%;padding: 5px 10px 0;">
+                  <span class="label">Uom</span>
+                  <div id="UOM30" class="value">
+                    <div class="custom-form-field custom-field-contract-quantity lightTheme">
+                      <mat-form-field class="without-search" appearance="legacy" style="width:60px">
+                        <mat-select [ngModel]="selectedUom" (focus)="focus($event, 'uom')"
+                          panelClass="general-info-select-container">
+                          <mat-option value="MT">
+                            MT
+                          </mat-option>
+                          <mat-option value="GAL">
+                            GAL
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="border_line"></div>
+              <div class="col-md-2 p-lr-5">
+                <div class="tolInputFocus" style="width:100%;padding: 5px 10px 0;">
+                  <span class="label">Tolerance %</span>
+                  <div id="TOL31" class="value">
+                      <div class="custom-form-field custom-field-contract-quantity lightTheme">
+                        <mat-form-field class="without-search" appearance="legacy">
+                          <input value="{{tolerance}}" matInput (focus)="focus($event, 'tol')">
+                        </mat-form-field>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="section-divider-line"></div>
+    <div class="section3">
+      <div style="display: flex; flex-direction: row;">
+        <a id="LOCPL32" class="add-product-dropdown-icon" (click)="addNewMainLocation()"></a>
+        <ng-container *ngFor="let loc of locationBasedProducts; let i = index">
+          <div class="select-location">
+            <div>
+              <div class="product-tabs">
+                <div class="addded-product" style="display: inline-flex; margin-right: 10px;">
+                  <div id="LOCMNS33" class="remove-icon" (click)="deleteMainLocation(i)"></div>
+                  <div class="product-tab" [ngClass]="{'selected-product-container':loc.selected}"
+                    (click)="onClick(loc)">
+                    <div class="bootstrap-tagsinput">
+                      <div class="tag label border-default text-ellipsis">
+                        {{loc.mainLocationName}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="divider" *ngIf=" i != locationBasedProducts.length - 1"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </ng-container>
+        <div id="ADLOC34" class="select-product" *ngIf="!hideMainLocationDropdown">
+          <mat-form-field class="custom-select" appearance="fill" (click)="openAddMainLocationSelect()">
+            <!-- <mat-label>Add product</mat-label> -->
+            <mat-select [disableOptionCentering]="true" #mainLocationSelect [(ngModel)]="selectedMainLocation"
+              placeholder="Add Location" (selectionChange)="addSelectedMainLocation(selectedMainLocation)"
+              panelClass="shiptech-select-product-container">
+
+              <div class="col-md-12 header-container-product pd-0">
+                <div class="search-product-container col-md-10 pd-0">
+                  <span id="ADLOC36" class="search-product-lookup">
+                  </span>
+                  <input id="ADLOC35" matInput placeholder="Search all and select a location" class="search-product-input">
+                </div>
+
+                <div class="col-md-2" id="ADLOC37">
+                  <img alt="Shiptech"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+                </div>
+              </div>
+              <table class="delivery-products-pop-up shiptech-delivery-popup col-md-12 no-padding" mat-table
+                [dataSource]="locationDataSource">
+
+                <ng-container matColumnDef="location">
+                  <th mat-header-cell *matHeaderCellDef style="padding-left:0px;"> Location </th>
+                  <td mat-cell *matCellDef="let element">
+                    <mat-option [value]="element.location" style="padding-left:0px; text-align: unset !important;">
+                      <mat-radio-button id="ADLOC38" [value]="element.location"
+                        (click)="openSelectedMainLocation($event, element.location)">
+                        {{element.location}}
+                      </mat-radio-button>
+                    </mat-option>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="main-product-section">
+        <ng-container *ngFor="let prod of locationBasedSubArray; let i = index">
+          <div>
+            <div style="max-height: 50vh; margin-bottom: 45px;">
+              <!--                       <span style="background-color: red;">prod{{prod.productId}}</span>
+  -->
+              <div class="main-product">
+                <div class="title">Main Product</div>
+                <div class="form-fields-with-flex">
+                  <div class="row multi-select-formfield">
+                    <div class="col-12 no-padding">
+                      <ng-container>
+                        <ng-container>
+                          <div>
+                            <div class="hoveraddedProduct">
+                              <div class="custom-product-container contract-location-with-product-container d-flex"
+                                [ngClass]="{
+                                        'container-with-value': productSelected && selectedProindex==i}"
+                                style="margin-right:15px;">
+                                <div id="PDDD39" class="custom-form-field custom-form-field-location lightTheme">
+                                  <mat-form-field
+                                    class="without-search contract-location-product-dropdown custom-dropdown"
+                                    appearance="legacy" style="width: 100% !important;">
+                                    <mat-label>Add Product</mat-label>
+                                    <mat-select #locSelect disableOptionCentering
+                                      [panelClass]="'shiptech-select-product-container'" required>
+                                      <div [ngClass]="{
+                                                  'expand-select-location-container': expandLocation
+                                                }">
+                                        <div class="col-md-12 header-container-product pd-0">
+                                          <div class="search-product-container col-md-10 pd-0">
+                                            <span id="PDDD41" class="search-product-lookup">
+                                            </span>
+                                            <input id="PDDD40" matInput placeholder="Search all and select a product"
+                                              class="search-product-input">
+                                          </div>
+
+                                          <div id="PDDD42" class="col-md-2">
+                                            <img alt="Shiptech"
+                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+                                          </div>
+                                        </div>
+                                        <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
+                                          mat-table [dataSource]="locationMasterSearchListOptions">
+                                          <!-- Location name Column -->
+                                          <ng-container matColumnDef="name">
+                                            <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
+                                              Product
+                                            </th>
+                                            <td mat-cell *matCellDef="let element">
+                                              <mat-option [value]="element" class="no-padding"
+                                                style="padding-left:0px; text-align: unset !important;">
+                                                <mat-radio-button id="PDDD43" class="location-container-radio-button"
+                                                  [value]="element">
+                                                  {{ element.name }}
+                                                </mat-radio-button>
+                                              </mat-option>
+                                            </td>
+                                          </ng-container>
+
+
+                                          <tr mat-header-row *matHeaderRowDef="displayedLocColumns"></tr>
+                                          <tr mat-row *matRowDef="let row; columns: displayedLocColumns"></tr>
+                                        </table>
+                                      </div>
+                                    </mat-select>
+                                  </mat-form-field>
+                                </div>
+                                <div>
+                                  <a class="product-divider-line remove-product-icon"
+                                    style="top: 8px !important;left: 8px;"> </a>
+                                </div>
+                                <div id="SPEC44" class="custom-form-field custom-form-field-location lightTheme">
+                                  <mat-form-field
+                                    class="without-search contract-location-product-dropdown custom-dropdown"
+                                    appearance="legacy" style="width: 100% !important;">
+                                    <mat-label>Spec Group</mat-label>
+                                    <span>
+
+                                    </span>
+                                    <mat-select #singleSelect disableOptionCentering
+                                      [panelClass]="'shiptech-select-product-container'" required>
+                                      "
+
+                                      >
+                                      <div style="margin-top: -20px;" [ngClass]="{
+                                                      'expand-select-location-container': expandLocation
+                                                    }">
+                                        <div class="col-md-12 header-container-product pd-0">
+                                          <div class="search-product-container col-md-10 pd-0">
+                                            <span id="SPEC46" class="search-product-lookup">
+                                            </span>
+                                            <input id="SPEC45" matInput placeholder="Search all and select spec group"
+                                              class="search-product-input">
+                                          </div>
+
+                                          <div id="SPEC47" class="col-md-2">
+                                            <img alt="Shiptech"
+                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+                                          </div>
+                                        </div>
+                                        <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
+                                          mat-table [dataSource]="productMasterSearchListOptions">
+                                          <!-- Location name Column -->
+                                          <ng-container matColumnDef="name">
+                                            <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
+                                              Spec Group
+                                            </th>
+                                            <td mat-cell *matCellDef="let element"
+                                              style="padding-left:0px; text-align: unset !important;">
+                                              <mat-option [value]="element" class="no-padding"
+                                                style="padding-left:0px; text-align: unset !important;">
+                                                <mat-radio-button id="SPEC48" class="location-container-radio-button"
+                                                  [value]="element">
+                                                  {{ element.pname }}
+                                                </mat-radio-button>
+                                              </mat-option>
+                                            </td>
+                                          </ng-container>
+
+                                          <!-- Country Column -->
+                                          <ng-container matColumnDef="type">
+                                            <th mat-header-cell *matHeaderCellDef>Type</th>
+                                            <td mat-cell *matCellDef="let element">
+                                              {{ element.type}}
+                                            </td>
+                                          </ng-container>
+                                          <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                                          <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+                                        </table>
+                                      </div>
+                                    </mat-select>
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div id="custom-form-field" class=" lightTheme" style="margin:0px; padding:0px 15px 15px 0px;">
+                    <div class="split-field" style="width: 178px;height: 38px !important;">
+                      <mat-form-field id="MIN49" class="without-search long-label-field"
+                        style="width: 64%;height: 30px !important;border: none;" placeholder="Minimum Qty"
+                        appearance="legacy">
+                        <mat-label>Minimum Qty</mat-label>
+                        <input matInput class="text-ellipsis" value="100">
+                      </mat-form-field>
+                      <mat-form-field class="long-label-field"
+                        style="line-height: 22px;width: 36%;height: 38px !important;border-radius: 4px;"
+                        appearance="legacy">
+                        <mat-select disableRipple [ngModel]="selectedUom" style="background-color: #EBECED !important;">
+                          <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div id="custom-form-field" class=" lightTheme" style="margin:0px; padding:0px 15px 15px 0px;">
+                    <div class="split-field" style="width: 178px;height: 38px !important;">
+                      <mat-form-field id="MAX50" class="without-search long-label-field"
+                        style="width: 64%;height: 30px !important;border: none;" placeholder="Maximum Qty"
+                        appearance="legacy">
+                        <mat-label>Maximum Qty</mat-label>
+                        <input matInput class="text-ellipsis" value="100">
+                      </mat-form-field>
+                      <mat-form-field class="long-label-field"
+                        style="line-height: 22px;width: 36%;height: 38px !important;border-radius: 4px;"
+                        appearance="legacy">
+                        <mat-select disableRipple [ngModel]="selectedUom" style="background-color: #EBECED !important;">
+                          <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div id="custom-form-field" class="lightTheme darkBorder" style="margin: 0px;">
+                    <mat-form-field id="PT51" class="without-search" appearance="legacy">
+                      <mat-label>Pricing Type</mat-label>
+                      <mat-select required>
+                        <mat-option value="Option1">Formula</mat-option>
+                        <mat-option value="Option2">Fixed</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div
+                  class="custom-form-field custom-field-general lightTheme darkBorder custom-form-field-margin-contract"
+                  style="width: 100% !important;">
+                  <mat-form-field id="PC52" class="without-search" appearance="legacy" style="width: 100% !important;">
+                    <mat-label>Pricing Comments</mat-label>
+                    <input matInput placeholder="Pricing Comments">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div>
+                <div class="sub-title">Allowed Products</div>
+                <div class="row multi-select-formfield">
+                  <div class="col-12 no-padding">
+                    <a class="add-product-dropdown-icon" (click)="addNewAllowedProduct()"></a>
+                    <ng-container *ngFor="let contractProduct of allowedProductsValue | keyvalue: originalOrder;
+                            let i = index">
+                      <ng-container>
+                        <div>
+                          <div class="contract-addProduct-separator" *ngIf="i > 0"></div>
+                          <div class="hoveraddedProduct">
+                            <div class="hover-remove-icon" *ngIf="allowedProductsValue.length > 1"
+                              (click)="removeProductToContract(i)"></div>
+                            <!-- <div
+                      *ngIf="allowedProductsValue.length > 1 &&
+                      ((selectedLocindex !=i || selectedProindex!=i)  && (contractProduct.value.name && contractProduct.value.pname))"
+                      class="fieldOverlayClass contract-location-with-product-container d-flex" style="margin-right:0"
+                      (click)="setAllowedLocations(contractProduct.value,i);setAllowedProducts(i)">
+                    </div> -->
+                            <div class="contract-location-with-product-container d-flex" [ngClass]="{
+                  'container-with-value': productSelected && selectedProindex==i}" style="margin-right:0"
+                              (click)="setAllowedLocations(contractProduct.value,i);setAllowedProducts(i)">
+                              <div id="ALPROD53" class="custom-form-field custom-form-field-location lightTheme" [ngClass]="{
+                    'container-location-with-value': locationSelected && selectedLocindex==i}">
+                                <mat-form-field class="without-search contract-location-product-dropdown"
+                                  appearance="legacy" style="width: 100% !important; border-right: none !important;">
+                                  <mat-label>Add Product</mat-label>
+                                  <mat-select [(ngModel)]="contractProduct.value.name" #locSelect disableOptionCentering
+                                    [panelClass]="'shiptech-select-product-container'" (selectionChange)="
+                        setLocationChange(contractProduct.value.name,$event.value,i)">
+                                    <div [ngClass]="{
+                            'expand-select-location-container': expandLocation
+                          }">
+                                      <div class="col-md-12 header-container-product pd-0">
+                                        <div class="search-product-container col-md-10 pd-0">
+                                          <span id="ALPROD55" class="search-product-lookup">
+                                          </span>
+                                          <input id="ALPROD54" matInput placeholder="Search all and select a product"
+                                            class="search-product-input">
+                                        </div>
+
+                                        <div id="ALPROD56" class="col-md-2">
+                                          <img alt="Shiptech"
+                                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+                                        </div>
+                                      </div>
+                                      <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
+                                        mat-table [dataSource]="locationMasterSearchListOptions">
+                                        <!-- Location name Column -->
+                                        <ng-container matColumnDef="name">
+                                          <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
+                                            Product
+                                          </th>
+                                          <td mat-cell *matCellDef="let element">
+                                            <mat-option [value]="element" class="no-padding"
+                                              style="padding-left:0px; text-align: unset !important;">
+                                              <mat-radio-button id="ALPROD57" class="location-container-radio-button"
+                                                [value]="element">
+                                                {{ element.name }}
+                                              </mat-radio-button>
+                                            </mat-option>
+                                          </td>
+                                        </ng-container>
+
+
+                                        <tr mat-header-row *matHeaderRowDef="displayedLocColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedLocColumns"></tr>
+                                      </table>
+                                    </div>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                              <div [ngClass]="{
+                        'container-with-value': productSelected && selectedProindex==i}">
+                                <a class="remove-product-black-icon remove-product-icon"> </a>
+                              </div>
+                              <div class="custom-form-field custom-form-field-location lightTheme" [ngClass]="{
+                        'container-product-with-value': productSelected && selectedProindex==i}">
+                                <mat-form-field class="without-search contract-location-product-dropdown"
+                                  appearance="legacy" style="width: 100% !important; border-left: none !important;">
+                                  <mat-label>Spec Group</mat-label>
+                                  <span>
+
+                                  </span>
+                                  <mat-select [(ngModel)]="contractProduct.value.pname" #singleSelect
+                                    disableOptionCentering [panelClass]="'shiptech-select-product-container'"
+                                    (selectionChange)="
+                            setProductChange($event.value,i)">
+                                    "
+
+                                    >
+                                    <div style="margin-top: -20px;" [ngClass]="{
+                                'expand-select-location-container': expandLocation
+                              }">
+                                      <div class="col-md-12 header-container-product pd-0">
+                                        <div class="search-product-container col-md-10 pd-0">
+                                          <span class="search-product-lookup">
+                                          </span>
+                                          <input matInput placeholder="Search all and select spec group"
+                                            class="search-product-input">
+                                        </div>
+
+                                        <div class="col-md-2">
+                                          <img alt="Shiptech"
+                                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+                                        </div>
+                                      </div>
+                                      <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
+                                        mat-table [dataSource]="productMasterSearchListOptions">
+                                        <!-- Location name Column -->
+                                        <ng-container matColumnDef="name">
+                                          <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
+                                            Spec Group
+                                          </th>
+                                          <td mat-cell *matCellDef="let element"
+                                            style="padding-left:0px; text-align: unset !important;">
+                                            <mat-option [value]="element" class="no-padding"
+                                              style="padding-left:0px; text-align: unset !important;">
+                                              <mat-radio-button class="location-container-radio-button"
+                                                [value]="element">
+                                                {{ element.pname }}
+                                              </mat-radio-button>
+                                            </mat-option>
+                                          </td>
+                                        </ng-container>
+
+                                        <!-- Country Column -->
+                                        <ng-container matColumnDef="type">
+                                          <th mat-header-cell *matHeaderCellDef>Type</th>
+                                          <td mat-cell *matCellDef="let element">
+                                            {{ element.type}}
+                                          </td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+                                      </table>
+                                    </div>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+
+
+              <div>
+                <div class="sub-title">Allowed Locations</div>
+                <div>
+                  <a class="add-product-dropdown-icon" (click)="addNewAllowedLocation()"></a>
+                  <div class="product-tabs" *ngIf="allowedLocationName">
+                    <div class="addded-product" *ngFor="let allowedLocName of prod.allowedLocations;; let i = index"
+                      style="display: inline-flex; margin-right: 10px;">
+                      <div *ngIf="prod.allowedLocations.length > 1" class="remove-icon"
+                        (click)="deleteAllowedLocation(i)"></div>
+                      <div class="product-tab" [ngClass]="{'selected-product-container':allowedLocName.selected}"
+                        > <!-- (click)="onClick(allowedLocName.location)" -->
+                        <div class="bootstrap-tagsinput">
+                          <span class="tag label border-default text-ellipsis">
+                            {{allowedLocName.location}}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="divider" *ngIf="i != prod.allowedLocations.length - 1"></div>
+                    </div>
+                  </div>
+                  <div class="select-product" *ngIf="!hideAllowedLocationDropdown">
+                    <mat-form-field id="ALPROD58" class="custom-select" appearance="fill" (click)="openAddAllowedLocationSelect()">
+                      <!-- <mat-label>Add product</mat-label> -->
+                      <mat-select [disableOptionCentering]="true" #allowedLocationSelect [(ngModel)]="selectedAllowedLocation"
+                        placeholder="Add Location"
+                        (selectionChange)="addSelectedAllowedLocation(prod,selectedAllowedLocation)"
+                        panelClass="shiptech-select-product-container">
+
+                        <div class="col-md-12 header-container-product pd-0">
+                          <div class="search-product-container col-md-10 pd-0">
+                            <span id="ALPROD60" class="search-product-lookup">
+                            </span>
+                            <input id="ALPROD59" matInput placeholder="Search all and select a location" class="search-product-input">
+                          </div>
+
+                          <div id="ALPROD61" class="col-md-2">
+                            <img alt="Shiptech"
+                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+                          </div>
+                        </div>
+                        <table class="delivery-products-pop-up shiptech-delivery-popup col-md-12 no-padding" mat-table
+                          [dataSource]="locationDataSource">
+
+                          <ng-container matColumnDef="location">
+                            <th mat-header-cell *matHeaderCellDef style="padding-left:0px;"> Location </th>
+                            <td mat-cell *matCellDef="let element">
+                              <mat-option [value]="element.location"
+                                style="padding-left:0px; text-align: unset !important;">
+                                <mat-radio-button id="ALPROD62" [value]="element.location">
+                                  {{element.location}}
+                                </mat-radio-button>
+                              </mat-option>
+                            </td>
+                          </ng-container>
+
+                          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="section-divider-line"></div>
+            <div class="form-fields-with-flex" *ngIf="i == locationBasedSubArray.length - 1">
+              <a id="ADMN63" class="add-icon" (click)="addNewMainProduct(prod)"></a>
+              <div class="title" (click)="addNewMainProduct(prod)">Main Product</div>
+            </div>
+            <div class="form-fields-with-flex" *ngIf="i != locationBasedSubArray.length - 1">
+              <a id="ADMN64" class="remove-product-icon" (click)="deleteNewMainProduct(prod)"></a>
+              <div class="title" (click)="deleteNewMainProduct(prod)">Remove Product</div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+    </div>
+    <div class="section-divider-line"></div>
+    <div class="section4">
+      <span class="title">Supplier Comments</span>
+      <div style="margin-top: 10px;padding-left:0" class="col-md-12 pd-0 supplierComments">
+        <textarea id="ADMN65" placeholder="General Comments to Supplier" autocomplete="off"></textarea>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>

@@ -1,0 +1,18 @@
+<div class="modify-offer-period-popup">
+    <div id="custom-form-field" class="lightTheme darkBorder">
+        <mat-form-field class="without-search" appearance="legacy">
+            <mat-label>Fixed Pricing Duration</mat-label>
+            <mat-select [(ngModel)]="value">
+                <mat-option value="1">1 months</mat-option>
+                <mat-option value="2">2 months</mat-option>
+                <mat-option value="3">3 months</mat-option>
+                <mat-option value="4">4 months</mat-option>
+                <mat-option value="5">5 months</mat-option>
+                <mat-option value="6">6 months</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="dialog-footer">
+        <button class="blue-button save-btn" [mat-dialog-close]="value">Save</button>
+    </div>
+</div>
