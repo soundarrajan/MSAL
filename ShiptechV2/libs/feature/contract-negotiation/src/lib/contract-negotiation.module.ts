@@ -13,6 +13,18 @@ import { MaterialModule } from '@shiptech/core/ui/material.module';
 //import { SharedModule } from 'src/public_api';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
+import { AGGridCellClickRendererComponent } from './core/ag-grid-renderers/ag-grid-cell-click-renderer.component';
+import { AGGridCellLinkRenderer } from './core/ag-grid-renderers/ag-grid-cell-link-renderer.component';
+import { AGGridCellMenuRenderer } from './core/ag-grid-renderers/ag-grid-cell-menu-renderer.component';
+import { AGGridCheckboxRenderer } from './core/ag-grid-renderers/ag-grid-checkbox-renderer.component';
+import { AGGridDatepickerRenderer } from './core/ag-grid-renderers/ag-grid-datepicker-renderer.component';
+import { AGGridInputSelectRenderer } from './core/ag-grid-renderers/ag-grid-input-select-renderer.component';
+import { AGGridMultiDataRendererComponent } from './core/ag-grid-renderers/ag-grid-multi-data-renderer.component';
+import { AGGridRatingChipRenderer } from './core/ag-grid-renderers/ag-grid-rating-chip-renderer.component';
+import { fullWidthCellRenderer } from './core/ag-grid-renderers/fullWidthCellRenderer.component';
+
+import { ContractNegotiationModuleResolver } from './contract-negotiation-route.resolver';
+
 import { MainContractNegotiationComponent } from './views/main-contract-negotiation.component';
 import { ContractNegotiationHeaderComponent } from './views/contract-negotiation-components/contract-negotiation-header/contract-negotiation-header.component';
 import { ContractNegotiationDetailsComponent } from './views/contract-negotiation-components/contract-negotiation-details/contract-negotiation-details.component';
@@ -66,7 +78,17 @@ import { DocDragDropUploadComponent } from '@shiptech/core/ui/components/doc-dra
     FilterListComponent,
     HeaderFilterChipComponent,
     MoreFilterChipComponent,
-    DocDragDropUploadComponent
+    DocDragDropUploadComponent,
+    AGGridCellClickRendererComponent,
+    AGGridCellLinkRenderer,
+    AGGridCellMenuRenderer,
+    AGGridCheckboxRenderer,
+    AGGridDatepickerRenderer,
+    AGGridInputSelectRenderer,
+    AGGridMultiDataRendererComponent,
+    AGGridRatingChipRenderer,
+    fullWidthCellRenderer
+    
   ],
   imports: [
     CommonModule,
@@ -79,9 +101,23 @@ import { DocDragDropUploadComponent } from '@shiptech/core/ui/components/doc-dra
     UIModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    AgGridModule.withComponents([]),
+
+    AgGridModule.withComponents([
+      AGGridCellClickRendererComponent,
+      AGGridCellLinkRenderer,
+      AGGridCellMenuRenderer,
+      AGGridCheckboxRenderer,
+      AGGridDatepickerRenderer,
+      AGGridInputSelectRenderer,
+      AGGridMultiDataRendererComponent,
+      AGGridRatingChipRenderer,
+      fullWidthCellRenderer
+    ]),
     ContractNegotiationRoutingModule,
     DSV2ComponentsModule
+  ],
+  providers: [
+    ContractNegotiationModuleResolver
   ]
 })
 export class ContractNegotiationModule { }

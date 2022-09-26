@@ -8,6 +8,9 @@ import { environment } from '@shiptech/environment';
   templateUrl: './layout-main.component.html'
 })
 export class LayoutMainComponent implements AfterViewInit {
+
+  @Input() showFooter = true;
+
   menuMode = 'static';
 
   overlayMenuActive: boolean;
