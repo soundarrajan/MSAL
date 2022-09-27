@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions } from '@ag-grid-enterprise/all-modules';
 import { LocalService } from '../../../services/local-service.service';
 import { MatCheckboxHeaderComponent } from '../../../core/mat-checkbox-header.component';
 

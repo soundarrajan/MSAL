@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
+import 'ag-grid-enterprise';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContractNegotiationRoutingModule } from './contract-negotiation-routing.module';
 import { ContractNegotiationComponent } from './views/contract-negotiation-components/contract-negotiation.component';

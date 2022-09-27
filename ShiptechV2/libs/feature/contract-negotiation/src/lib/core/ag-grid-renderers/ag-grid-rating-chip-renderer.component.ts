@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { MatDialog } from "@angular/material/dialog";
-import { SellerratingpopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/sellerratingpopup/sellerratingpopup.component';
+import { SellerratingpopupComponent } from '@shiptech/core/ui/components/designsystem-v2/dialog-popup/sellerratingpopup/sellerratingpopup.component';
 
 
 @Component({

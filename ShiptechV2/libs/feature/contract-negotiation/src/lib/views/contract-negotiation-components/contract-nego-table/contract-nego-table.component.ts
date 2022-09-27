@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FormulaPricingPopupComponent } from '../contract-negotiation-popups/formula-pricing-popup/formula-pricing-popup.component';
 import { LocalService } from '../../../services/local-service.service';
 import { AdditionalCostPopupComponent } from '../contract-negotiation-popups/additional-cost-popup/additional-cost-popup.component';
-import { SellerratingpopupComponent } from '../contract-negotiation-popups/sellerratingpopup/sellerratingpopup.component';
+import { SellerratingpopupComponent } from '@shiptech/core/ui/components/designsystem-v2/dialog-popup/sellerratingpopup/sellerratingpopup.component';
 import { ModifyOfferPeriodPopupComponent } from '../contract-negotiation-popups/modify-offer-period-popup/modify-offer-period-popup.component';
 import { EmailPreviewPopupComponent } from '../contract-negotiation-popups/email-preview-popup/email-preview-popup.component';
 import { ToastrService } from 'ngx-toastr';
