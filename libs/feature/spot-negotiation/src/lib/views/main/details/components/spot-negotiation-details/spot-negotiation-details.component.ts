@@ -73,6 +73,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   requestOptions: any;
   Index: number;
   reqLocId: number;
+  netEnergySpecific: any;
 
 
 
@@ -461,18 +462,20 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     let locationsRows = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
-    let pay=  {
-      locationIds:[locationsRows.find(l=>l.id==payload.RequestLocationSellerId).locationId],
-      productIds:[product.productId],
-      physicalSupplierIds:[locationsRows.find(l=>l.id==payload.RequestLocationSellerId).physicalSupplierCounterpartyId],
-      requestGroupId:locationsRows.find(l=>l.id==payload.RequestLocationSellerId).requestGroupId
-    }
-    this.getEnergy6MHistory(pay);
+    // let pay=  {
+    //   locationIds:[locationsRows.find(l=>l.id==payload.RequestLocationSellerId).locationId],
+    //   productIds:[product.productId],
+    //   physicalSupplierIds:[locationsRows.find(l=>l.id==payload.RequestLocationSellerId).physicalSupplierCounterpartyId],
+    //   requestGroupId:locationsRows.find(l=>l.id==payload.RequestLocationSellerId).requestGroupId
+    // }
+    //this.getEnergy6MHistory(pay);
     response.subscribe((res: any) => {
       if (res?.message == 'Unauthorized') {
         return;
       }
       if (res.status) {
+        if(productDetails.isEnergyCalculationRequired)
+        this.spotNegotiationService.energyCalculationService(product.productId,updatedRow.locationId,null);
       } else {
         this.toastr.error(res.message);
         return;
@@ -797,7 +800,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         {
           headerName: 'Energy(MJ/KJ)',
           headerTooltip: 'MJ/KJ',
-          field: `mj$`,
+          field: `mjkj`,
           flex: 5,
           width: 135,
           minWidth: 94,
@@ -806,7 +809,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               params.data,
               product.id
             );
-            return  this.tenantService.amount(details.amount);
+            
+            if(!details.amount || details.amount == null){
+              return null;
+            }else{
+              return this.tenantService.amount(details.mjkj);
+            }
+            
+            
           },
           cellClass: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
@@ -834,7 +844,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               params.data,
               product.id
             );
-            return  this.tenantService.amount(details.amount);
+            if(!details.amount || details.amount == null){
+              return null;
+            }else{
+              return this.tenantService.amount(details.ediff);
+            }
+          
           },
           cellClass: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
@@ -862,7 +877,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               params.data,
               product.id
             );
-            return  this.tenantService.amount(details.amount);
+
+            if(!details.amount || details.amount == null){
+              return null;
+            }else{
+              return this.tenantService.amount(details.tco);
+            }
           },
           headerClass: 'border-right',
           cellClass: params => {
@@ -1376,6 +1396,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           );
           this.spotNegotiationService.callGridRedrawService();
           this.store.dispatch([new RemoveCounterparty({ rowId: rowData.id }), new RemoveLocationsRowsOriData({ rowId: rowData.id })]);
+          this.spotNegotiationService.energyCalculationService(null,rowData.locationId,null);
 
           if (res['requestLocationSellers'] && res['sellerOffers']) {
             const futureLocationsRows = this.getLocationRowsWithPriceDetails(
