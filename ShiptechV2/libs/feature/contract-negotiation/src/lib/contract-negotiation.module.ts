@@ -14,7 +14,6 @@ import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AGGridCellClickRendererComponent } from './core/ag-grid-renderers/ag-grid-cell-click-renderer.component';
 import { AGGridCellLinkRenderer } from './core/ag-grid-renderers/ag-grid-cell-link-renderer.component';
 import { AGGridCellMenuRenderer } from './core/ag-grid-renderers/ag-grid-cell-menu-renderer.component';
@@ -99,7 +98,6 @@ import { DocDragDropUploadComponent } from '@shiptech/core/ui/components/doc-dra
     SharedModule,
     UIModule,
     FilterPresetsModule,
-    DragDropModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AgGridModule.withComponents([

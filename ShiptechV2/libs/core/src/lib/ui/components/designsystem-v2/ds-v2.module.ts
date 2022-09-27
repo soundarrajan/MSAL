@@ -18,6 +18,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { AGGridCellRendererStatusComponent } from './ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 import { ControlTowerPopupComponent } from './control-tower-popup/control-tower-popup.component';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { SharedModule } from '@shiptech/core/shared/shared.module';
     NgxPaginationModule,
     MatRadioModule,
     SharedModule,
+    DragDropModule,
     AgGridModule.withComponents([
       AGGridCellActionsComponent,
       AGGridCellEditableComponent,

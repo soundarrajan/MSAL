@@ -41,7 +41,7 @@ $light-blue : #74CDEA;
 
     &.active-chip {
       color: #ffffff;
-      background: #37414f;
+      background: #37414f !important;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.0523656);
       text-align: center;
 

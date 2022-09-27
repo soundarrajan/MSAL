@@ -3230,7 +3230,7 @@
 
     &.active-chip {
         color: #ffffff;
-        background: #37414f;
+        background: #37414f !important;
         box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.0523656);
 
         .filter-pin {
@@ -3341,7 +3341,7 @@
         cursor: pointer;
     }
 
-    .chip-container {
+    .chip-holder {
         // height: inherit;
         height: 100%;
         width: 100%;
