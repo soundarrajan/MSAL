@@ -14,11 +14,11 @@ export class RequestListComponent implements OnInit {
   constructor(public dialog: MatDialog,public router: Router) { }
 
   ngOnInit(): void {
-    if (this.router.url.includes("buyer")){
+    /*if (this.router.url.includes("buyer")){
       this.isBuyer = true;
     }else{
       this.isBuyer = false;
-    }
+    }*/
   }
 
   createContractRequest(){

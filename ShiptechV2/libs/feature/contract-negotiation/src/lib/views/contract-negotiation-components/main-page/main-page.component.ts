@@ -104,12 +104,12 @@ export class MainPageComponent implements OnInit {
     this.localService.contractNoQuote.subscribe(data => {
       this.showNoQuote = data;
     })
-
-    if (this.router.url.includes("buyer")){
+    console.log('isBuyer', this.isBuyer);
+    /*if (this.router.url.includes("buyer")){
       this.isBuyer = true;
     }else{
       this.isBuyer = false;
-    }
+    }*/
   }
   goBack() {
     this._location.back();
