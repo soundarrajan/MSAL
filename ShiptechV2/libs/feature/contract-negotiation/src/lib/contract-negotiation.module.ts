@@ -88,7 +88,6 @@ import { DocDragDropUploadComponent } from '@shiptech/core/ui/components/doc-dra
     AGGridMultiDataRendererComponent,
     AGGridRatingChipRenderer,
     fullWidthCellRenderer
-    
   ],
   imports: [
     CommonModule,
