@@ -2458,6 +2458,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     const locationsRows = this.store.selectSnapshot<string>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
+    let currentRequestDetails = [];
     this.currentRequestSmallInfo = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.currentRequestSmallInfo;
     });
@@ -2477,7 +2478,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         const futureLocationsRows = this.getLocationRowsAddPhySupplier(
           JSON.parse(JSON.stringify(locationsRows))
         );
-          let productIds=this.currentRequestSmallInfo.map(rl=>rl.requestLocations.map(reql=>reql.requestProducts.map(reql=>reql.productId)));
+          let productIds=this.currentRequestSmallInfo.requestLocations.map(reql=>reql.requestProducts.map(reql=>reql.productId))
           if(productIds){
             let payload=  {
               locationIds: [this.params.data.requestLocationId],
