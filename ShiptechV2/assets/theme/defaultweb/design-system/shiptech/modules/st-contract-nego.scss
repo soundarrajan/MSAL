@@ -1819,7 +1819,9 @@
   .contract-requestDetails-container,
   .emailLog-content,
   .auditLog-content {
-
+    .mat-tab-body-content{
+      overflow: auto !important;
+    }
     .grid-in-accordion {
       margin-bottom: 5px;
       .mat-expansion-panel {
@@ -4465,7 +4467,10 @@
     border-bottom-left-radius: unset;
     flex-wrap: wrap;
     padding: unset;
-}
+  }
+  .mat-tab-body-content{
+    overflow: auto !important;
+  }
 }
 
 /** Email preview popup - Start **/
