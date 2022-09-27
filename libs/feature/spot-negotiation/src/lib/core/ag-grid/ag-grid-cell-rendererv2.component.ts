@@ -2445,6 +2445,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     const locationsRows = this.store.selectSnapshot<string>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
+    this.currentRequestSmallInfo = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
+    });
     this.phySupplierId=this.phySupplierIdCopy;
     let payload = {
       requestGroupId: this.params.data.requestGroupId,
@@ -2461,15 +2464,16 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         const futureLocationsRows = this.getLocationRowsAddPhySupplier(
           JSON.parse(JSON.stringify(locationsRows))
         );
-        //TODO
           let productIds=this.currentRequestSmallInfo.map(rl=>rl.requestLocations.map(reql=>reql.requestProducts.map(reql=>reql.productId)));
-          let payload=  {
-            locationIds: [this.params.data.requestLocationId],
-            productIds:productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []),
-            physicalSupplierIds:[this.phySupplierId],
-            requestGroupId:this.params.data.requestGroupId
+          if(productIds){
+            let payload=  {
+              locationIds: [this.params.data.requestLocationId],
+              productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
+              physicalSupplierIds:[this.phySupplierId],
+              requestGroupId:this.params.data.requestGroupId
+            }
+            this.getEnergy6MHistory(payload);
           }
-          this.getEnergy6MHistory(payload);
         if (this.phySupplierId && this.params?.value) {
           const counterpartyList = this.store.selectSnapshot<any>(
             (state: any) => {

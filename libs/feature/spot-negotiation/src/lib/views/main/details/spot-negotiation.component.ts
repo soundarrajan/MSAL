@@ -336,9 +336,9 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           let productIds=this.allRequest.map(rl=>rl.requestLocations.map(reql=>reql.requestProducts.map(reql=>reql.productId)));
           let physicalSupplierIds=res['requestLocationSellers'].map(phy=>phy.physicalSupplierCounterpartyId);
           let payload=  {
-            locationIds:locationIds.reduce((acc, val) => acc.concat(val), []),
-            productIds:productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []),
-            physicalSupplierIds:physicalSupplierIds.reduce((acc, val) => acc.concat(val), []),
+            locationIds:[...new Set(locationIds.reduce((acc, val) => acc.concat(val), []))],
+            productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
+            physicalSupplierIds:[...new Set(physicalSupplierIds.reduce((acc, val) => acc.concat(val), []))],
             requestGroupId:groupRequestIdFromUrl
           }
           this.getEnergy6MHistory(payload);
