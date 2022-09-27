@@ -338,6 +338,14 @@ export class EmailPreviewPopupComponent implements OnInit {
         if (res.payload) {
           this.to = res.payload.to ? res.payload.to.split(',') : res.payload.to;
           this.cc = res.payload.cc ? res.payload.cc.split(',') : res.payload.cc;
+          this.previewTemplate.to = [];
+          this.previewTemplate.cc = [];
+          this.to.forEach((item: any)=>{
+            this.previewTemplate.to.push({ IdEmailAddress: item, name: item });
+          });
+          this.cc.forEach((item: any)=>{
+            this.previewTemplate.cc.push({ IdEmailAddress: item , name: item });
+          });
           this.subject = res.payload.subject;
           this.content = res.payload.body;
         }
@@ -368,7 +376,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     if (selectedFromLookup) {
       this.previewTemplate.to.push(this.toList2?.find(c => c.name == item));
     } else {
-      this.previewTemplate.to.push({ IdEmailAddress: item });
+      this.previewTemplate.to.push({ IdEmailAddress: item, name: item });
     }
     this.to = this.previewTemplate.to;
     this.toEmail = '';
@@ -431,7 +439,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     if (selectedFromLookup) {
       this.previewTemplate.cc.push(this.ccList2?.find(c => c.name == item));
     } else {
-      this.previewTemplate.cc.push({ IdEmailAddress: item });
+      this.previewTemplate.cc.push({ IdEmailAddress: item , name: item });
     }
     this.cc = this.previewTemplate.cc;
     this.ccEmail = '';
