@@ -14,8 +14,8 @@ table {
   color: white;
   line-height: 26px;
 }
-.mat-button{
-  background: #e0e1e4;
+.mat-button.mat-button-disabled{
+  color: #e0e1e4;
   width: 90px;
   height: 26px;
   line-height: 26px;
