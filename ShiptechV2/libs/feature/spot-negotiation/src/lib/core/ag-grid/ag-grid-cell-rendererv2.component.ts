@@ -723,7 +723,18 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
           <span class="search-icon-dark"></span>
         </span>
       </div>
-    </div>`,
+    </div>
+    
+    <div *ngIf="params.type == 'mj$'">
+    {{ params.value }}
+    </div>
+    <div *ngIf="params.type == 'mt$'">
+    {{ params.value }}
+    </div>
+    <div *ngIf="params.type == 'tco$'">
+    {{ params.value }}
+    </div>
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush
   })
 export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
@@ -776,6 +787,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   offerOldValue : number;
   clrRequest: any = 0;
   currentRequestOffer: any;
+  netEnergyList: any;
+  energyFunctionFlag = true;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -1787,7 +1800,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
 
-  onPriceChange(e, params) {
+  onPriceChange(e, params) {  
     this.priceChanged = false;
     if((e.target.value !='' && this.offerOldValue != e.target.value) || (e.target.value == '' && this.offerOldValue > 0) ){
       params.colDef.valueSetter({

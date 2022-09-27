@@ -333,7 +333,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             res['sellerOffers']
           );
           let locationIds=this.allRequest.map(e=>e.requestLocations.map(rl=>rl.locationId));
-          let productIds=this.allRequest.map(rl=>rl.requestLocations.map(reql=>reql.requestProducts.map(reql=>reql.productId)));
+          let productIds=this.allRequest.map(rl=>rl.requestLocations.map(reql=>reql.requestProducts.map(reql=> reql.productId)));
           let physicalSupplierIds=res['requestLocationSellers'].map(phy=>phy.physicalSupplierCounterpartyId);
           let payload=  {
             locationIds:[...new Set(locationIds.reduce((acc, val) => acc.concat(val), []))],
@@ -350,7 +350,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               locRow);
               reqLocationRows.push(data);
           }
-
+          this.spotNegotiationService.energyCalculationService(null,null,null);
           this.store.dispatch([new SetLocationsRowsOriData(reqLocationRows), new SetLocationsRows(reqLocationRows)]);
       }
     });

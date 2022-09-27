@@ -353,7 +353,7 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
   }
   //updateEnegryPrices
   @ObservableException()
-  updateEnegryPrices(payload: any):  Observable<any> {
+  updateEnegryPrices(payload: any):Observable<unknown> {
     return this.http
       .put<any>(`${this._negotiationApiUrl}/Price/updateEnegry`, payload)
       .pipe(
