@@ -350,7 +350,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               locRow);
               reqLocationRows.push(data);
           }
-          this.spotNegotiationService.energyCalculationService(null,null,null);
+         // this.spotNegotiationService.energyCalculationService(null,null,null);
           this.store.dispatch([new SetLocationsRowsOriData(reqLocationRows), new SetLocationsRows(reqLocationRows)]);
       }
     });
