@@ -474,7 +474,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         return;
       }
       if (res.status) {
-        if(productDetails.isEnergyCalculationRequired)
+       // if(productDetails.isEnergyCalculationRequired)
         this.spotNegotiationService.energyCalculationService(product.productId,updatedRow.locationId,null);
       } else {
         this.toastr.error(res.message);

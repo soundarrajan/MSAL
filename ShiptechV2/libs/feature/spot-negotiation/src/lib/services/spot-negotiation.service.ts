@@ -765,10 +765,10 @@ export class SpotNegotiationService extends BaseStoreService
     this.netEnergyList = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.netEnergySpecific;
     });
-  
-      let currentLocationId;
+
+    let currentLocationId;
       let alllocationRows;
-      let productSet = [];
+      let productSet = {};
       this.store.selectSnapshot<any>((state: any) => {
         currentLocationId =   state.spotNegotiation.currentRequestSmallInfo.id;
         alllocationRows = state.spotNegotiation.locationsRows.filter(res => {
@@ -780,96 +780,93 @@ export class SpotNegotiationService extends BaseStoreService
           }
         });
       });
-  
+
       alllocationRows.forEach(res1 => {
         if(res1?.requestOffers){
-        let productData = [];
-        res1?.requestOffers.filter(res2 => {
-          if(res2.reqProdStatus != 'Stemmed' && res2.reqProdStatus != 'Confirmed' && res2.isEnergyCalculationRequired && res2.price != null){
-              let Pdata = {};
-              if((productId) && ( res2.quotedProductId == productId )){
-                Pdata = cloneDeep(res2);
-                Pdata['requestId'] = res1.requestId;
-                Pdata['locationId'] = res1.locationId;
-                productData.push(Pdata);
-                return;
-              }
-              if(productId == null){
-                Pdata = cloneDeep(res2);
-                Pdata['requestId'] = res1.requestId;
-                Pdata['locationId'] = res1.locationId;
-                productData.push(Pdata);
-                return;
-              }
-          }
-        });
-        let product = [];
-        productData.forEach(element => {
-          product['physicalSupplierCounterpartyId'] = res1.physicalSupplierCounterpartyId;
-          product['price'] = element.price;
-          product['id'] = element.id;
-          product['quotedProductId'] = element.quotedProductId;
-          product['requestId'] = element.requestId;
-          product['locationId'] = element.locationId;
-          product['supplyQuantity'] = element.supplyQuantity;
-          productSet[element.quotedProductId+''+element.id] = product;
-          product = [];
-        });
+            res1?.requestOffers.filter(res2 => {
+              if(res2.reqProdStatus != 'Stemmed' && res2.reqProdStatus != 'Confirmed' && res2.isEnergyCalculationRequired && res2.price != null){
+                      if((productId) && ( res2.quotedProductId == productId )){
+                        productSet[res2.quotedProductId+''+res2.id] = {
+                          'physicalSupplierCounterpartyId' : res1.physicalSupplierCounterpartyId,
+                          'price' : res2.price,
+                          'id' : res2.id,
+                          'quotedProductId' : res2.quotedProductId,
+                          'requestId' : res1.requestId,
+                          'locationId' : res1.locationId,
+                          'supplyQuantity' : res2.supplyQuantity
+                        }
+                        return;
+                      }
+                      if(productId == null){
+                        productSet[res2.quotedProductId+''+res2.id] = {
+                          'physicalSupplierCounterpartyId' : res2.physicalSupplierCounterpartyId,
+                          'price' : res2.price,
+                          'id' : res2.id,
+                          'quotedProductId' : res2.quotedProductId,
+                          'requestId' : res2.requestId,
+                          'locationId' : res2.locationId,
+                          'supplyQuantity' : res2.supplyQuantity
+                        }
+                        return;
+                      }
+                }
+            });
         }
       });
-      if(productSet.length == 0) return;
-      let currentProductNetEnergyList =  this.netEnergyList.filter(res => {
-        if((locationId && productId) && res.locationId == locationId && res.productId == productId){
-          return res;
-        }
-        if(productId &&  res.productId == productId){
-          return res;
-        }
-        if(locationId && res.locationId == locationId){
-          return res;
-        }
-        if(productId == null || locationId == null){
-          return res;
-        }
-      } );
-     let differenceValue = [];
-     let difTemp = [];
-     productSet.forEach(res => {
-      console.log(res);
-      let eVal = currentProductNetEnergyList.find(fRes => fRes.physicalSupplierId == res.physicalSupplierCounterpartyId && fRes.productId == res.quotedProductId);
-      if(eVal?.netAverage){
-        differenceValue[res.quotedProductId+''+res.id] = res.price / eVal.netAverage;
-       if(!difTemp[eVal.locationId+''+eVal.productId])     
-        difTemp[eVal.locationId+''+eVal.productId] = [];
-        difTemp[eVal.locationId+''+eVal.productId].push(res.price / eVal.netAverage);
-      }else{
-        let removeIndex = res.quotedProductId+''+res.id;
-        productSet.splice(parseInt(removeIndex),1);
-      }
-     });
-     if(differenceValue.length == 0) return;
-     
-     let updateArr = {};
+ console.log(productSet);
+ if(Object.keys(productSet).length == 0) return;
+
+ let currentProductNetEnergyList =  this.netEnergyList.filter(res => {
+  if((locationId && productId) && res.locationId == locationId && res.productId == productId){
+    return res;
+  }
+  if(productId &&  res.productId == productId){
+    return res;
+  }
+  if(locationId && res.locationId == locationId){
+    return res;
+  }
+  if(productId == null || locationId == null){
+    return res;
+  }
+} );
+
+ let differenceValue = {};
+ let difTemp = {};
+
+ Object.entries(productSet).forEach(([key, res]) => {
+  let eVal = currentProductNetEnergyList.find(fRes => fRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && fRes.productId == res['quotedProductId']);
+  if(eVal?.netAverage){
+    differenceValue[res['quotedProductId']+''+res['id']] = res['price'] / eVal.netAverage;
+   if(!difTemp[eVal.locationId+''+eVal.productId])     
+    difTemp[eVal.locationId+''+eVal.productId] = [];
+    difTemp[eVal.locationId+''+eVal.productId].push(res['price'] / eVal.netAverage);
+  }else{
+   delete productSet[key];
+  }
+ }); 
+ if(Object.keys(differenceValue).length == 0) return;
+ let updateArr = {};
      let updatePayload = [];
      let storePayload = [];
      let serverPayLoad = {};
      storePayload = cloneDeep(alllocationRows);
-     productSet.forEach(res => {
-      let curentProductVal = currentProductNetEnergyList.filter(nRes => nRes.physicalSupplierId == res.physicalSupplierCounterpartyId && nRes.productId == res.quotedProductId);
+     Object.entries(productSet).forEach(([key, res]) => {
+      let curentProductVal = currentProductNetEnergyList.filter(nRes => nRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && nRes.productId == res['quotedProductId']);
       if(curentProductVal.length > 0){
         let minIndex = curentProductVal[0].locationId+''+curentProductVal[0].productId;
         console.log(minIndex);
         const minVal = Math.min(...difTemp[curentProductVal[0].locationId+''+curentProductVal[0].productId]);
-        updateArr['id'] = res.id;
+        updateArr['id'] = res['id'];
         updateArr['mjkj'] = curentProductVal[0]?.netAverage;
-        updateArr['ediff'] = (differenceValue[res.quotedProductId+''+res.id] - minVal) * parseFloat(curentProductVal[0].netAverage);
-        updateArr['tco'] = (res.price + updateArr['ediff']) * res.supplyQuantity;
+        updateArr['ediff'] = (differenceValue[res['quotedProductId']+''+res['id']] - minVal) * parseFloat(curentProductVal[0].netAverage);
+        updateArr['tco'] = (res['price'] + updateArr['ediff']) * res['supplyQuantity'];
         updatePayload.push(updateArr); 
         
         alllocationRows.filter((el,index) => {
-          if(el.locationId == res.locationId && el.requestId == res.requestId){
+          if(el.locationId == res['locationId'] && el.requestId == res['requestId']){
             el.requestOffers.filter((inner,iIndex) =>{
-              if(inner.id == res.id){
+              if(inner.id == res['id']){
                 storePayload[index].requestOffers[iIndex].mjkj = updateArr['mjkj'] ;
                 storePayload[index].requestOffers[iIndex].ediff = updateArr['ediff'];
                 storePayload[index].requestOffers[iIndex].tco = updateArr['tco'];
@@ -878,7 +875,6 @@ export class SpotNegotiationService extends BaseStoreService
           }
         });
         updateArr = {};
-
       }
      });
      serverPayLoad = { "requestOfferEnergys" : updatePayload }
