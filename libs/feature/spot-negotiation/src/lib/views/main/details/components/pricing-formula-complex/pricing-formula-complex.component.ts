@@ -522,6 +522,10 @@ export class PricingFormulaComplex
   }
 
   filterSystemInstrumentListFromComplexFormulaQuoteLine(value) {
+
+    if(typeof value === 'object'){
+      value = value.name;
+    }  
     if (value) {
       const filterValue = value.toLowerCase();
       if (this.systemInstumentList) {
