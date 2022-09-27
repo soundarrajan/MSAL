@@ -206,3 +206,7 @@ td.mat-footer-cell:first-of-type {
 {
   opacity: 100;
 }
+.email-preview-popup .email-container .section1 .subject {
+  max-width: 550px;
+  width: 550px;
+}

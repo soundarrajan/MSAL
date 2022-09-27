@@ -335,6 +335,7 @@
 
 <mat-autocomplete
   #autoCompleteTO="matAutocomplete"
+  [panelWidth]="'156px'"
   (optionSelected)="addTo($event.option.value, true)"
   [displayWith]="displayNull"
 >
