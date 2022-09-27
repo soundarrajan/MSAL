@@ -27,11 +27,13 @@ export class ContractRequestDetailsComponent implements OnInit {
     this.getGridData();
   }
   mainPage(id) {
+    this.router.navigate([`contract-requests/request/${id}/details`]);
+    /*this.router.navigate(['contract-request/request/0/details', id]);
     if (this.router.url.includes("buyer"))
       this.router.navigate(['shiptech/contractnegotiation/buyer/details', id]);
     else if (this.router.url.includes("approver")) {
       this.router.navigate(['shiptech/contractnegotiation/approver/details', id]);
-    }
+    }*/
   }
 
   filterList = {

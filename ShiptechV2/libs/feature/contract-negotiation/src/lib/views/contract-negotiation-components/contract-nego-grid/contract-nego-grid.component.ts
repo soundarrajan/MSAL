@@ -22,9 +22,10 @@ export class ContractNegoGridComponent implements OnInit {
   @Input() periodicity;
   @Input() locationId;
   //@Input() chipSelected;
-  public rfqSent: boolean = true;
+  @Input() rfqSent: boolean = true;
   @Input() noQuote;
   @Input() sendToApprove;
+  @Input() groupDisplayType = 'multipleColumns';
   @Output() pinnedColumnsWidth: EventEmitter<any> = new EventEmitter();
   @Output() sendNodeData: EventEmitter<any> = new EventEmitter();
   private context: any;
@@ -34,7 +35,6 @@ export class ContractNegoGridComponent implements OnInit {
   public gridOptions_formulaDesc: GridOptions;
   public rowData_aggrid_forecast = [];
   public rowData_aggrid_formulaDesc = [];
-  public groupDisplayType = 'multipleColumns';
   public groupDefaultExpanded = 1;
   public rowSelection;
   public rowCount: Number;

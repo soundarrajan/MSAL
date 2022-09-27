@@ -28,6 +28,7 @@ import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SpotNegotiationStore } from '../../../../libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 
 // Note: Currently we're running the application in a sub directory on the IIS (v2), v1 (angular js) runs in the root. They way we'll also share auth cookies
@@ -128,6 +129,7 @@ export function MSALInterceptConfigFactory() {
   imports: [
     HttpClientModule,
     BrowserModule,
+    DragDropModule,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,

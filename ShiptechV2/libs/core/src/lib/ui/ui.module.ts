@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { CopyToClipboardDirective } from './directives/copy-to-clipboard.directive';
 import { AgGridExternalSearchDirective } from './directives/ag-external-search.directive';
 import { MaterialModule } from './material.module';
@@ -10,7 +11,8 @@ import { AutosizeDirective } from '@shiptech/core/ui/directives/autosize.directi
 @NgModule({
   imports: [
     MaterialModule,
-    LayoutMainModule
+    LayoutMainModule,
+    CommonModule
   ],
   declarations: [
     CopyToClipboardDirective,

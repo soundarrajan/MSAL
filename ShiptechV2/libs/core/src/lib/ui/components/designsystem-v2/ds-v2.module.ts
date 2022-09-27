@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MaterialModule } from '../../material.module';
 import { UIModule } from '../../ui.module';
+import { AvailableFiltersPreferencesComponent } from './dialog-popup/available-filters-preferences/available-filters-preferences.component';
 import { AGGridCellActionsComponent } from './ag-grid/ag-grid-cell-actions.component';
 import { AGGridCellRendererAsyncStatusComponent } from './ag-grid/ag-grid-cell-async-status/ag-grid-cell-async-status.component';
 import { AGGridCellEditableComponent } from './ag-grid/ag-grid-cell-editable.component';
@@ -46,6 +47,7 @@ import { SharedModule } from '@shiptech/core/shared/shared.module';
     AGGridCellRendererStatusComponent
   ],
   declarations: [
+    AvailableFiltersPreferencesComponent,
     AGGridCellActionsComponent,
     AGGridCellEditableComponent,
     AGGridCellRendererV2Component,

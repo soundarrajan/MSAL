@@ -13,6 +13,8 @@ import { MaterialModule } from '@shiptech/core/ui/material.module';
 //import { SharedModule } from 'src/public_api';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
+import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AGGridCellClickRendererComponent } from './core/ag-grid-renderers/ag-grid-cell-click-renderer.component';
 import { AGGridCellLinkRenderer } from './core/ag-grid-renderers/ag-grid-cell-link-renderer.component';
 import { AGGridCellMenuRenderer } from './core/ag-grid-renderers/ag-grid-cell-menu-renderer.component';
@@ -22,9 +24,7 @@ import { AGGridInputSelectRenderer } from './core/ag-grid-renderers/ag-grid-inpu
 import { AGGridMultiDataRendererComponent } from './core/ag-grid-renderers/ag-grid-multi-data-renderer.component';
 import { AGGridRatingChipRenderer } from './core/ag-grid-renderers/ag-grid-rating-chip-renderer.component';
 import { fullWidthCellRenderer } from './core/ag-grid-renderers/fullWidthCellRenderer.component';
-
 import { ContractNegotiationModuleResolver } from './contract-negotiation-route.resolver';
-
 import { MainContractNegotiationComponent } from './views/main-contract-negotiation.component';
 import { ContractNegotiationHeaderComponent } from './views/contract-negotiation-components/contract-negotiation-header/contract-negotiation-header.component';
 import { ContractNegotiationDetailsComponent } from './views/contract-negotiation-components/contract-negotiation-details/contract-negotiation-details.component';
@@ -99,9 +99,10 @@ import { DocDragDropUploadComponent } from '@shiptech/core/ui/components/doc-dra
     FormsModule,
     SharedModule,
     UIModule,
+    FilterPresetsModule,
+    DragDropModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-
     AgGridModule.withComponents([
       AGGridCellClickRendererComponent,
       AGGridCellLinkRenderer,

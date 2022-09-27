@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
   MAT_MOMENT_DATE_FORMATS,
   MatMomentDateModule,
@@ -46,7 +47,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
-  imports: [],
+  imports: [CommonModule],
   declarations: [],
   providers: [
     // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
