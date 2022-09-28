@@ -51,6 +51,7 @@
   box-sizing: border-box;
   box-shadow: 0 6px 7px rgb(0 0 0 / 25%);
   padding: 10px;
+  min-width: 30vw;
 }
 
 .container-modal-expand {
@@ -131,7 +132,7 @@ input.search-input::placeholder {
 
 .email-preview-popup .email-container .section2 .cust-input-field {
   padding: 5px 7px;
-  width: 156px;
+  width: unset;
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
@@ -213,4 +214,8 @@ td.mat-footer-cell:first-of-type {
 .email-preview-popup .email-container .section2 .email-draft
 {
   border: 0px !important;
+}
+.email-preview-popup .email-container .section2 .file-list
+{
+  width: unset !important ;
 }
