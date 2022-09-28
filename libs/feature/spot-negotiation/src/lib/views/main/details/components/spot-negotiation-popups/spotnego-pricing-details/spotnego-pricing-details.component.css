@@ -25,3 +25,10 @@
     height: 30px;
 
 }
+.contract-shiptech.shiptech-contract-pricing-details-popup .pricing-container {
+    background: #fcfcfc;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding-left: 10px;
+}
