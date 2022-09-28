@@ -1,17 +1,9 @@
-<div class="row delete-delivery-modal-top">
-  <div class="col-md-12">
-    <a (click)="closeClick()"
-      class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all close-button delete-delivery-close-button"
-      role="button">
-      <span class="pi pi-times cl-content"></span>
-    </a>
-  </div>
-  <div class="col-md-9 delete-delivery-modal-header">
-    Delete Counterparty
-  </div>
 
-</div>
-<div mat-dialog-content>
+  <div class="remove-terminal-section"  >
+    <div class="close-btn" style="position: absolute !important;top: -12px !important;right: -8px;" (click)="closeClick()"><img id="close-icon" src="./assets/customicons/close_o.svg" alt="list"></div>
+    <div class="warning-title"><img id="warning-icon" src="./assets/customicons/warning_o.svg" alt="list">
+      <span class="p-l-10" style="margin-top: 4px;">Warning</span></div>
+    <p style="font-size: 15px;">Delete Counterparty</p>
   <div class="row">
     <div class="col-md-12" *ngIf="!data.isRFQSent">
       You are trying to remove the counterparty '{{this.format.htmlDecode(data.sellerName)}}' from the negotiation. Are you sure you want to continue?
@@ -20,18 +12,17 @@
       Removing the counterparty '{{this.format.htmlDecode(data.sellerName)}}' will revoke the RFQ. Do you want to continue?
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-12">
-      <div style="float:right;position: relative;">
-        <button type="button" class="delete-delivery-button cancel-button" (click)="confirm(false)">
-          No
+ 
+    <div class="yes-no">
+        <button  class="blue-button-o" style="float:left;" [mat-dialog-close]="false"  (click)="confirm(false)">    
+          <span>NO</span>
         </button>
-        <button type="button" class="delete-delivery-button" (click)="confirm(true)">
-          Yes
+        <button mat-raised-button class="red-button" style="float:right;  margin:0px 0px 0px !important;"  [mat-dialog-close]="true" (click)="confirm(true)">    
+          <span>Yes</span>
         </button>
-      </div>
     </div>
   </div>
+  
 
   <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-spin-clockwise-fade">
   </ngx-spinner>

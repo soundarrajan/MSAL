@@ -193,13 +193,13 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   setFormulaTypeSelected(id) {
-    if (id == 1) {
+    if (id == 2) {
       if (this.formValues.complexFormulaQuoteLines) {
         this.formValues.complexFormulaQuoteLines = [];
         this.formulaId = id;
       } else this.formulaId = id;
     }
-    if (id == 2) {
+    if (id == 1) {
       if (this.formValues.simpleFormula) {
         this.formValues.simpleFormula = {};
         this.formulaId = id;
@@ -998,7 +998,11 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   getInstrumentNameById(instrumentId: number) {
+    
     var instrumentName = '';
+    if(instrumentId == 0){
+      return instrumentName;
+    }
     if (this.systemInstumentList) {
       instrumentName = this.systemInstumentList.filter(item => item.id === instrumentId)[0].name;
     }
@@ -1029,11 +1033,22 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   getSystemInstruments(systemInstruments: SystemInstrumentDto[]) {
     var uiInstruments: SystemInstruments[] = [];
     systemInstruments.forEach(item => {
-      uiInstruments.push({
-        marketPriceTypeId: { id: item.marketPriceTypeId },
-        systemInstrument: { id: item.systemInstrumentId, name: this.getInstrumentNameById(item.systemInstrumentId) }
+        uiInstruments.push({
+          marketPriceTypeId: { id: item.marketPriceTypeId },
+          systemInstrument: { id: item.systemInstrumentId, name: this.getInstrumentNameById(item.systemInstrumentId) }
+        });
       });
-    });
+    
+      if(systemInstruments.length  < 3){
+        for(var i=systemInstruments.length+1;i<=3;i++){
+          uiInstruments.push({
+            marketPriceTypeId: { id:0},
+            systemInstrument:  { id:0,name: ''}
+          });
+        }
+         console.log(uiInstruments);
+      }
+
     return uiInstruments;
   }
 

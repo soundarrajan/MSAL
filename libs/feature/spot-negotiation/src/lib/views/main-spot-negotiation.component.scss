@@ -416,7 +416,7 @@ ag-grid-angular .ag-body-horizontal-scroll-viewport{
       color: #364150;
       position: relative;
       float: left;
-      margin: 2px;
+      margin: 2px 4px 2px 2px;
       .plus {
         position: absolute;
         top: 50%;
@@ -642,6 +642,27 @@ ag-grid-angular .ag-body-horizontal-scroll-viewport{
   font-style: normal;
   font-weight: 500;
   padding-left: 15px !important;
+}
+
+#add-padd .cell-dashed-border{
+  outline-offset: -8px !important;
+}
+
+#add-padd .required-field{
+  right: 10px;
+}
+
+#add-padd .mat-input-element{
+  padding-left: 1px;
+}
+
+#additional-cost.increment-circle-button{
+  position: relative;
+}
+
+#additional-cost.product-terms .mat-checkbox {
+top:-4px;
+position: absolute;
 }
 
 /** Shiptech - UI PD fixes - End **/

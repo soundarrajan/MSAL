@@ -181,14 +181,33 @@ export class PricingFormulaSimple implements OnInit {
   }
 
   @Input('model') set _setFormValues(formValues) {
+   
     if (!formValues) {
       return;
     }
     this.formValues = formValues;
+    console.log(this.formValues);
     if (this.formValues.simpleFormula && this.formValues.simpleFormula.amount) {
       this.formValues.simpleFormula.amount = this.amountFormatValue(
         this.formValues.simpleFormula.amount
       );
+    
+    }else{
+      if( this.formValues.simpleFormula){
+       //  simpleFormula value will be assigned from api
+      }else{
+         /*switching from complex to simple formula*/
+        this.formValues.simpleFormula = {
+          plusMinus: { id: 0 },
+          priceType: { id: 0 },
+          systemInstrument: { id:0,name:''},
+          flatPercentage: {
+            id: 0
+          },
+          uom: {},
+          amount: 0
+       };
+      }
     }
   }
 
@@ -285,6 +304,7 @@ export class PricingFormulaSimple implements OnInit {
 
   setContractForm(form) {
     this.formValues = form;
+  
   }
 
   compareUomObjects(object1: any, object2: any) {
@@ -308,6 +328,21 @@ export class PricingFormulaSimple implements OnInit {
 
   filterSystemInstrumenttList() {
     if (this.formValues.simpleFormula.systemInstrument) {
+
+   
+    
+      if(this.formValues.simpleFormula.systemInstrument.name == ""){
+        console.log(this.formValues.simpleFormula.systemInstrument);
+        const filterValue = this.formValues.simpleFormula.systemInstrument.name.toLowerCase();
+        return this.systemInstumentList
+        .filter(
+          option =>
+            option.name.toLowerCase(filterValue.trim())
+        )
+        .slice(0, 10);
+       
+      }
+
       const filterValue = this.formValues.simpleFormula.systemInstrument.name
         ? this.formValues.simpleFormula.systemInstrument.name.toLowerCase()
         : this.formValues.simpleFormula.systemInstrument.toLowerCase();

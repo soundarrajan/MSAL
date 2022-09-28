@@ -148,7 +148,7 @@
 <div class="p-r-15 p-l-15 additional-cost-subheading1">
   Offer Additional Costs
 </div>
-<div class="product-terms p-b-5 p-r-15 p-l-15">
+<div id="additional-cost" class="product-terms p-b-5 p-r-15 p-l-15">
   <div
     class="operations-details-block additional-cost-table-container"
     style="height: auto;"
@@ -201,7 +201,7 @@
               let j = index
             "
           >
-            <tr class="border-bottom" *ngIf="!offerAdditionalCost.isDeleted">
+            <tr id="add-padd" class="border-bottom" *ngIf="!offerAdditionalCost.isDeleted">
               <td class="decrement-circle-button" style="width: 60px; cursor: pointer;
     padding-top: 5px;">
                 <div
