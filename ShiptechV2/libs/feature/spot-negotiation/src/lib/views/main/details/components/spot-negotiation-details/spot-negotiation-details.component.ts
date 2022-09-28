@@ -1529,7 +1529,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               .map(r => r.requestProductId)
           );
         const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
-          width: '600px',
+          width: '400px',
           data: {
             sellerName: rowData.sellerCounterpartyName,
             isRFQSent:
