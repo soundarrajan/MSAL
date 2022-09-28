@@ -581,6 +581,7 @@ export const BASE_MENU: KeyedMenuItems = {
         target: '_blank'
       }
     }
+    
   },
   contract: {
     label: 'Contract',
