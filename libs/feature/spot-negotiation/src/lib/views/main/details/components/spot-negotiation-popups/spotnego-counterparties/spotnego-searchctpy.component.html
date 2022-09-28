@@ -43,6 +43,7 @@
           (pageChange)="data.isPhysicalSupplier ? onPageChangeforPhysicalSupplier($event.page) : onPageChangeforCounterparty($event.page)"
           (newPageSize) = "data.isPhysicalSupplier ?  onPageSizeChangeforPhysicalSupplier($event.pageSize) : onPageSizeChangeforCounterparty($event.pageSize)"
           [enabler] = "true"
+          [display] = "false"
         >
         </app-ag-footer-new>
         </div>
