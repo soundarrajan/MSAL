@@ -5392,6 +5392,9 @@
       resize: unset;
       border-radius: 4px;
       padding: 8px;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
 
       &::placeholder {
         color: #364150;
