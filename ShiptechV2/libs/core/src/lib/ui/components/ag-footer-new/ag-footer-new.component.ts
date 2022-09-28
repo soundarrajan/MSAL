@@ -32,6 +32,7 @@ export class AgFooterNewComponent {
   @Input() footerWidth;
   @Input() footerPosition;
   @Input() showFooterDatepicker;
+  @Input() display : boolean = true;
 
   @Output() pageChange: EventEmitter<any> = new EventEmitter();
 
