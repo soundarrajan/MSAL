@@ -210,3 +210,7 @@ td.mat-footer-cell:first-of-type {
   max-width: 550px;
   width: 550px;
 }
+.email-preview-popup .email-container .section2 .email-draft
+{
+  border: 0px !important;
+}
