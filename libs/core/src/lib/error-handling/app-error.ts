@@ -36,7 +36,7 @@ export class AppError<T = any> implements IAppError {
 
   static readonly GeneralTenantSettingsNotLoaded = new AppError({
     code: AppErrorCode.GeneralTenantSettingsNotLoaded,
-    message: 'Could not load user profile.'
+    message: 'Could not load tenant settings - general.'
   });
 
   readonly code: number;
