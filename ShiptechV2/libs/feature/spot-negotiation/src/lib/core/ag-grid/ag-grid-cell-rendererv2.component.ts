@@ -2510,6 +2510,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         }
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         this.toastr.success('Phy. Supplier added successfully','',{timeOut: 800});
+        
+        setTimeout(() => {
+          this._spotNegotiationService.energyCalculationService(null,this.params.locationId,null);
+        }, 100);
       } else {
         if (this.phySupplierId && this.params?.value) {
           const counterpartyList = this.store.selectSnapshot<any>(
