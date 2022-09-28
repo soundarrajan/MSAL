@@ -780,11 +780,11 @@ export class SpotNegotiationService extends BaseStoreService
           }
         });
       });
-
+//&& res2.isEnergyCalculationRequired
       alllocationRows.forEach(res1 => {
         if(res1?.requestOffers){
             res1?.requestOffers.filter(res2 => {
-              if(res2.reqProdStatus != 'Stemmed' && res2.reqProdStatus != 'Confirmed' && res2.isEnergyCalculationRequired && res2.price != null){
+              if(res2.reqProdStatus != 'Stemmed' && res2.reqProdStatus != 'Confirmed'  && res2.price != null){
                       if((productId) && ( res2.quotedProductId == productId )){
                         productSet[res2.quotedProductId+''+res2.id] = {
                           'physicalSupplierCounterpartyId' : res1.physicalSupplierCounterpartyId,
@@ -799,12 +799,12 @@ export class SpotNegotiationService extends BaseStoreService
                       }
                       if(productId == null){
                         productSet[res2.quotedProductId+''+res2.id] = {
-                          'physicalSupplierCounterpartyId' : res2.physicalSupplierCounterpartyId,
+                          'physicalSupplierCounterpartyId' : res1.physicalSupplierCounterpartyId,
                           'price' : res2.price,
                           'id' : res2.id,
                           'quotedProductId' : res2.quotedProductId,
-                          'requestId' : res2.requestId,
-                          'locationId' : res2.locationId,
+                          'requestId' : res1.requestId,
+                          'locationId' : res1.locationId,
                           'supplyQuantity' : res2.supplyQuantity
                         }
                         return;
@@ -870,6 +870,10 @@ export class SpotNegotiationService extends BaseStoreService
                 storePayload[index].requestOffers[iIndex].mjkj = updateArr['mjkj'] ;
                 storePayload[index].requestOffers[iIndex].ediff = updateArr['ediff'];
                 storePayload[index].requestOffers[iIndex].tco = updateArr['tco'];
+                if(updateArr['ediff'] == 0){
+                  storePayload[index].requestOffers[iIndex]['hclass'] = 'HilightClass';
+                }
+                 storePayload[index].requestOffers[iIndex]['hclass'] = 'nohiglight';
               }
             });
           }
