@@ -893,7 +893,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             if (details.hasNoQuote) {
               return 'display-no-quote line-seperator grey-opacity-cell pad-lr-0';
             }
-            return 'line-seperator grey-opacity-cell pad-lr-0';
+
+            console.log("details",details.mjkj);
+            
+            if(details.ediff == 0){
+              console.log("details",details);
+              return 'line-seperator grey-opacity-cell pad-lr-0 offerPriceHighLight';
+            }else{
+              return 'line-seperator grey-opacity-cell pad-lr-0';
+            }
           },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'tco$', cellClass: '', index: index },
@@ -1396,7 +1404,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           );
           this.spotNegotiationService.callGridRedrawService();
           this.store.dispatch([new RemoveCounterparty({ rowId: rowData.id }), new RemoveLocationsRowsOriData({ rowId: rowData.id })]);
-          this.spotNegotiationService.energyCalculationService(null,rowData.locationId,null);
+          
+          this.interval = setTimeout(() => {
+            this.spotNegotiationService.energyCalculationService(null,rowData.locationId,null);
+          }, 100);
 
           if (res['requestLocationSellers'] && res['sellerOffers']) {
             const futureLocationsRows = this.getLocationRowsWithPriceDetails(
@@ -1441,6 +1452,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 reqLocationRows.push(data);
             }
             this.store.dispatch(new SetLocationsRows(reqLocationRows));
+
+            
+            
           }
           if (res.isGroupDeleted) {
             const baseOrigin = new URL(window.location.href).origin;
