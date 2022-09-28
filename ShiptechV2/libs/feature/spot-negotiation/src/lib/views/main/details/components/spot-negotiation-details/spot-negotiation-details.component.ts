@@ -893,16 +893,23 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             if (details.hasNoQuote) {
               return 'display-no-quote line-seperator grey-opacity-cell pad-lr-0';
             }
-
-            console.log("details",details.mjkj);
-            
-            if(details.ediff == 0){
-              console.log("details",details);
-              return 'line-seperator grey-opacity-cell pad-lr-0 offerPriceHighLight';
-            }else{
-              return 'line-seperator grey-opacity-cell pad-lr-0';
-            }
           },
+          cellClassRules:  {
+            'tcoHighLight': params => {
+              const details = this.spotNegotiationService.getRowProductDetails(
+                params.data,
+                product.id
+              );
+              if (details.ediff == 0) return true; 
+            },
+            'noHighListashght' : params => {
+              const details = this.spotNegotiationService.getRowProductDetails(
+                params.data,
+                product.id
+              );
+              if (details.ediff != 0) return false;
+          }
+        },
           cellRendererFramework: AGGridCellRendererV2Component,
           cellRendererParams: { type: 'tco$', cellClass: '', index: index },
           lockVisible: true
