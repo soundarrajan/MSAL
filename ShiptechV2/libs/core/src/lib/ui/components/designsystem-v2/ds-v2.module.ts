@@ -15,6 +15,7 @@ import { FooterV2Component } from './footer-v2/footer-v2.component';
 import { RowstatusOnchangePopupComponent } from './rowstatus-onchange-popup/rowstatus-onchange-popup.component';
 import { RowstatusOnchangeQualitylabPopupComponent } from './rowstatus-onchange-qualitylab-popup/rowstatus-onchange-qualitylab-popup.component';
 import { RowstatusOnchangeResiduePopupComponent } from './rowstatus-onchange-residue-popup/rowstatus-onchange-residue-popup.component';
+import { DarkSelectionMenuComponent } from './dark-selection-menu/dark-selection-menu.component'
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AGGridCellRendererStatusComponent } from './ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 import { ControlTowerPopupComponent } from './control-tower-popup/control-tower-popup.component';
@@ -61,7 +62,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     RowstatusOnchangeQualitylabPopupComponent,
     RowstatusOnchangePopupComponent,
     AGGridCellRendererAsyncStatusComponent,
-    AGGridCellRendererStatusComponent
+    AGGridCellRendererStatusComponent,
+    DarkSelectionMenuComponent
   ],
   entryComponents: [
     RowstatusOnchangeResiduePopupComponent,

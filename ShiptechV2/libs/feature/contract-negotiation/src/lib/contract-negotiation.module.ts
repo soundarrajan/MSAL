@@ -24,6 +24,7 @@ import { AGGridInputSelectRenderer } from './core/ag-grid-renderers/ag-grid-inpu
 import { AGGridMultiDataRendererComponent } from './core/ag-grid-renderers/ag-grid-multi-data-renderer.component';
 import { AGGridRatingChipRenderer } from './core/ag-grid-renderers/ag-grid-rating-chip-renderer.component';
 import { fullWidthCellRenderer } from './core/ag-grid-renderers/fullWidthCellRenderer.component';
+import { AGGridCellRendererV2Component } from './core/ag-grid-renderers/ag-grid-cell-rendererv2.component';
 import { ContractNegotiationModuleResolver } from './contract-negotiation-route.resolver';
 import { MainContractNegotiationComponent } from './views/main-contract-negotiation.component';
 import { ContractNegotiationHeaderComponent } from './views/contract-negotiation-components/contract-negotiation-header/contract-negotiation-header.component';
@@ -47,7 +48,7 @@ import { DSV2ComponentsModule } from '@shiptech/core/ui/components/designsystem-
 import { FilterListComponent } from './views/contract-negotiation-components/filter-components/filter-list/filter-list.component';
 import { HeaderFilterChipComponent } from './views/contract-negotiation-components/filter-components/header-filter-chip/header-filter-chip.component';
 import { MoreFilterChipComponent } from './views/contract-negotiation-components/filter-components/more-filter-chip/more-filter-chip.component';
-import { DocDragDropUploadComponent } from '@shiptech/core/ui/components/doc-drag-drop-upload/doc-drag-drop-upload.component';
+import { DocDragDropUploadComponent } from './views/contract-negotiation-components/doc-drag-drop-upload/doc-drag-drop-upload.component';
 
 
 @NgModule({
@@ -87,7 +88,8 @@ import { DocDragDropUploadComponent } from '@shiptech/core/ui/components/doc-dra
     AGGridInputSelectRenderer,
     AGGridMultiDataRendererComponent,
     AGGridRatingChipRenderer,
-    fullWidthCellRenderer
+    fullWidthCellRenderer,
+    AGGridCellRendererV2Component
   ],
   imports: [
     CommonModule,
@@ -101,19 +103,21 @@ import { DocDragDropUploadComponent } from '@shiptech/core/ui/components/doc-dra
     FilterPresetsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    AgGridModule.withComponents([
-      AGGridCellClickRendererComponent,
-      AGGridCellLinkRenderer,
-      AGGridCellMenuRenderer,
-      AGGridCheckboxRenderer,
-      AGGridDatepickerRenderer,
-      AGGridInputSelectRenderer,
-      AGGridMultiDataRendererComponent,
-      AGGridRatingChipRenderer,
-      fullWidthCellRenderer
-    ]),
+    AgGridModule.withComponents([]),
     ContractNegotiationRoutingModule,
     DSV2ComponentsModule
+  ],
+  entryComponents:[
+    AGGridCellClickRendererComponent,
+    AGGridCellLinkRenderer,
+    AGGridCellMenuRenderer,
+    AGGridCheckboxRenderer,
+    AGGridDatepickerRenderer,
+    AGGridInputSelectRenderer,
+    AGGridMultiDataRendererComponent,
+    AGGridRatingChipRenderer,
+    fullWidthCellRenderer,
+    AGGridCellRendererV2Component
   ],
   providers: [
     ContractNegotiationModuleResolver

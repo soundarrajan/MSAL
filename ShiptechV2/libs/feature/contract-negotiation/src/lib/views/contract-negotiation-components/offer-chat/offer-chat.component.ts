@@ -1,4 +1,4 @@
-import { Component, OnInit,ElementRef, ViewChild, Input, } from '@angular/core';
+import { Component, OnInit,ElementRef, ViewChild, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteChatPopupComponent } from '../contract-negotiation-popups/delete-chat-popup/delete-chat-popup.component';
 @Component({

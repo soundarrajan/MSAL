@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions } from '@ag-grid-enterprise/all-modules';
 import { Router } from "@angular/router";
 import { EmailPreviewPopupComponent } from '../contract-negotiation-popups/email-preview-popup/email-preview-popup.component';
-import { AGGridCellRendererV2Component } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-rendererv2.component';
+import { AGGridCellRendererV2Component } from '../../../core/ag-grid-renderers/ag-grid-cell-rendererv2.component';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-actions.component';
 
 
