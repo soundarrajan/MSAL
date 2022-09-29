@@ -350,7 +350,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               locRow);
               reqLocationRows.push(data);
           }
-         // this.spotNegotiationService.energyCalculationService(null,null,null);
+         
           this.store.dispatch([new SetLocationsRowsOriData(reqLocationRows), new SetLocationsRows(reqLocationRows)]);
       }
     });
@@ -360,6 +360,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
     if (response.energy6MonthHistories.length > 0){
       this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+
+      setTimeout(() => {
+        this.spotNegotiationService.energyCalculationService(null,null,null);
+        this.changeDetector.detectChanges();
+      }, 3000);
     }
   }
   getRequestList(): void {

@@ -37,7 +37,6 @@ export class SpotNegotiationService extends BaseStoreService
   private gridRefreshServiceAll = new Subject<any>();
   private gridRedrawService = new Subject<any>();
   private evaluateIconDisplayCheck = new Subject<any>();
-  private energyCalculation = new Subject<any>();
   QuoteByDate: any;
   counterpartyTotalCount: any;
   physicalSupplierTotalCount: any;
@@ -70,11 +69,6 @@ export class SpotNegotiationService extends BaseStoreService
     // Grid Refrsh Service invoke commands
     callGridRefreshServiceAll() {
       this.gridRefreshServiceAll.next();
-    }
-    
-    energyCalculation$ = this.energyCalculation.asObservable();
-    callenergyCalculation(){
-      this.energyCalculation.next();
     }
     
     evaluateIconDisplayCheck$ = this.evaluateIconDisplayCheck.asObservable();
@@ -238,7 +232,6 @@ export class SpotNegotiationService extends BaseStoreService
    */
      @ObservableException()
      updateEnegryPrices(payload: any):Observable<unknown> {
-      debugger;
        return this.spotNegotiationApi.updateEnegryPrices(payload);
      }
   /**
@@ -765,6 +758,7 @@ export class SpotNegotiationService extends BaseStoreService
     this.netEnergyList = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.netEnergySpecific;
     });
+    if(this.netEnergyList.length == 0) return;
 
     let currentLocationId;
       let alllocationRows;
@@ -780,6 +774,7 @@ export class SpotNegotiationService extends BaseStoreService
           }
         });
       });
+  if(alllocationRows.length == 0 ) return;
 //&& res2.isEnergyCalculationRequired
       alllocationRows.forEach(res1 => {
         if(res1?.requestOffers){
@@ -793,7 +788,8 @@ export class SpotNegotiationService extends BaseStoreService
                           'quotedProductId' : res2.quotedProductId,
                           'requestId' : res1.requestId,
                           'locationId' : res1.locationId,
-                          'supplyQuantity' : res2.supplyQuantity
+                          'supplyQuantity' : res2.supplyQuantity,
+                          'mjkj' : res2.mjkj
                         }
                         return;
                       }
@@ -805,7 +801,8 @@ export class SpotNegotiationService extends BaseStoreService
                           'quotedProductId' : res2.quotedProductId,
                           'requestId' : res1.requestId,
                           'locationId' : res1.locationId,
-                          'supplyQuantity' : res2.supplyQuantity
+                          'supplyQuantity' : res2.supplyQuantity,
+                          'mjkj' : res2.mjkj
                         }
                         return;
                       }
@@ -813,7 +810,7 @@ export class SpotNegotiationService extends BaseStoreService
             });
         }
       });
- console.log(productSet);
+
  if(Object.keys(productSet).length == 0) return;
 
  let currentProductNetEnergyList =  this.netEnergyList.filter(res => {
@@ -842,45 +839,45 @@ export class SpotNegotiationService extends BaseStoreService
     difTemp[eVal.locationId+''+eVal.productId] = [];
     difTemp[eVal.locationId+''+eVal.productId].push(res['price'] / eVal.netAverage);
   }else{
-   delete productSet[key];
+    if(productSet[key].mjkj == null)
+    delete productSet[key];
   }
  }); 
  if(Object.keys(differenceValue).length == 0) return;
- let updateArr = {};
+     let updateArr = {};
      let updatePayload = [];
      let storePayload = [];
      let serverPayLoad = {};
      storePayload = cloneDeep(alllocationRows);
-     Object.entries(productSet).forEach(([key, res]) => {
-      let curentProductVal = currentProductNetEnergyList.filter(nRes => nRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && nRes.productId == res['quotedProductId']);
-      if(curentProductVal.length > 0){
-        let minIndex = curentProductVal[0].locationId+''+curentProductVal[0].productId;
-        console.log(minIndex);
-        const minVal = Math.min(...difTemp[curentProductVal[0].locationId+''+curentProductVal[0].productId]);
-        updateArr['id'] = res['id'];
-        updateArr['mjkj'] = curentProductVal[0]?.netAverage;
-        updateArr['ediff'] = (differenceValue[res['quotedProductId']+''+res['id']] - minVal) * parseFloat(curentProductVal[0].netAverage);
-        updateArr['tco'] = (res['price'] + updateArr['ediff']) * res['supplyQuantity'];
-        updatePayload.push(updateArr); 
-        
-        alllocationRows.filter((el,index) => {
-          if(el.locationId == res['locationId'] && el.requestId == res['requestId']){
-            el.requestOffers.filter((inner,iIndex) =>{
-              if(inner.id == res['id']){
-                storePayload[index].requestOffers[iIndex].mjkj = updateArr['mjkj'] ;
-                storePayload[index].requestOffers[iIndex].ediff = updateArr['ediff'];
-                storePayload[index].requestOffers[iIndex].tco = updateArr['tco'];
-                if(updateArr['ediff'] == 0){
-                  storePayload[index].requestOffers[iIndex]['hclass'] = 'HilightClass';
-                }
-                 storePayload[index].requestOffers[iIndex]['hclass'] = 'nohiglight';
-              }
-            });
+  Object.entries(productSet).forEach(([key, res]) => {
+  let curentProductVal = currentProductNetEnergyList.filter(nRes => nRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && nRes.productId == res['quotedProductId']);
+    if(curentProductVal.length > 0){
+      const minVal = Math.min(...difTemp[curentProductVal[0].locationId+''+curentProductVal[0].productId]);
+      updateArr['id'] = res['id'];
+      updateArr['mjkj'] = curentProductVal[0]?.netAverage;
+      updateArr['ediff'] = (differenceValue[res['quotedProductId']+''+res['id']] - minVal) * parseFloat(curentProductVal[0].netAverage);
+      updateArr['tco'] = (res['price'] + updateArr['ediff']) * res['supplyQuantity'];
+      updatePayload.push(updateArr); 
+    }else{
+      updateArr['id'] = res['id'];
+      updateArr['mjkj'] = null;
+      updateArr['ediff'] = null;
+      updateArr['tco'] = null;
+      updatePayload.push(updateArr); 
+    }
+    alllocationRows.filter((el,index) => {
+      if(el.locationId == res['locationId'] && el.requestId == res['requestId']){
+        el.requestOffers.filter((inner,iIndex) =>{
+          if(inner.id == res['id']){
+            storePayload[index].requestOffers[iIndex].mjkj = updateArr['mjkj'] ;
+            storePayload[index].requestOffers[iIndex].ediff = updateArr['ediff'];
+            storePayload[index].requestOffers[iIndex].tco = updateArr['tco'];
           }
         });
-        updateArr = {};
       }
-     });
+    });
+   updateArr = {};
+  });
      serverPayLoad = { "requestOfferEnergys" : updatePayload }
      this.store.dispatch(new EditLocationRow(storePayload));
      this.updateEnegryPrices(serverPayLoad).subscribe();
