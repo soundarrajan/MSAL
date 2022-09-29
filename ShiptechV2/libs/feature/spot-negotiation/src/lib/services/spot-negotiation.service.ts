@@ -814,26 +814,13 @@ export class SpotNegotiationService extends BaseStoreService
 
  if(Object.keys(productSet).length == 0) return;
 
- let currentProductNetEnergyList =  this.netEnergyList.filter(res => {
-  if((locationId && productId) && res.locationId == locationId && res.productId == productId){
-    return res;
-  }
-  if(productId &&  res.productId == productId){
-    return res;
-  }
-  if(locationId && res.locationId == locationId){
-    return res;
-  }
-  if(productId == null || locationId == null){
-    return res;
-  }
-} );
 
  let differenceValue = {};
  let difTemp = {};
 
  Object.entries(productSet).forEach(([key, res]) => {
-  let eVal = currentProductNetEnergyList.find(fRes => fRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && fRes.productId == res['quotedProductId']);
+  let eVal = this.netEnergyList.find(fRes => fRes.locationId == res['locationId'] && fRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && fRes.productId == res['quotedProductId']);
+
   if(eVal?.netAverage){
     differenceValue[res['quotedProductId']+''+res['id']] = res['price'] / eVal.netAverage;
    if(!difTemp[eVal.locationId+''+eVal.productId])     
@@ -851,7 +838,7 @@ export class SpotNegotiationService extends BaseStoreService
      let serverPayLoad = {};
      storePayload = cloneDeep(alllocationRows);
   Object.entries(productSet).forEach(([key, res]) => {
-  let curentProductVal = currentProductNetEnergyList.filter(nRes => nRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && nRes.productId == res['quotedProductId']);
+  let curentProductVal = this.netEnergyList.filter(fRes => fRes.locationId == res['locationId'] && fRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && fRes.productId == res['quotedProductId']);
     if(curentProductVal.length > 0){
       const minVal = Math.min(...difTemp[curentProductVal[0].locationId+''+curentProductVal[0].productId]);
       updateArr['id'] = res['id'];
