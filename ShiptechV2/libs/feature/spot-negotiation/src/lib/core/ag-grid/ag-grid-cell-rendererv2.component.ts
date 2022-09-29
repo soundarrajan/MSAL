@@ -841,7 +841,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.paramsDataClone = _.cloneDeep(this.params.data);
     this.priceChanged = false;
     if (
-      this.paramsDataClone.requestOffers &&
+      this.paramsDataClone.requestOffers && this.paramsDataClone.requestOffers.length > 0 &&
       this.params.type === 'price-calc'
     ) {
       this.paramsDataClone.currency = this.paramsDataClone.requestOffers[0].currencyId;
