@@ -326,7 +326,7 @@ export class ContractNegoGridComponent implements OnInit {
           suppressSizeToFit:true
         },
         {
-          headerName: 'Name', headerTooltip: 'Name', field: 'CounterpartyName', width: 100,suppressSizeToFit:true,
+          headerName: 'Name', headerTooltip: 'Name', field: 'CounterpartyName', width: 120,suppressSizeToFit:true,
           cellClass: 'suppress-movable-col remove-option hoverCell', pinned: 'left',
           headerClass: 'm-l-7', suppressNavigable: true, lockPosition: true,
           cellRendererFramework: AGGridCellClickRendererComponent,
