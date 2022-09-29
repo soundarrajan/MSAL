@@ -760,18 +760,19 @@ export class SpotNegotiationService extends BaseStoreService
     });
     if(this.netEnergyList.length == 0) return;
 
-    let currentLocationId;
       let alllocationRows;
       let productSet = {};
       this.store.selectSnapshot<any>((state: any) => {
-        currentLocationId =   state.spotNegotiation.currentRequestSmallInfo.id;
+        const currentReqId =   state.spotNegotiation.currentRequestSmallInfo.id;
         alllocationRows = state.spotNegotiation.locationsRows.filter(res => {
-          if((locationId) && (res.requestId == currentLocationId && res?.requestOffers && locationId == res.locationId && res.totalOffer > 0)){
+          if(res.requestId == currentReqId && res?.requestOffers && res.totalOffer > 0){
+          if((locationId) && (locationId == res.locationId )){
             return res;
           }
-          if((locationId == null && res.totalOffer > 0)){
+          if((locationId == null)){
             return res;
           }
+        }
         });
       });
   if(alllocationRows.length == 0 ) return;
