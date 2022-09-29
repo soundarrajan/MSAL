@@ -487,6 +487,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                   hasOrder = true;
                   let errorType = [];
                   if (rodV.seller.id != rqV.SellerId) {
+                    hasOrder = false;
                     if (
                       productsWithErrors.indexOf(rqV.RequestProductId) == -1
                     ) {
