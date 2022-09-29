@@ -900,7 +900,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 params.data,
                 product.id
               );
-              if (details.ediff == 0) return true; 
+              if (details.ediff == 0 && details.tco > 0) return true; 
             },
             'noHighListashght' : params => {
               const details = this.spotNegotiationService.getRowProductDetails(

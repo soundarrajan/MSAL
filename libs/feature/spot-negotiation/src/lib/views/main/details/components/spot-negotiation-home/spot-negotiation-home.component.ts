@@ -1431,6 +1431,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) revoked successfully.');
+          setTimeout(() => {
+            this.spotNegotiationService.energyCalculationService(null,null,null);
+          },3000);
+          
 
           if (res['message'].length > 3) this.toaster.warning(res['message']);
           // else
@@ -1657,8 +1661,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
         let successMessage =
           type === 'enable-quote'
             ? 'Selected Offer Price has been enabled.'
-            : "Selected Offers have been marked as 'No Quote' successfully.";
+            : "Selected Offers have been marked as 'No Quote' successfully. zxc";
         this.toaster.success(successMessage);
+        setTimeout(() => {
+          this.spotNegotiationService.energyCalculationService(null,null,null);
+        },3000);
+        
       } else {
         this.toaster.error('An error has occurred!');
         this.spinner.hide();

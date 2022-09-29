@@ -2316,6 +2316,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             ? 'Selected Offer Price has been enabled.'
             : "Selected Offers have been marked as 'No Quote' successfully.";
         this.toastr.success(successMessage,'',{timeOut: 800});
+        setTimeout(() => {
+          this._spotNegotiationService.energyCalculationService(null,null,null);
+        },3000);
         this.getSellerLineDetails();
       } else {
         this.spinner.hide();
