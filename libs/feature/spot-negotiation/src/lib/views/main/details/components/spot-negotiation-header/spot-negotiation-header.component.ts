@@ -804,6 +804,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     };
     this.selectionChange.emit(obj);
     this.getBestContractForCurrentRequest(selected.id);
+    setTimeout(()=>{
+      this._spotNegotiationService.energyCalculationService(null,null,null);
+    },3000);
   }
 
   getBestContractForCurrentRequest(selectedRequestId): void {
