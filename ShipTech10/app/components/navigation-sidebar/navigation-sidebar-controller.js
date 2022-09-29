@@ -1,9 +1,10 @@
-angular.module('shiptech').controller('navigationSidebarController', [ '$scope', '$rootScope', '$state', 'STATE', '$timeout', "$listsCache", '$tenantSettings', '$filter', '$window', '$location', '$tenantConfiguration',
-    function($scope, $rootScope, $state, STATE, $timeout, $listsCache, $tenantSettings, $filter, $window, $location, $tenantConfiguration) {
+angular.module('shiptech').controller('navigationSidebarController', [ '$scope', '$rootScope', '$state', 'STATE', '$timeout', "$listsCache", '$tenantSettings', '$filter', '$window', '$location', '$tenantConfiguration', 'buildNumber',
+    function($scope, $rootScope, $state, STATE, $timeout, $listsCache, $tenantSettings, $filter, $window, $location, $tenantConfiguration, buildNumber) {
         $scope.state = $state;
         $scope.STATE = STATE;
         $scope.tenantSettings = $tenantSettings;
         $scope.isShowCalanderView = $tenantConfiguration.scheduleDashboardConfiguration? $tenantConfiguration.scheduleDashboardConfiguration.showCalenderView: false;
+        $scope.buildNumber = buildNumber;
         $timeout(() => {
             let menu = $('.page-sidebar-menu');
             menu.find('li.active').removeClass('active');
