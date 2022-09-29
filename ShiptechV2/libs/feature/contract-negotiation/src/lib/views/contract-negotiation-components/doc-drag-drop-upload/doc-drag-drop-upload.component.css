@@ -1,0 +1,9 @@
+.mat-option,.mat-option.mat-active {
+    color: rgba(0,0,0,.87) !important;
+}
+.mat-selected .mat-option:focus:not(.mat-option-disabled), .mat-option:hover:not(.mat-option-disabled){
+    color: rgba(0,0,0,.87) !important; 
+}
+.mat-option.mat-active, .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled), .mat-option:hover:not(.mat-option-disabled) {
+    background: rgba(0,0,0,.04) !important;
+}
