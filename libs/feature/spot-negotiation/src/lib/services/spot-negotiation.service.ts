@@ -762,8 +762,11 @@ export class SpotNegotiationService extends BaseStoreService
 
       let alllocationRows;
       let productSet = {};
+      let locationRows;
+      let maxQtyArray = {};
       this.store.selectSnapshot<any>((state: any) => {
         const currentReqId =   state.spotNegotiation.currentRequestSmallInfo.id;
+        locationRows = state.spotNegotiation.locations;
         alllocationRows = state.spotNegotiation.locationsRows.filter(res => {
           if(res.requestId == currentReqId && res?.requestOffers && res.totalOffer > 0){
           if((locationId) && (locationId == res.locationId )){
@@ -776,6 +779,12 @@ export class SpotNegotiationService extends BaseStoreService
         });
       });
   if(alllocationRows.length == 0 ) return;
+  locationRows.forEach(main => {
+    main.requestProducts.forEach(reqProds => {
+      maxQtyArray[main.locationId+'-'+reqProds.productId] = reqProds.maxQuantity;
+    });
+  });
+  debugger;
 //&& res2.isEnergyCalculationRequired
       alllocationRows.forEach(res1 => {
         if(res1?.requestOffers){
@@ -844,7 +853,7 @@ export class SpotNegotiationService extends BaseStoreService
       updateArr['id'] = res['id'];
       updateArr['mjkj'] = curentProductVal[0]?.netAverage;
       updateArr['ediff'] = (differenceValue[res['quotedProductId']+''+res['id']] - minVal) * parseFloat(curentProductVal[0].netAverage);
-      updateArr['tco'] = (res['price'] + updateArr['ediff']) * res['supplyQuantity'];
+      updateArr['tco'] = (res['price'] + updateArr['ediff']) * maxQtyArray[res['locationId']+'-'+res['quotedProductId']];
       updatePayload.push(updateArr); 
     }else{
       updateArr['id'] = res['id'];
