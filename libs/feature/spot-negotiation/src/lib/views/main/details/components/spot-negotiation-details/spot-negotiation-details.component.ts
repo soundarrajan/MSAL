@@ -811,6 +811,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             );
             
             if(!details.amount || details.amount == null){
+              if(details.isEnergyCalculationRequired)
+              return "--"
               return null;
             }else{
               return this.tenantService.amount(details.mjkj);
@@ -845,6 +847,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               product.id
             );
             if(!details.amount || details.amount == null){
+              if(details.isEnergyCalculationRequired)
+              return "--"
               return null;
             }else{
               return this.tenantService.amount(details.ediff);
@@ -879,6 +883,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             );
 
             if(!details.amount || details.amount == null){
+              if(details.isEnergyCalculationRequired)
+              return "--"
               return null;
             }else{
               return this.tenantService.amount(details.tco);

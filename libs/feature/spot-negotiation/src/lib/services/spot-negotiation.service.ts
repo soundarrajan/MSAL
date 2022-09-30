@@ -784,7 +784,7 @@ export class SpotNegotiationService extends BaseStoreService
       maxQtyArray[main.locationId+'-'+reqProds.productId] = reqProds.maxQuantity;
     });
   });
-  debugger;
+
 //&& res2.isEnergyCalculationRequired
       alllocationRows.forEach(res1 => {
         if(res1?.requestOffers){
