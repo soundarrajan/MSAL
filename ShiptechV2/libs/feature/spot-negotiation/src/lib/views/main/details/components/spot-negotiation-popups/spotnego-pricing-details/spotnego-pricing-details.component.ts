@@ -748,20 +748,21 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           this.toastr.error('Plus Minus field is required in in Complex Pricing formula');
           return;
         }
-
-        if (this.formValues.complexFormulaQuoteLines[i - 1]?.formulaPlusMinus.name != 'None') {
+     
+        if (this.formValues.complexFormulaQuoteLines[i - 1]?.formulaPlusMinus.id != 3) {
           if (!this.formValues.complexFormulaQuoteLines[i - 1]?.amount) {
             this.toastr.error('Amount field is required in Complex Pricing formula');
             return;
           }
 
-          if (!this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage) {
-            this.toastr.error('FlatPercentage field is required in Complex Pricing formula');
+          if (!this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage || this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage.id == 0) {
+             this.toastr.error('FlatPercentage field is required in Complex Pricing formula');
             return;
           }
           
-            if (!this.formValues.complexFormulaQuoteLines[i - 1]?.uom) {
-              if(this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage.name != 'Percentage'){
+            if (!this.formValues.complexFormulaQuoteLines[i - 1]?.uom || this.formValues.complexFormulaQuoteLines[i - 1]?.uom.id == null) {
+              // id = 2  is percentage
+              if(this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage.id != 2  ){
                 this.toastr.error('UOM field is required in Complex Pricing formula');
                 return;
               }
@@ -1155,7 +1156,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       productDiscountRules: this.getProductDiscountRules(priceConfig.discountRules?.productDiscountRules),
       locationDiscountRules: this.getLocationDiscountRules(priceConfig.discountRules?.locationDiscountRules)
     };
-
+ 
     if (priceConfig.formula.formulaTypeId === 1) {
       this.formValues.simpleFormula = {
         plusMinus: { id: priceConfig.formula.simpleFormula.formulaPlusMinusId },
@@ -1184,7 +1185,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           systemInstruments: this.getSystemInstruments(quote.systemInstruments)
         } as ComplexFormula);
       });
-
+   
       this.formValues.complexFormulaQuoteLines = complexFormulaQuoteLines;
     }
     var uomMassList = this.setListFromStaticLists('UomMass');
