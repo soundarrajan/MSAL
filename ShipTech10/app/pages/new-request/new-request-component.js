@@ -679,6 +679,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 newRequestModel.newRequest(voyageId).then((newRequestData) => {
                     ctrl.request = newRequestData.payload;
 
+                    $scope.forms.detailsFromRequest.$setPristine();
+                    $scope.forms.detailsFromRequest.$setUntouched();
                     $.each(ctrl.request.locations, (i, j) => {
 
                         getTerminalLocations('locations', j.location.id);
@@ -750,6 +752,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             } else if (typeof requestId != 'undefined' && requestId !== null) {
                 newRequestModel.getRequest(requestId).then((newRequestData) => {
                     ctrl.request = newRequestData.payload;
+                    $scope.forms.detailsFromRequest.$setPristine();
+                    $scope.forms.detailsFromRequest.$setUntouched();
                     ctrl.getRequestinitialSnapshot = angular.copy(newRequestData.payload);
                     $.each(ctrl.request.locations, (i, j) => {
                         if (j.terminal != null && j.terminal.length != 0) {
