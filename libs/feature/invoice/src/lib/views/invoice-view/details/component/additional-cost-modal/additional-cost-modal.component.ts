@@ -529,12 +529,7 @@ export class AdditionalCostModalComponent implements OnInit {
       }
     });
 
-    let productLine = {
-      id: -1,
-      name: 'All',
-      deliveryProductId: null,
-      productId: null
-    };
+    let productLine;
     if (
       additionalCost.costType.name == 'Range' ||
       additionalCost.costType.name == 'Total'
