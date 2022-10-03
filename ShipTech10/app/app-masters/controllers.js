@@ -10765,13 +10765,21 @@
                 }
 
                 Factory_Master.getLocationSellerContacts(payload, (callback) => {
+                    if($scope.formValues.sellers?.[$scope.locationCounterpartyindex]?.locationContacts){
+                        $scope.formValues.sellers[$scope.locationCounterpartyindex].locationContacts = [];
+                    }
                     if (callback) {
                         $.each(callback, (k, v) => {
-                            $scope.preferredContacts[k] = callback[k].locationContact[0];
+                            // $scope.preferredContacts[k] = callback[k].locationContact[0];
+                            $scope.formValues.sellers[$scope.locationCounterpartyindex].locationContacts.push(callback[k]);
                         });
                     }
                 });
             }
+        }
+
+        $scope.locationCounterpartyChange= function(index){
+            $scope.locationCounterpartyindex = index;
         }
 
         $scope.locationContactsChange= function(index){
@@ -10813,7 +10821,9 @@
             angular.forEach(locationContacts, (locationContact) => {
                 locationContact.isDeleted = false;
             });
-            $scope.formValues.counterpartyLocations[key].locationContacts = locationContacts;
+            if($scope.formValues?.counterpartyLocations?.[key]?.locationContacts){
+                $scope.formValues.counterpartyLocations[key].locationContacts = locationContacts;
+                }
         }
 
         $scope.deleteVesselProduct = function(key) {
