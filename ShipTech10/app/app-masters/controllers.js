@@ -1217,7 +1217,7 @@
                     }
 
                     if($scope.formValues.sellers){
-                        angular.forEach($scope.formValues.sellers, (sellerContact) => {
+                        angular.forEach($scope.formValues.sellers, (sellerContact, sellerIndex) => {
                             if($scope.formValues.id == 0 ){
                                 let location = {
                                     'name': $scope.formValues.name,
@@ -1225,16 +1225,16 @@
                                 };
                                 sellerContact.location = location;
                             }                            
-                            // let savedContacts = $filter('filter')(sellerContact.sellerContacts, function(value){ return (value.id > 0);},true );
-                            // if(savedContacts && savedContacts.length > 0){
-                            //     angular.forEach(savedContacts, (contact) => {
-                            //         let isDeleted = $filter('filter')(sellerContact.locationContacts, { id: contact.id}).length == 0;
-                            //         if(isDeleted){
-                            //             contact.isDeleted = true;
-                            //             sellerContact.locationContacts.push(contact);
-                            //         }
-                            //     });
-                            // }
+                            let savedContacts = $filter('filter')($scope.preferredContacts[sellerIndex], function(value){ return (value.id > 0);},true );
+                            if(savedContacts && savedContacts.length > 0){
+                                angular.forEach(savedContacts, (contact) => {
+                                    let isDeleted = $filter('filter')(sellerContact.locationContacts, { id: contact.id}).length == 0;
+                                    if(isDeleted){
+                                        contact.isDeleted = true;
+                                        sellerContact.locationContacts.push(contact);
+                                    }
+                                });
+                            }
                         });
                     }
 
