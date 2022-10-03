@@ -86,7 +86,7 @@
         
         (click)="expandedSearch = showSearch(expandedSearch)"
       ></span>
-      <div *ngIf="expandedSearch" style="display:flex" class="search-input">
+      <div *ngIf="expandedSearch" style="display: flex; position: relative; height: 26px;" class="search-input">
         <input matInput
           type="search"
           name="inputSearch"
@@ -97,9 +97,7 @@
           matTooltipClass="lightTooltip"
           class="search-box light"
         />
-        <div
-          style="border-right: 1px solid gray; height: 12px; margin-top: 8px;"
-        ></div>
+        <span class="search-line">|</span>
         <button class="searchButton" type="submit">
           <i
             class="fa fa-search"
