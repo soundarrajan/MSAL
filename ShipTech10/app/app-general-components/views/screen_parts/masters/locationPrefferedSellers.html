@@ -17,7 +17,7 @@
 				<td style="width:5%"><span class="insert" ng-click="formValues.sellers.push({id:0, locationContacts:[], sellerContacts: []})"></span></td>
 				<td style="width:20%">
 					<div class="input-group">
-	                    <input decode-input-format ng-model="value.counterparty" typeahead-on-select="getLocationDetails()" ng-change="locationCounterpartyChange($index)" uib-typeahead="item as item.name for item in CM.listsCache.Counterparty | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
+	                    <input decode-input-format ng-model="value.counterparty" typeahead-on-select="getLocationDetails($index)" ng-change="locationCounterpartyChange($index)" uib-typeahead="item as item.name for item in CM.listsCache.Counterparty | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
 	                    <span class="input-group-addon" ng-click="triggerModal('general', 'masters_counterpartylist', 'Counterparty' , 'formValues.sellers.'+key+'.counterparty');" ng-init="modal = false">
 	                        <a   class=" btn default">
 	                            <i class="fa fa-search"></i>
@@ -42,7 +42,7 @@
 					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.CounterpartyStatus track by item.id " ng-model="value.status"></select>
 				</td>
 				<td>
-					<multiselect ng-model="formValues.sellers[$index].locationContacts" options="formValues.sellers[$index].locationContacts" class="multiselect" display-prop="email" id-prop="indexId" show-search="false"></multiselect>
+					<multiselect ng-model="formValues.sellers[$index].locationContacts" options="preferredContacts[$index]" class="multiselect" display-prop="email" id-prop="indexId" show-search="false"></multiselect>
 				</td>
 				<td style="width:30%"><input class="form-control" type="text" decode-input-format ng-model="value.comments"></td>
 			</tr>

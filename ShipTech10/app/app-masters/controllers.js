@@ -7999,6 +7999,7 @@
                 vm.preparePreferredContacts($scope.formValues.counterpartyLocations);
             }
             if(vm.screen_id == 'location'){
+                vm.preparePreferredContacts($scope.formValues.sellers);
                 // location seller contacts to be in synch with counterparty location contacts
                 _.each($scope.formValues.sellers, (seller, index) =>{
                     if(seller.sellerContacts && seller.sellerContacts.length > 0 && seller.sellerContacts[0].indexId === undefined){
@@ -8013,7 +8014,7 @@
                             sellerContact = { indexId: contactIndex, contactId: sellerContact.id, id: sellerContactId, email: sellerContact.email}
                             sellerContacts.push(sellerContact);
                         });
-                        $scope.formValues.sellers[index].sellerContacts = sellerContacts;
+                        $scope.preferredContacts[index] = sellerContacts;
                     }
                 });
             }
@@ -10754,9 +10755,8 @@
             }
         }
 
-        $scope.getLocationDetails = function(){
-            const index = $scope.formValues.sellers && $scope.formValues.sellers.length >0 ? $scope.formValues.sellers.length-1 : 0;
-            const counterpartyId = $scope.formValues.sellers[index].counterparty.id;
+        $scope.getLocationDetails = function(index) {
+            const counterpartyId = $scope.formValues.sellers[index]?.counterparty.id;
             const locationId = $scope.formValues? $scope.formValues.id : 0;
 
             if(locationId > 0){
@@ -10768,11 +10768,17 @@
                     if($scope.formValues.sellers?.[$scope.locationCounterpartyindex]?.locationContacts){
                         $scope.formValues.sellers[$scope.locationCounterpartyindex].locationContacts = [];
                     }
+                    if (!$scope.preferredContacts[$scope.locationCounterpartyindex]) {
+                        $scope.preferredContacts[$scope.locationCounterpartyindex] = [];
+                    }
                     if (callback) {
-                        $.each(callback, (k, v) => {
-                            // $scope.preferredContacts[k] = callback[k].locationContact[0];
-                            $scope.formValues.sellers[$scope.locationCounterpartyindex].locationContacts.push(callback[k]);
+                        let contacts = [];
+                        _.each(callback, (contact, contactIndex) => {
+                            contact.indexId = contacts.length + 1;
+                            contact.isNewContact = false;
+                            contacts.push(contact);
                         });
+                        $scope.preferredContacts[$scope.locationCounterpartyindex] = contacts;
                     }
                 });
             }
