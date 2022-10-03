@@ -1225,16 +1225,16 @@
                                 };
                                 sellerContact.location = location;
                             }                            
-                            let savedContacts = $filter('filter')(sellerContact.sellerContacts, function(value){ return (value.id > 0);},true );
-                            if(savedContacts && savedContacts.length > 0){
-                                angular.forEach(savedContacts, (contact) => {
-                                    let isDeleted = $filter('filter')(sellerContact.locationContacts, { id: contact.id}).length == 0;
-                                    if(isDeleted){
-                                        contact.isDeleted = true;
-                                        sellerContact.locationContacts.push(contact);
-                                    }
-                                });
-                            }
+                            // let savedContacts = $filter('filter')(sellerContact.sellerContacts, function(value){ return (value.id > 0);},true );
+                            // if(savedContacts && savedContacts.length > 0){
+                            //     angular.forEach(savedContacts, (contact) => {
+                            //         let isDeleted = $filter('filter')(sellerContact.locationContacts, { id: contact.id}).length == 0;
+                            //         if(isDeleted){
+                            //             contact.isDeleted = true;
+                            //             sellerContact.locationContacts.push(contact);
+                            //         }
+                            //     });
+                            // }
                         });
                     }
 
@@ -8010,9 +8010,12 @@
                             if(savedSellerContacts.length > 0){
                                 sellerContactId = savedSellerContacts[0].id;
                                 savedSellerContacts[0].indexId = contactIndex;
+                                sellerContacts.push(savedSellerContacts[0]);
                             }
-                            sellerContact = { indexId: contactIndex, contactId: sellerContact.id, id: sellerContactId, email: sellerContact.email}
-                            sellerContacts.push(sellerContact);
+                            else {
+                                sellerContact = { indexId: contactIndex, contactId: sellerContact.id, id: sellerContactId, email: sellerContact.email}
+                                sellerContacts.push(sellerContact);
+                            }
                         });
                         $scope.preferredContacts[index] = sellerContacts;
                     }
