@@ -11151,8 +11151,8 @@ tr.title {
 /* Spot Negotiation Header - Start */
 #spot-nego-header {
   margin: 0px 15px 0px -10px;
-  height: 55px;
-  max-height: 55px;
+  height: 49px;
+  max-height: 50px;
   .section1 {
     margin-left: -7px;
     flex: 1 1 262px;
@@ -11163,6 +11163,8 @@ tr.title {
       .search-line {
         margin-top: 4px;
         color: #333333;
+        position: absolute;
+        right: 30px;
       }
       input[type='search'] {
         border: 1px solid gray;
@@ -11178,7 +11180,6 @@ tr.title {
       input[type='search'].light {
         background: #fff;
         color: #222;
-        text-overflow: ellipsis;
       }
 
       input[type='search']::-webkit-search-cancel-button {
@@ -11215,6 +11216,12 @@ tr.title {
       font-size: 12px;
       line-height: 14px;
       color: #5c5c5c;
+
+      &.ellipsis {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
     ::placeholder {
       font-family: Roboto;
