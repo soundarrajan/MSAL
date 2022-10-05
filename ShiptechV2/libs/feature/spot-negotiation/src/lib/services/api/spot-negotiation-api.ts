@@ -83,7 +83,8 @@ export const SpotNegotiationApiPaths = {
   getContractFormulaList : `api/masters/formulas/listMasters`,
   getMasterFormula : `api/masters/formulas/get`,
   getDefaultConversionFactor : `api/masters/products/getProdDefaultConversionFactors`,
-  getEnergy6MonthHistory:`groups/getEnergy6MonthHistorys`
+  getEnergy6MonthHistory:`groups/getEnergy6MonthHistorys`,
+  updateQuoteDateGroup: `groups/updateQuoteGroup`,
 };
 
 @Injectable({
@@ -922,12 +923,20 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
     return this.http
       .post<any>(
         `${this._sellerApiUrl}/${SpotNegotiationApiPaths.getSellerRatingsforNegotiation}`,
-        payload
-      )
+        payload)
       .pipe(
         map((body: any) => body),
         catchError((body: any) => this.handleErrorMessage(body))
       );
+  }
+  
+  @ObservableException()
+  updateQuoteDateGroup(request: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updateQuoteDateGroup}`,
+        request
+      )
   }
 
   @ObservableException()
