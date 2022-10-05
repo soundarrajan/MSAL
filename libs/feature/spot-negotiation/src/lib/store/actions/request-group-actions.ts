@@ -23,6 +23,11 @@ export class SetRequestGroupId {
 
   constructor(public payload: any) {}
 }
+export class SetQuoteDateAndTimeZoneId {
+  static readonly type = '[SetQuoteDateAndTimeZoneId] Set';
+
+  constructor(public payload: any) {}
+}
 export class SetStaticLists {
   static readonly type = '[Static Lists] Set';
 

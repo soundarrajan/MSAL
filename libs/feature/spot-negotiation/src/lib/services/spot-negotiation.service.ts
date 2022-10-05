@@ -38,6 +38,7 @@ export class SpotNegotiationService extends BaseStoreService
   private gridRedrawService = new Subject<any>();
   private evaluateIconDisplayCheck = new Subject<any>();
   QuoteByDate: any;
+  QuoteByTimeZoneId: any;
   counterpartyTotalCount: any;
   physicalSupplierTotalCount: any;
   requestCount: any;
@@ -584,6 +585,13 @@ export class SpotNegotiationService extends BaseStoreService
     return this.spotNegotiationApi.getEnergy6MHistorys(payload).toPromise();
   }
   
+
+    /**
+   * @param payload
+   */
+     updateQuoteDateGroup(payload: any): Observable<unknown> {
+      return this.spotNegotiationApi.updateQuoteDateGroup(payload);
+    }
   ngOnDestroy(): void {
     super.onDestroy();
   }

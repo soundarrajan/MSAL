@@ -291,7 +291,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         TemplateName: this.selected,
         QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate)
       };
-
+      
       this.spinner.show();
       // Get response from server
       const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
