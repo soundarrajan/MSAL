@@ -51,6 +51,7 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly orderedStatus: Dexie.Table<IStatusLookupDto, number>;
   readonly barge: Dexie.Table<IDisplayLookupDto, number>;
   readonly product: Dexie.Table<IDisplayLookupDto, number>;
+  readonly timeZone: Dexie.Table<IDisplayLookupDto, number>;
   readonly supplier: Dexie.Table<IDisplayLookupDto, number>;
   readonly qualityMatch: Dexie.Table<IDisplayLookupDto, number>;
   readonly deliveryFeedback: Dexie.Table<IDisplayLookupDto, number>;
@@ -145,6 +146,7 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('vessel')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('barge')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('product')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('timeZone')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('supplier')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('qualityMatch')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('quantityCategory')]: lookupSchema,
@@ -247,6 +249,11 @@ export class LegacyLookupsDatabase extends Dexie {
     return productList;
   }
 
+  async getTimeZoneList() {
+    const db = this.table('timeZone');
+    let timeZoneList = await db.toArray();
+    return timeZoneList;
+  }
   async getPhysicalSupplierList() {
     const db = this.table('supplier');
     let physicalSupplierList = await db.toArray();
