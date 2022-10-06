@@ -542,6 +542,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
         }else{
           productDetails.price = 0;
         }
+        productDetails.price = Number(newValue?.toString().replace(/,/g, ''));
         break;
 
       default:

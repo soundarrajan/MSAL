@@ -18,6 +18,7 @@ import {
   SetLocationsRows,
   SetNetEnergySpecific,
   SetOfferPriceFormulaId,
+  SetStaticLists,
   UpdateRequest
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotnegoemaillogComponent } from '../spotnegoemaillog/spotnegoemaillog.component';
@@ -30,6 +31,10 @@ import { NegotiationDetailsToolbarComponent } from '../../../toolbar/spot-negoti
 import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
 import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
 import { ServerQueryFilter } from '@shiptech/core/grid/server-grid/server-query.filter';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { forkJoin } from 'rxjs';
+import { SetQuoteDateAndTimeZoneId } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -41,9 +46,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
   navigationItems: any[];
   navBar: any;
   requestOptions: any;
+  switchTheme; //false-Light Theme, true- Dark Theme
+  quoteByTimeZoneId:number|null;
+  quoteByTimeZone:any;
   requestOptionsToDuplicatePrice: any;
   isOpen: boolean = false;
-
+  public expand_quoteDate:boolean = true;
+  private legacyLookupsDatabase: LegacyLookupsDatabase;
+  staticLists: any;
+  timeZones:any;
   @ViewChild(NegotiationDetailsToolbarComponent)
   negoNavBarChild: NegotiationDetailsToolbarComponent;
 
@@ -60,6 +71,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   currentRequestInfo: any;
   tenantConfiguration: any;
   RequestGroupID: number;
+  generalTenantSettings:any;
   negotiationId: any;
   requestId: any;
   emailLogUrl: string;
@@ -76,11 +88,13 @@ export class SpotNegotiationHomeComponent implements OnInit {
     private store: Store,
     private spinner: NgxSpinnerService,
     private spotNegotiationService: SpotNegotiationService,
+    private tenantSettingsService: TenantSettingsService,
     private router: Router,
     private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService,
     private myMonitoringService: MyMonitoringService
   ) {
     this.baseOrigin = new URL(window.location.href).origin;
+    this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
   }
 
   ngOnInit(): void {
@@ -138,9 +152,23 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     
   }
-
+  ngDoCheck(){
+    this.quoteByTimeZoneId=this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.quoteTimeZoneIdByGroup;
+    });
+    this.staticLists = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists;
+    });
+    this.timeZones=this.staticLists['timeZone'];
+    if(this.timeZones!=undefined && this.spotNegotiationService.QuoteByTimeZoneId!=undefined){
+      this.quoteByTimeZone=this.timeZones?.find(x => x.id == this.spotNegotiationService.QuoteByTimeZoneId).name;
+    }
+    this.spotNegotiationService.QuoteByDate= this.spotNegotiationService.QuoteByDate;
+  }
+  
   ngAfterViewInit(): void {
-    this.spotNegotiationService.QuoteByDate = this.child.getValue();
+    setTimeout(() => {
+    });
   }
 
   setTabItems() {
@@ -205,7 +233,38 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
     ];
   }
-
+  compareQuoteByTimeZoneIdObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
+  selectedQuoteByTimeZone(value){
+    this.quoteByTimeZoneId=value.id;
+    this.quoteByTimeZone =value.name;
+    this.updateQuoteByGroup();
+  }
+  updateQuoteByGroup(){
+    let payload={
+      QuoteByTimeZoneId:this.quoteByTimeZoneId, 
+      RequestGroupId:this.currentRequestInfo.requestGroupId, 
+      QuoteByDate:this.spotNegotiationService.QuoteByDate 
+    }
+    this.spotNegotiationService
+    .updateQuoteDateGroup(payload)
+    .subscribe((response: any) => {
+      if (response?.message == 'Unauthorized') {
+        return;
+      }
+      if (response.status) {
+        this.spotNegotiationService.QuoteByTimeZoneId=payload.QuoteByTimeZoneId;
+        this.spotNegotiationService.QuoteByDate=payload.QuoteByDate;
+        let setQuoteByGroup={
+          quoteTimeZoneIdByGroup:payload.QuoteByTimeZoneId,
+          quoteDateByGroup: payload.QuoteByDate
+        };
+        payload.QuoteByTimeZoneId;
+        this.store.dispatch(new SetQuoteDateAndTimeZoneId(setQuoteByGroup));
+      }
+    });
+  }
   setActiveRequest() {
     (<any>window).activeRequest = {
       i: this.headerDetailsComponent.selReqIndex
@@ -227,6 +286,13 @@ export class SpotNegotiationHomeComponent implements OnInit {
     //    this.spotEmailComp.getEmailLogs();
     //  }
   }
+
+  loadTimeZone(){
+    this.staticLists = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists;
+    });
+    this.timeZones=this.staticLists['timeZone'];
+}
 
  async confirmorderpopup() {
     this.isOrderexisting = false;
@@ -432,8 +498,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
     var FinalAPIdata = {
       RequestGroupId: this.currentRequestInfo.requestGroupId,
-      quoteByDate: new Date(this.child.getValue()),
-      selectedSellers: selectedCounterpartyList
+      quoteByDate: new Date(this.spotNegotiationService.QuoteByDate ),
+      selectedSellers: this.selectedSellerList
     };
     this.spinner.show();
 
@@ -756,7 +822,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       RequestOffers: Seller.requestOffers?.filter(row =>
         selectedproductIds.includes(row.requestProductId)
       ),
-      QuoteByDate: new Date(this.child.getValue())
+      QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate )
     };
   }
 
@@ -1284,7 +1350,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       );
       var FinalAPIPayload = {
         RequestGroupId: this.currentRequestInfo.requestGroupId,
-        quoteByDate: new Date(this.child.getValue()),
+        quoteByDate: new Date(this.spotNegotiationService.QuoteByDate ),
         selectedSellers: this.selectedSellerList
       };
       this.spinner.show();
