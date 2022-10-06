@@ -19,7 +19,7 @@ import {
   IDocumentsCreateUploadRequest,
   IDocumentsCreateUploadResponse
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
-import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
+import { IDocumentsDownloadRequest, IDocumentsDownloadZipRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
 import {
   IDocumentsMasterRequest,
   IDocumentsMasterResponse
@@ -47,6 +47,7 @@ export interface IDocumentsApiService {
   ): Observable<IDocumentsCreateUploadResponse>;
 
   downloadDocument(request: IDocumentsDownloadRequest): Observable<Blob>;
+  downloadDocumentAsZip(request: IDocumentsDownloadZipRequest): Observable<Blob>;
 
   getDocumentsMaster(
     request: IDocumentsMasterRequest

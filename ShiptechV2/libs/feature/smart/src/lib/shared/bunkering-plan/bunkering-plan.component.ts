@@ -53,6 +53,8 @@ export class BunkeringPlanComponent implements OnInit {
   public selectedPort: any = [];
   public vesselData: any;
   public latestPlanId: any;
+  public invalidPlanId: any;
+  public planStatus: string;
   public editableCell: boolean;
   public type: any;
   public rowSelection;
@@ -76,6 +78,10 @@ export class BunkeringPlanComponent implements OnInit {
         this.loadBunkeringPlanDetails();
       }
     }
+  }
+  @Input('planStatus')
+  public set currPlanStatus(ps: string) {
+    this.planStatus = ps;
   }
   @Input('vesselRef')
   public set vesselRef(v: string) {
@@ -734,14 +740,23 @@ export class BunkeringPlanComponent implements OnInit {
           this.gridOptions.api.setRowData(this.rowData);
         }
         this.bPlanData = this.rowData;
+        if (this.planStatus == 'Invalid') {
+          this.invalidPlanId = this.latestPlanId;
+        }
         this.latestPlanId = '';
         this.loadBplan.emit(false);
         let titleEle = document.getElementsByClassName(
           'page-title'
         )[0] as HTMLElement;
         titleEle.click();
-        if (this.type == 'C') {
+        if (this.type == 'C' || this.planStatus == 'Invalid') {
           this.addBplanToStoreForSaveFunction(this.bPlanData);
+        }
+        
+        // Run-time calculation for invalid plans
+        if (this.store.selectSnapshot(UpdateBplanTypeState.getBplanType) == 'A' && this.planStatus == 'Invalid') {
+          this.calculateSOA('0.5 QTY');
+          this.calculateSOA('LSDIS');
         }
       });
     } else {
@@ -1215,11 +1230,14 @@ export class BunkeringPlanComponent implements OnInit {
     this.sodCommentsUpdated = true;
   }
 
-  calculateSOA(column) {    
-    if (this.store.selectSnapshot(UpdateBplanTypeState.getBplanType) == 'C') {
+  calculateSOA(column) {
+    if (this.store.selectSnapshot(UpdateBplanTypeState.getBplanType) == 'C' || this.planStatus == 'Invalid') {
       let currentROB = this.store.selectSnapshot(
         SaveCurrentROBState.saveCurrentROB
       );
+      if (this.planStatus == 'Invalid' && this.invalidPlanId) {
+        currentROB = this.remodelROB(JSON.parse(localStorage.getItem('ROB_' + this.invalidPlanId.trim())));
+      }
       let rowData2 = this.rowData;
 
       var BPlanExistData = JSON.parse(
@@ -1320,7 +1338,7 @@ export class BunkeringPlanComponent implements OnInit {
                   parseInt(rowData2[i - 1].hsfo_estimated_lift) +
                   parseInt(rowData2[i - 1].vlsfo_estimated_lift)) : 0;
                 rowData2[i].hsfo_soa = prev_est_lift + parseInt(rowData2[i - 1].hsfo_soa) -
-                  parseInt(estdConsHsfoList[i].hsfo_estimated_consumption);
+                  parseInt(estdConsHsfoList[i]?.hsfo_estimated_consumption);
               }
               if (rowData2[i].hsfo_soa)
                 this.store.dispatch(
@@ -1341,6 +1359,35 @@ export class BunkeringPlanComponent implements OnInit {
         }
       }
     }
+  }
+
+  remodelROB(ROBArbitrageData) {
+    let currentROBObj = {
+      '3.5 QTY': null,
+      '0.5 QTY': null,
+      ULSFO: null,
+      LSDIS: null,
+      HSDIS: null,
+      hsfoTankCapacity: null,
+      ulsfoTankCapacity: null,
+      lsdisTankCapacity: null,
+      hsdisTankCapacity: null,
+      upulsfo: null,
+      uplsdis: null
+    };
+    currentROBObj['3.5 QTY'] = ROBArbitrageData?.hsfoCurrentStock;
+    currentROBObj['0.5 QTY'] = ROBArbitrageData?.hsfO05CurrentStock;
+    currentROBObj.ULSFO = ROBArbitrageData?.ulsfoCurrentStock;
+    currentROBObj.LSDIS = ROBArbitrageData?.lsdisCurrentStock;
+    currentROBObj.HSDIS = ROBArbitrageData?.hsdisCurrentStock;
+    currentROBObj.hsfoTankCapacity = ROBArbitrageData?.hsfoTankCapacity;
+    currentROBObj.ulsfoTankCapacity = ROBArbitrageData?.ulsfoTankCapacity;
+    currentROBObj.lsdisTankCapacity = ROBArbitrageData?.lsdisTankCapacity;
+    currentROBObj.hsdisTankCapacity = ROBArbitrageData?.hsdisTankCapacity;
+    currentROBObj.upulsfo = ROBArbitrageData?.upulsfo;
+    currentROBObj.uplsdis = ROBArbitrageData?.uplsdis;
+    
+    return currentROBObj;
   }
 
   calculateConsumptionAndLsdisAsEca(
@@ -1402,7 +1449,7 @@ export class BunkeringPlanComponent implements OnInit {
       lsdisCurrentRob +
       prev_lsdis_lift -
       lsdis_unpumpables -
-      parseInt(lsdisEstdConsList[index].lsdis_estimated_consumption);
+      parseInt(lsdisEstdConsList[index]?.lsdis_estimated_consumption);
 
     //Ulsfo Actual/Reduced Stock Calculation
     if (ulsfo_original_stock > 0)
@@ -1455,6 +1502,9 @@ export class BunkeringPlanComponent implements OnInit {
       lsdis_original_stock < 0
         ? lsdis_original_stock + lsdis_unpumpables
         : lsdis_original_stock - lsdis_as_eca + lsdis_unpumpables;
+    if (this.planStatus == 'Invalid') {
+      lsdis_soa = lsdis_original_stock - lsdis_as_eca + lsdis_unpumpables;
+    }
     final_lsdis_soa =
       lsdis_soa +
       (ulsfo_soa < 0 ? ulsfo_soa : 0) +
