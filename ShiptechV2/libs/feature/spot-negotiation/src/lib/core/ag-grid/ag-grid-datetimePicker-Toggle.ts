@@ -62,9 +62,9 @@ export class CustomDateAdapter extends MomentDateAdapter {
     currentFormat = currentFormat.replace(/d/g, 'D');
     currentFormat = currentFormat.replace(/y/g, 'Y');
     currentFormat = currentFormat.split(' HH:mm')[0];
-    let formattedDate = moment.utc(value).format(currentFormat);
+    let formattedDate = moment(value).format(currentFormat);
     if (hasDayOfWeek) {
-      formattedDate = `${moment.utc(value).format('ddd')} ${formattedDate}`;
+      formattedDate = `${moment(value).format('ddd')} ${formattedDate}`;
     }
     return formattedDate;
   }
@@ -373,7 +373,7 @@ export class CustomNgxDatetimeAdapter extends NgxMatDateAdapter<Moment> {
        </mat-form-field>
         <div
           style="height:24px;float:right;line-height:15px;width:30px;position: absolute;
-    right: -6px;"
+    right: 1px;"
         >
           {{ timeValue }}
         </div>
@@ -663,7 +663,7 @@ export class AgGridDatetimePickerToggleComponent
     let payload={
       QuoteByTimeZoneId:this.spotNegotiationService.QuoteByTimeZoneId, 
       RequestGroupId:this.currentRequestInfo.requestGroupId, 
-      QuoteByDate:updateDateTime 
+      QuoteByDate: updateDateTime 
     }
     this.spotNegotiationService
     .updateQuoteDateGroup(payload)
@@ -671,7 +671,7 @@ export class AgGridDatetimePickerToggleComponent
       if (response?.message == 'Unauthorized') {
         return;
       }
-      if (response.status) {
+      if (response?.status) {
         this.spotNegotiationService.QuoteByTimeZoneId=payload.QuoteByTimeZoneId;
         this.spotNegotiationService.QuoteByDate=updateDateTime;
         let setQuoteByGroup={

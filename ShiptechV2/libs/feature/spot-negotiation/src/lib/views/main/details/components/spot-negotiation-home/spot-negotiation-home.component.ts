@@ -286,8 +286,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
     //    this.spotEmailComp.getEmailLogs();
     //  }
   }
-
-  loadTimeZone(){
+loadTimeZone(){
     this.staticLists = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.staticLists;
     });
@@ -365,7 +364,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       }
     });
-  await this.checkorderexists();
+this.checkorderexists();
     if (!isallow) {
       setTimeout(() => {
         const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
@@ -498,7 +497,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
     var FinalAPIdata = {
       RequestGroupId: this.currentRequestInfo.requestGroupId,
-      quoteByDate: new Date(this.spotNegotiationService.QuoteByDate ),
+      quoteByDate: this.spotNegotiationService.QuoteByDate,
       selectedSellers: this.selectedSellerList
     };
     this.spinner.show();
