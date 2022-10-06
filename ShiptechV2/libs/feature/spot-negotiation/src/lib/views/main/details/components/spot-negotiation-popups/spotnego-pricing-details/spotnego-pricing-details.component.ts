@@ -806,7 +806,6 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         return;
       }
     }
-    console.log(this.formValues);
     if(this.formValues.pricingScheduleOptionEventBasedSimple != undefined){
       if(!this.formValues.pricingScheduleOptionEventBasedSimple?.fromNoOfBusinessDaysBefore){
         this.toastr.error('From - (From No Of Business Days Before) field is required in Pricing schedule -> Event Based Simple Section');
