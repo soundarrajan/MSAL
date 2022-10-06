@@ -1176,7 +1176,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
         ctrl.isRequiredMTRValid = function(mtrList) {
             let isMTRValid = false;
             if (mtrList && mtrList.length > 0 && mtrList.some(elem => !elem.isDeleted
-                    && !IsLessThanZero(elem.minQtyToReach) && !IsLessThanZero(elem.minQtyToReachPretest) && !IsDataNotExists(elem.minQtyToReachPretest) && !IsDataNotExists(elem.eta) && !IsDataNotExists(elem.port.id)
+                    && !IsLessThanZero(elem.minQtyToReach) && !IsLessThanZero(elem.minQtyToReachPretest) && !IsDataNotExistStrict(elem.minQtyToReachPretest) && !IsDataNotExists(elem.eta) && !IsDataNotExists(elem.port.id)
                 )
             ) {
                 isMTRValid = true;
@@ -4686,6 +4686,13 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 return false;
             }
         }
+        function IsDataNotExistStrict(data) {
+            if (data === "" || data === null || data === undefined) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         function IsLessThanZero(data) {
             if (data >= 0) {
                 return false;
@@ -4781,12 +4788,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     let v = ctrl.request.locations[ctrl.selectedLocationIdx].products[ctrl.selectedProductIdx].minimumQuantitiesToReach[k];
                     if(v.isDeleted!=true ){
                         if(FormvalueLength != k ) {
-                            if(IsLessThanZero(v.minQtyToReach) || IsLessThanZero(v.minQtyToReachPretest) ||IsDataNotExists(v.minQtyToReach)  ||IsDataNotExists(v.minQtyToReachPretest) || IsDataNotExists(v.eta) || IsDataNotExists(v.port.id)){
+                            if(IsLessThanZero(v.minQtyToReach) || IsLessThanZero(v.minQtyToReachPretest) ||IsDataNotExistStrict(v.minQtyToReach)  ||IsDataNotExistStrict(v.minQtyToReachPretest) || IsDataNotExists(v.eta) || IsDataNotExists(v.port.id)) {
                                 isvalidminQtyTOReach = false;
-                                if(IsDataNotExists(v.minQtyToReachPretest) ){
+                                if(IsDataNotExistStrict(v.minQtyToReachPretest) || IsLessThanZero(v.minQtyToReachPretest)) {
                                     $('#minQtyToReachPretest'+k).addClass('ng-cus-invalidcolor');
                                 }
-                                if(IsDataNotExists(v.minQtyToReach) ){
+                                if(IsDataNotExistStrict(v.minQtyToReach) || IsLessThanZero(v.minQtyToReach)) {
                                     $('#minQtyToReach'+k).addClass('ng-cus-invalidcolor');
                                 }
                                 if(IsDataNotExists(v.port.id)){
@@ -4804,12 +4811,12 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                             }
                         }
                         else{
-                            if(IsLessThanZero(v.minQtyToReach) ||IsLessThanZero(v.minQtyToReachPretest) || IsDataNotExists(v.minQtyToReach) ||IsDataNotExists(v.minQtyToReachPretest)    || IsDataNotExists(v.eta) || IsDataNotExists(v.port.id)){
+                            if(IsLessThanZero(v.minQtyToReach) || IsLessThanZero(v.minQtyToReachPretest) || IsDataNotExistStrict(v.minQtyToReach) || IsDataNotExistStrict(v.minQtyToReachPretest) || IsDataNotExists(v.eta) || IsDataNotExists(v.port.id)) {
                                 isvalidminQtyTOReach = false;
-                                if(IsDataNotExists(v.minQtyToReachPretest)  ){
+                                if(IsDataNotExistStrict(v.minQtyToReachPretest) || IsLessThanZero(v.minQtyToReachPretest)) {
                                     $('#minQtyToReachPretest'+k).addClass('ng-cus-invalidcolor');
                                 }
-                                if(IsDataNotExists(v.minQtyToReach) ){
+                                if(IsDataNotExistStrict(v.minQtyToReach) || IsLessThanZero(v.minQtyToReach)) {
                                     $('#minQtyToReach'+k).addClass('ng-cus-invalidcolor');
                                 }
                                 if(IsDataNotExists(v.port.id)){
