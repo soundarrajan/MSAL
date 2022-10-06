@@ -56,8 +56,8 @@ export interface SpecificDateDatesDto {
 export interface PricingScheduleOptionEventBasedSimple extends PricingScheduleOptionHolidayRule {
     fromBusinessCalendarId?: event;
     toBusinessCalendar?: event;
-    fromNoOfBusinessDaysBefore ?: number;
-    toNoOfBusinessDaysAfter?: number;
+    fromNoOfBusinessDaysBefore ?: string;
+    toNoOfBusinessDaysAfter?: string;
     isDeleted?: boolean;
     isEventIncluded?: event;
     event?: event;
@@ -220,8 +220,8 @@ export interface SpecificDateDatesDto {
 }
 
 export interface EventBasedSimpleDto extends HolidayRuleDto{
-    fromNoOfBusinessDaysBefore ?: number
-    toNoOfBusinessDaysAfter?: number
+    fromNoOfBusinessDaysBefore ?: string
+    toNoOfBusinessDaysAfter?: string
     fromBusinessCalendarId?: number
     toBusinessCalendarId?: number 
     isEventIncludedId: number
