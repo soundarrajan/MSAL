@@ -32,3 +32,12 @@
     border-radius: 4px;
     padding-left: 10px;
 }
+
+.discount-tab .unselected-tab.grey-bg {
+    background: #e0e0e0;
+    border: none;
+}
+
+.discount-tab .unselected-tab.grey-bg .value{
+    color:#a5a5a5
+}
