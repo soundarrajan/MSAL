@@ -63,7 +63,7 @@
                             <div class="date ml-auto">{{item.created_date | date: 'dd/MM/yyyy HH:mm'}}
                               <!- <i class="fas fa-chevron-down"></i> ->
                             </div> -->
-                            <div class="date ml-auto"><span class="p-id">Plan ID:</span> {{item?.plan_id}}<span class="p-id-divider">|</span>{{item.created_date | date: 'dd MMM yyyy HH:mm'}}
+                            <div class="date ml-auto"><span class="p-id">Plan ID:</span> {{item?.plan_id}}<span class="p-id-divider">|</span>{{(item.created_date.split('T')[0] != '0001-01-01' ? item.created_date : item.modified_date) | date: 'dd MMM yyyy HH:mm'}}
                               <!-- <i class="fas fa-chevron-down"></i> -->
                             </div>
                           </div>

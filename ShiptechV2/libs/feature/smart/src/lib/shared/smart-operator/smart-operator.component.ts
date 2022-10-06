@@ -70,6 +70,7 @@ export class SmartOperatorComponent implements OnInit {
   public tab1: boolean;
   public tab2: boolean;
   public tab3: boolean;
+  enableFileDownload: boolean = true;
   // public paginationPageSize : number = 20;
   // public currentPage : number = 1;
   // public lastPage : number = 99;
@@ -463,13 +464,7 @@ export class SmartOperatorComponent implements OnInit {
     console.log("sssssss", this.gridBdnReportOptions);
     this.getSelectedbdnreport = [];
     this.getSelectedbdnreport = this.gridBdnReportOptions.api.getSelectedRows();
-    this.getSelectedbdnreport.forEach((item: any) => {
-      if (item.bdnFileName != null) {
-        this.downloadDocument(item);
-      }
-
-     });
-
+    this.downloadDocumentAsZip(this.getSelectedbdnreport);
   }
 
   onPageChange(page: number): void {
@@ -491,16 +486,62 @@ export class SmartOperatorComponent implements OnInit {
 
   downloadDocument(param: any): void {
     const request = {
-      Payload: { Id: param.bdnFileID, name: param.bdnFileName }
+      Payload: param
     };
+    this.enableFileDownload = false;
     this.mastersApi.downloadDocument(request).subscribe(
       response => {
-        this._FileSaverService.save(response, param.bdnFileName);
+        this._FileSaverService.save(response, param.name);
       },
       () => {
+        this.fileProgressComplete();
         this.appErrorHandler.handleError(ModuleError.DocumentDownloadError);
+      },
+      () => {
+        this.fileProgressComplete();
       }
     );
+  }
+
+  downloadDocumentAsZip(param: any): void {
+    let docs = [];
+    param.forEach((item: any) => {
+      if (item.bdnFileName != null) {
+        docs.push({ Id: item.bdnFileID, name: item.bdnFileName });
+      }
+    });
+    if (docs.length == 1) {
+      this.downloadDocument(docs[0]);
+      return;
+    } else if (docs.length == 0) {
+      return;
+    }
+    let today = new Date();
+    let fileName = 'BDN_download_' + today.getUTCFullYear()
+      + '-' + (today.getUTCMonth() + 1) + '-' + today.getUTCDate()
+      + '-' + today.getTime() + '.zip';
+
+    const request = {
+      Payload: docs
+    };
+    this.enableFileDownload = false;
+    this.mastersApi.downloadDocumentAsZip(request).subscribe(
+      response => {
+        this._FileSaverService.save(response, fileName);
+      },
+      () => {
+        this.fileProgressComplete();
+        this.appErrorHandler.handleError(ModuleError.DocumentDownloadError);
+      },
+      () => {
+        this.fileProgressComplete();
+      }
+    );
+  }
+
+  private fileProgressComplete() {
+    this.enableFileDownload = true;
+    this.triggerUpdateEvent();
   }
 
   private columnDefs_myvessels = [

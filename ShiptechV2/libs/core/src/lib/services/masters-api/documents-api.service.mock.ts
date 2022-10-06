@@ -27,7 +27,7 @@ import {
   IDocumentsCreateUploadRequest,
   IDocumentsCreateUploadResponse
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
-import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
+import { IDocumentsDownloadRequest, IDocumentsDownloadZipRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
 import { getMockDocumentsMaster } from '@shiptech/core/services/masters-api/mock-data/documents-master.mock';
 import {
   IDocumentsMasterRequest,
@@ -78,6 +78,11 @@ export class DocumentsApiMock implements IDocumentsApiService {
 
   @ApiCall()
   downloadDocument(request: IDocumentsDownloadRequest): Observable<Blob> {
+    return of(undefined);
+  }
+
+  @ApiCall()
+  downloadDocumentAsZip(request: IDocumentsDownloadZipRequest): Observable<Blob> {
     return of(undefined);
   }
 
