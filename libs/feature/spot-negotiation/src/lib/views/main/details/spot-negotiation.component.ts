@@ -361,16 +361,20 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             res['requestLocationSellers'],
             res['sellerOffers']
           );
+          
           let locationIds=this.allRequest.map(e=>e.requestLocations.map(rl=>rl.locationId));
-          let productIds=this.allRequest.map(rl=>rl.requestLocations.map(reql=>reql.requestProducts.map(reql=> reql.productId)));
+          let productIds=res['requestLocationSellers'].map(ro=>ro?.requestOffers.map(r=>r.quotedProductId));;
           let physicalSupplierIds=res['requestLocationSellers'].map(phy=>phy.physicalSupplierCounterpartyId);
-          let payload=  {
-            locationIds:[...new Set(locationIds.reduce((acc, val) => acc.concat(val), []))],
-            productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
-            physicalSupplierIds:[...new Set(physicalSupplierIds.reduce((acc, val) => acc.concat(val), []))],
-            requestGroupId:groupRequestIdFromUrl
+          if(productIds){
+            let payload=  {
+              locationIds:[...new Set(locationIds.reduce((acc, val) => acc.concat(val), []))],
+              productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
+              physicalSupplierIds:[...new Set(physicalSupplierIds.reduce((acc, val) => acc.concat(val), []))],
+              requestGroupId:groupRequestIdFromUrl
+            }
+            this.getEnergy6MHistory(payload);
           }
-          this.getEnergy6MHistory(payload);
+
           // Demo format data
           let reqLocationRows : any =[];
           for (const locRow of futureLocationsRows) {
