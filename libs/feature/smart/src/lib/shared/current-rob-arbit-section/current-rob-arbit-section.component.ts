@@ -21,6 +21,7 @@ export class CurrentRobArbitSectionComponent implements OnInit {
     if(!this.planId) { return; }
         this.localService.loadROBArbitrage(this.planId).subscribe((data)=> {
           this.ROBArbitrageData = (data?.payload && data?.payload.length)? data.payload[0]: {};
+          localStorage.setItem('ROB_' + this.planId.trim(), JSON.stringify(this.ROBArbitrageData));
           this.triggerTitleToBind();
         })
   }

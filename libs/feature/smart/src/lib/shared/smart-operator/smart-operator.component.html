@@ -629,8 +629,11 @@
             <div class="createReqEnable col-6" style="border-right: solid #54617A 3px;">
               <i class="far fa-file-excel" (click)="ExcelReportsdownload('bdnReports')"></i>
             </div>
-            <div class="createReqEnable col-6" style="border-right: solid #54617A 3px;">
+            <div *ngIf="enableFileDownload" class="createReqEnable col-6" style="border-right: solid #54617A 3px;">
               <i class="fa fa-download" (click)="onBtExport()" aria-hidden="true"></i>
+            </div>
+            <div *ngIf="!enableFileDownload" class="createReqEnable not-special col-6" style="border-right: solid #54617A 3px;">
+              <i class="fa fa-spinner animate-spin" aria-hidden="true"></i>
             </div>
           </div>
           <div class="col-3 row" *ngIf="!Enabledbdnreports">
