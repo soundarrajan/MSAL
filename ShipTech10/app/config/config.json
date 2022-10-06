@@ -8,13 +8,8 @@
         "extraQueryParameter": "nux=1",
         "logOutUri": "",
         "endpoints": {
-<<<<<<< HEAD
-            "https://bvtapi01.shiptech.com": "24fc89b1-b1b1-47a7-b90b-513ec362a576",
-            "https://bvtapi.shiptech.com": "24fc89b1-b1b1-47a7-b90b-513ec362a576",
-=======
             "https://bvtapi.shiptech.com": "24fc89b1-b1b1-47a7-b90b-513ec362a576",
             "https://bvtapi01.shiptech.com": "24fc89b1-b1b1-47a7-b90b-513ec362a576",
->>>>>>> 01da2100d529f13279cf653b3257aafc70b42b56
             "https://euw-sh-int-dev-api01.azurewebsites.net": "24fc89b1-b1b1-47a7-b90b-513ec362a576"
         },
         "anonymousEndpoints": [
@@ -317,9 +312,5 @@
         "CONTRACT_PLANNING": "ContractPlanning"
     },
     "AppInsightsId": "3a6d834e-1597-40d8-9442-2cbcbecaea07",
-<<<<<<< HEAD
-    "BuildNumber": "11.1.20221001.1"
-=======
     "BuildNumber": "11.1.0"
->>>>>>> 01da2100d529f13279cf653b3257aafc70b42b56
 }
