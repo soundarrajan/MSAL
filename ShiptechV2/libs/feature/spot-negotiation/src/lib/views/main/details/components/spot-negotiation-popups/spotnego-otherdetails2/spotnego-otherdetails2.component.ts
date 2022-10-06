@@ -22,7 +22,7 @@ import _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import moment, { Moment, MomentFormatSpecification, MomentInput } from 'moment';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import { SetLocationsRows } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import { SetLocationsRows, SetNetEnergySpecific } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 import { OrderListGridViewModel } from '@shiptech/core/ui/components/delivery/view-model/order-list-grid-view-model.service';
 import {
   DateAdapter,
@@ -581,7 +581,6 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   }
   //Construct UI Value's to bind the popup grid
   ConstructOtherDetailsPayload(requestOffers, etaDate, reqProd) {
-    debugger;
     let QtyUomId;
     if (requestOffers.supplyQuantityUomId == null) {
       QtyUomId =
@@ -741,14 +740,31 @@ export class SpotnegoOtherdetails2Component implements OnInit {
           ).format(this.dateFormat_rel_SupplyDate)
         : ''
     };
+    let locationIds=this.locations.map(loc=>loc.locationId);
+    let physicalSupplierIds=this.locationsRows.map(phy=>phy.physicalSupplierCounterpartyId);
+    let payload=  {
+      locationIds:[...new Set(locationIds.reduce((acc, val) => acc.concat(val), []))],
+      productIds:[this.otherDetailsItems[this.productIndex].product.id],
+      physicalSupplierIds:[...new Set(physicalSupplierIds.reduce((acc, val) => acc.concat(val), []))],
+      requestGroupId:this.locationsRows[0]?.requestGroupId
+    }
     const response = this.spotNegotiationService.OtherDetails(
       otherDetails_data
     );
-    response.subscribe((res: any) => {
+    response.subscribe(async (res: any) => {
       if (res?.message == 'Unauthorized') {
         return;
       }
       if (res.status) {
+          const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
+          if (response.energy6MonthHistories.length > 0){
+            this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+      
+            setTimeout(() => {
+              this.spotNegotiationService.energyCalculationService(null,null,null);
+              this.changeDetectorRef.detectChanges();
+            }, 3000);
+          }
         this.toastr.success('Saved successfully..');
         const futureLocationsRows = this.getLocationRowsWithOtherDetails(
           JSON.parse(JSON.stringify(this.locationsRows)),
@@ -787,31 +803,4 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     });
     return rowdata;
   }
-
-  tabledata = [
-    {
-      seller: 'Total Marine Fuel',
-      port: 'Amstredam',
-      contractname: 'Cambodia Contarct 2021',
-      contractproduct: 'DMA 1.5%',
-      formula: 'Cambodia Con',
-      schedule: 'Average of 5 Days',
-      contractqty: '10,000,.00',
-      liftedqty: '898.00 MT',
-      availableqty: '96,602.00 MT',
-      price: '$500.00'
-    },
-    {
-      seller: 'Total Marine Fuel',
-      port: 'Amstredam',
-      contractname: 'Amstredam Contarct 2021',
-      contractproduct: 'DMA 1.5%',
-      formula: 'Cambodia Con',
-      schedule: 'Average of 5 Days',
-      contractqty: '10,000,.00',
-      liftedqty: '898.00 MT',
-      availableqty: '96,602.00 MT',
-      price: '$500.00'
-    }
-  ];
 }
