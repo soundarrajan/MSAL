@@ -3069,14 +3069,48 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     return object;
             });         
             var request_payload = [];
+            ctrl.conversionFactorData.conversionFactorToMT = undefined;
+            ctrl.conversionFactorData.isConvertMmbtuMwhToMT = false;
             if(!isUnitPriConvFac){
-                var request_dataForMT = {
-                    ProductId: convFactData.product.id,
-                    Quantity: 1,
-                    FromUomId: convFactData.quantityUom.id,
-                    ToUomId: metricTonUom?.id,
-                    OrderProductId: convFactData.id
-                };
+                if(convFactData.quantityUom.id == metricMillionBritishThermalUnitUom?.id || convFactData.quantityUom.id == mWHUom?.id)
+                {
+                    var request_dataForMT = {
+                        ProductId: 0,
+                        Quantity: 1,
+                        FromUomId: metricTonUom?.id,
+                        ToUomId: convFactData.quantityUom.id == metricMillionBritishThermalUnitUom?.id ? metricMillionBritishThermalUnitUom?.id : mWHUom?.id,
+                        OrderProductId: convFactData.id,
+                        productTypeId: convFactData.productType.id
+                    };
+                    var request_dataForCBM = {
+                        ProductId: convFactData.product.id,
+                        Quantity: 1,
+                        FromUomId: metricTonUom?.id,
+                        ToUomId: cubicMeterUom?.id,
+                        OrderProductId: convFactData.id
+                    };
+                    request_payload.push(request_dataForMT);
+                    request_payload.push(request_dataForCBM);
+                }
+                else{
+                    var request_dataForMT = {
+                        ProductId: convFactData.product.id,
+                        Quantity: 1,
+                        FromUomId: convFactData.quantityUom.id,
+                        ToUomId: metricTonUom?.id,
+                        OrderProductId: convFactData.id
+                    };
+                    var request_dataForCBM = {
+                        ProductId: convFactData.product.id,
+                        Quantity: 1,
+                        FromUomId: convFactData.quantityUom.id == metricMillionBritishThermalUnitUom?.id || convFactData.quantityUom.id == mWHUom?.id  ? metricTonUom?.id : convFactData.quantityUom.id,
+                        ToUomId: cubicMeterUom?.id,
+                        OrderProductId: convFactData.id,
+                        productTypeId: convFactData.quantityUom.id == metricMillionBritishThermalUnitUom?.id || convFactData.quantityUom.id == mWHUom?.id  ? convFactData.productType.id : null
+                    };
+                    request_payload.push(request_dataForMT);
+                    request_payload.push(request_dataForCBM);
+                }   
                 var request_dataForMMBTU = {
                     ProductId: 0,
                     Quantity: 1,
@@ -3092,19 +3126,9 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     ToUomId: mWHUom?.id,
                     OrderProductId: convFactData.id,
                     productTypeId: convFactData.productType.id
-                };
-                request_payload.push(request_dataForMT);
+                };  
                 request_payload.push(request_dataForMMBTU);
-                request_payload.push(request_dataForMWH);
-
-                var request_dataForCBM = {
-                    ProductId: convFactData.product.id,
-                    Quantity: 1,
-                    FromUomId: convFactData.quantityUom.id,
-                    ToUomId: cubicMeterUom?.id,
-                    OrderProductId: convFactData.id
-                };
-                request_payload.push(request_dataForCBM);
+                request_payload.push(request_dataForMWH);           
             }
             else if(isUnitPriConvFac){
                 if(_.find(ctrl.listsCache.UomMass, { id : convFactData.priceUom.id })){
@@ -3113,13 +3137,27 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 else{   //else if(_.find(ctrl.listsCache.UomVolume, { id : convFactData.priceUom.id })){
                     ctrl.conversionFactorData.isPriceUomMass = false;
                 }
-                var request_dataForMT = {
-                    ProductId: convFactData.product.id,
-                    Quantity: 1,
-                    FromUomId: convFactData.priceUom.id,
-                    ToUomId: metricTonUom?.id,
-                    OrderProductId: convFactData.id
-                };
+                if(convFactData.priceUom.id == metricMillionBritishThermalUnitUom?.id || convFactData.priceUom.id == mWHUom?.id){
+                    var request_dataForMT = {
+                        ProductId: 0,
+                        Quantity: 1,
+                        FromUomId: metricTonUom?.id,
+                        ToUomId: convFactData.priceUom.id == metricMillionBritishThermalUnitUom?.id ? metricMillionBritishThermalUnitUom?.id : mWHUom?.id,
+                        OrderProductId: convFactData.id,
+                        productTypeId: convFactData.productType.id
+                    };                    
+                    request_payload.push(request_dataForMT);
+                }
+                else{
+                    var request_dataForMT = {
+                        ProductId: convFactData.product.id,
+                        Quantity: 1,
+                        FromUomId: convFactData.priceUom.id,
+                        ToUomId: metricTonUom?.id,
+                        OrderProductId: convFactData.id
+                    };                    
+                    request_payload.push(request_dataForMT);
+                }    
                 var request_dataForMMBTU = {
                     ProductId: 0,
                     Quantity: 1,
@@ -3135,14 +3173,30 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                     ToUomId: mWHUom?.id,
                     OrderProductId: convFactData.id,
                     productTypeId: convFactData.productType.id
-                };
-                request_payload.push(request_dataForMT);
+                };                
                 request_payload.push(request_dataForMMBTU);
-                request_payload.push(request_dataForMWH);
+                request_payload.push(request_dataForMWH);      
             }
             lookupModel.getUOMConversionFactor(request_payload).then((server_data) => {
                 server_data.payload.forEach((cv) => { 
-                    if(cv.id == metricTonUom?.id){
+                    if(!isUnitPriConvFac && ((cv.id == ctrl.conversionFactorData.quantityUom.id && !ctrl.conversionFactorData.conversionFactorToMT) || cv.id == metricTonUom?.id))
+                    {
+                        if(!isUnitPriConvFac && (ctrl.conversionFactorData.quantityUom.id == metricMillionBritishThermalUnitUom?.id || ctrl.conversionFactorData.quantityUom.id == mWHUom?.id))
+                        {
+                            ctrl.conversionFactorData.conversionFactorToMT = ctrl.conversionFactorData.quantityUom.id == metricMillionBritishThermalUnitUom?.id ? 1 / cv.conversionFactor : 1 * cv.conversionFactor;
+                            ctrl.conversionFactorData.isConvertMmbtuMwhToMT = true;
+                        }
+                        else
+                        ctrl.conversionFactorData.conversionFactorToMT = cv.conversionFactor;
+                    }
+                    else if(isUnitPriConvFac && ((cv.id == ctrl.conversionFactorData.priceUom.id && !ctrl.conversionFactorData.conversionFactorToMT) || cv.id == metricTonUom?.id))
+                    {
+                        if(isUnitPriConvFac && (ctrl.conversionFactorData.priceUom.id == metricMillionBritishThermalUnitUom?.id || ctrl.conversionFactorData.priceUom.id == mWHUom?.id))
+                        {
+                            ctrl.conversionFactorData.conversionFactorToMT = ctrl.conversionFactorData.priceUom.id == metricMillionBritishThermalUnitUom?.id ? 1 / cv.conversionFactor : 1 * cv.conversionFactor;
+                            ctrl.conversionFactorData.isConvertMmbtuMwhToMT = true;
+                        }
+                        else
                         ctrl.conversionFactorData.conversionFactorToMT = cv.conversionFactor;
                         if(isUnitPriConvFac && ctrl.conversionFactorData.isPriceUomMass)
                         ctrl.conversionFactorData.priceValueConveredToMT = ctrl.conversionFactorData.originalPrice * ctrl.conversionFactorData.conversionFactorToMT;

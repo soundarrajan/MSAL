@@ -92,7 +92,7 @@
 					</div>
 					<div class="action-btn-container">
 						<span class="sendQuesBtn" ng-if="$ctrl.portStatusCheck(voyage) && $ctrl.requestTenantSettings.request.isPrerequestEnabled" ng-click="$ctrl.sendQuestionnaires(voyage)">
-							<a class="action-btn" style="margin-right: 15px; color: #333333; width: 83.4px; height: 26px; ">Questionnaire</a> 
+							<a class="action-btn" style="margin-right: 15px; color: #333333;">Questionnaire</a> 
 							<i class="send-questionnaires"></i>
 						</span>
 						<span class="border-line"></span>
@@ -152,7 +152,7 @@
 											{{columnValue ? columnValue : '-'}}
 										</span>
 										<span ng-if="$index == $ctrl.groupedVoyages.rowValuesForGroupedVoyagesRequest[voyage][key2][key3].length - 1" 
-										class="label formatStatus" style="overflow:hidden; text-overflow:ellipsis; display:block; background-color:{{$ctrl.getStatusColor(columnValue)}}">
+										class="label formatStatus" style="overflow:hidden; width: 112px; border-radius: 2px !important; height: 23px;text-overflow:ellipsis; display:block; background-color:{{$ctrl.getStatusColor(columnValue)}}">
 											{{columnValue ? columnValue.name : '-'}}
 										</span>
 									</td>

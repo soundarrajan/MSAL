@@ -22,7 +22,7 @@ angular
             // angular.module("shiptech").value("$cacheDefaultFilterConfigurations", {});
             // angular.module("shiptech").value("$cacheFilterConfigurations", {});
             $(document).on('click',  function (event) {
-                if ($(event.target).parent()[0].nodeName != 'LI' && $(event.target).parents('.st-main-content-menu').length && ($(event.target).hasClass('btn') || $(event.target).hasClass('ladda-label'))) {
+                if ($(event.target).parent()[0]?.nodeName != 'LI' && $(event.target).parents('.st-main-content-menu').length && ($(event.target).hasClass('btn') || $(event.target).hasClass('ladda-label'))) {
                     window.actionLevel = event.target.outerText.trim();
                     if (event.target.outerText == 'Save') {
                         let length = window.location.href.split('/#/')[1].split('/').length - 1;
@@ -967,7 +967,8 @@ angular.element(document).ready(() => {
                 .constant('EXPORT_FILETYPE_EXTENSION', appConfig.EXPORT_FILETYPE_EXTENSION)
                 .constant('PACKAGES_CONFIGURATION', appConfig.PACKAGES_CONFIGURATION)
                 .constant('EMAIL_TRANSACTION', appConfig.EMAIL_TRANSACTION)
-                .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.AppInsightsId));
+                .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.AppInsightsId))
+                .constant('buildNumber', appConfig.BuildNumber);
             if (window.location.hash.indexOf('supplier-portal') > 0) {
 		        // $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
 		        //     Payload: false
