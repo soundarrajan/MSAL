@@ -181,6 +181,8 @@ input.search-input::placeholder {
 .document-preview-pop-up td.mat-cell:first-of-type,
 .document-preview-pop-up th.mat-header-cell:first-of-type {
   padding-left: unset !important;
+  padding-right: 15px;
+  padding-bottom: 5px;
 }
 
 .document-preview-pop-up td.mat-cell:last-of-type,
