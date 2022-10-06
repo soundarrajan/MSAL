@@ -679,6 +679,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                 newRequestModel.newRequest(voyageId).then((newRequestData) => {
                     ctrl.request = newRequestData.payload;
 
+                    $scope.forms.detailsFromRequest.$setPristine();
+                    $scope.forms.detailsFromRequest.$setUntouched();
                     $.each(ctrl.request.locations, (i, j) => {
 
                         getTerminalLocations('locations', j.location.id);
@@ -750,6 +752,8 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             } else if (typeof requestId != 'undefined' && requestId !== null) {
                 newRequestModel.getRequest(requestId).then((newRequestData) => {
                     ctrl.request = newRequestData.payload;
+                    $scope.forms.detailsFromRequest.$setPristine();
+                    $scope.forms.detailsFromRequest.$setUntouched();
                     ctrl.getRequestinitialSnapshot = angular.copy(newRequestData.payload);
                     $.each(ctrl.request.locations, (i, j) => {
                         if (j.terminal != null && j.terminal.length != 0) {
@@ -2383,34 +2387,28 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     }
                     let companyToDefault = null;
                     if (vessel.operatingCompany) {
-                        companyToDefault = vessel.operatingCompany;                         
+                        companyToDefault = vessel.operatingCompany;
                     } else if (vessel.voyages.length > 0) {
-                            if (vessel.voyages[0].voyageDetails) {
-                                if (vessel.voyages[0].voyageDetails[0].company) {       
-                                    if(ctrl?.stateParams?.voyageId){                           
+                        if (vessel.voyages[0].voyageDetails) {
+                            if (vessel.voyages[0].voyageDetails[0].company) {  
+                                if(ctrl?.stateParams?.voyageId || ctrl.request.id > 0){                           
                                     companyToDefault = vessel.voyages[0].voyageDetails[0].company;
-                                    }
-                                }  
-                            }
+                                }
+                            }  
                         }
+                    }
 
-                        //if (ctrl.requestTenantSettings.displayOfCompany.id == 2) {
-                        if (!ctrl.request.company) {
-                            ctrl.request.company = {};
-                            ctrl.request.company.name = companyToDefault?.name;
-                            ctrl.request.company.id = companyToDefault?.id;
-                        }
-                       // if (!preventUpdateCompany) {
-                       // debugger;                           
-
-                        if(ctrl.request.locations.length > 0 && !ctrl.request.id > 0) 
-                        {
-                            ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.name = companyToDefault.name:'';
-                            ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.id = companyToDefault.id:0;
-                        }
-                       // }
-                    //}
-
+                    if (!ctrl.request.company) {
+                        ctrl.request.company = {};
+                    }
+                    ctrl.request.company.name = companyToDefault?.name;
+                    ctrl.request.company.id = companyToDefault?.id;
+                    
+                    if(ctrl.request.locations.length > 0) {
+                        ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.name = companyToDefault.name:'';
+                        ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.id = companyToDefault.id:0;
+                    }
+                
                     ctrl.vesselDefaultDetails = {
                         company: companyToDefault,
                         service: vessel.defaultService ? vessel.defaultService : ctrl.request.vesselDetails.service

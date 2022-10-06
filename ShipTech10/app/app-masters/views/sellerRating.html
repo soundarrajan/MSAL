@@ -200,6 +200,7 @@
 					                                                    ng-model="value3.comments"
 					                                                    placeholder="Type your answer..."
 					                                                    ng-change="changeNameAndDate(value2)"
+																		ng-model-options="{updateOn:'blur'}"
 					                                                    ></textarea>
 																	<div  ng-if= "value3.ratingRequired" rating="{{value3.rating}}" class="rating" data-rate-value=0 onmouseleave="setModelOfRatingForSpecificLocation(this)" 
 																	onclick="changeNameAndDateForSpecificLocation(this)"  location-key="{{key4}}" category-key="{{key2}}" detail-key="{{key3}}" >

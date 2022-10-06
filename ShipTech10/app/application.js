@@ -967,7 +967,8 @@ angular.element(document).ready(() => {
                 .constant('EXPORT_FILETYPE_EXTENSION', appConfig.EXPORT_FILETYPE_EXTENSION)
                 .constant('PACKAGES_CONFIGURATION', appConfig.PACKAGES_CONFIGURATION)
                 .constant('EMAIL_TRANSACTION', appConfig.EMAIL_TRANSACTION)
-                .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.AppInsightsId));
+                .constant('appInsightsInstance', appInsightsInstanceProvider(appConfig.AppInsightsId))
+                .constant('buildNumber', appConfig.BuildNumber);
             if (window.location.hash.indexOf('supplier-portal') > 0) {
 		        // $http.post(`${appConfig.API.BASE_URL }/Shiptech10.Api.Admin/api/admin/tenantConfiguration/get`, {
 		        //     Payload: false

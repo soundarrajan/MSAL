@@ -1217,7 +1217,7 @@
                     }
 
                     if($scope.formValues.sellers){
-                        angular.forEach($scope.formValues.sellers, (sellerContact) => {
+                        angular.forEach($scope.formValues.sellers, (sellerContact, sellerIndex) => {
                             if($scope.formValues.id == 0 ){
                                 let location = {
                                     'name': $scope.formValues.name,
@@ -1225,7 +1225,7 @@
                                 };
                                 sellerContact.location = location;
                             }                            
-                            let savedContacts = $filter('filter')(sellerContact.sellerContacts, function(value){ return (value.id > 0);},true );
+                            let savedContacts = $filter('filter')($scope.preferredContacts[sellerIndex], function(value){ return (value.id > 0);},true );
                             if(savedContacts && savedContacts.length > 0){
                                 angular.forEach(savedContacts, (contact) => {
                                     let isDeleted = $filter('filter')(sellerContact.locationContacts, { id: contact.id}).length == 0;
@@ -7999,6 +7999,7 @@
                 vm.preparePreferredContacts($scope.formValues.counterpartyLocations);
             }
             if(vm.screen_id == 'location'){
+                vm.preparePreferredContacts($scope.formValues.sellers);
                 // location seller contacts to be in synch with counterparty location contacts
                 _.each($scope.formValues.sellers, (seller, index) =>{
                     if(seller.sellerContacts && seller.sellerContacts.length > 0 && seller.sellerContacts[0].indexId === undefined){
@@ -8009,11 +8010,14 @@
                             if(savedSellerContacts.length > 0){
                                 sellerContactId = savedSellerContacts[0].id;
                                 savedSellerContacts[0].indexId = contactIndex;
+                                sellerContacts.push(savedSellerContacts[0]);
                             }
-                            sellerContact = { indexId: contactIndex, contactId: sellerContact.id, id: sellerContactId, email: sellerContact.email}
-                            sellerContacts.push(sellerContact);
+                            else {
+                                sellerContact = { indexId: contactIndex, contactId: sellerContact.id, id: sellerContactId, email: sellerContact.email}
+                                sellerContacts.push(sellerContact);
+                            }
                         });
-                        $scope.formValues.sellers[index].sellerContacts = sellerContacts;
+                        $scope.preferredContacts[index] = sellerContacts;
                     }
                 });
             }
@@ -10754,9 +10758,8 @@
             }
         }
 
-        $scope.getLocationDetails = function(){
-            const index = $scope.formValues.sellers && $scope.formValues.sellers.length >0 ? $scope.formValues.sellers.length-1 : 0;
-            const counterpartyId = $scope.formValues.sellers[index].counterparty.id;
+        $scope.getLocationDetails = function(index) {
+            const counterpartyId = $scope.formValues.sellers[index]?.counterparty.id;
             const locationId = $scope.formValues? $scope.formValues.id : 0;
 
             if(locationId > 0){
@@ -10765,13 +10768,27 @@
                 }
 
                 Factory_Master.getLocationSellerContacts(payload, (callback) => {
+                    if($scope.formValues.sellers?.[$scope.locationCounterpartyindex]?.locationContacts){
+                        $scope.formValues.sellers[$scope.locationCounterpartyindex].locationContacts = [];
+                    }
+                    if (!$scope.preferredContacts[$scope.locationCounterpartyindex]) {
+                        $scope.preferredContacts[$scope.locationCounterpartyindex] = [];
+                    }
                     if (callback) {
-                        $.each(callback, (k, v) => {
-                            $scope.preferredContacts[k] = callback[k].locationContact[0];
+                        let contacts = [];
+                        _.each(callback, (contact, contactIndex) => {
+                            contact.indexId = contacts.length + 1;
+                            contact.isNewContact = false;
+                            contacts.push(contact);
                         });
+                        $scope.preferredContacts[$scope.locationCounterpartyindex] = contacts;
                     }
                 });
             }
+        }
+
+        $scope.locationCounterpartyChange= function(index){
+            $scope.locationCounterpartyindex = index;
         }
 
         $scope.locationContactsChange= function(index){
@@ -10813,7 +10830,9 @@
             angular.forEach(locationContacts, (locationContact) => {
                 locationContact.isDeleted = false;
             });
-            $scope.formValues.counterpartyLocations[key].locationContacts = locationContacts;
+            if($scope.formValues?.counterpartyLocations?.[key]?.locationContacts){
+                $scope.formValues.counterpartyLocations[key].locationContacts = locationContacts;
+                }
         }
 
         $scope.deleteVesselProduct = function(key) {

@@ -217,7 +217,7 @@
             'white-space': 'nowrap'
         });
         $(this.element).css({
-            width:  "90px",
+            width:  "82px",
             height: $(layer).height(),
             position: 'relative',
             cursor: this.settings.cursor,
@@ -252,7 +252,9 @@
     Rate.prototype.hover = function(ev)
     {
         var pad = parseInt($(this.element).css("padding-left").replace("px", ""));
+
         var x = ev.pageX - $(this.element).offset().left - pad;
+  
         var val = this.toValue(x, true);
         if (val < 1) return;
         if (val != this.value)
@@ -314,7 +316,8 @@
      * Takes a width (px) and returns the value it resembles
      */
     Rate.prototype.toWidth = function(val)
-    {
+    {  
+        //console.log(val / this.settings.max_value * 100);
         return val / this.settings.max_value * 100;
     }
 
