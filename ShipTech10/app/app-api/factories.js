@@ -8435,7 +8435,7 @@ APP_API.factory('$Api_Service', [
                             callback([
                                 {
                                     id: -1,
-                                    name: 'No options defined! Please fix!'
+                                    name: 'No options defined! Please use lookup!'
                                 }
                             ]);
                         }
@@ -8498,7 +8498,7 @@ APP_API.factory('$Api_Service', [
                         callback([
                             {
                                 id: -1,
-                                name: 'No options defined! Please fix!'
+                                name: 'No options defined! Please use lookup!'
                             }
                         ]);
                     }
