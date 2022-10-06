@@ -347,9 +347,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       this.formValues.pricingScheduleOptionSpecificDate.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
     } else if (id == 6) {
       this.formValues.pricingScheduleOptionEventBasedSimple = {
-        fromNoOfBusinessDaysBefore: 0,
+        fromNoOfBusinessDaysBefore: '',
         name: '',
-        toNoOfBusinessDaysAfter: 0,
+        toNoOfBusinessDaysAfter: '',
         fromBusinessCalendarId: { id: 1 },
         toBusinessCalendar: { id: 1 }
       };
@@ -362,8 +362,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       this.formValues.pricingScheduleOptionEventBasedSimple.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
     } else if (id == 7) {
       this.formValues.pricingScheduleOptionEventBasedExtended = {
-        fromNoOfBusinessDaysBefore: 0,
-        toNoOfBusinessDaysAfter: 0,
+        fromNoOfBusinessDaysBefore: '',
+        toNoOfBusinessDaysAfter: '',
         fromBusinessCalendar: { id: 1 },
         toBusinessCalendar: { id: 1 },
         excludeFromNoOfBusinessDaysBefore: undefined,
@@ -806,7 +806,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         return;
       }
     }
-
+    console.log(this.formValues);
     if(this.formValues.pricingScheduleOptionEventBasedSimple != undefined){
       if(!this.formValues.pricingScheduleOptionEventBasedSimple?.fromNoOfBusinessDaysBefore){
         this.toastr.error('From - (From No Of Business Days Before) field is required in Pricing schedule -> Event Based Simple Section');
