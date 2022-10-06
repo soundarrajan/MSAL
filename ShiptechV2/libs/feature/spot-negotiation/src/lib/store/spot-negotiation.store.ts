@@ -34,6 +34,7 @@ import {
 
 import {
   SetRequestGroupId,
+  SetQuoteDateAndTimeZoneId,
   SetCurrentRequest,
   SetCurrentRequestSmallInfo,
   SetAvailableContracts,
@@ -51,6 +52,8 @@ export class SpotNegotiationStoreModel {
   counterparties: any;
   // Until here
   groupOfRequestsId: number | null;
+  quoteDateByGroup: Date | null;
+  quoteTimeZoneIdByGroup: number | null;
   locations: Array<any>;
   locationsRows: Array<any>;
   netEnergySpecific: Array<any>;
@@ -100,6 +103,8 @@ export class SpotNegotiationStoreModel {
     this.offerPriceHistory = null;
     this.additionalCostList = [];
     this.formulaList = {};
+    this.quoteTimeZoneIdByGroup=null;
+    this.quoteDateByGroup=null;
   }
 }
 
@@ -107,6 +112,8 @@ export class SpotNegotiationStoreModel {
   name: 'spotNegotiation',
   defaults: {
     groupOfRequestsId: null,
+    quoteTimeZoneIdByGroup:null,
+    quoteDateByGroup:null,
     currentRequestSmallInfo: null,
     availableContracts: null,
     locations: [],
@@ -173,7 +180,7 @@ export class SpotNegotiationStore {
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: SetRequests
   ): void {
-    patchState({
+    patchState({   
       requests: payload
     });
   }
@@ -220,6 +227,17 @@ export class SpotNegotiationStore {
   ): void {
     patchState({
       groupOfRequestsId: payload
+    });
+  }
+  // Group Of QuoteByDate and timeZoneId
+  @Action(SetQuoteDateAndTimeZoneId)
+  SetQuoteDateAndTimeZoneId(
+    { patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: SetQuoteDateAndTimeZoneId
+  ): void {
+    patchState({
+      quoteDateByGroup:payload?.quoteByDate,
+      quoteTimeZoneIdByGroup:payload?.quoteByTimeZoneId
     });
   }
   // Static lists
