@@ -419,7 +419,7 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
           ></div>
           <div
             class="formulaButton"
-            style="display:inline; position:absolute; left:112px;"
+            style="display:inline; position:absolute; right:3px;"
             (mouseenter)="hoverMenu($event)"
             [matMenuTriggerFor]="formulamenu"
             #menuTriggerHover="matMenuTrigger"
