@@ -759,11 +759,6 @@ export class SpotnegoOtherdetails2Component implements OnInit {
           const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
           if (response.energy6MonthHistories.length > 0){
             this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
-      
-            setTimeout(() => {
-              this.spotNegotiationService.energyCalculationService(null,null,null);
-              this.changeDetectorRef.detectChanges();
-            }, 3000);
           }
         this.toastr.success('Saved successfully..');
         const futureLocationsRows = this.getLocationRowsWithOtherDetails(
@@ -771,6 +766,10 @@ export class SpotnegoOtherdetails2Component implements OnInit {
           otherDetails_data
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
+        setTimeout(() => {
+          this.spotNegotiationService.energyCalculationService(null,null,null);
+          this.changeDetectorRef.detectChanges();
+        }, 3000);
         this.spotNegotiationService.callGridRefreshService();
       } else {
         this.toastr.error(res.message);
