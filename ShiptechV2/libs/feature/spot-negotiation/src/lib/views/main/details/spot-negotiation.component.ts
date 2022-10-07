@@ -373,6 +373,10 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               requestGroupId:groupRequestIdFromUrl
             }
             this.getEnergy6MHistory(payload);
+          }else{
+            setTimeout(() => {
+              this.spotNegotiationService.energyCalculationService(null,null,null);
+            }, 3000);
           }
 
           // Demo format data
@@ -391,14 +395,12 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   }
   async getEnergy6MHistory(payload){   
     const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
-    if (response.energy6MonthHistories.length > 0){
+    if (response){
       this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
-
-      setTimeout(() => {
-        this.spotNegotiationService.energyCalculationService(null,null,null);
-        this.changeDetector.detectChanges();
-      }, 3000);
     }
+    setTimeout(() => {
+      this.spotNegotiationService.energyCalculationService(null,null,null);
+    }, 3000);
   }
   getRequestList(): void {
     const response = this.spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip: 0, Take: 25 })

@@ -763,13 +763,10 @@ export class SpotNegotiationService extends BaseStoreService
   }
 
   energyCalculationService(productId = null,locationId = null, reuestId = null){
-    this.netEnergyList = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.netEnergySpecific;
-    });
-    if(this.netEnergyList.length == 0) return;
-
+ 
       let alllocationRows;
       let productSet = {};
+      let checkMjkjFlag : Boolean = true;
       let locationRows;
       let maxQtyArray = {};
       this.store.selectSnapshot<any>((state: any) => {
@@ -798,6 +795,7 @@ export class SpotNegotiationService extends BaseStoreService
         if(res1?.requestOffers){
             res1?.requestOffers.filter(res2 => {
               if(res2.reqProdStatus != 'Stemmed' && res2.reqProdStatus != 'Confirmed'  && res2.price != null){
+                      if(res2.mjkj != null && checkMjkjFlag) checkMjkjFlag = false;
                       if((productId) && ( res2.quotedProductId == productId )){
                         productSet[res2.quotedProductId+''+res2.id] = {
                           'physicalSupplierCounterpartyId' : res1.physicalSupplierCounterpartyId,
@@ -807,7 +805,8 @@ export class SpotNegotiationService extends BaseStoreService
                           'requestId' : res1.requestId,
                           'locationId' : res1.locationId,
                           'supplyQuantity' : res2.supplyQuantity,
-                          'mjkj' : res2.mjkj
+                          'mjkj' : res2.mjkj,
+                          'isSupplyQuantityEdited' : res2.isSupplyQuantityEdited
                         }
                         return;
                       }
@@ -820,7 +819,8 @@ export class SpotNegotiationService extends BaseStoreService
                           'requestId' : res1.requestId,
                           'locationId' : res1.locationId,
                           'supplyQuantity' : res2.supplyQuantity,
-                          'mjkj' : res2.mjkj
+                          'mjkj' : res2.mjkj,
+                          'isSupplyQuantityEdited' : res2.isSupplyQuantityEdited
                         }
                         return;
                       }
@@ -830,6 +830,11 @@ export class SpotNegotiationService extends BaseStoreService
       });
 
  if(Object.keys(productSet).length == 0) return;
+
+ this.netEnergyList = this.store.selectSnapshot<any>((state: any) => {
+  return state.spotNegotiation.netEnergySpecific;
+});
+if(this.netEnergyList.length == 0 && checkMjkjFlag) return;
 
 
  let differenceValue = {};
@@ -848,7 +853,7 @@ export class SpotNegotiationService extends BaseStoreService
     delete productSet[key];
   }
  }); 
- if(Object.keys(differenceValue).length == 0) return;
+ if(Object.keys(differenceValue).length == 0 && checkMjkjFlag) return;
      let updateArr = {};
      let updatePayload = [];
      let storePayload = [];
@@ -861,7 +866,11 @@ export class SpotNegotiationService extends BaseStoreService
       updateArr['id'] = res['id'];
       updateArr['mjkj'] = curentProductVal[0]?.netAverage;
       updateArr['ediff'] = (differenceValue[res['quotedProductId']+''+res['id']] - minVal) * parseFloat(curentProductVal[0].netAverage);
-      updateArr['tco'] = (res['price'] + updateArr['ediff']) * maxQtyArray[res['locationId']+'-'+res['quotedProductId']];
+      if(res['isSupplyQuantityEdited']){
+        updateArr['tco'] = (res['price'] + updateArr['ediff']) * res['supplyQuantity'];
+      }else{
+        updateArr['tco'] = (res['price'] + updateArr['ediff']) * maxQtyArray[res['locationId']+'-'+res['quotedProductId']];
+      }
       updatePayload.push(updateArr); 
     }else{
       updateArr['id'] = res['id'];
