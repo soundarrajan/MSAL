@@ -512,16 +512,6 @@ this.checkorderexists();
         return;
       }
       if (res instanceof Object && res['sellerOffers'].length > 0) {
-        let locationIds=selectedCounterpartyList.map(loc=>loc.LocationID);
-        let productIds=res['sellerOffers'].map(ro=>ro.requestOffers.map(r=>r.quotedProductId));
-        let physicalSupplierIds=res['sellerOffers'].map(phy=>phy.physicalSupplierCounterpartyId);
-        let payload=  {
-          locationIds: [...new Set(locationIds)],
-          productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
-          physicalSupplierIds:[...new Set(physicalSupplierIds)],
-          requestGroupId:this.currentRequestInfo.requestGroupId
-        }
-        this.getEnergy6MHistory(payload);
         this.myMonitoringService.logMetric(
           'Send RFQ ' + (<any>window).location.href,
           Date.now() - (<any>window).startSendRFQTime,
@@ -570,7 +560,17 @@ this.checkorderexists();
             reqLocationRows.push(data);
         }
       this.store.dispatch([new UpdateRequest(reqs), new SetLocationsRows(reqLocationRows)]);
-
+      let locationIds=reqLocationRows.map(loc=>loc.locationId);
+      let productIds=reqLocationRows.map(ro=>ro.requestOffers.map(r=>r.quotedProductId));
+      let physicalSupplierIds=reqLocationRows.map(phy=>phy.physicalSupplierCounterpartyId);
+      debugger;
+      let payload=  {
+        locationIds: [...new Set(locationIds)],
+        productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
+        physicalSupplierIds:[...new Set(physicalSupplierIds)],
+        requestGroupId:this.currentRequestInfo.requestGroupId
+      }
+      this.getEnergy6MHistory(payload);
       // this.spotNegotiationService.callGridRefreshServiceAll();
       this.spotNegotiationService.callGridRedrawService();
       this.changeDetector.detectChanges();
