@@ -363,7 +363,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           );
           
           let locationIds=this.allRequest.map(e=>e.requestLocations.map(rl=>rl.locationId));
-          let productIds=res['requestLocationSellers'].map(ro=>ro?.requestOffers.map(r=>r.quotedProductId));;
+          let productIds=res['requestLocationSellers'].map(ro=>ro?.requestOffers?.map(r=>r.quotedProductId));;
           let physicalSupplierIds=res['requestLocationSellers'].map(phy=>phy.physicalSupplierCounterpartyId);
           if(productIds){
             let payload=  {
