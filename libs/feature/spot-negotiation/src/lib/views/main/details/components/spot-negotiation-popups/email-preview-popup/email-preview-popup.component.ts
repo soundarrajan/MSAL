@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
   SetLocationsRows,
+  SetNetEnergySpecific,
   UpdateRequest
 } from '../../../../../../store/actions/ag-grid-row.action';
 import _ from 'lodash';
@@ -580,6 +581,16 @@ export class EmailPreviewPopupComponent implements OnInit {
       });
 
       if (res['sellerOffers']) {
+        let locationIds=res['sellerOffers'].map(loc=>loc.LocationID);
+        let productIds=res['sellerOffers'].map(ro=>ro.requestOffers.map(r=>r.quotedProductId));
+        let physicalSupplierIds=res['sellerOffers'].map(phy=>phy.physicalSupplierCounterpartyId);
+        let payload=  {
+          locationIds: [...new Set(locationIds)],
+          productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
+          physicalSupplierIds:[...new Set(physicalSupplierIds)],
+          requestGroupId:this.currentRequestInfo.requestGroupId
+        }
+        this.getEnergy6MHistory(payload);
         let locationsRows;
         const requestGroupID = this.store.selectSnapshot<string>(
           (state: any) => {
@@ -683,6 +694,13 @@ export class EmailPreviewPopupComponent implements OnInit {
       }
     });
     //}
+  }
+  /// get avg netEnergy6MonthHistory
+  async getEnergy6MHistory(payload){   
+    const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
+    if (response.energy6MonthHistories.length > 0){
+        this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+      }
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
