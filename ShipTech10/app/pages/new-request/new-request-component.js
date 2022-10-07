@@ -2386,6 +2386,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         }
                     }
                     let companyToDefault = null;
+
                     if (vessel.operatingCompany) {
                         companyToDefault = vessel.operatingCompany;
                     } else if (vessel.voyages.length > 0) {
@@ -2401,6 +2402,15 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     if (!ctrl.request.company) {
                         ctrl.request.company = {};
                     }
+                    
+                    /* New Request - requestStatus = Created */
+                    if (ctrl.request.id > 0 && ctrl.request.requestStatus.name == "Created") {
+                        if(ctrl.request.company != null) // Vessel Detail
+                            companyToDefault = ctrl.request.company;
+                        else if(ctrl.request.locations.length > 0) // Port Section
+                            companyToDefault = ctrl.request.locations[0].company;
+                    }
+  
                     ctrl.request.company.name = companyToDefault?.name;
                     ctrl.request.company.id = companyToDefault?.id;
                     
