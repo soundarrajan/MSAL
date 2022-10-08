@@ -242,7 +242,7 @@
             [matMenuTriggerFor]="additionalProductSearch"
             (click)="
             additionalProdSearch = null;"
-          ><mat-form-field class="dotted-form-field" appearance="none" style="height: 40px"><input matInput value="{{additionalCost.value.product == null ? '' : additionalCost.value.product.name }} {{ additionalCost.value.product != null && additionalCost.value.product.name =='All' ? '' : '' }} {{ additionalCost.value.deliveryId}}"
+          ><mat-form-field class="dotted-form-field" appearance="none" style="height: 40px"><input matInput value="{{additionalCost.value.product == null ? '' : additionalCost.value.product.name =='All' ? '' : additionalCost.value.product.name }} {{ additionalCost.value.product != null && additionalCost.value.product.name =='All' ? '' : '' }} {{ additionalCost.value.deliveryId}}"
                     [disabled]="
                     (additionalCost.value.locationAdditionalCostId &&
                       !(
