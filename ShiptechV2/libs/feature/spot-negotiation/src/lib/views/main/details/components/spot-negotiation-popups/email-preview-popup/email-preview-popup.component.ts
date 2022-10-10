@@ -582,7 +582,7 @@ export class EmailPreviewPopupComponent implements OnInit {
 
       if (res['sellerOffers']) {
         let locationIds=res['sellerOffers'].map(loc=>loc.LocationID);
-        let productIds=res['sellerOffers'].map(ro=>ro.requestOffers.map(r=>r.quotedProductId));
+        let productIds=res['sellerOffers'].map(ro=>ro?.requestOffers?.map(r=>r.quotedProductId));
         let physicalSupplierIds=res['sellerOffers'].map(phy=>phy.physicalSupplierCounterpartyId);
         let payload=  {
           locationIds: [...new Set(locationIds)],

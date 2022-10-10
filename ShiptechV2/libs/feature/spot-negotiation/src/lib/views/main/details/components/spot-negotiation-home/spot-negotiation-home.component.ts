@@ -561,9 +561,8 @@ this.checkorderexists();
         }
       this.store.dispatch([new UpdateRequest(reqs), new SetLocationsRows(reqLocationRows)]);
       let locationIds=reqLocationRows.map(loc=>loc.locationId);
-      let productIds=reqLocationRows.map(ro=>ro.requestOffers.map(r=>r.quotedProductId));
+      let productIds=reqLocationRows.map(ro=>ro?.requestOffers?.map(r=>r.quotedProductId));
       let physicalSupplierIds=reqLocationRows.map(phy=>phy.physicalSupplierCounterpartyId);
-      debugger;
       let payload=  {
         locationIds: [...new Set(locationIds)],
         productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
