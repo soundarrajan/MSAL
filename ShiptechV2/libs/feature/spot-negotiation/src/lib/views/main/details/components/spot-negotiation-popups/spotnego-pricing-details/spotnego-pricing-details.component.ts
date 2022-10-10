@@ -347,9 +347,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       this.formValues.pricingScheduleOptionSpecificDate.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
     } else if (id == 6) {
       this.formValues.pricingScheduleOptionEventBasedSimple = {
-        fromNoOfBusinessDaysBefore: '',
+        fromNoOfBusinessDaysBefore: '0',
         name: '',
-        toNoOfBusinessDaysAfter: '',
+        toNoOfBusinessDaysAfter: '0',
         fromBusinessCalendarId: { id: 1 },
         toBusinessCalendar: { id: 1 }
       };
@@ -362,8 +362,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       this.formValues.pricingScheduleOptionEventBasedSimple.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
     } else if (id == 7) {
       this.formValues.pricingScheduleOptionEventBasedExtended = {
-        fromNoOfBusinessDaysBefore: '',
-        toNoOfBusinessDaysAfter: '',
+        fromNoOfBusinessDaysBefore: '0',
+        toNoOfBusinessDaysAfter: '0',
         fromBusinessCalendar: { id: 1 },
         toBusinessCalendar: { id: 1 },
         excludeFromNoOfBusinessDaysBefore: undefined,
@@ -806,12 +806,15 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         return;
       }
     }
+  
     if(this.formValues.pricingScheduleOptionEventBasedSimple != undefined){
-      if(!this.formValues.pricingScheduleOptionEventBasedSimple?.fromNoOfBusinessDaysBefore){
+      this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore = this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore.toString();
+      if(this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore == "" || this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore.length == 0) {
         this.toastr.error('From - (From No Of Business Days Before) field is required in Pricing schedule -> Event Based Simple Section');
         return;
       }
-      if(!this.formValues.pricingScheduleOptionEventBasedSimple?.toNoOfBusinessDaysAfter){
+      this.formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter = this.formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter.toString();
+      if(this.formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter == "" || this.formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter.length == 0){
         this.toastr.error('To - (To No Of Business Days After) field is required in Pricing schedule -> Event Based Simple Section');
         return;
       }
