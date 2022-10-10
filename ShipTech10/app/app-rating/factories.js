@@ -1488,7 +1488,7 @@ APP_RATING.factory('Factory_Rating', ['$listsCache', '$tenantSettings', 'API', '
                 if (typeof($listsCache[param.field.masterSource]) != 'undefined') callback($listsCache[param.field.masterSource]);
                 else {
                     console.log("$APIService dropdown.lookup failed for parameter ", param.field.masterSource);
-                    callback([{ "id": -1, "name": "No options defined! Please fix!" }]);
+                    callback([{ "id": -1, "name": "No options defined! Please use lookup!" }]);
                 }
                 return;
             }

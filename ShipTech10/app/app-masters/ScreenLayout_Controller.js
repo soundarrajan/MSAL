@@ -669,6 +669,16 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     if (vm.app_id == 'admin' && vm.screen_id == 'users') {
                                         $scope.formValues.contactInformation.id = 0;
                                         $scope.formValues.contactInformation.address.id = 0;
+                                        $scope.formValues.customNonMandatoryAttribute1 = null;
+                                        $scope.formValues.customNonMandatoryAttribute2 = null;
+                                        $scope.formValues.customNonMandatoryAttribute3 = null;
+                                        $scope.formValues.customNonMandatoryAttribute4 = null;
+                                        $scope.formValues.customNonMandatoryAttribute5 = null;
+                                        $scope.formValues.customNonMandatoryAttribute6 = null;
+                                        $scope.formValues.customNonMandatoryAttribute7 = null;
+                                        $scope.formValues.customNonMandatoryAttribute8 = null;
+                                        $scope.formValues.customNonMandatoryAttribute9 = null;
+
                                     }
                                     if (vm.app_id == 'admin' && vm.screen_id == 'role') {
                                         $scope.formValues.roles.id = 0;

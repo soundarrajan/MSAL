@@ -207,20 +207,47 @@ angular.module('shiptech.components').controller('FiltersController', [
             }
 
             let isInvalidValue = false;
-            $.each(loopList, (k, v) => {
-                if (v.condition.conditionNrOfValues && (!v.value || v.value == 'Invalid date')) {
-                    isInvalidValue = true;
-                }
-                $.each(v.value, (k1, v1) => {
-                	if (typeof v1 != 'undefined') {
-                		if (!v1) {
-		                    isInvalidValue = true;
-                		}
-                	} else {
-	                    isInvalidValue = true;
-                	}
+  
+            if($scope.currentList === 'schedule-dashboard-table'){
+                $.each(loopList, (k, v) => {
+           
+                    if (v.condition.conditionNrOfValues && (!v.value || v.value == 'Invalid date')) {
+                        isInvalidValue = true;
+                    }
+                  
+                    if(v.value == "" && v.condition.conditionNrOfValues == 1){
+                        isInvalidValue = true;
+                    }
+                    $.each(v.value, (k1, v1) => {
+                        if (typeof v1 != 'undefined') {
+                            if (!v1) {
+                                isInvalidValue = true;
+                            }
+                        } else {
+                            if(v1 == undefined){
+                                isInvalidValue =  (v.condition.conditionNrOfValues == 1)?true:false;
+                            }else{                                
+                                isInvalidValue =  (v1 == "")?true:false;
+                            }
+                        }
+                    });
                 });
-            });
+            }else{
+                $.each(loopList, (k, v) => {
+                    if (v.condition.conditionNrOfValues && (!v.value || v.value == 'Invalid date')) {
+                        isInvalidValue = true;
+                    }
+                    $.each(v.value, (k1, v1) => {
+                        if (typeof v1 != 'undefined') {
+                            if (!v1) {
+                                isInvalidValue = true;
+                            }
+                        } else {
+                            isInvalidValue = true;
+                        }
+                    });
+                });
+            }
             if (isInvalidValue) {
                 toastr.error('Please enter a value');
             	return false;
@@ -320,7 +347,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     });
                 }
                 // console.log(data);
-                // console.log(2,);
+               
             } else {
                 data = [];
             }
@@ -345,7 +372,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             }
             if ($scope.packedFilters && !defaultConf || $scope.packedFilters && defaultConf && !column) {
                 if ($rootScope.clc_loaded) {
-                    // console.log(123)
+               
                     if (!ctrl.saveFilterActionEvent) {
                         if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' ||  $state.current.name == 'default.schedule-dashboard-table' || $state.current.name == 'default.dashboard-table') {
 	                        $rootScope.$broadcast('filters-applied', $scope.packedFilters, false, $rootScope.productTypeView);
