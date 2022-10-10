@@ -51,7 +51,7 @@
   box-sizing: border-box;
   box-shadow: 0 6px 7px rgb(0 0 0 / 25%);
   padding: 10px;
-  min-width: 30vw;
+  min-width: 40vw;
 }
 
 .container-modal-expand {
@@ -151,6 +151,7 @@ input.search-input::placeholder {
   text-overflow: ellipsis;
 }
 
+
 .document-preview-pop-up.mat-table {
   background-color: #364150 !important;
   box-shadow: unset !important;
@@ -183,11 +184,14 @@ input.search-input::placeholder {
   padding-left: unset !important;
   padding-right: 15px;
   padding-bottom: 5px;
+  width:475px;
 }
 
 .document-preview-pop-up td.mat-cell:last-of-type,
 .document-preview-pop-up th.mat-header-cell:last-of-type {
   padding-right: unset !important;
+  vertical-align: text-top;
+  line-height: 25px;
 }
 
 th.mat-header-cell:first-of-type,
@@ -234,3 +238,4 @@ td.mat-footer-cell:first-of-type {
 .document-type-container-radio-button .mat-radio-label{
     white-space:normal !important;
 }
+
