@@ -2400,16 +2400,16 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                         }
                     }
                     
-                    if (!ctrl.request.company) {
-                        ctrl.request.company = {};
-                    }
-
                     // Assigning company name for Edit Request //
                     if (ctrl.request.id > 0) {
-                        if (ctrl.request.company != null) // Vessel Detail
+                        if (ctrl.request.company !== null) // Vessel Detail
                             companyToDefault = ctrl.request.company;
-                        if (ctrl.request.locations.length > 0) // Port Section
+                        else if (ctrl.request.locations.length > 0) // Port Section
                             companyToDefault = ctrl.request.locations[0].company;
+                    }
+
+                    if (!ctrl.request.company) {
+                        ctrl.request.company = {};
                     }
   
                     // Vessel Detail - Set value for company name //
