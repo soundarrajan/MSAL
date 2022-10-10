@@ -1089,6 +1089,11 @@ ag-grid-cell-renderer {
   color: #4a71c2;
 }
 
+.mat-menu-panel.document-type-modal {
+  max-width: 40vw !important;
+  max-height: 50vh;
+}
+
 .document-type-modal {
   max-width: 50vw !important;
   max-height: 50vh;
