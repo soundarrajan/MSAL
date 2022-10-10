@@ -377,7 +377,7 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.toastr.warning('Please add location cost');
       return;
     }
-    if (!this.enableSave) {
+    if (!this.enableSave && save != 'isProceed') {
       this.toastr.warning('No changes are made to perform save.');
       return;
     }
