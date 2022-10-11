@@ -325,7 +325,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
             </div>
           </div>
         </div>
-        <div class="resize-icon" style="display: none;">
+        <div class="resize-icon">
           <div
             class="img resizeIcons"
             [ngClass]="this.expandState"
@@ -553,18 +553,21 @@ export class ShiptechCustomHeaderGroup {
     this.syncExpandButtons();
   }
 
-  expandOrCollapse(isExpanded) {
-    const currentState = this.params.columnGroup
+  expandOrCollapse(isExpanded=false) {
+    debugger;
+      const currentState = this.params.columnGroup
       .getOriginalColumnGroup()
       .isExpanded();
-
-    const groupNames = ['grid1', 'grid2', 'grid3'];
-    groupNames.forEach(groupId => {
-      this.params.columnApi.setColumnGroupOpened(groupId, !currentState);
-    });
-
+      let productId = this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.locations.filter(flt => flt.id == this.params.requestLocationId)[0]?.requestProducts.map(res=> res.productId);
+      });
+      productId?.forEach(groupId => {
+        this.params.columnApi.setColumnGroupOpened(groupId.toString(), !currentState);
+      });
+      // let  groupState = this.params.columnApi.getColumnGroupState();
+      // console.log("groupState",groupState);
     if (currentState) this.params.api.sizeColumnsToFit();
-    //this.invokeParentMethod();
+     // this.params.columnApi.getColumnGroupState();
   }
 
   invokeParentMethod(): void {
