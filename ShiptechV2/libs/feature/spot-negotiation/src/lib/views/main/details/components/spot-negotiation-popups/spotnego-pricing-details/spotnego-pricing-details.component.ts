@@ -830,11 +830,13 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
 
 
     if(this.formValues.pricingScheduleOptionEventBasedExtended != undefined){
-      if(!this.formValues.pricingScheduleOptionEventBasedExtended?.fromNoOfBusinessDaysBefore){
+      this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore =this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore.toString();
+      if(this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore == "" || this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore.length == 0){
         this.toastr.error('From - (From No Of Business Days Before) field is required in Pricing schedule -> Event Based Extended Section');
         return;
       }
-      if(!this.formValues.pricingScheduleOptionEventBasedExtended?.toNoOfBusinessDaysAfter){
+      this.formValues.pricingScheduleOptionEventBasedExtended.toNoOfBusinessDaysAfter = this.formValues.pricingScheduleOptionEventBasedExtended.toNoOfBusinessDaysAfter.toString();
+      if(this.formValues.pricingScheduleOptionEventBasedExtended.toNoOfBusinessDaysAfter == "" || this.formValues.pricingScheduleOptionEventBasedExtended.toNoOfBusinessDaysAfter.length == 0){
         this.toastr.error('To - (To No Of Business Days After) field is required in Pricing schedule -> Event Based Extended Section');
         return;
       }
