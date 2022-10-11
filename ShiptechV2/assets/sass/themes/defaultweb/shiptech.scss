@@ -11846,6 +11846,10 @@ tr.title {
 
 /* Spot Negotiation Comments - Start */
 .spot-nego-comments {
+  &.popup-scroll {
+    max-height: 510px;
+    overflow-y: auto;
+  }
   padding-top: 1px;
   .grid-in-accordion {
     .mat-expansion-panel {
