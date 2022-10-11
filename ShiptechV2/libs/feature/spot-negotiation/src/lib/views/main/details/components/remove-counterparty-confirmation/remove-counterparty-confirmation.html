@@ -1,28 +1,22 @@
-
   <div class="remove-terminal-section"  >
-    <div class="close-btn" style="position: absolute !important;top: -12px !important;right: -8px;" (click)="closeClick()"><img id="close-icon" src="./assets/customicons/close_o.svg" alt="list"></div>
-    <div class="warning-title"><img id="warning-icon" src="./assets/customicons/warning_o.svg" alt="list">
-      <span class="p-l-10" style="margin-top: 4px;">Warning</span></div>
-    <p style="font-size: 15px;">Delete Counterparty</p>
-  <div class="row">
-    <div class="col-md-12" *ngIf="!data.isRFQSent">
-      You are trying to remove the counterparty '{{this.format.htmlDecode(data.sellerName)}}' from the negotiation. Are you sure you want to continue?
+    <div class="close-btn" style="position: relative !important;left: 16px !important;bottom: 16px;cursor:pointer;" (click)="closeClick()"><img id="close-icon" src="./assets/customicons/close_o.svg" alt="list"></div>
+    <div class="warning-title">
+        <span class="p-l-10" style="margin-top: 4px;">Delete Counterparty</span>
     </div>
-    <div class="col-md-12" *ngIf="data.isRFQSent">
-      Removing the counterparty '{{this.format.htmlDecode(data.sellerName)}}' will revoke the RFQ. Do you want to continue?
+    <div class="center-content" *ngIf="!data.isRFQSent">
+      <p>You are trying to remove the counterparty '{{this.format.htmlDecode(data.sellerName)}}' from the negotiation. Are you sure you want to continue?</p>
     </div>
-  </div>
- 
+    <div class="center-content" *ngIf="data.isRFQSent">
+      <p>Removing the counterparty '{{this.format.htmlDecode(data.sellerName)}}' will revoke the RFQ. Do you want to continue?</p>
+    </div>
     <div class="yes-no">
-        <button  class="blue-button-o" style="float:left;" [mat-dialog-close]="false"  (click)="confirm(false)">    
-          <span>NO</span>
-        </button>
-        <button mat-raised-button class="red-button" style="float:right;  margin:0px 0px 0px !important;"  [mat-dialog-close]="true" (click)="confirm(true)">    
+        <button mat-raised-button class="mat-focus-indicator red-button mat-raised-button mat-button-base" [mat-dialog-close]="true" (click)="confirm(true)">    
           <span>Yes</span>
         </button>
+        <button  class="mat-focus-indicator blue-button-o mat-raised-button mat-button-base" style="float:right"  [mat-dialog-close]="false"  (click)="confirm(false)">    
+          <span>No</span>
+        </button>
     </div>
   </div>
-  
-
   <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-spin-clockwise-fade">
   </ngx-spinner>
