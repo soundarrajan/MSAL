@@ -64,7 +64,7 @@ export class SellerratingpopupComponent implements OnInit {
            this.specificPortRatingData.push({
             categoriesName: ele.name,
             categoriesRating : ele.rating,
-            ratedBy: ele.createdBy.name,
+            ratedBy: ele.createdBy?.name,
             createdOn :ele.createdOn,
             details : ele.details
            })
@@ -75,7 +75,7 @@ export class SellerratingpopupComponent implements OnInit {
         element.categories.map(ele=>{
           this.allLocationRatingData.push({
            categoriesName: ele.name,
-           ratedBy: ele.createdBy.name,
+           ratedBy: ele.createdBy?.name,
            createdOn :ele.createdOn,
            details : ele.details
           })
