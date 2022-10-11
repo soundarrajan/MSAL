@@ -186,7 +186,7 @@ export class PricingFormulaSimple implements OnInit {
       return;
     }
     this.formValues = formValues;
-    console.log(this.formValues);
+    
     if (this.formValues.simpleFormula && this.formValues.simpleFormula.amount) {
       this.formValues.simpleFormula.amount = this.amountFormatValue(
         this.formValues.simpleFormula.amount

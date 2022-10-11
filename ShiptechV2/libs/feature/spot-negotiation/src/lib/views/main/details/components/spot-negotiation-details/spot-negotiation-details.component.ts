@@ -579,7 +579,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       },
       marryChildren: true,
       resizable: false,
-      groupId: 'grid1',
+      groupId: product.productId,
       suppressMovable: true,
       lockVisible: true,
 
@@ -809,6 +809,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           flex: 5,
           width: 135,
           minWidth: 94,
+          columnGroupShow: 'open',
           valueGetter: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
               params.data,
@@ -846,6 +847,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           flex: 5,
           width: 135,
           minWidth: 94,
+          columnGroupShow: 'open',
           valueGetter: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
               params.data,
@@ -880,6 +882,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           field: `tco$`,
           flex: 5,
           width: 135,
+         columnGroupShow: 'open',
           minWidth: 94,
           valueGetter: params => {
             const details = this.spotNegotiationService.getRowProductDetails(

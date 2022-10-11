@@ -375,10 +375,33 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }
     );
     OfferIds =  OfferIds.filter(x=> x!=undefined);
-    this._spotNegotiationService.evaluatePrices({ RequestOfferIds: OfferIds}).subscribe((resp:any) =>{
+    this._spotNegotiationService.evaluatePrices({ RequestOfferIds: OfferIds}).subscribe(async (resp:any) =>{
       if(resp?.message == 'Unauthorized') return;
       if(resp.offersPrices){
-        this.store.dispatch(new EvaluatePrice(resp.offersPrices));
+        
+        let reqLocationRows : any =[];
+        let locationsRows = _.cloneDeep(
+          this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
+            return state['spotNegotiation'].locationsRows;
+          })
+        );
+        for (var locRow of locationsRows) {
+          if(locRow.requestOffers){
+            locRow.requestOffers.forEach(req=>{
+              resp.offersPrices.forEach(x=>{
+                if(req.id === x.requestOfferId){
+                  req.price = x.price;
+                }
+              })
+            });
+           }
+          var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+            locRow,
+            locRow);
+            reqLocationRows.push(data);
+        }
+        //this.store.dispatch(new EvaluatePrice(resp.offersPrices));
+        this.store.dispatch(new SetLocationsRows(reqLocationRows));
         this._spotNegotiationService.callGridRedrawService();
       }
       else{
