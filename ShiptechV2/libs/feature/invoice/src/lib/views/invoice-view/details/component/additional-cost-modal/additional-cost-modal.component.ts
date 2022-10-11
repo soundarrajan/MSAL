@@ -437,8 +437,8 @@ export class AdditionalCostModalComponent implements OnInit {
 
   getRangeTotalAmount(additionalCost, rowIndex) {
     additionalCost.deliveryId = additionalCost.product.deliveryNumber;
-    additionalCost.invoiceQuantity = additionalCost.product.finalQuantityAmount;
-    additionalCost.invoiceQuantityUom = this.uomList[additionalCost.product.finalQuantityAmountUomId - 1];
+    additionalCost.invoiceQuantity = this.quantityFormatValue(additionalCost.product.finalQuantityAmount);
+    additionalCost.invoiceQuantityUom = this.uomList.find(item => item.id === additionalCost.product.finalQuantityAmountUomId);
     if (!additionalCost.locationAdditionalCostId) {
       return;
     }
@@ -529,12 +529,7 @@ export class AdditionalCostModalComponent implements OnInit {
       }
     });
 
-    let productLine = {
-      id: -1,
-      name: 'All',
-      deliveryProductId: null,
-      productId: null
-    };
+    let productLine;
     if (
       additionalCost.costType.name == 'Range' ||
       additionalCost.costType.name == 'Total'

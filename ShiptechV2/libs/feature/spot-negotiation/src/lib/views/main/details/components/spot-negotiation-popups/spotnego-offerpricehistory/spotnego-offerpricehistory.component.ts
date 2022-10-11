@@ -32,6 +32,7 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
   tenantService:any;
   targerPrice: any;
   offerPriceList = [];
+  offerPriceListOld = [];
   highcharts = Highcharts;
   public chartOptions: any = {
     chart: {
@@ -209,6 +210,9 @@ export class SpotnegoOfferpricehistoryComponent implements OnInit {
          res.marketPriceHistory.map(x=> 
           this.offerPriceList.push(this.counter(x.oldPrices))
           );
+          res.marketPriceHistory.map(x=> 
+            this.offerPriceListOld.push(this.counter(x.oldPrices.slice(1)))  //removes the curr price
+            );
          if(dataSeries.length === 0){
            this.highcharts.setOptions({ lang: {noData: "No past offers found"}});
            this.highcharts.chart('container', this.chartOptions);

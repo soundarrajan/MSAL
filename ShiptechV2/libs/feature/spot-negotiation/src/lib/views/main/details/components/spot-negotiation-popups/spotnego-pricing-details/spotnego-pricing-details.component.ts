@@ -97,6 +97,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   defaultConversionRate: number;
   defaultConversionVolumeUomId: number;
   isComplexFormulaWeightEnforced: boolean;
+  checkRequestStatus: boolean = false;
+  
   constructor(
     public dialogRef: MatDialogRef<SpotnegoPricingDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -126,6 +128,10 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       this.staticList = state.spotNegotiation.staticLists.otherLists;
       this.sessionFormulaList = state.spotNegotiation.formulaList;
       this.isComplexFormulaWeightEnforced = state.tenantSettings.general.defaultValues.isComplexFormulaWeightEnforced;
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.checkRequestStatus = true;
+      }
+      
     });
 
     this.getOfferPriceConfiguration();
@@ -187,13 +193,13 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   setFormulaTypeSelected(id) {
-    if (id == 1) {
+    if (id == 2) {
       if (this.formValues.complexFormulaQuoteLines) {
         this.formValues.complexFormulaQuoteLines = [];
         this.formulaId = id;
       } else this.formulaId = id;
     }
-    if (id == 2) {
+    if (id == 1) {
       if (this.formValues.simpleFormula) {
         this.formValues.simpleFormula = {};
         this.formulaId = id;
@@ -341,9 +347,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       this.formValues.pricingScheduleOptionSpecificDate.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
     } else if (id == 6) {
       this.formValues.pricingScheduleOptionEventBasedSimple = {
-        fromNoOfBusinessDaysBefore: 0,
+        fromNoOfBusinessDaysBefore: '',
         name: '',
-        toNoOfBusinessDaysAfter: 0,
+        toNoOfBusinessDaysAfter: '',
         fromBusinessCalendarId: { id: 1 },
         toBusinessCalendar: { id: 1 }
       };
@@ -356,8 +362,8 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       this.formValues.pricingScheduleOptionEventBasedSimple.saturdayHolidayRule = _.cloneDeep(this.holidayRuleList[2]);
     } else if (id == 7) {
       this.formValues.pricingScheduleOptionEventBasedExtended = {
-        fromNoOfBusinessDaysBefore: 0,
-        toNoOfBusinessDaysAfter: 0,
+        fromNoOfBusinessDaysBefore: '',
+        toNoOfBusinessDaysAfter: '',
         fromBusinessCalendar: { id: 1 },
         toBusinessCalendar: { id: 1 },
         excludeFromNoOfBusinessDaysBefore: undefined,
@@ -685,16 +691,22 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   saveFormula() {
-    console.log(this.formValues);
-          debugger;
+    if (!this.formValues.conversionRate) {
+      this.toastr.error('Conversion Rate field is required.');
+      return;
+    }
 
     if (this.formValues.formulaType.id == 1) {
+      if (!this.formValues.simpleFormula.systemInstrument) {
+        this.toastr.error('System Instrument field is required in Simple Pricing formula.');
+        return;
+      }
+
       if (!this.formValues.simpleFormula.priceType) {
         this.toastr.error('Price Type field is required in Simple Pricing formula.');
         return;
       }
       
-
       if (!this.formValues.simpleFormula.plusMinus) {
         this.toastr.error('Premimum/Discount  field is required in Simple Pricing formula');
         return;
@@ -736,20 +748,24 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           this.toastr.error('Plus Minus field is required in in Complex Pricing formula');
           return;
         }
-        if (this.formValues.complexFormulaQuoteLines[i - 1]?.formulaPlusMinus.name != 'None') {
+     
+        if (this.formValues.complexFormulaQuoteLines[i - 1]?.formulaPlusMinus.id != 3) {
           if (!this.formValues.complexFormulaQuoteLines[i - 1]?.amount) {
             this.toastr.error('Amount field is required in Complex Pricing formula');
             return;
           }
 
-          if (!this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage) {
-            this.toastr.error('FlatPercentage field is required in Complex Pricing formula');
+          if (!this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage || this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage.id == 0) {
+             this.toastr.error('FlatPercentage field is required in Complex Pricing formula');
             return;
           }
           
-            if (!this.formValues.complexFormulaQuoteLines[i - 1]?.uom) {
-              this.toastr.error('UOM field is required in Complex Pricing formula');
-              return;
+            if (!this.formValues.complexFormulaQuoteLines[i - 1]?.uom || this.formValues.complexFormulaQuoteLines[i - 1]?.uom.id == null) {
+              // id = 2  is percentage
+              if(this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage.id != 2  ){
+                this.toastr.error('UOM field is required in Complex Pricing formula');
+                return;
+              }
             }
         }
       }
@@ -790,7 +806,6 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         return;
       }
     }
-
     if(this.formValues.pricingScheduleOptionEventBasedSimple != undefined){
       if(!this.formValues.pricingScheduleOptionEventBasedSimple?.fromNoOfBusinessDaysBefore){
         this.toastr.error('From - (From No Of Business Days Before) field is required in Pricing schedule -> Event Based Simple Section');
@@ -983,7 +998,11 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   getInstrumentNameById(instrumentId: number) {
+    
     var instrumentName = '';
+    if(instrumentId == 0){
+      return instrumentName;
+    }
     if (this.systemInstumentList) {
       instrumentName = this.systemInstumentList.filter(item => item.id === instrumentId)[0].name;
     }
@@ -1014,11 +1033,22 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   getSystemInstruments(systemInstruments: SystemInstrumentDto[]) {
     var uiInstruments: SystemInstruments[] = [];
     systemInstruments.forEach(item => {
-      uiInstruments.push({
-        marketPriceTypeId: { id: item.marketPriceTypeId },
-        systemInstrument: { id: item.systemInstrumentId, name: this.getInstrumentNameById(item.systemInstrumentId) }
+        uiInstruments.push({
+          marketPriceTypeId: { id: item.marketPriceTypeId },
+          systemInstrument: { id: item.systemInstrumentId, name: this.getInstrumentNameById(item.systemInstrumentId) }
+        });
       });
-    });
+    
+      if(systemInstruments.length  < 3){
+        for(var i=systemInstruments.length+1;i<=3;i++){
+          uiInstruments.push({
+            marketPriceTypeId: { id:0},
+            systemInstrument:  { id:0,name: ''}
+          });
+        }
+         console.log(uiInstruments);
+      }
+
     return uiInstruments;
   }
 
@@ -1045,7 +1075,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
 
   getSpecificDate(scheduleSpecificDate: any) {
     var scheduleOption = this.getHolidayRule(scheduleSpecificDate as HolidayRuleDto) as PricingScheduleOptionSpecificDate;
-    scheduleOption = { ...scheduleSpecificDate };
+    scheduleOption = {...scheduleOption, ...scheduleSpecificDate };
     return scheduleOption;
   }
 
@@ -1125,7 +1155,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       productDiscountRules: this.getProductDiscountRules(priceConfig.discountRules?.productDiscountRules),
       locationDiscountRules: this.getLocationDiscountRules(priceConfig.discountRules?.locationDiscountRules)
     };
-
+ 
     if (priceConfig.formula.formulaTypeId === 1) {
       this.formValues.simpleFormula = {
         plusMinus: { id: priceConfig.formula.simpleFormula.formulaPlusMinusId },
@@ -1154,7 +1184,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           systemInstruments: this.getSystemInstruments(quote.systemInstruments)
         } as ComplexFormula);
       });
-
+   
       this.formValues.complexFormulaQuoteLines = complexFormulaQuoteLines;
     }
     var uomMassList = this.setListFromStaticLists('UomMass');

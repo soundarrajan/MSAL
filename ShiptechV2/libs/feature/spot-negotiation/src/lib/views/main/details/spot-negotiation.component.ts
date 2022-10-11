@@ -5,7 +5,8 @@ import {
   ChangeDetectorRef,
   Component,
   OnDestroy,
-  OnInit
+  OnInit,
+  ViewChild
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
@@ -15,7 +16,8 @@ import {
   SetRequests,
   SetTenantConfigurations,
   SetStaticLists,
-  SetCounterparties
+  SetCounterparties,
+  SetQuoteDateAndTimeZoneId
 } from '../../../store/actions/request-group-actions';
 import {
   SetLocations,
@@ -26,7 +28,8 @@ import {
   // SetLocationsRowsPriceDetails,
   SetPhysicalSupplierCounterpartyList,
   UpdateAdditionalCostList,
-  setFormulaList
+  setFormulaList,
+  SetNetEnergySpecific
 } from '../../../store/actions/ag-grid-row.action';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -35,6 +38,8 @@ import { isNumeric } from 'rxjs/internal-compatibility';
 import { SpotNegotiationPriceCalcService } from '../../../services/spot-negotiation-price-calc.service';
 import _ from 'lodash';
 import { forkJoin } from 'rxjs';
+import { AgGridDatetimePickerToggleComponent } from '../../../core/ag-grid/ag-grid-datetimePicker-Toggle';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
 @Component({
   selector: 'spot-negotiation-main-component',
@@ -53,11 +58,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   staticLists: any;
   CurrentProductLength: any;
   CurrentLocationprduct: any[];
+  generalTenantSettings:any;
   currentRequestData: any[];
   allRequest: any[];
   totalCounterpartyCount: number;
   additionalCostList: any = [];
-
+  @ViewChild(AgGridDatetimePickerToggleComponent)
+  child: AgGridDatetimePickerToggleComponent;
   constructor(
     private store: Store,
     private route: ActivatedRoute,
@@ -67,9 +74,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private spinner: NgxSpinnerService,
     private legacyLookupsDatabase: LegacyLookupsDatabase,
-    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService
+    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService,
+    private tenantSettingsService: TenantSettingsService,
   ) {
     this.entityName = 'Spot negotiation';
+    this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
   }
 
   ngOnInit(): void {
@@ -77,7 +86,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     this.spinner.show();
     const requestIdFromUrl = this.route.snapshot.params.requestId;
     if(requestIdFromUrl && isNumeric(requestIdFromUrl)){
-      localStorage.setItem('activeRequestId', requestIdFromUrl.toString());
+      localStorage.setItem('activeRequestId', requestIdFromUrl?.toString());
     }
     this.setFormulaList();
     this.getStaticLists();
@@ -99,18 +108,38 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
     });
   }
 
-
-  getRequestGroup(): void {
+  UpdateCommentAndGetQuote(){
     // Get current id from url and make a request with that data.
     const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
-    this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
-    // Get response from server and populate store
     const responseGroupComment = this.spotNegotiationService.updateGroupComments(
       groupRequestIdFromUrl
     );
 
     responseGroupComment.subscribe((res: any) => {
-    if(res.status){
+      if(res.status){
+        this.spotNegotiationService.QuoteByDate =res?.quoteByDate;
+        this.spotNegotiationService.QuoteByTimeZoneId=res?.quoteByTimeZoneId??this.generalTenantSettings.tenantFormats.timeZone.id;
+        // set QuoteByDate and TimeZoneID
+        this.store.dispatch(new SetQuoteDateAndTimeZoneId(res));
+      }
+    });
+  }
+  
+  getRequestGroup(): void {
+    // Get current id from url and make a request with that data.
+    const groupRequestIdFromUrl = this.route.snapshot.params.spotNegotiationId;
+    this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
+    // Get response from server and populate store
+    // const responseGroupComment = this.spotNegotiationService.updateGroupComments(
+    //   groupRequestIdFromUrl
+    // );
+
+    // responseGroupComment.subscribe((res: any) => {
+    // if(res.status){
+    //   this.spotNegotiationService.QuoteByDate =res?.quoteByDate??this.child.getValue();
+    //   this.spotNegotiationService.QuoteByTimeZoneId=res?.quoteByTimeZoneId??this.generalTenantSettings.tenantFormats.timeZone.id;
+    //   // set QuoteByDate and TimeZoneID
+    //   this.store.dispatch(new SetQuoteDateAndTimeZoneId(res));
     // Get response from server and populate store
     const responseGetRequestGroup = this.spotNegotiationService.getRequestGroup(
       groupRequestIdFromUrl
@@ -121,10 +150,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if(res?.message == 'Unauthorized'){
         return;
       }
-      if (res.error) {
+      if (res?.error) {
         alert('Handle Error');
         return;
       }
+      
       // Set all request inside store
       if (res['requests']) {
         this.store.dispatch(new SetRequests(res['requests']));
@@ -161,8 +191,8 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           this.changeDetector.detectChanges();
         }
       }
-    });}
-    });
+    })//};
+    // });
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     this.currentRequestData = this.store.selectSnapshot<any>((state: any) => {
@@ -181,11 +211,11 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
         row1 => row1.id == row.requestId
       );
       let requestProducts = requests.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
-      if(rowrelatedrequest.length > 0 && rowrelatedrequest[0]["requestLocations"]){
+      if(rowrelatedrequest?.length > 0 && rowrelatedrequest[0]["requestLocations"]){
         currentLocProd = rowrelatedrequest[0]["requestLocations"].filter(
           row1 => row1.locationId == row.locationId
         );
-      if (currentLocProd.length != 0) {
+      if (currentLocProd?.length != 0) {
         let currentLocProdCount = currentLocProd[0].requestProducts.length;
         for (let index = 0; index < currentLocProdCount; index++) {
           let indx = index + 1;
@@ -211,14 +241,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             this.currentRequestData?.length > 0
           ) {
             if (
-              currentLocProd.length > 0 &&
-              currentLocProd[0].requestProducts.length > 0
+              currentLocProd?.length > 0 &&
+              currentLocProd[0].requestProducts?.length > 0
             ) {
               let FilterProdut = currentLocProd[0].requestProducts.filter(
                 col => col.id == element1.requestProductId
               );
               if (
-                FilterProdut.length > 0 &&
+                FilterProdut?.length > 0 &&
                 FilterProdut[0].status != undefined &&
                 FilterProdut[0].status == 'Stemmed'
               ) {
@@ -239,7 +269,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
         });
         row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
-        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+        row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts?.length > 0);
         row.requestOffers = row.requestOffers?.sort((a,b)=>
         a.requestProductTypeOrderBy  === b.requestProductTypeOrderBy ?
         (a.requestProductId > b.requestProductId ? 1 : -1) :
@@ -249,13 +279,13 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       }
 
       // Else if not in the same index
-      if (priceDetailsArray != undefined && priceDetailsArray.length > 0) {
+      if (priceDetailsArray != undefined && priceDetailsArray?.length > 0) {
         const detailsForCurrentRow = priceDetailsArray.filter(
           e => e.requestLocationSellerId === row.id
         );
 
         // We found something
-        if (detailsForCurrentRow.length > 0) {
+        if (detailsForCurrentRow?.length > 0) {
           detailsForCurrentRow[0].requestOffers.forEach(element1 => {
             if (
               element1.requestProductId != undefined &&
@@ -263,14 +293,14 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               this.currentRequestData?.length > 0
             ) {
               if (
-                currentLocProd.length > 0 &&
-                currentLocProd[0].requestProducts.length > 0
+                currentLocProd?.length > 0 &&
+                currentLocProd[0].requestProducts?.length > 0
               ) {
                 let FilterProdut = currentLocProd[0].requestProducts.filter(
                   col => col.id == element1.requestProductId
                 );
                 if (
-                  FilterProdut.length > 0 &&
+                  FilterProdut?.length > 0 &&
                   FilterProdut[0].status != undefined &&
                   FilterProdut[0].status == 'Stemmed'
                 ) {
@@ -290,7 +320,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
           });
           row.hasAnyProductStemmed = row.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
-          row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+          row.isOfferConfirmed = row.requestOffers?.some(off => off.orderProducts && off.orderProducts?.length > 0);
           row.requestOffers = row.requestOffers?.sort((a,b)=>
           a.requestProductTypeOrderBy  === b.requestProductTypeOrderBy ?
           (a.requestProductId > b.requestProductId ? 1 : -1) :
@@ -317,7 +347,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if(res?.message == 'Unauthorized'){
         return;
       }
-      if (res.error) {
+      if (res?.error) {
         alert('Handle Error');
         return;
       }
@@ -331,6 +361,24 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
             res['requestLocationSellers'],
             res['sellerOffers']
           );
+          
+          let locationIds=this.allRequest.map(e=>e.requestLocations.map(rl=>rl.locationId));
+          let productIds=res['requestLocationSellers'].map(ro=>ro?.requestOffers?.map(r=>r.quotedProductId));;
+          let physicalSupplierIds=res['requestLocationSellers'].map(phy=>phy.physicalSupplierCounterpartyId);
+          if(productIds){
+            let payload=  {
+              locationIds:[...new Set(locationIds.reduce((acc, val) => acc.concat(val), []))],
+              productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
+              physicalSupplierIds:[...new Set(physicalSupplierIds.reduce((acc, val) => acc.concat(val), []))],
+              requestGroupId:groupRequestIdFromUrl
+            }
+            this.getEnergy6MHistory(payload);
+          }else{
+            setTimeout(() => {
+              this.spotNegotiationService.energyCalculationService(null,null,null);
+            }, 3000);
+          }
+
           // Demo format data
           let reqLocationRows : any =[];
           for (const locRow of futureLocationsRows) {
@@ -339,20 +387,28 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
               locRow);
               reqLocationRows.push(data);
           }
-
+         
           this.store.dispatch([new SetLocationsRowsOriData(reqLocationRows), new SetLocationsRows(reqLocationRows)]);
       }
     });
     this.changeDetector.detectChanges();
   }
-
+  async getEnergy6MHistory(payload){   
+    const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
+    if (response){
+      this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+    }
+    setTimeout(() => {
+      this.spotNegotiationService.energyCalculationService(null,null,null);
+    }, 3000);
+  }
   getRequestList(): void {
     const response = this.spotNegotiationService.getRequestresponse(null, { Filters: [] }, { SortList: [{ columnValue: 'eta', sortIndex: 0, sortParameter: 2 }]}, [] , null , { Skip: 0, Take: 25 })
     response.subscribe((res: any) => {
       if(res?.message == 'Unauthorized'){
         return;
       }
-      if (res.error) {
+      if (res?.error) {
         alert('Handle Error');
         return;
       } else {
@@ -376,7 +432,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if(res?.message == 'Unauthorized'){
         return;
       }
-      if (res.error) {
+      if (res?.error) {
         alert('Handle Error');
         return;
       } else {
@@ -396,7 +452,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   getPhysicalSupplierList(): void{
     const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1' }], null, { Skip:0 , Take: 25 } );
     response.subscribe((res: any) => {
-      if (res.error) {
+      if (res?.error) {
         alert('Handle Error');
         return;
       } else {
@@ -419,7 +475,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
       if(res?.message == 'Unauthorized'){
         return;
       }
-      if (res.error) {
+      if (res?.error) {
         alert('Handle Error');
         return;
       } else {
@@ -455,6 +511,7 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
   }
 
   getStaticLists(): void {
+    this.UpdateCommentAndGetQuote();
     let staticLists = {};
     forkJoin(
       { currencies: this.legacyLookupsDatabase.getTableByName('currency'),
@@ -496,14 +553,16 @@ export class SpotNegotiationComponent implements OnInit, OnDestroy {
           'AdditionalCost',
           'CostType',
           'Customer'
-        ])
+        ]),
+        timeZones: this.legacyLookupsDatabase.getTableByName('timeZone')
       }
     ).subscribe((res: any)=>{
       staticLists = {'currency': res.currencies };
       staticLists = { ...staticLists, 'product': res.products};
       // staticLists = { ...staticLists, 'inactiveProducts': res.inactiveProducts};
       staticLists = { ...staticLists, 'uom': res.uoms};
-      staticLists = {...staticLists, 'otherLists': res.otherLists}
+      staticLists = {...staticLists, 'otherLists': res.otherLists};
+      staticLists = { ...staticLists, 'timeZone': res.timeZones};
       this.store.dispatch(new SetStaticLists(staticLists));
     });
   }

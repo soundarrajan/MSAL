@@ -81,7 +81,7 @@
                       "
                     >
                       <mat-radio-button [value]="element">
-                        {{ element.product.name }}
+                        {{ element.costName?.name ? element.costName?.name : element.product?.name }}
                       </mat-radio-button>
                     </mat-radio-group>
                   </td>
@@ -732,7 +732,7 @@
                       <input
                         matInput
                         [(ngModel)]="productDetail.value.pricingDate"
-                        [disabled]="!isPricingDateEditable || formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
+                        [disabled]="isPricingDateEditable || formValues.status?.name === 'Approved' || formValues.status?.name === 'Cancelled'"
                         (dateChange)="
                           formatDate(productDetail.value.pricingDate)
                         "

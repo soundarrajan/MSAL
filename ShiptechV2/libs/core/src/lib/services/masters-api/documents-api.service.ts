@@ -25,7 +25,7 @@ import {
   IDocumentsCreateUploadRequest,
   IDocumentsCreateUploadResponse
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
-import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
+import { IDocumentsDownloadRequest, IDocumentsDownloadZipRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
 import {
   IDocumentsMasterRequest,
   IDocumentsMasterResponse
@@ -37,6 +37,7 @@ export namespace DocumentsApiPaths {
   export const updateNotesDocument = `api/masters/documentupload/notes`;
   export const deleteDocument = `api/masters/documentupload/delete`;
   export const downloadDocument = `api/masters/documentupload/download`;
+  export const downloadDocumentAsZip = `api/masters/documentupload/downloadAsZip`;
   export const uploadDocument = 'api/masters/documentupload/create';
   export const getDocumentsType = 'api/masters/documenttype/list';
 }
@@ -103,6 +104,16 @@ export class DocumentsApi implements IDocumentsApiService {
   downloadDocument(request: IDocumentsDownloadRequest): Observable<Blob> {
     return this.http.post(
       `${this._apiUrl}/${DocumentsApiPaths.downloadDocument}`,
+      request,
+      {
+        responseType: 'blob'
+      }
+    );
+  }
+
+  downloadDocumentAsZip(request: IDocumentsDownloadZipRequest): Observable<Blob> {
+    return this.http.post(
+      `${this._apiUrl}/${DocumentsApiPaths.downloadDocumentAsZip}`,
       request,
       {
         responseType: 'blob'

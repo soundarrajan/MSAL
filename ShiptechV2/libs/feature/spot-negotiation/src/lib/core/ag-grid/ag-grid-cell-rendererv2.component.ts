@@ -27,7 +27,8 @@ import {
   EditLocationRow,
   SetLocationsRows,
   EditCounterpartyList,
-  UpdateSpecificRequests
+  UpdateSpecificRequests,
+  SetNetEnergySpecific
 } from '../../store/actions/ag-grid-row.action';
 import { SpotnegoSearchCtpyComponent } from '../../views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { SpotnegoOtherdetails2Component } from '../../views/main/details/components/spot-negotiation-popups/spotnego-otherdetails2/spotnego-otherdetails2.component';
@@ -418,7 +419,7 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
           ></div>
           <div
             class="formulaButton"
-            style="display:inline; position:absolute; left:112px;"
+            style="display:inline; position:absolute; right:3px;"
             (mouseenter)="hoverMenu($event)"
             [matMenuTriggerFor]="formulamenu"
             #menuTriggerHover="matMenuTrigger"
@@ -440,10 +441,10 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
         <div></div>
         <span>Add/View Request changes</span>
       </div>
-      <br />
       <ng-container *ngIf="params && (currentRequestOffer && currentRequestOffer?.isFormulaPricing)">
         <div class="divider-line"></div>
-        <div class="delete-block" (click)="removeFormulaPrice(params)">
+        <div class="delete-block" [ngStyle]="{'opacity': (params.product.status === 'Stemmed' || params.product.status === 'Confirmed') ? 0.5 : 1}"
+        (click)="(params.product.status === 'Stemmed' || params.product.status === 'Confirmed') ? false : removeFormulaPrice(params);">
           <div></div>
           <span>Remove Formula pricing</span>
         </div>
@@ -722,7 +723,18 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
           <span class="search-icon-dark"></span>
         </span>
       </div>
-    </div>`,
+    </div>
+    
+    <div *ngIf="params.type == 'mj$'">
+    {{ params.value }}
+    </div>
+    <div *ngIf="params.type == 'mt$'">
+    {{ params.value }}
+    </div>
+    <div *ngIf="params.type == 'tco$'">
+    {{ params.value }}
+    </div>
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush
   })
 export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
@@ -775,6 +787,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   offerOldValue : number;
   clrRequest: any = 0;
   currentRequestOffer: any;
+  netEnergyList: any;
+  energyFunctionFlag = true;
   constructor(
     @Inject(DecimalPipe)
     private _decimalPipe,
@@ -827,7 +841,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.paramsDataClone = _.cloneDeep(this.params.data);
     this.priceChanged = false;
     if (
-      this.paramsDataClone.requestOffers &&
+      this.paramsDataClone.requestOffers && this.paramsDataClone.requestOffers.length > 0 &&
       this.params.type === 'price-calc'
     ) {
       this.paramsDataClone.currency = this.paramsDataClone.requestOffers[0].currencyId;
@@ -1786,7 +1800,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
 
-  onPriceChange(e, params) {
+  onPriceChange(e, params) {  
     this.priceChanged = false;
     if((e.target.value !='' && this.offerOldValue != e.target.value) || (e.target.value == '' && this.offerOldValue > 0) ){
       params.colDef.valueSetter({
@@ -2302,6 +2316,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             ? 'Selected Offer Price has been enabled.'
             : "Selected Offers have been marked as 'No Quote' successfully.";
         this.toastr.success(successMessage,'',{timeOut: 800});
+        setTimeout(() => {
+          this._spotNegotiationService.energyCalculationService(null,null,null);
+        },3000);
         this.getSellerLineDetails();
       } else {
         this.spinner.hide();
@@ -2444,6 +2461,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     const locationsRows = this.store.selectSnapshot<string>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
+    let currentRequestDetails = [];
+    this.currentRequestSmallInfo = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.currentRequestSmallInfo;
+    });
     this.phySupplierId=this.phySupplierIdCopy;
     let payload = {
       requestGroupId: this.params.data.requestGroupId,
@@ -2460,7 +2481,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         const futureLocationsRows = this.getLocationRowsAddPhySupplier(
           JSON.parse(JSON.stringify(locationsRows))
         );
-
+          
         if (this.phySupplierId && this.params?.value) {
           const counterpartyList = this.store.selectSnapshot<any>(
             (state: any) => {
@@ -2483,6 +2504,23 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         }
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         this.toastr.success('Phy. Supplier added successfully','',{timeOut: 800});
+
+        let productIds=this.currentRequestSmallInfo.requestLocations.map(reql=>reql.requestProducts.map(reql=>reql.productId));
+          let physicalSupplierIds=futureLocationsRows.map(phy=>phy.physicalSupplierCounterpartyId);
+          if(productIds){
+            let payload=  {
+              locationIds: [this.params.data.requestLocationId],
+              productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
+              physicalSupplierIds:[...new Set(physicalSupplierIds)],
+              requestGroupId:this.params.data.requestGroupId
+            }
+            this.getEnergy6MHistory(payload);
+        }
+
+        
+        setTimeout(() => {
+          this._spotNegotiationService.energyCalculationService(null,this.params.locationId,null);
+        }, 100);
       } else {
         if (this.phySupplierId && this.params?.value) {
           const counterpartyList = this.store.selectSnapshot<any>(
@@ -2520,7 +2558,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
     return locationrow;
   }
-
+  /// get avg netEnergy6MonthHistory
+  async getEnergy6MHistory(payload){   
+    const response = await this._spotNegotiationService.getEnergy6MHistorys(payload);
+    if (response.energy6MonthHistories.length > 0){
+        this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+      }
+  }
   openCostMenu(event: any, totalOfferValue: any) {
     event.preventDefault();
     event.stopPropagation();

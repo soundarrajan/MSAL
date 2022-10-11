@@ -82,7 +82,9 @@ export const SpotNegotiationApiPaths = {
   getSellerRatingsforNegotiation: `api/sellerrating/sellerratingreview/getForNegotiation`,
   getContractFormulaList : `api/masters/formulas/listMasters`,
   getMasterFormula : `api/masters/formulas/get`,
-  getDefaultConversionFactor : `api/masters/products/getProdDefaultConversionFactors`
+  getDefaultConversionFactor : `api/masters/products/getProdDefaultConversionFactors`,
+  getEnergy6MonthHistory:`groups/getEnergy6MonthHistorys`,
+  updateQuoteDateGroup: `groups/updateQuoteGroup`
 };
 
 @Injectable({
@@ -350,7 +352,16 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
         catchError((body: any) => this.handleErrorMessage(body))
       );
   }
-
+  //updateEnegryPrices
+  @ObservableException()
+  updateEnegryPrices(payload: any):Observable<unknown> {
+    return this.http
+      .put<any>(`${this._negotiationApiUrl}/Price/updateEnegry`, payload)
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
   @ObservableException()
   copyPriceDetails(payload: any): Observable<any> {
     return this.http
@@ -913,6 +924,19 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       .post<any>(
         `${this._sellerApiUrl}/${SpotNegotiationApiPaths.getSellerRatingsforNegotiation}`,
         payload
+        )
+        .pipe(
+          map((body: any) => body),
+          catchError((body: any) => this.handleErrorMessage(body))
+        );
+    }
+    
+  @ObservableException()
+  updateQuoteDateGroup(request: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.updateQuoteDateGroup}`,
+        request
       )
       .pipe(
         map((body: any) => body),
@@ -1067,6 +1091,18 @@ export class SpotNegotiationApi implements ISpotNegotiationApiService {
       catchError((body: any) => this.handleErrorMessage(body))
     );
   }
+  @ObservableException()
+  getEnergy6MHistorys(payload: any): Observable<any> {
+    return this.http.post<any>(
+        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getEnergy6MonthHistory}`,
+        payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
 }
 
 export const SPOT_NEGOTIATION_API_SERVICE = new InjectionToken<

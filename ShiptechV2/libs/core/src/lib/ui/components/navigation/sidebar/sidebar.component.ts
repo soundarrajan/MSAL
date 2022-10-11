@@ -55,8 +55,11 @@ export class SidebarComponent implements OnInit, AfterContentInit {
   model: any[];
   @ViewChild('layoutMenuScroller', { static: true })
   layoutMenuScrollerViewChild: ScrollPanel;
+  buildNumber: string;
 
-  constructor(public app: LayoutMainComponent, private appConfig: AppConfig) {}
+  constructor(public app: LayoutMainComponent, private appConfig: AppConfig) {
+    this.buildNumber = this.appConfig.v1.BuildNumber;
+  }
 
   ngOnInit(): void {
     // TODO: replace this with values from tenant settings

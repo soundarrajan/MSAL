@@ -21,9 +21,11 @@ import {
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { openDB } from 'idb';
+import { cloneDeep } from 'lodash';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
+import { EditLocationRow } from '../store/actions/ag-grid-row.action';
 import { SpotNegotiationApi } from './api/spot-negotiation-api';
 
 
@@ -36,10 +38,12 @@ export class SpotNegotiationService extends BaseStoreService
   private gridRedrawService = new Subject<any>();
   private evaluateIconDisplayCheck = new Subject<any>();
   QuoteByDate: any;
+  QuoteByTimeZoneId: any;
   counterpartyTotalCount: any;
   physicalSupplierTotalCount: any;
   requestCount: any;
   hArray : any = [];
+  netEnergyList: any;
   // indexedDBList: any = [];
   constructor(
     protected store: Store,
@@ -72,6 +76,7 @@ export class SpotNegotiationService extends BaseStoreService
     callEvaluateIconDisplayCheck(){
       this.evaluateIconDisplayCheck.next();
     }
+
   /* Gets the list of Email Logs
    * @param payload =
    */
@@ -222,6 +227,14 @@ export class SpotNegotiationService extends BaseStoreService
   updatePrices(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.updatePrices(payload);
   }
+
+    /**
+   * @param payload = True
+   */
+     @ObservableException()
+     updateEnegryPrices(payload: any):Observable<unknown> {
+       return this.spotNegotiationApi.updateEnegryPrices(payload);
+     }
   /**
    * @param payload = True
    */
@@ -263,8 +276,8 @@ export class SpotNegotiationService extends BaseStoreService
    * @param payload =
    */
   @ObservableException()
-  GetExistingOrders(payload: any): Observable<unknown> {
-    return this.spotNegotiationApi.GetExistingOrders(payload);
+  GetExistingOrders(payload: any): Promise<any> {
+    return this.spotNegotiationApi.GetExistingOrders(payload).toPromise();
   }
 
   /**
@@ -563,6 +576,22 @@ export class SpotNegotiationService extends BaseStoreService
   updateGroupComments(payload: any): Observable<unknown> {
     return this.spotNegotiationApi.updateGroupComments(payload);
   }
+  /**
+ * Get Net Energy specific details
+ * @param payload =
+ */
+  @ObservableException()
+  getEnergy6MHistorys(payload: any):  Promise<any> {
+    return this.spotNegotiationApi.getEnergy6MHistorys(payload).toPromise();
+  }
+  
+
+    /**
+   * @param payload
+   */
+     updateQuoteDateGroup(payload: any): Observable<unknown> {
+      return this.spotNegotiationApi.updateQuoteDateGroup(payload);
+    }
   ngOnDestroy(): void {
     super.onDestroy();
   }
@@ -714,6 +743,8 @@ export class SpotNegotiationService extends BaseStoreService
     return emptyPriceDetails;
   }
 
+
+
   setRowProductDetails(row, details, productId) {
     // returns a row;
     let futureRow = JSON.parse(JSON.stringify(row));
@@ -729,6 +760,141 @@ export class SpotNegotiationService extends BaseStoreService
       }
     }
     return futureRow;
+  }
+
+  energyCalculationService(productId = null,locationId = null, reuestId = null){
+ 
+      let alllocationRows;
+      let productSet = {};
+      let checkMjkjFlag : Boolean = true;
+      let locationRows;
+      let maxQtyArray = {};
+      this.store.selectSnapshot<any>((state: any) => {
+        const currentReqId =   state.spotNegotiation.currentRequestSmallInfo.id;
+        locationRows = state.spotNegotiation.locations;
+        alllocationRows = state.spotNegotiation.locationsRows.filter(res => {
+          if(res.requestId == currentReqId && res?.requestOffers && res.totalOffer > 0){
+          if((locationId) && (locationId == res.locationId )){
+            return res;
+          }
+          if((locationId == null)){
+            return res;
+          }
+        }
+        });
+      });
+  if(alllocationRows.length == 0 ) return;
+  locationRows.forEach(main => {
+    main.requestProducts.forEach(reqProds => {
+      maxQtyArray[main.locationId+'-'+reqProds.productId] = reqProds.maxQuantity;
+    });
+  });
+
+//&& res2.isEnergyCalculationRequired
+      alllocationRows.forEach(res1 => {
+        if(res1?.requestOffers){
+            res1?.requestOffers.filter(res2 => {
+              if(res2.reqProdStatus != 'Stemmed' && res2.reqProdStatus != 'Confirmed'  && res2.price != null){
+                      if(res2.mjkj != null && checkMjkjFlag) checkMjkjFlag = false;
+                      if((productId) && ( res2.quotedProductId == productId )){
+                        productSet[res2.quotedProductId+''+res2.id] = {
+                          'physicalSupplierCounterpartyId' : res1.physicalSupplierCounterpartyId,
+                          'price' : res2.price,
+                          'id' : res2.id,
+                          'quotedProductId' : res2.quotedProductId,
+                          'requestId' : res1.requestId,
+                          'locationId' : res1.locationId,
+                          'supplyQuantity' : res2.supplyQuantity,
+                          'mjkj' : res2.mjkj,
+                          'isSupplyQuantityEdited' : res2.isSupplyQuantityEdited
+                        }
+                        return;
+                      }
+                      if(productId == null){
+                        productSet[res2.quotedProductId+''+res2.id] = {
+                          'physicalSupplierCounterpartyId' : res1.physicalSupplierCounterpartyId,
+                          'price' : res2.price,
+                          'id' : res2.id,
+                          'quotedProductId' : res2.quotedProductId,
+                          'requestId' : res1.requestId,
+                          'locationId' : res1.locationId,
+                          'supplyQuantity' : res2.supplyQuantity,
+                          'mjkj' : res2.mjkj,
+                          'isSupplyQuantityEdited' : res2.isSupplyQuantityEdited
+                        }
+                        return;
+                      }
+                }
+            });
+        }
+      });
+
+ if(Object.keys(productSet).length == 0) return;
+
+ this.netEnergyList = this.store.selectSnapshot<any>((state: any) => {
+  return state.spotNegotiation.netEnergySpecific;
+});
+if(this.netEnergyList.length == 0 && checkMjkjFlag) return;
+
+
+ let differenceValue = {};
+ let difTemp = {};
+
+ Object.entries(productSet).forEach(([key, res]) => {
+  let eVal = this.netEnergyList.find(fRes => fRes.locationId == res['locationId'] && fRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && fRes.productId == res['quotedProductId']);
+
+  if(eVal?.netAverage){
+    differenceValue[res['quotedProductId']+''+res['id']] = res['price'] / eVal.netAverage;
+   if(!difTemp[eVal.locationId+''+eVal.productId])     
+    difTemp[eVal.locationId+''+eVal.productId] = [];
+    difTemp[eVal.locationId+''+eVal.productId].push(res['price'] / eVal.netAverage);
+  }else{
+    if(productSet[key].mjkj == null)
+    delete productSet[key];
+  }
+ }); 
+ if(Object.keys(differenceValue).length == 0 && checkMjkjFlag) return;
+     let updateArr = {};
+     let updatePayload = [];
+     let storePayload = [];
+     let serverPayLoad = {};
+     storePayload = cloneDeep(alllocationRows);
+  Object.entries(productSet).forEach(([key, res]) => {
+  let curentProductVal = this.netEnergyList.filter(fRes => fRes.locationId == res['locationId'] && fRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && fRes.productId == res['quotedProductId']);
+    if(curentProductVal.length > 0){
+      const minVal = Math.min(...difTemp[curentProductVal[0].locationId+''+curentProductVal[0].productId]);
+      updateArr['id'] = res['id'];
+      updateArr['mjkj'] = curentProductVal[0]?.netAverage;
+      updateArr['ediff'] = (differenceValue[res['quotedProductId']+''+res['id']] - minVal) * parseFloat(curentProductVal[0].netAverage);
+      if(res['isSupplyQuantityEdited']){
+        updateArr['tco'] = (res['price'] + updateArr['ediff']) * res['supplyQuantity'];
+      }else{
+        updateArr['tco'] = (res['price'] + updateArr['ediff']) * maxQtyArray[res['locationId']+'-'+res['quotedProductId']];
+      }
+      updatePayload.push(updateArr); 
+    }else{
+      updateArr['id'] = res['id'];
+      updateArr['mjkj'] = null;
+      updateArr['ediff'] = null;
+      updateArr['tco'] = null;
+      updatePayload.push(updateArr); 
+    }
+    alllocationRows.filter((el,index) => {
+      if(el.locationId == res['locationId'] && el.requestId == res['requestId']){
+        el.requestOffers.filter((inner,iIndex) =>{
+          if(inner.id == res['id']){
+            storePayload[index].requestOffers[iIndex].mjkj = updateArr['mjkj'] ;
+            storePayload[index].requestOffers[iIndex].ediff = updateArr['ediff'];
+            storePayload[index].requestOffers[iIndex].tco = updateArr['tco'];
+          }
+        });
+      }
+    });
+   updateArr = {};
+  });
+     serverPayLoad = { "requestOfferEnergys" : updatePayload }
+     this.store.dispatch(new EditLocationRow(storePayload));
+     this.updateEnegryPrices(serverPayLoad).subscribe();
   }
 
   @ObservableException()

@@ -581,6 +581,7 @@ export const BASE_MENU: KeyedMenuItems = {
         target: '_blank'
       }
     }
+    
   },
   contract: {
     label: 'Contract',
@@ -593,6 +594,11 @@ export const BASE_MENU: KeyedMenuItems = {
       new_contract: {
         label: 'New contract',
         url: '/v2/contracts/contract/0/details',
+        target: '_blank'
+      },
+      request_contract: {
+        label: 'Contract Req list',
+        url: '/v2/contracts/contract/0/request',
         target: '_blank'
       }
     }

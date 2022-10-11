@@ -749,6 +749,13 @@ export class VesselInfoComponent implements OnInit {
   }
 
   saveCurrentBPlan(event) {
+    this.disableCurrentBPlan = true;
+    setTimeout(() => {
+      this.disableCurrentBPlan = false;
+    }, 3000);
+    if (event.detail > 1) { // Do not allow double/triple-click
+      return;
+    }
     this.currentBplan.gridChanged = false;
     this.localService.setBunkerPlanState(false);
     event.stopPropagation();
@@ -775,6 +782,9 @@ export class VesselInfoComponent implements OnInit {
 
 
   sendCurrentBPlan(event){
+    if (event.detail > 1) { // Do not allow double/triple-click
+      return;
+    }
     if(this.isLatestPlanInvalid == true){
       let messageText = `The latest plan is unmanageable and cannot be sent. Therefore, the latest valid plan ${ this.planId } will be sent.  Please Confirm.`;
       const dialogRef = this.dialog.open(SuccesspopupComponent, {
@@ -811,6 +821,9 @@ export class VesselInfoComponent implements OnInit {
     event.stopPropagation();
   }
   generateCurrentBPlan(event) {
+    if (event.detail > 1) { // Do not allow double/triple-click
+      return;
+    }
     this.import_gsis = this.isChecked ? 1 : 0;
     let req = {
       action: '',
@@ -902,11 +915,17 @@ export class VesselInfoComponent implements OnInit {
     if (this.selectedPort.length > 1) {
       this.selectedPort.forEach((port, index) => {
         _this.shiptechRequestUrl = `${baseOrigin}/#/new-request/${port.voyage_detail_id}`;
+        if (port.voyage_detail_id != undefined && port.voyage_detail_id != null) {
+          _this.shiptechRequestUrl = _this.shiptechRequestUrl + '/1';
+        }
         window.open(_this.shiptechRequestUrl, '_blank');
       });
     } else if (this.selectedPort.length == 1) {
       let voyage_id = this.selectedPort[0].voyage_detail_id;
       let url = `${baseOrigin}/#/new-request/${voyage_id}`;
+      if (voyage_id != undefined && voyage_id != null) {
+        url = url + '/1';
+      }
       window.open(url, '_blank');
     }
   }

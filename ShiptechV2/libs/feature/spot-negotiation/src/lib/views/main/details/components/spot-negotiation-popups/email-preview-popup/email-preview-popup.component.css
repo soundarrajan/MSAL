@@ -51,6 +51,7 @@
   box-sizing: border-box;
   box-shadow: 0 6px 7px rgb(0 0 0 / 25%);
   padding: 10px;
+  min-width: 40vw;
 }
 
 .container-modal-expand {
@@ -92,6 +93,15 @@
   color: #fff;
 }
 
+.document_popup .search-product-lookup:before{
+  content:url("data:image/svg+xml,%3Csvg width='13' height='13' viewBox='0 0 13 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9.29104 8.17611H8.70013L8.49571 7.9717C9.22414 7.12809 9.66265 6.03173 9.66265 4.83134C9.66265 2.16295 7.4997 0 4.83134 0C2.16299 0 0 2.16295 0 4.83134C0 7.49974 2.16295 9.66269 4.83134 9.66269C6.03173 9.66269 7.12809 9.22414 7.9717 8.49944L8.17611 8.70385V9.29104L11.8925 13L13 11.8925L9.29104 8.17611ZM4.83134 8.17611C2.9843 8.17611 1.48658 6.67839 1.48658 4.83134C1.48658 2.9843 2.9843 1.48658 4.83134 1.48658C6.67839 1.48658 8.17611 2.9843 8.17611 4.83134C8.17611 6.67839 6.67839 8.17611 4.83134 8.17611Z' fill='white'/%3E%3C/svg%3E");
+}
+
+.document_popup .search-product-lookup {
+  width: 8%;
+  padding: 12px;
+}
+
 .expand-img {
   float: right;
 }
@@ -131,7 +141,7 @@ input.search-input::placeholder {
 
 .email-preview-popup .email-container .section2 .cust-input-field {
   padding: 5px 7px;
-  width: 156px;
+  width: unset;
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
@@ -140,6 +150,7 @@ input.search-input::placeholder {
   display: flex;
   text-overflow: ellipsis;
 }
+
 
 .document-preview-pop-up.mat-table {
   background-color: #364150 !important;
@@ -171,11 +182,16 @@ input.search-input::placeholder {
 .document-preview-pop-up td.mat-cell:first-of-type,
 .document-preview-pop-up th.mat-header-cell:first-of-type {
   padding-left: unset !important;
+  padding-right: 15px;
+  padding-bottom: 5px;
+  width:475px;
 }
 
 .document-preview-pop-up td.mat-cell:last-of-type,
 .document-preview-pop-up th.mat-header-cell:last-of-type {
   padding-right: unset !important;
+  vertical-align: text-top;
+  line-height: 25px;
 }
 
 th.mat-header-cell:first-of-type,
@@ -206,3 +222,20 @@ td.mat-footer-cell:first-of-type {
 {
   opacity: 100;
 }
+.email-preview-popup .email-container .section1 .subject {
+  max-width: 550px;
+  width: 550px;
+}
+.email-preview-popup .email-container .section2 .email-draft
+{
+  border: 0px !important;
+}
+.email-preview-popup .email-container .section2 .file-list
+{
+  width: unset !important ;
+}
+
+.document-type-container-radio-button .mat-radio-label{
+    white-space:normal !important;
+}
+

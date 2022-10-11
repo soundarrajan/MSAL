@@ -34,6 +34,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
       <div class="title">
         <span
           class="add-icon"
+          (menuClosed)="onCounterPartyMenuClose()" 
           [matMenuTriggerFor]="clickmenu"
           #menuTrigger="matMenuTrigger"
           (click)="setValuefun()">
@@ -196,10 +197,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
           
           <div
             class="arrow" matTooltipClass="lightTooltip" matTooltip="Market Price history"
-
-            [ngClass]="
-              params.product.status === 'Stemmed' ? 'disabled-new-events' : ''
-            "
             (click)="pricinghistorypopup(params)"
           >
             <span class="title" title="{{ params.product.indexName }}">{{
@@ -1202,5 +1199,9 @@ export class ShiptechCustomHeaderGroup {
     });
 
     return rowsArray;
+  }
+
+  onCounterPartyMenuClose() {
+    this.selectedCounterparty = [];
   }
 }

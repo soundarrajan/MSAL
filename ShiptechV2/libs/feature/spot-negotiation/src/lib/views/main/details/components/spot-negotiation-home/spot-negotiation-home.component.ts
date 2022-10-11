@@ -16,7 +16,9 @@ import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from '../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
   SetLocationsRows,
+  SetNetEnergySpecific,
   SetOfferPriceFormulaId,
+  SetStaticLists,
   UpdateRequest
 } from '../../../../../store/actions/ag-grid-row.action';
 import { SpotnegoemaillogComponent } from '../spotnegoemaillog/spotnegoemaillog.component';
@@ -29,6 +31,10 @@ import { NegotiationDetailsToolbarComponent } from '../../../toolbar/spot-negoti
 import { MyMonitoringService } from '@shiptech/core/services/app-insights/logging.service';
 import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
 import { ServerQueryFilter } from '@shiptech/core/grid/server-grid/server-query.filter';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { forkJoin } from 'rxjs';
+import { SetQuoteDateAndTimeZoneId } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
 @Component({
   selector: 'app-spot-negotiation-home',
@@ -40,9 +46,15 @@ export class SpotNegotiationHomeComponent implements OnInit {
   navigationItems: any[];
   navBar: any;
   requestOptions: any;
+  switchTheme; //false-Light Theme, true- Dark Theme
+  quoteByTimeZoneId:number|null;
+  quoteByTimeZone:any;
   requestOptionsToDuplicatePrice: any;
   isOpen: boolean = false;
-
+  public expand_quoteDate:boolean = true;
+  private legacyLookupsDatabase: LegacyLookupsDatabase;
+  staticLists: any;
+  timeZones:any;
   @ViewChild(NegotiationDetailsToolbarComponent)
   negoNavBarChild: NegotiationDetailsToolbarComponent;
 
@@ -59,6 +71,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   currentRequestInfo: any;
   tenantConfiguration: any;
   RequestGroupID: number;
+  generalTenantSettings:any;
   negotiationId: any;
   requestId: any;
   emailLogUrl: string;
@@ -75,11 +88,13 @@ export class SpotNegotiationHomeComponent implements OnInit {
     private store: Store,
     private spinner: NgxSpinnerService,
     private spotNegotiationService: SpotNegotiationService,
+    private tenantSettingsService: TenantSettingsService,
     private router: Router,
     private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService,
     private myMonitoringService: MyMonitoringService
   ) {
     this.baseOrigin = new URL(window.location.href).origin;
+    this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
   }
 
   ngOnInit(): void {
@@ -137,9 +152,23 @@ export class SpotNegotiationHomeComponent implements OnInit {
     });
     
   }
-
+  ngDoCheck(){
+    this.quoteByTimeZoneId=this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.quoteTimeZoneIdByGroup;
+    });
+    this.staticLists = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists;
+    });
+    this.timeZones=this.staticLists['timeZone'];
+    if(this.timeZones!=undefined && this.spotNegotiationService.QuoteByTimeZoneId!=undefined){
+      this.quoteByTimeZone=this.timeZones?.find(x => x.id == this.spotNegotiationService.QuoteByTimeZoneId).name;
+    }
+    this.spotNegotiationService.QuoteByDate= this.spotNegotiationService.QuoteByDate;
+  }
+  
   ngAfterViewInit(): void {
-    this.spotNegotiationService.QuoteByDate = this.child.getValue();
+    setTimeout(() => {
+    });
   }
 
   setTabItems() {
@@ -204,7 +233,38 @@ export class SpotNegotiationHomeComponent implements OnInit {
       }
     ];
   }
-
+  compareQuoteByTimeZoneIdObjects(object1: any, object2: any) {
+    return object1 && object2 && object1.id == object2.id;
+  }
+  selectedQuoteByTimeZone(value){
+    this.quoteByTimeZoneId=value.id;
+    this.quoteByTimeZone =value.name;
+    this.updateQuoteByGroup();
+  }
+  updateQuoteByGroup(){
+    let payload={
+      QuoteByTimeZoneId:this.quoteByTimeZoneId, 
+      RequestGroupId:this.currentRequestInfo.requestGroupId, 
+      QuoteByDate:this.spotNegotiationService.QuoteByDate 
+    }
+    this.spotNegotiationService
+    .updateQuoteDateGroup(payload)
+    .subscribe((response: any) => {
+      if (response?.message == 'Unauthorized') {
+        return;
+      }
+      if (response.status) {
+        this.spotNegotiationService.QuoteByTimeZoneId=payload.QuoteByTimeZoneId;
+        this.spotNegotiationService.QuoteByDate=payload.QuoteByDate;
+        let setQuoteByGroup={
+          quoteTimeZoneIdByGroup:payload.QuoteByTimeZoneId,
+          quoteDateByGroup: payload.QuoteByDate
+        };
+        payload.QuoteByTimeZoneId;
+        this.store.dispatch(new SetQuoteDateAndTimeZoneId(setQuoteByGroup));
+      }
+    });
+  }
   setActiveRequest() {
     (<any>window).activeRequest = {
       i: this.headerDetailsComponent.selReqIndex
@@ -226,6 +286,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
     //    this.spotEmailComp.getEmailLogs();
     //  }
   }
+loadTimeZone(){
+    this.staticLists = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.staticLists;
+    });
+    this.timeZones=this.staticLists['timeZone'];
+}
 
  async confirmorderpopup() {
     this.isOrderexisting = false;
@@ -298,7 +364,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
         }
       }
     });
-  await this.checkorderexists();
+this.checkorderexists();
     if (!isallow) {
       setTimeout(() => {
         const dialogRef = this.dialog.open(SpotnegoConfirmorderComponent, {
@@ -336,21 +402,18 @@ export class SpotNegotiationHomeComponent implements OnInit {
     let payload = {
       filters
     };
-    const response = this.spotNegotiationService.GetExistingOrders(payload);
-     response.subscribe(
-      (res: any) => {
-        if (res?.message == 'Unauthorized') {
+    const response = await this.spotNegotiationService.GetExistingOrders(payload);
+        if (response?.message == 'Unauthorized') {
           return;
         }
-        if (res.payload.length > 0 && res.payload.some(x=>x.id !=null)) {
-          for (let existingorders of res.payload) {
+        if (response.payload.length > 0 && response.payload.some(x=>x.id !=null)) {
+          for (let existingorders of response.payload) {
             this.isOrderexisting = this.selectedSellerList.some(y=>y.RequestLocationId == existingorders.requestLocationId && ((y.LocationID > 0 && existingorders.locationId > 0) ? y.LocationID == existingorders.locationId : true) && y.SellerId  == existingorders.seller?.id);
             if (this.isOrderexisting == true) {
                 return;
             }
           }      
         }
-      });
   }
 
   sendRFQpopup() {
@@ -434,8 +497,8 @@ export class SpotNegotiationHomeComponent implements OnInit {
 
     var FinalAPIdata = {
       RequestGroupId: this.currentRequestInfo.requestGroupId,
-      quoteByDate: new Date(this.child.getValue()),
-      selectedSellers: selectedCounterpartyList
+      quoteByDate: this.spotNegotiationService.QuoteByDate,
+      selectedSellers: this.selectedSellerList
     };
     this.spinner.show();
 
@@ -497,13 +560,28 @@ export class SpotNegotiationHomeComponent implements OnInit {
             reqLocationRows.push(data);
         }
       this.store.dispatch([new UpdateRequest(reqs), new SetLocationsRows(reqLocationRows)]);
-
+      let locationIds=reqLocationRows.map(loc=>loc.locationId);
+      let productIds=reqLocationRows.map(ro=>ro?.requestOffers?.map(r=>r.quotedProductId));
+      let physicalSupplierIds=reqLocationRows.map(phy=>phy.physicalSupplierCounterpartyId);
+      let payload=  {
+        locationIds: [...new Set(locationIds)],
+        productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
+        physicalSupplierIds:[...new Set(physicalSupplierIds)],
+        requestGroupId:this.currentRequestInfo.requestGroupId
+      }
+      this.getEnergy6MHistory(payload);
       // this.spotNegotiationService.callGridRefreshServiceAll();
       this.spotNegotiationService.callGridRedrawService();
       this.changeDetector.detectChanges();
     });
   }
-
+  /// get avg netEnergy6MonthHistory
+  async getEnergy6MHistory(payload){   
+    const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
+    if (response.energy6MonthHistories.length > 0){
+        this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+      }
+  }
  toTitleCase(str) {
     return str.replace(
       /\w\S*/g,
@@ -742,7 +820,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       RequestOffers: Seller.requestOffers?.filter(row =>
         selectedproductIds.includes(row.requestProductId)
       ),
-      QuoteByDate: new Date(this.child.getValue())
+      QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate )
     };
   }
 
@@ -1010,6 +1088,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       selectedSellerRows.forEach(sellerRow => {
         requestLocationIds.push(sellerRow.RequestLocationId);
       });
+
       let sellerDetailsforFormula =[] ;
       sellerDetails.map(rows => rows.Offers.map(offer => {
          offer.requestOffers.map(x=> {
@@ -1021,18 +1100,48 @@ export class SpotNegotiationHomeComponent implements OnInit {
             }
          })
       }));
+
+      // Stop the copy the formula price to fixed price and fixed price to formula price - Start 
+      let checkLocation = [];
+      this.selectedRequestList.forEach(element => {
+       checkLocation =  [...checkLocation, ...locationsRows.filter(arr => arr.requestId == element.id && arr?.requestOffers)];
+      });
+
+      let copyFlag = true;
+      selectedSellerRows.forEach(el => { 
+        checkLocation.filter(res => {
+          if(el.SellerId == res.sellerCounterpartyId){
+            el.RequestOffers.forEach(element => {
+              res.requestOffers.filter(inner => {
+                if(inner.quotedProductId == element.quotedProductId){
+                  if(inner.isFormulaPricing != element.isFormulaPricing && inner.price != null){
+                    copyFlag = false;
+                    return;
+                  }
+                }
+              })
+            });
+          }
+        });
+      });
+
+      if(!copyFlag){
+        this.toaster.warning('Unable to copy price from "Fixed to Formula price" or "Formula to Fixed price"');
+        return;
+      }
+      // Stop the copy the formula price to fixed price and fixed price to formula price - End
      
       if(sellerDetailsforFormula.length>0){
-        let checkForErrors = [];
-        sellerDetailsforFormula.forEach(x=>{
-          x.requestOfferIds.forEach(y=>
-            checkForErrors = this.checkQuoatedPriceAcrossLocations(y, locationsRows)
-          )
-        });
-        if(checkForErrors.length > 0){
-            this.toaster.error('Formula Price cannot be copied to fixed Price');
-        return;
-        }
+        // let checkForErrors = [];
+        // sellerDetailsforFormula.forEach(x=>{
+        //   x.requestOfferIds.forEach(y=>
+        //     checkForErrors = this.checkQuoatedPriceAcrossLocations(y, locationsRows)
+        //   )
+        // });
+        // if(checkForErrors.length > 0){
+        //     this.toaster.error('Formula Price cannot be copied to fixed Price');
+        // return;
+        // }
         const payload = {
           copyOfferPrices : sellerDetailsforFormula
          }
@@ -1043,7 +1152,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           if (res?.message == 'Unauthorized') {
             return;
           }
-          res.copyOfferPrices.forEach(off=>{
+          res?.copyOfferPrices?.forEach(off=>{
             let payload = {
               RequestOfferId: off.requestOfferId,
               priceConfigurationId: off.priceConfigurationId
@@ -1118,19 +1227,20 @@ export class SpotNegotiationHomeComponent implements OnInit {
     }
   }
 
-  checkQuoatedPriceAcrossLocations(id : number, locationsRows){
-    let quoatedPrice = [];
-    locationsRows.forEach(loc=>
-      loc.requestOffers.forEach(req=>{
-         if(req.id == id){
-           if(req.price){
-              quoatedPrice.push(req);
-           }
-         }
-      })
-  );
-  return quoatedPrice;
-  }
+  // checkQuoatedPriceAcrossLocations(id : number, locationsRows){
+  //   debugger;
+  //   let quoatedPrice = [];
+  //   locationsRows.forEach(loc=>
+  //     loc?.requestOffers?.forEach(req=>{
+  //        if(req.id == id){
+  //          if(req.price){
+  //             quoatedPrice.push(req);
+  //          }
+  //        }
+  //     })
+  // );
+  // return quoatedPrice;
+  // }
 
   getLocationRowsWithSelectedSeller(rowsArray, selectedSellerRows) {
     rowsArray.forEach(row => {
@@ -1238,7 +1348,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
       );
       var FinalAPIPayload = {
         RequestGroupId: this.currentRequestInfo.requestGroupId,
-        quoteByDate: new Date(this.child.getValue()),
+        quoteByDate: new Date(this.spotNegotiationService.QuoteByDate ),
         selectedSellers: this.selectedSellerList
       };
       this.spinner.show();
@@ -1385,6 +1495,10 @@ export class SpotNegotiationHomeComponent implements OnInit {
           );
 
           this.toaster.success('RFQ(s) revoked successfully.');
+          setTimeout(() => {
+            this.spotNegotiationService.energyCalculationService(null,null,null);
+          },3000);
+          
 
           if (res['message'].length > 3) this.toaster.warning(res['message']);
           // else
@@ -1611,8 +1725,12 @@ export class SpotNegotiationHomeComponent implements OnInit {
         let successMessage =
           type === 'enable-quote'
             ? 'Selected Offer Price has been enabled.'
-            : "Selected Offers have been marked as 'No Quote' successfully.";
+            : "Selected Offers have been marked as 'No Quote' successfully. zxc";
         this.toaster.success(successMessage);
+        setTimeout(() => {
+          this.spotNegotiationService.energyCalculationService(null,null,null);
+        },3000);
+        
       } else {
         this.toaster.error('An error has occurred!');
         this.spinner.hide();

@@ -9,7 +9,7 @@
 }
 
 .blue-button {
-    background-color: #1cabe0!important;
+    background-color: #1d9fff!important;
     border: none;
     border-radius: 5px;
     color: #fff!important;
@@ -17,3 +17,14 @@
     line-height: 25px!important;
     cursor:pointer;
 }
+
+.search-request-popup .searchButton .fa.fa-search {
+    font-size: 12px;
+    margin-top:6px;
+    color: #325187;
+}
+
+.search-request-popup .searchButton .fa.fa-search:before{
+    content: "\f002" !important; 
+}
+

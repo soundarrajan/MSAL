@@ -9,7 +9,7 @@
         "logOutUri": "",
         "endpoints": {
             "https://bvtapi.shiptech.com": "24fc89b1-b1b1-47a7-b90b-513ec362a576",
-            "http://localhost:5021": "24fc89b1-b1b1-47a7-b90b-513ec362a576",
+            "https://bvtapi01.shiptech.com": "24fc89b1-b1b1-47a7-b90b-513ec362a576",
             "https://euw-sh-int-dev-api01.azurewebsites.net": "24fc89b1-b1b1-47a7-b90b-513ec362a576"
         },
         "anonymousEndpoints": [
@@ -27,7 +27,7 @@
         ],
         "cacheLocation": "localStorage",
         "endpoints": {
-            "http://localhost:5021": "fe75785b-6545-4ede-95f5-d7137f9f5bfa",
+            "https://bvtapi01.shiptech.com": "fe75785b-6545-4ede-95f5-d7137f9f5bfa",
             "https://bvtapi.shiptech.com": "fe75785b-6545-4ede-95f5-d7137f9f5bfa"
         },
         "anonymousEndpoints": [
@@ -86,28 +86,28 @@
         ]
     },
     "API": {
-        "BASE_URL_DATA_PROCUREMENT": "https://bvtapi.shiptech.com/Shiptech10.Api.Procurement",
-        "BASE_URL_DATA_NEGOTIATION": "https://bvtapi.shiptech.com/Shiptech.Negotiation.Api",
-        "BASE_URL_DATA_EMAIL": "https://bvtapi.shiptech.com/Shiptech10.Api.Mail",
-        "BASE_URL_DATA_MASTERS": "https://bvtapi.shiptech.com/Shiptech10.Api.Masters",
-        "BASE_URL_DATA_ADMIN": "https://bvtapi.shiptech.com/Shiptech10.Api.Admin",
-        "BASE_URL_DATA_INFRASTRUCTURE": "https://bvtapi.shiptech.com/Shiptech10.Api.Infrastructure",
+        "BASE_URL_DATA_PROCUREMENT": "https://bvtapi01.shiptech.com/Shiptech10.Api.Procurement",
+        "BASE_URL_DATA_NEGOTIATION": "https://bvtapi01.shiptech.com/Shiptech.Negotiation.Api",
+        "BASE_URL_DATA_EMAIL": "https://bvtapi01.shiptech.com/Shiptech10.Api.Mail",
+        "BASE_URL_DATA_MASTERS": "https://bvtapi01.shiptech.com/Shiptech10.Api.Masters",
+        "BASE_URL_DATA_ADMIN": "https://bvtapi01.shiptech.com/Shiptech10.Api.Admin",
+        "BASE_URL_DATA_INFRASTRUCTURE": "https://bvtapi01.shiptech.com/Shiptech10.Api.Infrastructure",
         "BASE_URL_DATA_SELLER_PORTAL": "https://bvtsp.shiptech.com/Shiptech10.Api.SellerPortal",
-        "BASE_URL_DATA_CLAIMS": "https://bvtapi.shiptech.com/Shiptech10.Api.Claims",
-        "BASE_URL_DATA_LABS": "https://bvtapi.shiptech.com/Shiptech10.Api.Labs",
-        "BASE_URL_DATA_CONTRACTS": "https://bvtapi.shiptech.com/Shiptech10.Api.Contracts",
-        "BASE_URL_DATA_DELIVERY": "https://bvtapi.shiptech.com/Shiptech10.Api.Delivery",
-        "BASE_URL_DATA_RECON": "https://bvtapi.shiptech.com/Shiptech10.Api.Recon",
-        "BASE_URL_DATA_SELLERRATING": "https://bvtapi.shiptech.com/Shiptech10.Api.SellerRating",
-        "BASE_URL_DATA_INVOICES": "https://bvtapi.shiptech.com/Shiptech10.Api.Invoice",
-        "BASE_URL_DATA_ALERTS": "https://bvtapi.shiptech.com/Shiptech10.Api.BusinessAlerts",
-        "BASE_URL_DATA_HANGFIRE": "https://bvtapi.shiptech.com/Shiptech10.Api.Hangfire",
-        "BASE_URL_DATA_MAIL": "https://bvtapi.shiptech.com/Shiptech10.Api.Mail",
-        "BASE_URL_DATA_ROB": "https://bvtapi.shiptech.com/Shiptech10.Api.Rob",
-        "BASE_URL_DATA_IMPORTEXPORT": "https://bvtapi.shiptech.com/Shiptech10.Api.ImportExport",
-        "BASE_URL_DATA_BOPS": "https://bvtapi.shiptech.com/Shiptech10.Api.BOPS",
-        "BASE_URL_DATA_SMART": "https://bvtapi.shiptech.com/Shiptech10.Api.Smart",
-        "BASE_URL_UI": "https://bvtapi.shiptech.com/Shiptech10.Api.Infrastructure/api/infrastructure/screenlayout",
+        "BASE_URL_DATA_CLAIMS": "https://bvtapi01.shiptech.com/Shiptech10.Api.Claims",
+        "BASE_URL_DATA_LABS": "https://bvtapi01.shiptech.com/Shiptech10.Api.Labs",
+        "BASE_URL_DATA_CONTRACTS": "https://bvtapi01.shiptech.com/Shiptech10.Api.Contracts",
+        "BASE_URL_DATA_DELIVERY": "https://bvtapi01.shiptech.com/Shiptech10.Api.Delivery",
+        "BASE_URL_DATA_RECON": "https://bvtapi01.shiptech.com/Shiptech10.Api.Recon",
+        "BASE_URL_DATA_SELLERRATING": "https://bvtapi01.shiptech.com/Shiptech10.Api.SellerRating",
+        "BASE_URL_DATA_INVOICES": "https://bvtapi01.shiptech.com/Shiptech10.Api.Invoice",
+        "BASE_URL_DATA_ALERTS": "https://bvtapi01.shiptech.com/Shiptech10.Api.BusinessAlerts",
+        "BASE_URL_DATA_HANGFIRE": "https://bvtapi01.shiptech.com/Shiptech10.Api.Hangfire",
+        "BASE_URL_DATA_MAIL": "https://bvtapi01.shiptech.com/Shiptech10.Api.Mail",
+        "BASE_URL_DATA_ROB": "https://bvtapi01.shiptech.com/Shiptech10.Api.Rob",
+        "BASE_URL_DATA_IMPORTEXPORT": "https://bvtapi01.shiptech.com/Shiptech10.Api.ImportExport",
+        "BASE_URL_DATA_BOPS": "https://bvtapi01.shiptech.com/Shiptech10.Api.BOPS",
+        "BASE_URL_DATA_SMART": "https://bvtapi01.shiptech.com/Shiptech10.Api.Smart",
+        "BASE_URL_UI": "https://bvtapi01.shiptech.com/Shiptech10.Api.Infrastructure/api/infrastructure/screenlayout",
         "BASE_URL_OPEN_SERVER": "https://bvtsp.shiptech.com",
         "BASE_HEADER_FOR_NOTIFICATIONS": "https://bvt.shiptech.com",
         "BASE_URL": "https://bvtapi.shiptech.com",
@@ -311,5 +311,6 @@
         "ORDER_CONFIRM": "OrderConfirmationToSellerOrVessel",
         "CONTRACT_PLANNING": "ContractPlanning"
     },
-    "AppInsightsId": "3a6d834e-1597-40d8-9442-2cbcbecaea07"
+    "AppInsightsId": "3a6d834e-1597-40d8-9442-2cbcbecaea07",
+    "BuildNumber": "11.1.0"
 }

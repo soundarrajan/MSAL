@@ -26,6 +26,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { DecimalPipe, KeyValue } from '@angular/common';
 import { MatSelect } from '@angular/material/select';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'shiptech-pricing-formula-complex',
@@ -279,6 +280,13 @@ export class PricingFormulaComplex
       return;
     }
     this.hasInvoicedOrder = hasInvoicedOrder;
+
+    this.store.selectSnapshot<any>((state: any) => {
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.hasInvoicedOrder = true;
+      }
+    });
+    
   }
 
   index = 0;
@@ -293,7 +301,8 @@ export class PricingFormulaComplex
     public dialog: MatDialog,
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
-    public changeDetectorRef: ChangeDetectorRef
+    public changeDetectorRef: ChangeDetectorRef,
+    private store: Store
   ) {
     this.autocompletePhysicalSupplier =
       knownMastersAutocomplete.physicalSupplier;
@@ -308,6 +317,11 @@ export class PricingFormulaComplex
   ngOnInit() {
     this.entityName = 'Contract';
     this.autocompleteCurrency = knownMastersAutocomplete.currency;
+    this.store.selectSnapshot<any>((state: any) => {
+      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+        this.hasInvoicedOrder = true;
+      }
+    });
     //this.eventsSubscription = this.events.subscribe((data) => this.setContractForm(data));
   }
 
@@ -508,6 +522,10 @@ export class PricingFormulaComplex
   }
 
   filterSystemInstrumentListFromComplexFormulaQuoteLine(value) {
+
+    if(typeof value === 'object'){
+      value = value.name;
+    }  
     if (value) {
       const filterValue = value.toLowerCase();
       if (this.systemInstumentList) {

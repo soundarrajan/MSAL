@@ -77,8 +77,8 @@
       </ng-container>
     
     <button
-      mat-button
-      [ngClass]="{ 'mid-blue-button': enableSave }"
+     class="mat-focus-indicator proceed-btn mat-button mat-button-base"
+      mat-button [disabled]="enableSave==false"
       (click)="saveLocationAdditionalCosts('isSave')"
     >
       Save

@@ -1,12 +1,12 @@
 <div
-  class="col-md-12 formula-description-header d-flex"
+  class="col-md-12 formula-description-header d-flex no-padding"
   style="margin-top: 15px;"
 >
-  <div class="title">
+  <div class="title no-padding">
     Discount Definition
   </div>
 </div>
-<div class="col-md-12" style="margin-top: 15px;">
+<div class="col-md-12" style="margin-top: 15px;padding-left: 2px;">
   <table
     class="quantity-based-table table table-stripped table-hover"
     style="width:100%"
@@ -55,7 +55,7 @@
               | keyvalue: originalOrder
           "
         >
-          <tr *ngIf="!quantityDiscountRule.value.isDeleted">
+          <tr *ngIf="!quantityDiscountRule.value.isDeleted" >
             <td class="padding" style="width: 30px;">
               <a
                 class="remove-icon"

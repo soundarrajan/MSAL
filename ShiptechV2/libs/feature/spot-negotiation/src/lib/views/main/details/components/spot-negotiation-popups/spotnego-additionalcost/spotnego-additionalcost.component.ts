@@ -12,10 +12,12 @@ import { IDisplayLookupDto } from '@shiptech/core/lookups/display-lookup-dto.int
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
 import _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { AdditionalCostViewModel } from '../../../../../../core/models/additional-costs-model';
+import { EditLocationRow } from '../../../../../../store/actions/ag-grid-row.action';
 
 export const COMPONENT_TYPE_IDS = {
   TAX_COMPONENT: 1,
@@ -75,6 +77,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     private toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private spotNegotiationService: SpotNegotiationService,
+    private spotNegotiationPriceCalcService: SpotNegotiationPriceCalcService,
     private tenantSettingsService: TenantSettingsService,
     private changeDetectorRef: ChangeDetectorRef,
     private tenantService: TenantFormattingService,
@@ -433,6 +436,8 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           return;
         }
         if (res.status) {
+          let rowData = (payload.additionalCosts.filter(obj => obj.hasOwnProperty('rowData')))[0].rowData;
+          this.updateCopiedAdditionalCostToStore(rowData);
           this.toastr.success('Additional cost copied successfully!');
         } else this.toastr.error('Please try again later.');
       });
@@ -2344,5 +2349,46 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
       }
     }
     return requestOfferIds.join(',');
+  }
+
+  updateCopiedAdditionalCostToStore(rowData){
+    var updatedRow = { ...rowData };
+    let groupId = updatedRow.requestGroupId;
+    let requestLocationSellerId = updatedRow.id;
+    this.spotNegotiationService
+            .getPriceDetailsById(groupId, requestLocationSellerId)
+            .subscribe(async (priceDetailsRes: any) => {
+      let requests = this.store.selectSnapshot<any>((state: any) => {
+        return state['spotNegotiation'].requests;
+      });
+      let requestProducts = requests.find(x => x.id == updatedRow.requestId)?.requestLocations?.find(l => l.id ==updatedRow.requestLocationId)?.requestProducts;
+      updatedRow.totalOffer = priceDetailsRes.sellerOffers[0].totalOffer;
+
+      updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
+      updatedRow.requestOffers = priceDetailsRes.sellerOffers[0].requestOffers;
+      updatedRow.requestAdditionalCosts = priceDetailsRes.sellerOffers[0].requestAdditionalCosts;
+      updatedRow.requestOffers = updatedRow.requestOffers.map(e => {
+        let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
+        let requestProductTypeOrderBy = requestProducts?.find(rp => rp.id == e.requestProductId)?.productTypeOrderBy;
+        return { ...e, reqProdStatus: isStemmed, requestProductTypeOrderBy: requestProductTypeOrderBy };
+      });
+      updatedRow.hasAnyProductStemmed = updatedRow.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
+      updatedRow.isOfferConfirmed = updatedRow.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
+      updatedRow.requestOffers = updatedRow.requestOffers?.sort((a, b) =>
+      a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
+        ? a.requestProductId > b.requestProductId
+          ? 1
+          : -1
+        : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
+        ? 1
+        : -1);
+      var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+        updatedRow,
+        updatedRow
+      );
+      // Update the store
+      this.store.dispatch(new EditLocationRow(locRow));
+      this.spotNegotiationService.callGridRedrawService();
+    });
   }
 }

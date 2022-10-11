@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SpotNegotiationService } from '../../../../../../../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import {
   SetLocationsRows,
+  SetNetEnergySpecific,
   UpdateRequest
 } from '../../../../../../store/actions/ag-grid-row.action';
 import _ from 'lodash';
@@ -291,7 +292,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         TemplateName: this.selected,
         QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate)
       };
-
+      
       this.spinner.show();
       // Get response from server
       const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
@@ -338,6 +339,14 @@ export class EmailPreviewPopupComponent implements OnInit {
         if (res.payload) {
           this.to = res.payload.to ? res.payload.to.split(',') : res.payload.to;
           this.cc = res.payload.cc ? res.payload.cc.split(',') : res.payload.cc;
+          this.previewTemplate.to = [];
+          this.previewTemplate.cc = [];
+          this.to.forEach((item: any)=>{
+            this.previewTemplate.to.push({ IdEmailAddress: item, name: item });
+          });
+          this.cc.forEach((item: any)=>{
+            this.previewTemplate.cc.push({ IdEmailAddress: item , name: item });
+          });
           this.subject = res.payload.subject;
           this.content = res.payload.body;
         }
@@ -368,7 +377,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     if (selectedFromLookup) {
       this.previewTemplate.to.push(this.toList2?.find(c => c.name == item));
     } else {
-      this.previewTemplate.to.push({ IdEmailAddress: item });
+      this.previewTemplate.to.push({ IdEmailAddress: item, name: item });
     }
     this.to = this.previewTemplate.to;
     this.toEmail = '';
@@ -431,7 +440,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     if (selectedFromLookup) {
       this.previewTemplate.cc.push(this.ccList2?.find(c => c.name == item));
     } else {
-      this.previewTemplate.cc.push({ IdEmailAddress: item });
+      this.previewTemplate.cc.push({ IdEmailAddress: item , name: item });
     }
     this.cc = this.previewTemplate.cc;
     this.ccEmail = '';
@@ -572,6 +581,16 @@ export class EmailPreviewPopupComponent implements OnInit {
       });
 
       if (res['sellerOffers']) {
+        let locationIds=res['sellerOffers'].map(loc=>loc.LocationID);
+        let productIds=res['sellerOffers'].map(ro=>ro?.requestOffers?.map(r=>r.quotedProductId));
+        let physicalSupplierIds=res['sellerOffers'].map(phy=>phy.physicalSupplierCounterpartyId);
+        let payload=  {
+          locationIds: [...new Set(locationIds)],
+          productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
+          physicalSupplierIds:[...new Set(physicalSupplierIds)],
+          requestGroupId:this.currentRequestInfo.requestGroupId
+        }
+        this.getEnergy6MHistory(payload);
         let locationsRows;
         const requestGroupID = this.store.selectSnapshot<string>(
           (state: any) => {
@@ -675,6 +694,13 @@ export class EmailPreviewPopupComponent implements OnInit {
       }
     });
     //}
+  }
+  /// get avg netEnergy6MonthHistory
+  async getEnergy6MHistory(payload){   
+    const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
+    if (response.energy6MonthHistories.length > 0){
+        this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+      }
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;

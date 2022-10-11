@@ -293,8 +293,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         ).name,
         minQuantity: requestProducts.minQuantity,
         MaxQuantity: this.format.quantity(requestProducts.maxQuantity), //this.format.quantity(requestOffers.supplyQuantity)??
-        ConfirmedQuantity:
-          this.format.quantity(requestOffer.supplyQuantity) ??
+        ConfirmedQuantity: requestOffer.isSupplyQuantityEdited ? 
+          this.format.quantity(requestOffer.supplyQuantity) :
           this.format.quantity(requestProducts.maxQuantity),
         UomId: requestProducts.uomId,
         WorkflowId: requestProducts.workflowId,
@@ -341,8 +341,8 @@ export class SpotnegoConfirmorderComponent implements OnInit {
         isofferPriceFormula : requestOffer.isFormulaPricing,
         RfqId: requestOffer.rfqId,
         OrderFields: {
-          ConfirmedQuantity:
-          this.format.quantity(requestOffer.supplyQuantity) ??
+          ConfirmedQuantity: requestOffer.isSupplyQuantityEdited ? 
+          this.format.quantity(requestOffer.supplyQuantity) :
           this.format.quantity(requestProducts.maxQuantity)
         },
         ClosurePrice: requestProducts.requestGroupProducts.closurePrice,
@@ -408,7 +408,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
-  confirmOffers(shouldValidate) {
+  async confirmOffers(shouldValidate) {
     let RequestProductIds = [];
     let requestOfferIds = [];
     let errorMessages = [];
@@ -467,13 +467,11 @@ export class SpotnegoConfirmorderComponent implements OnInit {
 
     (<any>window).startConfirmOfferTime = Date.now();
     this.spinner.show();
-    const response = this.spotNegotiationService.GetExistingOrders(payload);
-    response.subscribe(
-      (res: any) => {
+    const res = await this.spotNegotiationService.GetExistingOrders(payload);
         if (res?.message == 'Unauthorized') {
           return;
         }
-        let errorMessages = [];
+        // let errorMessages = [];
         this.selectedOffers.forEach((rqV, rqK) => {
           let hasOrder = false;
           let hasError = false;
@@ -489,6 +487,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                   hasOrder = true;
                   let errorType = [];
                   if (rodV.seller.id != rqV.SellerId) {
+                    hasOrder = false;
                     if (
                       productsWithErrors.indexOf(rqV.RequestProductId) == -1
                     ) {
@@ -523,7 +522,7 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                     foundRelatedOrder = rodV.id;
                   } else {
                     errorMessages.push(
-                      this.createOrderErrorMessage(
+                       this.createOrderErrorMessage(
                         rqV.RequestProductId,
                         errorType
                       )
@@ -589,25 +588,25 @@ export class SpotnegoConfirmorderComponent implements OnInit {
                 resp.subscribe((result: any) => {
                   if(result.status) {
                     this.toaster.success('order created successfully.');
-                    if(requestOfferIds.length>0){
-                      this.spotNegotiationService.cloneToPriceConfiguration({RequestOfferIds:requestOfferIds})
-                        .pipe(
-                          switchMap((resp: any) => this.spotNegotiationService.orderPriceEvaluations({PriceConfigurationIds: resp.orderPriceConfigurationIds}))
-                        ).subscribe((res:any)=> {const baseOrigin = new URL(window.location.href).origin;
-                          window.open(
-                            `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
-                            '_self'
-                          );
-                          console.log(res);
-                        });
-                      }
-                      else{
+                    // if(requestOfferIds.length>0){
+                    //   this.spotNegotiationService.cloneToPriceConfiguration({RequestOfferIds:requestOfferIds})
+                    //     .pipe(
+                    //       switchMap((resp: any) => this.spotNegotiationService.orderPriceEvaluations({PriceConfigurationIds: resp.orderPriceConfigurationIds}))
+                    //     ).subscribe((res:any)=> {const baseOrigin = new URL(window.location.href).origin;
+                    //       window.open(
+                    //         `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
+                    //         '_self'
+                    //       );
+                    //       console.log(res);
+                    //     });
+                    //   }
+                    //   else{
                         const baseOrigin = new URL(window.location.href).origin;
                           window.open(
                             `${baseOrigin}/#/edit-order/${receivedOffers.payload[0]}`,
                             '_self'
                           );
-                      }
+                      //}
                     //this.openEditOrder(receivedOffers.payload);                    
                   }
                 });
@@ -629,11 +628,9 @@ export class SpotnegoConfirmorderComponent implements OnInit {
             }
           );
         }, 200);
-      },
       response => {
         this.buttonsDisabled = true;
       }
-    );
   }
   getPriceDetails() {
     // Get current id from url and make a request with that data.

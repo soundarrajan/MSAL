@@ -3,7 +3,7 @@
     <div class="spot-nego-title">Formula pricing details</div>
     <div class="spot-dialog-title-right">
       <!-- <button class="cancel-btn w-104" mat-button [mat-dialog-close]="true">Cancel</button> -->
-      <button class="proceed-btn w-104" mat-button  (click)="saveFormula()" [disabled]="">Save</button>
+      <button class="proceed-btn w-104" mat-button  (click)="saveFormula()" disabled="{{checkRequestStatus||formValues.name==null}}">Save</button>
       <div class="title-divider">|</div>
       <span class="close" style="cursor:pointer;" (click)="closePopup()"></span>
       <!-- <div class="close-circle">
@@ -25,7 +25,7 @@
             <div class="custom-form-field lightTheme" style="width: 100% !important;margin:0px">
               <mat-form-field class="with-search" style="width: 100%; border-radius: 4px;">
                 <mat-label>Search Formula</mat-label>
-                <input #searchInput  matInput [matAutocomplete]="auto1" name="formula-name" [value]="formulaValue" [(ngModel)]="formValues.name" placeholder="Search Formula" (keyup) ="SearchFormulaList($event.target.value)">
+                <input #searchInput disabled = {{checkRequestStatus}}  matInput [matAutocomplete]="auto1" name="formula-name" [value]="formulaValue" [(ngModel)]="formValues.name" placeholder="Search Formula" (keyup) ="SearchFormulaList($event.target.value)">
                 <mat-autocomplete
                         #auto1="matAutocomplete"
                         class="darkPanelAuto"
@@ -43,7 +43,7 @@
                 <div *ngIf="formValues.name" class="form-field-action" style="right: 25px; top: 14px;">
                   <button class="remove-icon" (click)="removeFromula()" style="border:none; background:transparent; margin: -8px 6px"></button>
                 </div>
-                <button class="search-icon" (click)="searchFormula();" style="margin-top: -5px;height: 40px;">
+                <button [disabled] ="checkRequestStatus" class="search-icon" (click)="searchFormula();" style="margin-top: -5px;height: 40px;">
                   <div class="img"></div>
                 </button>
               </div>
@@ -59,7 +59,7 @@
       <div class="custom-form-field lightTheme" style="width: 100% !important;margin:0px">
         <mat-form-field class="without-search" style="width:100%;border-radius: 4px;">
           <mat-label>Formula Name</mat-label>
-          <input matInput autocomplete="off" [(ngModel)]="formValues.name" name="formula-name" placeholder="Formula Name">
+          <input matInput autocomplete="off" disabled = {{checkRequestStatus}} [(ngModel)]="formValues.name" name="formula-name" placeholder="Formula Name">
         </mat-form-field>
         <!-- <div *ngIf="formValues.name" class="form-field-action" style="right: 25px; top: 14px;">
           <button class="remove-icon" (click)="removeFromula()" style="border:none; background:transparent"></button>
@@ -109,7 +109,7 @@
                       <mat-radio-group class="pricing-container-radio-group" [(ngModel)]="formValues.formulaType.id"
                         (ngModelChange)="setFormulaTypeSelected($event)" style="display: flex;
                                                           justify-content: space-between;width: 75%;">
-                        <mat-radio-button class="pricing-container-radio-button col-md-3" *ngFor="let option of formulaTypeList"
+                        <mat-radio-button disabled = {{checkRequestStatus}} class="pricing-container-radio-button col-md-3" *ngFor="let option of formulaTypeList"
                           [value]="option.id">
                           {{option.name}}
                         </mat-radio-button>
@@ -140,7 +140,7 @@
                           <div class="inline-dropdown">
                             <mat-form-field style="background: none !important;border: none !important;">
                               <mat-select style="height: 18px;" [(ngModel)]="formValues.conversionVolumeUomId">
-                                <mat-option *ngFor="let option of uomVolumeList" [value]="option.id">
+                                <mat-option disabled = {{checkRequestStatus}} *ngFor="let option of uomVolumeList" [value]="option.id">
                                   {{option.name}}
                                 </mat-option>
                 
@@ -187,7 +187,7 @@
                 <div class="col-md-12 no-padding">
                   <mat-form-field appearance="outline" class="custom-form-field-comments">
                     <mat-label>Comments</mat-label>
-                    <textarea matInput rows="4" cols="60" [(ngModel)] = "comment" placeholder="Comments"></textarea>
+                    <textarea disabled = {{checkRequestStatus}} matInput rows="4" cols="60" [(ngModel)] = "comment" placeholder="Comments"></textarea>
                   </mat-form-field>
                 </div>
               </div>
@@ -209,6 +209,7 @@
                     <mat-radio-group class="pricing-container-radio-group" 
                                      [(ngModel)]="formValues.pricingSchedule.id" 
                                      (ngModelChange)="clearSchedules(formValues.pricingSchedule.id)"
+                                     disabled = {{checkRequestStatus}}
                     >
                     <mat-radio-button class="pricing-container-radio-button" *ngFor="let option of pricingScheduleList" [value]="option.id">
                         {{option.name}}
@@ -293,7 +294,7 @@
                 <div style="margin-top: 15px;">
                     <div class="col-md-12 pricing-formula-tab no-padding"
                         style="display: flex;justify-content: flex-start;">
-                        <div class="pricing-formula-tab-header flexi-row col-md-6">
+                        <div class="discount-tab pricing-formula-tab-header flexi-row col-md-6">
                             <div [ngClass]="{'selected-tab': rules == 1, 
                   'unselected-tab grey-bg': rules != 1}" (click)="rules = 1">
                                 <div class="value">Quantity Based</div>

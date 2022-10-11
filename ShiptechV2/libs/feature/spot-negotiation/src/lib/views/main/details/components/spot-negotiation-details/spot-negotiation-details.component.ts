@@ -22,6 +22,7 @@ import {
   RemoveCounterparty,
   RemoveLocationsRowsOriData,
   SetLocationsRows,
+  SetNetEnergySpecific,
   UpdateAdditionalCostList,
   UpdateRequest
 } from '../../../../../store/actions/ag-grid-row.action';
@@ -72,6 +73,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   requestOptions: any;
   Index: number;
   reqLocId: number;
+  netEnergySpecific: any;
 
 
 
@@ -457,11 +459,23 @@ export class SpotNegotiationDetailsComponent implements OnInit {
 
     // Update the store
     const response = this.spotNegotiationService.updatePrices(payload);
+    let locationsRows = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.locationsRows;
+    });
+    // let pay=  {
+    //   locationIds:[locationsRows.find(l=>l.id==payload.RequestLocationSellerId).locationId],
+    //   productIds:[product.productId],
+    //   physicalSupplierIds:[locationsRows.find(l=>l.id==payload.RequestLocationSellerId).physicalSupplierCounterpartyId],
+    //   requestGroupId:locationsRows.find(l=>l.id==payload.RequestLocationSellerId).requestGroupId
+    // }
+    //this.getEnergy6MHistory(pay);
     response.subscribe((res: any) => {
       if (res?.message == 'Unauthorized') {
         return;
       }
       if (res.status) {
+       // if(productDetails.isEnergyCalculationRequired)
+        this.spotNegotiationService.energyCalculationService(product.productId,updatedRow.locationId,null);
       } else {
         this.toastr.error(res.message);
         return;
@@ -483,7 +497,13 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     }
     element.parentNode.classList.add("focus-price-highlight");
   }
-
+  /// get avg netEnergy6MonthHistory
+  async getEnergy6MHistory(payload){   
+    const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
+    if (response.energy6MonthHistories.length > 0){
+      this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+    }
+  }
   redrawGridDetails() {
     if (this.interval) {
       clearInterval(this.interval);
@@ -517,7 +537,12 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     //Change with new value
     switch (field) {
       case 'offPrice':
-        productDetails.price = Number(newValue.toString().replace(/,/g, ''));
+        if(newValue != undefined){
+          productDetails.price = Number(newValue.toString().replace(/,/g, ''));
+        }else{
+          productDetails.price = 0;
+        }
+        productDetails.price = Number(newValue?.toString().replace(/,/g, ''));
         break;
 
       default:
@@ -778,10 +803,28 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           lockVisible: true
         },
         {
-          headerName: 'MJ/KJ',
+          headerName: 'Energy(MJ/KJ)',
           headerTooltip: 'MJ/KJ',
-          field: `mj$`,
-          columnGroupShow: 'open',
+          field: `mjkj`,
+          flex: 5,
+          width: 135,
+          minWidth: 94,
+          valueGetter: params => {
+            const details = this.spotNegotiationService.getRowProductDetails(
+              params.data,
+              product.id
+            );
+            
+            if(!details.amount || details.amount == null){
+              if(details.isEnergyCalculationRequired)
+              return "--"
+              return null;
+            }else{
+              return this.tenantService.amount(details.mjkj);
+            }
+            
+            
+          },
           cellClass: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
               params.data,
@@ -792,30 +835,66 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             }
             return 'grey-opacity-cell pad-lr-0';
           },
+          cellRendererFramework: AGGridCellRendererV2Component,
+          cellRendererParams: { type: 'mj$', cellClass: '', index: index },
+          lockVisible: true
+        },
+        {
+          headerName: 'Energy($/mt)',
+          headerTooltip: 'mt',
+          field: `mt$`,
+          flex: 5,
+          width: 135,
+          minWidth: 94,
+          valueGetter: params => {
+            const details = this.spotNegotiationService.getRowProductDetails(
+              params.data,
+              product.id
+            );
+            if(!details.amount || details.amount == null){
+              if(details.isEnergyCalculationRequired)
+              return "--"
+              return null;
+            }else{
+              return this.tenantService.amount(details.ediff);
+            }
+          
+          },
+          cellClass: params => {
+            const details = this.spotNegotiationService.getRowProductDetails(
+              params.data,
+              product.id
+            );
+            if (details.hasNoQuote) {
+              return 'display-no-quote grey-opacity-cell pad-lr-0';
+            }
+            return 'grey-opacity-cell pad-lr-0';
+          },
+          cellRendererFramework: AGGridCellRendererV2Component,
+          cellRendererParams: { type: 'mt$', cellClass: '', index: index },
           lockVisible: true
         },
         {
           headerName: 'TCO ($)',
           headerTooltip: 'TCO ($)',
           field: `tco$`,
-          columnGroupShow: 'open',
-          cellClass: params => {
+          flex: 5,
+          width: 135,
+          minWidth: 94,
+          valueGetter: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
               params.data,
               product.id
             );
-            if (details.hasNoQuote) {
-              return 'display-no-quote grey-opacity-cell pad-lr-0';
+
+            if(!details.amount || details.amount == null){
+              if(details.isEnergyCalculationRequired)
+              return "--"
+              return null;
+            }else{
+              return this.tenantService.amount(details.tco);
             }
-            return 'grey-opacity-cell pad-lr-0';
           },
-          lockVisible: true
-        },
-        {
-          headerName: 'E. diff',
-          headerTooltip: 'E. diff',
-          field: `ediff`,
-          columnGroupShow: 'open',
           headerClass: 'border-right',
           cellClass: params => {
             const details = this.spotNegotiationService.getRowProductDetails(
@@ -823,10 +902,27 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               product.id
             );
             if (details.hasNoQuote) {
-              return 'display-no-quote line-seperator grey-opacity-cell pad-lr-5';
+              return 'display-no-quote line-seperator grey-opacity-cell pad-lr-0';
             }
-            return 'line-seperator grey-opacity-cell pad-lr-5';
           },
+          cellClassRules:  {
+            'tcoHighLight': params => {
+              const details = this.spotNegotiationService.getRowProductDetails(
+                params.data,
+                product.id
+              );
+              if (details.ediff == 0 && details.tco > 0) return true; 
+            },
+            'noHighListashght' : params => {
+              const details = this.spotNegotiationService.getRowProductDetails(
+                params.data,
+                product.id
+              );
+              if (details.ediff != 0) return false;
+          }
+        },
+          cellRendererFramework: AGGridCellRendererV2Component,
+          cellRendererParams: { type: 'tco$', cellClass: '', index: index },
           lockVisible: true
         }
       ]
@@ -1326,6 +1422,10 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           );
           this.spotNegotiationService.callGridRedrawService();
           this.store.dispatch([new RemoveCounterparty({ rowId: rowData.id }), new RemoveLocationsRowsOriData({ rowId: rowData.id })]);
+          
+          this.interval = setTimeout(() => {
+            this.spotNegotiationService.energyCalculationService(null,rowData.locationId,null);
+          }, 100);
 
           if (res['requestLocationSellers'] && res['sellerOffers']) {
             const futureLocationsRows = this.getLocationRowsWithPriceDetails(
@@ -1370,6 +1470,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
                 reqLocationRows.push(data);
             }
             this.store.dispatch(new SetLocationsRows(reqLocationRows));
+
+            
+            
           }
           if (res.isGroupDeleted) {
             const baseOrigin = new URL(window.location.href).origin;
@@ -1444,7 +1547,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               .map(r => r.requestProductId)
           );
         const dialogRef = this.dialog.open(RemoveCounterpartyComponent, {
-          width: '600px',
+          width: '400px',
           data: {
             sellerName: rowData.sellerCounterpartyName,
             isRFQSent:
