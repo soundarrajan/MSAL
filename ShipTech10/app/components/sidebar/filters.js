@@ -139,14 +139,20 @@ angular.module('shiptech.components').controller('FiltersController', [
         }
 
         $scope.applyFilters = function (data, noSlide, fromcol, column, defaultConf) {
+        
             if(data && data.length > 0 && data[0].value ) {
                 data[0].value['0'] = data[0]?.value['0']?.toString();
             }
+        
             // $scope.currentList = $state.current.url.replace(":screen_id", $state.params.screen_id).replace("/", "");
             if ($scope.currentList === 'schedule-dashboard-calendar' || $scope.currentList === 'schedule-dashboard-table' || $scope.currentList === 'schedule-dashboard-timeline'){
                 data = $scope.CombineGlobalAndPrecedenceData(data);
             }
-
+            if(!data[0].value) {
+                data.forEach(obj => {
+                    obj.value = '';
+                });
+            }
             if (typeof $rootScope.lastFilterApplied == 'undefined') {
             	$rootScope.lastFilterApplied = 0;
             }
