@@ -152,7 +152,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     if(data) {
                         if(data[0] && !data[0].value){
                             data.forEach(obj => {
-                                obj.value = '';
+                                obj.value = [undefined];
                             });
                         }
                     }
@@ -224,6 +224,12 @@ angular.module('shiptech.components').controller('FiltersController', [
             }
             if($scope.currentList === 'schedule-dashboard-table' || $scope.currentList === 'schedule-dashboard-calendar'){
                 $.each(loopList, (k, v) => {
+
+                    if($scope.currentList === 'schedule-dashboard-calendar'){
+                        if(v.condition.conditionNrOfValues == 0){
+                            loopList[k]['value'] = undefined;
+                        }
+                    }
            
                     if (v.condition.conditionNrOfValues && (!v.value || v.value == 'Invalid date')) {
                         isInvalidValue = true;
@@ -263,6 +269,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     });
                 });
             }
+            console.log('vinoth: ', data);
             if (isInvalidValue) {
                 toastr.error('Please enter a value');
             	return false;
