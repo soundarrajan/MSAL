@@ -554,7 +554,6 @@ export class ShiptechCustomHeaderGroup {
   }
 
   expandOrCollapse(isExpanded=false) {
-    debugger;
       const currentState = this.params.columnGroup
       .getOriginalColumnGroup()
       .isExpanded();
