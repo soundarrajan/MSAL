@@ -865,6 +865,7 @@ timeline-right-click-popover .contextmenu {
 .right-click-pop-up-table-container .first-col, .right-click-pop-up-voyage-table-container .first-col {
     display: flex;
     align-items: center;
+    margin-top: 6px;
 }
 
 .content-right-click .eta-container {
@@ -932,3 +933,6 @@ timeline-right-click-popover {
 .newStatusColoured.contextmenu {
 border-radius: 4px !important;
 }
+.right-click-pop-up-table-container tr{
+    height: 40px !important;
+ }
