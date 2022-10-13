@@ -20,7 +20,7 @@
                         cdkDragBoundary=".dialog-container"
                         [cdkDragDisabled]="enableEdit || filter.defaultFilter|| !filter.pinned">
                         <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                        <div class="chip-container">
+                        <div class="chip-holder">
                             <div class="filter-name" matTooltip="{{filter.name}}"
                                 (click)="filter.pinned && applyFilter(i)">
                                 {{filter.name}}
@@ -70,7 +70,7 @@
                     [ngClass]="{'removeFilterChip':filter?.deleted && filter.deleted==true}">
                     <!-- Set chip to disabled or user wont be able to change chip text properly -->
                     <div disabled [ngClass]="filter.defaultFilter?'inactive-chip':'editable-chip'" class="filter-chip">
-                        <div class="chip-container">
+                        <div class="chip-holder">
                             <div class="filter-name" matTooltip="{{filter.name}}">
                                 <input matInput [(ngModel)]="filter.name" type="text">
                             </div>

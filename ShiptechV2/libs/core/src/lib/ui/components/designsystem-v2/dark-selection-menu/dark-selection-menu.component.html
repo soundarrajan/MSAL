@@ -1,0 +1,41 @@
+<div class="shiptech-select-product-container">
+    <div class="col-md-12 header-container-product pd-0">
+        <div class="search-product-container col-md-12 pd-0">
+            <span class="search-product-lookup">
+            </span>
+            <input matInput placeholder="Search all and select a product" class="search-product-input" (click)="
+                                $event.stopPropagation();
+                                $event.preventDefault();" (input)="search('location',$event.target.value)">
+        </div>
+    </div>
+    <table class="delivery-products-pop-up shiptech-delivery-popup col-md-12 no-padding" mat-table
+        [dataSource]="dataSources">
+
+        <ng-container matColumnDef="product">
+            <th mat-header-cell *matHeaderCellDef> Products </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-option [value]="element.product" style="padding-left:0">
+                    <mat-radio-group [(ngModel)]="selectedProduct">
+                        <mat-radio-button [id]="element.product" [value]="element.product"
+                            [checked]="element.product==selectedProduct" (change)="onChangeProduct(element.product)">
+                            {{element.product}}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </mat-option>
+            </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="delNo">
+            <th mat-header-cell *matHeaderCellDef> Delivery No </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-option>
+                    {{element.delNo}}
+                </mat-option>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

@@ -1,0 +1,27 @@
+<div class="send-rfq-popup">
+    <div class="header">
+        <span class="warning-title">Send RFQ</span>
+        <span class="close-icon" [mat-dialog-close]="true"></span>
+    </div>
+    <div class="divider-line"></div>
+    <div class="popup-content">
+        <div class="message">{{data.message}}</div>
+        <div class="yes-no">
+            <button mat-raised-button class="red-button" (click)="proceed();">    
+                <span>Yes</span>
+            </button>
+            <button  class="blue-button" (click)="close();">    
+            <span>No</span>
+            </button>     
+        </div>
+    </div>
+    <div class="open-negotiation" *ngIf="showOpenNego">
+        <div class="message">For selectively choosing the suppliers and senting the RFQ,</div>
+        <div style="padding-left: 25px; padding-top: 5px;" (click)="mainPage()">
+            <i class="fas fa-circle"></i>
+            <span class="blue-message">Open  negotiation Req ID: 12323</span>
+            <span class="navigate-icon"></span>
+        </div>
+    </div>
+  </div>
+  

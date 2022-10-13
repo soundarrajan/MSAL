@@ -1,0 +1,22 @@
+[
+    {
+        "username": "Inatechee",
+        "password":"SApooAleSmaGoRe@$",
+        "role": "ADMIN"
+    },
+    {
+        "username": "RnD",
+        "password":"password",
+        "role": "RnD"
+    },
+    {
+        "username": "Tester",
+        "password":"password",
+        "role": "Test"
+    },
+    {
+        "username": "24s",
+        "password":"password",
+        "role": "24S"
+    }
+]
