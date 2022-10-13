@@ -12,7 +12,8 @@ import {
   AppendLocationsRowsOriData,
   EditLocationRow,
   EditLocations,
-  UpdateRequest
+  UpdateRequest,
+  gridColumnState
 } from '../../store/actions/ag-grid-row.action';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 
@@ -329,7 +330,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
           <div
             class="img resizeIcons"
             [ngClass]="this.expandState"
-            (click)="expandOrCollapse(true)"
+            (click)="expandOrCollapse()"
           ></div>
         </div>
       </div>
@@ -352,7 +353,6 @@ export class ShiptechCustomHeaderGroup {
   public params: any;
   selected = 'eur';
   selected1 = 'bbl';
-  isExpand: boolean;
   public resizeIconss: any;
   public expandState: string;
   closureValue: any;
@@ -553,20 +553,31 @@ export class ShiptechCustomHeaderGroup {
     this.syncExpandButtons();
   }
 
-  expandOrCollapse(isExpanded=false) {
-      const currentState = this.params.columnGroup
-      .getOriginalColumnGroup()
-      .isExpanded();
-      let productId = this.store.selectSnapshot<any>((state: any) => {
-        return state.spotNegotiation.locations.filter(flt => flt.id == this.params.requestLocationId)[0]?.requestProducts.map(res=> res.productId);
-      });
-      productId?.forEach(groupId => {
-        this.params.columnApi.setColumnGroupOpened(groupId.toString(), !currentState);
-      });
-      // let  groupState = this.params.columnApi.getColumnGroupState();
-      // console.log("groupState",groupState);
+  expandOrCollapse() {
+    const currentState = this.params.columnGroup
+    let currGroupState = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.gridColumnState;
+    });
+    if(currGroupState.length == undefined){
+      currGroupState = {...this.params.columnApi!.getColumnGroupState()};
+    }
+    currGroupState = Object.keys(currGroupState).map(key => { return currGroupState[key] });
+    let currGroupId = this.params.columnGroup.groupId.toString();
+    let isExpanded = this.params.columnGroup.getOriginalColumnGroup().isExpanded();
+    let colGroup = currGroupState.find(x=>x.groupId == currGroupId);
+    if(colGroup) {
+      currGroupState = JSON.parse(JSON.stringify(currGroupState));
+      currGroupState.find(x=>x.groupId == currGroupId).open = !isExpanded;
+    } else {
+      Object.assign(currGroupState, this.params.columnApi!.getColumnGroupState());
+      currGroupState = JSON.parse(JSON.stringify(currGroupState));
+      currGroupState.find(x=>x.groupId == currGroupId).open = !isExpanded;
+    }
+    this.store.dispatch(new gridColumnState(currGroupState));
+    currGroupState.forEach(product => {
+      this.params.columnApi.setColumnGroupOpened(product.groupId.toString(), product.open);
+    });
     if (currentState) this.params.api.sizeColumnsToFit();
-     // this.params.columnApi.getColumnGroupState();
   }
 
   invokeParentMethod(): void {
