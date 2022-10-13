@@ -587,7 +587,7 @@ export const BASE_MENU: KeyedMenuItems = {
     label: 'Contract',
     items: {
       request_contract: {
-        label: 'Contract Req list',
+        label: 'Request list',
         url: '/v2/contract-negotiation/requests',
         target: '_blank'
       },
