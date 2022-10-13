@@ -76,8 +76,7 @@ export class ControlTowerResidueEGCSDifferenceListGridViewModel extends BaseGrid
   public loadingFailed: boolean = false;
 
   public defaultColFilterParams = {
-    resetButton: true,
-    applyButton: true,
+    buttons:['reset', 'apply'],
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {

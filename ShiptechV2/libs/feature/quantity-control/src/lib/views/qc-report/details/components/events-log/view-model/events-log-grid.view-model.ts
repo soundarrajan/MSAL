@@ -29,8 +29,7 @@ function model(prop: keyof IQcEventsLogItemState): keyof IQcEventsLogItemState {
 export class EventsLogGridViewModel extends BaseGridViewModel
   implements OnDestroy {
   public defaultColFilterParams = {
-    resetButton: true,
-    applyButton: true,
+    buttons:['reset', 'apply'],
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {
@@ -116,8 +115,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel
     valueFormatter: params => params.value?.name,
     filterParams: {
       valueGetter: rowModel => rowModel.data?.createdBy?.name,
-      applyButton: true,
-      resetButton: true
+      buttons:['reset', 'apply']
     },
    
   };
@@ -146,8 +144,7 @@ export class EventsLogGridViewModel extends BaseGridViewModel
           return 1;
         }
       },
-      applyButton: true,
-      resetButton: true,
+      buttons:['reset', 'apply'],
       inRangeInclusive: true
     },
     width: 507

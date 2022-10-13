@@ -395,8 +395,7 @@ export class MasterSelectionDialog implements OnInit{
             resizable: true,
             headerCheckboxSelection: false,
             filterParams:{
-                resetButton: true,
-                applyButton: true,
+                buttons:['reset', 'apply'],
                 suppressAndOrCondition: true
             },
             checkboxSelection: isFirstColumn

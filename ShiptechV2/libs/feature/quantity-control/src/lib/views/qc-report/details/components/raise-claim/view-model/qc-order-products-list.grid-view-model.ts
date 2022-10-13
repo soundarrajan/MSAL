@@ -30,8 +30,7 @@ function model(
 @Injectable()
 export class QcOrderProductsListGridViewModel extends BaseGridViewModel {
   public defaultColFilterParams = {
-    resetButton: true,
-    applyButton: true,
+    buttons:['reset', 'apply'],
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {
