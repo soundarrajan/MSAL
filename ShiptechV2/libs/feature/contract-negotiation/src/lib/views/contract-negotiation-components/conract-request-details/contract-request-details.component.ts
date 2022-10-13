@@ -27,7 +27,7 @@ export class ContractRequestDetailsComponent implements OnInit {
     this.getGridData();
   }
   mainPage(id) {
-    this.router.navigate([`contract-requests/request/${id}/details`]);
+    this.router.navigate([`contract-negotiation/requests/${id}`]);
     /*this.router.navigate(['contract-request/request/0/details', id]);
     if (this.router.url.includes("buyer"))
       this.router.navigate(['shiptech/contractnegotiation/buyer/details', id]);
