@@ -48,7 +48,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     RowstatusOnchangeQualitylabPopupComponent,
     RowstatusOnchangePopupComponent,
     AGGridCellRendererAsyncStatusComponent,
-    AGGridCellRendererStatusComponent
+    AGGridCellRendererStatusComponent,
+    DarkSelectionMenuComponent
   ],
   declarations: [
     AvailableFiltersPreferencesComponent,

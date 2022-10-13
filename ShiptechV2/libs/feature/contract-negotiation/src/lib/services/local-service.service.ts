@@ -296,12 +296,13 @@ export class LocalService {
         return this.http.get("./assets/data/contract-negotiation/contract-nego-request-list-" + reqId + ".json");
     }
     public getContractNegoJSON(reqID, locID): Observable<any> {
-        if (this.router.url.includes("buyer")) {
+        return this.http.get("./assets/data/contract-negotiation/contract-nego-" + reqID + "-" + locID + ".json");
+        /*if (this.router.url.includes("buyer")) {
             return this.http.get("./assets/data/contract-negotiation/contract-nego-" + reqID + "-" + locID + ".json");
         }
         else {
             return this.http.get("./assets/data/contract-negotiation/contract-negoAp-" + reqID + "-" + locID + ".json");
-        }
+        }*/
     }
     public getContractNegoChatData(reqId): Observable<any> {
         return this.http.get("./assets/data/contract-negotiation/contract-nego-chat-" + reqId + ".json");
