@@ -600,11 +600,6 @@ export const BASE_MENU: KeyedMenuItems = {
         label: 'New contract',
         url: '/v2/contracts/contract/0/details',
         target: '_blank'
-      },
-      request_contract: {
-        label: 'Contract Req list',
-        url: '/v2/contracts/contract/0/request',
-        target: '_blank'
       }
     }
   },
