@@ -15,24 +15,16 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        data: {
-          breadcrumb: 'Contract Requests List'
-        },
         children: [
           {
-            path: '',
+            path: KnownContractNegotiationRoutes.RequestsList,
             component: ContractNegotiationComponent,
             //redirectTo: KnownContractNegotiationRoutes.RequestsList,
             pathMatch: 'full',
             data: { title: 'Contract Requests List' }
           },
-          /*{
-            path: KnownContractNegotiationRoutes.RequestsList,
-            component: ContractNegotiationComponent,
-            data: { title: 'Contract Requests List' }
-          },*/
           {
-            path: `${KnownContractNegotiationRoutes.RequestsList}/:${KnownContractNegotiationRoutes.RequestIdParam}/${KnownContractNegotiationRoutes.RequestDetails}`,
+            path: `${KnownContractNegotiationRoutes.RequestsList}/:${KnownContractNegotiationRoutes.RequestIdParam}`,
             component: MainPageComponent,
             data: { breadCrumb1: 'Contract Negotiation' }
           }

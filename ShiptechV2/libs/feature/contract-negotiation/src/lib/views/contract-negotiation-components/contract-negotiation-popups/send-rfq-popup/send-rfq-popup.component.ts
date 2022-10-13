@@ -50,7 +50,7 @@ export class SendRfqPopupComponent implements OnInit {
   mainPage() {
     this.dialogRef.close('close');
     let id="12323";
-    this.router.navigate([`contract-requests/request/${id}/details`]);
+    this.router.navigate([`contract-negotiation/requests/${id}`]);
     /*if (this.router.url.includes("buyer"))
       this.router.navigate([`contract-requests/request/${id}/details`]);
     else if (this.router.url.includes("approver")) {
