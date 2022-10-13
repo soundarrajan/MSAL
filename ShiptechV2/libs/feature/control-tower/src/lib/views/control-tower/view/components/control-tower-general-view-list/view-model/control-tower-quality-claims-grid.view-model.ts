@@ -65,8 +65,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   public loadingFailed: boolean = false;
 
   public defaultColFilterParams = {
-    resetButton: true,
-    applyButton: true,
+    buttons:['reset', 'apply'],
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {
@@ -506,7 +505,7 @@ export class ControlTowerQualityClaimsListGridViewModel extends BaseGridViewMode
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    const grid1 = this.gridApi.getSortModel();
+    // const grid1 = this.gridApi.getSortModel();
     this.getFiltersCount();
     this.checkStatusAvailable();
     this.paramsServerSide = params;
