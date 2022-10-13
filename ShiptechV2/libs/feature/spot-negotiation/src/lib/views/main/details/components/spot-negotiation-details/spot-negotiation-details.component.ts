@@ -74,6 +74,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   Index: number;
   reqLocId: number;
   netEnergySpecific: any;
+  gridParams: any;
 
 
 
@@ -331,10 +332,20 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           .getActualWidth();
         if(this.rowData_aggrid?.filter(x => x.requestLocationId == this.reqLocId).length == 0)
           params.api.showNoRowsOverlay();
+        let currGroupState = this.store.selectSnapshot<any>((state: any) => {
+          return state.spotNegotiation.gridColumnState;
+        });
+        if(currGroupState.length !== undefined && currGroupState.length > 0){
+          currGroupState.forEach(product => {
+            params.columnApi.setColumnGroupOpened(product.groupId.toString(), product.open); //here
+          });
+          //params.columnApi!.applyColumnState({ state: currGroupState });
+        }
       },
       onColumnVisible: function(params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 20) {
           params.api.sizeColumnsToFit();
+
         }
       },
       frameworkComponents: {
@@ -564,7 +575,15 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return data.id;
   }
 
-  createProductHeader(product, requestLocationId, index) {
+  createProductHeader(product, requestLocationId, index, gridGroupState=null) {
+    let isOpened = false;
+    if(gridGroupState !== null){
+      console.log('gridGroupState',gridGroupState);
+      gridGroupState = Object.keys(gridGroupState).map(key => {
+        return gridGroupState[key]; });
+      let currCol = gridGroupState.find(x=>x.groupId == product.productId + '_' + requestLocationId);
+      isOpened = (currCol)?currCol.open:false;
+    }
     var checkprodindex = index + 1;
     var productData = cloneDeep(product);
     productData.uomName = this.uomsMap.get(product.uomId);
@@ -579,7 +598,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       },
       marryChildren: true,
       resizable: false,
-      groupId: product.productId,
+      groupId: product.productId + '_' + requestLocationId,
+      openByDefault: isOpened,
       suppressMovable: true,
       lockVisible: true,
 
@@ -1274,8 +1294,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             if(this.highlightedCells.length > 0){
               this.spotNegotiationService.highlihtArrayIni(this.highlightedCells,reqLocation.locationId);
             }
+            let gridColumnState = spotNegotiation.gridColumnState.length > 0 ? spotNegotiation.gridColumnState : null;
             this.columnDef_aggridObj[i].push(
-              this.createProductHeader(reqProduct, reqLocation.id, index)
+              this.createProductHeader(reqProduct, reqLocation.id, index, gridColumnState)
             );
           });
         });

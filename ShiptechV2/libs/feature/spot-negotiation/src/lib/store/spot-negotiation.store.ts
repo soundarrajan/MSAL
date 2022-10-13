@@ -29,7 +29,8 @@ import {
   UpdateAdditionalCostList,
   SetOfferPriceFormulaId,
   setFormulaList,
-  EvaluatePrice
+  EvaluatePrice,
+  gridColumnState
 } from './actions/ag-grid-row.action';
 
 import {
@@ -75,6 +76,7 @@ export class SpotNegotiationStoreModel {
   offerPriceHistory: object | null;
   additionalCostList: Array<any>;
   formulaList : any;
+  gridColumnState : object | null;
   constructor() {
     // Initialization inside the constructor
     this.staticLists = {};
@@ -139,7 +141,8 @@ export class SpotNegotiationStoreModel {
     requestList: [],
     counterparties: [],
     additionalCostList: [],
-    formulaList:{}
+    formulaList:{},
+    gridColumnState : {}
   }
 })
 export class SpotNegotiationStore {
@@ -549,6 +552,18 @@ EditLocationRow(
       locationsRows: state.locationsRows.filter(e => e.requestId != payload)
     });
   }
+
+  @Action(gridColumnState)
+  addGridColumnState(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: gridColumnState
+  ){
+    //const state = getState();
+    patchState({
+      gridColumnState: payload
+    });
+  }
+
   // Rows lists
   @Action(AddCounterpartyToLocations)
   AddCounterpartyToLocations(

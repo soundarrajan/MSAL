@@ -130,6 +130,12 @@ export class AddCounterpartyToLocations {
 
   constructor(public payload: any) {}
 }
+
+export class gridColumnState {
+  static readonly type = '[gridColumnState] Add';
+  constructor(public payload: any) {}
+}
+
 export class RemoveCounterparty {
   static readonly type = '[Counterparty] Remove';
 
