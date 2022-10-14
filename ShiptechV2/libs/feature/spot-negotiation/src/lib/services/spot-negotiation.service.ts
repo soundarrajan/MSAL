@@ -888,7 +888,7 @@ if(this.netEnergyList.length == 0 && checkMjkjFlag) return;
             storePayload[index].requestOffers[iIndex].mjkj = updateArr['mjkj'] ;
             storePayload[index].requestOffers[iIndex].ediff = updateArr['ediff'];
             storePayload[index].requestOffers[iIndex].tco = updateArr['tco'];
-           // storePayload[index].requestOffers[iIndex].noLabs = curentProductVal[0]?.noLabs;
+            storePayload[index].requestOffers[iIndex].noLabs = curentProductVal[0]?.noLabs;
           }
         });
       }
