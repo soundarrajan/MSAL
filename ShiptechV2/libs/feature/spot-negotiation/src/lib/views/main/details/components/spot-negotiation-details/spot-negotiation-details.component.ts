@@ -74,7 +74,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   Index: number;
   reqLocId: number;
   netEnergySpecific: any;
-  gridParams: any;
 
 
 
@@ -332,15 +331,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
           .getActualWidth();
         if(this.rowData_aggrid?.filter(x => x.requestLocationId == this.reqLocId).length == 0)
           params.api.showNoRowsOverlay();
-        let currGroupState = this.store.selectSnapshot<any>((state: any) => {
-          return state.spotNegotiation.gridColumnState;
-        });
-        if(currGroupState.length !== undefined && currGroupState.length > 0){
-          currGroupState.forEach(product => {
-            params.columnApi.setColumnGroupOpened(product.groupId.toString(), product.open); //here
-          });
-          //params.columnApi!.applyColumnState({ state: currGroupState });
-        }
       },
       onColumnVisible: function(params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 20) {
@@ -578,7 +568,6 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   createProductHeader(product, requestLocationId, index, gridGroupState=null) {
     let isOpened = false;
     if(gridGroupState !== null){
-      console.log('gridGroupState',gridGroupState);
       gridGroupState = Object.keys(gridGroupState).map(key => {
         return gridGroupState[key]; });
       let currCol = gridGroupState.find(x=>x.groupId == product.productId + '_' + requestLocationId);
@@ -1298,7 +1287,17 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             if(this.highlightedCells.length > 0){
               this.spotNegotiationService.highlihtArrayIni(this.highlightedCells,reqLocation.locationId);
             }
-            let gridColumnState = spotNegotiation.gridColumnState.length > 0 ? spotNegotiation.gridColumnState : null;
+
+            /* Column Header Group Expand / Collapse by default - Begin */
+            let currReqId = this.currentRequestSmallInfo.id;
+            let storeGridColumnState = spotNegotiation.gridColumnState;
+            let gridColumnState = null;
+            if(storeGridColumnState['"' + currReqId + '"']){
+              gridColumnState = storeGridColumnState['"' + currReqId + '"']['"' + reqLocation.id + '"'];
+              gridColumnState = (gridColumnState !== undefined && gridColumnState.length > 0) ? gridColumnState : null;
+            }
+            /* Column Header Group Expand / Collapse by default - End */
+
             this.columnDef_aggridObj[i].push(
               this.createProductHeader(reqProduct, reqLocation.id, index, gridColumnState)
             );
