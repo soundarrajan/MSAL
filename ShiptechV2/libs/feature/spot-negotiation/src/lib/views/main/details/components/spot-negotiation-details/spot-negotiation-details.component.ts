@@ -1292,8 +1292,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             let currReqId = this.currentRequestSmallInfo.id;
             let storeGridColumnState = spotNegotiation.gridColumnState;
             let gridColumnState = null;
-            if(storeGridColumnState['"' + currReqId + '"']){
-              gridColumnState = storeGridColumnState['"' + currReqId + '"']['"' + reqLocation.id + '"'];
+            if(storeGridColumnState[currReqId+'-'+reqLocation.id]){
+              gridColumnState = storeGridColumnState[currReqId+'-'+reqLocation.id];
               gridColumnState = (gridColumnState !== undefined && gridColumnState.length > 0) ? gridColumnState : null;
             }
             /* Column Header Group Expand / Collapse by default - End */

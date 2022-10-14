@@ -564,8 +564,8 @@ export class ShiptechCustomHeaderGroup {
     });
     let currGroupId = this.params.columnGroup.groupId.toString();
     let currReqLocId = currGroupId.substring(currGroupId.indexOf('_') + 1);
-    if(storeGroupState['"'+currReqId+'"'] &&  storeGroupState['"'+currReqId+'"']['"'+currReqLocId+'"']){
-      currGroupState = _.cloneDeep(storeGroupState['"'+currReqId+'"']['"'+currReqLocId+'"']);
+    if(storeGroupState[currReqId+'-'+currReqLocId]){
+      currGroupState = _.cloneDeep(storeGroupState[currReqId+'-'+currReqLocId]);
     } else {
       currGroupState = _.cloneDeep(this.params.columnApi!.getColumnGroupState());
     }
