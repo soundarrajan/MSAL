@@ -841,7 +841,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               return "--"
               return null;
             }else{
-              return this.tenantService.amount(details.mjkj);
+                let mjkj= this.tenantService.amount(details?.mjkj)
+                if( details.mjkj != undefined || details.mjkj != null ){
+                let netData=[mjkj,details?.noLabs]
+                return netData;
+              }
             }
             
             

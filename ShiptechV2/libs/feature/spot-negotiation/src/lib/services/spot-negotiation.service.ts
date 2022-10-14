@@ -866,7 +866,7 @@ if(this.netEnergyList.length == 0 && checkMjkjFlag) return;
       updateArr['id'] = res['id'];
       updateArr['mjkj'] = curentProductVal[0]?.netAverage;
       updateArr['ediff'] = (differenceValue[res['quotedProductId']+''+res['id']] - minVal) * parseFloat(curentProductVal[0].netAverage);
-      updateArr['noLabs']=curentProductVal[0]?.noLabs;
+      //updateArr['noLabs']=curentProductVal[0]?.noLabs;
       if(res['isSupplyQuantityEdited']){
         updateArr['tco'] = (res['price'] + updateArr['ediff']) * res['supplyQuantity'];
       }else{
@@ -878,7 +878,7 @@ if(this.netEnergyList.length == 0 && checkMjkjFlag) return;
       updateArr['mjkj'] = null;
       updateArr['ediff'] = null;
       updateArr['tco'] = null;
-      updateArr['noLabs']=null;
+      //updateArr['noLabs']=0;
       updatePayload.push(updateArr); 
     }
     alllocationRows.filter((el,index) => {
@@ -888,7 +888,7 @@ if(this.netEnergyList.length == 0 && checkMjkjFlag) return;
             storePayload[index].requestOffers[iIndex].mjkj = updateArr['mjkj'] ;
             storePayload[index].requestOffers[iIndex].ediff = updateArr['ediff'];
             storePayload[index].requestOffers[iIndex].tco = updateArr['tco'];
-            storePayload[index].requestOffers[iIndex].noLabs = updateArr['noLabs'];
+           // storePayload[index].requestOffers[iIndex].noLabs = curentProductVal[0]?.noLabs;
           }
         });
       }
