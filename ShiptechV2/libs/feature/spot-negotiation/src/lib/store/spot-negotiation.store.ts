@@ -558,22 +558,12 @@ EditLocationRow(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: gridColumnState
   ){
-    debugger;
     const state = getState();
-    let updatedPayload = {...state.gridColumnState};
-    console.log('store--before change in payload', updatedPayload);
-    updatedPayload = JSON.parse(JSON.stringify(updatedPayload));
+    let updatedPayload ={};
+    updatedPayload =  _.cloneDeep(state.gridColumnState);
     let currLocGroupId = payload.slice(-1)[0].groupId;
     let currReqLocId = currLocGroupId.substring(currLocGroupId.indexOf('_') + 1);
-    let reqId = state.currentRequestSmallInfo['id'].toString();
-
-    if(updatedPayload[reqId] === undefined){
-      updatedPayload[reqId] = [];
-    } else console.log('else updatepayload', updatedPayload);
-    console.log(currReqLocId);
-    updatedPayload['"'+state.currentRequestSmallInfo['id']+'"']['"' + currReqLocId + '"'] = payload;
-
-    console.log('store--after change in payload', updatedPayload);
+    updatedPayload[state.currentRequestSmallInfo['id']+'-'+currReqLocId] = payload;
     patchState({
       gridColumnState: updatedPayload
     });
