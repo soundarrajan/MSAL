@@ -5564,23 +5564,24 @@
 
         $scope.openPDFViewer = (blobData) => {
             let url = window.URL.createObjectURL(blobData);
-            pdfViewerTemplate = `<div class="documentsPdfViewer">
-                                    <div class="close-bar">
-                                        <i class="closePDFViewer fa fa-times"></i>
-                                    </div>
-                                    <object
-                                        data='${url}'
-                                        style='width: 100%; height: calc(100% - 40px);'
-                                        type="application/pdf">
-                                    </object>
-                                </div>`;
-            $("body").append(pdfViewerTemplate);   
-            $("body").css("overflow", "hidden");   
-            $(".documentsPdfViewer .closePDFViewer").on("click", () => {
-                $(".documentsPdfViewer").remove();
-                $("body").css("overflow", "auto");   
-                $("body").css("overflow-x", "hidden");   
-            })       
+            window.open(url, '_blank');
+            // pdfViewerTemplate = `<div class="documentsPdfViewer">
+            //                         <div class="close-bar">
+            //                             <i class="closePDFViewer fa fa-times"></i>
+            //                         </div>
+            //                         <object
+            //                             data='${url}'
+            //                             style='width: 100%; height: calc(100% - 40px);'
+            //                             type="application/pdf">
+            //                         </object>
+            //                     </div>`;
+            // $("body").append(pdfViewerTemplate);   
+            // $("body").css("overflow", "hidden");   
+            // $(".documentsPdfViewer .closePDFViewer").on("click", () => {
+            //     $(".documentsPdfViewer").remove();
+            //     $("body").css("overflow", "auto");   
+            //     $("body").css("overflow-x", "hidden");   
+            // })       
         }    
 
         $scope.getLogo = function(name) {
