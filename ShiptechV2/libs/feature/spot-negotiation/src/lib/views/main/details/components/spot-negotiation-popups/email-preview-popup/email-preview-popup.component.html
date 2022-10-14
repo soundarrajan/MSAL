@@ -171,14 +171,7 @@
             <span class="text">Subject:</span>
           </div>
           <div style="display: flex; flex: 0 0 95%">
-            <!-- <span class="subject">{{subject}}</span> -->
-            <input
-              [readonly]="readonly"
-              [disabled]="isDisabled"
-              matInput
-              class="subject"
-              [(ngModel)]="subject"
-            />
+            <span contenteditable="true" class="subject">{{subject}}</span>
           </div>
         </div>
       </div>
