@@ -43,7 +43,7 @@ import {
   SetTenantConfigurations,
   SetCounterparties
 } from './actions/request-group-actions';
-import _ from 'lodash';
+import _, { update } from 'lodash';
 
 export class SpotNegotiationStoreModel {
   staticLists: any;
@@ -558,9 +558,24 @@ EditLocationRow(
     { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
     { payload }: gridColumnState
   ){
-    //const state = getState();
+    debugger;
+    const state = getState();
+    let updatedPayload = {...state.gridColumnState};
+    console.log('store--before change in payload', updatedPayload);
+    updatedPayload = JSON.parse(JSON.stringify(updatedPayload));
+    let currLocGroupId = payload.slice(-1)[0].groupId;
+    let currReqLocId = currLocGroupId.substring(currLocGroupId.indexOf('_') + 1);
+    let reqId = state.currentRequestSmallInfo['id'].toString();
+
+    if(updatedPayload[reqId] === undefined){
+      updatedPayload[reqId] = [];
+    } else console.log('else updatepayload', updatedPayload);
+    console.log(currReqLocId);
+    updatedPayload['"'+state.currentRequestSmallInfo['id']+'"']['"' + currReqLocId + '"'] = payload;
+
+    console.log('store--after change in payload', updatedPayload);
     patchState({
-      gridColumnState: payload
+      gridColumnState: updatedPayload
     });
   }
 
