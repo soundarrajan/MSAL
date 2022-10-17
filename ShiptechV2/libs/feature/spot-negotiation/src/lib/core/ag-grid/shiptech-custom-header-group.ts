@@ -562,22 +562,19 @@ export class ShiptechCustomHeaderGroup {
       currReqId = state.spotNegotiation.currentRequestSmallInfo.id;
       return state.spotNegotiation.gridColumnState;
     });
-    let currGroupId = this.params.columnGroup.groupId.toString();
-    let currReqLocId = currGroupId.substring(currGroupId.indexOf('_') + 1);
+    let currReqLocId = this.params.columnGroup.groupId.toString();
+    currReqLocId = currReqLocId.substring(currReqLocId.indexOf('_') + 1);
     if(storeGroupState[currReqId+'-'+currReqLocId]){
       currGroupState = _.cloneDeep(storeGroupState[currReqId+'-'+currReqLocId]);
     } else {
       currGroupState = _.cloneDeep(this.params.columnApi!.getColumnGroupState());
     }
     currGroupState = Object.keys(currGroupState).map(key => { return currGroupState[key] });
-    
-    let isExpanded = this.params.columnGroup.getOriginalColumnGroup().isExpanded();
-    currGroupState.find(x=>x.groupId == currGroupId).open = !isExpanded;
-    this.store.dispatch(new gridColumnState(currGroupState));
     currGroupState.forEach(product => {
-      this.params.columnApi.setColumnGroupOpened(product.groupId.toString(), product.open);
+      product.open = !this.params.columnGroup.getOriginalColumnGroup().isExpanded();
     });
     if (currentState) this.params.api.sizeColumnsToFit();
+    this.store.dispatch(new gridColumnState(currGroupState));
   }
 
   invokeParentMethod(): void {
