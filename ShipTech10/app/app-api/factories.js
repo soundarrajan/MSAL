@@ -6617,9 +6617,9 @@ APP_API.factory('$Api_Service', [
                         else{
                             orderAfter = $rootScope.adminConfiguration.invoice.orderAfter;
                         }
-                        /* Treasury Report --  excel export  */
+                       
                         var UIFilters = { UIFilters : { "OrderAfterDate": orderAfter.substr(0, 10) } };
-                                  
+                         /* Treasury Report -- sorted  excel export  */         
                         datas =  angular.extend( datas, UIFilters);
                        if(param.action == "export_xls"){                         
                              datas['Payload']['SortList'] =  { SortList:$rootScope.sortList };
