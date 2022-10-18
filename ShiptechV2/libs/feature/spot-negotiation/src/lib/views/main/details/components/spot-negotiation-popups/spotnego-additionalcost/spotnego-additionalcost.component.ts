@@ -476,6 +476,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
               requestLocationId: this.rowData.requestLocationId,
               isLocationBased: false
             };
+            let additionalCostId = [];
             let response  =  await this.spotNegotiationService
               .getAdditionalCosts(payload);
               //.subscribe((response: any) => {
@@ -491,6 +492,10 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                   this.offerAdditionalCostList = _.cloneDeep(
                     response.offerAdditionalCosts.map( resp =>({...resp, isSelected: true}))
                   );
+                  response.offerAdditionalCosts.forEach(el => {
+                    additionalCostId[el.additionalCostId] = el.additionalCostId;
+                  });
+                  
                   this.formatAdditionalCostList(this.offerAdditionalCostList);
                   this.locationAdditionalCostsList = _.cloneDeep(
                     response.locationAdditionalCosts
@@ -504,6 +509,11 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                 }
               //});
               }
+              let tempId = [];
+              if(additionalCostId.length > 0){
+                tempId = this.additionalCostList.filter(el => !el.isDeleted || additionalCostId[el.id])
+              }
+              this.additionalCostList = tempId;
           }
         }
       });
