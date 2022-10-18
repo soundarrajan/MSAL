@@ -509,11 +509,13 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                 }
               //});
               }
-              let tempId = [];
-              if(additionalCostId.length > 0){
-                tempId = this.additionalCostList.filter(el => !el.isDeleted || additionalCostId[el.id])
-              }
-              this.additionalCostList = tempId;
+              let tempId = [];             
+                this.additionalCostList.filter(el => {
+                  if(!el.isDeleted == true || additionalCostId[el.id]){
+                    tempId.push(el);
+                  }
+                }); 
+                this.additionalCostList = tempId;
           }
         }
       });
