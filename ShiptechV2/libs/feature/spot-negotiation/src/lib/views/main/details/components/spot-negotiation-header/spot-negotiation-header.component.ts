@@ -314,11 +314,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             let val = this.selectedCounterparty[i];
             let checkIfSelectedCounterpartyExist = _.findIndex(
               currentLocationRows,
-              function(row) {
+              function(row) {               
                 return row.sellerCounterpartyId == val.id;
               }
             );
-            if (checkIfSelectedCounterpartyExist == -1) {
+            //if (checkIfSelectedCounterpartyExist == -1) {
               perLocationCtpys.push(<SpnegoAddCounterpartyModel>{
                 requestId: request.id,
                 requestGroupId: RequestGroupId,
@@ -350,7 +350,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 sellerCounterpartyName: val.name,
                 senRating: ''
               });
-            }
+            //}
           }
           selectedCounterparties.push(...perLocationCtpys);
         });
@@ -414,7 +414,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     if (selectedCounterparties?.length == 0){
       let selectedCounterpartyNames =  this.selectedCounterparty.map(innerData => {
         return innerData.name;
-      });
+      });    
       if(selectedCounterpartyNames?.length > 0)
       this.toastr.error("Counterparty "+selectedCounterpartyNames?.toString()+" already added");
       else

@@ -34,8 +34,7 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
   public searchText: string;
 
   public defaultColFilterParams = {
-    resetButton: true,
-    applyButton: true,
+    buttons:['reset', 'apply'],
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {

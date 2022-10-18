@@ -29,7 +29,8 @@ import {
   UpdateAdditionalCostList,
   SetOfferPriceFormulaId,
   setFormulaList,
-  EvaluatePrice
+  EvaluatePrice,
+  gridColumnState
 } from './actions/ag-grid-row.action';
 
 import {
@@ -42,7 +43,7 @@ import {
   SetTenantConfigurations,
   SetCounterparties
 } from './actions/request-group-actions';
-import _ from 'lodash';
+import _, { update } from 'lodash';
 
 export class SpotNegotiationStoreModel {
   staticLists: any;
@@ -75,6 +76,7 @@ export class SpotNegotiationStoreModel {
   offerPriceHistory: object | null;
   additionalCostList: Array<any>;
   formulaList : any;
+  gridColumnState : object | null;
   constructor() {
     // Initialization inside the constructor
     this.staticLists = {};
@@ -139,7 +141,8 @@ export class SpotNegotiationStoreModel {
     requestList: [],
     counterparties: [],
     additionalCostList: [],
-    formulaList:{}
+    formulaList:{},
+    gridColumnState : {}
   }
 })
 export class SpotNegotiationStore {
@@ -549,6 +552,23 @@ EditLocationRow(
       locationsRows: state.locationsRows.filter(e => e.requestId != payload)
     });
   }
+
+  @Action(gridColumnState)
+  addGridColumnState(
+    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { payload }: gridColumnState
+  ){
+    const state = getState();
+    let updatedPayload ={};
+    updatedPayload =  _.cloneDeep(state.gridColumnState);
+    let currLocGroupId = payload.slice(-1)[0].groupId;
+    let currReqLocId = currLocGroupId.substring(currLocGroupId.indexOf('_') + 1);
+    updatedPayload[state.currentRequestSmallInfo['id']+'-'+currReqLocId] = payload;
+    patchState({
+      gridColumnState: updatedPayload
+    });
+  }
+
   // Rows lists
   @Action(AddCounterpartyToLocations)
   AddCounterpartyToLocations(

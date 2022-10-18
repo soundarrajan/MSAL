@@ -335,6 +335,7 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       onColumnVisible: function(params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 20) {
           params.api.sizeColumnsToFit();
+
         }
       },
       frameworkComponents: {
@@ -564,7 +565,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
     return data.id;
   }
 
-  createProductHeader(product, requestLocationId, index) {
+  createProductHeader(product, requestLocationId, index, gridGroupState=null) {
+    let isOpened = false;
+    if(gridGroupState !== null){
+      gridGroupState = Object.keys(gridGroupState).map(key => {
+        return gridGroupState[key]; });
+      let currCol = gridGroupState.find(x=>x.groupId == product.productId + '_' + requestLocationId);
+      isOpened = (currCol)?currCol.open:false;
+    }
     var checkprodindex = index + 1;
     var productData = cloneDeep(product);
     productData.uomName = this.uomsMap.get(product.uomId);
@@ -579,7 +587,8 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       },
       marryChildren: true,
       resizable: false,
-      groupId: product.productId,
+      groupId: product.productId + '_' + requestLocationId,
+      openByDefault: isOpened,
       suppressMovable: true,
       lockVisible: true,
 
@@ -821,7 +830,11 @@ export class SpotNegotiationDetailsComponent implements OnInit {
               return "--"
               return null;
             }else{
-              return this.tenantService.amount(details.mjkj);
+                let mjkj= this.tenantService.amount(details?.mjkj)
+                if( details.mjkj != undefined || details.mjkj != null ){
+                let netData=[mjkj,details?.noLabs]
+                return netData;
+              }
             }
             
             
@@ -1274,8 +1287,19 @@ export class SpotNegotiationDetailsComponent implements OnInit {
             if(this.highlightedCells.length > 0){
               this.spotNegotiationService.highlihtArrayIni(this.highlightedCells,reqLocation.locationId);
             }
+
+            /* Column Header Group Expand / Collapse by default - Begin */
+            let currReqId = this.currentRequestSmallInfo.id;
+            let storeGridColumnState = spotNegotiation.gridColumnState;
+            let gridColumnState = null;
+            if(storeGridColumnState[currReqId+'-'+reqLocation.id]){
+              gridColumnState = storeGridColumnState[currReqId+'-'+reqLocation.id];
+              gridColumnState = (gridColumnState !== undefined && gridColumnState.length > 0) ? gridColumnState : null;
+            }
+            /* Column Header Group Expand / Collapse by default - End */
+
             this.columnDef_aggridObj[i].push(
-              this.createProductHeader(reqProduct, reqLocation.id, index)
+              this.createProductHeader(reqProduct, reqLocation.id, index, gridColumnState)
             );
           });
         });

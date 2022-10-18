@@ -19,12 +19,12 @@
 }
 
 .search-request-popup .searchButton .fa.fa-search {
-    font-size: 12px;
-    margin-top:6px;
-    color: #325187;
+    font-size: 11px;
+    margin-top:4px;
+    color: #333333;
 }
 
-.search-request-popup .searchButton .fa.fa-search:before{
+/* .search-request-popup .searchButton .fa.fa-search:before{
     content: "\f002" !important; 
-}
+} */
 
