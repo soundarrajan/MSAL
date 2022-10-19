@@ -116,8 +116,7 @@ import { DocDragDropUploadComponent } from './views/contract-negotiation-compone
     AGGridInputSelectRenderer,
     AGGridMultiDataRendererComponent,
     AGGridRatingChipRenderer,
-    fullWidthCellRenderer,
-    //AGGridCellRendererV2Component
+    fullWidthCellRenderer
   ],
   providers: [
     ContractNegotiationModuleResolver

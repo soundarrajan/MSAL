@@ -10,7 +10,7 @@
         <div class="header-btn">
             <button class="blue-button h-25" style="width:100px;border-radius:3px" [ngStyle]="formulaSelected?{'pointer-events': 'all'} : {'pointer-events': 'none'}" (click)="proceed();">Proceed</button>
             <span class="seperator-line"></span>
-            <span class="closeBtn" style="cursor:pointer;" mat-dialog-close></span>
+            <span class="closeBtn" style="cursor:pointer;" [mat-dialog-close]="true"></span>
         </div>
     </div>
     <mat-dialog-content style="overflow: hidden;">
