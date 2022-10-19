@@ -2473,6 +2473,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (this.formSubmitted) {
       return;
     }
+    if (this.formValues.paymentDetails?.paymentProofReceived && 
+      !this.formValues.paymentDetails?.comments) {
+      this.toastr.error('Payment proof comments is required');
+      return;
+    }
     if (
       !this.formValues.counterpartyDetails.counterpartyBankAccount &&
       this.tenantConfiguration?.invoiceConfiguration?.fieldVisibility
