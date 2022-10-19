@@ -15,6 +15,7 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   @Input() selectedRequestIndex;
 
   public portIndex: number = 0;
+  public fullHeaderWidth: any;
   statusList = [
     { key: 'AwaitingApproval', name: 'Awaiting Approval', className: 'await', count: 0 },
     { key: 'Approved', name: 'Approved', className: 'approved', count: 0 },
