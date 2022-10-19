@@ -19,7 +19,7 @@ import { ModifyOfferPeriodPopupComponent } from '../../views/contract-negotiatio
             (contextmenu)="$event.preventDefault();$event.stopPropagation();menuPopupTrigger.openMenu()">
             {{params.value}}
         </div>
-        <div (click)="params.value && openEmailPreview()" matTooltip="Preview RFQ" matTooltipClass="lightTooltip" [ngClass]="{'preview-rfq-icon':params.value}">
+        <div (click)="params.value && openEmailPreview(params)" matTooltip="Preview RFQ" matTooltipClass="lightTooltip" [ngClass]="{'preview-rfq-icon':params.value}">
         </div>
     </div>
 
@@ -53,7 +53,7 @@ import { ModifyOfferPeriodPopupComponent } from '../../views/contract-negotiatio
                 <div class="popup-icon-align">
                     <div class="delete-icon"></div>
                 </div>
-                <div class="fs-13" (click)="deleteRow(aliasMenuItems)">Remove counterparty</div>
+                <div class="fs-13" (click)="deleteRow()">Remove counterparty</div>
             </div>
         </ng-template>
     </mat-menu>
@@ -68,15 +68,15 @@ import { ModifyOfferPeriodPopupComponent } from '../../views/contract-negotiatio
 
     </div>
     <mat-menu #priceMenupopup="matMenu" class="darkPanel-add big">
-        <div class="add-block" (click)="formulaPricingPopup(i,j)">
+        <div class="add-block" (click)="formulaPricingPopup()">
             <div></div><span>Add/View Formula pricing</span>
         </div>
         <div class="divider-line"></div>
-        <div class="add-block" (click)="additionalCostPopup(i,j)">
+        <div class="add-block" (click)="additionalCostPopup()">
             <div></div><span>Add/View Additional Cost</span>
         </div>
         <div class="divider-line"></div>
-        <div class="add-block" (click)="modifyOfferPeriod($event,params,row)">
+        <div class="add-block" (click)="modifyOfferPeriod($event,params)">
             <div></div><span>Modify Offer Period</span>
         </div>
     </mat-menu>
@@ -145,7 +145,7 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
         this.params.api.applyTransaction({ remove: newData });
     }
 
-    formulaPricingPopup(index, rowindex) {
+    formulaPricingPopup() {
         const dialogRef = this.dialog.open(FormulaPricingPopupComponent, {
             width: '1164px',
             maxHeight: '95vh',
@@ -158,7 +158,7 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
         });
     }
 
-    additionalCostPopup(index, rowindex) {
+    additionalCostPopup() {
         const dialogRef = this.dialog.open(AdditionalCostPopupComponent, {
             width: '1170px',
             height: 'auto',
@@ -171,7 +171,7 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
         });
     }
 
-    modifyOfferPeriod(e, params, row) {
+    modifyOfferPeriod(e, params) {
         const dialogRef = this.dialog.open(ModifyOfferPeriodPopupComponent, {
             width: '350px',
             height: '150px',
@@ -179,7 +179,7 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            row.offerPeriod = result;
+            //row.offerPeriod = result;
         });
     }
 

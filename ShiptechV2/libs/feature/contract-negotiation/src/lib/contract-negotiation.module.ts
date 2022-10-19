@@ -24,7 +24,7 @@ import { AGGridInputSelectRenderer } from './core/ag-grid-renderers/ag-grid-inpu
 import { AGGridMultiDataRendererComponent } from './core/ag-grid-renderers/ag-grid-multi-data-renderer.component';
 import { AGGridRatingChipRenderer } from './core/ag-grid-renderers/ag-grid-rating-chip-renderer.component';
 import { fullWidthCellRenderer } from './core/ag-grid-renderers/fullWidthCellRenderer.component';
-import { AGGridCellRendererV2Component } from './core/ag-grid-renderers/ag-grid-cell-rendererv2.component';
+import { MatCheckboxHeaderComponent } from './core/ag-grid-renderers/mat-checkbox-header.component';
 import { ContractNegotiationModuleResolver } from './contract-negotiation-route.resolver';
 import { MainContractNegotiationComponent } from './views/main-contract-negotiation.component';
 import { ContractNegotiationHeaderComponent } from './views/contract-negotiation-components/contract-negotiation-header/contract-negotiation-header.component';
@@ -89,7 +89,7 @@ import { DocDragDropUploadComponent } from './views/contract-negotiation-compone
     AGGridMultiDataRendererComponent,
     AGGridRatingChipRenderer,
     fullWidthCellRenderer,
-    AGGridCellRendererV2Component
+    MatCheckboxHeaderComponent
   ],
   imports: [
     CommonModule,
@@ -116,8 +116,7 @@ import { DocDragDropUploadComponent } from './views/contract-negotiation-compone
     AGGridInputSelectRenderer,
     AGGridMultiDataRendererComponent,
     AGGridRatingChipRenderer,
-    fullWidthCellRenderer,
-    AGGridCellRendererV2Component
+    fullWidthCellRenderer
   ],
   providers: [
     ContractNegotiationModuleResolver

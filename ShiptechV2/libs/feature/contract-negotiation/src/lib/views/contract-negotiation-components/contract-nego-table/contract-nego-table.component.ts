@@ -25,7 +25,9 @@ export class ContractNegoTableComponent implements OnInit {
   @Input() sendToApprove;
   @ViewChild('picker') picker;
   @ViewChild('timepicker') timepicker: ElementRef<HTMLElement>;
-
+  
+  public dark:boolean = false;
+  public params: any;
   dummyId = 121;
   noQuoteRow = '';
   // periodicity = 'M';
@@ -270,7 +272,7 @@ export class ContractNegoTableComponent implements OnInit {
     });
   }
 
-  openEmailPreview(params) {
+  openEmailPreview() {
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
       width: '80vw',
       height: '90vh',

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { GridOptions } from '@ag-grid-enterprise/all-modules';
 import { LocalService } from '../../../services/local-service.service';
-import { MatCheckboxHeaderComponent } from '../../../core/mat-checkbox-header.component';
+import { MatCheckboxHeaderComponent } from '../../../core/ag-grid-renderers/mat-checkbox-header.component';
 
 import { AGGridCellClickRendererComponent } from '../../../core/ag-grid-renderers/ag-grid-cell-click-renderer.component';
 import { AGGridCellMenuRenderer } from '../../../core/ag-grid-renderers/ag-grid-cell-menu-renderer.component';
