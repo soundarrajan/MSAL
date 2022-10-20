@@ -146,7 +146,7 @@ export class SpotNegotiationStore {
   // Requests
   @Action(SetCurrentRequestSmallInfo)
   setCurrentRequestSmallInfo(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetCurrentRequestSmallInfo
   ): any {
     patchState({
@@ -156,7 +156,7 @@ export class SpotNegotiationStore {
 
   @Action(SetAvailableContracts)
   SetAvailableContracts(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetAvailableContracts
   ): any {
     patchState({
@@ -167,7 +167,7 @@ export class SpotNegotiationStore {
   // Requests
   @Action(SetCurrentRequest)
   setCurrentRequest(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetCurrentRequest
   ): void {
     patchState({
@@ -177,7 +177,7 @@ export class SpotNegotiationStore {
   // Requests
   @Action(SetRequests)
   setRequests(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetRequests
   ): void {
     patchState({   
@@ -187,7 +187,7 @@ export class SpotNegotiationStore {
   // Tenant Configuration
   @Action(SetTenantConfigurations)
   setTenantConfigurations(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetTenantConfigurations
   ): void {
     patchState({
@@ -197,7 +197,7 @@ export class SpotNegotiationStore {
 
   @Action(SetLocations)
   setLocations(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetLocations
   ): void {
     patchState({
@@ -207,7 +207,7 @@ export class SpotNegotiationStore {
 
   @Action(EditLocations)
   EditLocations(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: EditLocations
   ) {
     patchState({
@@ -222,7 +222,7 @@ export class SpotNegotiationStore {
   // Group Of Requests Id
   @Action(SetRequestGroupId)
   setRequestGroupId(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetRequestGroupId
   ): void {
     patchState({
@@ -232,7 +232,7 @@ export class SpotNegotiationStore {
   // Group Of QuoteByDate and timeZoneId
   @Action(SetQuoteDateAndTimeZoneId)
   SetQuoteDateAndTimeZoneId(
-    { patchState }: StateContext<SpotNegotiationStoreModel>,
+    { patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetQuoteDateAndTimeZoneId
   ): void {
     patchState({
@@ -243,7 +243,7 @@ export class SpotNegotiationStore {
   // Static lists
   @Action(SetStaticLists)
   setStaticLists(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetStaticLists
   ): void {
     patchState({
@@ -254,7 +254,7 @@ export class SpotNegotiationStore {
   //// action to set full list of look up counterparties from cache
   @Action(SetCounterpartyList)
   SetCounterparties(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetCounterpartyList
   ): void {
     patchState({
@@ -264,7 +264,7 @@ export class SpotNegotiationStore {
 
   @Action(SetCounterparties)
   SetLookupCounterparties(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetCounterparties
   ): void {
     patchState({
@@ -274,7 +274,7 @@ export class SpotNegotiationStore {
 
   @Action(SetRequestList)
   SetRequestList(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetRequestList
   ): void {
     patchState({
@@ -285,7 +285,7 @@ export class SpotNegotiationStore {
   //Append Request List
   @Action(AppendRequestList)
   AppendRequestList(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: AppendRequestList
   ) {
     const state = getState();
@@ -297,7 +297,7 @@ export class SpotNegotiationStore {
 
   @Action(EditCounterpartyList)
   EditCounterpartyList(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: EditCounterpartyList
   ) {
     patchState({
@@ -313,7 +313,7 @@ export class SpotNegotiationStore {
   //Append CounterParty List
   @Action(AppendCounterpartyList)
   AppendCounterpartyList(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: AppendCounterpartyList
   ) {
     const state = getState();
@@ -326,7 +326,7 @@ export class SpotNegotiationStore {
   //Add Physical Sypplier Counterparty List
   @Action(SetPhysicalSupplierCounterpartyList)
   SetPhysicalSupplierCounterparties(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetPhysicalSupplierCounterpartyList
   ): void {
     patchState({
@@ -337,7 +337,7 @@ export class SpotNegotiationStore {
   //Append Physical Sypplier Counterparty List
   @Action(AppendPhysicalSupplierCounterpartyList)
   AppendPhysicalSupplierCounterpartyList(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: AppendPhysicalSupplierCounterpartyList
   ) {
     const state = getState();
@@ -349,7 +349,7 @@ export class SpotNegotiationStore {
 
   @Action(AppendLocationsRowsOriData)
   AppendLocationsRowsOriData (
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: AppendLocationsRowsOriData
   ) {
     const state = getState();
@@ -363,7 +363,7 @@ export class SpotNegotiationStore {
   // Rows lists
   @Action(SetLocationsRows)
   SetLocationsRows(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetLocationsRows
   ) {
     patchState({
@@ -372,7 +372,7 @@ export class SpotNegotiationStore {
   }
   @Action(SetLocationsRowsOriData)
   SetLocationsRowsOriData(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetLocationsRowsOriData
   ): void {
     patchState({
@@ -382,7 +382,7 @@ export class SpotNegotiationStore {
 
   @Action(RemoveLocationsRowsOriData)
   RemoveLocationsRowsOriData(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: RemoveLocationsRowsOriData
   ) {
     patchState({
@@ -394,7 +394,7 @@ export class SpotNegotiationStore {
   // Rows lists
   @Action(SetLocationsRowsPriceDetails)
   SetLocationsRowsPriceDetails(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetLocationsRowsPriceDetails
   ) {
     patchState({
@@ -404,7 +404,7 @@ export class SpotNegotiationStore {
 
   @Action(setFormulaList)
   setFormulaList(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: setFormulaList
   ) {
     patchState({
@@ -415,7 +415,7 @@ export class SpotNegotiationStore {
 // Rows lists
 @Action(EditLocationRow)
 EditLocationRow(
-  { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+  { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
   { payload }: EditLocationRow
 ) {
   let currentLocRows = payload;
@@ -441,7 +441,7 @@ EditLocationRow(
 
   @Action(SelectSeller)
   addUser(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SelectSeller
   ) {
     const state = getState();
@@ -453,7 +453,7 @@ EditLocationRow(
 
   @Action(DeleteSeller)
   deleteUser(
-    { getState, setState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, setState }: StateContext<ContractNegotiationStoreModel>,
     { RequestLocationSellerId }: DeleteSeller
   ) {
     const state = getState();
@@ -468,7 +468,7 @@ EditLocationRow(
 
   @Action(RemoveCounterparty)
   removeCounterparty(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: RemoveCounterparty
   ) {
     patchState({
@@ -481,7 +481,7 @@ EditLocationRow(
   // Rows lists
   @Action(AddRequest)
   AddRequest(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: AddRequest
   ) {
     const state = getState();
@@ -494,7 +494,7 @@ EditLocationRow(
   // update requests
   @Action(UpdateRequest)
   UpdateRequest(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: UpdateRequest
   ) {
     const state = getState();
@@ -507,7 +507,7 @@ EditLocationRow(
   // update additional cost list
   @Action(UpdateAdditionalCostList)
   UpdateAdditionalCostList(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: UpdateAdditionalCostList
   ) {
     patchState({
@@ -518,7 +518,7 @@ EditLocationRow(
   // update specific requests
   @Action(UpdateSpecificRequests)
   UpdateSpecificRequests(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: UpdateSpecificRequests
   ) {
     const state = getState();
@@ -540,7 +540,7 @@ EditLocationRow(
   /* delink Request */
   @Action(DelinkRequest)
   DelinkRequest(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: DelinkRequest
   ) {
     const state = getState();
@@ -552,7 +552,7 @@ EditLocationRow(
   // Rows lists
   @Action(AddCounterpartyToLocations)
   AddCounterpartyToLocations(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: AddCounterpartyToLocations
   ) {
     const state = getState();
@@ -590,7 +590,7 @@ EditLocationRow(
 
   @Action(SetOfferPriceFormulaId)
   SetOfferPriceFormulaId(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetOfferPriceFormulaId
   ) {
     let locRows = getState().locationsRows;
@@ -612,7 +612,7 @@ EditLocationRow(
 
   @Action(EvaluatePrice)
   EvaluateOfferPrice(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetOfferPriceFormulaId
   ) {
     let locRows = getState().locationsRows;
@@ -634,7 +634,7 @@ EditLocationRow(
   }
   @Action(SetNetEnergySpecific)
   SetNetEnergySpecific(
-    { getState, patchState }: StateContext<SpotNegotiationStoreModel>,
+    { getState, patchState }: StateContext<ContractNegotiationStoreModel>,
     { payload }: SetNetEnergySpecific
   ) {
     patchState({
@@ -643,22 +643,22 @@ EditLocationRow(
   }
 
   @Selector()
-  static locationRows(state: SpotNegotiationStoreModel) {
+  static locationRows(state: ContractNegotiationStoreModel) {
     return state.locationsRows;
   }
 
   @Selector()
-  static getStaticList(state: SpotNegotiationStoreModel) {
+  static getStaticList(state: ContractNegotiationStoreModel) {
     return state.staticLists;
   }
 
   @Selector()
-  static getCounterpartyList(state: SpotNegotiationStoreModel) {
+  static getCounterpartyList(state: ContractNegotiationStoreModel) {
     return state.counterpartyList;
   }
 
   @Selector()
-  static selectedSellers(state: SpotNegotiationStoreModel) {
+  static selectedSellers(state: ContractNegotiationStoreModel) {
     return state.locationsRows.filter(
       row =>
         row.requestId === state.currentRequestSmallInfo['id'] && row.isSelected
