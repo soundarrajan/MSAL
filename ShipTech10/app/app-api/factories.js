@@ -3951,6 +3951,9 @@ APP_API.factory('$Api_Service', [
                                     Pagination: {
                                         Skip: 0,
                                         Take: 3
+                                    },
+                                    SortList:{
+                                        SortList:[]
                                     }
                                 }
                             },
@@ -6602,7 +6605,7 @@ APP_API.factory('$Api_Service', [
                         ];
                     }
 
-                    //Common
+                    //Common                 
                     var datas = { Payload: payload };
 
                     // treasuryreport
@@ -6614,8 +6617,13 @@ APP_API.factory('$Api_Service', [
                         else{
                             orderAfter = $rootScope.adminConfiguration.invoice.orderAfter;
                         }
+                       
                         var UIFilters = { UIFilters : { "OrderAfterDate": orderAfter.substr(0, 10) } };
+                         /* Treasury Report -- sorted  excel export  */         
                         datas =  angular.extend( datas, UIFilters);
+                       if(param.action == "export_xls"){                         
+                             datas['Payload']['SortList'] =  { SortList:$rootScope.sortList };
+                        }                       
                     }
                     // console.log(param.app,param.screen);
                     // debugger;
@@ -7177,7 +7185,7 @@ APP_API.factory('$Api_Service', [
                             });
                         };
 
-                        // debugger;
+                      
                         if (param.field.param.ClaimTypeName == 'Quantity') {
                             apiJSON = {
                                 Payload: {
