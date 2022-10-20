@@ -70,13 +70,13 @@
                                 </div>
                             </td>
                             <td class="rating-column" [matTooltip]="row.genRating" matTooltipClass="lightTooltip"
-                                (click)="sellerratingpopup('general',row.genRating,'',row.portRating,'')">
+                                (click)="sellerratingpopup(row.data,'gen-rating')">
                                 <div class="rating-chip">
                                     <div class="chip">{{row.genRating}} <span class="star"></span> </div>
                                 </div>
                             </td>
                             <td class="rating-column" style="border-right: 2px solid  #E6E8EC!important;"
-                                (click)="sellerratingpopup('port',row.genRating,'',row.portRating,'')"
+                                (click)="sellerratingpopup(row.data,'port-rating')"
                                 [matTooltip]="row.portRating" matTooltipClass="lightTooltip">
                                 <div class="rating-chip">
                                     <div class="chip">{{row.portRating}} <span class="star"></span></div>

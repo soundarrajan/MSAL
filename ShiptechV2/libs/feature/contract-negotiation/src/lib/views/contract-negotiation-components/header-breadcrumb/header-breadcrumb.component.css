@@ -1,0 +1,11 @@
+.breadcrumbs-container{
+  background-color: unset;
+  height: unset;
+  margin: unset;
+}
+.page-bar {
+  height: 43px !important;
+}
+shiptech-breadcrumbs {
+  height: 43px !important;
+}

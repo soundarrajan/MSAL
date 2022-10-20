@@ -68,9 +68,10 @@ export class ContractNegoTableComponent implements OnInit {
 
   constructor(public dialog: MatDialog, private localService: LocalService, private toaster: ToastrService) {
   }
-
+  
   ngOnInit(): void {
     // this.initialDate.setValue(new Date('12/09/2022'));
+    console.log('contractData:::', this.contractData);
     this.localService.sendRFQUpdate.subscribe((r) => {
       if (r == true) {
         this.contractData.forEach((item) => {
@@ -135,6 +136,7 @@ export class ContractNegoTableComponent implements OnInit {
     if (this.contractData) {
       while (statusId <= 4) {
         let items = this.contractData.filter((record) => record.status == statusId);
+        console.log('items::', items)
         this.rowData.push({
           "status": statusId,
           "statusName": this.getStatusName(statusId.toString()),
@@ -168,12 +170,22 @@ export class ContractNegoTableComponent implements OnInit {
     this.localService.setContractNoQuote(value);
     this.noQuoteRow = rowindex;
   }
-  sellerratingpopup(type, genRating, genPrice, portRating, portPrice) {
-    const dialogRef = this.dialog.open(SellerratingpopupComponent, {
+  sellerratingpopup(data : any, popupType:string) {
+      let type = (popupType == 'gen-rating')?'genRating':'portRating';
+      const dialogRef = this.dialog.open(SellerratingpopupComponent, {
       width: '1164px',
       height: '562px',
       panelClass: 'additional-cost-popup',
-      data: { type: type, gRating: genRating, gPrice: genPrice, pRating: portRating, pPrice: portPrice }
+      /*data: {
+        sellerId: data.sellerCounterpartyId,
+        locationId : data.locationId,
+        popupType : type
+      }*/
+      data: {
+        sellerId: 385,
+        locationId: 112,
+        popupType: type
+      }
     });
     dialogRef.afterClosed().subscribe(result => {
     });

@@ -21,6 +21,8 @@ import { AGGridCellRendererStatusComponent } from './ag-grid/ag-grid-cell-status
 import { ControlTowerPopupComponent } from './control-tower-popup/control-tower-popup.component';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { RatingModule } from 'ng-starrating';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
@@ -33,6 +35,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatRadioModule,
     SharedModule,
     DragDropModule,
+    RatingModule,
+    NgxSpinnerModule,
     AgGridModule.withComponents([
       AGGridCellActionsComponent,
       AGGridCellEditableComponent,

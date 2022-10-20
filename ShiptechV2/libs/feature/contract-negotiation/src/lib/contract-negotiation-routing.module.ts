@@ -21,12 +21,18 @@ const routes: Routes = [
             component: ContractNegotiationComponent,
             //redirectTo: KnownContractNegotiationRoutes.RequestsList,
             pathMatch: 'full',
-            data: { title: 'Contract Requests List' }
+            data: {
+              title: 'Contract Requests List',
+              breadcrumb: 'Requests List'
+            }
           },
           {
             path: `${KnownContractNegotiationRoutes.RequestsList}/:${KnownContractNegotiationRoutes.RequestIdParam}`,
             component: MainPageComponent,
-            data: { breadCrumb1: 'Contract Negotiation' }
+            data: {
+              title: 'Negotiation',
+              breadcrumb: 'Negotiation'
+            }
           }
         ]
       }
