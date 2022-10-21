@@ -103,7 +103,7 @@ export class QcReportService extends BaseStoreService implements OnDestroy {
   ) {
     super(store, loggerFactory.createLogger(QcReportService.name));
   }
-
+  vesselId: any;
   protected get reportDetailsState(): IQcReportDetailsState {
     // Note: Always get a fresh reference to the state.
     return (<IAppState>this.store.snapshot()).quantityControl.report.details;
