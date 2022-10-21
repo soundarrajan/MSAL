@@ -12,7 +12,8 @@ import {
   AppendLocationsRowsOriData,
   EditLocationRow,
   EditLocations,
-  UpdateRequest
+  UpdateRequest,
+  gridColumnState
 } from '../../store/actions/ag-grid-row.action';
 import { MarketpricehistorypopupComponent } from '../../views/main/details/components/spot-negotiation-popups/marketpricehistorypopup/marketpricehistorypopup.component';
 
@@ -26,6 +27,7 @@ import moment from 'moment';
 import { BestcontractpopupComponent } from '../../views/main/details/components/spot-negotiation-popups/bestcontractpopup/bestcontractpopup.component';
 import _, { cloneDeep } from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ControlTowerQualityClaimsListGridViewModel } from 'libs/feature/control-tower/src/lib/views/control-tower/view/components/control-tower-general-view-list/view-model/control-tower-quality-claims-grid.view-model';
 
 @Component({
   selector: 'app-loading-overlay',
@@ -329,7 +331,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
           <div
             class="img resizeIcons"
             [ngClass]="this.expandState"
-            (click)="expandOrCollapse(true)"
+            (click)="expandOrCollapse()"
           ></div>
         </div>
       </div>
@@ -352,7 +354,6 @@ export class ShiptechCustomHeaderGroup {
   public params: any;
   selected = 'eur';
   selected1 = 'bbl';
-  isExpand: boolean;
   public resizeIconss: any;
   public expandState: string;
   closureValue: any;
@@ -553,21 +554,27 @@ export class ShiptechCustomHeaderGroup {
     this.syncExpandButtons();
   }
 
-  expandOrCollapse(isExpanded=false) {
-    debugger;
-      const currentState = this.params.columnGroup
-      .getOriginalColumnGroup()
-      .isExpanded();
-      let productId = this.store.selectSnapshot<any>((state: any) => {
-        return state.spotNegotiation.locations.filter(flt => flt.id == this.params.requestLocationId)[0]?.requestProducts.map(res=> res.productId);
-      });
-      productId?.forEach(groupId => {
-        this.params.columnApi.setColumnGroupOpened(groupId.toString(), !currentState);
-      });
-      // let  groupState = this.params.columnApi.getColumnGroupState();
-      // console.log("groupState",groupState);
+  expandOrCollapse() {
+    let currReqId = 0;
+    let currGroupState = [];
+    const currentState = this.params.columnGroup;
+    let storeGroupState = this.store.selectSnapshot<any>((state: any) => {
+      currReqId = state.spotNegotiation.currentRequestSmallInfo.id;
+      return state.spotNegotiation.gridColumnState;
+    });
+    let currReqLocId = this.params.columnGroup.groupId.toString();
+    currReqLocId = currReqLocId.substring(currReqLocId.indexOf('_') + 1);
+    if(storeGroupState[currReqId+'-'+currReqLocId]){
+      currGroupState = _.cloneDeep(storeGroupState[currReqId+'-'+currReqLocId]);
+    } else {
+      currGroupState = _.cloneDeep(this.params.columnApi!.getColumnGroupState());
+    }
+    currGroupState = Object.keys(currGroupState).map(key => { return currGroupState[key] });
+    currGroupState.forEach(product => {
+      product.open = !this.params.columnGroup.getOriginalColumnGroup().isExpanded();
+    });
     if (currentState) this.params.api.sizeColumnsToFit();
-     // this.params.columnApi.getColumnGroupState();
+    this.store.dispatch(new gridColumnState(currGroupState));
   }
 
   invokeParentMethod(): void {

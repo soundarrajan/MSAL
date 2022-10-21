@@ -645,6 +645,38 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
     </div>
 
     <div
+      *ngIf="
+        params.type == 'mj$' && !(this.params.data?.requestOffers && this.params.data?.requestOffers[params.index]?.hasNoQuote)
+      "
+      class="addTpr"
+    >
+      <span *ngIf="!params.value&& params.value != 0">-</span>
+      <span *ngIf="params.value!=null && params.value != undefined" [matTooltip]="priceCalFormatValue(params.value[0])+' (based on '+params.value[1]+' labs)' " matTooltipClass="lightTooltip">
+        {{params.value[0]  | priceFormatValue : priceFormatValue1}} </span>
+    </div>
+    <div
+      *ngIf="
+        params.type == 'mt$' && !(this.params.data?.requestOffers && this.params.data?.requestOffers[params.index]?.hasNoQuote)
+      "
+      class="addTpr"
+    >
+      <span *ngIf="!params.value && params.value != 0">-</span>
+      <span [matTooltip]="priceCalFormatValue(params.value)" matTooltipClass="lightTooltip">{{
+        params.value | priceFormatValue : priceFormatValue1 
+      }}</span>
+    </div>
+    <div
+      *ngIf="
+        params.type == 'tco$' && !(this.params.data?.requestOffers && this.params.data?.requestOffers[params.index]?.hasNoQuote)
+      "
+      class="addTpr"
+    >
+      <span *ngIf="!params.value && params.value != 0">-</span>
+      <span [matTooltip]="priceCalFormatValue(params.value)" matTooltipClass="lightTooltip">{{
+        params.value | priceFormatValue : priceFormatValue1 
+      }}</span>
+    </div>
+    <div
       *ngIf="params.type == 'totalOffer'"
       class="addTpr defaultAddicon total-offer"
       [matTooltip]="
@@ -723,16 +755,6 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
           <span class="search-icon-dark"></span>
         </span>
       </div>
-    </div>
-    
-    <div *ngIf="params.type == 'mj$'">
-    {{ params.value }}
-    </div>
-    <div *ngIf="params.type == 'mt$'">
-    {{ params.value }}
-    </div>
-    <div *ngIf="params.type == 'tco$'">
-    {{ params.value }}
     </div>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush

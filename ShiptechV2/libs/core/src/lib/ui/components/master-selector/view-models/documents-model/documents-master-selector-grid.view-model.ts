@@ -59,8 +59,7 @@ export class DocumentsMasterSelectorGridViewModel extends BaseGridViewModel {
 
   public searchText: string;
   public defaultColFilterParams = {
-    resetButton: true,
-    applyButton: true,
+    buttons:['reset', 'apply'],
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {

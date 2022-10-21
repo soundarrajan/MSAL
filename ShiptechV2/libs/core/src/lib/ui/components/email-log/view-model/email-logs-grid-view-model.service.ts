@@ -56,8 +56,7 @@ export class EmailLogsGridViewModel extends BaseGridViewModel {
   }
 
   public defaultColFilterParams = {
-    resetButton: true,
-    applyButton: true
+    buttons:['reset', 'apply']
   };
 
   editCol: ITypedColDef<IEmailLogsItemDto> = {

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   Inject,
   Input,
   OnInit
@@ -31,6 +32,7 @@ import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/re
 import { AppConfig } from '@shiptech/core/config/app-config';
 import { HttpClient } from '@angular/common/http';
 import { ServerQueryFilter } from '@shiptech/core/grid/server-grid/server-query.filter';
+import { AutoComplete } from 'primeng/autocomplete';
 const routes = {
   getDocumentsType: (serverUrl: string) => serverUrl  + '/api/masters/documenttype/list',
 
@@ -75,6 +77,7 @@ export class AutocompleteComponent extends MasterAutocompleteComponent
   private _TRANSACTION_TYPE_ID: number = 46;
   protected _apiUrl = this.appConfig.v1.API.BASE_URL_DATA_MASTERS;
 
+  @ContentChild(AutoComplete, { static: true }) autoComplete: AutoComplete;
 
   constructor(
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi,

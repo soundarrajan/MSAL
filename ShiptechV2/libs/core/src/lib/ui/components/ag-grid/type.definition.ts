@@ -80,9 +80,10 @@ export interface TypedFilterParams<TData = any, TField = any>
   extends Omit<Partial<IFilterParams>, 'colDef' | 'rowModel' | 'valueGetter'> {
   colDef?: ITypedColDef<TData, TField>;
   rowModel?: ITypedRowModel<TData>;
-  clearButton?: boolean;
-  resetButton?: boolean;
-  applyButton?: boolean;
+  // clearButton?: boolean;
+  // resetButton?: boolean;
+  // applyButton?: boolean;
+  buttons?: any;
   inRangeInclusive?: boolean;
   valueGetter?: (rowNode: TypedRowNode<TData>) => any;
   comparator?: object;
@@ -243,9 +244,10 @@ export interface ITypedFilterParams {
 }
 
 export interface ITypedProvidedFilterParams extends IFilterParams {
-  clearButton?: boolean;
-  resetButton?: boolean;
-  applyButton?: boolean;
+  // clearButton?: boolean;
+  // resetButton?: boolean;
+  // applyButton?: boolean;
+  buttons?: any;
   newRowsAction?: string;
   debounceMs?: number;
 }

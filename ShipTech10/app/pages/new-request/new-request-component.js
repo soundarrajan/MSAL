@@ -2387,6 +2387,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                     }
                     let companyToDefault = null;
 
+                    // Assigning company name for New Request //
                     if (vessel.operatingCompany) {
                         companyToDefault = vessel.operatingCompany;
                     } else if (vessel.voyages.length > 0) {
@@ -2395,25 +2396,27 @@ angular.module('shiptech.pages').controller('NewRequestController', [
                                 if(ctrl?.stateParams?.voyageId || ctrl.request.id > 0){                           
                                     companyToDefault = vessel.voyages[0].voyageDetails[0].company;
                                 }
-                            }  
+                            }
                         }
+                    }
+                    
+                    // Assigning company name for Edit Request //
+                    if (ctrl.request.id > 0) {
+                        if (ctrl.request.company !== null) // Vessel Detail
+                            companyToDefault = ctrl.request.company;
+                        else if (ctrl.request.locations.length > 0) // Port Section
+                            companyToDefault = ctrl.request.locations[0].company;
                     }
 
                     if (!ctrl.request.company) {
                         ctrl.request.company = {};
                     }
-                    
-                    /* New Request - requestStatus = Created */
-                    if (ctrl.request.id > 0 && ctrl.request.requestStatus.name == "Created") {
-                        if(ctrl.request.company != null) // Vessel Detail
-                            companyToDefault = ctrl.request.company;
-                        else if(ctrl.request.locations.length > 0) // Port Section
-                            companyToDefault = ctrl.request.locations[0].company;
-                    }
   
+                    // Vessel Detail - Set value for company name //
                     ctrl.request.company.name = companyToDefault?.name;
                     ctrl.request.company.id = companyToDefault?.id;
-                    
+
+                    // Port Section - Set value for company name //
                     if(ctrl.request.locations.length > 0) {
                         ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.name = companyToDefault.name:'';
                         ctrl.request.locations[0]?.company ? ctrl.request.locations[0].company.id = companyToDefault.id:0;
