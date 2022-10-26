@@ -36,8 +36,7 @@ export class CompleteListGridViewModel extends BaseGridViewModel {
   public paramsServerSide: IServerSideGetRowsParams;
   public exportUrl: string;
   public defaultColFilterParams = {
-    resetButton: true,
-    applyButton: true,
+    buttons:['reset', 'apply'],
     precision: () => this.format.quantityPrecision
   };
   gridOptions: GridOptions = {

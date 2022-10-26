@@ -56,8 +56,7 @@ export class QcSurveyHistoryListGridViewModel extends BaseGridViewModel {
   }
 
   public defaultColFilterParams = {
-    resetButton: true,
-    applyButton: true,
+    buttons:['reset', 'apply'],
     precision: () => this.format.quantityPrecision
   };
 

@@ -66,8 +66,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   public toDate = new FormControl(moment().format('YYYY-MM-DD'));
 
   public defaultColFilterParams = {
-    resetButton: true,
-    applyButton: true,
+    buttons:['reset', 'apply'],
     precision: () => this.format.quantityPrecision
   };
 
@@ -631,7 +630,7 @@ export class ControlTowerQualityLabsListGridViewModel extends BaseGridViewModel 
   }
 
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
-    const grid1 = this.gridApi.getSortModel();
+    // const grid1 = this.gridApi.getSortModel();
     this.getFiltersCount();
     this.formatFilterModel(params);
     this.checkStatusAvailable();

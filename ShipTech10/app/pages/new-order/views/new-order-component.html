@@ -864,7 +864,7 @@
                                                                    name="{{ $ctrl.sellerDetails.Seller.caption | translate }}"
                                                                    ng-blur="!$ctrl.data.seller.name ? $ctrl.clearPhysicalSupplier() : null"
                                                                    ng-disabled="$ctrl.data.status != null && ($ctrl.data.status.id === $ctrl.STATUS['Cancelled'].id || $ctrl.data.status.id === $ctrl.STATUS['Closed'].id)"
-                                                                   ng-model="$ctrl.data.seller.name" decode-input-format
+                                                                   ng-model="$ctrl.data.broker.name == null ? $ctrl.data.seller.name : null" decode-input-format
                                                                    ng-required="true" typeahead-append-to-body="true"
                                                                    typeahead-editable="false" typeahead-min-length="1"
                                                                    typeahead-on-select="$ctrl.selectSeller($item)"

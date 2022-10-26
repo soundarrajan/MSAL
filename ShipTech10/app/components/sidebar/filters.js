@@ -139,14 +139,26 @@ angular.module('shiptech.components').controller('FiltersController', [
         }
 
         $scope.applyFilters = function (data, noSlide, fromcol, column, defaultConf) {
+        
             if(data && data.length > 0 && data[0].value ) {
                 data[0].value['0'] = data[0]?.value['0']?.toString();
             }
+        
             // $scope.currentList = $state.current.url.replace(":screen_id", $state.params.screen_id).replace("/", "");
             if ($scope.currentList === 'schedule-dashboard-calendar' || $scope.currentList === 'schedule-dashboard-table' || $scope.currentList === 'schedule-dashboard-timeline'){
                 data = $scope.CombineGlobalAndPrecedenceData(data);
+               
+                if($scope.currentList === 'schedule-dashboard-table'){
+                    if(data) {
+                        if(data[0] && !data[0].value){
+                            data.forEach(obj => {
+                                obj.value = [undefined];
+                            });
+                        }
+                    }
+                }
             }
-
+            
             if (typeof $rootScope.lastFilterApplied == 'undefined') {
             	$rootScope.lastFilterApplied = 0;
             }
@@ -190,7 +202,6 @@ angular.module('shiptech.components').controller('FiltersController', [
                 if(data.clear) {
                     data = [];
                 }
-
                 var loopList = [];
                 if($scope.currentList === 'schedule-dashboard-calendar') {
                     loopList = data.Filters;
@@ -207,9 +218,18 @@ angular.module('shiptech.components').controller('FiltersController', [
             }
 
             let isInvalidValue = false;
-  
-            if($scope.currentList === 'schedule-dashboard-table'){
+         
+            if(loopList == undefined){
+                loopList = data;
+            }
+            if($scope.currentList === 'schedule-dashboard-table' || $scope.currentList === 'schedule-dashboard-calendar'){
                 $.each(loopList, (k, v) => {
+
+                    if($scope.currentList === 'schedule-dashboard-calendar'){
+                        if(v.condition.conditionNrOfValues == 0){
+                            loopList[k]['value'] = undefined;
+                        }
+                    }
            
                     if (v.condition.conditionNrOfValues && (!v.value || v.value == 'Invalid date')) {
                         isInvalidValue = true;
@@ -232,6 +252,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                         }
                     });
                 });
+              
             }else{
                 $.each(loopList, (k, v) => {
                     if (v.condition.conditionNrOfValues && (!v.value || v.value == 'Invalid date')) {
@@ -248,6 +269,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     });
                 });
             }
+            console.log('vinoth: ', data);
             if (isInvalidValue) {
                 toastr.error('Please enter a value');
             	return false;
