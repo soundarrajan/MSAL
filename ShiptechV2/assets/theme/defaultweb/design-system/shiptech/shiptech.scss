@@ -855,10 +855,6 @@
         .page-bar {
             margin: 0 !important;
             height: 33px;
-
-            .breadcrumbs-container .ui-breadcrumb {
-                padding-left: 0px !important;
-            }
         }
     }
 
@@ -914,7 +910,7 @@
                 padding-left: 23px !important;
 
                 ul {
-                    font-size: 14px;
+                    font-size: 13px;
                     display: flex;
                     align-items: center;
                     color: #FFFFFF;

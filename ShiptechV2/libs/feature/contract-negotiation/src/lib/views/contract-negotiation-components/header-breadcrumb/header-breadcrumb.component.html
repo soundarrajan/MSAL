@@ -1,38 +1,3 @@
-<!--shiptech-breadcrumbs class="col-md-6"> </shiptech-breadcrumbs-->
-<!--div class="st-breadcrumbs-progress-bar col-md-6" style="margin: 0px 15px;">
-  <ul class="page-breadcrumb">
-    <li
-      *ngFor="let navItem of navigationItems"
-      class="btn btn-fit-height {{ navItem.indexStatus }}"
-      title="{{ navItem.entityId }}"
-    >
-      <a *ngIf="navItem.url" href="{{ navItem.url }}" class="breadcrumb-a">
-        {{ navItem.displayName }}
-      </a>
-      <span *ngIf="!navItem.url">
-        {{ navItem.displayName }}
-      </span>
-    </li>
-  </ul>
-</div-->
-
-
-<!--div class="page-bar" style="position: fixed; width: 100%;">
-  <div class="col-md-4">
-    <div class="breadcrumbs-container">
-        <div class="ui-breadcrumb">
-            <ul>
-                <li class="home" id="Home001"></li>
-                <li class="link" id="BrdSrm02">Contract</li>
-                <li class="arrow">></li>
-                <li class="link" id="BrdSrm03">Request List</li>
-                <li class="arrow">></li>
-                <li class="link" id="BrdSrm03">Negotiation</li>
-            </ul>
-        </div>
-    </div>
-  </div>
-</div-->
 <div
   fxLayout="row"
   fxLayoutAlign="start center"
@@ -40,31 +5,3 @@
 >
 <shiptech-breadcrumbs class="col-md-6"> </shiptech-breadcrumbs>
 </div>
-<!--div class="page-bar" style="position: fixed; width: 100%;">
-  <div class="col-md-4">
-    <div class="breadcrumbs-container">
-        <div class="ui-breadcrumb">
-            <ul-->
-              <!--li
-                *ngFor="let navItem of navigationItems"
-                class="btn btn-fit-height {{ navItem.indexStatus }}"
-                title="{{ navItem.entityId }}"
-              >
-                <a *ngIf="navItem.url" href="{{ navItem.url }}" class="breadcrumb-a">
-                  {{ navItem.displayName }}
-                </a>
-                <span *ngIf="!navItem.url">
-                  {{ navItem.displayName }}
-                </span>
-              </li-->
-                <!--li class="home" id="Home001"></li>
-                <li class="link" id="BrdSrm02">Contract</li>
-                <li class="arrow">></li>
-                <li class="link" id="BrdSrm03">Request List</li>
-                <li class="arrow">></li>
-                <li class="link" id="BrdSrm03">Negotiation</li>
-            </ul>
-        </div>
-    </div>
-  </div>
-</div-->
