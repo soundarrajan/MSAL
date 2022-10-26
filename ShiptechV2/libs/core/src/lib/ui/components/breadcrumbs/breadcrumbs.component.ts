@@ -81,7 +81,8 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
       : '_self';
     newBreadCrumb.routerLink = url;
     const data = child.snapshot.routeConfig.data;
-    if (data) {
+    let isBreadCrumbExist = ( data ) ? breadcrumbs.findIndex(x => x.label == data[this.ROUTE_DATA_BREADCRUMB] ) : -1;
+    if (data && isBreadCrumbExist === -1) {
       if (data[this.ROUTE_DATA_BREADCRUMB]) {
         if (data[this.ROUTE_DATA_BREADCRUMB_URL]) {
           newBreadCrumb.url = data[this.ROUTE_DATA_BREADCRUMB_URL];

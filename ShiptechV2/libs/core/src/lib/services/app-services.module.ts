@@ -54,6 +54,11 @@ import {
   APP_INSIGHTS_SERVICE,
   MyMonitoringService
 } from './app-insights/logging.service';
+import { 
+  COMMON_API_SERVICE,
+  CommonApiService 
+} from '@shiptech/core/services/common/common-api.service';
+import { CommonService } from './common/common-service.service';
 
 @NgModule({
   imports: [],
@@ -120,6 +125,11 @@ export class AppServicesModule {
             ? MyMonitoringService
             : MyMonitoringService
         },
+        {
+          provide: COMMON_API_SERVICE,
+          useClass: environment.production ? CommonApiService : CommonApiService
+        },
+        CommonService,
         // {
         //   provide: RouteReuseStrategy,
         //   useClass: AppRouteReuseStrategy

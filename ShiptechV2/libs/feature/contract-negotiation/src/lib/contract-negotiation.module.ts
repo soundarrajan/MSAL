@@ -15,6 +15,7 @@ import { MaterialModule } from '@shiptech/core/ui/material.module';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
 import { UIModule } from '@shiptech/core/ui/ui.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
+import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { AGGridCellClickRendererComponent } from './core/ag-grid-renderers/ag-grid-cell-click-renderer.component';
 import { AGGridCellLinkRenderer } from './core/ag-grid-renderers/ag-grid-cell-link-renderer.component';
 import { AGGridCellMenuRenderer } from './core/ag-grid-renderers/ag-grid-cell-menu-renderer.component';
@@ -49,6 +50,7 @@ import { FilterListComponent } from './views/contract-negotiation-components/fil
 import { HeaderFilterChipComponent } from './views/contract-negotiation-components/filter-components/header-filter-chip/header-filter-chip.component';
 import { MoreFilterChipComponent } from './views/contract-negotiation-components/filter-components/more-filter-chip/more-filter-chip.component';
 import { DocDragDropUploadComponent } from './views/contract-negotiation-components/doc-drag-drop-upload/doc-drag-drop-upload.component';
+import { HeaderBreadcrumbComponent } from './views/contract-negotiation-components/header-breadcrumb/header-breadcrumb.component';
 
 
 @NgModule({
@@ -89,7 +91,8 @@ import { DocDragDropUploadComponent } from './views/contract-negotiation-compone
     AGGridMultiDataRendererComponent,
     AGGridRatingChipRenderer,
     fullWidthCellRenderer,
-    MatCheckboxHeaderComponent
+    MatCheckboxHeaderComponent,
+    HeaderBreadcrumbComponent
   ],
   imports: [
     CommonModule,
@@ -105,7 +108,8 @@ import { DocDragDropUploadComponent } from './views/contract-negotiation-compone
     OwlNativeDateTimeModule,
     AgGridModule.withComponents([]),
     ContractNegotiationRoutingModule,
-    DSV2ComponentsModule
+    DSV2ComponentsModule,
+    BreadcrumbsModule
   ],
   entryComponents:[
     AGGridCellClickRendererComponent,

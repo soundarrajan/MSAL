@@ -14,19 +14,29 @@ const routes: Routes = [
     resolve: { moduleInit: ContractNegotiationModuleResolver },
     children: [
       {
-        path: '',
+        path: `${KnownContractNegotiationRoutes.RequestsList}`,
+        data: {
+          title: 'Contract Requests List',
+          breadcrumb: 'Requests List'
+        },
         children: [
           {
-            path: KnownContractNegotiationRoutes.RequestsList,
+            path: '',
             component: ContractNegotiationComponent,
-            //redirectTo: KnownContractNegotiationRoutes.RequestsList,
             pathMatch: 'full',
-            data: { title: 'Contract Requests List' }
+            data: {
+              title: 'Contract Requests List',
+              breadcrumb: 'Requests List'
+            },
           },
           {
-            path: `${KnownContractNegotiationRoutes.RequestsList}/:${KnownContractNegotiationRoutes.RequestIdParam}`,
+            path: `:${KnownContractNegotiationRoutes.RequestIdParam}`,
             component: MainPageComponent,
-            data: { breadCrumb1: 'Contract Negotiation' }
+            pathMatch: 'full',
+            data: {
+              title: 'Contract Negotiation',
+              breadcrumb: 'Negotiation'
+            }
           }
         ]
       }
@@ -66,4 +76,8 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ContractNegotiationRoutingModule { }
+export class ContractNegotiationRoutingModule { 
+  constructor(){
+    console.log(routes);
+  }
+}

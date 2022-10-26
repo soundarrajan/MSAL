@@ -78,8 +78,8 @@ const routes: Routes = environment.useAdal
       },{
         path: '',
         data: {
-          breadcrumb: 'Contract Requests List',
-          breadcrumbUrl: '/v2/contract-negotiation/requests',
+          breadcrumb: 'Contract',
+          breadcrumbUrl: '/v2/contract-negotiation',
           breadcrumbIcon: 'fa fa-home'
         },
         children: [
@@ -253,7 +253,7 @@ const routes: Routes = environment.useAdal
       {
         path: '',
         data: {
-          breadcrumb: 'Contract Requests List',
+          breadcrumb: 'Contract',
           breadcrumbUrl: '/v2/contract-negotiation',
           breadcrumbIcon: 'fa fa-home'
         },
