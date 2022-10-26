@@ -102,7 +102,7 @@ export class AgColumnPreferencesService implements OnDestroy {
           this._savePreferences.next({
             gridName,
             columnState: gridOptions.columnApi.getColumnState(),
-            sortState: gridOptions.api.getSortModel()
+            sortState: gridOptions.columnApi.getColumnState()
           });
         })
       )

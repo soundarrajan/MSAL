@@ -171,7 +171,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     this.formulaTypeList = this.setListFromStaticLists('FormulaType');
     this.pricingScheduleList = this.setListFromStaticLists('PricingSchedule');
 
-    //this.getConversionFactor();
+   // this.getConversionFactor();
   }
 
   setListFromStaticLists(name) {
@@ -303,6 +303,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         });
 
       this.formValues = data.payload;
+      this.getConversionFactor();
       this.formValues.conversionRate = this.defaultConversionRate;
       this.formValues.conversionVolumeUomId = this.defaultConversionVolumeUomId;
       this.formulaDesc = data.payload?.name;

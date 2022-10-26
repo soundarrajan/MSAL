@@ -75,6 +75,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   duplicateCost: boolean = false;
   copiedLocationCost: any[];
   endpointCount: number = 0;
+  checkboxselected: boolean = true;
 
   constructor(
     public dialogRef: MatDialogRef<ApplicablecostpopupComponent>,
@@ -360,7 +361,12 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   saveLocationAdditionalCosts(save: string) {
-    if(this.locationBasedCosts.length === 0 && this.enableSave == false){
+    
+    if(this.locationBasedCosts.length === 0 ){
+      this.toastr.warning('Please Select Atleast one Row');
+      return;
+    }
+    if(this.locationBasedCosts.length > 0 && this.isCheckedMain == false && this.checkboxselected==false){ 
       this.toastr.warning('Please Select Atleast one Row');
       return;
     }
@@ -538,9 +544,12 @@ export class ApplicablecostpopupComponent implements OnInit {
    if(event.checked == true && rowNumber === -1){
      this.locationBasedCosts.map(x=> x.isSelected = true);
   }
+  if(event.checked == true && rowNumber === 1){
+    this.checkboxselected = true;
+ }
    if(event.checked == false && rowNumber === -1){
-    this.isCheckedMain = false;
-     this.locationBasedCosts.map(x=> x.isSelected = false);
+    this.isCheckedMain = false;this.checkboxselected = false;
+    this.locationBasedCosts.map(x=> x.isSelected = false);
    }
    if(this.locationBasedCosts.every(x=> x.isSelected== true)){
     this.isCheckedMain = true; 
