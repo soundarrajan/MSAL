@@ -228,8 +228,6 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                     var hasSellerConfirmationDocument = true; 
                     var noSchedule = false;
 					var hasSludge = false;
-                    var hasorderStatusGTEConfirmed = true;
-                    var hasrequestStatusGTEValidated = true;
 					var voyageDetailId = detail.voyageDetail.id;
 					if (detail.voyageDetail.request.requestDetail.isSludgeProduct) {
 						hasSludge = true;
@@ -261,25 +259,12 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
                         vesselWithHasUsdRestrictions[detail.VesselId] = hasUsdRestrictions;       
                     }
 
-                    if(!hasOpsValidation && detail.voyageDetail.request.requestDetail?.statusCode){
-                        hasrequestStatusGTEValidated =  
-                        (detail.voyageDetail.request.requestDetail?.statusCode == 'New' ||
-                        detail.voyageDetail.request.requestDetail?.statusCode == 'BunkerStrategy' ||
-                        detail.voyageDetail.request.requestDetail?.statusCode == 'Created' ||
-                        detail.voyageDetail.request.requestDetail?.statusCode == 'Planned' ||
-                        detail.voyageDetail.request.requestDetail?.statusCode == 'Questionnaire') ? false : true;
-                    }
-
-                    if(!hasSellerConfirmationDocument && detail.voyageDetail.request.requestDetail?.orderStatus?.displayName){
-                        hasorderStatusGTEConfirmed =
-                        (detail.voyageDetail.request.requestDetail?.orderStatus?.displayName == 'Stemmed') ? false : true; 
-                        }
 
                     if (typeof(ctrl.vesselWithPbBucket[detail.VesselId]) == "undefined" || !ctrl.vesselWithPbBucket[detail.VesselId])  {
-                        if (hasrequestStatusGTEValidated &&  hasorderStatusGTEConfirmed && 
-                            (!hasOpsValidation  || !hasSellerConfirmationDocument || noSchedule)) {
+                        if (!hasOpsValidation  || !hasSellerConfirmationDocument || noSchedule) {
                             ctrl.vesselWithPbBucket[detail.VesselId] = true;
                         }
+
                     }
 				}
 			})
