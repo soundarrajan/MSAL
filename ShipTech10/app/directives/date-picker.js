@@ -3,7 +3,7 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
         require: '^ngModel',
         restrict: 'A',
         link: function(scope, elm, attrs, ngModel) {
-            let BLOCKS = {
+           let BLOCKS = {
                 YYYY: {
                     mask: IMask.MaskedRange,
                     from: 1,
@@ -91,7 +91,7 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
             }
 
             let prevValue = null;
-            let hasDayOfWeek = false;
+            let hasDayOfWeek = false;          
             if (attrs.screenType === 'supplierPortal') {
                 var tenantService = tenantModel.getGlobalConfigurationForSupplierPortal($stateParams.token).payload;
                 var currentFormat = tenantService.tenantFormats.dateFormat.name;
@@ -109,6 +109,9 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
 
             if (attrs.pickerType == 'date') {
                 currentFormat = currentFormat.split(' ')[0];
+                if(attrs.id == "PeriodFrom" || attrs.id == "PeriodTo" ){                 
+                    currentFormat = "DD/MM/YYYY";                
+                }             
             }
 
             currentFormat = currentFormat.replace(/d/g, 'D');
@@ -212,7 +215,7 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
                     }
                     if (separator) {
                         inputPattern = inputPattern.split(separator).join(`\`${separator}`);
-                    }
+                    }                 
 
                     /* PREVENT DELETION OF CHARS FROM RIGHT */
 

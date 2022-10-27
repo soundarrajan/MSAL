@@ -933,7 +933,7 @@
                     }
                     dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
                     if ((options.colModel.name == "createdOn" || options.colModel.name == "lastModifiedOn") && window.location.href.indexOf('masters/price') != -1) {
-                        var date = Date.parse(cellValue);
+                        var date = Date.parse(cellValue); 
                         date = new Date(cellValue);
                         formattedDate = moment(date).format(dateFormat);
 
@@ -3986,6 +3986,20 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                     for (let i = 0; i < $scope.formValues.specGroupParameters.length; i++) {
                         $scope.formValues.specGroupParameters[i].specParameter.name =  decodeHtmlEntity(_.unescape($scope.formValues.specGroupParameters[i].specParameter.name));
                     }
+                }
+                if (vm.app_id == 'masters' && vm.screen_id == 'period') {
+                    $scope.formValues.Year = $scope.formValues.year;   
+                    $scope.formValues.FromDate = $scope.formValues.fromDate;
+                    $scope.formValues.ToDate = $scope.formValues.toDate;
+                    $scope.formValues.periodType =  {"id":"1"};
+                    $scope.formValues.PeriodMonth =  {"id":"1"};
+                    $scope.formValues.PeriodQuarter =  {"id":"1"}; 
+                    if($scope.formValues.periodType.id == 1){       
+                        $(".edit_form_fields_Quarter_masters").hide(); 
+                    }else{                   
+                        $(".edit_form_fields_Month_masters").hide();  
+                    }      
+                   
                 }
             }
         });
