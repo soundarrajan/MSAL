@@ -1255,14 +1255,6 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 		    		$scope.filters = $scope.modal.filters;
                 }
 
-                if (clc == 'masters_companylist' && field_name == "OperatingCompany") {
-                    $scope.modal.filters = [
-			    		{
-			    			ColumnName: 'OperatingCompany',
-			    			Value: true
-			    		}];
-                }
-
                 if (clc == 'PreRequest') {
                     $scope.modal.app = 'procurement';
                     $scope.modal.screen = 'request_entity_documents';
