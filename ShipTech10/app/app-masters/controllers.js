@@ -11277,6 +11277,7 @@
                         $scope.formValues.mcr100 = cvData.mcr100;
                         $scope.formValues.pilotSpeed = cvData.pilotSpeed;
                         $scope.formValues.reeferCapacity = cvData.reeferCapacity;
+                        $scope.formValues.reeferUtilization = cvData.reeferUtilization;
                         $scope.formValues.scrubbersReadyOn = cvData.scrubbersReadyOn;
                         $scope.formValues.vesselClass = cvData.vesselClass;
                         $scope.formValues.vesselIsoSpecGroup = cvData.vesselIsoSpecGroup;
