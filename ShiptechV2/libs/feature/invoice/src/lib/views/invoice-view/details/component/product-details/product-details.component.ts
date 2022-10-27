@@ -1198,7 +1198,8 @@ export class ProductDetailsComponent extends DeliveryAutocompleteComponent
           name: 'Unmatched',
           code: '',
           collectionName: null
-        }
+        },
+        pricingType:rowData.pricingType
       };
     }
 

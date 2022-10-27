@@ -650,10 +650,9 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
       "
       class="addTpr"
     >
-      <span *ngIf="!params.value && params.value != 0">-</span>
-      <span [matTooltip]="priceCalFormatValue(params.value)+' (based on '+(this.params.data?.requestOffers[params.index]?.noLabs)+ ' labs)' " matTooltipClass="lightTooltip">{{
-        params.value | priceFormatValue : priceFormatValue1 
-      }}</span>
+      <span *ngIf="!params.value&& params.value != 0">-</span>
+      <span *ngIf="params.value!=null && params.value != undefined" [matTooltip]="priceCalFormatValue(params.value[0])+' (based on '+params.value[1]+' labs)' " matTooltipClass="lightTooltip">
+        {{params.value[0]  | priceFormatValue : priceFormatValue1}} </span>
     </div>
     <div
       *ngIf="

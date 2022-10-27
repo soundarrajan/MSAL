@@ -257,6 +257,7 @@
                       <mat-option
                         *ngFor="let option of additionalCostList"
                         [value]="option.id"
+                        [disabled] ="option.isDeleted"
                       >
                         {{ option.name }}
                       </mat-option>

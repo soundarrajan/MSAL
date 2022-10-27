@@ -22,6 +22,7 @@ import {
 import { IVesselPortCallMasterDto } from '@shiptech/core/services/masters-api/request-response-dtos/vessel-port-call';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { takeUntil } from 'rxjs/operators';
+import { QcReportService } from 'libs/feature/quantity-control/src/lib/services/qc-report.service';
 
 function model(
   prop: keyof IVesselPortCallMasterDto
@@ -162,6 +163,7 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
     changeDetector: ChangeDetectorRef,
     loggerFactory: LoggerFactory,
     private format: TenantFormattingService,
+    private reportService: QcReportService,
     @Inject(VESSEL_MASTERS_API_SERVICE) private mastersApi: IVesselMastersApi
   ) {
     super(
@@ -196,7 +198,7 @@ export class VesselPortCallsMasterSelectorGridViewModel extends BaseGridViewMode
   public serverSideGetRows(params: IServerSideGetRowsParams): void {
     this.mastersApi
       .getVesselPortCalls({
-        id: this.vesselId,
+        id: this.reportService?.vesselId,
         ...transformLocalToServeGridInfo(
           this.gridApi,
           params,

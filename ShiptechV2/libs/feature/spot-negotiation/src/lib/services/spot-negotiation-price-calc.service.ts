@@ -205,19 +205,17 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     }
     additionalCost.isTaxComponent = false;
     if (
-      this.additionalCostTypes[additionalCost.additionalCostId].componentType
+      this.additionalCostTypes[additionalCost.additionalCostId]?.componentType
     ) {
       additionalCost.isTaxComponent = !(
-        this.additionalCostTypes[additionalCost.additionalCostId].componentType
-          .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
+        this.additionalCostTypes[additionalCost.additionalCostId]?.componentType?.id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
       );
       if (additionalCost.isTaxComponent) {
       } else {
         additionalCost.isTaxComponent = false;
       }
       return (
-        this.additionalCostTypes[additionalCost.additionalCostId].componentType
-          .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
+        this.additionalCostTypes[additionalCost.additionalCostId]?.componentType?.id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
       );
     }
     return null;

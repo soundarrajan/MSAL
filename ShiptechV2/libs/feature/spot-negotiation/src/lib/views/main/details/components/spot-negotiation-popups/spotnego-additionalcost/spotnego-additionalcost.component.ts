@@ -463,7 +463,6 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
           this.additionalCostList = _.cloneDeep(
             response.payload.filter(
               e =>
-                e.isDeleted == false &&
                 e.costType.name !== 'Total' &&
                 e.costType.name !== 'Range'
             )
@@ -477,6 +476,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
               requestLocationId: this.rowData.requestLocationId,
               isLocationBased: false
             };
+            let additionalCostId = [];
             let response  =  await this.spotNegotiationService
               .getAdditionalCosts(payload);
               //.subscribe((response: any) => {
@@ -492,6 +492,10 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                   this.offerAdditionalCostList = _.cloneDeep(
                     response.offerAdditionalCosts.map( resp =>({...resp, isSelected: true}))
                   );
+                  response.offerAdditionalCosts.forEach(el => {
+                    additionalCostId[el.additionalCostId] = el.additionalCostId;
+                  });
+                  
                   this.formatAdditionalCostList(this.offerAdditionalCostList);
                   this.locationAdditionalCostsList = _.cloneDeep(
                     response.locationAdditionalCosts
@@ -505,6 +509,13 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
                 }
               //});
               }
+              let tempId = [];             
+                this.additionalCostList.filter(el => {
+                  if(!el.isDeleted == true || additionalCostId[el.id]){
+                    tempId.push(el);
+                  }
+                }); 
+                this.additionalCostList = tempId;
           }
         }
       });
@@ -1149,10 +1160,10 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
     }
     additionalCost.isTaxComponent = false;
     if (
-      this.additionalCostTypes[additionalCost.additionalCostId].componentType
+      this.additionalCostTypes[additionalCost.additionalCostId]?.componentType
     ) {
       additionalCost.isTaxComponent = !(
-        this.additionalCostTypes[additionalCost.additionalCostId].componentType
+        this.additionalCostTypes[additionalCost.additionalCostId]?.componentType
           .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
       );
       if (additionalCost.isTaxComponent) {
@@ -1160,7 +1171,7 @@ export class SpotnegoAdditionalcostComponent implements OnInit {
         additionalCost.isTaxComponent = false;
       }
       return (
-        this.additionalCostTypes[additionalCost.additionalCostId].componentType
+        this.additionalCostTypes[additionalCost.additionalCostId]?.componentType
           .id === COMPONENT_TYPE_IDS.PRODUCT_COMPONENT
       );
     }

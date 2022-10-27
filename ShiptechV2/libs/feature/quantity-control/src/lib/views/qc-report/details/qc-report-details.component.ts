@@ -232,6 +232,7 @@ export class QcReportDetailsComponent implements OnInit, OnDestroy {
   }
 
   updateVessel(newVessel: any): void {
+    this.reportService.vesselId = newVessel?.id;
     this.reportService
       .updateVessel$(fromLegacyLookupVesselToWatch(newVessel))
       .subscribe();
