@@ -290,7 +290,7 @@ export class LocalService {
         return this.http.get("./assets/data/ship-tech/spot-comments-" + reqId + ".json");
     }
     public getContractRequestData(reqId): Observable<any> {
-        return this.http.get("../assets/data/contract-negotiation/contract-request-" + reqId + ".json");
+        return this.http.get("./assets/data/contract-negotiation/contract-request-" + reqId + ".json");
     }
     public getContractNegoRequestDetailsJSON(reqId): Observable<any> {
         return this.http.get("./assets/data/contract-negotiation/contract-nego-request-list-" + reqId + ".json");
