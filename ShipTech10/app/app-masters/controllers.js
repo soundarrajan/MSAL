@@ -138,6 +138,7 @@
             vm.formValues.mcrPart = mcrPart;
             vm.formValues.oneReeferConsumption = oneReeferConsumption;
         }
+        vm.VESSEL_REEFER_UTILIZATION = 30;
 
         $scope.host = $location.$$host;
         $scope.changedFields = 0;
@@ -1328,6 +1329,7 @@
                     return;
                     vm.editInstance.$valid = false;
                 }
+                $scope.formValues.reeferUtilization = $scope.formValues.reeferUtilization ?? vm.VESSEL_REEFER_UTILIZATION;
 
                 // disabled on 03.01.2019 - de la Teo
                 // tankErrors = false;
@@ -11277,7 +11279,6 @@
                         $scope.formValues.mcr100 = cvData.mcr100;
                         $scope.formValues.pilotSpeed = cvData.pilotSpeed;
                         $scope.formValues.reeferCapacity = cvData.reeferCapacity;
-                        $scope.formValues.reeferUtilization = cvData.reeferUtilization;
                         $scope.formValues.scrubbersReadyOn = cvData.scrubbersReadyOn;
                         $scope.formValues.vesselClass = cvData.vesselClass;
                         $scope.formValues.vesselIsoSpecGroup = cvData.vesselIsoSpecGroup;
