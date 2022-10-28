@@ -2076,8 +2076,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 	ctrl.data.products[index].contractProductId = null;
                 	ctrl.data.products[index].contractId = null;
                 	ctrl.data.products[index].formula = null;
-                	ctrl.data.products[index].price = null;
-                    ctrl.data.products[index].originalPrice = null;
+                	// ctrl.data.products[index].price = null;
+                    // ctrl.data.products[index].originalPrice = null;
 					ctrl.data.products[index].agreementType = null;
 					ctrl.data.products[index].physicalSupplier = null;
 					ctrl.data.products[index].pricingType = null;
