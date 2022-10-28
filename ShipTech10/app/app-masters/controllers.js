@@ -114,7 +114,20 @@
         if (!vm.overrideInvalidDate) {
             vm.overrideInvalidDate = {};
         }
-
+        if (vm.app_id == 'masters' &&  vm.screen_id == 'period') {
+            var currentYear = new Date().getFullYear() ;         
+             var periodYears = [];
+             periodYears.push({"name":currentYear,"value":currentYear});
+             for(i = 1 ; i <= 6; i++){
+                var nextYear = new Date().getFullYear() + i;
+                periodYears.push({"name":nextYear,"value":nextYear});
+             }
+             vm.options = periodYears; 
+    
+             $(".edit_form_fields_Month_masters").hide();
+             $(".edit_form_fields_Quarter_masters").hide();          
+        }
+       
         // angular.element(document).ready(function () {
         // 	setTimeout(function(){
         // 		screenLoader.hideLoader();
@@ -277,7 +290,7 @@
                 }
             }(navigator.userAgent || navigator.vendor || window.opera));
             return check;
-        }());
+        }());      
         vm.mime_types = {
             'application/postscript': 'ps',
             'audio/x-aiff': 'aiff',
@@ -938,7 +951,18 @@
             if(!$scope.counterPartyListisValid()){
                 return;
             }
-
+            if(vm.app_id == 'masters' && vm.screen_id == 'period') {
+               
+               if ($scope.formValues.Year) { 
+                    $scope.formValues.Year = $scope.formValues.Year;                   
+                }
+                 $scope.formValues.periodType =  ($scope.formValues.pType)?$scope.formValues.pType.id:"";
+                 $scope.formValues.Month =  ($scope.formValues.PeriodMonth)?$scope.formValues.PeriodMonth.id:"";
+                 $scope.formValues.Quarter =  ($scope.formValues.PeriodQuarter)?$scope.formValues.PeriodQuarter.id:"";
+                 $scope.formValues.ToDate = $scope.formValues.ToDate;
+                 $scope.formValues.FromDate = $scope.formValues.FromDate; 
+                      
+            }
             if(vm.app_id == 'masters' && vm.screen_id == 'strategy') {
                 if ($scope.formValues.mtmType.id != 1) {
                     $scope.formValues.mtmFormulaProducts = _.filter($scope.formValues.mtmFormulaProducts, function(object) {
@@ -3255,6 +3279,68 @@
         };
 
         $scope.triggerChangeFields = function(name, id, isManualChange) {
+           
+            if (vm.app_id == 'masters' && vm.screen_id == 'period') {
+                console.log($scope.formValues);
+                $(".edit_form_fields_Month_masters").hide();
+                $(".edit_form_fields_Quarter_masters").hide();
+                var pType =  ($scope.formValues.pType)?{"id":$scope.formValues.pType.id}:"";
+                var periodMonth =  ($scope.formValues.PeriodMonth)?{"id":$scope.formValues.PeriodMonth.id}:"";
+                var periodQuarter =  ($scope.formValues.PeriodQuarter)?{"id":$scope.formValues.PeriodQuarter.id}:"";
+                    console.log(pType);
+                if(pType.id == 1){
+                    $(".edit_form_fields_Month_masters").show();        
+                }else if(pType.id == 2){
+                    $(".edit_form_fields_Quarter_masters").show();             
+                }               
+
+                if(pType.id){
+                    $scope.formValues.pType = pType;
+                }
+                if(periodMonth.id){
+                    $scope.formValues.PeriodMonth = periodMonth;
+                }
+                if(periodQuarter.id){
+                    $scope.formValues.PeriodQuarter = periodQuarter;
+                }
+                if((pType.id && periodMonth.id  && $scope.formValues.Year) || (pType.id && periodQuarter.id  && $scope.formValues.Year)){
+
+                    var year = $scope.formValues.Year;
+                    var month = periodMonth.id;
+                    var quarter = periodQuarter.id;
+                    if(pType.id == 1){
+                        if(month < 10){
+                            month = "0"+month;
+                        }
+                        var fromDate = $scope.formValues.Year+"-"+month+"-01";
+                        var lastDay = new Date(year, month, 0).getDate();               
+                        var toDate = $scope.formValues.Year+"-"+month+"-"+lastDay;   
+                   }else{
+
+                        if(quarter == 1){
+                            //YYYY-MM-DD
+                            var fromDate = year+"-01-01";
+                            var lastDay = new Date(year, "03", 0).getDate();               
+                            var toDate = year+"-03-"+lastDay; 
+                        }else if(quarter == 2){
+                            var fromDate = year+"-04-01";
+                            var lastDay = new Date(year, "06", 0).getDate();               
+                            var toDate = year+"-06-"+lastDay; 
+                        }else if(quarter == 3){
+                            var fromDate = year+"-07-01";
+                            var lastDay = new Date(year, "09", 0).getDate();               
+                            var toDate = year+"-09-"+lastDay; 
+                        }else if(quarter == 4){
+                            var fromDate = year+"-10-01";
+                            var lastDay = new Date(year, "12", 0).getDate();               
+                            var toDate = year+"-12-"+lastDay; 
+                        }
+
+                   }           
+                    $scope.formValues.ToDate = moment(toDate,"YYYY-MM-DD").format("YYYY-MM-DD");
+                    $scope.formValues.FromDate = moment(fromDate,"YYYY-MM-DD").format("YYYY-MM-DD");;     
+                }
+           }
             if (vm.app_id == 'invoices' && vm.screen_id == 'treasuryreport') {
                 if(!$scope.formValues.OrderAfter){
                     $scope.formValues.OrderAfter = $rootScope.adminConfiguration.invoice.orderAfter;
@@ -3431,7 +3517,7 @@
                 if (name == 'systemInstrument' && vm.screen_id == 'price') {
                     if ($scope.formValues.systemInstrument) {
                         Factory_Master.get_master_entity($scope.formValues.systemInstrument.id, 'systeminstrument', 'masters', (response) => {
-                            if (response) {
+                            if (response) {                             
                                 $scope.formValues.marketInstrumentCode = response.marketInstrument.code;
                                 $scope.formValues.code = response.marketInstrument.code;
                                 $scope.formValues.period = null;
@@ -7770,7 +7856,7 @@
                 toastr.error('Formula cannot be modifed for a Confirmed / Delivered contract');
             }
         };
-        vm.checkVerifiedDelivery = [ false, false ];
+        vm.checkVerifiedDelivery = [ false, false ];       
         vm.checkVerifiedDeliveryFromLabs = function(orderChange) {
             if (orderChange == 'orderChange' &&  $('#DeliveryDeliveryID') &&  $('#DeliveryDeliveryID').length > 0) {
                 $('#DeliveryDeliveryID')[0].disabled = '';
@@ -7803,7 +7889,7 @@
                     }, 10);
                 }
             }
-        };
+        };      
         $scope.showMultiLookupWarning = function(model) {
             $('#departments').removeClass('invalid');
             setTimeout(() => {

@@ -933,7 +933,7 @@
                     }
                     dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
                     if ((options.colModel.name == "createdOn" || options.colModel.name == "lastModifiedOn") && window.location.href.indexOf('masters/price') != -1) {
-                        var date = Date.parse(cellValue);
+                        var date = Date.parse(cellValue); 
                         date = new Date(cellValue);
                         formattedDate = moment(date).format(dateFormat);
 
@@ -3987,12 +3987,26 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                         $scope.formValues.specGroupParameters[i].specParameter.name =  decodeHtmlEntity(_.unescape($scope.formValues.specGroupParameters[i].specParameter.name));
                     }
                 }
+                if (vm.app_id == 'masters' && vm.screen_id == 'period') {
+                    $scope.formValues.Year = $scope.formValues.year;   
+                    $scope.formValues.FromDate = $scope.formValues.fromDate;
+                    $scope.formValues.ToDate = $scope.formValues.toDate;
+                    $scope.formValues.pType = {id:$scope.formValues.periodType};
+              
+                    $scope.formValues.PeriodMonth =   {"id":$scope.formValues.month};
+                    $scope.formValues.PeriodQuarter =  {"id":$scope.formValues.quarter}; 
+                  
+                   
+                }
             }
         });
 
         setTimeout(function() {
             console.log("$rootScope", $rootScope.formValues);
             console.log("$scope", $scope.formValues);
+            $(".edit_form_fields_Quarter_masters").css("display","none"); 
+            $(".edit_form_fields_Month_masters").css("display","none"); 
+           
             if($scope.formValues.orderDetails != undefined && $scope.formValues.orderDetails.orderStatusName != undefined){
                 if($scope.formValues.orderDetails.orderStatusName == 'Cancelled'){
                     $('#ClaimTypeClaimType').attr('disabled', 'disabled');
