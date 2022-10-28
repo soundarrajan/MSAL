@@ -3991,14 +3991,11 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                     $scope.formValues.Year = $scope.formValues.year;   
                     $scope.formValues.FromDate = $scope.formValues.fromDate;
                     $scope.formValues.ToDate = $scope.formValues.toDate;
-                    $scope.formValues.periodType =  {"id":"1"};
-                    $scope.formValues.PeriodMonth =  {"id":"1"};
-                    $scope.formValues.PeriodQuarter =  {"id":"1"}; 
-                    if($scope.formValues.periodType.id == 1){       
-                        $(".edit_form_fields_Quarter_masters").hide(); 
-                    }else{                   
-                        $(".edit_form_fields_Month_masters").hide();  
-                    }      
+                    $scope.formValues.pType = {id:$scope.formValues.periodType};
+              
+                    $scope.formValues.PeriodMonth =   {"id":$scope.formValues.month};
+                    $scope.formValues.PeriodQuarter =  {"id":$scope.formValues.quarter}; 
+                  
                    
                 }
             }
@@ -4007,6 +4004,9 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         setTimeout(function() {
             console.log("$rootScope", $rootScope.formValues);
             console.log("$scope", $scope.formValues);
+            $(".edit_form_fields_Quarter_masters").css("display","none"); 
+            $(".edit_form_fields_Month_masters").css("display","none"); 
+           
             if($scope.formValues.orderDetails != undefined && $scope.formValues.orderDetails.orderStatusName != undefined){
                 if($scope.formValues.orderDetails.orderStatusName == 'Cancelled'){
                     $('#ClaimTypeClaimType').attr('disabled', 'disabled');

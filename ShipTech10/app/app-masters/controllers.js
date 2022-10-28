@@ -122,7 +122,10 @@
                 var nextYear = new Date().getFullYear() + i;
                 periodYears.push({"name":nextYear,"value":nextYear});
              }
-             vm.options = periodYears;            
+             vm.options = periodYears; 
+    
+             $(".edit_form_fields_Month_masters").hide();
+             $(".edit_form_fields_Quarter_masters").hide();          
         }
        
         // angular.element(document).ready(function () {
@@ -953,12 +956,12 @@
                if ($scope.formValues.Year) { 
                     $scope.formValues.Year = $scope.formValues.Year;                   
                 }
-                 $scope.formValues.periodType =  ($scope.formValues.periodType)?$scope.formValues.periodType.id:"";
-                 $scope.formValues.PeriodMonth =  ($scope.formValues.PeriodMonth)?$scope.formValues.PeriodMonth.id:"";
-                 $scope.formValues.PeriodQuarter =  ($scope.formValues.PeriodQuarter)?$scope.formValues.PeriodQuarter.id:"";
+                 $scope.formValues.periodType =  ($scope.formValues.pType)?$scope.formValues.pType.id:"";
+                 $scope.formValues.Month =  ($scope.formValues.PeriodMonth)?$scope.formValues.PeriodMonth.id:"";
+                 $scope.formValues.Quarter =  ($scope.formValues.PeriodQuarter)?$scope.formValues.PeriodQuarter.id:"";
                  $scope.formValues.ToDate = $scope.formValues.ToDate;
                  $scope.formValues.FromDate = $scope.formValues.FromDate; 
-               
+                      
             }
             if(vm.app_id == 'masters' && vm.screen_id == 'strategy') {
                 if ($scope.formValues.mtmType.id != 1) {
@@ -3278,21 +3281,21 @@
         $scope.triggerChangeFields = function(name, id, isManualChange) {
            
             if (vm.app_id == 'masters' && vm.screen_id == 'period') {
-               
+                console.log($scope.formValues);
                 $(".edit_form_fields_Month_masters").hide();
                 $(".edit_form_fields_Quarter_masters").hide();
-                var periodType =  ($scope.formValues.periodType)?{"id":$scope.formValues.periodType.id}:"";
+                var pType =  ($scope.formValues.pType)?{"id":$scope.formValues.pType.id}:"";
                 var periodMonth =  ($scope.formValues.PeriodMonth)?{"id":$scope.formValues.PeriodMonth.id}:"";
                 var periodQuarter =  ($scope.formValues.PeriodQuarter)?{"id":$scope.formValues.PeriodQuarter.id}:"";
-                
-                if(periodType.id == 1){
+                    console.log(pType);
+                if(pType.id == 1){
                     $(".edit_form_fields_Month_masters").show();        
-                }else if(periodType.id == 2){
+                }else if(pType.id == 2){
                     $(".edit_form_fields_Quarter_masters").show();             
                 }               
 
-                if(periodType.id){
-                    $scope.formValues.periodType = periodType;
+                if(pType.id){
+                    $scope.formValues.pType = pType;
                 }
                 if(periodMonth.id){
                     $scope.formValues.PeriodMonth = periodMonth;
@@ -3300,12 +3303,12 @@
                 if(periodQuarter.id){
                     $scope.formValues.PeriodQuarter = periodQuarter;
                 }
-                if((periodType.id && periodMonth.id  && $scope.formValues.Year) || (periodQuarter.id  && $scope.formValues.Year)){
+                if((pType.id && periodMonth.id  && $scope.formValues.Year) || (pType.id && periodQuarter.id  && $scope.formValues.Year)){
 
                     var year = $scope.formValues.Year;
                     var month = periodMonth.id;
                     var quarter = periodQuarter.id;
-                    if(periodType.id == 1){
+                    if(pType.id == 1){
                         if(month < 10){
                             month = "0"+month;
                         }

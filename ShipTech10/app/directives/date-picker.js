@@ -108,12 +108,8 @@ angular.module('shiptech.pages').directive('newDatePicker', [ 'tenantModel', '$w
             }
 
             if (attrs.pickerType == 'date') {
-                currentFormat = currentFormat.split(' ')[0];
-                if(attrs.id == "PeriodFrom" || attrs.id == "PeriodTo" ){                 
-                    currentFormat = "DD/MM/YYYY";                
-                }             
+                currentFormat = currentFormat.split(' ')[0];                    
             }
-
             currentFormat = currentFormat.replace(/d/g, 'D');
             currentFormat = currentFormat.replace(/y/g, 'Y');
 

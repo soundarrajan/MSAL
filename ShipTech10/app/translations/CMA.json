@@ -800,7 +800,7 @@
     "PERIOD_CODE": "Period code",
     "PERIOD_TYPE":"Period Type",
     "PERIOD_MONTH": "Month",
-    "PERIOD_Quarter" : "Quarter",
+    "PERIOD_QUARTER" : "Quarter",
     "PERIOD_YEAR" :"Year",
     "PERIOD_FROM" : "From Date",
     "PERIOD_TO" : "To Date",
