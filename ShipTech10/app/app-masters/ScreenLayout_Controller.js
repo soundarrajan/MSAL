@@ -1587,7 +1587,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                         localStorage.setItem("uniqueModalTableIdentifier", "productsInTradeBookMapping");
                     }
                 }
-                if (filter == 'price_period_filter') {
+                if (filter == 'price_period_filter' && $scope.formValues.systemInstrument?.id != undefined) {
                     $scope.modal.filters = [
                         {
                             ColumnName: 'SystemInstrumentId',

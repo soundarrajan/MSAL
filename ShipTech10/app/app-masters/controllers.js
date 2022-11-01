@@ -3435,6 +3435,8 @@
                                 $scope.formValues.marketInstrumentCode = response.marketInstrument.code;
                                 $scope.formValues.code = response.marketInstrument.code;
                                 $scope.formValues.period = null;
+                                $scope.formValues.fromDate = null;
+                                $scope.formValues.toDate = null;
                                 obj = [];
                                 $.each(response.periods, (key, value) => {
                                     obj.push(value.period);
@@ -3499,7 +3501,16 @@
                 vm.checkVerifiedDeliveryFromLabs('orderChange');
             }
 
-        };
+            if(name == 'systemInstrumentPeriod' && id == 'period'){
+                Factory_Master.get_master_entity($scope.formValues.period.id, 'period', 'masters', (response) => {
+                $scope.formValues.fromDate = 'test date';
+                    if (response) {
+                        $scope.formValues.fromDate = response.fromDate;
+                        $scope.formValues.toDate = response.toDate;
+                    }
+                    });
+                }
+            };
 
         vm.getDataTable = function(id, data, obj, idx, app, screen) {
             $scope.dynamicTable = [];
