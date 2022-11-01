@@ -3503,7 +3503,6 @@
 
             if(name == 'systemInstrumentPeriod' && id == 'period'){
                 Factory_Master.get_master_entity($scope.formValues.period.id, 'period', 'masters', (response) => {
-                $scope.formValues.fromDate = 'test date';
                     if (response) {
                         $scope.formValues.fromDate = response.fromDate;
                         $scope.formValues.toDate = response.toDate;
