@@ -515,7 +515,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     let requestProductIds = selectedSellers.map(x => x.RequestProductIds);
 
     var saveAndSendRfqAPIPayload = {
-      SelectedSellers: selectedSellers.filter(x=>x.RequestProductIds.length > 0),
+      SelectedSellers: selectedSellers?.filter(x=>x.RequestProductIds.length > 0),
       RequestGroupId: this.currentRequestInfo.requestGroupId,
       IsSendMail: isSendEmail,
       PreviewResponse: this.previewTemplate,
