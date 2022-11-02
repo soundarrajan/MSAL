@@ -28,7 +28,7 @@ export interface ISaveReportDetailsRequest extends IBaseQuantityControlRequest {
   id: number;
   portCall: IQcVesselPortCallDto;
   isVerifiedSludgeQty: boolean;
-  sludgePercentage: number;
+  sludgePercentage?: number;
   comments: string;
   sludgeVesselResponseDescription: string;
   bunkerVesselResponseDescription: string;

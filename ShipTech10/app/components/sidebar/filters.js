@@ -269,7 +269,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     });
                 });
             }
-            console.log('vinoth: ', data);
+            console.log('data: ', data);
             if (isInvalidValue) {
                 toastr.error('Please enter a value');
             	return false;
@@ -304,7 +304,7 @@ angular.module('shiptech.components').controller('FiltersController', [
             */
 
             // console.log('applied filters');
-            console.log('data: ', data);
+             console.log('data: ', data);
             // console.log(sortList)
             // console.log(data);
             if (typeof $scope.packedFilters == 'undefined') {
@@ -392,21 +392,24 @@ angular.module('shiptech.components').controller('FiltersController', [
             if ($rootScope.sortList) {
                 $scope.packedFilters.sortList = $rootScope.sortList;
             }
-            if ($scope.packedFilters && !defaultConf || $scope.packedFilters && defaultConf && !column) {
+            if ($scope.packedFilters && !defaultConf || $scope.packedFilters && defaultConf && !column) {            
                 if ($rootScope.clc_loaded) {
-               
+                 
                     if (!ctrl.saveFilterActionEvent) {
                         if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' ||  $state.current.name == 'default.schedule-dashboard-table' || $state.current.name == 'default.dashboard-table') {
 	                        $rootScope.$broadcast('filters-applied', $scope.packedFilters, false, $rootScope.productTypeView);
-                        } else {
+                        } else {                           
                             $rootScope.$broadcast('filters-applied', $scope.packedFilters);
-                        }
+                        }                      
                     } else {
                         ctrl.saveFilterActionEvent = false;
                         if ($state.current.name == 'default.dashboard-timeline' || $state.current.name == 'default.home' || $state.current.name == 'default.schedule-dashboard-table' || $state.current.name == 'default.dashboard-table') {
                             $rootScope.$broadcast('filters-applied', $scope.packedFilters, false, $rootScope.productTypeView);
-                        }
+                        }                       
                     }
+                }
+                if($scope.currentList == "edit-order/procurement_productcontractlist"){
+                    $rootScope.$broadcast('filters-applied', $scope.packedFilters);
                 }
             }
             if (noSlide != true) {
@@ -766,9 +769,9 @@ angular.module('shiptech.components').controller('FiltersController', [
                 $rootScope.rawFilters = [];
             }
             $rootScope.CheckForFilters = 0;
-            $scope.conditions = $scope.filtersData.filterConditions;
+            $scope.conditions = $scope.filtersData.filterConditions;         
             $.each($scope.filtersData.filterColumns, (key, value) => {
-                if (value.columnRoute == $scope.currentList) {
+                if (value.columnRoute == $scope.currentList) {                 
                     // if(value.columnType == 'Number') value.columnType = 'longNumber';
                     //
                     if ($scope.tenantSettings.companyDisplayName == 'Pool') {
@@ -820,7 +823,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     $scope.currentColumns.push(value);
                     $rootScope.CheckForFilters++;
                 }
-            });
+            });            
             if ($rootScope.CheckForFilters == 0) {
                 $timeout(() => {
                     if(typeof ctrl.hideSidebar == 'function') {

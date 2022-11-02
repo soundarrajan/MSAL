@@ -151,6 +151,7 @@
             vm.formValues.mcrPart = mcrPart;
             vm.formValues.oneReeferConsumption = oneReeferConsumption;
         }
+        vm.VESSEL_REEFER_UTILIZATION = 30;
 
         $scope.host = $location.$$host;
         $scope.changedFields = 0;
@@ -1352,6 +1353,7 @@
                     return;
                     vm.editInstance.$valid = false;
                 }
+                $scope.formValues.reeferUtilization = $scope.formValues.reeferUtilization ?? vm.VESSEL_REEFER_UTILIZATION;
 
                 // disabled on 03.01.2019 - de la Teo
                 // tankErrors = false;

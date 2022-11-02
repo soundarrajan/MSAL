@@ -1443,6 +1443,16 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.formErrors.orderDetails.paymentCompany.name = errorMessage;
     }
 
+    // Payment proof received
+    if (this.formValues.paymentDetails?.paymentProofReceived && 
+        !this.formValues.paymentDetails?.comments) {
+      error = true;
+      errorMessage += 'Payment proof comments is required. \n';
+      this.formErrors.paymentDetails = {};
+      this.formErrors.paymentDetails.comments = {};
+      this.formErrors.paymentDetails.comments = errorMessage;
+    }
+
     if (useToaster && errorMessage) {
       this.toastrService.error(errorMessage);
     }
@@ -2461,6 +2471,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
   invoiceOptionSelected(option) {
     if (this.formSubmitted) {
+      return;
+    }
+    if (this.formValues.paymentDetails?.paymentProofReceived && 
+      !this.formValues.paymentDetails?.comments) {
+      this.toastr.error('Payment proof comments is required');
       return;
     }
     if (
