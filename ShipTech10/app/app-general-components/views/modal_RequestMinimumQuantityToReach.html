@@ -2,7 +2,7 @@
                     <!-- <div> -->
                         <div id="modal_close_bar"><button type="button" class="close" ng-click="PopupprettyCloseModal()" aria-hidden="true"></button></div>
                         <br>
-                        <div class="portlet light" >
+                        <div class="portlet light" ng-style="{{(['Stemmed', 'Cancelled'].indexOf($ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].productStatus.name) != -1) ? {'pointer-events': 'none'} : ''}}">
                             <div class="portlet-title">
                                 <div class="caption-subject pull-left">
                                     Min Quantity to Reach
@@ -57,7 +57,7 @@
                                             class="ng-scope">
                                             <td style="width:2%">
                                                 <span class="remove"                                                 
-                                                style="display: block;pointer-events: all; opacity: 1" 
+                                                style="display: block; opacity: 1" 
                                                 ng-click="value.id == 0 ? $ctrl.request.locations[$ctrl.selectedLocationIdx].products[$ctrl.selectedProductIdx].minimumQuantitiesToReach.splice(key,1) : value.isDeleted = true">
                                                 </span>
                                                     <!-- <span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="deleteMinimumQuantityToReach(key)"></span> -->

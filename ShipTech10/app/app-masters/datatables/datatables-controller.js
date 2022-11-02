@@ -1,7 +1,7 @@
 /**
  * Labs Controller
  */
-APP_MASTERS.controller('Controller_Datatables', [
+ APP_MASTERS.controller('Controller_Datatables', [
     '$scope',
     '$rootScope',
     '$Api_Service',

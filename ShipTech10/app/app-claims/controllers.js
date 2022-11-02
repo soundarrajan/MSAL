@@ -1211,8 +1211,8 @@ APP_CLAIMS.controller('Controller_Claims', [
                     if (response.status == true) {
                         $scope.loaded = true;
                         toastr.success(response.message);
+                        response.data.noteType = $scope.formValues.claimDetails.settlementType.id == 1 ? "Pre-claim Debit" : "Pre-claim Credit";
                         $rootScope.transportData = response.data;
-                        // $location.path('invoices/claims/edit/');
                         localStorage.setItem('createCreditNote', JSON.stringify(response.data));
                         window.open($location.$$absUrl.replace('#'+$location.$$path, 'v2/invoices/edit/0'), '_self');
                     } else {
