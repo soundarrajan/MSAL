@@ -1249,7 +1249,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     this.formValues.pumpingRate =
       this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount /
       pumpingTime;
-    this.pumpingRateUom.forEach((val, key) => {
+    this.pumpingRateUom?.forEach((val, key) => {
       if (
         val.name.split('/')[0] ==
         this.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name
