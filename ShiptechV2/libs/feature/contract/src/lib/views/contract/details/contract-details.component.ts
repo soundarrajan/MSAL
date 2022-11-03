@@ -348,7 +348,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   }
 
   setListFromStaticLists(name) {
-    const findList = _.find(this.staticLists, function(object) {
+    const findList = _.find(this.staticLists, function (object: any) {
       return object.name == name;
     });
     if (findList != -1) {
@@ -358,7 +358,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
   selectedAllowedCompanies() {
     this.formValues.allowedCompanies.forEach((allowedCompany, k) => {
-      const findCompanyIndex = _.findIndex(this.companyList, function(
+      const findCompanyIndex = _.findIndex(this.companyList, function (
         object: any
       ) {
         return object.id == allowedCompany.id;
@@ -416,7 +416,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.formValues.customNonMandatoryAttribute8 = null;
           this.formValues.customNonMandatoryAttribute9 = null;
           this.formValues.id = 0;
-          if(this.formValues.agreementType && this.formValues.agreementType.isDeleted){
+          if (this.formValues.agreementType && this.formValues.agreementType.isDeleted) {
             this.formValues.agreementType = null;
           }
           if (typeof this.formValues.name != 'undefined') {
@@ -626,16 +626,16 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (additionalCostString != '' && additionalCost.length > 1) {
       this.toastr.warning(
         'The additional costs ' +
-          additionalCostString +
-          ' does not allow negative amounts!'
+        additionalCostString +
+        ' does not allow negative amounts!'
       );
       return;
     }
     if (additionalCostString != '' && additionalCost.length == 1) {
       this.toastr.warning(
         'The additional cost ' +
-          additionalCostString +
-          ' does not allow negative amounts!'
+        additionalCostString +
+        ' does not allow negative amounts!'
       );
       return;
     }
@@ -717,11 +717,11 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             this.formValues.products[i].additionalCosts[j].costType.id != 4 &&
             this.formValues.products[i].additionalCosts[j].costType.id != 5
           ) {
-            if (!this.formValues.products[i].additionalCosts[j].amount ) {
+            if (!this.formValues.products[i].additionalCosts[j].amount) {
               additionalCostRequired.push('Amount');
             }
           }
-         
+
         }
       }
     }
@@ -774,17 +774,17 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (additionalCostString != '' && additionalCost.length > 1) {
       this.toastr.warning(
         'The additional costs ' +
-          additionalCostString +
-          ' does not allow negative amounts!'
+        additionalCostString +
+        ' does not allow negative amounts!'
       );
       return false;
     }
-    
+
     if (additionalCostString != '' && additionalCost.length == 1) {
       this.toastr.warning(
         'The additional cost ' +
-          additionalCostString +
-          ' does not allow negative amounts!'
+        additionalCostString +
+        ' does not allow negative amounts!'
       );
       return false;
     }
@@ -801,7 +801,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       if (conversionFactorForProduct && conversionFactorForProduct.length) {
         const findSystemInstrumentOption = _.find(
           conversionFactorForProduct,
-          function(object) {
+          function (object: any) {
             return object.contractConversionFactorOptions.id == 4;
           }
         );
@@ -818,7 +818,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
             notValidConversionFactor = true;
             this.toastr.error(
               `Please select formula for using system instrument conversion for Product ${i +
-                1}.`
+              1}.`
             );
           }
         }
@@ -905,10 +905,10 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     }
     this.formValues.products.forEach((v, k) => {
       if (typeof v != 'undefined') {
-      if (v.price == null || v.price == '') {
-        v.price = 0;
+        if (v.price == null || v.price == '') {
+          v.price = 0;
+        }
       }
-    }
     });
     this.formValues.details.forEach((v, k) => {
       if (typeof v != 'undefined') {
@@ -1078,7 +1078,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     this.spinner.show();
     this.contractService
       .undoConfirmContract(this.formValues)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
@@ -1113,7 +1113,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     this.spinner.show();
     this.contractService
       .deleteContract(this.formValues)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
@@ -1148,7 +1148,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     this.spinner.show();
     this.contractService
       .cancelContract(this.formValues)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
@@ -1220,7 +1220,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         0,
         KnownContractRoutes.ContractDetails
       ])
-      .then(() => {});
+      .then(() => { });
   }
 
   public changeFormData(formValues: any): void {
@@ -1231,5 +1231,5 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.markForCheck();
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 }

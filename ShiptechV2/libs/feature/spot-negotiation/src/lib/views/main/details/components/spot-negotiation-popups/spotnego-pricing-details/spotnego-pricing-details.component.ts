@@ -15,15 +15,18 @@ import _ from 'lodash';
 import { SearchFormulaPopupComponent } from '../search-formula-popup/search-formula-popup.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { ComplexFormula, DateRangeDto, EventBasedContinuousDto, EventBasedExtendDto, EventBasedSimpleDto, FormValues, HolidayRuleDto, OfferPriceFormulaDto,
-   PricingScheduleDto,
-   PricingScheduleOptionDateRange, PricingScheduleOptionEventBasedContinuous, PricingScheduleOptionEventBasedExtended, PricingScheduleOptionEventBasedSimple, PricingScheduleOptionSpecificDate, SystemInstrumentDto, SystemInstruments } from './spotnego-pricing-details.interface';
+import {
+  ComplexFormula, DateRangeDto, EventBasedContinuousDto, EventBasedExtendDto, EventBasedSimpleDto, FormValues, HolidayRuleDto, OfferPriceFormulaDto,
+  PricingScheduleDto,
+  PricingScheduleOptionDateRange, PricingScheduleOptionEventBasedContinuous, PricingScheduleOptionEventBasedExtended, PricingScheduleOptionEventBasedSimple, PricingScheduleOptionSpecificDate, SystemInstrumentDto, SystemInstruments
+} from './spotnego-pricing-details.interface';
 import { first, switchMap, tap } from 'rxjs/operators';
 import { SetOfferPriceFormulaId } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE } from '@angular/material/core';
+  MAT_DATE_LOCALE
+} from '@angular/material/core';
 import { CustomDateAdapter, CustomNgxDatetimeAdapter, CUSTOM_DATE_FORMATS, MAT_MOMENT_DATE_ADAPTER_OPTIONS_1, PICK_FORMATS } from '@shiptech/core/utils/dateTime.utils';
 import {
   NgxMatDateAdapter,
@@ -98,7 +101,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   defaultConversionVolumeUomId: number;
   isComplexFormulaWeightEnforced: boolean;
   checkRequestStatus: boolean = false;
-  
+
   constructor(
     public dialogRef: MatDialogRef<SpotnegoPricingDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -128,10 +131,10 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       this.staticList = state.spotNegotiation.staticLists.otherLists;
       this.sessionFormulaList = state.spotNegotiation.formulaList;
       this.isComplexFormulaWeightEnforced = state.tenantSettings.general.defaultValues.isComplexFormulaWeightEnforced;
-      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+      if (state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed') {
         this.checkRequestStatus = true;
       }
-      
+
     });
 
     this.getOfferPriceConfiguration();
@@ -171,11 +174,11 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     this.formulaTypeList = this.setListFromStaticLists('FormulaType');
     this.pricingScheduleList = this.setListFromStaticLists('PricingSchedule');
 
-   // this.getConversionFactor();
+    // this.getConversionFactor();
   }
 
   setListFromStaticLists(name) {
-    const findList = _.find(this.staticList, function(object) {
+    const findList = _.find(this.staticList, function (object: any) {
       return object.name == name;
     });
     if (findList != -1) {
@@ -313,7 +316,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
     });
   }
 
-  hideFormula() {}
+  hideFormula() { }
 
   clearSchedules(id) {
     this.formValues.pricingScheduleOptionDateRange = undefined;
@@ -707,49 +710,49 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
         this.toastr.error('Price Type field is required in Simple Pricing formula.');
         return;
       }
-      
+
       if (!this.formValues.simpleFormula.plusMinus) {
         this.toastr.error('Premimum/Discount  field is required in Simple Pricing formula');
         return;
       }
-      if (this.formValues.simpleFormula?.plusMinus.id !=3) {
-        if(!this.formValues.simpleFormula.amount){
+      if (this.formValues.simpleFormula?.plusMinus.id != 3) {
+        if (!this.formValues.simpleFormula.amount) {
           this.toastr.error('Amount  field is required in Simple Pricing formula');
           return;
         }
-        if(!this.formValues.simpleFormula.flatPercentage){
+        if (!this.formValues.simpleFormula.flatPercentage) {
           this.toastr.error('Flat Percentage  field is required in Simple Pricing formula');
           return;
         }
-        if(!this.formValues.simpleFormula.uom){
-          if(this.formValues?.simpleFormula?.flatPercentage?.name != 'Percentage'){
-          this.toastr.error('UOM  field is required in Simple Pricing formula');
-          return;
+        if (!this.formValues.simpleFormula.uom) {
+          if (this.formValues?.simpleFormula?.flatPercentage?.name != 'Percentage') {
+            this.toastr.error('UOM  field is required in Simple Pricing formula');
+            return;
           }
         }
-      } 
-    }else if(this.formValues.formulaType.id == 2){
-     let _length = this.formValues.complexFormulaQuoteLines.length;
-     let totalWeight = 0;
-     for(let i=1;i<=_length; i++){
-        if(this.formValues.complexFormulaQuoteLines[i-1]?.weight){
-          totalWeight += parseInt(this.formValues.complexFormulaQuoteLines[i-1].weight.toString());
+      }
+    } else if (this.formValues.formulaType.id == 2) {
+      let _length = this.formValues.complexFormulaQuoteLines.length;
+      let totalWeight = 0;
+      for (let i = 1; i <= _length; i++) {
+        if (this.formValues.complexFormulaQuoteLines[i - 1]?.weight) {
+          totalWeight += parseInt(this.formValues.complexFormulaQuoteLines[i - 1].weight.toString());
         }
         if (!this.formValues.complexFormulaQuoteLines[i - 1]?.systemInstruments[0]?.systemInstrument) {
           this.toastr.error('Instument1  field is required in Complex Pricing formula');
           return;
         }
 
-       if(!this.formValues.complexFormulaQuoteLines[i-1]?.systemInstruments[0]?.marketPriceTypeId){
-        this.toastr.error('Price Type  field is required in Complex Pricing formula');
-        return;
-       }
+        if (!this.formValues.complexFormulaQuoteLines[i - 1]?.systemInstruments[0]?.marketPriceTypeId) {
+          this.toastr.error('Price Type  field is required in Complex Pricing formula');
+          return;
+        }
 
         if (!this.formValues.complexFormulaQuoteLines[i - 1]?.formulaPlusMinus) {
           this.toastr.error('Plus Minus field is required in in Complex Pricing formula');
           return;
         }
-     
+
         if (this.formValues.complexFormulaQuoteLines[i - 1]?.formulaPlusMinus.id != 3) {
           if (!this.formValues.complexFormulaQuoteLines[i - 1]?.amount) {
             this.toastr.error('Amount field is required in Complex Pricing formula');
@@ -757,115 +760,115 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           }
 
           if (!this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage || this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage.id == 0) {
-             this.toastr.error('FlatPercentage field is required in Complex Pricing formula');
+            this.toastr.error('FlatPercentage field is required in Complex Pricing formula');
             return;
           }
-          
-            if (!this.formValues.complexFormulaQuoteLines[i - 1]?.uom || this.formValues.complexFormulaQuoteLines[i - 1]?.uom.id == null) {
-              // id = 2  is percentage
-              if(this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage.id != 2  ){
-                this.toastr.error('UOM field is required in Complex Pricing formula');
-                return;
-              }
+
+          if (!this.formValues.complexFormulaQuoteLines[i - 1]?.uom || this.formValues.complexFormulaQuoteLines[i - 1]?.uom.id == null) {
+            // id = 2  is percentage
+            if (this.formValues.complexFormulaQuoteLines[i - 1]?.formulaFlatPercentage.id != 2) {
+              this.toastr.error('UOM field is required in Complex Pricing formula');
+              return;
             }
+          }
         }
       }
-      if(this.isComplexFormulaWeightEnforced == true){
-        if(totalWeight != 100 ){
+      if (this.isComplexFormulaWeightEnforced == true) {
+        if (totalWeight != 100) {
           this.toastr.error('Complex Formula Weight Enforced so Weight should be restricted to 100 ');
           return;
         }
       }
-      
+
     }
 
-    if(this.formValues.pricingScheduleOptionDateRange != undefined){
-      if(!this.formValues.pricingScheduleOptionDateRange?.from){
+    if (this.formValues.pricingScheduleOptionDateRange != undefined) {
+      if (!this.formValues.pricingScheduleOptionDateRange?.from) {
         this.toastr.error('From date  is required in Pricing schedule -> Date Range Section');
-            return;
+        return;
       }
-      if(!this.formValues.pricingScheduleOptionDateRange?.to){
+      if (!this.formValues.pricingScheduleOptionDateRange?.to) {
         this.toastr.error('To date  is required in Pricing schedule -> Date Range Section');
-            return;
+        return;
       }
     }
-    
-    if(this.formValues.pricingScheduleOptionSpecificDate != undefined){
+
+    if (this.formValues.pricingScheduleOptionSpecificDate != undefined) {
       let errorCkeck = 0;
-      if(!this.formValues.pricingScheduleOptionSpecificDate?.dates){
+      if (!this.formValues.pricingScheduleOptionSpecificDate?.dates) {
         this.toastr.error('Add atleast one date in Pricing schedule -> Specific Dates Section');
         return;
-      }else{
-        this.formValues.pricingScheduleOptionSpecificDate.dates.some((data,index) => {
-          if(!data?.date){
-            this.toastr.error('Date  is required in row '+  (index+ 1) +' in Pricing schedule -> Specific Dates Section');
+      } else {
+        this.formValues.pricingScheduleOptionSpecificDate.dates.some((data, index) => {
+          if (!data?.date) {
+            this.toastr.error('Date  is required in row ' + (index + 1) + ' in Pricing schedule -> Specific Dates Section');
             errorCkeck = 1;
           }
         });
       }
-      if(errorCkeck == 1){
+      if (errorCkeck == 1) {
         return;
       }
     }
-  
-    if(this.formValues.pricingScheduleOptionEventBasedSimple != undefined){
+
+    if (this.formValues.pricingScheduleOptionEventBasedSimple != undefined) {
       this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore = this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore.toString();
-      if(this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore == "" || this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore.length == 0) {
+      if (this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore == "" || this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore.length == 0) {
         this.toastr.error('From - (From No Of Business Days Before) field is required in Pricing schedule -> Event Based Simple Section');
         return;
       }
       this.formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter = this.formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter.toString();
-      if(this.formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter == "" || this.formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter.length == 0){
+      if (this.formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter == "" || this.formValues.pricingScheduleOptionEventBasedSimple.toNoOfBusinessDaysAfter.length == 0) {
         this.toastr.error('To - (To No Of Business Days After) field is required in Pricing schedule -> Event Based Simple Section');
         return;
       }
-      if(!this.formValues.pricingScheduleOptionEventBasedSimple?.event){
+      if (!this.formValues.pricingScheduleOptionEventBasedSimple?.event) {
         this.toastr.error('Event field is required in Pricing schedule -> Event Based Simple Section');
         return;
       }
-      if(!this.formValues.pricingScheduleOptionEventBasedSimple?.isEventIncluded){
+      if (!this.formValues.pricingScheduleOptionEventBasedSimple?.isEventIncluded) {
         this.toastr.error('Where Event date field is required in Pricing schedule -> Event Based Simple Section');
         return;
       }
     }
 
 
-    if(this.formValues.pricingScheduleOptionEventBasedExtended != undefined){
-      this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore =this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore.toString();
-      if(this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore == "" || this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore.length == 0){
+    if (this.formValues.pricingScheduleOptionEventBasedExtended != undefined) {
+      this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore = this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore.toString();
+      if (this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore == "" || this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore.length == 0) {
         this.toastr.error('From - (From No Of Business Days Before) field is required in Pricing schedule -> Event Based Extended Section');
         return;
       }
       this.formValues.pricingScheduleOptionEventBasedExtended.toNoOfBusinessDaysAfter = this.formValues.pricingScheduleOptionEventBasedExtended.toNoOfBusinessDaysAfter.toString();
-      if(this.formValues.pricingScheduleOptionEventBasedExtended.toNoOfBusinessDaysAfter == "" || this.formValues.pricingScheduleOptionEventBasedExtended.toNoOfBusinessDaysAfter.length == 0){
+      if (this.formValues.pricingScheduleOptionEventBasedExtended.toNoOfBusinessDaysAfter == "" || this.formValues.pricingScheduleOptionEventBasedExtended.toNoOfBusinessDaysAfter.length == 0) {
         this.toastr.error('To - (To No Of Business Days After) field is required in Pricing schedule -> Event Based Extended Section');
         return;
       }
-      if(!this.formValues.pricingScheduleOptionEventBasedExtended?.event){
+      if (!this.formValues.pricingScheduleOptionEventBasedExtended?.event) {
         this.toastr.error('Event field is required in Pricing schedule -> Event Based Extended Section');
         return;
       }
-      if(!this.formValues.pricingScheduleOptionEventBasedExtended?.isEventIncluded){
+      if (!this.formValues.pricingScheduleOptionEventBasedExtended?.isEventIncluded) {
         this.toastr.error('Where Event date field is required in Pricing schedule -> Event Based Extended Section');
         return;
       }
     }
 
-    if(this.formValues.pricingScheduleOptionEventBasedContinuous != undefined){
-      if(!this.formValues.pricingScheduleOptionEventBasedContinuous?.period){
+    if (this.formValues.pricingScheduleOptionEventBasedContinuous != undefined) {
+      if (!this.formValues.pricingScheduleOptionEventBasedContinuous?.period) {
         this.toastr.error('Type - (Period) field is required in Pricing schedule -> Event Based Continuous Section');
         return;
       }
-      if(!this.formValues.pricingScheduleOptionEventBasedContinuous?.event){
+      if (!this.formValues.pricingScheduleOptionEventBasedContinuous?.event) {
         this.toastr.error('Average of the Event field is required in Pricing schedule -> Event Based Continuous Section');
         return;
       }
-      if(!this.formValues.pricingScheduleOptionEventBasedContinuous?.weekStartsOn){
+      if (!this.formValues.pricingScheduleOptionEventBasedContinuous?.weekStartsOn) {
         this.toastr.error('Where the Week Starts From field is required in Pricing schedule -> Event Based Continuous Section');
         return;
       }
     }
-    
+
 
     let formulaPayload: any = this.constructPayload(this.formValues);
 
@@ -1004,9 +1007,9 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   }
 
   getInstrumentNameById(instrumentId: number) {
-    
+
     var instrumentName = '';
-    if(instrumentId == 0){
+    if (instrumentId == 0) {
       return instrumentName;
     }
     if (this.systemInstumentList) {
@@ -1039,21 +1042,21 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
   getSystemInstruments(systemInstruments: SystemInstrumentDto[]) {
     var uiInstruments: SystemInstruments[] = [];
     systemInstruments.forEach(item => {
-        uiInstruments.push({
-          marketPriceTypeId: { id: item.marketPriceTypeId },
-          systemInstrument: { id: item.systemInstrumentId, name: this.getInstrumentNameById(item.systemInstrumentId) }
-        });
+      uiInstruments.push({
+        marketPriceTypeId: { id: item.marketPriceTypeId },
+        systemInstrument: { id: item.systemInstrumentId, name: this.getInstrumentNameById(item.systemInstrumentId) }
       });
-    
-      if(systemInstruments.length  < 3){
-        for(var i=systemInstruments.length+1;i<=3;i++){
-          uiInstruments.push({
-            marketPriceTypeId: { id:0},
-            systemInstrument:  { id:0,name: ''}
-          });
-        }
-         console.log(uiInstruments);
+    });
+
+    if (systemInstruments.length < 3) {
+      for (var i = systemInstruments.length + 1; i <= 3; i++) {
+        uiInstruments.push({
+          marketPriceTypeId: { id: 0 },
+          systemInstrument: { id: 0, name: '' }
+        });
       }
+      console.log(uiInstruments);
+    }
 
     return uiInstruments;
   }
@@ -1081,7 +1084,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
 
   getSpecificDate(scheduleSpecificDate: any) {
     var scheduleOption = this.getHolidayRule(scheduleSpecificDate as HolidayRuleDto) as PricingScheduleOptionSpecificDate;
-    scheduleOption = {...scheduleOption, ...scheduleSpecificDate };
+    scheduleOption = { ...scheduleOption, ...scheduleSpecificDate };
     return scheduleOption;
   }
 
@@ -1161,7 +1164,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
       productDiscountRules: this.getProductDiscountRules(priceConfig.discountRules?.productDiscountRules),
       locationDiscountRules: this.getLocationDiscountRules(priceConfig.discountRules?.locationDiscountRules)
     };
- 
+
     if (priceConfig.formula.formulaTypeId === 1) {
       this.formValues.simpleFormula = {
         plusMinus: { id: priceConfig.formula.simpleFormula.formulaPlusMinusId },
@@ -1190,7 +1193,7 @@ export class SpotnegoPricingDetailsComponent implements OnInit {
           systemInstruments: this.getSystemInstruments(quote.systemInstruments)
         } as ComplexFormula);
       });
-   
+
       this.formValues.complexFormulaQuoteLines = complexFormulaQuoteLines;
     }
     var uomMassList = this.setListFromStaticLists('UomMass');

@@ -973,8 +973,8 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       const filterValue = this.formValues.products[this.selectedTabIndex]
         .formula.name
         ? this.formValues.products[
-            this.selectedTabIndex
-          ].formula.name.toLowerCase()
+          this.selectedTabIndex
+        ].formula.name.toLowerCase()
         : this.formValues.products[this.selectedTabIndex].formula.toLowerCase();
 
       if (this.contractFormulaList) {
@@ -1200,7 +1200,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
         key,
         1
       );
-    } 
+    }
   }
 
   setDefaultCostType(additionalCost) {
@@ -1247,7 +1247,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     } else if (
       this.formValues.products[key1].additionalCosts[key2].costType &&
       this.formValues.products[key1].additionalCosts[key2].costType.name ==
-        'Unit'
+      'Unit'
     ) {
       this.formValues.products[key1].additionalCosts[
         key2
@@ -1306,7 +1306,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
       .additionalCost;
     let findAdditionalCostComponent = _.find(
       this.additionalCostsComponentTypes,
-      function(obj) {
+      function (obj: any) {
         return obj.id == additionalCost.id;
       }
     );
@@ -1397,7 +1397,7 @@ export class ProductPricing extends DeliveryAutocompleteComponent
     }
   }
 
-  changePricing(type) {}
+  changePricing(type) { }
 
   // Only Number
   keyPressNumber(event) {
@@ -1536,11 +1536,11 @@ export class ProductPricing extends DeliveryAutocompleteComponent
               }
             });
 
-            dialogRef.afterClosed().subscribe(result => {});
+            dialogRef.afterClosed().subscribe(result => { });
           }
         }
       });
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 }

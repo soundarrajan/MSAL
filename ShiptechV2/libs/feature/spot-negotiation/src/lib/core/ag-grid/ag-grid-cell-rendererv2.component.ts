@@ -757,8 +757,8 @@ import { ConfirmdialogComponent } from '../../views/main/details/components/spot
       </div>
     </div>
     `,
-    changeDetection: ChangeDetectionStrategy.OnPush
-  })
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
 export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   @ViewChild('menuTriggerHover') menuTriggerHover: MatMenuTrigger;
   @ViewChild('addAdditionalCostPopUpTrigger')
@@ -786,7 +786,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   counterpartyList = [];
   physicalSupplierList = [];
   visibleCounterpartyList = [];
-  selectedSellerList=[];
+  selectedSellerList = [];
   currencyList = [];
   currentRequestInfo: any;
   tenantService: any;
@@ -806,7 +806,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   currencyListForAdditionalCost: any[] = [];
   priceChanged: boolean = false;
   check_count = 0;
-  offerOldValue : number;
+  offerOldValue: number;
   clrRequest: any = 0;
   currentRequestOffer: any;
   netEnergyList: any;
@@ -892,9 +892,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           this.params.type == 'diff')
       ) {
         let requestLocationId = this.params.data.requestLocationId;
-        let currentLocation = _.find(
+        let currentLocation: any = _.find(
           this.currentRequestInfo.requestLocations,
-          function(location) {
+          function (location) {
             return location.id == requestLocationId;
           }
         );
@@ -905,7 +905,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           for (let i = 0; i < products.length; i++) {
             let findRequestOfferIndex = _.findIndex(
               this.params.data.requestOffers,
-              function(object: any) {
+              function (object: any) {
                 return object.requestProductId == products[i].id;
               }
             );
@@ -927,7 +927,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
   }
-  public isRfqSendForAnyProduct1 = ()=> {
+  public isRfqSendForAnyProduct1 = () => {
     const { requestOffers } = this.params.data || {};
     if (!requestOffers) {
       return false;
@@ -980,7 +980,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
     this.editSeller = false;
   }
-  public isOfferRequestAvailable1 = () =>{
+  public isOfferRequestAvailable1 = () => {
     const { requestOffers } = this.params.data || {};
     if (!requestOffers) {
       return false;
@@ -1023,55 +1023,55 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   agInit(params: any): void {
     this.params = params;
-    if(this.params.product){
+    if (this.params.product) {
       const { requestOffers } = this.params.data || {};
 
-    if (!requestOffers) {
-      this.isOfferAvaialble = false;
-      return;
-    }
-    const productId = this.params.product.id;
+      if (!requestOffers) {
+        this.isOfferAvaialble = false;
+        return;
+      }
+      const productId = this.params.product.id;
 
-    const offerExists = requestOffers.find(
-      e => e.requestProductId === productId && e.offerId
-    );
+      const offerExists = requestOffers.find(
+        e => e.requestProductId === productId && e.offerId
+      );
 
-    if (offerExists) {
-      this.currentRequestOffer = offerExists
-      this.isOfferAvaialble =  true;
-    }
+      if (offerExists) {
+        this.currentRequestOffer = offerExists
+        this.isOfferAvaialble = true;
+      }
 
-//    this.isOfferAvaialble = false;
+      //    this.isOfferAvaialble = false;
     }
     //this.params.data.isOfferAvaialble = this.isOfferRequestAvailable();
   }
-//
+  //
 
   search(userInput: string, params: any): void {
     clearInterval(this.clrRequest);
-     this.clrRequest = setTimeout(() => {
-        this._spotNegotiationService.getResponse(
-          null,
-          { Filters: [] },
-          { SortList: [] },
-          [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
-          userInput.toLowerCase(),
-          { Skip: 0, Take: 25 },
-          true
-        ).subscribe((res: any) => {
-          if (res?.message == 'Unauthorized')return;
-          if (res?.counterpartyListItems?.length > 0) {
-            let SelectedCounterpartyList = cloneDeep(res.counterpartyListItems);
-            SelectedCounterpartyList.forEach(element => {
-              element.name = this.format.htmlDecode(element.name);
-            });
-            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 12);
-          }else{
-            this.visibleCounterpartyList = [];
-          }
-          this.changeDetector.detectChanges();
-        });
-      }, 1200);
+    this.clrRequest = setTimeout(() => {
+      this._spotNegotiationService.getResponse(
+        null,
+        { Filters: [] },
+        { SortList: [] },
+        [{ ColumnName: 'CounterpartyTypes', Value: '1' }],
+        userInput.toLowerCase(),
+        { Skip: 0, Take: 25 },
+        true
+      ).subscribe((res: any) => {
+        if (res?.message == 'Unauthorized') return;
+        if (res?.counterpartyListItems?.length > 0) {
+          let SelectedCounterpartyList = cloneDeep(res.counterpartyListItems);
+          SelectedCounterpartyList.forEach(element => {
+            element.name = this.format.htmlDecode(element.name);
+          });
+          this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 12);
+        } else {
+          this.visibleCounterpartyList = [];
+        }
+        this.changeDetector.detectChanges();
+      });
+    }, 1200);
   }
 
   hoverMenu(event) {
@@ -1087,7 +1087,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     );
     let findRequestLocationIndex = _.findIndex(
       currentRequestSmallInfo.requestLocations,
-      function(object: any) {
+      function (object: any) {
         return object.id == requestLocationId;
       }
     );
@@ -1096,7 +1096,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         currentRequestSmallInfo.requestLocations[findRequestLocationIndex];
       let findProductIndex = _.findIndex(
         requestLocation?.requestProducts,
-        function(object: any) {
+        function (object: any) {
           return object.id == requestProductId;
         }
       );
@@ -1111,7 +1111,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   selectCounterParties(params) {
-//    let updatedRow = { ...params.data };
+    //    let updatedRow = { ...params.data };
     let updatedRow = _.cloneDeep(this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows?.find(lr => lr.id == params.data.id);
     }));
@@ -1170,7 +1170,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let requestLocationId = this.params.data.requestLocationId;
     let findRequestLocationIndex = _.findIndex(
       this.currentRequestSmallInfo?.requestLocations,
-      function(object: any) {
+      function (object: any) {
         return object.id == requestLocationId;
       }
     );
@@ -1181,7 +1181,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       const dialogRef = this.dialog.open(SpotnegoAdditionalcostComponent, {
         width: '95%',
         height: 'auto',
-        maxWidth : '100vw',
+        maxWidth: '100vw',
         panelClass: 'additional-cost-popup',
         data: {
           requestLocation: requestLocation,
@@ -1205,7 +1205,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
                 return state['spotNegotiation'].requests;
               });
               let updatedRow = { ...this.params.data };
-              let requestProducts = requests.find(x => x.id == updatedRow.requestId)?.requestLocations?.find(l => l.id ==updatedRow.requestLocationId)?.requestProducts;
+              let requestProducts = requests.find(x => x.id == updatedRow.requestId)?.requestLocations?.find(l => l.id == updatedRow.requestLocationId)?.requestProducts;
               updatedRow.totalOffer =
                 priceDetailsRes.sellerOffers[0].totalOffer;
               updatedRow.totalCost = priceDetailsRes.sellerOffers[0].totalCost;
@@ -1220,17 +1220,17 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
               updatedRow.hasAnyProductStemmed = updatedRow.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
               updatedRow.isOfferConfirmed = updatedRow.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
               updatedRow.requestOffers = updatedRow.requestOffers?.sort((a, b) =>
-              a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
-                ? a.requestProductId > b.requestProductId
-                  ? 1
-                  : -1
-                : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
-                ? 1
-                : -1
-            );
-            var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
-              updatedRow,
-              updatedRow);
+                a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
+                  ? a.requestProductId > b.requestProductId
+                    ? 1
+                    : -1
+                  : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
+                    ? 1
+                    : -1
+              );
+              var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
+                updatedRow,
+                updatedRow);
               // Update the store
               this.store.dispatch(new EditLocationRow(locRow));
               this.params.node.setData(locRow);
@@ -1258,12 +1258,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             rows,
             res['sellerOffers']
           );
-          let reqLocationRows : any =[];
+          let reqLocationRows: any = [];
           for (const locRow of futureLocationsRows) {
             var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
               locRow,
               locRow);
-              reqLocationRows.push(data);
+            reqLocationRows.push(data);
           }
           this.store.dispatch(new SetLocationsRows(reqLocationRows));
         }
@@ -1291,7 +1291,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       let currentLocProd = currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
-      let requestProducts = requests.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
+      let requestProducts = requests.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id == row.requestLocationId)?.requestProducts;
       // Optimize: Check first in the same index from priceDetailsArray; if it's not the same row, we will do the map bind
       if (
         index < priceDetailsArray.length &&
@@ -1331,8 +1331,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
               ? 1
               : -1
             : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
-            ? 1
-            : -1
+              ? 1
+              : -1
         );
         return row;
       }
@@ -1371,8 +1371,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
               ? 1
               : -1
             : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
-            ? 1
-            : -1
+              ? 1
+              : -1
         );
       }
       return row;
@@ -1397,15 +1397,15 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
 
-  sellerratingpopup(data : any, popupType:string) {
+  sellerratingpopup(data: any, popupType: string) {
     const dialogRef = this.dialog.open(SellerratingpopupComponent, {
       width: '1164px',
       height: '562px',
       panelClass: 'additional-cost-popup',
       data: {
         sellerId: data.sellerCounterpartyId,
-        locationId : data.locationId,
-        popupType : popupType
+        locationId: data.locationId,
+        popupType: popupType
       }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -1421,13 +1421,13 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       return state.spotNegotiation.locationsRows?.find(lr => lr.id == params.data.id);
     });
 
-    let sameSellerData= this.locationRowsAcrossRequest.filter(
+    let sameSellerData = this.locationRowsAcrossRequest.filter(
       s =>
-        s.sellerCounterpartyId == locRow.sellerCounterpartyId 
+        s.sellerCounterpartyId == locRow.sellerCounterpartyId
     );
-    let sellerData = sameSellerData.length>0?sameSellerData:this.locationRowsAcrossRequest.filter(
+    let sellerData = sameSellerData.length > 0 ? sameSellerData : this.locationRowsAcrossRequest.filter(
       s =>
-        s.sellerCounterpartyId ==locRow.sellerCounterpartyId && 
+        s.sellerCounterpartyId == locRow.sellerCounterpartyId &&
         s.requestId == locRow.requestId
     );;
     // let products = this.currentRequestInfo.requestLocations.filter(loc => this.locationRowsAcrossRequest.some(s => s.sellerCounterpartyId == locRow.sellerCounterpartyId && s.requestId == locRow.requestId && s.requestLocationId ==  loc.id)).map(prod =>
@@ -1462,7 +1462,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   openCounterpartyPopup(locationId) {
@@ -1542,7 +1542,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       var itemsToUpdate = [];
       let rowData = [];
 
-      params.api.forEachNodeAfterFilterAndSort(function(rowNode, index) {
+      params.api.forEachNodeAfterFilterAndSort(function (rowNode, index) {
         if (!rowNode.isSelected() === true) {
           return;
         }
@@ -1634,8 +1634,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let requestedOffer = this.currentRequestOffer;
     const dialogRef = this.dialog.open(SpotnegoPricingDetailsComponent, {
       width: '1164px',
-      data : {
-        requestOfferId : requestedOffer.id,
+      data: {
+        requestOfferId: requestedOffer.id,
         offerPriceFormulaId: requestedOffer.offerPriceFormulaId,
         productId: params.product.productId
       },
@@ -1697,7 +1697,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     if (requestLocation) {
       let findProductIndex = _.findIndex(
         requestLocation.requestProducts,
-        function(object: any) {
+        function (object: any) {
           return object.id == requestOffer.requestProductId;
         }
       );
@@ -1812,7 +1812,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         element.focus();
         element.setSelectionRange(len, len);
       }, 500);
-      
+
     } else if (element.createTextRange) {
       var t = element.createTextRange();
       t.collapse(true);
@@ -1822,9 +1822,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     }
   }
 
-  onPriceChange(e, params) {  
+  onPriceChange(e, params) {
     this.priceChanged = false;
-    if((e.target.value !='' && this.offerOldValue != e.target.value) || (e.target.value == '' && this.offerOldValue > 0) ){
+    if ((e.target.value != '' && this.offerOldValue != e.target.value) || (e.target.value == '' && this.offerOldValue > 0)) {
       params.colDef.valueSetter({
         colDef: params.colDef,
         data: params.data,
@@ -1832,11 +1832,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         event: e,
         elementidValue: this.returnRowIndex(params)
       });
-    }else{
+    } else {
       this.onGetFocus(e, params);
     }
   }
-  public getCurrentOfferValue(e){
+  public getCurrentOfferValue(e) {
     this.offerOldValue = e.target.value.replace(/,/g, "");
   }
   public checkIfSellerHasAtleastOneProductStemmedAndAnyOrderCreated1 = (params) => {
@@ -1876,7 +1876,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
 
   checkIfProductIsStemmedWithAnotherSeller1(params) {
     let product = params.product;
-    let findOffer = _.find(params.requestOffers, function(requestOffer) {
+    let findOffer: any = _.find(params.requestOffers, function (requestOffer) {
       return requestOffer.requestProductId === product.id;
     });
     if (findOffer) {
@@ -1887,7 +1887,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return false;
   }
   checkIfProductIsStemmedWithAnotherSeller(params, product) {
-    let findOffer = _.find(params.requestOffers, function(requestOffer) {
+    let findOffer = _.find(params.requestOffers, function (requestOffer: any) {
       return requestOffer.requestProductId === product.id;
     });
     if (findOffer) {
@@ -1912,7 +1912,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
 
   getCurrentRequestLocation() {
- // console.log(this.stcount++ +" getCurrentRequestLocation...");
+    // console.log(this.stcount++ +" getCurrentRequestLocation...");
     this.currentRequestSmallInfo = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.currentRequestSmallInfo;
     });
@@ -1920,7 +1920,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let requestLocationId = this.params.data.requestLocationId;
     let findRequestLocationIndex = _.findIndex(
       this.currentRequestSmallInfo?.requestLocations,
-      function(object: any) {
+      function (object: any) {
         return object.id == requestLocationId;
       }
     );
@@ -1937,7 +1937,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     if (requestLocation != null) {
       let findProductIndex = _.findIndex(
         requestLocation.requestProducts,
-        function(object: any) {
+        function (object: any) {
           return object.id == requestOffer.requestProductId;
         }
       );
@@ -2003,7 +2003,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         //   res.exchangeRateValue
         // );
         applyExchangeRate.subscribe((res: any) => {
-        params.api?.hideOverlay();
+          params.api?.hideOverlay();
           if (res.status) {
             this.paramsDataClone.oldCurrency = this.paramsDataClone.currency;
             //this.store.dispatch(new EditLocationRow(futureRowData));
@@ -2023,11 +2023,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.toastr.warning(res.message);
         this.changeDetector.detectChanges();
       }
-      setTimeout(() => {this.spinner.hide()}, 1000);
+      setTimeout(() => { this.spinner.hide() }, 1000);
     });
   }
 
-  removeFormulaPrice(params){
+  removeFormulaPrice(params) {
     const dialogRef = this.dialog.open(ConfirmdialogComponent, {
       width: '368px',
       maxWidth: '80vw',
@@ -2036,27 +2036,27 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         message: 'Are you sure you want to remove this formula?'
       }
     });
-    dialogRef.afterClosed().subscribe(result =>{
-      if(result){
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
         let requestedOffer = this.currentRequestOffer;
         var newData = _.cloneDeep(params.data);
         newData.requestOffers.map((el) => {
-          if(el.id === requestedOffer.id){
+          if (el.id === requestedOffer.id) {
             el.isFormulaPricing = false;
             el.price = 0;
             el.totalPrice = 0;
             el.amount = 0;
             el.offerPriceFormulaId = null;
-          } 
+          }
         });
-       this._spotNegotiationService.removeFormula(requestedOffer.id,requestedOffer.offerPriceFormulaId).subscribe();
-       this.toastr.success('Formula removed successfully');
-       this.store.dispatch(new EditLocationRow(newData));
-       this._spotNegotiationService.callGridRedrawService();
+        this._spotNegotiationService.removeFormula(requestedOffer.id, requestedOffer.offerPriceFormulaId).subscribe();
+        this.toastr.success('Formula removed successfully');
+        this.store.dispatch(new EditLocationRow(newData));
+        this._spotNegotiationService.callGridRedrawService();
       }
     });
   }
-  
+
   changeCurrencyForAdditionalCost(currencyId, exchangeRateValue) {
     this.checkAdditionalCost(
       _.cloneDeep(this.params.data),
@@ -2073,7 +2073,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     let requestLocationId = sellerOffers.requestLocationId;
     let findRequestLocationIndex = _.findIndex(
       this.currentRequestSmallInfo?.requestLocations,
-      function(object: any) {
+      function (object: any) {
         return object.id == requestLocationId;
       }
     );
@@ -2167,10 +2167,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         updatedRow.requestOffers =
           priceDetailsRes.sellerOffers[0].requestOffers;
         updatedRow.isRfqSend = updatedRow.requestOffers?.some(off => off.isRfqskipped === false);
-        let requestProducts = requests.find(x => x.id == updatedRow.requestId)?.requestLocations?.find(l => l.id ==updatedRow.requestLocationId)?.requestProducts;
+        let requestProducts = requests.find(x => x.id == updatedRow.requestId)?.requestLocations?.find(l => l.id == updatedRow.requestLocationId)?.requestProducts;
         updatedRow.requestOffers = updatedRow.requestOffers.map(e => {
           let isStemmed = requestProducts?.find(rp => rp.id == e.requestProductId)?.status;
-           return { ...e, reqProdStatus: isStemmed };
+          return { ...e, reqProdStatus: isStemmed };
         });
         updatedRow.hasAnyProductStemmed = updatedRow.requestOffers?.some(off => off.reqProdStatus == 'Stemmed');
         updatedRow.isOfferConfirmed = updatedRow.requestOffers?.some(off => off.orderProducts && off.orderProducts.length > 0);
@@ -2183,7 +2183,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         this.params.node.setData(locRow);
       });
   }
-  public getCurrencyCode1 = (currencyId)  => {
+  public getCurrencyCode1 = (currencyId) => {
     //this._spotNegotiationService.callGridRefreshService();
     let currency = this.currencyList?.filter(el => el.id == currencyId)[0];
     return currency ? currency.code : false;
@@ -2213,31 +2213,31 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     });
 
     //this.store.subscribe(({ spotNegotiation }) => {
-      this.selectedSellerList = [];
-      requests.forEach(req => {
-        req.requestLocations.forEach(element => {
-          locationsRows.forEach(element1 => {
-            if (element.id == element1.requestLocationId) {
-              if (
-                element1['checkProd1'] ||
-                element1['checkProd2'] ||
-                element1['checkProd3'] ||
-                element1['checkProd4'] ||
-                element1['checkProd5']
-              ) {
-                var Sellectedsellerdata = this.ConstuctSellerPayload(
-                  element1,
-                  element.requestProducts,
-                  req
-                );
-                if (Sellectedsellerdata) {
-                  this.selectedSellerList.push(Sellectedsellerdata);
-                }
+    this.selectedSellerList = [];
+    requests.forEach(req => {
+      req.requestLocations.forEach(element => {
+        locationsRows.forEach(element1 => {
+          if (element.id == element1.requestLocationId) {
+            if (
+              element1['checkProd1'] ||
+              element1['checkProd2'] ||
+              element1['checkProd3'] ||
+              element1['checkProd4'] ||
+              element1['checkProd5']
+            ) {
+              var Sellectedsellerdata = this.ConstuctSellerPayload(
+                element1,
+                element.requestProducts,
+                req
+              );
+              if (Sellectedsellerdata) {
+                this.selectedSellerList.push(Sellectedsellerdata);
               }
             }
-          });
+          }
         });
       });
+    });
     //});
     return this.selectedSellerList;
   }
@@ -2337,10 +2337,10 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           type === 'enable-quote'
             ? 'Selected Offer Price has been enabled.'
             : "Selected Offers have been marked as 'No Quote' successfully.";
-        this.toastr.success(successMessage,'',{timeOut: 800});
+        this.toastr.success(successMessage, '', { timeOut: 800 });
         setTimeout(() => {
-          this._spotNegotiationService.energyCalculationService(null,null,null);
-        },3000);
+          this._spotNegotiationService.energyCalculationService(null, null, null);
+        }, 3000);
         this.getSellerLineDetails();
       } else {
         this.spinner.hide();
@@ -2348,7 +2348,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
   }
-  public  checkIfRequestOffersHasNoQuote1 = (index) =>{
+  public checkIfRequestOffersHasNoQuote1 = (index) => {
     if (
       this.paramsDataCloneForNoQuote &&
       this.paramsDataCloneForNoQuote.requestOffers &&
@@ -2389,14 +2389,14 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
         var locRow = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
           updatedRow,
           updatedRow);
-          locRow.requestOffers = locRow.requestOffers?.sort((a, b) =>
+        locRow.requestOffers = locRow.requestOffers?.sort((a, b) =>
           a.requestProductTypeOrderBy === b.requestProductTypeOrderBy
             ? a.requestProductId > b.requestProductId
               ? 1
               : -1
             : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
-            ? 1
-            : -1
+              ? 1
+              : -1
         );
         this.store.dispatch(new EditLocationRow(locRow));
         this._spotNegotiationService.callGridRedrawService();
@@ -2415,12 +2415,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
   }
   selectSupplier(element) {
     this.editedSellerCopy = element.name;
-    this.phySupplierIdCopy  = element.id;
+    this.phySupplierIdCopy = element.id;
   }
 
   updatePhysicalSupplier() {
     let valid = false;
-    let phySupplier=this.phySupplierIdCopy ==0?this.phySupplierId:this.phySupplierIdCopy;
+    let phySupplier = this.phySupplierIdCopy == 0 ? this.phySupplierId : this.phySupplierIdCopy;
     if (phySupplier == this.phySupplierId) {
       this.toastr.warning(
         'Invalid or same physical supplier selected, Please try selecting it again.'
@@ -2433,9 +2433,9 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           item =>
             item.locationId === this.params.data.locationId &&
             item.sellerCounterpartyId ===
-              this.params.data.sellerCounterpartyId &&
+            this.params.data.sellerCounterpartyId &&
             item.requestId === this.params.data.requestId &&
-            item.physicalSupplierCounterpartyId ===phySupplier &&
+            item.physicalSupplierCounterpartyId === phySupplier &&
             item.id !== this.params.data.id
         );
         if (selectItems.length != 0) {
@@ -2472,8 +2472,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
       }
     });
     if (valid) {
-      this.editedSeller='Add P. Supplier';
-      this.phySupplierId=0;
+      this.editedSeller = 'Add P. Supplier';
+      this.phySupplierId = 0;
       this.toastr.error(
         'Physical supplier already available against the given the Seller.'
       );
@@ -2487,7 +2487,7 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     this.currentRequestSmallInfo = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.currentRequestSmallInfo;
     });
-    this.phySupplierId=this.phySupplierIdCopy;
+    this.phySupplierId = this.phySupplierIdCopy;
     let payload = {
       requestGroupId: this.params.data.requestGroupId,
       requestLocationId: this.params.data.requestLocationId,
@@ -2498,12 +2498,12 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     };
     const response = this._spotNegotiationService.updatePhySupplier(payload);
     response.subscribe((res: any) => {
-      this.editedSeller=this.editedSellerCopy;
+      this.editedSeller = this.editedSellerCopy;
       if (res.status) {
         const futureLocationsRows = this.getLocationRowsAddPhySupplier(
           JSON.parse(JSON.stringify(locationsRows))
         );
-          
+
         if (this.phySupplierId && this.params?.value) {
           const counterpartyList = this.store.selectSnapshot<any>(
             (state: any) => {
@@ -2525,23 +2525,23 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
           }
         }
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
-        this.toastr.success('Phy. Supplier added successfully','',{timeOut: 800});
+        this.toastr.success('Phy. Supplier added successfully', '', { timeOut: 800 });
 
-        let productIds=this.currentRequestSmallInfo.requestLocations.map(reql=>reql.requestProducts.map(reql=>reql.productId));
-          let physicalSupplierIds=futureLocationsRows.map(phy=>phy.physicalSupplierCounterpartyId);
-          if(productIds){
-            let payload=  {
-              locationIds: [this.params.data.requestLocationId],
-              productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
-              physicalSupplierIds:[...new Set(physicalSupplierIds)],
-              requestGroupId:this.params.data.requestGroupId
-            }
-            this.getEnergy6MHistory(payload);
+        let productIds = this.currentRequestSmallInfo.requestLocations.map(reql => reql.requestProducts.map(reql => reql.productId));
+        let physicalSupplierIds = futureLocationsRows.map(phy => phy.physicalSupplierCounterpartyId);
+        if (productIds) {
+          let payload = {
+            locationIds: [this.params.data.requestLocationId],
+            productIds: [...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
+            physicalSupplierIds: [...new Set(physicalSupplierIds)],
+            requestGroupId: this.params.data.requestGroupId
+          }
+          this.getEnergy6MHistory(payload);
         }
 
-        
+
         setTimeout(() => {
-          this._spotNegotiationService.energyCalculationService(null,this.params.locationId,null);
+          this._spotNegotiationService.energyCalculationService(null, this.params.locationId, null);
         }, 100);
       } else {
         if (this.phySupplierId && this.params?.value) {
@@ -2564,8 +2564,8 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
             });
           }
         }
-        this.editedSeller='Add P. Supplier';
-        this.phySupplierId=0;
+        this.editedSeller = 'Add P. Supplier';
+        this.phySupplierId = 0;
         this.toastr.error(res.message);
         return;
       }
@@ -2581,11 +2581,11 @@ export class AGGridCellRendererV2Component implements ICellRendererAngularComp {
     return locationrow;
   }
   /// get avg netEnergy6MonthHistory
-  async getEnergy6MHistory(payload){   
+  async getEnergy6MHistory(payload) {
     const response = await this._spotNegotiationService.getEnergy6MHistorys(payload);
-    if (response.energy6MonthHistories.length > 0){
-        this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
-      }
+    if (response.energy6MonthHistories.length > 0) {
+      this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+    }
   }
   openCostMenu(event: any, totalOfferValue: any) {
     event.preventDefault();

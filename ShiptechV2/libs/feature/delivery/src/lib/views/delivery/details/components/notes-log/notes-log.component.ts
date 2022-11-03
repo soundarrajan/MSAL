@@ -626,8 +626,8 @@ export class NotesLogComponent implements OnInit {
   }
 
   notesUpdate() {
-    let findNotesWithIdZero = _.filter(this.formValues.deliveryNotes, function(
-      object
+    let findNotesWithIdZero = _.filter(this.formValues.deliveryNotes, function (
+      object: any
     ) {
       return object.id == 0;
     });

@@ -642,7 +642,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     this.changeDetectorRef.detectChanges();
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   formatDate(date?: any) {
     if (date) {
@@ -689,7 +689,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
     this.gridViewModel.page = page;
   }
 
-  orderNumberSelection(event: IOrderLookupDto): void {}
+  orderNumberSelection(event: IOrderLookupDto): void { }
 
   onPageSizeChange(pageSize: number): void {
     this.gridViewModel.pageSize = pageSize;
@@ -993,7 +993,7 @@ export class BdnInformationComponent extends DeliveryAutocompleteComponent
   }
 
   setBarge(value) {
-    const findBarge = _.find(this.bargeList, function(object) {
+    const findBarge = _.find(this.bargeList, function (object: any) {
       return object.id == value;
     });
     if (findBarge != -1) {
