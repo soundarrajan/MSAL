@@ -75,7 +75,6 @@
     "@types/chance": "^1.0.8",
     "@types/dateformat": "^3.0.1",
     "@types/jsonpath": "^0.2.0",
-    "@types/lodash": "^4.14.50",
     "@types/postal": "^1.0.30",
     "@types/reflect-metadata": "^0.1.0",
     "@types/url-parse": "^1.4.8",
