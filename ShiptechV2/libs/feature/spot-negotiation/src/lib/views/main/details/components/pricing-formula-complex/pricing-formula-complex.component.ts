@@ -3,7 +3,7 @@ import {
   Component,
   OnInit,
   ViewEncapsulation,
-  ViewChild,  Input,
+  ViewChild, Input,
   Inject,
   ChangeDetectorRef,
   ViewChildren
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
-import {IOrderLookupDto} from '@shiptech/core/lookups/display-lookup-dto.interface';
+import { IOrderLookupDto } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import {
   knowMastersAutocompleteHeaderName,
   knownMastersAutocomplete
@@ -22,7 +22,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import _ from 'lodash';
 
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DecimalPipe, KeyValue } from '@angular/common';
 import { MatSelect } from '@angular/material/select';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -36,7 +36,7 @@ import { Store } from '@ngxs/store';
   encapsulation: ViewEncapsulation.None,
   providers: [OrderListGridViewModel, DialogService, ConfirmationService]
 })
-export class PricingFormulaComplex 
+export class PricingFormulaComplex
   implements OnInit {
   switchTheme; //false-Light Theme, true- Dark Theme
   formValues: any;
@@ -282,11 +282,11 @@ export class PricingFormulaComplex
     this.hasInvoicedOrder = hasInvoicedOrder;
 
     this.store.selectSnapshot<any>((state: any) => {
-      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+      if (state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed') {
         this.hasInvoicedOrder = true;
       }
     });
-    
+
   }
 
   index = 0;
@@ -318,7 +318,7 @@ export class PricingFormulaComplex
     this.entityName = 'Contract';
     this.autocompleteCurrency = knownMastersAutocomplete.currency;
     this.store.selectSnapshot<any>((state: any) => {
-      if(state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed'){
+      if (state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed') {
         this.hasInvoicedOrder = true;
       }
     });
@@ -505,7 +505,7 @@ export class PricingFormulaComplex
   }
 
   setFormulaOperation(value, line) {
-    let findObject = _.find(this.formulaOperationList, function(obj) {
+    let findObject = _.find(this.formulaOperationList, function (obj: any) {
       return obj.id == value;
     });
     if (findObject != -1) {
@@ -523,9 +523,9 @@ export class PricingFormulaComplex
 
   filterSystemInstrumentListFromComplexFormulaQuoteLine(value) {
 
-    if(typeof value === 'object'){
+    if (typeof value === 'object') {
       value = value.name;
-    }  
+    }
     if (value) {
       const filterValue = value.toLowerCase();
       if (this.systemInstumentList) {
@@ -587,5 +587,5 @@ export class PricingFormulaComplex
     }
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 }

@@ -248,19 +248,19 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         if (this.formValues?.info?.request) {
           this.titleService.setTitle(
             'Delivery' +
-              ' - ' +
-              'REQ ' +
-              this.formValues.info.request.id +
-              ' - ' +
-              this.formValues.info.vesselName
+            ' - ' +
+            'REQ ' +
+            this.formValues.info.request.id +
+            ' - ' +
+            this.formValues.info.vesselName
           );
         } else {
           this.titleService.setTitle(
             'Delivery' +
-              ' - ' +
-              this.formValues.order.name +
-              ' - ' +
-              this.formValues.info.vesselName
+            ' - ' +
+            this.formValues.order.name +
+            ' - ' +
+            this.formValues.info.vesselName
           );
         }
 
@@ -508,7 +508,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     activeProduct.vesselFlowMeterQuantityUom == null
       ? (vesselFlowMeterQuantityUom = null)
       : (vesselFlowMeterQuantityUom =
-          activeProduct.vesselFlowMeterQuantityUom.name);
+        activeProduct.vesselFlowMeterQuantityUom.name);
     // activeProduct.bargeFlowMeterQuantityUom == null ? bargeFlowMeterQuantityUom = null : bargeFlowMeterQuantityUom = activeProduct.bargeFlowMeterQuantityUom.name;
     activeProduct.surveyorQuantityUom == null
       ? (surveyorQuantityUom = null)
@@ -572,7 +572,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     ) {
       const uomObjId =
         fieldUoms[
-          this.formValues.deliveryProducts[productIdx].sellerQuantityType.name
+        this.formValues.deliveryProducts[productIdx].sellerQuantityType.name
         ];
       baseUom = this.formValues.deliveryProducts[productIdx][uomObjId];
     }
@@ -879,13 +879,13 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       const rule = this.finalQuantityRules[i];
       if (
         typeof this.formValues.deliveryProducts[productIdx][
-          `${rule.deliveryMapping}Uom`
+        `${rule.deliveryMapping}Uom`
         ] != 'undefined' &&
         this.formValues.deliveryProducts[productIdx][
-          `${rule.deliveryMapping}Amount`
+        `${rule.deliveryMapping}Amount`
         ] != '' &&
         this.formValues.deliveryProducts[productIdx][
-          `${rule.deliveryMapping}Amount`
+        `${rule.deliveryMapping}Amount`
         ] != null
       ) {
         // quantity exists, set it
@@ -893,12 +893,12 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           productIdx
         ].finalQuantityUom = this.formValues.deliveryProducts[productIdx][
           `${rule.deliveryMapping}Uom`
-        ];
+          ];
         this.formValues.deliveryProducts[
           productIdx
         ].finalQuantityAmount = this.formValues.deliveryProducts[productIdx][
           `${rule.deliveryMapping}Amount`
-        ];
+          ];
         dataSet = true;
       }
       if (dataSet) {
@@ -1219,19 +1219,19 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
           if (this.formValues?.info?.request) {
             this.titleService.setTitle(
               'Delivery' +
-                ' - ' +
-                'REQ ' +
-                this.formValues.info.request.id +
-                ' - ' +
-                this.formValues.info.vesselName
+              ' - ' +
+              'REQ ' +
+              this.formValues.info.request.id +
+              ' - ' +
+              this.formValues.info.vesselName
             );
           } else {
             this.titleService.setTitle(
               'Delivery' +
-                ' - ' +
-                this.formValues.order.name +
-                ' - ' +
-                this.formValues.info.vesselName
+              ' - ' +
+              this.formValues.order.name +
+              ' - ' +
+              this.formValues.info.vesselName
             );
           }
           // this.orderProductsByProductType('summaryProducts');
@@ -1433,7 +1433,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
   public detectChanges(form: any): void {
     this.formValues = form;
@@ -1524,10 +1524,10 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
         if (typeof this.formValues.temp.variances != 'undefined') {
           if (
             typeof this.formValues.temp.variances[
-              `product_${this.CM.selectedProduct}`
+            `product_${this.CM.selectedProduct}`
             ] == 'undefined' ||
             this.formValues.temp.variances[
-              `product_${this.CM.selectedProduct}`
+            `product_${this.CM.selectedProduct}`
             ] == null
           ) {
             claim2.disabled = true;
@@ -1998,8 +1998,8 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   }
 
   decodeSpecificField(modelValue) {
-    const decode = function(str) {
-      return str.replace(/&#(\d+);/g, function(match, dec) {
+    const decode = function (str) {
+      return str.replace(/&#(\d+);/g, function (match, dec) {
         return String.fromCharCode(dec);
       });
     };
@@ -2009,7 +2009,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
   notesUpdate() {
     const findNotesWithIdZero = _.filter(
       this.formValues.deliveryNotes,
-      function(object) {
+      function (object: any) {
         return object.id == 0;
       }
     );
@@ -2053,6 +2053,6 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {});
+    dialogRef.afterClosed().subscribe(result => { });
   }
 }

@@ -141,7 +141,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   setListFromStaticLists(name) {
-    const findList = _.find(this.staticLists, function(object) {
+    const findList = _.find(this.staticLists, function (object: any) {
       return object.name == name;
     });
     if (findList != -1) {
@@ -236,11 +236,10 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     data.invoiceDetails = null;
     data.documentNo = null;
     data.dueDate = null;
-    data.invoiceDate = `${
-      moment(new Date())
+    data.invoiceDate = `${moment(new Date())
         .format('YYYY-MM-DDTHH:mm:ss')
         .split('T')[0]
-    }T00:00:00`;
+      }T00:00:00`;
     data.invoiceSummary.deductions = null;
     // data.paymentDate = null;
     data.accountNumber = null;
@@ -438,7 +437,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
     this.invoiceService
       .computeInvoiceTotalConversion(payloadData)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.toastr.error(result);

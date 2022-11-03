@@ -77,7 +77,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   visibleRequestList: any = [];
   couterpartyValue: any;
   clrRequest: any = 0;
-  bestOffIconDispaly : boolean = false;
+  bestOffIconDispaly: boolean = false;
   // requestsAndVessels = [
   //   { request: 'Demo Req 100001', vessel: 'MerinLion', selected: false },
   //   { request: 'Demo Req 100002', vessel: 'Afif', selected: false },
@@ -112,7 +112,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           return state['spotNegotiation'].locationsRows;
         })
       );
-      this.evaluateIconDisplayCheck(locationsRows);     
+      this.evaluateIconDisplayCheck(locationsRows);
     });
   }
 
@@ -169,19 +169,19 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }, 100);
   }
 
-  evaluateIconDisplayCheck(locationsRows){
+  evaluateIconDisplayCheck(locationsRows) {
     this.evaluateIconDisplay = false;
-    this.bestOffIconDispaly =  false; 
+    this.bestOffIconDispaly = false;
     locationsRows.forEach(element => {
-      if(element?.requestOffers?.length > 0){
-        this.bestOffIconDispaly =  true;
+      if (element?.requestOffers?.length > 0) {
+        this.bestOffIconDispaly = true;
         element.requestOffers.filter(_data => {
-          if(_data.isFormulaPricing == true){
+          if (_data.isFormulaPricing == true) {
             this.evaluateIconDisplay = true;
-          return;
+            return;
           }
         });
-      if(this.evaluateIconDisplay == true) return;
+        if (this.evaluateIconDisplay == true) return;
       }
     });
   }
@@ -306,7 +306,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       //Looping through all the Request Locations
       this.requestOptions.forEach(request => {
         request.requestLocations.forEach(reqLoc => {
-          let currentLocationRows = _.filter(locationsRows, function(row) {
+          let currentLocationRows = _.filter(locationsRows, function (row: any) {
             return row.requestLocationId == reqLoc.id;
           });
           let perLocationCtpys = [];
@@ -314,42 +314,42 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
             let val = this.selectedCounterparty[i];
             let checkIfSelectedCounterpartyExist = _.findIndex(
               currentLocationRows,
-              function(row) {               
+              function (row: any) {
                 return row.sellerCounterpartyId == val.id;
               }
             );
             //if (checkIfSelectedCounterpartyExist == -1) {
-              perLocationCtpys.push(<SpnegoAddCounterpartyModel>{
-                requestId: request.id,
-                requestGroupId: RequestGroupId,
-                requestLocationId: reqLoc.id,
-                locationId: reqLoc.locationId,
-                id: 0,
-                name: '',
-                counterpartytypeId: 0,
-                counterpartyTypeName: val.seller
-                  ? 'Seller'
-                  : val.supplier
+            perLocationCtpys.push(<SpnegoAddCounterpartyModel>{
+              requestId: request.id,
+              requestGroupId: RequestGroupId,
+              requestLocationId: reqLoc.id,
+              locationId: reqLoc.locationId,
+              id: 0,
+              name: '',
+              counterpartytypeId: 0,
+              counterpartyTypeName: val.seller
+                ? 'Seller'
+                : val.supplier
                   ? 'Supplier'
                   : val.broker
-                  ? 'Broker'
-                  : val.sludge
-                  ? 'Sludge'
-                  : '',
-                genPrice: '',
-                genRating: '',
-                isDeleted: false,
-                isSelected: false,
-                mail: '',
-                portPrice: '',
-                portRating: '',
-                prefferedProductIds: '',
-                sellerComments: '',
-                isSellerPortalComments: false,
-                sellerCounterpartyId: val.id,
-                sellerCounterpartyName: val.name,
-                senRating: ''
-              });
+                    ? 'Broker'
+                    : val.sludge
+                      ? 'Sludge'
+                      : '',
+              genPrice: '',
+              genRating: '',
+              isDeleted: false,
+              isSelected: false,
+              mail: '',
+              portPrice: '',
+              portRating: '',
+              prefferedProductIds: '',
+              sellerComments: '',
+              isSellerPortalComments: false,
+              sellerCounterpartyId: val.id,
+              sellerCounterpartyName: val.name,
+              senRating: ''
+            });
             //}
           }
           selectedCounterparties.push(...perLocationCtpys);
@@ -362,70 +362,70 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  refreshGrid(){
-    let locationData : any[] = this.store.selectSnapshot<any>((state: any) => {
+  refreshGrid() {
+    let locationData: any[] = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locationsRows;
     });
     let OfferIds = [];
-    locationData.forEach(loc =>{
-      if(loc.requestOffers){
-         let offerId = loc.requestOffers.find(x => x.isFormulaPricing == true)?.id;
-         OfferIds.push(offerId);
+    locationData.forEach(loc => {
+      if (loc.requestOffers) {
+        let offerId = loc.requestOffers.find(x => x.isFormulaPricing == true)?.id;
+        OfferIds.push(offerId);
       }
     }
     );
-    OfferIds =  OfferIds.filter(x=> x!=undefined);
-    this._spotNegotiationService.evaluatePrices({ RequestOfferIds: OfferIds}).subscribe(async (resp:any) =>{
-      if(resp?.message == 'Unauthorized') return;
-      if(resp.offersPrices){
-        
-        let reqLocationRows : any =[];
+    OfferIds = OfferIds.filter(x => x != undefined);
+    this._spotNegotiationService.evaluatePrices({ RequestOfferIds: OfferIds }).subscribe(async (resp: any) => {
+      if (resp?.message == 'Unauthorized') return;
+      if (resp.offersPrices) {
+
+        let reqLocationRows: any = [];
         let locationsRows = _.cloneDeep(
           this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {
             return state['spotNegotiation'].locationsRows;
           })
         );
         for (var locRow of locationsRows) {
-          if(locRow.requestOffers){
-            locRow.requestOffers.forEach(req=>{
-              resp.offersPrices.forEach(x=>{
-                if(req.id === x.requestOfferId){
+          if (locRow.requestOffers) {
+            locRow.requestOffers.forEach(req => {
+              resp.offersPrices.forEach(x => {
+                if (req.id === x.requestOfferId) {
                   req.price = x.price;
                 }
               })
             });
-           }
+          }
           var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
             locRow,
             locRow);
-            reqLocationRows.push(data);
+          reqLocationRows.push(data);
         }
         //this.store.dispatch(new EvaluatePrice(resp.offersPrices));
         this.store.dispatch(new SetLocationsRows(reqLocationRows));
         this._spotNegotiationService.callGridRedrawService();
       }
-      else{
+      else {
         this.toastr.error('An Error Occurred while evaluating price');
       }
     })
   }
   addCounterpartyAcrossLocations() {
     const selectedCounterparties = this.toBeAddedCounterparties();
-    if (selectedCounterparties?.length == 0){
-      let selectedCounterpartyNames =  this.selectedCounterparty.map(innerData => {
+    if (selectedCounterparties?.length == 0) {
+      let selectedCounterpartyNames = this.selectedCounterparty.map(innerData => {
         return innerData.name;
-      });    
-      if(selectedCounterpartyNames?.length > 0)
-      this.toastr.error("Counterparty "+selectedCounterpartyNames?.toString()+" already added");
+      });
+      if (selectedCounterpartyNames?.length > 0)
+        this.toastr.error("Counterparty " + selectedCounterpartyNames?.toString() + " already added");
       else
-      this.toastr.error("Please Select atleast One Counterparty");
+        this.toastr.error("Please Select atleast One Counterparty");
       this.selectedCounterparty = _.cloneDeep([]);
       for (let i = 0; i < this.visibleCounterpartyList?.length; i++) {
         this.visibleCounterpartyList[i].selected = false;
       }
       this.selectedCounterparty = _.cloneDeep([]);
       return;
-    } 
+    }
     const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
     let payload = {
       requestGroupId: parseInt(RequestGroupId),
@@ -454,44 +454,44 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
         }
 
         let messageList = [];
-        selectedCounterparties.forEach((data,index) => {
-          if(messageList[data.sellerCounterpartyId] == undefined){
-            messageList[data.sellerCounterpartyId]=[];  
+        selectedCounterparties.forEach((data, index) => {
+          if (messageList[data.sellerCounterpartyId] == undefined) {
+            messageList[data.sellerCounterpartyId] = [];
             messageList[data.sellerCounterpartyId]['counterpartyName'] = data.sellerCounterpartyName;
           }
-          if(messageList[data.sellerCounterpartyId]['locations'] == undefined)
-          messageList[data.sellerCounterpartyId]['locations'] = [];
+          if (messageList[data.sellerCounterpartyId]['locations'] == undefined)
+            messageList[data.sellerCounterpartyId]['locations'] = [];
 
           this.requestOptions[0].requestLocations.forEach(inner => {
-            if(inner.locationId == data.locationId){
+            if (inner.locationId == data.locationId) {
               messageList[data.sellerCounterpartyId]['locations'][index] = inner.locationName;
               return;
-            }  
+            }
           });
         });
         let alreadyAdded = '';
         checkalreadyAdded.forEach(element => {
-          if(messageList[element.id] == undefined){
+          if (messageList[element.id] == undefined) {
             alreadyAdded += element.name + ", ";
           }
         });
         const LOCATION_COUNT = this.requestOptions[0].requestLocations?.length;
         let allLocationMessage = '';
         messageList.forEach(element => {
-          let addedLocations =  element.locations.filter(e => { 
+          let addedLocations = element.locations.filter(e => {
             return e?.length;
           });
-          if(LOCATION_COUNT == addedLocations?.length){
+          if (LOCATION_COUNT == addedLocations?.length) {
             allLocationMessage += element.counterpartyName + ", ";
-          }else{
-            this.toastr.success(element.counterpartyName + " added successfully to ("+addedLocations?.length+") locations - "+ addedLocations?.toString());
+          } else {
+            this.toastr.success(element.counterpartyName + " added successfully to (" + addedLocations?.length + ") locations - " + addedLocations?.toString());
           }
         });
-        if(allLocationMessage != ''){
-          this.toastr.success(allLocationMessage + " added successfully to all ("+LOCATION_COUNT+") locations");
+        if (allLocationMessage != '') {
+          this.toastr.success(allLocationMessage + " added successfully to all (" + LOCATION_COUNT + ") locations");
         }
-        if(alreadyAdded != ''){
-          this.toastr.error(alreadyAdded + " already added in to all ("+LOCATION_COUNT+") locations");
+        if (alreadyAdded != '') {
+          this.toastr.error(alreadyAdded + " already added in to all (" + LOCATION_COUNT + ") locations");
         }
         // Add in Store
         // this.store.dispatch(
@@ -516,11 +516,11 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  setValuefun(){
+  setValuefun() {
     this.searchCounterparty.nativeElement.value = '';
     for (let i = 0; i < this.visibleCounterpartyList.length; i++) {
       this.visibleCounterpartyList[i].selected = false;
-    }  
+    }
     let counterparties = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.physicalSupplierCounterpartyList.slice(0, 12);
     });
@@ -575,7 +575,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       })
     );
     let locRowsArray = [...locationsRows, ...rowsArray];
-    return locRowsArray;    
+    return locRowsArray;
   }
 
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
@@ -593,15 +593,15 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     // currencyList = this.store.selectSnapshot<any>((state: any) => {
     //   return state.spotNegotiation.staticLists['currency'];
     // });
-    
+
     rowsArray.forEach((row, index) => {
       //let row = { ... reqLocSeller };
       let currentLocProd = this.currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
-      row.isSelected=true; /// Only store update isSelected true
-      let requestProducts = requests?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
-      let reqLocations = this.requestOptions.filter(req=>req.requestLocations.some(reqloc=>reqloc.id==row.requestLocationId));
+      row.isSelected = true; /// Only store update isSelected true
+      let requestProducts = requests?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id == row.requestLocationId)?.requestProducts;
+      let reqLocations = this.requestOptions.filter(req => req.requestLocations.some(reqloc => reqloc.id == row.requestLocationId));
       let reqProducts = reqLocations[0].requestLocations.filter(
         row1 => row1.id == row.requestLocationId
       );
@@ -661,8 +661,8 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
               ? 1
               : -1
             : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
-            ? 1
-            : -1
+              ? 1
+              : -1
         );
         return row;
       }
@@ -726,8 +726,8 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                   ? 1
                   : -1
                 : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
-                ? 1
-                : -1
+                  ? 1
+                  : -1
           );
         }
       }
@@ -798,12 +798,12 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
                 const futureLocationsRows = this.getLocationRowsWithLinkRequest(
                   res['requestLocationSellers']
                 );
-                let reqLocationRows : any =[];
+                let reqLocationRows: any = [];
                 for (const locRow of futureLocationsRows) {
                   var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
                     locRow,
                     locRow);
-                    reqLocationRows.push(data);
+                  reqLocationRows.push(data);
                 }
                 this.store.dispatch(new SetLocationsRows(reqLocationRows));
               }
@@ -842,9 +842,9 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
     };
     this.selectionChange.emit(obj);
     this.getBestContractForCurrentRequest(selected.id);
-    setTimeout(()=>{
-      this._spotNegotiationService.energyCalculationService(null,null,null);
-    },3000);
+    setTimeout(() => {
+      this._spotNegotiationService.energyCalculationService(null, null, null);
+    }, 3000);
   }
 
   getBestContractForCurrentRequest(selectedRequestId): void {
@@ -857,7 +857,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
           return;
         }
         if (res.payload) {
-          this.availableContracts[`request_${selectedRequestId}`] = res.payload;          
+          this.availableContracts[`request_${selectedRequestId}`] = res.payload;
 
           if (res.payload?.length > 0) {
             const futurerequestContract = this.getRequestAddContract(
@@ -867,7 +867,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
 
             this.store.dispatch([new SetAvailableContracts(res.payload), new SetRequests(futurerequestContract)]);
           }
-          else{
+          else {
             this.store.dispatch(new SetAvailableContracts(res.payload));
           }
         } else {
@@ -943,31 +943,31 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   search(userInput: string): void {
-     this.expandedSearch = false;
-     clearInterval(this.clrRequest);
-     this.clrRequest = setTimeout(() => {
-        this._spotNegotiationService.getResponse(
-          null,
-          { Filters: [] },
-          { SortList: [] },
-          [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
-          userInput.toLowerCase(),
-          { Skip: 0, Take: 25 },
-          true
-        ).subscribe((res: any) => {
-          if (res?.message == 'Unauthorized')return;
-          if (res?.counterpartyListItems?.length > 0) {
-            let SelectedCounterpartyList = cloneDeep(res.counterpartyListItems);
-            SelectedCounterpartyList.forEach(element => {
-              element.name = this.tenantService.htmlDecode(element.name);
-            });
-            this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 12);
-          }else{
-            this.visibleCounterpartyList = [];
-          }
-          this.changeDetector.detectChanges();
-        });
-      }, 1200);
+    this.expandedSearch = false;
+    clearInterval(this.clrRequest);
+    this.clrRequest = setTimeout(() => {
+      this._spotNegotiationService.getResponse(
+        null,
+        { Filters: [] },
+        { SortList: [] },
+        [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
+        userInput.toLowerCase(),
+        { Skip: 0, Take: 25 },
+        true
+      ).subscribe((res: any) => {
+        if (res?.message == 'Unauthorized') return;
+        if (res?.counterpartyListItems?.length > 0) {
+          let SelectedCounterpartyList = cloneDeep(res.counterpartyListItems);
+          SelectedCounterpartyList.forEach(element => {
+            element.name = this.tenantService.htmlDecode(element.name);
+          });
+          this.visibleCounterpartyList = SelectedCounterpartyList.slice(0, 12);
+        } else {
+          this.visibleCounterpartyList = [];
+        }
+        this.changeDetector.detectChanges();
+      });
+    }, 1200);
   }
 
   searchRequest(userInput: string): void {
@@ -1048,7 +1048,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
       this.store.dispatch(new SetLocationsRows(result));
     }
   }
-  
+
   searchCounterpartyDet(userInput: string): void {
     if (userInput.length === 0) {
       const locationsRowsOriData = this.store.selectSnapshot(
@@ -1077,7 +1077,7 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   scrollPort(scrollPlaceId) {
-    let scrollId = "scroll"+scrollPlaceId;
+    let scrollId = "scroll" + scrollPlaceId;
     document.getElementById(scrollId).scrollIntoView({
       behavior: "smooth",
       block: "start",

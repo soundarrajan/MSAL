@@ -412,7 +412,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   private _autocompleteType: any;
   @ViewChild(AgGridDatetimePickerToggleComponent)
   child: AgGridDatetimePickerToggleComponent;
-  ngOnInit() {}
+  ngOnInit() { }
   get entityId(): number {
     return this._entityId;
   }
@@ -456,7 +456,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     // .replace('dd/', 'DD/')
     // .replace('dd-', 'DD-');
     this.store.selectSnapshot<any>((state: any) => {
-      this.staticLists =  state.spotNegotiation.staticLists;
+      this.staticLists = state.spotNegotiation.staticLists;
     });
     this.uomList = this.staticLists.uom;
     this.productList = this.staticLists.product;
@@ -503,7 +503,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   }
 
   formatDateForBe(value, canBeConvertedUTC = true) {
-      if (value) {
+    if (value) {
       this.enableSave = true;
       let beValue;
       if (canBeConvertedUTC) {
@@ -532,7 +532,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
           element1.requestOffers.forEach(reqOff => {
             if (
               reqOff.requestProductId ==
-                this.selectedProductList.column.userProvidedColDef.product.id &&
+              this.selectedProductList.column.userProvidedColDef.product.id &&
               element1.id == this.selectedProductList.data.id &&
               ele.locationId == element1.locationId
             ) {
@@ -593,20 +593,20 @@ export class SpotnegoOtherdetails2Component implements OnInit {
         OfferId: requestOffers.offerId,
         RequestOfferId: requestOffers.id,
         SupplyQuantity: requestOffers.isSupplyQuantityEdited ?
-            this.tenantFormat.quantity(requestOffers.supplyQuantity) :
-            this.tenantFormat.quantity(reqProd[0].maxQuantity),
+          this.tenantFormat.quantity(requestOffers.supplyQuantity) :
+          this.tenantFormat.quantity(reqProd[0].maxQuantity),
         SupplyDeliveryDate: etaDate
           ? moment(etaDate).format(this.dateFormat_rel_SupplyDate)
           : '',
         product:
-        requestOffers.quotedProductId == reqProd[0].productId
+          requestOffers.quotedProductId == reqProd[0].productId
             ? ''
             : {
-                id: requestOffers.quotedProductId,
-                name: this.productList.find(
-                  x => x.id == requestOffers.quotedProductId
-                ).name
-              },
+              id: requestOffers.quotedProductId,
+              name: this.productList.find(
+                x => x.id == requestOffers.quotedProductId
+              ).name
+            },
         QuotedProductId: requestOffers.quotedProductId,
         uom: {
           id: QtyUomId,
@@ -626,15 +626,15 @@ export class SpotnegoOtherdetails2Component implements OnInit {
     } else {
       event.preventDefault();
       return false;
-    }    
+    }
   }
-  otherDetailsItemsValidation(){
+  otherDetailsItemsValidation() {
     console.log(this.otherDetailsItems[this.productIndex]);
     if (
-       this.otherDetailsItems[this.productIndex].product?.id == undefined  ||
-       this.otherDetailsItems[this.productIndex].SupplyQuantity == undefined ||
-       this.otherDetailsItems[this.productIndex].SupplyQuantity==''||
-       this.otherDetailsItems[this.productIndex].SupplyDeliveryDate==null) {
+      this.otherDetailsItems[this.productIndex].product?.id == undefined ||
+      this.otherDetailsItems[this.productIndex].SupplyQuantity == undefined ||
+      this.otherDetailsItems[this.productIndex].SupplyQuantity == '' ||
+      this.otherDetailsItems[this.productIndex].SupplyDeliveryDate == null) {
       this.enableSave = false;
       return;
     }
@@ -658,8 +658,8 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   }
   //decode
   htmlDecode(str: any): any {
-    var decode = function(str) {
-      return str.replace(/&#(\d+);/g, function(match, dec) {
+    var decode = function (str) {
+      return str.replace(/&#(\d+);/g, function (match, dec) {
         return String.fromCharCode(dec);
       });
     };
@@ -688,7 +688,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
   }
   /// lists class separate
   setListFromStaticLists(name) {
-    const findList = _.find(this.staticLists, function(object) {
+    const findList = _.find(this.staticLists, function (object: any) {
       return object.name == name;
     });
     if (findList != -1) {
@@ -708,7 +708,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
         ele.requestProducts.forEach(reqOff => {
           if (
             reqOff.id ==
-              this.selectedProductList.column.userProvidedColDef.product.id &&
+            this.selectedProductList.column.userProvidedColDef.product.id &&
             ele.locationId == this.selectedProductList.data.locationId
           ) {
             if (
@@ -736,17 +736,17 @@ export class SpotnegoOtherdetails2Component implements OnInit {
       SupplyDeliveryDate: this.otherDetailsItems[this.productIndex]
         .SupplyDeliveryDate
         ? moment(
-            this.otherDetailsItems[this.productIndex].SupplyDeliveryDate
-          ).format(this.dateFormat_rel_SupplyDate)
+          this.otherDetailsItems[this.productIndex].SupplyDeliveryDate
+        ).format(this.dateFormat_rel_SupplyDate)
         : ''
     };
-    let locationIds=this.locations.map(loc=>loc.locationId);
-    let physicalSupplierIds=this.locationsRows.map(phy=>phy.physicalSupplierCounterpartyId);
-    let payload=  {
-      locationIds:[...new Set(locationIds.reduce((acc, val) => acc.concat(val), []))],
-      productIds:[this.otherDetailsItems[this.productIndex].product.id],
-      physicalSupplierIds:[...new Set(physicalSupplierIds.reduce((acc, val) => acc.concat(val), []))],
-      requestGroupId:this.locationsRows[0]?.requestGroupId
+    let locationIds = this.locations.map(loc => loc.locationId);
+    let physicalSupplierIds = this.locationsRows.map(phy => phy.physicalSupplierCounterpartyId);
+    let payload = {
+      locationIds: [...new Set(locationIds.reduce((acc, val) => acc.concat(val), []))],
+      productIds: [this.otherDetailsItems[this.productIndex].product.id],
+      physicalSupplierIds: [...new Set(physicalSupplierIds.reduce((acc, val) => acc.concat(val), []))],
+      requestGroupId: this.locationsRows[0]?.requestGroupId
     }
     const response = this.spotNegotiationService.OtherDetails(
       otherDetails_data
@@ -756,10 +756,10 @@ export class SpotnegoOtherdetails2Component implements OnInit {
         return;
       }
       if (res.status) {
-          const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
-          if (response.energy6MonthHistories.length > 0){
-            this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
-          }
+        const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
+        if (response.energy6MonthHistories.length > 0) {
+          this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+        }
         this.toastr.success('Saved successfully..');
         const futureLocationsRows = this.getLocationRowsWithOtherDetails(
           JSON.parse(JSON.stringify(this.locationsRows)),
@@ -767,7 +767,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
         );
         this.store.dispatch(new SetLocationsRows(futureLocationsRows));
         setTimeout(() => {
-          this.spotNegotiationService.energyCalculationService(null,null,null);
+          this.spotNegotiationService.energyCalculationService(null, null, null);
           this.changeDetectorRef.detectChanges();
         }, 3000);
         this.spotNegotiationService.callGridRefreshService();
@@ -784,7 +784,7 @@ export class SpotnegoOtherdetails2Component implements OnInit {
         element1.requestOffers.forEach((reqOff, reqkey) => {
           if (
             reqOff.requestProductId ==
-              this.selectedProductList.column.userProvidedColDef.product.id &&
+            this.selectedProductList.column.userProvidedColDef.product.id &&
             element1.id == this.selectedProductList.data.id
           ) {
             reqOff.supplyQuantity = requestChangeData.SupplyQuantity;
