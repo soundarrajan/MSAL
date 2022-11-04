@@ -625,6 +625,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         // set all data mappings
         getOrderListForRequest();
         function loadData(data) {
+            // temp_test
             ctrl.data = data.payload;
             ctrl.getOrderinitialSnapshot = angular.copy(ctrl.data);
             //ctrl.PortLocationEditable = false;
@@ -757,6 +758,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             if (ctrl.data.barge === null) {
                 ctrl.data.barge = {};
+            }
+            if (ctrl.data.broker?.name !=null && ctrl.relatedOrders.filter(ord=>ord.id==ctrl.data.id).some(se=>se.seller?.customNonMandatoryAttribute1 == null ) ) {
+                                  //if condition checks if the counterparty type found is of null (broker) and if so enters the loop and the line below makes the broker name that is populated in the seller name as null
+                    ctrl.data.seller.name = null;
             }
             for(var i = 0; i < ctrl.data.mailSent.length; i++) {
                 if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToSeller') != -1) {
@@ -1878,7 +1883,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             ctrl.getAllOrderContractOptions();
             ctrl.setPhysicalSupplier();
         };
-
+    
         ctrl.selectAgent = function(sellerId, type) {
             ctrl.counterpartyType = 'counterparties';
             if (ctrl.data.agentCounterparty.name) {
@@ -1959,7 +1964,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
             }
         };
-
+        
         ctrl.setPhysicalSupplier = function(product) {
             function setPS() {
                 if (product) {
