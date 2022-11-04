@@ -10864,10 +10864,10 @@
         $scope.addEmptyLocationContact = function(){
             if($scope.formValues.counterpartyLocations){
                 $scope.setNewLocationContacts($scope.formValues.counterpartyLocations.length);
-                $scope.formValues.counterpartyLocations.push({id:0, locationContacts:[]});
+                $scope.formValues.counterpartyLocations.push({id:0,preferredProductStatus:{id: 3, name: 'Both'}, locationContacts:[]});
             } else{
                 $scope.setNewLocationContacts(0);
-                $scope.formValues.counterpartyLocations = [{id:0, locationContacts:[]}];
+                $scope.formValues.counterpartyLocations = [{id:0,preferredProductStatus:{id: 3, name: 'Both'}, locationContacts:[]}];
             }
         }
 

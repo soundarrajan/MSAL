@@ -6,6 +6,7 @@
 				<td  style="max-width: initial; min-width: 50px;" class="padding"><span class="insert" ng-click="addEmptyLocationContact();"></span></td>
 				<td  style="max-width: initial; min-width: 220px;" class="padding"><b>Location</b></td>
 				<td style="max-width: initial; min-width: 300px;" class="padding"><b>Preferred Products</b></td>
+				<td style="max-width: initial; min-width: 300px;" class="padding"><b>Applicable For</b></td>
 				<td style="max-width: initial; min-width: 200px;" class="padding"><b>Status</b></td>
 				<td style="max-width: initial; min-width: 300px;" class="padding"><b>Preferred Contact Email Address</b></td>
 				<td style="max-width: initial; min-width: 250px;" class="padding"><b>Comments</b></td>
@@ -41,6 +42,9 @@
                             {{ product.product.name  | decodeReadOnly}}
                         </span>			
 					</div>
+				</td>
+				<td style="max-width: initial; min-width: 300px;">
+					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.PreferredProductStatuses track by item.id " ng-model="value.preferredProductStatus"></select>
 				</td>
 				<td style="max-width: initial; min-width: 300px;">
 					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.CounterpartyStatus track by item.id " ng-model="value.status"></select>
