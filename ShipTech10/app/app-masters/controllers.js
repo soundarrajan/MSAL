@@ -41,7 +41,6 @@
         $scope.preferredContacts = [];
         $rootScope.isSaveAction = false;
         $scope.benchMarkErrorLogs = [];
-
         $controller('ScreenLayout_Controller', {
             $scope: $scope
         });
@@ -110,7 +109,7 @@
                 $scope: $scope
             });
         }
-
+   
         if (!vm.overrideInvalidDate) {
             vm.overrideInvalidDate = {};
         }
@@ -1097,7 +1096,7 @@
 
             }
 
-            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
+            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {                
                 let periods = [];
                 if($scope.formValues && $scope.formValues.periods) {
                     for (var i = 0; i < $scope.formValues.periods.length; i++) {
@@ -3287,11 +3286,11 @@
                 $(".edit_form_fields_Month_masters").hide();
                 $(".edit_form_fields_Quarter_masters").hide();
                 var pType =  ($scope.formValues.pType)?{"id":$scope.formValues.pType.id}:"";
-                var periodMonth =  ($scope.formValues.PeriodMonth)?{"id":$scope.formValues.PeriodMonth.id}:"";
-                var periodQuarter =  ($scope.formValues.PeriodQuarter)?{"id":$scope.formValues.PeriodQuarter.id}:"";
-                    console.log(pType);
+                var periodMonth =  ($scope.formValues.PeriodMonth)?{"id":$scope.formValues.PeriodMonth.id}:null;
+                var periodQuarter =  ($scope.formValues.PeriodQuarter)?{"id":$scope.formValues.PeriodQuarter.id}:null;
+                
                 if(pType.id == 1){
-                    $(".edit_form_fields_Month_masters").show();        
+                    $(".edit_form_fields_Month_masters").show();                     
                 }else if(pType.id == 2){
                     $(".edit_form_fields_Quarter_masters").show();             
                 }               

@@ -3992,11 +3992,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                     $scope.formValues.FromDate = $scope.formValues.fromDate;
                     $scope.formValues.ToDate = $scope.formValues.toDate;
                     $scope.formValues.pType = {id:$scope.formValues.periodType};
-              
-                    $scope.formValues.PeriodMonth =   {"id":$scope.formValues.month};
-                    $scope.formValues.PeriodQuarter =  {"id":$scope.formValues.quarter}; 
-                  
-                   
+                    if($scope.formValues.periodType == 1){
+                        $scope.formValues.PeriodQuarter = null;
+                        $scope.formValues.PeriodMonth =   {"id":$scope.formValues.month};
+                    }else{
+                        $scope.formValues.PeriodMonth = null;
+                        $scope.formValues.PeriodQuarter =  {"id":$scope.formValues.quarter}; 
+                    }
                 }
             }
         });
