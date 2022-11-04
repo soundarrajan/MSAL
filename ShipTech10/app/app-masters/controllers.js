@@ -3596,6 +3596,12 @@
                     }
                     });
                 }
+
+                if( id == 'periods' && vm.screen_id == 'systeminstrument'){
+                    let formValues = angular.element(`[unique-id="name"]`).scope().formValues;                    
+                    $scope.siPeriodSelection($rootScope.elements[2], formValues);
+                }
+                
             };
 
         vm.getDataTable = function(id, data, obj, idx, app, screen) {
@@ -5947,9 +5953,18 @@
             // }
             $scope.prettyCloseModal();
             $('*').tooltip('destroy');
+            $rootScope.elements = elements;
             $scope.triggerChangeFields(field_name, elements[1], true);
         };
 
+        $scope.siPeriodSelection = function(index,formValues,fVal){
+           Factory_Master.get_master_entity(formValues.periods[index].period.id, 'period', 'masters', (response) => {
+               if (response) {
+                   formValues.periods[index].validFrom = response.fromDate;
+                   formValues.periods[index].validTo = response.toDate;
+               }
+           });
+        };
 
         $scope.assignObjValue = function(obj, keyPath, value) {
             var lastKeyIndex = keyPath.length - 1;
