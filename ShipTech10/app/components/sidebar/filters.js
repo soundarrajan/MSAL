@@ -269,7 +269,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     });
                 });
             }
-            console.log('vinoth: ', data);
+           
             if (isInvalidValue) {
                 toastr.error('Please enter a value');
             	return false;
@@ -408,7 +408,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                         }
                     }
                 }
-                console.log($scope.currentList);
+              
                 if($scope.currentList == "edit-order/procurement_productcontractlist"){
                     $rootScope.$broadcast('filters-applied', $scope.packedFilters);
                 }
