@@ -124,7 +124,8 @@
              vm.options = periodYears; 
     
              $(".edit_form_fields_Month_masters").hide();
-             $(".edit_form_fields_Quarter_masters").hide();          
+             $(".edit_form_fields_Quarter_masters").hide();  
+                 
         }
        
         // angular.element(document).ready(function () {
@@ -3288,7 +3289,7 @@
                 var pType =  ($scope.formValues.pType)?{"id":$scope.formValues.pType.id}:"";
                 var periodMonth =  ($scope.formValues.PeriodMonth)?{"id":$scope.formValues.PeriodMonth.id}:null;
                 var periodQuarter =  ($scope.formValues.PeriodQuarter)?{"id":$scope.formValues.PeriodQuarter.id}:null;
-                
+             
                 if(pType.id == 1){
                     $(".edit_form_fields_Month_masters").show();                     
                 }else if(pType.id == 2){
@@ -3297,50 +3298,51 @@
 
                 if(pType.id){
                     $scope.formValues.pType = pType;
-                }
-                if(periodMonth.id){
-                    $scope.formValues.PeriodMonth = periodMonth;
-                }
-                if(periodQuarter.id){
-                    $scope.formValues.PeriodQuarter = periodQuarter;
-                }
-                if((pType.id && periodMonth.id  && $scope.formValues.Year) || (pType.id && periodQuarter.id  && $scope.formValues.Year)){
+                    if(periodMonth!= null){
+                        $scope.formValues.PeriodMonth = periodMonth;
+                    }
+                    if(periodQuarter!= null){
+                        $scope.formValues.PeriodQuarter = periodQuarter;
+                    }
+                    if((pType.id && periodMonth!=null  && $scope.formValues.Year) || (pType.id && periodQuarter!=null  && $scope.formValues.Year)){
 
-                    var year = $scope.formValues.Year;
-                    var month = periodMonth.id;
-                    var quarter = periodQuarter.id;
-                    if(pType.id == 1){
-                        if(month < 10){
-                            month = "0"+month;
-                        }
-                        var fromDate = $scope.formValues.Year+"-"+month+"-01";
-                        var lastDay = new Date(year, month, 0).getDate();               
-                        var toDate = $scope.formValues.Year+"-"+month+"-"+lastDay;   
-                   }else{
-
-                        if(quarter == 1){
-                            //YYYY-MM-DD
-                            var fromDate = year+"-01-01";
-                            var lastDay = new Date(year, "03", 0).getDate();               
-                            var toDate = year+"-03-"+lastDay; 
-                        }else if(quarter == 2){
-                            var fromDate = year+"-04-01";
-                            var lastDay = new Date(year, "06", 0).getDate();               
-                            var toDate = year+"-06-"+lastDay; 
-                        }else if(quarter == 3){
-                            var fromDate = year+"-07-01";
-                            var lastDay = new Date(year, "09", 0).getDate();               
-                            var toDate = year+"-09-"+lastDay; 
-                        }else if(quarter == 4){
-                            var fromDate = year+"-10-01";
-                            var lastDay = new Date(year, "12", 0).getDate();               
-                            var toDate = year+"-12-"+lastDay; 
-                        }
-
-                   }           
-                    $scope.formValues.ToDate = moment(toDate,"YYYY-MM-DD").format("YYYY-MM-DD");
-                    $scope.formValues.FromDate = moment(fromDate,"YYYY-MM-DD").format("YYYY-MM-DD");;     
+                        var year = $scope.formValues.Year;
+                        if(pType.id == 1){
+                            var month = (periodMonth!=null)?periodMonth.id:"";
+                            if(month < 10){
+                                month = "0"+month;
+                            }
+                            var fromDate = $scope.formValues.Year+"-"+month+"-01";
+                            var lastDay = new Date(year, month, 0).getDate();               
+                            var toDate = $scope.formValues.Year+"-"+month+"-"+lastDay;   
+                       }else{
+                             var quarter = (periodQuarter!=null)?periodQuarter.id:"";
+                            if(quarter == 1){
+                                //YYYY-MM-DD
+                                var fromDate = year+"-01-01";
+                                var lastDay = new Date(year, "03", 0).getDate();               
+                                var toDate = year+"-03-"+lastDay; 
+                            }else if(quarter == 2){
+                                var fromDate = year+"-04-01";
+                                var lastDay = new Date(year, "06", 0).getDate();               
+                                var toDate = year+"-06-"+lastDay; 
+                            }else if(quarter == 3){
+                                var fromDate = year+"-07-01";
+                                var lastDay = new Date(year, "09", 0).getDate();               
+                                var toDate = year+"-09-"+lastDay; 
+                            }else if(quarter == 4){
+                                var fromDate = year+"-10-01";
+                                var lastDay = new Date(year, "12", 0).getDate();               
+                                var toDate = year+"-12-"+lastDay; 
+                            }
+    
+                       }           
+                        $scope.formValues.ToDate = moment(toDate,"YYYY-MM-DD").format("YYYY-MM-DD");
+                        $scope.formValues.FromDate = moment(fromDate,"YYYY-MM-DD").format("YYYY-MM-DD");;     
+                    }
                 }
+              
+                
            }
             if (vm.app_id == 'invoices' && vm.screen_id == 'treasuryreport') {
                 if(!$scope.formValues.OrderAfter){
