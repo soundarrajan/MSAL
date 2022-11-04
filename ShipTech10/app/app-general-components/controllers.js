@@ -4006,8 +4006,17 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         setTimeout(function() {
             console.log("$rootScope", $rootScope.formValues);
             console.log("$scope", $scope.formValues);
-            $(".edit_form_fields_Quarter_masters").css("display","none"); 
-            $(".edit_form_fields_Month_masters").css("display","none"); 
+           
+            if($state.params.screen_id == "period"){
+                var pType =  ($scope.formValues.pType)?{"id":$scope.formValues.pType.id}:"";
+                $(".edit_form_fields_Quarter_masters").hide(); 
+                $(".edit_form_fields_Month_masters").hide(); 
+                if(pType.id == 1){
+                    $(".edit_form_fields_Month_masters").show();        
+                }else if(pType.id == 2){
+                    $(".edit_form_fields_Quarter_masters").show();             
+                }  
+            } 
            
             if($scope.formValues.orderDetails != undefined && $scope.formValues.orderDetails.orderStatusName != undefined){
                 if($scope.formValues.orderDetails.orderStatusName == 'Cancelled'){
