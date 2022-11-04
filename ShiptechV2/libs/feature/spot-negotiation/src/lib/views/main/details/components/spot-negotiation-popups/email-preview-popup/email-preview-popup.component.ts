@@ -515,7 +515,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     let requestProductIds = selectedSellers.map(x => x.RequestProductIds);
 
     var saveAndSendRfqAPIPayload = {
-      SelectedSellers: selectedSellers,
+      SelectedSellers: selectedSellers?.filter(x=>x.RequestProductIds.length > 0),
       RequestGroupId: this.currentRequestInfo.requestGroupId,
       IsSendMail: isSendEmail,
       PreviewResponse: this.previewTemplate,
@@ -555,7 +555,6 @@ export class EmailPreviewPopupComponent implements OnInit {
         res['validationMessage'].length == 0
       ) {
         this.toaster.success('Template saved successfully.');
-        this.toaster.success('Mail sent successfully.');
         setTimeout(() => {
           this.spotNegotiationService.callGridRedrawService();
         }, 500);
