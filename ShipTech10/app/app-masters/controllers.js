@@ -3283,13 +3283,21 @@
         $scope.triggerChangeFields = function(name, id, isManualChange) {
            
             if (vm.app_id == 'masters' && vm.screen_id == 'period') {
-                console.log($scope.formValues);
+             
                 $(".edit_form_fields_Month_masters").hide();
                 $(".edit_form_fields_Quarter_masters").hide();
-                var pType =  ($scope.formValues.pType)?{"id":$scope.formValues.pType.id}:"";
-                var periodMonth =  ($scope.formValues.PeriodMonth)?{"id":$scope.formValues.PeriodMonth.id}:null;
-                var periodQuarter =  ($scope.formValues.PeriodQuarter)?{"id":$scope.formValues.PeriodQuarter.id}:null;
+                if(id == "pType"){
+                    $scope.formValues.Year = null; 
+                    $scope.formValues.PeriodQuarter = null; 
+                    $scope.formValues.PeriodMonth = null;   
              
+                    $scope.formValues.ToDate = moment(toDate,"YYYY-MM-DD").format("YYYY-MM-DD");;    
+                    $scope.formValues.FromDate = moment(fromDate,"YYYY-MM-DD").format("YYYY-MM-DD");
+                     
+                }                   
+
+                var pType =  ($scope.formValues.pType)?{"id":$scope.formValues.pType.id}:"";               
+                
                 if(pType.id == 1){
                     $(".edit_form_fields_Month_masters").show();                     
                 }else if(pType.id == 2){
@@ -3298,10 +3306,12 @@
 
                 if(pType.id){
                     $scope.formValues.pType = pType;
-                    if(periodMonth!= null){
+                    var periodMonth =  ($scope.formValues.PeriodMonth)?{"id":$scope.formValues.PeriodMonth.id}:null;
+                    var periodQuarter =  ($scope.formValues.PeriodQuarter)?{"id":$scope.formValues.PeriodQuarter.id}:null;
+                    if(periodMonth!= null && pType.id == 1){
                         $scope.formValues.PeriodMonth = periodMonth;
                     }
-                    if(periodQuarter!= null){
+                    if(periodQuarter!= null && pType.id == 2){
                         $scope.formValues.PeriodQuarter = periodQuarter;
                     }
                     if((pType.id && periodMonth!=null  && $scope.formValues.Year) || (pType.id && periodQuarter!=null  && $scope.formValues.Year)){
@@ -3340,6 +3350,7 @@
                         $scope.formValues.ToDate = moment(toDate,"YYYY-MM-DD").format("YYYY-MM-DD");
                         $scope.formValues.FromDate = moment(fromDate,"YYYY-MM-DD").format("YYYY-MM-DD");;     
                     }
+                    console.log( $scope.formValues);
                 }
               
                 
