@@ -2121,10 +2121,28 @@
                 let isMin = false;
                 let names = [];
                 $.each(vm.editInstance.$error.required, (key, val) => {
-                    if (names.indexOf(val.$name) == -1) {
-                        message = `${message }<br>${ val.$name ? val.$name : val.$$attr.id}`;
-                        hasMessage = true;
+                  
+                    if (vm.app_id == 'masters' && vm.screen_id == 'period') { 
+                       
+                        if (names.indexOf(val.$name) == -1) {
+                            message = `${message }<br>${ val.$name ? val.$name : val.$$attr.id}`;
+                            hasMessage = true;
+                        }else{                      
+                            hasMessage = true;
+                            if(val.$$attr.id == "PeriodTo"){
+                             message = `${message }<br> ToDate`;
+                            }
+                            if(val.$$attr.id == "PeriodFrom"){
+                                message = `${message }<br> FromDate`;
+                            }
+                        }
+                    }else{
+                        if (names.indexOf(val.$name) == -1) {
+                            message = `${message }<br>${ val.$name ? val.$name : val.$$attr.id}`;
+                            hasMessage = true;
+                        }
                     }
+                   
                     names = names + (val.$name ? val.$name : val.$$attr.id);
                 });
                 i = 0;
@@ -3289,11 +3307,11 @@
                 if(id == "pType"){
                     $scope.formValues.Year = null; 
                     $scope.formValues.PeriodQuarter = null; 
-                    $scope.formValues.PeriodMonth = null;   
-             
-                    $scope.formValues.ToDate = moment(toDate,"YYYY-MM-DD").format("YYYY-MM-DD");;    
-                    $scope.formValues.FromDate = moment(fromDate,"YYYY-MM-DD").format("YYYY-MM-DD");
-                     
+                    $scope.formValues.PeriodMonth = null;                
+                    $scope.formValues.ToDate = null;    
+                    $scope.formValues.FromDate = null;
+                    $("#PeriodFrom_dateinput").val("");
+                    $("#PeriodTo_dateinput").val("");                     
                 }                   
 
                 var pType =  ($scope.formValues.pType)?{"id":$scope.formValues.pType.id}:"";               
@@ -3348,7 +3366,7 @@
     
                        }           
                         $scope.formValues.ToDate = moment(toDate,"YYYY-MM-DD").format("YYYY-MM-DD");
-                        $scope.formValues.FromDate = moment(fromDate,"YYYY-MM-DD").format("YYYY-MM-DD");;     
+                        $scope.formValues.FromDate = moment(fromDate,"YYYY-MM-DD").format("YYYY-MM-DD");     
                     }
                   
                 }
