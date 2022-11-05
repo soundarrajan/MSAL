@@ -3350,7 +3350,7 @@
                         $scope.formValues.ToDate = moment(toDate,"YYYY-MM-DD").format("YYYY-MM-DD");
                         $scope.formValues.FromDate = moment(fromDate,"YYYY-MM-DD").format("YYYY-MM-DD");;     
                     }
-                    console.log( $scope.formValues);
+                  
                 }
               
                 
