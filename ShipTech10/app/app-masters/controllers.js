@@ -1081,6 +1081,13 @@
                         }
                     }
                 }
+
+                let periodData = $scope.formValues.periods.map(el => el.validFrom+'-'+el.validTo);
+                let findDuplicates = periodData.filter((item, index) => periodData.indexOf(item) != index);
+                if(findDuplicates.length > 0){
+                    toastr.error('P​eriod Overlapped, Please Change the Period');
+                    return;
+                }
                 $scope.formValues.periods = periods;
                 if ($scope.formValues && $scope.formValues.productsLocations) {
                     let errors = '';
@@ -5871,8 +5878,23 @@
         };
 
         $scope.siPeriodSelection = function(index,formValues,fVal){
+           let checkFlag = false;
            Factory_Master.get_master_entity(formValues.periods[index].period.id, 'period', 'masters', (response) => {
                if (response) {
+                if(formValues.periods.length > 1){
+                    let arrVal = formValues.periods.map(el => el.validFrom+'-'+el.validTo);
+                    arrVal.find( (el,chkIndex) => {
+                            if(el == response.fromDate+'-'+response.toDate && index != chkIndex){
+                                checkFlag = true;
+                            }
+                        }
+                    );
+                }
+                if(checkFlag) {
+                    toastr.error('P​eriod Overlapped, Please Change the Period');
+                    return;
+                }
+                
                    formValues.periods[index].validFrom = response.fromDate;
                    formValues.periods[index].validTo = response.toDate;
                }
