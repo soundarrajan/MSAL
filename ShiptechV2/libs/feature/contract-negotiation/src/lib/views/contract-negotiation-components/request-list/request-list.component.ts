@@ -23,7 +23,7 @@ export class RequestListComponent implements OnInit {
 
   createContractRequest(){
     const dialogRef = this.dialog.open(CreateContractRequestPopupComponent, {
-      width: '1194px',
+      width: '1136px',
       minHeight: '90vh',
       maxHeight:'100vh',
       panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
