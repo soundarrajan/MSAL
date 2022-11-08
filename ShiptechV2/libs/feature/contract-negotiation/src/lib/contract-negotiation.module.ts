@@ -51,6 +51,7 @@ import { HeaderFilterChipComponent } from './views/contract-negotiation-componen
 import { MoreFilterChipComponent } from './views/contract-negotiation-components/filter-components/more-filter-chip/more-filter-chip.component';
 import { DocDragDropUploadComponent } from './views/contract-negotiation-components/doc-drag-drop-upload/doc-drag-drop-upload.component';
 import { HeaderBreadcrumbComponent } from './views/contract-negotiation-components/header-breadcrumb/header-breadcrumb.component';
+import { ContractNegotiationService } from './services/contract-negotiation.service';
 
 
 @NgModule({
@@ -111,7 +112,7 @@ import { HeaderBreadcrumbComponent } from './views/contract-negotiation-componen
     DSV2ComponentsModule,
     BreadcrumbsModule
   ],
-  entryComponents:[
+  entryComponents: [
     AGGridCellClickRendererComponent,
     AGGridCellLinkRenderer,
     AGGridCellMenuRenderer,
@@ -123,7 +124,8 @@ import { HeaderBreadcrumbComponent } from './views/contract-negotiation-componen
     fullWidthCellRenderer
   ],
   providers: [
-    ContractNegotiationModuleResolver
+    ContractNegotiationModuleResolver,
+    ContractNegotiationService
   ]
 })
 export class ContractNegotiationModule { }

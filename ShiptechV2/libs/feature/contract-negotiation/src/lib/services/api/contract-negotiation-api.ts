@@ -21,7 +21,8 @@ import {
 } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
 import {
-  IDocumentsUpdateIsVerifiedRequest} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
+  IDocumentsUpdateIsVerifiedRequest
+} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
 import {
   IDocumentsUpdateNotesRequest,
   IDocumentsUpdateNotesResponse
@@ -80,12 +81,17 @@ export const SpotNegotiationApiPaths = {
   updateProductPrice: `RFQ/FreezeMarketPrices`,
   isAuthorizedForReportsTab: `api/procurement/rfq/isAuthorizedForReportsTab`,
   getSellerRatingsforNegotiation: `api/sellerrating/sellerratingreview/getForNegotiation`,
-  getContractFormulaList : `api/masters/formulas/listMasters`,
-  getMasterFormula : `api/masters/formulas/get`,
-  getDefaultConversionFactor : `api/masters/products/getProdDefaultConversionFactors`,
-  getEnergy6MonthHistory:`groups/getEnergy6MonthHistorys`,
+  getContractFormulaList: `api/masters/formulas/listMasters`,
+  getMasterFormula: `api/masters/formulas/get`,
+  getDefaultConversionFactor: `api/masters/products/getProdDefaultConversionFactors`,
+  getEnergy6MonthHistory: `groups/getEnergy6MonthHistorys`,
   updateQuoteDateGroup: `groups/updateQuoteGroup`
 };
+
+export const ContractNegotiationApiPaths = {
+  requestList: `api/ContractRequest/list`
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -110,7 +116,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   @ApiCallUrl()
   private _shitechApiUrl = this.appConfig.v1.API.BASE_URL; // 'http://localhost:5021';
 
-  constructor(private http: HttpClient, private appConfig: AppConfig) {}
+  constructor(private http: HttpClient, private appConfig: AppConfig) { }
 
   @ObservableException()
   getTenantConfiguration(): Observable<any> {
@@ -286,7 +292,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     return this.http
       .post<any>(
         `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.counterpartyListsByName}`,
-         payload
+        payload
       )
       .pipe(
         map((body: any) => body),
@@ -354,7 +360,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   }
   //updateEnegryPrices
   @ObservableException()
-  updateEnegryPrices(payload: any):Observable<unknown> {
+  updateEnegryPrices(payload: any): Observable<unknown> {
     return this.http
       .put<any>(`${this._negotiationApiUrl}/Price/updateEnegry`, payload)
       .pipe(
@@ -865,7 +871,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
       body instanceof HttpErrorResponse && body.status != 401
         ? body.error.ErrorMessage
           ? body.error.ErrorMessage
-          : (body.error.errors)? body.error.errors : body.error.errorMessage
+          : (body.error.errors) ? body.error.errors : body.error.errorMessage
         : { message: 'Unauthorized' }
     );
   }
@@ -919,18 +925,18 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   }
 
   @ObservableException()
-  getSellerRatingforNegotiation(payload:any) : Observable<any>{
+  getSellerRatingforNegotiation(payload: any): Observable<any> {
     return this.http
       .post<any>(
         `${this._sellerApiUrl}/${SpotNegotiationApiPaths.getSellerRatingsforNegotiation}`,
         payload
-        )
-        .pipe(
-          map((body: any) => body),
-          catchError((body: any) => this.handleErrorMessage(body))
-        );
-    }
-    
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
   @ObservableException()
   updateQuoteDateGroup(request: any): Observable<any> {
     return this.http
@@ -968,15 +974,15 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
         map((body: any) => body),
         catchError((body: any) => this.handleErrorMessage(body))
       );
-  
-}
+
+  }
 
   @ObservableException()
-  addNewFormulaPrice(request: any, requestOfferId : number): Observable<any> {
+  addNewFormulaPrice(request: any, requestOfferId: number): Observable<any> {
     return this.http
       .post<any>(
         `${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration`,
-           request
+        request
       )
       .pipe(
         map((body: any) => body),
@@ -985,11 +991,11 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   }
 
   @ObservableException()
-  updateFormulaPrice(request: any, requestOfferId : number, priceConfigurationId: number): Observable<any> {
+  updateFormulaPrice(request: any, requestOfferId: number, priceConfigurationId: number): Observable<any> {
     return this.http
       .patch<any>(
         `${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigurationId}`,
-           request
+        request
       )
       .pipe(
         map((body: any) => body),
@@ -1002,7 +1008,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     return this.http
       .post<any>(
         `${this._shitechApiUrl}/offerPriceEvaluations`,
-          request
+        request
       )
       .pipe(
         map((body: any) => body),
@@ -1015,7 +1021,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     return this.http
       .post<any>(
         `${this._shitechApiUrl}/orders/cloneToPriceconfigurations`,
-          request
+        request
       )
       .pipe(
         map((body: any) => body),
@@ -1028,7 +1034,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     return this.http
       .post<any>(
         `${this._shitechApiUrl}/orderPriceEvaluations`,
-          request
+        request
       )
       .pipe(
         map((body: any) => body),
@@ -1041,7 +1047,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     return this.http
       .post<any>(
         `${this._shitechApiUrl}/offerPriceEvaluations/ForOffers`,
-          request
+        request
       )
       .pipe(
         map((body: any) => body),
@@ -1050,12 +1056,12 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   }
 
   @ObservableException()
-  getOfferPriceConfiguration(requestOfferId: number, priceConfigId : number): Observable<any> {
+  getOfferPriceConfiguration(requestOfferId: number, priceConfigId: number): Observable<any> {
     return this.http.get<any>(`${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigId}`)
-    .pipe(
-      map((body: any) => body),
-      catchError((body: any) => this.handleErrorMessage(body))
-    );
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
   }
 
   @ObservableException()
@@ -1084,18 +1090,30 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
       );
   }
   @ObservableException()
-  removeFormula(requestOfferId: number, priceConfigId : number): Observable<any> {
+  removeFormula(requestOfferId: number, priceConfigId: number): Observable<any> {
     return this.http.delete<any>(`${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigId}`)
-    .pipe(
-      map((body: any) => body),
-      catchError((body: any) => this.handleErrorMessage(body))
-    );
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
   }
   @ObservableException()
   getEnergy6MHistorys(payload: any): Observable<any> {
     return this.http.post<any>(
-        `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getEnergy6MonthHistory}`,
-        payload
+      `${this._negotiationApiUrl}/${SpotNegotiationApiPaths.getEnergy6MonthHistory}`,
+      payload
+    )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  contractRequestList(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.requestList}`, payload
       )
       .pipe(
         map((body: any) => body),

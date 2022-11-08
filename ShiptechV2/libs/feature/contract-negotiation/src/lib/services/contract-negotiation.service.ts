@@ -42,7 +42,7 @@ export class ContractNegotiationService extends BaseStoreService
   counterpartyTotalCount: any;
   physicalSupplierTotalCount: any;
   requestCount: any;
-  hArray : any = [];
+  hArray: any = [];
   netEnergyList: any;
   // indexedDBList: any = [];
   constructor(
@@ -52,30 +52,30 @@ export class ContractNegotiationService extends BaseStoreService
   ) {
     super(store, loggerFactory.createLogger(ContractNegotiationService.name));
   }
-    // Observable string streams
-    gridRefreshService$ = this.gridRefreshService.asObservable();
-    // Grid Refrsh Service invoke commands
-    callGridRefreshService() {
-      this.gridRefreshService.next();
-    }
+  // Observable string streams
+  gridRefreshService$ = this.gridRefreshService.asObservable();
+  // Grid Refrsh Service invoke commands
+  callGridRefreshService() {
+    this.gridRefreshService.next();
+  }
 
-        // Observable string streams
-    gridRedrawService$ = this.gridRedrawService.asObservable();
-    // Grid Redraw Service invoke commands
-    callGridRedrawService() {
-      this.gridRedrawService.next();
-    }
+  // Observable string streams
+  gridRedrawService$ = this.gridRedrawService.asObservable();
+  // Grid Redraw Service invoke commands
+  callGridRedrawService() {
+    this.gridRedrawService.next();
+  }
 
-    gridRefreshServiceAll$ = this.gridRefreshServiceAll.asObservable();
-    // Grid Refrsh Service invoke commands
-    callGridRefreshServiceAll() {
-      this.gridRefreshServiceAll.next();
-    }
-    
-    evaluateIconDisplayCheck$ = this.evaluateIconDisplayCheck.asObservable();
-    callEvaluateIconDisplayCheck(){
-      this.evaluateIconDisplayCheck.next();
-    }
+  gridRefreshServiceAll$ = this.gridRefreshServiceAll.asObservable();
+  // Grid Refrsh Service invoke commands
+  callGridRefreshServiceAll() {
+    this.gridRefreshServiceAll.next();
+  }
+
+  evaluateIconDisplayCheck$ = this.evaluateIconDisplayCheck.asObservable();
+  callEvaluateIconDisplayCheck() {
+    this.evaluateIconDisplayCheck.next();
+  }
 
   /* Gets the list of Email Logs
    * @param payload =
@@ -84,12 +84,12 @@ export class ContractNegotiationService extends BaseStoreService
   getEmailLogsList(payload: any): Observable<unknown> {
     return this.contractNegotiationApi.getEmailLogsList(payload);
   }
-  public highlihtArrayIni(data,_i){
-    data.forEach((element,index) => {
-      if(element.rowId){
+  public highlihtArrayIni(data, _i) {
+    data.forEach((element, index) => {
+      if (element.rowId) {
         this.hArray[index] = element;
-      }else{
-        this.hArray[_i+100000]= element;
+      } else {
+        this.hArray[_i + 100000] = element;
       }
     });
   }
@@ -228,13 +228,13 @@ export class ContractNegotiationService extends BaseStoreService
     return this.contractNegotiationApi.updatePrices(payload);
   }
 
-    /**
-   * @param payload = True
-   */
-     @ObservableException()
-     updateEnegryPrices(payload: any):Observable<unknown> {
-       return this.contractNegotiationApi.updateEnegryPrices(payload);
-     }
+  /**
+ * @param payload = True
+ */
+  @ObservableException()
+  updateEnegryPrices(payload: any): Observable<unknown> {
+    return this.contractNegotiationApi.updateEnegryPrices(payload);
+  }
   /**
    * @param payload = True
    */
@@ -416,7 +416,7 @@ export class ContractNegotiationService extends BaseStoreService
    * @param payload
    */
   @ObservableException()
-  getUomConversionFactor(payload: any):  Promise<any> {
+  getUomConversionFactor(payload: any): Promise<any> {
     return this.contractNegotiationApi.getUomConversionFactor(payload).toPromise();;
   }
 
@@ -486,8 +486,8 @@ export class ContractNegotiationService extends BaseStoreService
           body.error?.ErrorMessage && body.error?.Reference
             ? body.error.ErrorMessage + ' ' + body.error.Reference
             : body.status == 401
-            ? { message: 'Unauthorized' }
-            : body.error.errorMessage + ' ' + body.error.reference
+              ? { message: 'Unauthorized' }
+              : body.error.errorMessage + ' ' + body.error.reference
         )
       )
     );
@@ -581,17 +581,17 @@ export class ContractNegotiationService extends BaseStoreService
  * @param payload =
  */
   @ObservableException()
-  getEnergy6MHistorys(payload: any):  Promise<any> {
+  getEnergy6MHistorys(payload: any): Promise<any> {
     return this.contractNegotiationApi.getEnergy6MHistorys(payload).toPromise();
   }
-  
 
-    /**
-   * @param payload
-   */
-     updateQuoteDateGroup(payload: any): Observable<unknown> {
-      return this.contractNegotiationApi.updateQuoteDateGroup(payload);
-    }
+
+  /**
+ * @param payload
+ */
+  updateQuoteDateGroup(payload: any): Observable<unknown> {
+    return this.contractNegotiationApi.updateQuoteDateGroup(payload);
+  }
   ngOnDestroy(): void {
     super.onDestroy();
   }
@@ -644,16 +644,16 @@ export class ContractNegotiationService extends BaseStoreService
     currentLocation,
     isPriceCopied,
     sourceReqProOff,
-    isFormulaPricing ?,
-    offerPriceFormulaId ?
+    isFormulaPricing?,
+    offerPriceFormulaId?
   ) {
     const productDetails = this.getRowProductDetails(row, product.id);
 
-    if(sourceReqProOff?.hasNoQuote){
+    if (sourceReqProOff?.hasNoQuote) {
       productDetails.price = null;
     }
-    else{
-        //Change with new value
+    else {
+      //Change with new value
       switch (field) {
         case 'offPrice':
           productDetails.price = Number(newValue.toString().replace(/,/g, ''));
@@ -663,39 +663,39 @@ export class ContractNegotiationService extends BaseStoreService
           break;
       }
     }
-      productDetails.exchangeRateToBaseCurrency = isPriceCopied
-        ? sourceReqProOff?.exchangeRateToBaseCurrency ?? 1
-        : productDetails.exchangeRateToBaseCurrency ?? 1;
-      // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
-      productDetails.totalPrice =
-        (Number(productDetails.price) + productDetails.cost) *
-        (productDetails.exchangeRateToBaseCurrency ?? 1); // Amount = Total Price * Max. Quantity
-      productDetails.amount = productDetails.totalPrice * product.maxQuantity;
+    productDetails.exchangeRateToBaseCurrency = isPriceCopied
+      ? sourceReqProOff?.exchangeRateToBaseCurrency ?? 1
+      : productDetails.exchangeRateToBaseCurrency ?? 1;
+    // Total Price = Offer Price + Additional cost(Rate/MT of the product + Rate/MT of  applicable for 'All')
+    productDetails.totalPrice =
+      (Number(productDetails.price) + productDetails.cost) *
+      (productDetails.exchangeRateToBaseCurrency ?? 1); // Amount = Total Price * Max. Quantity
+    productDetails.amount = productDetails.totalPrice * product.maxQuantity;
 
-      // Target Difference = Total Price - Target Price
-      productDetails.targetDifference =
-        productDetails.totalPrice -
-        (product.requestGroupProducts
-          ? product.requestGroupProducts.targetPrice
-          : 0);
-      productDetails.targetDifference =
-        product.requestGroupProducts.targetPrice == 0
-          ? 0
-          : productDetails.targetDifference;
-      productDetails.isOfferPriceCopied = isPriceCopied;
-      productDetails.isFormulaPricing = isFormulaPricing;
-      productDetails.offerPriceFormulaId = offerPriceFormulaId;
-      productDetails.currencyId = isPriceCopied
-        ? sourceReqProOff?.currencyId
-        : productDetails.currencyId;
+    // Target Difference = Total Price - Target Price
+    productDetails.targetDifference =
+      productDetails.totalPrice -
+      (product.requestGroupProducts
+        ? product.requestGroupProducts.targetPrice
+        : 0);
+    productDetails.targetDifference =
+      product.requestGroupProducts.targetPrice == 0
+        ? 0
+        : productDetails.targetDifference;
+    productDetails.isOfferPriceCopied = isPriceCopied;
+    productDetails.isFormulaPricing = isFormulaPricing;
+    productDetails.offerPriceFormulaId = offerPriceFormulaId;
+    productDetails.currencyId = isPriceCopied
+      ? sourceReqProOff?.currencyId
+      : productDetails.currencyId;
 
 
     // Total Offer(provided Offer Price is captured for all the products in the request) = Sum of Amount of all the products in the request
 
     if (isPriceCopied)
       productDetails.offerPriceCopiedFrom = sourceReqProOff?.id;
-      productDetails.hasNoQuote = sourceReqProOff?.hasNoQuote;
-      const currentLocationAllProductsIds = currentLocation.requestProducts.map(
+    productDetails.hasNoQuote = sourceReqProOff?.hasNoQuote;
+    const currentLocationAllProductsIds = currentLocation.requestProducts.map(
       e => e.id
     );
 
@@ -762,139 +762,139 @@ export class ContractNegotiationService extends BaseStoreService
     return futureRow;
   }
 
-  energyCalculationService(productId = null,locationId = null, reuestId = null){
- 
-      let alllocationRows;
-      let productSet = {};
-      let checkMjkjFlag : Boolean = true;
-      let locationRows;
-      let maxQtyArray = {};
-      this.store.selectSnapshot<any>((state: any) => {
-        const currentReqId =   state.spotNegotiation.currentRequestSmallInfo.id;
-        locationRows = state.spotNegotiation.locations;
-        alllocationRows = state.spotNegotiation.locationsRows.filter(res => {
-          if(res.requestId == currentReqId && res?.requestOffers && res.totalOffer > 0){
-          if((locationId) && (locationId == res.locationId )){
+  energyCalculationService(productId = null, locationId = null, reuestId = null) {
+
+    let alllocationRows;
+    let productSet = {};
+    let checkMjkjFlag: Boolean = true;
+    let locationRows;
+    let maxQtyArray = {};
+    this.store.selectSnapshot<any>((state: any) => {
+      const currentReqId = state.spotNegotiation.currentRequestSmallInfo.id;
+      locationRows = state.spotNegotiation.locations;
+      alllocationRows = state.spotNegotiation.locationsRows.filter(res => {
+        if (res.requestId == currentReqId && res?.requestOffers && res.totalOffer > 0) {
+          if ((locationId) && (locationId == res.locationId)) {
             return res;
           }
-          if((locationId == null)){
+          if ((locationId == null)) {
             return res;
           }
         }
-        });
       });
-  if(alllocationRows.length == 0 ) return;
-  locationRows.forEach(main => {
-    main.requestProducts.forEach(reqProds => {
-      maxQtyArray[main.locationId+'-'+reqProds.productId] = reqProds.maxQuantity;
     });
-  });
-
-//&& res2.isEnergyCalculationRequired
-      alllocationRows.forEach(res1 => {
-        if(res1?.requestOffers){
-            res1?.requestOffers.filter(res2 => {
-              if(res2.reqProdStatus != 'Stemmed' && res2.reqProdStatus != 'Confirmed'  && res2.price != null){
-                      if(res2.mjkj != null && checkMjkjFlag) checkMjkjFlag = false;
-                      if((productId) && ( res2.quotedProductId == productId )){
-                        productSet[res2.quotedProductId+''+res2.id] = {
-                          'physicalSupplierCounterpartyId' : res1.physicalSupplierCounterpartyId,
-                          'price' : res2.price,
-                          'id' : res2.id,
-                          'quotedProductId' : res2.quotedProductId,
-                          'requestId' : res1.requestId,
-                          'locationId' : res1.locationId,
-                          'supplyQuantity' : res2.supplyQuantity,
-                          'mjkj' : res2.mjkj,
-                          'isSupplyQuantityEdited' : res2.isSupplyQuantityEdited
-                        }
-                        return;
-                      }
-                      if(productId == null){
-                        productSet[res2.quotedProductId+''+res2.id] = {
-                          'physicalSupplierCounterpartyId' : res1.physicalSupplierCounterpartyId,
-                          'price' : res2.price,
-                          'id' : res2.id,
-                          'quotedProductId' : res2.quotedProductId,
-                          'requestId' : res1.requestId,
-                          'locationId' : res1.locationId,
-                          'supplyQuantity' : res2.supplyQuantity,
-                          'mjkj' : res2.mjkj,
-                          'isSupplyQuantityEdited' : res2.isSupplyQuantityEdited
-                        }
-                        return;
-                      }
-                }
-            });
-        }
+    if (alllocationRows.length == 0) return;
+    locationRows.forEach(main => {
+      main.requestProducts.forEach(reqProds => {
+        maxQtyArray[main.locationId + '-' + reqProds.productId] = reqProds.maxQuantity;
       });
+    });
 
- if(Object.keys(productSet).length == 0) return;
-
- this.netEnergyList = this.store.selectSnapshot<any>((state: any) => {
-  return state.spotNegotiation.netEnergySpecific;
-});
-if(this.netEnergyList.length == 0 && checkMjkjFlag) return;
-
-
- let differenceValue = {};
- let difTemp = {};
-
- Object.entries(productSet).forEach(([key, res]) => {
-  let eVal = this.netEnergyList.find(fRes => fRes.locationId == res['locationId'] && fRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && fRes.productId == res['quotedProductId']);
-
-  if(eVal?.netAverage){
-    differenceValue[res['quotedProductId']+''+res['id']] = res['price'] / eVal.netAverage;
-   if(!difTemp[eVal.locationId+''+eVal.productId])     
-    difTemp[eVal.locationId+''+eVal.productId] = [];
-    difTemp[eVal.locationId+''+eVal.productId].push(res['price'] / eVal.netAverage);
-  }else{
-    if(productSet[key].mjkj == null)
-    delete productSet[key];
-  }
- }); 
- if(Object.keys(differenceValue).length == 0 && checkMjkjFlag) return;
-     let updateArr = {};
-     let updatePayload = [];
-     let storePayload = [];
-     let serverPayLoad = {};
-     storePayload = cloneDeep(alllocationRows);
-  Object.entries(productSet).forEach(([key, res]) => {
-  let curentProductVal = this.netEnergyList.filter(fRes => fRes.locationId == res['locationId'] && fRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && fRes.productId == res['quotedProductId']);
-    if(curentProductVal.length > 0){
-      const minVal = Math.min(...difTemp[curentProductVal[0].locationId+''+curentProductVal[0].productId]);
-      updateArr['id'] = res['id'];
-      updateArr['mjkj'] = curentProductVal[0]?.netAverage;
-      updateArr['ediff'] = (differenceValue[res['quotedProductId']+''+res['id']] - minVal) * parseFloat(curentProductVal[0].netAverage);
-      if(res['isSupplyQuantityEdited']){
-        updateArr['tco'] = (res['price'] + updateArr['ediff']) * res['supplyQuantity'];
-      }else{
-        updateArr['tco'] = (res['price'] + updateArr['ediff']) * maxQtyArray[res['locationId']+'-'+res['quotedProductId']];
-      }
-      updatePayload.push(updateArr); 
-    }else{
-      updateArr['id'] = res['id'];
-      updateArr['mjkj'] = null;
-      updateArr['ediff'] = null;
-      updateArr['tco'] = null;
-      updatePayload.push(updateArr); 
-    }
-    alllocationRows.filter((el,index) => {
-      if(el.locationId == res['locationId'] && el.requestId == res['requestId']){
-        el.requestOffers.filter((inner,iIndex) =>{
-          if(inner.id == res['id']){
-            storePayload[index].requestOffers[iIndex].mjkj = updateArr['mjkj'] ;
-            storePayload[index].requestOffers[iIndex].ediff = updateArr['ediff'];
-            storePayload[index].requestOffers[iIndex].tco = updateArr['tco'];
+    //&& res2.isEnergyCalculationRequired
+    alllocationRows.forEach(res1 => {
+      if (res1?.requestOffers) {
+        res1?.requestOffers.filter(res2 => {
+          if (res2.reqProdStatus != 'Stemmed' && res2.reqProdStatus != 'Confirmed' && res2.price != null) {
+            if (res2.mjkj != null && checkMjkjFlag) checkMjkjFlag = false;
+            if ((productId) && (res2.quotedProductId == productId)) {
+              productSet[res2.quotedProductId + '' + res2.id] = {
+                'physicalSupplierCounterpartyId': res1.physicalSupplierCounterpartyId,
+                'price': res2.price,
+                'id': res2.id,
+                'quotedProductId': res2.quotedProductId,
+                'requestId': res1.requestId,
+                'locationId': res1.locationId,
+                'supplyQuantity': res2.supplyQuantity,
+                'mjkj': res2.mjkj,
+                'isSupplyQuantityEdited': res2.isSupplyQuantityEdited
+              }
+              return;
+            }
+            if (productId == null) {
+              productSet[res2.quotedProductId + '' + res2.id] = {
+                'physicalSupplierCounterpartyId': res1.physicalSupplierCounterpartyId,
+                'price': res2.price,
+                'id': res2.id,
+                'quotedProductId': res2.quotedProductId,
+                'requestId': res1.requestId,
+                'locationId': res1.locationId,
+                'supplyQuantity': res2.supplyQuantity,
+                'mjkj': res2.mjkj,
+                'isSupplyQuantityEdited': res2.isSupplyQuantityEdited
+              }
+              return;
+            }
           }
         });
       }
     });
-   updateArr = {};
-  });
-     serverPayLoad = { "requestOfferEnergys" : updatePayload }
-     this.store.dispatch(new EditLocationRow(storePayload));
-     this.updateEnegryPrices(serverPayLoad).subscribe();
+
+    if (Object.keys(productSet).length == 0) return;
+
+    this.netEnergyList = this.store.selectSnapshot<any>((state: any) => {
+      return state.spotNegotiation.netEnergySpecific;
+    });
+    if (this.netEnergyList.length == 0 && checkMjkjFlag) return;
+
+
+    let differenceValue = {};
+    let difTemp = {};
+
+    Object.entries(productSet).forEach(([key, res]) => {
+      let eVal = this.netEnergyList.find(fRes => fRes.locationId == res['locationId'] && fRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && fRes.productId == res['quotedProductId']);
+
+      if (eVal?.netAverage) {
+        differenceValue[res['quotedProductId'] + '' + res['id']] = res['price'] / eVal.netAverage;
+        if (!difTemp[eVal.locationId + '' + eVal.productId])
+          difTemp[eVal.locationId + '' + eVal.productId] = [];
+        difTemp[eVal.locationId + '' + eVal.productId].push(res['price'] / eVal.netAverage);
+      } else {
+        if (productSet[key].mjkj == null)
+          delete productSet[key];
+      }
+    });
+    if (Object.keys(differenceValue).length == 0 && checkMjkjFlag) return;
+    let updateArr = {};
+    let updatePayload = [];
+    let storePayload = [];
+    let serverPayLoad = {};
+    storePayload = cloneDeep(alllocationRows);
+    Object.entries(productSet).forEach(([key, res]) => {
+      let curentProductVal = this.netEnergyList.filter(fRes => fRes.locationId == res['locationId'] && fRes.physicalSupplierId == res['physicalSupplierCounterpartyId'] && fRes.productId == res['quotedProductId']);
+      if (curentProductVal.length > 0) {
+        const minVal = Math.min(...difTemp[curentProductVal[0].locationId + '' + curentProductVal[0].productId]);
+        updateArr['id'] = res['id'];
+        updateArr['mjkj'] = curentProductVal[0]?.netAverage;
+        updateArr['ediff'] = (differenceValue[res['quotedProductId'] + '' + res['id']] - minVal) * parseFloat(curentProductVal[0].netAverage);
+        if (res['isSupplyQuantityEdited']) {
+          updateArr['tco'] = (res['price'] + updateArr['ediff']) * res['supplyQuantity'];
+        } else {
+          updateArr['tco'] = (res['price'] + updateArr['ediff']) * maxQtyArray[res['locationId'] + '-' + res['quotedProductId']];
+        }
+        updatePayload.push(updateArr);
+      } else {
+        updateArr['id'] = res['id'];
+        updateArr['mjkj'] = null;
+        updateArr['ediff'] = null;
+        updateArr['tco'] = null;
+        updatePayload.push(updateArr);
+      }
+      alllocationRows.filter((el, index) => {
+        if (el.locationId == res['locationId'] && el.requestId == res['requestId']) {
+          el.requestOffers.filter((inner, iIndex) => {
+            if (inner.id == res['id']) {
+              storePayload[index].requestOffers[iIndex].mjkj = updateArr['mjkj'];
+              storePayload[index].requestOffers[iIndex].ediff = updateArr['ediff'];
+              storePayload[index].requestOffers[iIndex].tco = updateArr['tco'];
+            }
+          });
+        }
+      });
+      updateArr = {};
+    });
+    serverPayLoad = { "requestOfferEnergys": updatePayload }
+    this.store.dispatch(new EditLocationRow(storePayload));
+    this.updateEnegryPrices(serverPayLoad).subscribe();
   }
 
   @ObservableException()
@@ -903,8 +903,8 @@ if(this.netEnergyList.length == 0 && checkMjkjFlag) return;
   }
 
   @ObservableException()
-  getSellerRatingforNegotiation(payload: any): Observable<unknown>{
-    return this.contractNegotiationApi.getSellerRatingforNegotiation(payload)  ;
+  getSellerRatingforNegotiation(payload: any): Observable<unknown> {
+    return this.contractNegotiationApi.getSellerRatingforNegotiation(payload);
   }
 
   @ObservableException()
@@ -916,7 +916,7 @@ if(this.netEnergyList.length == 0 && checkMjkjFlag) return;
   getMasterFormula(payload): Observable<unknown> {
     return this.contractNegotiationApi.getMasterFormula(payload);
   }
-  
+
   //Getting Static Lists from indexedDB
   // public async getStaticListFromIDB(){
   //   const db = await openDB('Shiptech',10)
@@ -927,16 +927,16 @@ if(this.netEnergyList.length == 0 && checkMjkjFlag) return;
 
   @ObservableException()
   addNewFormulaPrice(payload, requestOfferId): Observable<unknown> {
-     return this.contractNegotiationApi.addNewFormulaPrice(payload, requestOfferId);
-   }
+    return this.contractNegotiationApi.addNewFormulaPrice(payload, requestOfferId);
+  }
 
-   @ObservableException()
-   updateFormulaPrice(payload, requestOfferId, priceConfigurationId): Observable<unknown> {
-     return this.contractNegotiationApi.updateFormulaPrice(payload, requestOfferId, priceConfigurationId);
-   }
+  @ObservableException()
+  updateFormulaPrice(payload, requestOfferId, priceConfigurationId): Observable<unknown> {
+    return this.contractNegotiationApi.updateFormulaPrice(payload, requestOfferId, priceConfigurationId);
+  }
 
-   @ObservableException()
-   evaluateFormulaPrice(payload): Observable<unknown> {
+  @ObservableException()
+  evaluateFormulaPrice(payload): Observable<unknown> {
     return this.contractNegotiationApi.evaluateFormulaPrice(payload);
   }
 
@@ -961,17 +961,25 @@ if(this.netEnergyList.length == 0 && checkMjkjFlag) return;
   }
 
   @ObservableException()
-  getDefaultConversionFactor(payload): Observable<unknown>{
+  getDefaultConversionFactor(payload): Observable<unknown> {
     return this.contractNegotiationApi.getDefaultConversionFactor(payload);
   }
 
   @ObservableException()
-  copyPriceConfigurations(payload): Observable<unknown>{
+  copyPriceConfigurations(payload): Observable<unknown> {
     return this.contractNegotiationApi.copyPriceConfigurations(payload);
   }
   @ObservableException()
-  removeFormula(requestOfferId,priceConfigId):Observable<unknown>{
-    return this.contractNegotiationApi.removeFormula(requestOfferId,priceConfigId);
+  removeFormula(requestOfferId, priceConfigId): Observable<unknown> {
+    return this.contractNegotiationApi.removeFormula(requestOfferId, priceConfigId);
+  }
+
+  /**
+  * @param payload
+  */
+  @ObservableException()
+  getContractRequestList(payload): Observable<Blob> {
+    return this.contractNegotiationApi.contractRequestList(payload);
   }
 
 }
