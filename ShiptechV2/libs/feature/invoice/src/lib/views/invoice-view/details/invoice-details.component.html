@@ -5,7 +5,7 @@
       <div class="row">
         <div
           class="col-md-6 col-sm-12 col-12 pt-4"
-          style="line-height: 55px; padding: 0px 20px; margin: 0px;"
+          style="line-height: 55px; padding: 0px 0px; margin: 0px;"
         >
           <div class="row">
             <div class="col-md-3">
@@ -38,7 +38,7 @@
                 </mat-radio-group>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" style="padding-top: 10px;">
               <div class="badge-header-v2">
                 <span
                   class="label_text"
@@ -67,7 +67,7 @@
             </div>
           </div>
           <div class="row pt-3">
-            <div class="col-md-3">
+            <div class="col-md-3" style="padding-left: 0px;">
               <div
                 id="custom-form-field"
                 class="custom-form-field"
@@ -106,7 +106,7 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="col-md-3" *ngIf="getInvoiceDateConfig().isVisible">
+            <div class="col-md-3" style="padding-left: 2px;" *ngIf="getInvoiceDateConfig().isVisible">
               <div id="custom-form-field" class="lightTheme">
                 <mat-form-field
                   class="without-search"
@@ -139,7 +139,7 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="col-md-3" *ngIf="getReceivedDateConfig().isVisible">
+            <div class="col-md-3" style="padding-left: 2px;" *ngIf="getReceivedDateConfig().isVisible">
               <div id="custom-form-field" class="lightTheme">
                 <mat-form-field
                   class="without-search"
@@ -262,7 +262,7 @@
             </div>
           </div>
           <div class="row pt-3">
-            <div class="col-md-3">
+            <div class="col-md-3" style="padding-left: 0px;">
               <div
                 id="custom-form-field"
                 class="custom-form-field lightTheme can-be-disabled"
@@ -292,7 +292,7 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" style="padding-left: 2px;">
               <div id="custom-form-field" class="lightTheme">
                 <mat-form-field
                   [ngClass]="{ 'invalid-field': formErrors.dueDate }"
@@ -324,7 +324,7 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" style="padding-left: 2px;">
               <div id="custom-form-field" class="lightTheme">
                 <mat-form-field
                   class="without-search"
@@ -355,7 +355,7 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" style="padding-left: 2px;">
               <div
                 id="custom-form-field"
                 class="custom-form-field"
@@ -380,7 +380,7 @@
             </div>
           </div>
           <div class="row pt-3">
-            <div class="col-md-3">
+            <div class="col-md-3" style="padding-left: 0px;">
               <div id="custom-form-field" class="lightTheme">
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Seller Due Date</mat-label>
@@ -403,7 +403,7 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" style="padding-left: 2px;">
               <div id="custom-form-field" class="lightTheme">
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Payment Date</mat-label>
@@ -432,7 +432,7 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" style="padding-left: 2px;">
               <div id="custom-form-field" class="lightTheme">
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Validation Date</mat-label>
@@ -460,7 +460,7 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" style="padding-left: 2px;">
               <div id="custom-form-field" class="lightTheme can-be-disabled">
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Payment Status</mat-label>
@@ -502,7 +502,7 @@
             </div>
           </div>
           <div class="row pt-3">
-            <div class="col-md-3">
+            <div class="col-md-3" style="padding-left: 2px;">
               <div id="custom-form-field" class="lightTheme">
                 <mat-form-field class="without-search" appearance="legacy">
                   <mat-label>Invoice Status</mat-label>
@@ -566,7 +566,7 @@
             </div>
           </div>
           <div class="row pt-3">
-            <div class="col-md-3">
+            <div class="col-md-3" style="padding-left: 2px;">
               <div
                 id="custom-form-field"
                 class="custom-form-field lightTheme can-be-disabled"
@@ -600,7 +600,7 @@
                 >
               </div>
             </div>
-            <div class="border_line"></div>
+            <div class="border_line" style="padding-left: 10px;"></div>
             <div class="col-md-3">
               <div class="checkbox whithheld-amount">
                 <mat-checkbox

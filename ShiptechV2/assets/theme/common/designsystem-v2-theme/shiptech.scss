@@ -36,6 +36,7 @@
 }
 
 .invoice-details-component {
+  margin:0px -15px;
   .custom-form-field.lightTheme
     .mat-form-field.mat-form-field-disabled
     .mat-form-field-label
@@ -66,6 +67,16 @@
     .mat-placeholder-required {
     background: #eeeeee !important;
   }
+  // .section1{
+  //   .row{
+  //     div{
+  //       .col-md-3{
+  //         padding: 0px;
+  //       }
+  //     }
+  //   }
+
+  // }
 }
 
 .chip-container {

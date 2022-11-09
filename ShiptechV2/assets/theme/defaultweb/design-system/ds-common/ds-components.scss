@@ -818,7 +818,7 @@ $light-blue : #74CDEA;
 // <!-- Button Toggle Start-->
 #custom-btn-toggle-v2 {
   background: #ffffff;
-  margin: 0px 20px;
+  margin: 0px 0px;
 
   &.autoWidth {
     .mat-button-toggle {
@@ -1021,16 +1021,17 @@ $light-blue : #74CDEA;
 }
 
 .badge-header-v2 {
-  width: 198px !important;
+  min-width: 198px !important;
   height: 40px;
   background: #f1f1f2;
   border-radius: 4px;
   font-style: normal;
   font-weight: normal;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 12px;
   color: #252a32;
-  padding: 6px;
+  //  padding: 6px;
+  //  text-align: center;
   display: flex;
   justify-content: space-around;
 
