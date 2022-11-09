@@ -1070,6 +1070,18 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 	                        }
                     	}
                     }
+                    if (vm.app_id == 'masters' && vm.screen_id == 'period') {                    
+                        setTimeout(() => {
+                            if($scope.formValues.periodType == 1){
+                                $(".edit_form_fields_Quarter_masters").hide(); 
+                            }else if($scope.formValues.periodType == 2){
+                                $(".edit_form_fields_Month_masters").hide();   
+                            }else{
+                                $(".edit_form_fields_Quarter_masters").hide(); 
+                                $(".edit_form_fields_Month_masters").hide();
+                            }                       
+                        });  
+                    }
                     if (vm.app_id == 'masters' && vm.screen_id == 'additionalcost') {
 	                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit' || $scope.formValues.costType.name == 'Range' || $scope.formValues.costType.name == 'Total') {
 	                        $scope.formValues.componentType = null;
