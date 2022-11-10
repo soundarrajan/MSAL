@@ -48,6 +48,8 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   constructor(private localService: LocalService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    // debugger;
+    // let id = this.localService.contractRequestDetails;
     this.getJSONData();
   }
 
