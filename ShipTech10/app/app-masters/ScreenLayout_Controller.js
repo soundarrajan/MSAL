@@ -1074,8 +1074,10 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                         setTimeout(() => {
                             if($scope.formValues.periodType == 1){
                                 $(".edit_form_fields_Quarter_masters").hide(); 
+                                $(".edit_form_fields_Month_masters").show(); 
                             }else if($scope.formValues.periodType == 2){
-                                $(".edit_form_fields_Month_masters").hide();   
+                                $(".edit_form_fields_Month_masters").hide();  
+                                $(".edit_form_fields_Quarter_masters").show();  
                             }else{
                                 $(".edit_form_fields_Quarter_masters").hide(); 
                                 $(".edit_form_fields_Month_masters").hide();

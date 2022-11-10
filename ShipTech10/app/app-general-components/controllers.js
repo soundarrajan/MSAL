@@ -3998,26 +3998,22 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                     }else{
                         $scope.formValues.PeriodMonth = null;
                         $scope.formValues.PeriodQuarter =  {"id":$scope.formValues.quarter}; 
+                    } 
+                   var pType =  ($scope.formValues.pType)?{"id":$scope.formValues.pType.id}:"";
+                   
+                    if(pType.id == 1){
+                        $(".edit_form_fields_Month_masters").show();        
+                    }else if(pType.id == 2){
+                        $(".edit_form_fields_Quarter_masters").show();             
                     }
                 }
             }
         });
 
         setTimeout(function() {
+         
             console.log("$rootScope", $rootScope.formValues);
-            console.log("$scope", $scope.formValues);
-           
-            if($state.params.screen_id == "period"){
-                var pType =  ($scope.formValues.pType)?{"id":$scope.formValues.pType.id}:"";
-                $(".edit_form_fields_Quarter_masters").hide(); 
-                $(".edit_form_fields_Month_masters").hide(); 
-                if(pType.id == 1){
-                    $(".edit_form_fields_Month_masters").show();        
-                }else if(pType.id == 2){
-                    $(".edit_form_fields_Quarter_masters").show();             
-                }  
-            } 
-           
+            console.log("$scope", $scope.formValues);           
             if($scope.formValues.orderDetails != undefined && $scope.formValues.orderDetails.orderStatusName != undefined){
                 if($scope.formValues.orderDetails.orderStatusName == 'Cancelled'){
                     $('#ClaimTypeClaimType').attr('disabled', 'disabled');
