@@ -1,7 +1,7 @@
 export enum KnownContractNegotiationRoutes {
   RequestsList = 'requests',
   RequestDetails = 'details',
-  RequestIdParam = 'requesttId',
+  RequestIdParam = 'requestId',
   ContractAuditPath = 'audit-log',
   ContractDocumentsPath = 'documents',
   ContractEmailLogPath = 'email-log'

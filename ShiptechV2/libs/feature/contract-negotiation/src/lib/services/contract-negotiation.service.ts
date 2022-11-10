@@ -982,4 +982,12 @@ export class ContractNegotiationService extends BaseStoreService
     return this.contractNegotiationApi.contractRequestList(payload);
   }
 
+    /**
+  * @param contractRequestId
+  */
+  @ObservableException()
+  getContractRequestDetails(contractRequestId): Observable<Blob> {
+    return this.contractNegotiationApi.getcontractRequestDetails(contractRequestId);
+  }
+
 }

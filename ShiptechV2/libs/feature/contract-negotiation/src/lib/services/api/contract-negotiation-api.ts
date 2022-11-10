@@ -89,7 +89,8 @@ export const SpotNegotiationApiPaths = {
 };
 
 export const ContractNegotiationApiPaths = {
-  requestList: `api/ContractRequest/list`
+  requestList: `api/ContractRequest/list`,
+  contractRequest: 'api/ContractRequest'
 }
 
 
@@ -1115,6 +1116,17 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
       .post<any>(
         `${this._shitechApiUrl}/${ContractNegotiationApiPaths.requestList}`, payload
       )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  getcontractRequestDetails(contractRequestId: number): Observable<any> {
+    return this.http
+      .get<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.contractRequest}/${contractRequestId}`)
       .pipe(
         map((body: any) => body),
         catchError((body: any) => this.handleErrorMessage(body))

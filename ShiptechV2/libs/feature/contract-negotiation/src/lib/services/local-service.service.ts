@@ -22,6 +22,7 @@ export class LocalService {
     public errorurl = '/404';
     public userData;
     public userRoleList;
+    public contractRequestDetails;
 
     constructor(private http: HttpClient, private router: Router) {
         this.getVesselsList().subscribe(data => {

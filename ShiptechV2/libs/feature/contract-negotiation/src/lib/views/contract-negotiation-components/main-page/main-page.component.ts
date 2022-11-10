@@ -4,8 +4,10 @@ import { ToastrService } from 'ngx-toastr';
 import { EmailPreviewPopupComponent } from '../contract-negotiation-popups/email-preview-popup/email-preview-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { LocalService } from '../../../services/local-service.service';
-import { Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
+import { isNumeric } from 'rxjs/internal-compatibility';
 import { CreateContractRequestPopupComponent } from '../contract-negotiation-popups/create-contract-request-popup/create-contract-request-popup.component';
+import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
 
 @Component({
   selector: 'app-main-page',
@@ -28,9 +30,16 @@ export class MainPageComponent implements OnInit {
   isNegotiationClosed: boolean = true;
   public isBuyer:boolean = true;
   public rowSelected:boolean = false;
-  constructor(private _location: Location, private toaster: ToastrService, public dialog: MatDialog, private localService: LocalService,public router: Router) { }
+  constructor(private _location: Location, private toaster: ToastrService, public dialog: MatDialog, private localService: LocalService, private route: ActivatedRoute, private contractService: ContractNegotiationService) { }
 
   ngOnInit(): void {
+    const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
+    if(contractRequestIdFromUrl && isNumeric(contractRequestIdFromUrl)){
+      this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
+      .subscribe(response => {
+        this.localService.contractRequestDetails = response;
+      });
+    }
     this.navigationItems = [
       {
         id: 'request',
