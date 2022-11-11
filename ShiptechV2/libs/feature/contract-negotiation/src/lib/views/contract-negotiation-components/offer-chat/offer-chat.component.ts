@@ -13,6 +13,8 @@ export class OfferChatComponent implements OnInit {
   public editChatIndex:number;
   public contenteditable:boolean=false;
   public fullHeaderWidth: any;
+  public openChat:boolean=true;
+
   @Input() chatObj:any;
   constructor(public dialog: MatDialog) { }
 
@@ -66,5 +68,13 @@ export class OfferChatComponent implements OnInit {
   editSave(){
     this.contenteditable=false;
   }
+
+  toggleChat(){
+    this.openChat = true;
+ }
+
+ panelClosed(){
+  this.openChat=false;
+}
 
 }

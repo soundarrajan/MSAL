@@ -3,7 +3,7 @@
         <div id=port{{i+1}} #port{{i+1}} class="panel-container"
             *ngFor="let loc of requests[selectedRequestIndex]?.locations;let i = index">
             <mat-expansion-panel [expanded]="i==portIndex?true:false">
-                <mat-expansion-panel-header>
+                <mat-expansion-panel-header (click)="panelClosed()">
                     <mat-panel-title>
                         <!-- <app-details-table-header [title]="loc['location-name']"></app-details-table-header> -->
                         <div class="details-table-header">

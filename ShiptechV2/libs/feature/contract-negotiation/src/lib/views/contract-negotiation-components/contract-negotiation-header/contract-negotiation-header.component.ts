@@ -4,6 +4,7 @@ import { LocalService } from '../../../services/local-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateContractRequestPopupComponent } from '../contract-negotiation-popups/create-contract-request-popup/create-contract-request-popup.component';
 import { ContractNegotiationDetailsComponent } from '../contract-negotiation-details/contract-negotiation-details.component';
+import { OfferChatComponent } from '../offer-chat/offer-chat.component';
 @Component({
   selector: 'app-contract-negotiation-header',
   templateUrl: './contract-negotiation-header.component.html',
@@ -15,6 +16,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   @ViewChild('inputBox2') _el2: ElementRef;
   @ViewChild('inputSearch') inputSearch: ElementRef;
   @ViewChild(ContractNegotiationDetailsComponent) child: ContractNegotiationDetailsComponent;
+  @ViewChild(OfferChatComponent) childChat: OfferChatComponent;
   @ViewChild('ports') ports: ElementRef;
   allRequestDetails = [];
   allRequestComments = [];
@@ -80,25 +82,24 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   }
 
   scrollPort1(index, el, count) {
-    //console.log(count);
+    this.child.scrollPortToggle(index);
     let portVal = "port" + el;
-    //let ele = document.getElementById(portval);
     let portId = "#" + portVal;
     var ele = this.ports.nativeElement.querySelector(portId);
+    setTimeout(()=>{ 
     ele.scrollIntoView();
-    // if(el!=count){
-    //   ele.scrollIntoView();
-    //   setTimeout(()=>{ 
-    //     this.child.scrollExpand(index);
-    //     },0);
-    // }else{
-    //   setTimeout(()=>{ 
-    //     this.child.scrollExpand(index);
-    //     },0);
-    // }
+    },500);
+
+    /* let portVal = "port" + el;
+    let portId = "#" + portVal;
+    var ele = this.ports.nativeElement.querySelector(portId);
+    ele.scrollIntoView(); */
   }
   scrollComments(el: HTMLElement) {
     el.scrollIntoView();
+    this.childChat.toggleChat();
+    this.child.panelClosed();
+    //el.scrollIntoView();
   }
 
   clearCounterparty(event) {

@@ -1,8 +1,8 @@
 <div class="contract-nego-content offer-chat">
     <div class="grid-in-accordion">
       <div>
-        <mat-expansion-panel [expanded]="true">
-          <mat-expansion-panel-header>
+        <mat-expansion-panel [expanded]="openChat?true:false">
+          <mat-expansion-panel-header (click)="panelClosed()">
             <mat-panel-title>
                 <div class="details-table-header">
                     <div class="accordion-detail">
@@ -61,7 +61,7 @@
                           </ng-container>
                           </div>
                           <div class="chat-box">
-                            <div class="type-chat"><textarea [(ngModel)]="chatValue"></textarea></div>
+                            <div class="type-chat"><textarea [(ngModel)]="chatValue" placeholder="Start typing here"></textarea></div>
                             <div class="send-button" (click)="sendChat()"></div>
                           </div>
                         </div>

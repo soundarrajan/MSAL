@@ -103,5 +103,15 @@ export class ContractNegotiationDetailsComponent implements OnInit {
       }
     }
   }
+
+  scrollPortToggle(index){
+    //alert(index);
+    this.portIndex=index;
+  }
+
+  panelClosed(){
+    //alert("");
+    this.portIndex=-1;
+  }
 }
 
