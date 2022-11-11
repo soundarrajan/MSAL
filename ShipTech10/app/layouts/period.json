@@ -428,6 +428,20 @@
                     "sortable": true
                 },
                 {
+                    "index": "fromDate",
+                    "label": "From Date",
+                    "name": "fromDate",
+                    "width": 150,
+                    "sortable": true
+                },
+                {
+                    "index": "toDate",
+                    "label": "To Date",
+                    "name": "toDate",
+                    "width": 150,
+                    "sortable": true
+                },
+                {
                     "index": "createdBy.name",
                     "label": "Created By",
                     "name": "createdBy.name",
