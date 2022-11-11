@@ -3304,7 +3304,23 @@
         vm.setPageTitle = function(title) {
             $state.params.title = title;
         };
-
+        $scope.triggerKeyupFields  = function(name, id, isManualChange) {
+            if (vm.app_id == 'masters' && vm.screen_id == 'price') {
+                    if(id == "period"){                      
+                        if($scope.formValues.period == null || $scope.formValues.period == undefined || $scope.formValues.period == ''){
+                            $scope.formValues.fromDate = moment('',"YYYY-MM-DD");
+                            $scope.formValues.toDate = moment('',"YYYY-MM-DD");
+                        } 
+                    }
+                    if(id == "systemInstrument"){
+                        if($scope.formValues.systemInstrument == null || $scope.formValues.systemInstrument == undefined || $scope.formValues.systemInstrument == ''){
+                            $scope.formValues.fromDate = moment('',"YYYY-MM-DD");
+                            $scope.formValues.toDate = moment('',"YYYY-MM-DD");
+                        }  
+                    }
+                   
+            }
+        }
         $scope.triggerChangeFields = function(name, id, isManualChange) {
            
             if (vm.app_id == 'masters' && vm.screen_id == 'period') {
@@ -3559,9 +3575,9 @@
                             if (response) {                             
                                 $scope.formValues.marketInstrumentCode = response.marketInstrument.code;
                                 $scope.formValues.code = response.marketInstrument.code;
-                                $scope.formValues.period = null;
-                                $scope.formValues.fromDate = null;
-                                $scope.formValues.toDate = null;
+                                $scope.formValues.period = null;                           
+                                $scope.formValues.fromDate = moment('');
+                                $scope.formValues.toDate = moment('');
                                 obj = [];
                                 $.each(response.periods, (key, value) => {
                                     obj.push(value.period);
@@ -3627,6 +3643,8 @@
             }
 
             if(name == 'systemInstrumentPeriod' && id == 'period'){
+
+                console.log($scope.formValues);
                 Factory_Master.get_master_entity($scope.formValues.period.id, 'period', 'masters', (response) => {
                     if (response) {
                         $scope.formValues.fromDate = response.fromDate;
