@@ -14,7 +14,7 @@ import { MenuItem } from 'primeng/api';
       class="breadcrumbs-container"
       [ngClass]="{'remove-container': delivery}"
     >
-      <p-breadcrumb fxFlex="auto" [model]="breadcrumbs"></p-breadcrumb>
+    <p-breadcrumb fxFlex="auto" [model]="breadcrumbs"></p-breadcrumb>
     </div>
   `,
   styleUrls: ['./breadcrumbs.scss'],
@@ -109,6 +109,10 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
 
     if (this.router.url.includes('invoices/edit')) {
       breadcrumbs[0].url = '/#/invoices/invoice';
+    }
+        
+    if (this.router.url.includes('contract-negotiation/requests')) {
+      breadcrumbs[0].url = '/v2/contract-negotiation/requests';       
     }
 
     return this.createBreadcrumbs(child, url, breadcrumbs);
