@@ -614,4 +614,35 @@ export class LocalService {
             }
         })
     }
+
+    @ObservableException()
+    getMasterListData(items: string[]): Observable<any> {
+    let db;
+    let dbReq = indexedDB.open('Shiptech', 10);
+    return new Observable((observer) => {
+            dbReq.onsuccess = function() {
+                db = dbReq.result;
+                let response = [];
+                var objectStore;
+                var objectStoreRequest;
+                var transaction = db.transaction(['listsCache'], 'readonly');
+                objectStore = transaction.objectStore("listsCache");
+                objectStoreRequest = objectStore.getAll();
+                objectStoreRequest.onsuccess = function(event){
+                    response = event.target.result[0].data;
+                    let returnArr = [];
+                    if (response) {
+                        items.forEach((item) => {
+                            returnArr[item] = response[item];
+                        });
+                        observer.next(returnArr);
+                        observer.complete();
+                    }
+                }             
+            }
+            dbReq.onerror = function(event) {
+              alert('error opening database ' + event.target);
+            }
+        })
+    }
 }

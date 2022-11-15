@@ -10,13 +10,13 @@ import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
 @Injectable()
 export class CommonService extends BaseStoreService implements OnDestroy {
 
-    constructor(
-      protected store: Store,
-      loggerFactory: LoggerFactory,
-      private commonApiService: CommonApiService
-    ) {
-      super(store, loggerFactory.createLogger(CommonService.name));
-    }
+  constructor(
+    protected store: Store,
+    loggerFactory: LoggerFactory,
+    private commonApiService: CommonApiService
+  ) {
+    super(store, loggerFactory.createLogger(CommonService.name));
+  }
 
   @ObservableException()
   getSellerRatingforNegotiation(payload: any): Observable<unknown>{
