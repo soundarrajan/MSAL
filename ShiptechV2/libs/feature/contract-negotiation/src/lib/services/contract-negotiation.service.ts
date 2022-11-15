@@ -1,33 +1,18 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { BaseStoreService } from '@shiptech/core/services/base-store.service';
-import {
-  IDocumentsCreateUploadRequest,
-  IDocumentsCreateUploadResponse
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
-import {
-  IDocumentsDeleteRequest,
-  IDocumentsDeleteResponse
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
+import { IDocumentsCreateUploadRequest, IDocumentsCreateUploadResponse } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
+import { IDocumentsDeleteRequest, IDocumentsDeleteResponse } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-delete.dto';
 import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-download.dto';
-import {
-  IDocumentsUpdateIsVerifiedRequest
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
-import {
-  IDocumentsUpdateNotesRequest,
-  IDocumentsUpdateNotesResponse
-} from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
-import { UrlService } from '@shiptech/core/services/url/url.service';
+import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
+import { IDocumentsUpdateNotesRequest, IDocumentsUpdateNotesResponse } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
-import { openDB } from 'idb';
 import { cloneDeep } from 'lodash';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
 //import { EditLocationRow } from '../store/actions/ag-grid-row.action';
 import { ContractNegotiationApi } from './api/contract-negotiation-api';
-
 
 @Injectable()
 export class ContractNegotiationService extends BaseStoreService
@@ -100,14 +85,6 @@ export class ContractNegotiationService extends BaseStoreService
   @ObservableException()
   getEmailLogsPreview(payload: any): Observable<unknown> {
     return this.contractNegotiationApi.getEmailLogsPreview(payload);
-  }
-
-  /**
-   * @param payload = False
-   */
-  @ObservableException()
-  getTenantConfiguration(): Observable<unknown> {
-    return this.contractNegotiationApi.getTenantConfiguration();
   }
 
   /**
@@ -259,8 +236,8 @@ export class ContractNegotiationService extends BaseStoreService
    * @param payload =
    */
   @ObservableException()
-  AmendRFQ(payload: any): Observable<unknown> {
-    return this.contractNegotiationApi.AmendRFQ(payload);
+  createContractRequest(payload: any): Observable<unknown> {
+    return this.contractNegotiationApi.createContractRequest(payload);
   }
 
   /**

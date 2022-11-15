@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { AuthenticationMsalModule } from '@shiptech/core/authentication/authentication-msal.module';
+import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
 import 'ag-grid-enterprise';
@@ -13,6 +15,12 @@ import { CreateContractRequestPopupComponent } from './views/contract-negotiatio
 import { MaterialModule } from '@shiptech/core/ui/material.module';
 //import { SharedModule } from 'src/public_api';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
+import { environment } from '@shiptech/environment';
+import {
+  CONTRACT_NEGOTIATION_API_SERVICE,
+  ContractNegotiationApi
+} from './services/api/contract-negotiation-api';
+import { ContractNegotiationService } from './services/contract-negotiation.service';
 import { UIModule } from '@shiptech/core/ui/ui.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
@@ -51,8 +59,7 @@ import { HeaderFilterChipComponent } from './views/contract-negotiation-componen
 import { MoreFilterChipComponent } from './views/contract-negotiation-components/filter-components/more-filter-chip/more-filter-chip.component';
 import { DocDragDropUploadComponent } from './views/contract-negotiation-components/doc-drag-drop-upload/doc-drag-drop-upload.component';
 import { HeaderBreadcrumbComponent } from './views/contract-negotiation-components/header-breadcrumb/header-breadcrumb.component';
-import { ContractNegotiationService } from './services/contract-negotiation.service';
-
+import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 
 @NgModule({
   declarations: [
@@ -93,7 +100,7 @@ import { ContractNegotiationService } from './services/contract-negotiation.serv
     AGGridRatingChipRenderer,
     fullWidthCellRenderer,
     MatCheckboxHeaderComponent,
-    HeaderBreadcrumbComponent
+    HeaderBreadcrumbComponent,
   ],
   imports: [
     CommonModule,
@@ -103,6 +110,9 @@ import { ContractNegotiationService } from './services/contract-negotiation.serv
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
+    !environment.useAdal
+      ? AuthenticationMsalModule.forFeature()
+      : AuthenticationAdalModule.forFeature(),
     UIModule,
     FilterPresetsModule,
     OwlDateTimeModule,
@@ -124,8 +134,13 @@ import { ContractNegotiationService } from './services/contract-negotiation.serv
     fullWidthCellRenderer
   ],
   providers: [
-    ContractNegotiationModuleResolver,
-    ContractNegotiationService
+    ModuleLoggerFactory,
+    {
+      provide: CONTRACT_NEGOTIATION_API_SERVICE,
+      useClass: environment.production ? ContractNegotiationApi : ContractNegotiationApi
+    },
+    ContractNegotiationService,
+    ContractNegotiationModuleResolver
   ]
 })
 export class ContractNegotiationModule { }

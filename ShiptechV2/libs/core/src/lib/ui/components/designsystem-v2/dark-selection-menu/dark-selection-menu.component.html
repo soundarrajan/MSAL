@@ -1,41 +1,36 @@
-<div class="shiptech-select-product-container">
+<div [ngClass]="{
+    'expand-select-location-container': expandLocation
+  }">
     <div class="col-md-12 header-container-product pd-0">
-        <div class="search-product-container col-md-12 pd-0">
-            <span class="search-product-lookup">
-            </span>
-            <input matInput placeholder="Search all and select a product" class="search-product-input" (click)="
-                                $event.stopPropagation();
-                                $event.preventDefault();" (input)="search('location',$event.target.value)">
+        <div class="search-product-container col-md-10 pd-0">
+            <span id="PDDD41" class="search-product-lookup"></span>
+            <input id="PDDD40" matInput placeholder="Search all and select a product" class="search-product-input"
+            (click)="$event.stopPropagation(); $event.preventDefault();" (input)="search($event.target.value)">
+        </div>
+
+        <div id="PDDD42" class="col-md-2">
+            <img alt="Shiptech"
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
         </div>
     </div>
-    <table class="delivery-products-pop-up shiptech-delivery-popup col-md-12 no-padding" mat-table
-        [dataSource]="dataSources">
+    <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
+        mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="{{column}}" *ngFor = "let column of columnKeys; let i = index">
+                <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
+                {{columnSource[i].dispName}}
+                </th>
+                <td mat-cell *matCellDef="let element;" (click)="onItemSelectionChange(element)" >
+                    <mat-option [value]="element.id"  class="no-padding"
+                    style="padding-left:0px; text-align: unset !important;">
+                    <mat-radio-button [checked]="isChecked(element.id)" *ngIf="i === 0" id="PDDD43" class="location-container-radio-button"
+                        [value]="element">
+                    </mat-radio-button>
+                    {{ element[column] }}
+                    </mat-option>
+                </td>
+            </ng-container>
 
-        <ng-container matColumnDef="product">
-            <th mat-header-cell *matHeaderCellDef> Products </th>
-            <td mat-cell *matCellDef="let element">
-                <mat-option [value]="element.product" style="padding-left:0">
-                    <mat-radio-group [(ngModel)]="selectedProduct">
-                        <mat-radio-button [id]="element.product" [value]="element.product"
-                            [checked]="element.product==selectedProduct" (change)="onChangeProduct(element.product)">
-                            {{element.product}}
-                        </mat-radio-button>
-                    </mat-radio-group>
-                </mat-option>
-            </td>
-        </ng-container>
-
-
-        <ng-container matColumnDef="delNo">
-            <th mat-header-cell *matHeaderCellDef> Delivery No </th>
-            <td mat-cell *matCellDef="let element">
-                <mat-option>
-                    {{element.delNo}}
-                </mat-option>
-            </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="columnKeys"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnKeys"></tr>
     </table>
 </div>
