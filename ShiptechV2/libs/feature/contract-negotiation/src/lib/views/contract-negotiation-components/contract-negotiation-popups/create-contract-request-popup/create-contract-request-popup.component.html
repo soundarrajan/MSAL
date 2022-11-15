@@ -294,7 +294,7 @@
         <p *ngIf="errors.mainLocation?.duplicate">Location already selected</p>
       </div>
       <div>
-      <div class="main-product-section" *ngIf="mainLocations.length > 0">
+      <div class="main-product-section" [hidden]="mainLocations == 0">
         <ng-container *ngFor="let prod of reqObj.contractRequestProducts; let i = index;">
           <!--div *ngIf="reqObj.contractRequestProducts[i].locationId === selectedLocationId"-->
           <div>
