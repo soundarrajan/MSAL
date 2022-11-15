@@ -420,7 +420,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
       }
     })
-    this.addNewMainProduct(1);
+    this.addNewMainProduct(0);
   }
 
   originalOrder = (
