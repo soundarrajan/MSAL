@@ -5,6 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateContractRequestPopupComponent } from '../contract-negotiation-popups/create-contract-request-popup/create-contract-request-popup.component';
 import { ContractNegotiationDetailsComponent } from '../contract-negotiation-details/contract-negotiation-details.component';
 import { OfferChatComponent } from '../offer-chat/offer-chat.component';
+import { Select, Store } from '@ngxs/store';
+import { isNumeric } from 'rxjs/internal-compatibility';
+import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
+import { ActivatedRoute } from '@angular/router';
+import { ContractRequest } from '../../../store/actions/ag-grid-row.action';
 @Component({
   selector: 'app-contract-negotiation-header',
   templateUrl: './contract-negotiation-header.component.html',
@@ -18,8 +23,9 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   @ViewChild(ContractNegotiationDetailsComponent) child: ContractNegotiationDetailsComponent;
   @ViewChild(OfferChatComponent) childChat: OfferChatComponent;
   @ViewChild('ports') ports: ElementRef;
-  allRequestDetails = [];
+  allRequestDetails = {};
   allRequestComments = [];
+  contractReq;
   requestOptions = [
     {
       request: '10001', requestId: '10001'
@@ -46,14 +52,106 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   expandedSearch: boolean = false;
   lightChatIcon:boolean = true;
   searchText: string = "";
+  masterData: any;
+  contractArray = { locations : []};
 
-  constructor(private localService: LocalService, public dialog: MatDialog) { }
+  constructor(
+    private localService: LocalService,
+    public dialog: MatDialog,
+    public store : Store,
+    private contractService: ContractNegotiationService,
+    private route: ActivatedRoute,
+    ) { }
 
   ngOnInit(): void {
-    // debugger;
-    // let id = this.localService.contractRequestDetails;
-    this.getJSONData();
+    let id = this.localService.contractRequestDetails;
+
+    const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
+    if(contractRequestIdFromUrl && isNumeric(contractRequestIdFromUrl)){
+      this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
+      .subscribe(response => {
+        this.localService.contractRequestDetails = response;
+        this.localService.getMasterData().subscribe(res => {
+        this.masterData = res;
+        this.contractRequestData(response);
+       });       
+      });
+    }
+    
+    //this.getJSONData();
   }
+
+  contractRequestData(response){
+    let arrDet = {};
+    let data = [];
+    let arrMainDet = {};
+        Object.entries(response['contractRequestProducts']).forEach(([key, res1]) => {
+          this.contractArray['request-id'] = '001';
+          Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
+           let counterparty = this.masterData['counterparty'].find(el => el.id == res2['counterpartyId']);
+           let product = this.masterData['product'].find(el => el.id == res2['productId']);
+            arrDet = {
+              "check": false,
+              "id": res2['id'],
+              "LocationId": '',
+              "ProductId": res2['productId'],
+              "ProductName": product?.displayName,
+              "requestLocationId": '',
+              "requestProductId": '',
+              "RequestLocationSellerId": '',
+              "CounterpartyName": counterparty.name,
+              "CounterpartyId": res2['counterpartyId'],
+              "IsTemporarlySuspended": '',
+              "GenRating": '2.1',
+              "PortRating": '3',
+              "QuotedProductId": '',
+              "SpecGroupId": '',
+              "SpecGroupName": "",
+              "MinQuantity": res2['minQuantity'],
+              "MaxQuantity": res2['maxQuantity'],
+              "UomId": '',
+              "OfferPrice": res2['offerPrice'],
+              "PriceCurrencyId": '',
+              "PriceCurrencyName": "",
+              "ValidityDate": "",
+              "Status": "OfferCreated",
+              "M1": '',
+              "M2": '',
+              "M3": '',
+              "M4": '',
+              "M5": '',
+              "M6": '',
+              "Q1": '',
+              "Q2": '',
+              "Q3": '',
+              "Q4": '',
+              "fdProduct": "",
+              "fdTotalContractAmt": "",
+              "fdFomulaDesc": "",
+              "fdSchedule": "",
+              "fdPremium": "",
+              "fdAddCosts": "",
+              "fdRemarks": ""
+            }
+            data.push(arrDet);
+            arrDet = {};
+          });
+          arrMainDet = {
+            'data' : data,
+            "location-name": "ROTTERDAM",
+            "location-id": res1['locationId'],
+            "port-id": "1",
+            "period": "M",
+            "productId" : res1['productId'],
+            "minQuantity" : res1['minQuantity'],
+            "maxQuantity" : res1['maxQuantity']
+          }
+          this.contractArray['locations'].push(arrMainDet);
+          arrMainDet = {}; data = [];
+        });        
+        this.allRequestDetails[0] = this.contractArray;
+        this.store.dispatch(new ContractRequest([this.contractArray]));
+    }
 
   setFocus() {
     this._el2.nativeElement.focus();
@@ -112,38 +210,40 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     this.child.onSearchCounterparty(e);
   }
 
-  private getJSONData() {
-    this.allRequestDetails = [];
-    var allRequestDetailsObservable = [];
-    var allRequestCommentsObservable = [];
-    var allRequestLocationObservable = [];
-    this.requestOptions.forEach(r => {
-      allRequestDetailsObservable.push(this.localService.getContractRequestData(r.requestId));
-      allRequestCommentsObservable.push(this.localService.getContractNegoChatData(r.requestId));
-    });
-    forkJoin(allRequestDetailsObservable).subscribe(res => {
-      this.allRequestDetails = res;
-      this.allRequestDetails.forEach(req => req.locations.forEach(loc => {
-        allRequestLocationObservable.push(this.localService.getContractNegoJSON(req['request-id'], loc['location-id']));
-        this.localService.getContractNegoJSON(req['request-id'], loc['location-id']).subscribe(data => {
-          loc['data'] = data;
-        });
+  // ************************** Need to remove code after testing ***************** start
+  // private getJSONData() {
+  //   debugger;
+  //   let allRequestDetails = [];
+  //   var allRequestDetailsObservable = [];
+  //   var allRequestCommentsObservable = [];
+  //   var allRequestLocationObservable = [];
+  //   this.requestOptions.forEach(r => {
+  //     allRequestDetailsObservable.push(this.localService.getContractRequestData(r.requestId));
+  //     allRequestCommentsObservable.push(this.localService.getContractNegoChatData(r.requestId));
+  //   });
 
-
-      }
-
-      ))
-    })
-    forkJoin(allRequestCommentsObservable).subscribe(res => {
-      this.allRequestComments = res;
-      if(this.allRequestComments[0].length > 0){
-        this.lightChatIcon = false;
-      }else{
-        this.lightChatIcon = true;
-      }
-    })
-
-
-  }
+  //   forkJoin(allRequestDetailsObservable).subscribe(res => {
+  //     debugger;
+  //     console.log(res);
+  //     this.allRequestDetails = res;
+  //     allRequestDetails.forEach(req => req.locations.forEach(loc => {
+  //       allRequestLocationObservable.push(this.localService.getContractNegoJSON(req['request-id'], loc['location-id']));
+  //       this.localService.getContractNegoJSON(req['request-id'], loc['location-id']).subscribe(data => {
+  //         loc['data'] = data;
+  //       });
+  //     }
+  //     ));
+  //   })
+    
+    // forkJoin(allRequestCommentsObservable).subscribe(res => {
+    //   this.allRequestComments = res;
+    //   if(this.allRequestComments[0].length > 0){
+    //     this.lightChatIcon = false;
+    //   }else{
+    //     this.lightChatIcon = true;
+    //   }
+    // })
+  //}
+  // ************************** Need to remove code after testing ***************** end
 
 }

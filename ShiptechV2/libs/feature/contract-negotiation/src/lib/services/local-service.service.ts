@@ -4,6 +4,7 @@ import { BehaviorSubject, forkJoin, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { VesselDataModel, FuelDetails, VesselLocation, RequestDetail } from '../core/models/vessel.data.model';
 import { Router } from '@angular/router';
+import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 
 @Injectable({
     providedIn: 'root'
@@ -580,5 +581,37 @@ export class LocalService {
 
     updateRowSelected(c) {
         this.rowSelected.next(c);
+    }
+
+    @ObservableException()
+    getMasterData(): Observable<any> {
+    let db;
+    let dbReq = indexedDB.open('Shiptech-UI.Lookups', 10);
+    return new Observable((observer) => {
+            dbReq.onsuccess = function() {
+                db = dbReq.result;
+                let response = [];
+                var objectStore;
+                var objectStoreRequest;
+                var transaction = db.transaction(['counterparty','product'], 'readonly');
+                objectStore = transaction.objectStore("counterparty");
+                objectStoreRequest = objectStore.getAll();
+                objectStoreRequest.onsuccess = function(event){
+                   response['counterparty'] = event.target.result;
+                }
+                objectStore = transaction.objectStore("product");
+                objectStoreRequest = objectStore.getAll();
+                objectStoreRequest.onsuccess = function(event){
+                   response['product'] = event.target.result;
+                   if (response) {
+                    observer.next(response);
+                    observer.complete();
+                }
+                }               
+            }
+            dbReq.onerror = function(event) {
+              alert('error opening database ' + event.target);
+            }
+        })
     }
 }

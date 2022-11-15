@@ -30,6 +30,7 @@ import { reducers, metaReducers } from './reducers';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SpotNegotiationStore } from '../../../../libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
+import { ContractNegotiationStoreModel } from '../../../../libs/feature/contract-negotiation/src/lib/store/contract-negotiation.store';
 import { LicenseManager } from 'ag-grid-enterprise';
 LicenseManager.setLicenseKey('INATECH_EUROPE_LIMITED__MultiApp_1Devs1_SaaS_14_November_2022__MTY3MTUzMDkzODQxNQ==d429630a4af81735003a345c0cd1c941');
 
@@ -145,7 +146,7 @@ export function MSALInterceptConfigFactory() {
     LoggingModule.forRoot({ developmentMode: !environment.production }),
     BreadcrumbsModule,
     TitleModule,
-    NgxsModule.forRoot([SpotNegotiationStore], {
+    NgxsModule.forRoot([SpotNegotiationStore,ContractNegotiationStoreModel], {
       developmentMode: !environment.production,
       selectorOptions: { injectContainerState: false, suppressErrors: false }
     }),

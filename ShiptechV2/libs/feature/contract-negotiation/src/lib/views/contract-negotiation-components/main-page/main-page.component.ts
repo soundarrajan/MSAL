@@ -33,13 +33,13 @@ export class MainPageComponent implements OnInit {
   constructor(private _location: Location, private toaster: ToastrService, public dialog: MatDialog, private localService: LocalService, private route: ActivatedRoute, private contractService: ContractNegotiationService) { }
 
   ngOnInit(): void {
-    const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
-    if(contractRequestIdFromUrl && isNumeric(contractRequestIdFromUrl)){
-      this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
-      .subscribe(response => {
-        this.localService.contractRequestDetails = response;
-      });
-    }
+    //const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
+    // if(contractRequestIdFromUrl && isNumeric(contractRequestIdFromUrl)){
+    //   this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
+    //   .subscribe(response => {
+    //     this.localService.contractRequestDetails = response;
+    //   });
+    // }
     this.navigationItems = [
       {
         id: 'request',

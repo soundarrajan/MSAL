@@ -1,5 +1,6 @@
 <div class="contract-nego-content">
     <div class="grid-in-accordion">
+        <!-- <span>{{ requests | json }}</span> -->
         <div id=port{{i+1}} #port{{i+1}} class="panel-container"
             *ngFor="let loc of requests[selectedRequestIndex]?.locations;let i = index">
             <mat-expansion-panel [expanded]="i==portIndex?true:false">
@@ -11,7 +12,7 @@
                                 <div class="panel-title">
                                     <div>Location:</div>
                                     <div class="title" [matTooltip]="loc['location-name']"
-                                        matTooltipClass="lightTooltip">{{loc['location-name']}}</div>
+                                        matTooltipClass="lightTooltip">{{loc['location-id']}}</div>
                                 </div>
                                 <div class="counter-title">
                                     <div class="plus-icon" [matMenuTriggerFor]="clickmenu"
@@ -106,15 +107,15 @@
                                 <div class="product">
                                     <div class="title">M. Prdt:</div>
                                     <div class="w-65">
-                                        <div class="product-name" matTooltip="RMK 500" matTooltipClass="lightTooltip">
-                                            RMK 500</div>
+                                        <div class="product-name" matTooltip="{{ loc['productId']}}" matTooltipClass="lightTooltip">
+                                            {{ loc['productId']}}</div>
                                     </div>
                                 </div>
                                 <div class="b-r"></div>
                                 <div class="qty">
                                     <div class="title">Qty:</div>
-                                    <div class="qty-value" matTooltip="1000MT Min-1000MT Max"
-                                        matTooltipClass="lightTooltip">1000MT Min-1000MT Max </div>
+                                    <div class="qty-value" matTooltip="{{ loc['minQuantity'] }}MT Min-{{loc['maxQuantity']}}MT Max"
+                                        matTooltipClass="lightTooltip">{{ loc['minQuantity'] }}MT Min-{{loc['maxQuantity']}}MT Max </div>
                                 </div>
                                 <div class="b-r"></div>
                                 <div class="qty-tooltip">
@@ -173,8 +174,11 @@
                                             <!-- AG-GRID component -->
                                             <app-contract-nego-grid style="width: 100%;height: 100%;"
                                                 [contractData]="loc.data" 
-                                                [locationId]="loc['location-id']" [rfqSent]="rfqSent"
-                                                [noQuote]="noQuote" [periodicity]="per.value"
+                                                [locationId]="loc['location-id']"
+                                                [productId]="loc['productId']"
+                                                [rfqSent]="rfqSent"
+                                                [noQuote]="noQuote"
+                                                [periodicity]="per.value"
                                                 (sendNodeData)="getNodeData($event)"
                                                 (pinnedColumnsWidth)="getPinnedColumnWidth($event)">
                                             </app-contract-nego-grid>

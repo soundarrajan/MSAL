@@ -25,7 +25,7 @@ import { cloneDeep } from 'lodash';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
-import { EditLocationRow } from '../store/actions/ag-grid-row.action';
+//import { EditLocationRow } from '../store/actions/ag-grid-row.action';
 import { ContractNegotiationApi } from './api/contract-negotiation-api';
 
 
@@ -893,7 +893,7 @@ export class ContractNegotiationService extends BaseStoreService
       updateArr = {};
     });
     serverPayLoad = { "requestOfferEnergys": updatePayload }
-    this.store.dispatch(new EditLocationRow(storePayload));
+    //this.store.dispatch(new EditLocationRow(storePayload));
     this.updateEnegryPrices(serverPayLoad).subscribe();
   }
 
