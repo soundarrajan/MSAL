@@ -7,6 +7,7 @@ import { LayoutMainModule } from '@shiptech/core/ui/layout/main/layout-main.modu
 import { LayoutMainComponent } from '@shiptech/core/ui/layout/main/layout-main.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AutosizeDirective } from '@shiptech/core/ui/directives/autosize.directive';
+import { TwoDigitDecimaNumberDirective } from '@shiptech/core/ui/directives/two-digit-decimal-number.directive';
 
 @NgModule({
   imports: [
@@ -17,12 +18,14 @@ import { AutosizeDirective } from '@shiptech/core/ui/directives/autosize.directi
   declarations: [
     CopyToClipboardDirective,
     AgGridExternalSearchDirective,
-    AutosizeDirective
+    AutosizeDirective,
+    TwoDigitDecimaNumberDirective
   ],
   exports: [
     CopyToClipboardDirective,
     AgGridExternalSearchDirective,
     AutosizeDirective,
+    TwoDigitDecimaNumberDirective,
     LayoutMainComponent,
     FlexLayoutModule
   ]
