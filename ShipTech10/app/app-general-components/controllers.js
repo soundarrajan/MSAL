@@ -4513,7 +4513,12 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         };
         $rootScope.$on("formValues", function(event, data) {
             $scope.formValues = data;
-
+            if (vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
+                $.each($scope.formValues.periods, function(key, periods) {
+                    $scope.formValues.periods[key].validFrom =  periods.period.fromDate;
+                    $scope.formValues.periods[key].validTo =  periods.period.toDate;                
+                });
+            }
             // restructuring the period fromDate and toDate in formValue array Based on new-date-control.html
             // because  API array is not matched the common data binding logic
             $scope.formValues['fromDate'] = data.period.fromDate;
