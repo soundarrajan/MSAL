@@ -1825,6 +1825,11 @@
     .mat-tab-body-content{
       overflow: auto !important;
     }
+    .ui-breadcrumb ul li{
+      .ui-menuitem-link:focus{
+       background-color: #364150 !important;
+      }
+    }
     .grid-in-accordion {
       margin-bottom: 5px;
       .mat-expansion-panel {
