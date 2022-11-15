@@ -8156,6 +8156,18 @@
             if (vm.screen_id == 'additionalcost') {
                 $scope.triggerChangeFields('CostType', 'costType');
             }
+            if(vm.screen_id == "price"){              
+                if($scope.formValues.systemInstrument){  
+                        if ($scope.formValues.systemInstrumentPeriods) {
+                                var  systemInstrumentPeriods = $scope.formValues.systemInstrumentPeriods;
+                                obj = [];
+                                $.each(systemInstrumentPeriods, (key, period) => {
+                                    obj.push(period);
+                                });
+                                $scope.options.systemInstrumentPeriod = obj;
+                        }  
+                }                                       
+            }            
             if (vm.screen_id == 'service') {
                 if (!$scope.formValues.dmaUom) {
                     $scope.formValues.dmaUom = $scope.getDefaultUom();
