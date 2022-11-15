@@ -25,6 +25,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         ctrl.fixedCurrency = false;
         ctrl.messageType = null;
         ctrl.tenantSettings = $tenantSettings;
+        ctrl.IFO_QUANTITY_THRESHOLD = 500;
+        ctrl.DIS_QUANTITY_THRESHOLD = 100;
 
         ctrl.listsCache = $listsCache;
 
@@ -623,6 +625,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
         // set all data mappings
         getOrderListForRequest();
         function loadData(data) {
+            // temp_test
             ctrl.data = data.payload;
             ctrl.getOrderinitialSnapshot = angular.copy(ctrl.data);
             //ctrl.PortLocationEditable = false;
@@ -755,6 +758,10 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             }
             if (ctrl.data.barge === null) {
                 ctrl.data.barge = {};
+            }
+            if (ctrl.data.broker?.name !=null && ctrl.relatedOrders.filter(ord=>ord.id==ctrl.data.id).some(se=>se.seller?.customNonMandatoryAttribute1 == null ) ) {
+                                  //if condition checks if the counterparty type found is of null (broker) and if so enters the loop and the line below makes the broker name that is populated in the seller name as null
+                    ctrl.data.seller.name = null;
             }
             for(var i = 0; i < ctrl.data.mailSent.length; i++) {
                 if (ctrl.data.mailSent[i].emailTemplate.name.indexOf('ConfirmationToSeller') != -1) {
@@ -1876,7 +1883,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             ctrl.getAllOrderContractOptions();
             ctrl.setPhysicalSupplier();
         };
-
+    
         ctrl.selectAgent = function(sellerId, type) {
             ctrl.counterpartyType = 'counterparties';
             if (ctrl.data.agentCounterparty.name) {
@@ -1957,7 +1964,7 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 }
             }
         };
-
+        
         ctrl.setPhysicalSupplier = function(product) {
             function setPS() {
                 if (product) {
@@ -2074,8 +2081,8 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 	ctrl.data.products[index].contractProductId = null;
                 	ctrl.data.products[index].contractId = null;
                 	ctrl.data.products[index].formula = null;
-                	ctrl.data.products[index].price = null;
-                    ctrl.data.products[index].originalPrice = null;
+                	// ctrl.data.products[index].price = null;
+                    // ctrl.data.products[index].originalPrice = null;
 					ctrl.data.products[index].agreementType = null;
 					ctrl.data.products[index].physicalSupplier = null;
 					ctrl.data.products[index].pricingType = null;
@@ -2554,13 +2561,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 console.log(product);
                 let convertStringToDecimal = convertDecimalSeparatorStringToNumber(product.confirmedQuantity);
                 if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
-                    if (convertDecimalSeparatorStringToNumber(confirmedQuantityForBqs) > 200) {
+                    if (convertDecimalSeparatorStringToNumber(confirmedQuantityForBqs) > ctrl.IFO_QUANTITY_THRESHOLD) {
                         product.isBqs = true;
                         return;
                           
                     }
                 } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
-                    if (convertDecimalSeparatorStringToNumber(confirmedQuantityForBqs) > 50) {
+                    if (convertDecimalSeparatorStringToNumber(confirmedQuantityForBqs) > ctrl.DIS_QUANTITY_THRESHOLD) {
                         product.isBqs = true;
                         return;
                        
@@ -5111,13 +5118,13 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
                 console.log(product);
                 let convertStringToDecimal = convertDecimalSeparatorStringToNumber(product.confirmedQuantity);
                 if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
-                    if (convertDecimalSeparatorStringToNumber(confirmedQuantityForBqs) > 200) {
+                    if (convertDecimalSeparatorStringToNumber(confirmedQuantityForBqs) > ctrl.IFO_QUANTITY_THRESHOLD) {
                         product.isBqs = true;
                         return;
                           
                     }
                 } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
-                    if (convertDecimalSeparatorStringToNumber(confirmedQuantityForBqs) > 50) {
+                    if (convertDecimalSeparatorStringToNumber(confirmedQuantityForBqs) > ctrl.DIS_QUANTITY_THRESHOLD) {
                         product.isBqs = true;
                         return;
                        
@@ -5136,12 +5143,12 @@ angular.module('shiptech.pages').controller('NewOrderController', [ 'API', '$sco
             if (ctrl.data.is2MDelivery) {
                 let convertStringToDecimal = convertDecimalSeparatorStringToNumber(product.confirmedQuantity);
                 if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSFO' || product.productType.productTypeMOTGroup.name == 'IFO')) {
-                    if (convertDecimalSeparatorStringToNumber(product.confirmedQuantity) > 200 && (product.quantityUom && product.quantityUom.id == 5)) {
+                    if (convertDecimalSeparatorStringToNumber(product.confirmedQuantity) > ctrl.IFO_QUANTITY_THRESHOLD && (product.quantityUom && product.quantityUom.id == 5)) {
                         product.isBqs = true;
                         return;
                     }
                 } else  if (product.productType && product.productType.productTypeMOTGroup && (product.productType.productTypeMOTGroup.name == 'LSDIS' || product.productType.productTypeMOTGroup.name == 'DIS')) {
-                    if (convertDecimalSeparatorStringToNumber(product.confirmedQuantity) > 50 && (product.quantityUom && product.quantityUom.id == 5)) {
+                    if (convertDecimalSeparatorStringToNumber(product.confirmedQuantity) > ctrl.DIS_QUANTITY_THRESHOLD && (product.quantityUom && product.quantityUom.id == 5)) {
                         product.isBqs = true;
                         return;      
                     }

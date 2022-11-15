@@ -1,7 +1,7 @@
 /**
  * Labs Controller
  */
-APP_MASTERS.controller('Controller_Datatables', [
+ APP_MASTERS.controller('Controller_Datatables', [
     '$scope',
     '$rootScope',
     '$Api_Service',
@@ -2970,18 +2970,22 @@ APP_MASTERS.controller('Controller_Datatables', [
                             Name: 'Period',
                             Type: 'lookup',
                             masterSource: 'Period',
-                            clc_id: 'masters_periodlist'
+                            clc_id: 'masters_periodlist',
+                            customChangeAction: 'siPeriodSelection(rowRenderIndex, grid.appScope.fVal().formValues)'
                         }
                     },
                     {
                         name: 'validFrom',
                         displayName: 'Period From',
-                        cellTemplate: $scope.dataTableTemplates.date
+                        cellTemplate: $scope.dataTableTemplates.date,
+                        cellCondition : true,
+                        
                     },
                     {
                         name: 'validTo',
                         displayName: 'Period To',
-                        cellTemplate: $scope.dataTableTemplates.date
+                        cellTemplate: $scope.dataTableTemplates.date,
+                        cellCondition : true,
                     },
                     {
                         name: 'isDeleted',

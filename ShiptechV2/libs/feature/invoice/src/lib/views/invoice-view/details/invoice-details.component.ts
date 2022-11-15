@@ -537,7 +537,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       if (!this.formValues.counterpartyDetails.counterpartyBankAccount) {
         this.formValues.counterpartyDetails.counterpartyBankAccount = <
           IInvoiceDetailsItemBaseInfo
-        >null;
+          >null;
       }
       this.setOrderDetailsLables(this.formValues.orderDetails);
       this.setcounterpartyDetailsLables(this.formValues.counterpartyDetails);
@@ -950,15 +950,15 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       headerTooltip: 'Recon status',
       field: 'recon_status',
       cellRendererFramework: AGGridCellRendererComponent,
-      cellRendererParams: function(params) {
+      cellRendererParams: function (params) {
         const classArray: string[] = [];
         classArray.push('aggridtextalign-center');
         const newClass =
           params.value === 'Unmatched'
             ? 'custom-chip-type1 red-chip'
             : params.value === 'Matched'
-            ? 'custom-chip-type1 mediumgreen'
-            : 'custom-chip-type1';
+              ? 'custom-chip-type1 mediumgreen'
+              : 'custom-chip-type1';
         classArray.push(newClass);
         return { cellClass: classArray.length > 0 ? classArray : null };
       }
@@ -1142,17 +1142,17 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       headerTooltip: 'Invoice status',
       field: 'status',
       cellRendererFramework: AGGridCellRendererComponent,
-      cellRendererParams: function(params) {
+      cellRendererParams: function (params) {
         const classArray: string[] = [];
         classArray.push('aggridtextalign-center');
         const newClass =
           params.value === 'Reverted' || params.value === 'Discrepancy'
             ? 'custom-chip-type1 red-chip'
             : params.value === 'Approved'
-            ? 'custom-chip-type1 mediumgreen'
-            : params.value === 'New'
-            ? 'custom-chip-type1 dark'
-            : 'custom-chip-type1';
+              ? 'custom-chip-type1 mediumgreen'
+              : params.value === 'New'
+                ? 'custom-chip-type1 dark'
+                : 'custom-chip-type1';
         classArray.push(newClass);
         return { cellClass: classArray.length > 0 ? classArray : null };
       }
@@ -1443,6 +1443,16 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
       this.formErrors.orderDetails.paymentCompany.name = errorMessage;
     }
 
+    // Payment proof received
+    if (this.formValues.paymentDetails?.paymentProofReceived &&
+      !this.formValues.paymentDetails?.comments) {
+      error = true;
+      errorMessage += 'Payment proof comments is required. \n';
+      this.formErrors.paymentDetails = {};
+      this.formErrors.paymentDetails.comments = {};
+      this.formErrors.paymentDetails.comments = errorMessage;
+    }
+
     if (useToaster && errorMessage) {
       this.toastrService.error(errorMessage);
     }
@@ -1492,7 +1502,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
   calculateDifference() {
     if (this.formValues.costDetails) {
-      for (let i = 0; i < this.formValues.costDetails.length; i++) {}
+      for (let i = 0; i < this.formValues.costDetails.length; i++) { }
     }
   }
 
@@ -1804,7 +1814,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     }
     this.invoiceService
       .getUomConversionFactor(data)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.toastr.error(result);
@@ -1853,7 +1863,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     }
     this.invoiceService
       .calculateCostRecon(this.cost)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.toastr.error(result);
@@ -1918,7 +1928,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         if (
           product.invoiceQuantityUom == null ||
           product.invoiceRateUom ==
-            null /* || typeof(product.invoiceAmount) == 'undefined'*/
+          null /* || typeof(product.invoiceAmount) == 'undefined'*/
         ) {
           return;
         }
@@ -1989,7 +1999,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
     this.invoiceService
       .getUomConversionFactor(data)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
@@ -2027,7 +2037,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     }
     this.invoiceService
       .calculateProductRecon(product)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.spinner.hide();
@@ -2089,7 +2099,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   setListFromStaticLists(name) {
-    const findList = _.find(this.staticLists, function(object) {
+    const findList = _.find(this.staticLists, function (object: any) {
       return object.name == name;
     });
     if (findList != -1) {
@@ -2208,18 +2218,18 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (ivs) {
       this.chipData[2].Data = !!ivs.invoiceAmountGrandTotal
         ? `${this.amountFormatValue(
-            ivs.invoiceAmountGrandTotal?.toString()
-          )} ${currencyCode}`
+          ivs.invoiceAmountGrandTotal?.toString()
+        )} ${currencyCode}`
         : emptyValue;
       this.chipData[3].Data = !!ivs?.estimatedAmountGrandTotal
         ? `${this.amountFormatValue(
-            ivs?.estimatedAmountGrandTotal.toString()
-          )} ${currencyCode}`
+          ivs?.estimatedAmountGrandTotal.toString()
+        )} ${currencyCode}`
         : emptyValue;
       this.chipData[4].Data = !!ivs?.totalDifference
         ? this.amountFormatValue(ivs?.totalDifference?.toString()) +
-          ' ' +
-          currencyCode
+        ' ' +
+        currencyCode
         : emptyValue;
       this.chipData[5].Data =
         ivs?.provisionalInvoiceNo && ivs?.provisionalInvoiceNo !== null
@@ -2227,18 +2237,18 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           : '';
       this.chipData[6].Data = !!ivs?.provisionalInvoiceAmount
         ? this.amountFormatValue(ivs?.provisionalInvoiceAmount?.toString()) +
-          ' ' +
-          currencyCode
+        ' ' +
+        currencyCode
         : emptyValue;
       this.chipData[7].Data = !!ivs?.deductions
         ? this.amountFormatValue(ivs?.deductions?.toString()) +
-          ' ' +
-          currencyCode
+        ' ' +
+        currencyCode
         : emptyValue;
       this.chipData[8].Data = !!ivs?.netPayable
         ? this.amountFormatValue(ivs?.netPayable?.toString()) +
-          ' ' +
-          currencyCode
+        ' ' +
+        currencyCode
         : emptyValue;
     } else {
       this.formValues.invoiceSummary = <IInvoiceDetailsItemInvoiceSummary>{};
@@ -2277,7 +2287,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (this.formValues.counterpartyDetails.counterpartyBankAccount) {
       if (
         this.formValues.counterpartyDetails.counterpartyBankAccount.id ==
-          undefined ||
+        undefined ||
         this.formValues.counterpartyDetails.counterpartyBankAccount.id == 0
       ) {
         valuesForm.counterpartyDetails.counterpartyBankAccount = null;
@@ -2415,13 +2425,13 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           `${KnownInvoiceRoutes.InvoiceView}`,
           this.entityId
         ])
-        .then(() => {});
+        .then(() => { });
       this.onInvoiceDetailsChanged.emit(true);
       this.changeDetectorRef.detectChanges();
     }
   }
 
-  onModelChanged(evt) {}
+  onModelChanged(evt) { }
 
   AC_valueChanges(type, event) {
     const eventValueObject = {
@@ -2463,6 +2473,11 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (this.formSubmitted) {
       return;
     }
+    if (this.formValues.paymentDetails?.paymentProofReceived &&
+      !this.formValues.paymentDetails?.comments) {
+      this.toastr.error('Payment proof comments is required');
+      return;
+    }
     if (
       !this.formValues.counterpartyDetails.counterpartyBankAccount &&
       this.tenantConfiguration?.invoiceConfiguration?.fieldVisibility
@@ -2478,7 +2493,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     if (
       !this.formValues.counterpartyDetails.counterpartyBankAccount ||
       this.formValues.counterpartyDetails.counterpartyBankAccount.id ==
-        undefined ||
+      undefined ||
       this.formValues.counterpartyDetails.counterpartyBankAccount.id == 0
     ) {
       valuesForm.counterpartyDetails.counterpartyBankAccount = null;
@@ -2657,7 +2672,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
               `${KnownInvoiceRoutes.InvoiceView}`,
               0
             ])
-            .then(() => {});
+            .then(() => { });
           this.changeDetectorRef.detectChanges();
         }
       });
@@ -2687,7 +2702,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         );
         // this.addCustomHeaderEventListener(params);
       },
-      onColumnResized: function(params) {
+      onColumnResized: function (params) {
         if (
           params.columnApi.getAllDisplayedColumns().length <= 9 &&
           params.type === 'columnResized' &&
@@ -2697,7 +2712,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           params.api.sizeColumnsToFit();
         }
       },
-      onColumnVisible: function(params) {
+      onColumnVisible: function (params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 9) {
           params.api.sizeColumnsToFit();
         }
@@ -2732,7 +2747,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
   addnewProduct(event) {
     const itemsToUpdate = [];
-    this.gridOptions_data.api.forEachNodeAfterFilterAndSort(function(
+    this.gridOptions_data.api.forEachNodeAfterFilterAndSort(function (
       rowNode,
       index
     ) {
@@ -2932,7 +2947,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
     return object1 && object2 && object1.id == object2.id;
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   displayFn(value): string {
     return value && value.name ? value.name : '';
@@ -3245,8 +3260,8 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
   }
 
   htmlDecode(str: string): string {
-    const decode = function(str) {
-      return str.replace(/&#(\d+);/g, function(match, dec) {
+    const decode = function (str) {
+      return str.replace(/&#(\d+);/g, function (match, dec) {
         return String.fromCharCode(dec);
       });
     };
@@ -3345,7 +3360,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         }
         this.invoiceService
           .getWorkingDueDate(dueDate)
-          .pipe(finalize(() => {}))
+          .pipe(finalize(() => { }))
           .subscribe((response: any) => {
             // if (typeof response == 'string') {
             //   this.toastr.error(response);
@@ -3400,7 +3415,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
 
         this.invoiceService
           .getDueDateWithoutSave(payload)
-          .pipe(finalize(() => {}))
+          .pipe(finalize(() => { }))
           .subscribe((response: any) => {
             if (typeof response == 'string') {
               this.toastr.error(response);
@@ -3456,7 +3471,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         params.api.sizeColumnsToFit();
       },
 
-      onColumnResized: function(params) {
+      onColumnResized: function (params) {
         if (
           params.columnApi.getAllDisplayedColumns().length <= 8 &&
           params.type === 'columnResized' &&
@@ -3466,7 +3481,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           params.api.sizeColumnsToFit();
         }
       },
-      onColumnVisible: function(params) {
+      onColumnVisible: function (params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 8) {
           params.api.sizeColumnsToFit();
         }
@@ -3555,7 +3570,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
         this.gridOptions_data.api.setRowData(this.rowData_aggrid_ac);
         this.addCustomHeaderEventListener_AC(params);
       },
-      onColumnResized: function(params) {
+      onColumnResized: function (params) {
         if (
           params.columnApi.getAllDisplayedColumns().length <= 9 &&
           params.type === 'columnResized' &&
@@ -3565,7 +3580,7 @@ export class InvoiceDetailComponent extends DeliveryAutocompleteComponent
           params.api.sizeColumnsToFit();
         }
       },
-      onColumnVisible: function(params) {
+      onColumnVisible: function (params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 9) {
           params.api.sizeColumnsToFit();
         }

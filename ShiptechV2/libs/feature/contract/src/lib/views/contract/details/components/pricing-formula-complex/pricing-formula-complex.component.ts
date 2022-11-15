@@ -254,7 +254,7 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
 
     for (let cfql of this.formValues.complexFormulaQuoteLines) {
       for (var i = 0; i < this.NO_OF_SIs; i++) {
-        if(!cfql.systemInstruments[i] ||
+        if (!cfql.systemInstruments[i] ||
           (!cfql.systemInstruments[i].systemInstrument && !cfql.systemInstruments[i].marketPriceTypeId)) {
           cfql.systemInstruments[i] = { id: 0, systemInstrument: null, marketPriceTypeId: null }
         }
@@ -597,7 +597,7 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
   }
 
   setFormulaOperation(value, line) {
-    let findObject = _.find(this.formulaOperationList, function(obj) {
+    let findObject = _.find(this.formulaOperationList, function (obj: any) {
       return obj.id == value;
     });
     if (findObject != -1) {
@@ -675,5 +675,5 @@ export class PricingFormulaComplex extends DeliveryAutocompleteComponent
     }
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 }

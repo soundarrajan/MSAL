@@ -148,7 +148,7 @@
               <div class="label-content">
                 Quantity:
               </div>
-              <div style="display: flex; align-items: center;max-width: 170px;margin-right: 15px;">
+              <div style="display: flex; align-items: center;max-width: 176px;margin-right: 10px;">
                 <div class="select-contract-quantity-container value">
                   <div id="QtyDD27" class="dropdown">
                     <mat-form-field appearance="legacy" class="contract-quantity-select-container">
@@ -168,8 +168,8 @@
                 </div>
               </div>
               <div class="border_line"></div>
-              <div class="col-md-2 p-lr-5">
-                <div class="minInputFocus" style="width:100%;padding: 5px 10px 0;">
+              <div class="col-md-2 p-lr-5" (click)="enableSaveBtn=true;enableRFQBtn=false;">
+                <div class="minInputFocus" style="width:100%;padding: 10px 10px 0;">
                   <span class="label">Min
                     <span style="position: absolute;font-size: 10px;margin-left: 2px;">*</span>
                   </span>
@@ -189,7 +189,7 @@
               </div>
               <div class="border_line"></div>
               <div class="col-md-2 p-lr-5">
-                <div class="maxInputFocus" style="width:100%;padding: 5px 10px 0;">
+                <div class="maxInputFocus" style="width:100%;padding: 10px 10px 0;">
                   <span class="label">Max
                     <span style="position: absolute;font-size: 10px;margin-left: 2px;">*</span>
                   </span>
@@ -209,7 +209,7 @@
               </div>
               <div class="border_line"></div>
               <div class="col-md-2 p-lr-5">
-                <div class="uomInputFocus" style="width:100%;padding: 5px 10px 0;">
+                <div class="uomInputFocus" style="width:100%;padding: 10px 10px 0;">
                   <span class="label">Uom</span>
                   <div id="UOM30" class="value">
                     <div class="custom-form-field custom-field-contract-quantity lightTheme">
@@ -230,7 +230,7 @@
               </div>
               <div class="border_line"></div>
               <div class="col-md-2 p-lr-5">
-                <div class="tolInputFocus" style="width:100%;padding: 5px 10px 0;">
+                <div class="tolInputFocus" style="width:100%;padding: 10px 10px 0;">
                   <span class="label">Tolerance %</span>
                   <div id="TOL31" class="value">
                       <div class="custom-form-field custom-field-contract-quantity lightTheme">
@@ -401,8 +401,8 @@
                       </ng-container>
                     </div>
                   </div>
-                  <div id="custom-form-field" class=" lightTheme" style="margin:0px; padding:0px 15px 15px 0px;">
-                    <div class="split-field" style="width: 178px;height: 38px !important;">
+                  <div id="custom-form-field" class=" lightTheme" style="margin:0px 10px;">
+                    <div class="split-field" style="width: 190px;height: 34px !important;">
                       <mat-form-field id="MIN49" class="without-search long-label-field"
                         style="width: 64%;height: 30px !important;border: none;" placeholder="Minimum Qty"
                         appearance="legacy">
@@ -410,7 +410,7 @@
                         <input matInput class="text-ellipsis" value="100">
                       </mat-form-field>
                       <mat-form-field class="long-label-field"
-                        style="line-height: 22px;width: 36%;height: 38px !important;border-radius: 4px;"
+                        style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
                         appearance="legacy">
                         <mat-select disableRipple [ngModel]="selectedUom" style="background-color: #EBECED !important;">
                           <mat-option *ngFor="let option of uomList" [value]="option">{{option.name}}</mat-option>
@@ -418,8 +418,8 @@
                       </mat-form-field>
                     </div>
                   </div>
-                  <div id="custom-form-field" class=" lightTheme" style="margin:0px; padding:0px 15px 15px 0px;">
-                    <div class="split-field" style="width: 178px;height: 38px !important;">
+                  <div id="custom-form-field" class=" lightTheme" style="margin:0px 10px;">
+                    <div class="split-field" style="width: 190px;height: 34px !important;">
                       <mat-form-field id="MAX50" class="without-search long-label-field"
                         style="width: 64%;height: 30px !important;border: none;" placeholder="Maximum Qty"
                         appearance="legacy">
@@ -427,7 +427,7 @@
                         <input matInput class="text-ellipsis" value="100">
                       </mat-form-field>
                       <mat-form-field class="long-label-field"
-                        style="line-height: 22px;width: 36%;height: 38px !important;border-radius: 4px;"
+                        style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
                         appearance="legacy">
                         <mat-select disableRipple [ngModel]="selectedUom" style="background-color: #EBECED !important;">
                           <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom}}</mat-option>
@@ -435,7 +435,7 @@
                       </mat-form-field>
                     </div>
                   </div>
-                  <div id="custom-form-field" class="lightTheme darkBorder" style="margin: 0px;">
+                  <div id="custom-form-field" class="lightTheme darkBorder" style="width: 198px;">
                     <mat-form-field id="PT51" class="without-search" appearance="legacy">
                       <mat-label>Pricing Type</mat-label>
                       <mat-select required>
@@ -594,7 +594,6 @@
                   </div>
                 </div>
               </div>
-
 
               <div>
                 <div class="sub-title">Allowed Locations</div>

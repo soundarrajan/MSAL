@@ -933,7 +933,7 @@
                     }
                     dateFormat = dateFormat.replace(/d/g, "D").replace(/y/g, "Y");
                     if ((options.colModel.name == "createdOn" || options.colModel.name == "lastModifiedOn") && window.location.href.indexOf('masters/price') != -1) {
-                        var date = Date.parse(cellValue);
+                        var date = Date.parse(cellValue); 
                         date = new Date(cellValue);
                         formattedDate = moment(date).format(dateFormat);
 
@@ -3987,12 +3987,33 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                         $scope.formValues.specGroupParameters[i].specParameter.name =  decodeHtmlEntity(_.unescape($scope.formValues.specGroupParameters[i].specParameter.name));
                     }
                 }
+                if (vm.app_id == 'masters' && vm.screen_id == 'period') {
+                    $scope.formValues.Year = $scope.formValues.year;   
+                    $scope.formValues.FromDate = $scope.formValues.fromDate;
+                    $scope.formValues.ToDate = $scope.formValues.toDate;
+                    $scope.formValues.pType = {id:$scope.formValues.periodType};
+                    if($scope.formValues.periodType == 1){
+                        $scope.formValues.PeriodQuarter = null;
+                        $scope.formValues.PeriodMonth =   {"id":$scope.formValues.month};
+                    }else{
+                        $scope.formValues.PeriodMonth = null;
+                        $scope.formValues.PeriodQuarter =  {"id":$scope.formValues.quarter}; 
+                    } 
+                   var pType =  ($scope.formValues.pType)?{"id":$scope.formValues.pType.id}:"";
+                   
+                    if(pType.id == 1){
+                        $(".edit_form_fields_Month_masters").show();        
+                    }else if(pType.id == 2){
+                        $(".edit_form_fields_Quarter_masters").show();             
+                    }
+                }
             }
         });
 
         setTimeout(function() {
+         
             console.log("$rootScope", $rootScope.formValues);
-            console.log("$scope", $scope.formValues);
+            console.log("$scope", $scope.formValues);           
             if($scope.formValues.orderDetails != undefined && $scope.formValues.orderDetails.orderStatusName != undefined){
                 if($scope.formValues.orderDetails.orderStatusName == 'Cancelled'){
                     $('#ClaimTypeClaimType').attr('disabled', 'disabled');
@@ -4491,13 +4512,13 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             absolute: false
         };
         $rootScope.$on("formValues", function(event, data) {
-
             $scope.formValues = data;
 
-
-
-
-
+            // restructuring the period fromDate and toDate in formValue array Based on new-date-control.html
+            // because  API array is not matched the common data binding logic
+            $scope.formValues['fromDate'] = data.period.fromDate;
+            $scope.formValues['toDate'] = data.period.toDate;
+            
         });
         vm.taxi_start = function() {
             if (vm.taxi.url) {

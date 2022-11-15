@@ -118,6 +118,16 @@
 					            <button class="btn btn-default font-orange pull-right go_report_cashflow" ng-click="go_report_cashflow()">Report</button>
 					            <button class="treasury_generate_report" ng-click="treasury_generate_report()">Generate Report</button>
 					            <button class="btn btn-default  btn-outline pull-right" style="margin:0 15px" ng-click="treasury_clear_report()">Clear</button>
+                                <div>
+                                
+                                <div class="input-group form_input btn-outline pull-right" style="margin:0 1px">
+
+                                    <input ng-model="formValues.OrderAfter" name="OrderAfter" id="OrderAfter" new-date-picker picker-type="date" class="form-control date-mask new-date-picker">
+                                 </div>
+                              <label class="control-label btn-outline pull-right" style="margin:6px">
+                                     {{ CM.app_id + '.ORDERS_AFTER' | translate }}
+                              </label>
+                              </div>
                             </div>
                             <div class="portlet-body  main-portlet_content">
                                 <div class="row">

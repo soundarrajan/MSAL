@@ -1014,9 +1014,8 @@
                                                             <span class="input-group-addon {{(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) ? 'disabled' : ''}}" ng-click="triggerModal('general', 'masters_productlist', '' , '$ctrl.location[' + locationIdx + '].products[' +  productIdx + ']','','', $ctrl.productInfoColumns.Product.name ); $ctrl.requestProductDataOnChange = {'product':product.uniqueIdUI, 'location': locationIdx}" ng-disabled="(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) || $ctrl.disableAllFields" ng-mouseover="$ctrl.actveProductUniqueIdUi = product.uniqueIdUI">
                                                                 <i class="fa fa-search"></i>                                                          
                                                             </span>
-                                                           
-                                                            <span class="input-group-addon {{(['Inquired', 'Quoted', 'Stemmed', 'Amended', 'Cancelled'].indexOf(product.productStatus.name) != -1) ? 'disabled' : ''}}" ng-hide="$ctrl.requestTenantSettings.isRequestMinimumQuantityToReachHidden">
-                                                                <i class="fa fa-pencil-square-o"  ng-click="openMinQtyToReach(productIdx, $ctrl.request.locations[locationIdx],locationIdx)"></i> 
+                                                            <span ng-style="($ctrl.isMTRRequired && !$ctrl.isRequiredMTRValid($ctrl.request.locations[locationIdx].products[productIdx].minimumQuantitiesToReach)) ? {border: '1px solid #e73d4a'} : ''"  class="input-group-addon" ng-hide="$ctrl.requestTenantSettings.isRequestMinimumQuantityToReachHidden"> 
+                                                                 <i style="text-decoration: underline;font-weight: 700;"  ng-click="openMinQtyToReach(productIdx, $ctrl.request.locations[locationIdx],locationIdx)">MTR</i>
                                                             </span>
                                                         </div>
                                                     </td>

@@ -61,40 +61,53 @@
                                     <span class="">Negotiation <b>Closed</b> on <b>12/06/2022</b></span>
                                 </div>
                                 <mat-menu #clickmenupopup="matMenu" class="menu-panel-eta small-menu darkPanel">
-                                    <div class="p-tb-5" style="display:flex;align-items:center;">
+                                    <div class="p-t-0 p-tb-7" style="display:flex;align-items:center;">
                                         <span>
                                             <div class="contract-resend-icon"></div>
                                         </span>
-                                        <span class="fs-12">Update RFQ</span>
+                                        <span class="fs-13">Update RFQ</span>
                                     </div>
-                                    <div class="p-tb-5" style="display:flex;align-items:center;">
+                                    <div class="p-tb-7" style="display:flex;align-items:center;">
                                         <span>
                                             <div class="contract-requote-icon"></div>
                                         </span>
-                                        <span class="fs-12">Requote</span>
+                                        <span class="fs-13">Requote</span>
                                     </div>
                                     <hr class="menu-divider-line">
-                                    <div class="p-tb-5" (click)="duplicateRequest()"
-                                        style="display:flex;align-items:center;">
-                                        <span>
-                                            <div class="duplicate-nego-icon"></div>
-                                        </span>
-                                        <span class="fs-12">Duplicate Request</span>
+                                    <div class="p-tb-7" (click)="duplicateRequest()"
+                                            style="display:flex;align-items:center;">
+                                            <span>
+                                                <div class="duplicate-nego-icon"></div>
+                                            </span>
+                                            <span class="fs-13">Duplicate Request</span>
                                     </div>
                                     <hr class="menu-divider-line">
-                                    <div class="p-tb-5"
-                                        style="display:flex;align-items:center;">
+                                    <div class="p-tb-7" style="display:flex;align-items:center;">
                                         <span>
                                             <div class="add-nego-icon"></div>
                                         </span>
-                                        <span class="fs-12">Add to another Nego</span>
+                                        <span class="fs-13">Add to another Nego</span>
                                     </div>
-                                    <div class="p-tb-5" (click)="closeNegotiation()"
+                                    <div class="p-tb-7" (click)="closeNegotiation()"
+                                            style="display:flex;align-items:center;padding-left: 2px;">
+                                            <span>
+                                                <div class="close-nego-icon"></div>
+                                            </span>
+                                            <span class="fs-13">Close Negotiation</span>
+                                    </div>
+                                    <hr class="menu-divider-line">
+                                    <div class="p-tb-7" style="display:flex;align-items:center;">
+                                            <span>
+                                                <div class="approve-nego-icon"></div>
+                                            </span>
+                                            <span class="fs-13">Approve Offer</span>
+                                    </div>
+                                    <div class="p-b-0 p-tb-7"
                                         style="display:flex;align-items:center;padding-left: 2px;">
                                         <span>
-                                            <div class="close-nego-icon"></div>
+                                            <div class="reject-nego-icon"></div>
                                         </span>
-                                        <span class="fs-12">Close Negotiation</span>
+                                        <span class="fs-13">Reject Offer</span>
                                     </div>
                                 </mat-menu>
                             </div>

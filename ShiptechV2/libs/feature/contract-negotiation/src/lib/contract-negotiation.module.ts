@@ -61,7 +61,6 @@ import { DocDragDropUploadComponent } from './views/contract-negotiation-compone
 import { HeaderBreadcrumbComponent } from './views/contract-negotiation-components/header-breadcrumb/header-breadcrumb.component';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 
-
 @NgModule({
   declarations: [
     MainContractNegotiationComponent,
@@ -123,7 +122,7 @@ import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
     DSV2ComponentsModule,
     BreadcrumbsModule
   ],
-  entryComponents:[
+  entryComponents: [
     AGGridCellClickRendererComponent,
     AGGridCellLinkRenderer,
     AGGridCellMenuRenderer,

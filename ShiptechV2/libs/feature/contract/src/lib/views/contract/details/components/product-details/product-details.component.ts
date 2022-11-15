@@ -766,7 +766,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.isMenuOpen = true;
   }
 
-  onClickedOutside(event) {}
+  onClickedOutside(event) { }
 
   addProductToContract() {
     let emptyProductObj = {
@@ -822,7 +822,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         let allowedLocation = contractProduct.allowedLocations[i];
         let findIndexOfLocationInLocationList = _.findIndex(
           this.selectedLocationList,
-          function(obj) {
+          function (obj) {
             return (
               obj.id == allowedLocation.id && obj.name == allowedLocation.name
             );
@@ -866,7 +866,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         let allowedProduct = contractProduct.allowedProducts[i];
         let findIndexOfProductInProductList = _.findIndex(
           this.selectedProductList,
-          function(obj) {
+          function (obj) {
             return (
               obj.id == allowedProduct.id && obj.name == allowedProduct.name
             );
@@ -913,7 +913,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       };
       let findProductIfExistsInPreviousAllowedProducts = _.find(
         previousAllowedProducts,
-        function(obj) {
+        function (obj: any) {
           return obj.id == allowedProduct.id && obj.name == allowedProduct.name;
         }
       );
@@ -928,7 +928,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       let previousAllowedProduct = { ...previousAllowedProducts[i] };
       let findProductIfExistsInAllowedProducts = _.find(
         this.formValues.products[selectedTabIndex].allowedProducts,
-        function(obj) {
+        function (obj: any) {
           return (
             obj.id == previousAllowedProduct.id &&
             obj.name == previousAllowedProduct.name
@@ -980,11 +980,11 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       const filterValue = this.formValues.products[this.selectedTabIndex]
         .physicalSupplier.name
         ? this.formValues.products[
-            this.selectedTabIndex
-          ].physicalSupplier.name.toLowerCase()
+          this.selectedTabIndex
+        ].physicalSupplier.name.toLowerCase()
         : this.formValues.products[
-            this.selectedTabIndex
-          ].physicalSupplier.toLowerCase();
+          this.selectedTabIndex
+        ].physicalSupplier.toLowerCase();
       if (this.physicalSupplierList) {
         return this.physicalSupplierList
           .filter(option =>
@@ -1034,18 +1034,18 @@ export class ProductDetails extends DeliveryAutocompleteComponent
 
     this.contractService
       .getSpecGroupsGetByProduct(data)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
           if (response) {
-            response = _.filter(response, function(o) {
+            response = _.filter(response, function (o: any) {
               return o.isDeleted == false;
             });
             if (additionalSpecGroup) {
               var additionalSpecIsInArray = false;
-              response.forEach(function(v, k) {
+              response.forEach(function (v, k) {
                 if (v.id == additionalSpecGroup.id) {
                   additionalSpecIsInArray = true;
                 }
@@ -1125,15 +1125,15 @@ export class ProductDetails extends DeliveryAutocompleteComponent
               }
             });
 
-            dialogRef.afterClosed().subscribe(result => {});
+            dialogRef.afterClosed().subscribe(result => { });
           }
         }
       });
   }
 
   decodeSpecificField(modelValue) {
-    let decode = function(str) {
-      return str.replace(/&#(\d+);/g, function(match, dec) {
+    let decode = function (str) {
+      return str.replace(/&#(\d+);/g, function (match, dec) {
         return String.fromCharCode(dec);
       });
     };
@@ -1438,5 +1438,5 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     return 0;
   };
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 }

@@ -269,7 +269,7 @@ angular.module('shiptech.components').controller('FiltersController', [
                     });
                 });
             }
-            console.log('vinoth: ', data);
+           
             if (isInvalidValue) {
                 toastr.error('Please enter a value');
             	return false;
@@ -407,6 +407,10 @@ angular.module('shiptech.components').controller('FiltersController', [
                             $rootScope.$broadcast('filters-applied', $scope.packedFilters, false, $rootScope.productTypeView);
                         }
                     }
+                }
+              
+                if($scope.currentList == "edit-order/procurement_productcontractlist"){
+                    $rootScope.$broadcast('filters-applied', $scope.packedFilters);
                 }
             }
             if (noSlide != true) {

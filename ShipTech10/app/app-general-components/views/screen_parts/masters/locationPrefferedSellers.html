@@ -3,9 +3,10 @@
 		<thead>
 			<tr>
 				<td style="width:5%" class="padding"></td>
-				<td style="width:5%" class="padding"><span class="insert" ng-click="formValues.sellers ? formValues.sellers.push({id:0, locationContacts:[], sellerContacts: []}): formValues.sellers=[{id:0, locationContacts:[], sellerContacts: []}]"></span></td>
+				<td style="width:5%" class="padding"><span class="insert" ng-click="formValues.sellers ? formValues.sellers.push({id:0,preferredProductStatus:{id: 3, name: 'Both'}, locationContacts:[], sellerContacts: []}): formValues.sellers=[{id:0,preferredProductStatus:{id: 3, name: 'Both'}, locationContacts:[], sellerContacts: []}]"></span></td>
 				<td style="width:20%" class="padding"><b>Counterparty</b></td>
 				<td style="width:20%" class="padding"><b>Preferred Products</b></td>
+				<td style="width:20%" class="padding"><b>Applicable For</b></td>
 				<td style="width:20%" class="padding"><b>Status</b></td>
 				<td style="width:20%" class="padding"><b>Preferred Contact Email Address</b></td>
 				<td style="width:30%" class="padding"><b>Comments</b></td>
@@ -14,7 +15,7 @@
 		<tbody>
 			<tr ng-repeat="(key, value) in formValues.sellers track by $index" ng-if="!value.isDeleted">
 				<td style="width:5%"><span class="remove" style="display: block;pointer-events: all; opacity: 1" ng-click="value.id == 0 ? formValues.sellers.splice(key,1) : deleteSeller(key)"></span></td>
-				<td style="width:5%"><span class="insert" ng-click="formValues.sellers.push({id:0, locationContacts:[], sellerContacts: []})"></span></td>
+				<td style="width:5%"><span class="insert" ng-click="formValues.sellers.push({id:0,preferredProductStatus:{id: 3, name: 'Both'}, locationContacts:[], sellerContacts: []})"></span></td>
 				<td style="width:20%">
 					<div class="input-group">
 	                    <input decode-input-format ng-model="value.counterparty" typeahead-on-select="getLocationDetails($index)" ng-change="locationCounterpartyChange($index)" uib-typeahead="item as item.name for item in CM.listsCache.Counterparty | typeaheadCustomFilter:$viewValue:'name'"  class="form-control" typeahead-show-hint="true" typeahead-min-length="1" typeahead-limit="5" typeahead-append-to-body="true" typeahead-wait-ms="100" name="PrefferedSeller_{{ key }}" autocomplete="off" />
@@ -37,6 +38,9 @@
                             {{ product.product.name | decodeReadOnly }}
                         </span>			
 					</div>
+				</td>
+				<td style="width:20%">
+					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.PreferredProductStatuses track by item.id " ng-model="value.preferredProductStatus"></select>
 				</td>
 				<td style="width:20%">
 					<select name="Item Name" class="form-control" ng-options="item as item.name for item in CM.listsCache.CounterpartyStatus track by item.id " ng-model="value.status"></select>

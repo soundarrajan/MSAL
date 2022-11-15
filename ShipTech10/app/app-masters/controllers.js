@@ -41,7 +41,6 @@
         $scope.preferredContacts = [];
         $rootScope.isSaveAction = false;
         $scope.benchMarkErrorLogs = [];
-
         $controller('ScreenLayout_Controller', {
             $scope: $scope
         });
@@ -110,11 +109,25 @@
                 $scope: $scope
             });
         }
-
+   
         if (!vm.overrideInvalidDate) {
             vm.overrideInvalidDate = {};
         }
-
+        if (vm.app_id == 'masters' &&  vm.screen_id == 'period') {
+            var currentYear = new Date().getFullYear() ;         
+             var periodYears = [];
+             periodYears.push({"name":currentYear,"value":currentYear});
+             for(i = 1 ; i <= 6; i++){
+                var nextYear = new Date().getFullYear() + i;
+                periodYears.push({"name":nextYear,"value":nextYear});
+             }
+             vm.options = periodYears; 
+    
+             $(".edit_form_fields_Month_masters").hide();
+             $(".edit_form_fields_Quarter_masters").hide();  
+                 
+        }
+       
         // angular.element(document).ready(function () {
         // 	setTimeout(function(){
         // 		screenLoader.hideLoader();
@@ -138,6 +151,7 @@
             vm.formValues.mcrPart = mcrPart;
             vm.formValues.oneReeferConsumption = oneReeferConsumption;
         }
+        vm.VESSEL_REEFER_UTILIZATION = 30;
 
         $scope.host = $location.$$host;
         $scope.changedFields = 0;
@@ -277,7 +291,7 @@
                 }
             }(navigator.userAgent || navigator.vendor || window.opera));
             return check;
-        }());
+        }());      
         vm.mime_types = {
             'application/postscript': 'ps',
             'audio/x-aiff': 'aiff',
@@ -938,7 +952,18 @@
             if(!$scope.counterPartyListisValid()){
                 return;
             }
-
+            if(vm.app_id == 'masters' && vm.screen_id == 'period') {
+               
+               if ($scope.formValues.Year) { 
+                    $scope.formValues.Year = $scope.formValues.Year;                   
+                }
+                 $scope.formValues.periodType =  ($scope.formValues.pType)?$scope.formValues.pType.id:"";
+                 $scope.formValues.Month =  ($scope.formValues.PeriodMonth)?$scope.formValues.PeriodMonth.id:"";
+                 $scope.formValues.Quarter =  ($scope.formValues.PeriodQuarter)?$scope.formValues.PeriodQuarter.id:"";
+                 $scope.formValues.ToDate = $scope.formValues.ToDate;
+                 $scope.formValues.FromDate = $scope.formValues.FromDate; 
+                      
+            }
             if(vm.app_id == 'masters' && vm.screen_id == 'strategy') {
                 if ($scope.formValues.mtmType.id != 1) {
                     $scope.formValues.mtmFormulaProducts = _.filter($scope.formValues.mtmFormulaProducts, function(object) {
@@ -1072,7 +1097,7 @@
 
             }
 
-            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
+            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {                
                 let periods = [];
                 if($scope.formValues && $scope.formValues.periods) {
                     for (var i = 0; i < $scope.formValues.periods.length; i++) {
@@ -1080,6 +1105,13 @@
                             periods.push($scope.formValues.periods[i]);
                         }
                     }
+                }
+
+                let periodData = $scope.formValues.periods.map(el => el.validFrom+'-'+el.validTo);
+                let findDuplicates = periodData.filter((item, index) => periodData.indexOf(item) != index);
+                if(findDuplicates.length > 0){
+                    toastr.error('P​eriod Overlapped, Please Change the Period');
+                    return;
                 }
                 $scope.formValues.periods = periods;
                 if ($scope.formValues && $scope.formValues.productsLocations) {
@@ -1328,6 +1360,7 @@
                     return;
                     vm.editInstance.$valid = false;
                 }
+                $scope.formValues.reeferUtilization = $scope.formValues.reeferUtilization ?? vm.VESSEL_REEFER_UTILIZATION;
 
                 // disabled on 03.01.2019 - de la Teo
                 // tankErrors = false;
@@ -2095,10 +2128,28 @@
                 let isMin = false;
                 let names = [];
                 $.each(vm.editInstance.$error.required, (key, val) => {
-                    if (names.indexOf(val.$name) == -1) {
-                        message = `${message }<br>${ val.$name ? val.$name : val.$$attr.id}`;
-                        hasMessage = true;
+                  
+                    if (vm.app_id == 'masters' && vm.screen_id == 'period') { 
+                       
+                        if (names.indexOf(val.$name) == -1) {
+                            message = `${message }<br>${ val.$name ? val.$name : val.$$attr.id}`;
+                            hasMessage = true;
+                        }else{                      
+                            hasMessage = true;
+                            if(val.$$attr.id == "PeriodTo"){
+                             message = `${message }<br> ToDate`;
+                            }
+                            if(val.$$attr.id == "PeriodFrom"){
+                                message = `${message }<br> FromDate`;
+                            }
+                        }
+                    }else{
+                        if (names.indexOf(val.$name) == -1) {
+                            message = `${message }<br>${ val.$name ? val.$name : val.$$attr.id}`;
+                            hasMessage = true;
+                        }
                     }
+                   
                     names = names + (val.$name ? val.$name : val.$$attr.id);
                 });
                 i = 0;
@@ -3253,8 +3304,98 @@
         vm.setPageTitle = function(title) {
             $state.params.title = title;
         };
-
+        $scope.triggerKeyupFields  = function(name, id, isManualChange) {
+            if (vm.app_id == 'masters' && vm.screen_id == 'price') {
+                    if(id == "period"){                      
+                        if($scope.formValues.period == null || $scope.formValues.period == undefined || $scope.formValues.period == ''){
+                            $scope.formValues.fromDate = moment('',"YYYY-MM-DD");
+                            $scope.formValues.toDate = moment('',"YYYY-MM-DD");
+                        } 
+                    }
+                    if(id == "systemInstrument"){
+                        if($scope.formValues.systemInstrument == null || $scope.formValues.systemInstrument == undefined || $scope.formValues.systemInstrument == ''){
+                            $scope.formValues.fromDate = moment('',"YYYY-MM-DD");
+                            $scope.formValues.toDate = moment('',"YYYY-MM-DD");
+                        }  
+                    }
+                   
+            }
+        }
         $scope.triggerChangeFields = function(name, id, isManualChange) {
+           
+            if (vm.app_id == 'masters' && vm.screen_id == 'period') {
+             
+                $(".edit_form_fields_Month_masters").hide();
+                $(".edit_form_fields_Quarter_masters").hide();
+                if(id == "pType"){
+                    $scope.formValues.Year = null; 
+                    $scope.formValues.PeriodQuarter = null; 
+                    $scope.formValues.PeriodMonth = null;                
+                    $scope.formValues.ToDate = null;    
+                    $scope.formValues.FromDate = null;
+                    $("#PeriodFrom_dateinput").val("");
+                    $("#PeriodTo_dateinput").val("");                     
+                }                   
+
+                var pType =  ($scope.formValues.pType)?{"id":$scope.formValues.pType.id}:"";               
+                
+                if(pType.id == 1){
+                    $(".edit_form_fields_Month_masters").show();                     
+                }else if(pType.id == 2){
+                    $(".edit_form_fields_Quarter_masters").show();             
+                }               
+
+                if(pType.id){
+                    $scope.formValues.pType = pType;
+                    var periodMonth =  ($scope.formValues.PeriodMonth)?{"id":$scope.formValues.PeriodMonth.id}:null;
+                    var periodQuarter =  ($scope.formValues.PeriodQuarter)?{"id":$scope.formValues.PeriodQuarter.id}:null;
+                    if(periodMonth!= null && pType.id == 1){
+                        $scope.formValues.PeriodMonth = periodMonth;
+                    }
+                    if(periodQuarter!= null && pType.id == 2){
+                        $scope.formValues.PeriodQuarter = periodQuarter;
+                    }
+                    if((pType.id && periodMonth!=null  && $scope.formValues.Year) || (pType.id && periodQuarter!=null  && $scope.formValues.Year)){
+
+                        var year = $scope.formValues.Year;
+                        if(pType.id == 1){
+                            var month = (periodMonth!=null)?periodMonth.id:"";
+                            if(month < 10){
+                                month = "0"+month;
+                            }
+                            var fromDate = $scope.formValues.Year+"-"+month+"-01";
+                            var lastDay = new Date(year, month, 0).getDate();               
+                            var toDate = $scope.formValues.Year+"-"+month+"-"+lastDay;   
+                       }else{
+                             var quarter = (periodQuarter!=null)?periodQuarter.id:"";
+                            if(quarter == 1){
+                                //YYYY-MM-DD
+                                var fromDate = year+"-01-01";
+                                var lastDay = new Date(year, "03", 0).getDate();               
+                                var toDate = year+"-03-"+lastDay; 
+                            }else if(quarter == 2){
+                                var fromDate = year+"-04-01";
+                                var lastDay = new Date(year, "06", 0).getDate();               
+                                var toDate = year+"-06-"+lastDay; 
+                            }else if(quarter == 3){
+                                var fromDate = year+"-07-01";
+                                var lastDay = new Date(year, "09", 0).getDate();               
+                                var toDate = year+"-09-"+lastDay; 
+                            }else if(quarter == 4){
+                                var fromDate = year+"-10-01";
+                                var lastDay = new Date(year, "12", 0).getDate();               
+                                var toDate = year+"-12-"+lastDay; 
+                            }
+    
+                       }           
+                        $scope.formValues.ToDate = moment(toDate,"YYYY-MM-DD").format("YYYY-MM-DD");
+                        $scope.formValues.FromDate = moment(fromDate,"YYYY-MM-DD").format("YYYY-MM-DD");     
+                    }
+                  
+                }
+              
+                
+           }
             if (vm.app_id == 'invoices' && vm.screen_id == 'treasuryreport') {
                 if(!$scope.formValues.OrderAfter){
                     $scope.formValues.OrderAfter = $rootScope.adminConfiguration.invoice.orderAfter;
@@ -3431,10 +3572,12 @@
                 if (name == 'systemInstrument' && vm.screen_id == 'price') {
                     if ($scope.formValues.systemInstrument) {
                         Factory_Master.get_master_entity($scope.formValues.systemInstrument.id, 'systeminstrument', 'masters', (response) => {
-                            if (response) {
+                            if (response) {                             
                                 $scope.formValues.marketInstrumentCode = response.marketInstrument.code;
                                 $scope.formValues.code = response.marketInstrument.code;
-                                $scope.formValues.period = null;
+                                $scope.formValues.period = null;                           
+                                $scope.formValues.fromDate = moment('');
+                                $scope.formValues.toDate = moment('');
                                 obj = [];
                                 $.each(response.periods, (key, value) => {
                                     obj.push(value.period);
@@ -3499,7 +3642,23 @@
                 vm.checkVerifiedDeliveryFromLabs('orderChange');
             }
 
-        };
+            if(name == 'systemInstrumentPeriod' && id == 'period'){
+
+                console.log($scope.formValues);
+                Factory_Master.get_master_entity($scope.formValues.period.id, 'period', 'masters', (response) => {
+                    if (response) {
+                        $scope.formValues.fromDate = response.fromDate;
+                        $scope.formValues.toDate = response.toDate;
+                    }
+                    });
+                }
+
+                if( id == 'periods' && vm.screen_id == 'systeminstrument'){
+                    let formValues = angular.element(`[unique-id="name"]`).scope().formValues;                    
+                    $scope.siPeriodSelection($rootScope.elements[2], formValues);
+                }
+                
+            };
 
         vm.getDataTable = function(id, data, obj, idx, app, screen) {
             $scope.dynamicTable = [];
@@ -5850,9 +6009,33 @@
             // }
             $scope.prettyCloseModal();
             $('*').tooltip('destroy');
+            $rootScope.elements = elements;
             $scope.triggerChangeFields(field_name, elements[1], true);
         };
 
+        $scope.siPeriodSelection = function(index,formValues,fVal){
+           let checkFlag = false;
+           Factory_Master.get_master_entity(formValues.periods[index].period.id, 'period', 'masters', (response) => {
+               if (response) {
+                if(formValues.periods.length > 1){
+                    let arrVal = formValues.periods.map(el => el.validFrom+'-'+el.validTo);
+                    arrVal.find( (el,chkIndex) => {
+                            if(el == response.fromDate+'-'+response.toDate && index != chkIndex){
+                                checkFlag = true;
+                            }
+                        }
+                    );
+                }
+                if(checkFlag) {
+                    toastr.error('P​eriod Overlapped, Please Change the Period');
+                    return;
+                }
+                
+                   formValues.periods[index].validFrom = response.fromDate;
+                   formValues.periods[index].validTo = response.toDate;
+               }
+           });
+        };
 
         $scope.assignObjValue = function(obj, keyPath, value) {
             var lastKeyIndex = keyPath.length - 1;
@@ -7770,7 +7953,7 @@
                 toastr.error('Formula cannot be modifed for a Confirmed / Delivered contract');
             }
         };
-        vm.checkVerifiedDelivery = [ false, false ];
+        vm.checkVerifiedDelivery = [ false, false ];       
         vm.checkVerifiedDeliveryFromLabs = function(orderChange) {
             if (orderChange == 'orderChange' &&  $('#DeliveryDeliveryID') &&  $('#DeliveryDeliveryID').length > 0) {
                 $('#DeliveryDeliveryID')[0].disabled = '';
@@ -7803,7 +7986,7 @@
                     }, 10);
                 }
             }
-        };
+        };      
         $scope.showMultiLookupWarning = function(model) {
             $('#departments').removeClass('invalid');
             setTimeout(() => {
@@ -10752,10 +10935,10 @@
         $scope.addEmptyLocationContact = function(){
             if($scope.formValues.counterpartyLocations){
                 $scope.setNewLocationContacts($scope.formValues.counterpartyLocations.length);
-                $scope.formValues.counterpartyLocations.push({id:0, locationContacts:[]});
+                $scope.formValues.counterpartyLocations.push({id:0,preferredProductStatus:{id: 3, name: 'Both'}, locationContacts:[]});
             } else{
                 $scope.setNewLocationContacts(0);
-                $scope.formValues.counterpartyLocations = [{id:0, locationContacts:[]}];
+                $scope.formValues.counterpartyLocations = [{id:0,preferredProductStatus:{id: 3, name: 'Both'}, locationContacts:[]}];
             }
         }
 

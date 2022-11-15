@@ -928,8 +928,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     if (!value || typeof value == 'undefined') {
       value = '';
     }
-    const filterLocations = _.filter(this.locationMasterList, function(
-      location
+    const filterLocations = _.filter(this.locationMasterList, function (
+      location: any
     ) {
       return location?.name?.toLowerCase().includes(value.toLowerCase());
     });
@@ -943,7 +943,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     if (!value || typeof value == 'undefined') {
       value = '';
     }
-    const filterProducts = _.filter(this.productMasterList, function(product) {
+    const filterProducts = _.filter(this.productMasterList, function (product: any) {
       return product?.name?.toLowerCase().includes(value.toLowerCase());
     });
     this.productMasterSearchListOptions[contractProductIndex] = [
@@ -1004,7 +1004,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       allowedLocations: [],
       priceUom: this.generalTenantSettings.tenantFormats.uom,
       currency: this.generalTenantSettings.tenantFormats.currency
-      ,pricePrecision: this.tenantService.pricePrecision
+      , pricePrecision: this.tenantService.pricePrecision
     };
     if (this.formValues) {
       if (!this.formValues.products) {
@@ -1059,7 +1059,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     };
     this.contractService
       .getContractFormulaList(data)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastr.error(response);
@@ -1118,7 +1118,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         const allowedLocation = contractProduct.allowedLocations[i];
         const findIndexOfLocationInLocationList = _.findIndex(
           this.selectedLocationList,
-          function(obj) {
+          function (obj) {
             return (
               obj.id == allowedLocation.id && obj.name == allowedLocation.name
             );
@@ -1162,7 +1162,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
         const allowedProduct = contractProduct.allowedProducts[i];
         const findIndexOfProductInProductList = _.findIndex(
           this.selectedProductList,
-          function(obj) {
+          function (obj) {
             return (
               obj.id == allowedProduct.id && obj.name == allowedProduct.name
             );
@@ -1209,7 +1209,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       };
       const findProductIfExistsInPreviousAllowedProducts = _.find(
         previousAllowedProducts,
-        function(obj) {
+        function (obj: any) {
           return obj.id == allowedProduct.id && obj.name == allowedProduct.name;
         }
       );
@@ -1224,7 +1224,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       const previousAllowedProduct = { ...previousAllowedProducts[i] };
       const findProductIfExistsInAllowedProducts = _.find(
         this.formValues.products[selectedTabIndex].allowedProducts,
-        function(obj) {
+        function (obj: any) {
           return (
             obj.id == previousAllowedProduct.id &&
             obj.name == previousAllowedProduct.name
@@ -1276,11 +1276,11 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       const filterValue = this.formValues.products[this.selectedTabIndex]
         .physicalSuppliers[0].name
         ? this.formValues.products[
-            this.selectedTabIndex
-          ].physicalSuppliers[0].name.toLowerCase()
+          this.selectedTabIndex
+        ].physicalSuppliers[0].name.toLowerCase()
         : this.formValues.products[
-            this.selectedTabIndex
-          ].physicalSuppliers[0].toLowerCase();
+          this.selectedTabIndex
+        ].physicalSuppliers[0].toLowerCase();
       if (this.physicalSupplierList) {
         return this.physicalSupplierList
           .filter(
@@ -1311,8 +1311,8 @@ export class ContractProduct extends DeliveryAutocompleteComponent
   }
 
   decodeSpecificField(modelValue) {
-    const decode = function(str) {
-      return str.replace(/&#(\d+);/g, function(match, dec) {
+    const decode = function (str) {
+      return str.replace(/&#(\d+);/g, function (match, dec) {
         return String.fromCharCode(dec);
       });
     };
@@ -1354,7 +1354,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
     this.contractService
       .getAdditionalCostsPerPort(payload)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastr.error(response);
@@ -1466,7 +1466,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     let payload = { Payload: productId };
     this.contractService
       .getProductById(payload)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastr.error(response);
@@ -1476,7 +1476,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
           let payload1 = { Payload: {} };
           this.contractService
             .listProductTypeGroupsDefaults(payload1)
-            .pipe(finalize(() => {}))
+            .pipe(finalize(() => { }))
             .subscribe((res: any) => {
               if (typeof res == 'string') {
                 this.toastr.error(res);
@@ -1484,7 +1484,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
               } else {
                 this.spinner.hide();
 
-                let defaultUomAndCompany = _.find(res, function(object) {
+                let defaultUomAndCompany = _.find(res, function (object: any) {
                   return object.id == productTypeGroup.id;
                 });
                 if (defaultUomAndCompany) {
@@ -1527,18 +1527,18 @@ export class ContractProduct extends DeliveryAutocompleteComponent
 
     this.contractService
       .getSpecGroupsGetByProduct(data)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastr.error(response);
         } else {
           if (response) {
-            response = _.filter(response, function(o) {
+            response = _.filter(response, function (o: any) {
               return o.isDeleted == false;
             });
             if (additionalSpecGroup) {
               let additionalSpecIsInArray = false;
-              response.forEach(function(v, k) {
+              response.forEach(function (v, k) {
                 if (v.id == additionalSpecGroup.id) {
                   additionalSpecIsInArray = true;
                 }
@@ -1701,7 +1701,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       payload = { Payload: { ProductId: selectedProduct.product.id } };
       this.contractService
         .getProdDefaultConversionFactors(payload)
-        .pipe(finalize(() => {}))
+        .pipe(finalize(() => { }))
         .subscribe((response: any) => {
           if (typeof response == 'string') {
             this.toastr.error(response);
@@ -1732,7 +1732,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
       this.formValues.products[key].isDeleted = true;
     }
 
-    const findFirstIndex = _.findIndex(this.formValues.products, function(
+    const findFirstIndex = _.findIndex(this.formValues.products, function (
       object: any
     ) {
       return !object.isDeleted;
@@ -1784,7 +1784,7 @@ export class ContractProduct extends DeliveryAutocompleteComponent
               .additionalCosts[j].locationAdditionalCostId;
             const findLocationId = _.findIndex(
               this.additionalCostForLocation[locationId],
-              function(object: any) {
+              function (object: any) {
                 return object.locationid == additionalLocationId;
               }
             );
@@ -1801,5 +1801,5 @@ export class ContractProduct extends DeliveryAutocompleteComponent
     }
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 }

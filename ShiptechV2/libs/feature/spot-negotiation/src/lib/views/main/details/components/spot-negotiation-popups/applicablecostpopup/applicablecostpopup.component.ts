@@ -45,8 +45,8 @@ export class ApplicablecostpopupComponent implements OnInit {
   isBtnActive: boolean = false;
   isButtonVisible = true;
   iscontentEditable = false;
-  isCheckedMain:boolean = true;
-  isChecked:boolean =  true;
+  isCheckedMain: boolean = true;
+  isChecked: boolean = true;
   locationCosts: any = []; // location specific costs from location master
   locationBasedCosts: AdditionalCostViewModel[] = []; // saved location based costs
   deletedCosts: AdditionalCostViewModel[] = []; // deleted costs
@@ -122,7 +122,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
     this.store.selectSnapshot<any>((state: any) => {
       this.currentRequestInfo = _.cloneDeep(
         state.spotNegotiation.currentRequestSmallInfo
@@ -153,22 +153,22 @@ export class ApplicablecostpopupComponent implements OnInit {
         };
         let response = await this.spotNegotiationService
           .getAdditionalCosts(payload)
-          //.subscribe((response: any) => {
-            if(response != null){
-              this.spinner.hide();
-              if (response?.message == 'Unauthorized') {
-                return;
-              }
-              this.locationBasedCosts = this.formatCostItemForDisplay(
-                response.locationAdditionalCosts
-              );
-              if(this.locationBasedCosts.length ===0){
-                this.isCheckedMain = false;
-              }
-              this.calcLocationBasedAdditionalCosts(this.locationBasedCosts);
-              this.changeDetectorRef.detectChanges();
-            } 
-          //});
+        //.subscribe((response: any) => {
+        if (response != null) {
+          this.spinner.hide();
+          if (response?.message == 'Unauthorized') {
+            return;
+          }
+          this.locationBasedCosts = this.formatCostItemForDisplay(
+            response.locationAdditionalCosts
+          );
+          if (this.locationBasedCosts.length === 0) {
+            this.isCheckedMain = false;
+          }
+          this.calcLocationBasedAdditionalCosts(this.locationBasedCosts);
+          this.changeDetectorRef.detectChanges();
+        }
+        //});
       });
 
     this.spotNegotiationService
@@ -194,113 +194,114 @@ export class ApplicablecostpopupComponent implements OnInit {
     }
   }
 
-  calcLocationBasedAdditionalCosts(additionalCostList){
+  calcLocationBasedAdditionalCosts(additionalCostList) {
     for (let i = 0; i < additionalCostList.length; i++) {
       if (!additionalCostList[i].isDeleted) {
         this.additionalCostNameChanged(additionalCostList[i]);
         //this.calculateAdditionalCostAmounts(additionalCostList[i]);
-      }}
+      }
+    }
   }
 
   calculateAdditionalCostAmounts(additionalCost) {
-        let productComponent;
-        if (!additionalCost.costTypeId) {
-          return additionalCost;
-        }
-        additionalCost.maxQuantity = 0;
-        for (let i = 0; i < this.productList.length; i++) {
-          let product = this.productList[i];
-          if (additionalCost.isAllProductsCost || product.id == additionalCost.requestProductId
-          ) {
-    
-            additionalCost.maxQuantity = additionalCost.maxQuantity + product.maxQuantity;
+    let productComponent;
+    if (!additionalCost.costTypeId) {
+      return additionalCost;
+    }
+    additionalCost.maxQuantity = 0;
+    for (let i = 0; i < this.productList.length; i++) {
+      let product = this.productList[i];
+      if (additionalCost.isAllProductsCost || product.id == additionalCost.requestProductId
+      ) {
+
+        additionalCost.maxQuantity = additionalCost.maxQuantity + product.maxQuantity;
+      }
+    }
+    if (additionalCost.price != null)
+      additionalCost.price = additionalCost.price.toString().replace(/,/g, '');
+    if (additionalCost.extras != null)
+      additionalCost.extras = additionalCost.extras.toString().replace(/,/g, '');
+    switch (additionalCost.costTypeId) {
+      case COST_TYPE_IDS.FLAT:
+        additionalCost.amount = parseFloat(additionalCost.price);
+        productComponent = this.isProductComponent(additionalCost);
+        break;
+
+      case COST_TYPE_IDS.UNIT:
+        additionalCost.amount = 0;
+        productComponent = this.isProductComponent(additionalCost);
+        if (
+          additionalCost.priceUomId &&
+          additionalCost.prodConv &&
+          additionalCost.prodConv.length == this.productList.length
+        ) {
+          for (let i = 0; i < this.productList.length; i++) {
+            let product = this.productList[i];
+            if (
+              additionalCost.isAllProductsCost ||
+              product.id == additionalCost.requestProductId
+            ) {
+              additionalCost.amount =
+                additionalCost.amount +
+                product.maxQuantity *
+                additionalCost.prodConv[i] *
+                parseFloat(additionalCost.price);
+            }
           }
         }
-        if(additionalCost.price != null)
-          additionalCost.price = additionalCost.price.toString().replace(/,/g, '');
-        if(additionalCost.extras != null)
-          additionalCost.extras = additionalCost.extras.toString().replace(/,/g, '');
-        switch (additionalCost.costTypeId) {
-          case COST_TYPE_IDS.FLAT:
-            additionalCost.amount = parseFloat(additionalCost.price);
-            productComponent = this.isProductComponent(additionalCost);
-            break;
-    
-          case COST_TYPE_IDS.UNIT:
-            additionalCost.amount = 0;
-            productComponent = this.isProductComponent(additionalCost);
-            if (
-              additionalCost.priceUomId &&
-              additionalCost.prodConv &&
-              additionalCost.prodConv.length == this.productList.length
-            ) {
-              for (let i = 0; i < this.productList.length; i++) {
-                let product = this.productList[i];
-                if (
-                  additionalCost.isAllProductsCost ||
-                  product.id == additionalCost.requestProductId
-                ) {
-                  additionalCost.amount =
-                    additionalCost.amount +
-                    product.maxQuantity *
-                      additionalCost.prodConv[i] *
-                      parseFloat(additionalCost.price);
-                }
-              }
-            }
-            break;      
-          case COST_TYPE_IDS.RANGE:
-          case COST_TYPE_IDS.TOTAL:
-            additionalCost.amount = parseFloat(additionalCost.price) || 0;
-            break;
-        }
-    
-        if (isNaN(additionalCost.amount)) {
-          additionalCost.amount = null;
-        }
-    
-        additionalCost.extraAmount =
-          (additionalCost.extras / 100) * additionalCost.amount;
-    
-        if (isNaN(additionalCost.extraAmount)) {
-          additionalCost.extraAmount = null;
-        }
-    
-        additionalCost.totalAmount =
-          additionalCost.amount + additionalCost.extraAmount || 0;
-        if (isNaN(additionalCost.totalAmount)) {
-          additionalCost.totalAmount = null;
-        }
-    
-        additionalCost.ratePerUom =
-          additionalCost.totalAmount / additionalCost.maxQuantity;
-        if (isNaN(additionalCost.ratePerUom)) {
-          additionalCost.ratePerUom = null;
-        }
+        break;
+      case COST_TYPE_IDS.RANGE:
+      case COST_TYPE_IDS.TOTAL:
+        additionalCost.amount = parseFloat(additionalCost.price) || 0;
+        break;
+    }
+
+    if (isNaN(additionalCost.amount)) {
+      additionalCost.amount = null;
+    }
+
+    additionalCost.extraAmount =
+      (additionalCost.extras / 100) * additionalCost.amount;
+
+    if (isNaN(additionalCost.extraAmount)) {
+      additionalCost.extraAmount = null;
+    }
+
+    additionalCost.totalAmount =
+      additionalCost.amount + additionalCost.extraAmount || 0;
+    if (isNaN(additionalCost.totalAmount)) {
+      additionalCost.totalAmount = null;
+    }
+
+    additionalCost.ratePerUom =
+      additionalCost.totalAmount / additionalCost.maxQuantity;
+    if (isNaN(additionalCost.ratePerUom)) {
+      additionalCost.ratePerUom = null;
+    }
     this.changeDetectorRef.detectChanges();
   }
 
-    /**
-   * Sum the Amount field of all products.
-   */
-     sumProductAmounts(products) {
-      let result = 0;
-      let newProducts = _.cloneDeep(products);
-      for (let i = 0; i < newProducts.length; i++) {
-        let currentPrice = Number(newProducts[i].price) * Number(newProducts[i].exchangeRateToBaseCurrency);
-        let findProduct = _.find(this.productList, function(item) {
-          return item.id == newProducts[i].requestProductId;
-        });
-        if (findProduct) {
-          result += Number(currentPrice * findProduct.maxQuantity);
-        }
+  /**
+ * Sum the Amount field of all products.
+ */
+  sumProductAmounts(products) {
+    let result = 0;
+    let newProducts = _.cloneDeep(products);
+    for (let i = 0; i < newProducts.length; i++) {
+      let currentPrice = Number(newProducts[i].price) * Number(newProducts[i].exchangeRateToBaseCurrency);
+      let findProduct: any = _.find(this.productList, function (item) {
+        return item.id == newProducts[i].requestProductId;
+      });
+      if (findProduct) {
+        result += Number(currentPrice * findProduct.maxQuantity);
       }
-      return result;
     }
+    return result;
+  }
   /**
    * Sum the amounts of all additional costs that are NOT tax component additional costs.
    */
-   sumProductComponentAdditionalCostAmounts(additionalCostList) {
+  sumProductComponentAdditionalCostAmounts(additionalCostList) {
     let result = 0;
     if (!additionalCostList.length) {
       return;
@@ -317,10 +318,10 @@ export class ApplicablecostpopupComponent implements OnInit {
     }
     return result;
   }
-/**
- * Checks if the given additional cost belongs
- * to the ProductComponent category.
- */
+  /**
+   * Checks if the given additional cost belongs
+   * to the ProductComponent category.
+   */
   isProductComponent(additionalCost) {
     if (!additionalCost.additionalCostId) {
       return false;
@@ -361,16 +362,16 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   saveLocationAdditionalCosts(save: string) {
-    
-    if(this.locationBasedCosts.length === 0 ){
+
+    if (this.locationBasedCosts.length === 0) {
       this.toastr.warning('Please Select Atleast one Row');
       return;
     }
-    if(this.locationBasedCosts.length > 0 && this.isCheckedMain == false && this.checkboxselected==false){ 
+    if (this.locationBasedCosts.length > 0 && this.isCheckedMain == false && this.checkboxselected == false) {
       this.toastr.warning('Please Select Atleast one Row');
       return;
     }
-    let findIfLocationCostExists = _.filter(this.locationBasedCosts, function(
+    let findIfLocationCostExists = _.filter(this.locationBasedCosts, function (
       object
     ) {
       return !object.isDeleted;
@@ -401,10 +402,10 @@ export class ApplicablecostpopupComponent implements OnInit {
       return;
     }
     let selectedRequestList = [];
-    if(save == 'isProceed'){
-       selectedRequestList = _.filter(
+    if (save == 'isProceed') {
+      selectedRequestList = _.filter(
         this.requestListToDuplicateLocationBasedCost,
-        function(request) {
+        function (request) {
           return request.isSelected;
         }
       );
@@ -418,7 +419,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     let reqIdForLocation: String;
     let requestLocationId = this.requestLocation.locationId;
     for (let i = 0; i < selectedRequestList.length; i++) {
-      let reqLocation = selectedRequestList[i].requestLocations.filter(function(
+      let reqLocation = selectedRequestList[i].requestLocations.filter(function (
         location
       ) {
         return requestLocationId == location.locationId;
@@ -432,17 +433,17 @@ export class ApplicablecostpopupComponent implements OnInit {
     if (reqIdForLocation) {
       this.toastr.warning(
         'The particular cost cannot be applied to request(s) ' +
-          reqIdForLocation +
-          ' as the location is not available! '
+        reqIdForLocation +
+        ' as the location is not available! '
       );
       return;
     }
 
-    if(!selectedRequestList.length && save == 'isProceed'){
+    if (!selectedRequestList.length && save == 'isProceed') {
       this.toastr.warning('Please Select Atleast one Request');
       return;
     }
-    
+
     if (selectedRequestList.length) {
       this.copyLocationBasedCostToSelectedRequest(selectedRequestList);
     }
@@ -451,13 +452,13 @@ export class ApplicablecostpopupComponent implements OnInit {
       const payload = {
         additionalCosts: this.locationBasedCosts.concat(this.deletedCosts)
       };
-    let reqs = this.store.selectSnapshot<any>((state: any) => {
-      return state.spotNegotiation.requests;
-    });
+      let reqs = this.store.selectSnapshot<any>((state: any) => {
+        return state.spotNegotiation.requests;
+      });
       this.spotNegotiationService
         .saveOfferAdditionalCosts(payload)
         .subscribe((res: any) => {
-         // this.enableSave = false;
+          // this.enableSave = false;
           if (res?.message == 'Unauthorized') {
             return;
           }
@@ -468,18 +469,18 @@ export class ApplicablecostpopupComponent implements OnInit {
             );
             reqs = reqs.map(e => {
               let requestLocations = e.requestLocations.map(reqLoc => {
-                let requestAdditionalCosts : any = [];
-                if(locAddCosts?.filter(loc => reqLoc.id == loc.requestLocationId).length > 0){
-                  requestAdditionalCosts = locAddCosts.filter(loc => reqLoc.id == loc.requestLocationId);    
+                let requestAdditionalCosts: any = [];
+                if (locAddCosts?.filter(loc => reqLoc.id == loc.requestLocationId).length > 0) {
+                  requestAdditionalCosts = locAddCosts.filter(loc => reqLoc.id == loc.requestLocationId);
                   //return { ...reqLoc, requestAdditionalCosts };
                 }
-                return { ...reqLoc, requestAdditionalCosts };        
+                return { ...reqLoc, requestAdditionalCosts };
               });
-               return { ...e, requestLocations };
-            });            
+              return { ...e, requestLocations };
+            });
             this.store.dispatch(new UpdateRequest(reqs));
             this.toastr.success('Additional cost saved successfully.');
-            
+
           } else this.toastr.error('Please try again later.');
         });
     }
@@ -487,7 +488,7 @@ export class ApplicablecostpopupComponent implements OnInit {
 
   // To check if Location based Range/Total additional costs are invalid
   checkIfLocRTAddCostsInvalid(additionalCosts) {
-    let zeroPricedRTAddCosts = _.filter(additionalCosts, function(addCost) {
+    let zeroPricedRTAddCosts = _.filter(additionalCosts, function (addCost: any) {
       return (
         !addCost.isDeleted &&
         (addCost.costType == 'Total' || addCost.costType == 'Range') &&
@@ -518,7 +519,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   checkIfLineIsApplicableToStemmedProduct(locationAdditionalCost) {
     let findProductIndex = _.findIndex(
       this.requestLocation.requestProducts,
-      function(product: any) {
+      function (product: any) {
         return (
           product.id == locationAdditionalCost.requestProductId &&
           product.status == 'Stemmed'
@@ -534,35 +535,35 @@ export class ApplicablecostpopupComponent implements OnInit {
       };
     }
   }
- 
-  checkUncheckAll(event : any, rowNumber: number){
+
+  checkUncheckAll(event: any, rowNumber: number) {
     this.enableSave = true;
-    if(this.locationBasedCosts.length === 0){
-        this.isCheckedMain = false;
-     }
-     this.locationBasedCosts.map(req=>(req.isSelected == event.checked ? true: false));
-   if(event.checked == true && rowNumber === -1){
-     this.locationBasedCosts.map(x=> x.isSelected = true);
+    if (this.locationBasedCosts.length === 0) {
+      this.isCheckedMain = false;
+    }
+    this.locationBasedCosts.map(req => (req.isSelected == event.checked ? true : false));
+    if (event.checked == true && rowNumber === -1) {
+      this.locationBasedCosts.map(x => x.isSelected = true);
+    }
+    if (event.checked == true && rowNumber === 1) {
+      this.checkboxselected = true;
+    }
+    if (event.checked == false && rowNumber === -1) {
+      this.isCheckedMain = false; this.checkboxselected = false;
+      this.locationBasedCosts.map(x => x.isSelected = false);
+    }
+    if (this.locationBasedCosts.every(x => x.isSelected == true)) {
+      this.isCheckedMain = true;
+    }
+    else {
+      this.isCheckedMain = false;
+    }
   }
-  if(event.checked == true && rowNumber === 1){
-    this.checkboxselected = true;
- }
-   if(event.checked == false && rowNumber === -1){
-    this.isCheckedMain = false;this.checkboxselected = false;
-    this.locationBasedCosts.map(x=> x.isSelected = false);
-   }
-   if(this.locationBasedCosts.every(x=> x.isSelected== true)){
-    this.isCheckedMain = true; 
-   }
-   else{
-    this.isCheckedMain = false;
-   }
-}
 
   checkIfSelectedApplicableIdExistsInapplicableForItems(
     locationAdditionalCost
   ) {
-    let findIndex = _.findIndex(this.applicableForItems, function(object: any) {
+    let findIndex = _.findIndex(this.applicableForItems, function (object: any) {
       return object.id == locationAdditionalCost.selectedApplicableForId;
     });
     if (
@@ -579,18 +580,18 @@ export class ApplicablecostpopupComponent implements OnInit {
     let applicableForItemsArray = [];
     this.requestLocation.requestProducts.forEach((product: any) => {
       //if (product.status !== 'Stemmed') {
-        applicableForItemsArray.push({
-          id: product.id,
-          name: product.productName,
-          productId: product.productId
-        });
+      applicableForItemsArray.push({
+        id: product.id,
+        name: product.productName,
+        productId: product.productId
+      });
 
-        this.productList.push(product);
+      this.productList.push(product);
 
-        this.totalMaxQuantity = this.totalMaxQuantity + product.maxQuantity;
-        this.maxQuantityUomId = product.uomId;
-        this.maxQuantityUom = product.uomName;
-     //}
+      this.totalMaxQuantity = this.totalMaxQuantity + product.maxQuantity;
+      this.maxQuantityUomId = product.uomId;
+      this.maxQuantityUom = product.uomName;
+      //}
     });
 
     if (applicableForItemsArray.length > 1) {
@@ -705,7 +706,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   recalculatePercentAdditionalCosts(locationBasedCosts) {
-    for (let i = 0, costLength=locationBasedCosts.length; i < costLength; i++) {
+    for (let i = 0, costLength = locationBasedCosts.length; i < costLength; i++) {
       if (!locationBasedCosts[i].isDeleted && locationBasedCosts[i].isSelected) {
         if (locationBasedCosts[i].costTypeId == COST_TYPE_IDS.PERCENT) {
           locationBasedCosts[i].totalAmount = 0;
@@ -808,33 +809,33 @@ export class ApplicablecostpopupComponent implements OnInit {
         this.recalculatePercentAdditionalCosts(this.locationBasedCosts);
       }
     } else {
-      let response= await this.spotNegotiationService.getUomConversionFactor(payload);
-      if(response != null){
-          if (response?.message == 'Unauthorized') {
-            return;
+      let response = await this.spotNegotiationService.getUomConversionFactor(payload);
+      if (response != null) {
+        if (response?.message == 'Unauthorized') {
+          return;
+        }
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          additionalCost.prodConv[i] = _.cloneDeep(response);
+          if (
+            additionalCost.priceUomId &&
+            additionalCost.prodConv &&
+            additionalCost.prodConv.length == this.productList.length
+          ) {
+            this.calculateCostAmount(additionalCost);
+            this.recalculatePercentAdditionalCosts(this.locationBasedCosts);
           }
-          if (typeof response == 'string') {
-            this.toastr.error(response);
-          } else {
-            additionalCost.prodConv[i] = _.cloneDeep(response);
-            if (
-              additionalCost.priceUomId &&
-              additionalCost.prodConv &&
-              additionalCost.prodConv.length == this.productList.length
-            ) {
-              this.calculateCostAmount(additionalCost);
-              this.recalculatePercentAdditionalCosts(this.locationBasedCosts);
-            }
-          }
-        };
+        }
+      };
     }
   }
 
   getRangeTotalAdditionalCosts(cost: any) {
     let productId = cost.requestProductId
       ? this.applicableForItems.find(
-          (item: any) => item.id == cost.requestProductId
-        )?.productId
+        (item: any) => item.id == cost.requestProductId
+      )?.productId
       : 1;
     const payload = {
       Payload: {
@@ -902,8 +903,8 @@ export class ApplicablecostpopupComponent implements OnInit {
     for (let i = 0; i < this.locationBasedCosts.length; i++) {
       if (
         !this.locationBasedCosts[i].additionalCostId &&
-         this.locationBasedCosts[i].isSelected && 
-         !this.locationBasedCosts[i].isDeleted
+        this.locationBasedCosts[i].isSelected &&
+        !this.locationBasedCosts[i].isDeleted
       ) {
         locationBasedCostsRequired.push('Cost name is required!');
       }
@@ -914,7 +915,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     }
     if (
       locationBasedCostsRequiredString[
-        locationBasedCostsRequiredString.length - 1
+      locationBasedCostsRequiredString.length - 1
       ] == ','
     ) {
       locationBasedCostsRequiredString = locationBasedCostsRequiredString.substring(
@@ -931,13 +932,13 @@ export class ApplicablecostpopupComponent implements OnInit {
     else {
       const additionalCost = {
         selectedApplicableForId: this.applicableForItems[0]?.id,
-        isSelected : true
+        isSelected: true
       } as AdditionalCostViewModel;
       if (!this.applicableForItems.length) {
         this.toastr.warning('All products are stemmed!');
       } else {
         this.locationBasedCosts.push(additionalCost);
-        if(this.locationBasedCosts.length ===1){
+        if (this.locationBasedCosts.length === 1) {
           this.isCheckedMain = true;
         }
         this.onApplicableForChange(
@@ -957,8 +958,8 @@ export class ApplicablecostpopupComponent implements OnInit {
       this.locationBasedCosts.splice(key, 1);
     }
     this.recalculatePercentAdditionalCosts(this.locationBasedCosts);
-    if(this.locationBasedCosts.length === 0){
-        this.isCheckedMain = false;
+    if (this.locationBasedCosts.length === 0) {
+      this.isCheckedMain = false;
     }
     this.recalculatePercentAdditionalCosts(this.locationBasedCosts);
     this.enableSave = true;
@@ -1028,7 +1029,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   getCurrencyCode(currencyId) {
-    let findCurrencyIndex = _.findIndex(this.currencyList, function(object) {
+    let findCurrencyIndex = _.findIndex(this.currencyList, function (object) {
       return object.id == currencyId;
     });
     if (findCurrencyIndex !== -1) {
@@ -1037,7 +1038,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   getUomName(maxQuantityUomId) {
-    let findMaxQuantityUomIndex = _.findIndex(this.uomList, function(object) {
+    let findMaxQuantityUomIndex = _.findIndex(this.uomList, function (object) {
       return object.id == maxQuantityUomId;
     });
     if (findMaxQuantityUomIndex !== -1) {
@@ -1053,7 +1054,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     for (let i = 0; i < request.requestLocations.length; i++) {
       let productList = _.filter(
         request.requestLocations[i].requestProducts,
-        function(object) {
+        function (object: any) {
           return !(object.status == 'Stemmed' || object.status == 'Confirmed');
         }
       );
@@ -1095,7 +1096,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   ) {
     let findProductIndex = _.findIndex(
       selectedRequestLocation.requestProducts,
-      function(product: any) {
+      function (product: any) {
         return (
           product.id == locationAdditionalCost.requestProductId &&
           product.status == 'Stemmed'
@@ -1108,7 +1109,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   }
 
   copyLocationBasedCostToSelectedRequest(selectedRequestList) {
-    if(selectedRequestList.length == 0){
+    if (selectedRequestList.length == 0) {
       this.toastr.warning('Please Select Atlest one Row');
       return;
     }
@@ -1165,16 +1166,16 @@ export class ApplicablecostpopupComponent implements OnInit {
                 }
               } else {
                 //One product is selected in the applicable for dropdown
-                let applicableForProduct = _.find(
+                let applicableForProduct: any = _.find(
                   this.requestLocation.requestProducts,
-                  function(product) {
+                  function (product) {
                     return product.id == newCost.requestProductId;
                   }
                 );
                 let productId = applicableForProduct.productId;
                 let productList = _.filter(
                   requestLocation.requestProducts,
-                  function(product) {
+                  function (product: any) {
                     return product.productId === productId;
                   }
                 );
@@ -1186,7 +1187,7 @@ export class ApplicablecostpopupComponent implements OnInit {
                   //If selected product exist
                   let product = _.find(
                     requestLocation.requestProducts,
-                    function(product) {
+                    function (product: any) {
                       return product.productId === productId;
                     }
                   );
@@ -1207,15 +1208,15 @@ export class ApplicablecostpopupComponent implements OnInit {
           if (reqProductIdForLocationString != '') {
             reqIdForLocation = reqIdForLocation
               ? reqIdForLocation +
-                ', ' +
-                reqProductIdForLocationString +
-                ' does not exists in ' +
-                request.name +
-                ' '
+              ', ' +
+              reqProductIdForLocationString +
+              ' does not exists in ' +
+              request.name +
+              ' '
               : reqProductIdForLocationString +
-                ' does not exists in ' +
-                request.name +
-                ' ';
+              ' does not exists in ' +
+              request.name +
+              ' ';
           }
         }
       });
@@ -1295,7 +1296,7 @@ export class ApplicablecostpopupComponent implements OnInit {
     productList,
     selectedRequestLocation
   ) {
-   await this.getConvertedUOMForCopiedLocationCost(
+    await this.getConvertedUOMForCopiedLocationCost(
       prod.productId,
       1,
       prod.uomId,
@@ -1341,29 +1342,29 @@ export class ApplicablecostpopupComponent implements OnInit {
       }
     } else {
       this.endpointCount += 1;
-      let response= await this.spotNegotiationService.getUomConversionFactor(payload)
-      if(response != null){
-          this.endpointCount -= 1;
-          if (response?.message == 'Unauthorized') {
-            return;
+      let response = await this.spotNegotiationService.getUomConversionFactor(payload)
+      if (response != null) {
+        this.endpointCount -= 1;
+        if (response?.message == 'Unauthorized') {
+          return;
+        }
+        if (typeof response == 'string') {
+          this.toastr.error(response);
+        } else {
+          additionalCost.prodConv[i] = _.cloneDeep(response);
+          if (
+            additionalCost.priceUomId &&
+            additionalCost.prodConv &&
+            additionalCost.prodConv.length == productList.length
+          ) {
+            this.calculateCostAmountForCopiedLocationCost(
+              additionalCost,
+              productList,
+              selectedRequestLocation
+            );
           }
-          if (typeof response == 'string') {
-            this.toastr.error(response);
-          } else {
-            additionalCost.prodConv[i] = _.cloneDeep(response);
-            if (
-              additionalCost.priceUomId &&
-              additionalCost.prodConv &&
-              additionalCost.prodConv.length == productList.length
-            ) {
-              this.calculateCostAmountForCopiedLocationCost(
-                additionalCost,
-                productList,
-                selectedRequestLocation
-              );
-            }
-          }
-        };
+        }
+      };
     }
   }
 
@@ -1374,7 +1375,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   ) {
     let productId = cost.requestProductId
       ? productList.find((item: any) => item.id == cost.requestProductId)
-          ?.productId
+        ?.productId
       : 1;
     const payload = {
       Payload: {
@@ -1487,7 +1488,7 @@ export class ApplicablecostpopupComponent implements OnInit {
   checkIfForAllCopiedLocationCostAmountIsCalculated() {
     let checkCopiedAdditionalCostRowIndex = _.findIndex(
       this.copiedLocationCost,
-      function(obj: any) {
+      function (obj: any) {
         return !obj.amountIsCalculated;
       }
     );
@@ -1521,34 +1522,34 @@ export class ApplicablecostpopupComponent implements OnInit {
         if (res.status) {
           let locAddCosts = res?.costs?.locationAdditionalCosts;
           this.locationBasedCosts = this.formatCostItemForDisplay(
-            _.filter(res?.costs?.locationAdditionalCosts, function(
-              locationCost
+            _.filter(res?.costs?.locationAdditionalCosts, function (
+              locationCost: any
             ) {
               return locationCost.requestLocationId == requestLocationId;
             })
           );
           reqs = reqs.map(e => {
             let requestLocations = e.requestLocations.map(reqLoc => {
-              let requestAdditionalCosts : any = [];
-              if(locAddCosts?.filter(loc => reqLoc.id == loc.requestLocationId).length > 0){
-                requestAdditionalCosts = locAddCosts.filter(loc => reqLoc.id == loc.requestLocationId);    
+              let requestAdditionalCosts: any = [];
+              if (locAddCosts?.filter(loc => reqLoc.id == loc.requestLocationId).length > 0) {
+                requestAdditionalCosts = locAddCosts.filter(loc => reqLoc.id == loc.requestLocationId);
                 //return { ...reqLoc, requestAdditionalCosts };
               }
-              return { ...reqLoc, requestAdditionalCosts };          
+              return { ...reqLoc, requestAdditionalCosts };
             });
-             return { ...e, requestLocations };
+            return { ...e, requestLocations };
           });
           this.store.dispatch(new UpdateRequest(reqs));
           this.toastr.success('Additional cost copied successfully.');
 
-          
+
         } else this.toastr.error(res.message);
       });
   }
 
   checkNumberOfNotStemmedProduct(selectedRequestLocation: any) {
-    let products = _.filter(selectedRequestLocation.requestProducts, function(
-      product
+    let products = _.filter(selectedRequestLocation.requestProducts, function (
+      product: any
     ) {
       return product.status !== 'Stemmed';
     });

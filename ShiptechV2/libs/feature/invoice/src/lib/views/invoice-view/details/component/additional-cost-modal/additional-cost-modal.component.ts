@@ -309,9 +309,9 @@ export class AdditionalCostModalComponent implements OnInit {
     this.selectedRow = element;
   }
 
-  getFilterPredicate() {}
+  getFilterPredicate() { }
 
-  applyFilter() {}
+  applyFilter() { }
 
   invoiceRateChange(event, index) {
     const sumvalue = +event;
@@ -322,11 +322,11 @@ export class AdditionalCostModalComponent implements OnInit {
     this.formValues.costDetails[index].invoiceExtrasAmount =
       this.formValues.costDetails[index].costType.id == 2
         ? (this.formValues.costDetails[index].amountInOrderCurrency *
-            this.formValues.costDetails[index].invoiceExtras) /
-          100
+          this.formValues.costDetails[index].invoiceExtras) /
+        100
         : (this.formValues.costDetails[index].amountInOrderCurrency *
-            this.formValues.costDetails[index].invoiceExtras) /
-          100;
+          this.formValues.costDetails[index].invoiceExtras) /
+        100;
     this.formValues.costDetails[index].invoiceTotalAmount =
       this.formValues.costDetails[index].amountInOrderCurrency +
       this.formValues.costDetails[index].invoiceExtrasAmount;
@@ -337,11 +337,11 @@ export class AdditionalCostModalComponent implements OnInit {
     this.formValues.costDetails[index].invoiceExtrasAmount =
       this.formValues.costDetails[index].costType.id == 2
         ? (this.formValues.costDetails[index].amountInOrderCurrency *
-            this.formValues.costDetails[index].invoiceExtras) /
-          100
+          this.formValues.costDetails[index].invoiceExtras) /
+        100
         : (this.formValues.costDetails[index].amountInOrderCurrency *
-            this.formValues.costDetails[index].invoiceExtras) /
-          100;
+          this.formValues.costDetails[index].invoiceExtras) /
+        100;
     this.formValues.costDetails[index].invoiceTotalAmount =
       this.formValues.costDetails[index].amountInOrderCurrency +
       this.formValues.costDetails[index].invoiceExtrasAmount;
@@ -821,7 +821,7 @@ export class AdditionalCostModalComponent implements OnInit {
     }
     this.invoiceService
       .getUomConversionFactor(data)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.toastr.error(result);
@@ -882,7 +882,7 @@ export class AdditionalCostModalComponent implements OnInit {
     }
     this.invoiceService
       .calculateCostRecon(this.cost)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((result: any) => {
         if (typeof result == 'string') {
           this.toastr.error(result);
@@ -1176,7 +1176,7 @@ export class AdditionalCostModalComponent implements OnInit {
 
     this.invoiceService
       .getAdditionalCostsPerPort(payload)
-      .pipe(finalize(() => {}))
+      .pipe(finalize(() => { }))
       .subscribe((response: any) => {
         if (typeof response == 'string') {
           this.toastr.error(response);
@@ -1184,7 +1184,7 @@ export class AdditionalCostModalComponent implements OnInit {
           this.additionalCostForLocation[locationId] = _.cloneDeep(response);
           const filterElements = _.filter(
             this.additionalCostForLocation[locationId],
-            function(object) {
+            function (object: any) {
               return !object.isDeleted;
             }
           );

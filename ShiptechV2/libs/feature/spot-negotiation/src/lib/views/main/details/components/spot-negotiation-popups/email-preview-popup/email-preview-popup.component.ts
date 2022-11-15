@@ -34,24 +34,24 @@ interface Items {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmailPreviewPopupComponent implements OnInit {
-   public configuration = {
-     height: '250px',
-     disableNativeSpellChecker: false,
-     // fullPage: true,
-     allowContent: true,
-     extraAllowedContent:
-       'div;h1;h2;h3;h4;h5;h6;p;textarea;text;script;template;span;ol;ul;li;table;td;style;*[id];*(*);*{*};<!--(*); -->(*)',
-     defaultLanguage: 'en',
-     language: 'en',
-     toolbar: 'MyToolbar',
-     removePlugins: 'elementspath',
-     ignoreEmptyParagraph: true,
-     removeButtons: 'Anchor',
-     readOnly: false
-   };
- 
+  public configuration = {
+    height: '250px',
+    disableNativeSpellChecker: false,
+    // fullPage: true,
+    allowContent: true,
+    extraAllowedContent:
+      'div;h1;h2;h3;h4;h5;h6;p;textarea;text;script;template;span;ol;ul;li;table;td;style;*[id];*(*);*{*};<!--(*); -->(*)',
+    defaultLanguage: 'en',
+    language: 'en',
+    toolbar: 'MyToolbar',
+    removePlugins: 'elementspath',
+    ignoreEmptyParagraph: true,
+    removeButtons: 'Anchor',
+    readOnly: false
+  };
+
   public SelectedSellerWithProds: any;
-  isDisabled:boolean = false;
+  isDisabled: boolean = false;
   currentRequestInfo: any;
   selected: any;
   toEmail = '';
@@ -166,9 +166,9 @@ export class EmailPreviewPopupComponent implements OnInit {
       return state.spotNegotiation.locationsRows;
     });
 
-   if(this.readonly){
-    this.configuration.readOnly = true;
-   }
+    if (this.readonly) {
+      this.configuration.readOnly = true;
+    }
     if (
       !this.readonly &&
       this.prod1 == false &&
@@ -177,7 +177,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.prod4 == false &&
       this.prod5 == false
     ) {
-      this.isDisabled= true;
+      this.isDisabled = true;
       this.configuration.readOnly = true;
       this.toaster.error('Please select products to preview email');
       return;
@@ -238,10 +238,10 @@ export class EmailPreviewPopupComponent implements OnInit {
         return;
       }
     }
-    var reqSelectedProds =[];
+    var reqSelectedProds = [];
     if (!this.readonly) {
-      this.requestOptions.forEach((element,index)=>{
-         let reqSelectedProd = element.requestLocations.map(
+      this.requestOptions.forEach((element, index) => {
+        let reqSelectedProd = element.requestLocations.map(
           prod =>
             prod.requestProducts
               .map((e, i) =>
@@ -267,8 +267,8 @@ export class EmailPreviewPopupComponent implements OnInit {
       });
       let mergedReqProds = [];
       reqSelectedProds.forEach(multipleLocationPro => {
-        multipleLocationPro.forEach(singleLocationPro=>{
-        mergedReqProds = [...mergedReqProds, ...singleLocationPro];
+        multipleLocationPro.forEach(singleLocationPro => {
+          mergedReqProds = [...mergedReqProds, ...singleLocationPro];
         });
       });
       let rfqId = 0;
@@ -277,7 +277,7 @@ export class EmailPreviewPopupComponent implements OnInit {
           x => x.requestOffers?.length > 0
         )
           ? this.SelectedSellerWithProds.find(x => x.requestOffers?.length > 0)
-              .requestOffers[0].rfqId
+            .requestOffers[0].rfqId
           : 0;
       }
 
@@ -292,7 +292,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         TemplateName: this.selected,
         QuoteByDate: new Date(this.spotNegotiationService.QuoteByDate)
       };
-      
+
       this.spinner.show();
       // Get response from server
       const response = this.spotNegotiationService.PreviewRfqMail(FinalAPIdata);
@@ -341,11 +341,11 @@ export class EmailPreviewPopupComponent implements OnInit {
           this.cc = res.payload.cc ? res.payload.cc.split(',') : res.payload.cc;
           this.previewTemplate.to = [];
           this.previewTemplate.cc = [];
-          this.to.forEach((item: any)=>{
+          this.to.forEach((item: any) => {
             this.previewTemplate.to.push({ IdEmailAddress: item, name: item });
           });
-          this.cc.forEach((item: any)=>{
-            this.previewTemplate.cc.push({ IdEmailAddress: item , name: item });
+          this.cc.forEach((item: any) => {
+            this.previewTemplate.cc.push({ IdEmailAddress: item, name: item });
           });
           this.subject = res.payload.subject;
           this.content = res.payload.body;
@@ -427,7 +427,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   addCc(item, selectedFromLookup) {
-   
+
     if (this.previewTemplate == null) {
       this.previewTemplate = [];
     }
@@ -440,7 +440,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     if (selectedFromLookup) {
       this.previewTemplate.cc.push(this.ccList2?.find(c => c.name == item));
     } else {
-      this.previewTemplate.cc.push({ IdEmailAddress: item , name: item });
+      this.previewTemplate.cc.push({ IdEmailAddress: item, name: item });
     }
     this.cc = this.previewTemplate.cc;
     this.ccEmail = '';
@@ -472,24 +472,24 @@ export class EmailPreviewPopupComponent implements OnInit {
     }
 
     var selectedSellers = [];
-    var reqSelectedProds =[];
+    var reqSelectedProds = [];
     this.SelectedSellerWithProds.forEach((singleSeller, index) => {
-      this.requestOptions.forEach((reqLoc,index)=>{
-        let reqProds= reqLoc.requestLocations.filter(loc => loc.id === singleSeller.requestLocationId)
-        .map(prod =>
-          prod.requestProducts
-            .map((e, i) => (singleSeller['checkProd' + (i + 1)] ? e.id : ''))
-            .filter(x => x)
-            );
-          reqSelectedProds.push(reqProds);
-        })
-        let mergedReqProds = [];
-        reqSelectedProds.forEach(multipleLocationPro => {
-          multipleLocationPro.forEach(singleLocationPro=>{
+      this.requestOptions.forEach((reqLoc, index) => {
+        let reqProds = reqLoc.requestLocations.filter(loc => loc.id === singleSeller.requestLocationId)
+          .map(prod =>
+            prod.requestProducts
+              .map((e, i) => (singleSeller['checkProd' + (i + 1)] ? e.id : ''))
+              .filter(x => x)
+          );
+        reqSelectedProds.push(reqProds);
+      })
+      let mergedReqProds = [];
+      reqSelectedProds.forEach(multipleLocationPro => {
+        multipleLocationPro.forEach(singleLocationPro => {
           mergedReqProds = [...mergedReqProds, ...singleLocationPro];
-          });
         });
-        reqSelectedProds=[];/// empty to the every request loop
+      });
+      reqSelectedProds = [];/// empty to the every request loop
       var selectedSeller = {
         RequestLocationSellerId: singleSeller.id,
         RequestLocationId: singleSeller.requestLocationId,
@@ -515,7 +515,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     let requestProductIds = selectedSellers.map(x => x.RequestProductIds);
 
     var saveAndSendRfqAPIPayload = {
-      SelectedSellers: selectedSellers,
+      SelectedSellers: selectedSellers?.filter(x=>x.RequestProductIds.length > 0),
       RequestGroupId: this.currentRequestInfo.requestGroupId,
       IsSendMail: isSendEmail,
       PreviewResponse: this.previewTemplate,
@@ -541,12 +541,12 @@ export class EmailPreviewPopupComponent implements OnInit {
         isSendEmail &&
         res['validationMessage'].length == 0
       ) {
-        
+
         this.toaster.success('Mail sent successfully.');
         setTimeout(() => {
           this.spotNegotiationService.callGridRedrawService();
         }, 500);
-        
+
 
         this.dialogRef.close();
       } else if (
@@ -555,7 +555,6 @@ export class EmailPreviewPopupComponent implements OnInit {
         res['validationMessage'].length == 0
       ) {
         this.toaster.success('Template saved successfully.');
-        this.toaster.success('Mail sent successfully.');
         setTimeout(() => {
           this.spotNegotiationService.callGridRedrawService();
         }, 500);
@@ -581,14 +580,14 @@ export class EmailPreviewPopupComponent implements OnInit {
       });
 
       if (res['sellerOffers']) {
-        let locationIds=stelocationsRows.map(loc=>loc.locationId);
-        let productIds=res['sellerOffers'].map(ro=>ro?.requestOffers?.map(r=>r.quotedProductId));
-        let physicalSupplierIds=res['sellerOffers'].map(phy=>phy.physicalSupplierCounterpartyId);
-        let payload=  {
+        let locationIds = stelocationsRows.map(loc => loc.locationId);
+        let productIds = res['sellerOffers'].map(ro => ro?.requestOffers?.map(r => r.quotedProductId));
+        let physicalSupplierIds = res['sellerOffers'].map(phy => phy.physicalSupplierCounterpartyId);
+        let payload = {
           locationIds: [...new Set(locationIds)],
-          productIds:[...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
-          physicalSupplierIds:[...new Set(physicalSupplierIds)],
-          requestGroupId:this.currentRequestInfo.requestGroupId
+          productIds: [...new Set(productIds.reduce((acc, val) => acc.concat(val), []).reduce((acc, val) => acc.concat(val), []))],
+          physicalSupplierIds: [...new Set(physicalSupplierIds)],
+          requestGroupId: this.currentRequestInfo.requestGroupId
         }
         this.getEnergy6MHistory(payload);
         let locationsRows;
@@ -617,13 +616,13 @@ export class EmailPreviewPopupComponent implements OnInit {
           locationsRows,
           res['sellerOffers']
         );
-        let reqLocationRows : any =[];
+        let reqLocationRows: any = [];
         for (const locRow of futureLocationsRows) {
           var data = await this.spotNegotiationPriceCalcService.checkAdditionalCost(
             locRow,
             locRow);
-            reqLocationRows.push(data);
-        } 
+          reqLocationRows.push(data);
+        }
         this.store.dispatch(new SetLocationsRows(reqLocationRows));
 
         this.changeDetector.markForCheck();
@@ -635,17 +634,17 @@ export class EmailPreviewPopupComponent implements OnInit {
             let requestProducts =
               this.previewTemplate.comment.emailTemplate.id == 10
                 ? reqLoc.requestProducts.map(reqPro =>
-                    requestProductIds.some(x => x.includes(reqPro.id)) &&
+                  requestProductIds.some(x => x.includes(reqPro.id)) &&
                     (reqPro.status.toLowerCase() == 'validated' ||
                       reqPro.status.toLowerCase() == 'reopen')
-                      ? { ...reqPro, status: 'Inquired' }
-                      : reqPro
-                  )
+                    ? { ...reqPro, status: 'Inquired' }
+                    : reqPro
+                )
                 : reqLoc.requestProducts.map(reqPro =>
-                    requestProductIds.some(x => x.includes(reqPro.id))
-                      ? { ...reqPro, status: 'ReOpen' }
-                      : reqPro
-                  );
+                  requestProductIds.some(x => x.includes(reqPro.id))
+                    ? { ...reqPro, status: 'ReOpen' }
+                    : reqPro
+                );
 
             return { ...reqLoc, requestProducts };
           });
@@ -696,18 +695,18 @@ export class EmailPreviewPopupComponent implements OnInit {
     //}
   }
   /// get avg netEnergy6MonthHistory
-  async getEnergy6MHistory(payload){   
+  async getEnergy6MHistory(payload) {
     const response = await this.spotNegotiationService.getEnergy6MHistorys(payload);
-    if (response.energy6MonthHistories.length > 0){
-        this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
-      }
+    if (response.energy6MonthHistories.length > 0) {
+      this.store.dispatch(new SetNetEnergySpecific(response.energy6MonthHistories));
+    }
   }
   getLocationRowsWithPriceDetails(rowsArray, priceDetailsArray) {
     let currentRequestData: any;
     let counterpartyList: any;
     let requestlist: any;
     //let currencyList: any;
-    
+
     currentRequestData = this.store.selectSnapshot<any>((state: any) => {
       return state.spotNegotiation.locations;
     });
@@ -722,7 +721,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     // });
 
     rowsArray.forEach((row, index) => {
-      let requestProducts = requestlist?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id ==row.requestLocationId)?.requestProducts;
+      let requestProducts = requestlist?.find(x => x.id == row.requestId)?.requestLocations?.find(l => l.id == row.requestLocationId)?.requestProducts;
       let currentLocProd = currentRequestData.filter(
         row1 => row1.locationId == row.locationId
       );
@@ -772,8 +771,8 @@ export class EmailPreviewPopupComponent implements OnInit {
               ? 1
               : -1
             : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
-            ? 1
-            : -1
+              ? 1
+              : -1
         );
         return row;
       }
@@ -812,8 +811,8 @@ export class EmailPreviewPopupComponent implements OnInit {
               ? 1
               : -1
             : a.requestProductTypeOrderBy > b.requestProductTypeOrderBy
-            ? 1
-            : -1
+              ? 1
+              : -1
         );
       }
       return row;
@@ -947,7 +946,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   addFilesList($event: MatRadioChange) {
     if ($event.value) {
       let selectedDocument = $event.value;
-      let isInList = _.find(this.filesList, v => {
+      let isInList: any = _.find(this.filesList, v => {
         return v.id == selectedDocument.id;
       });
       if (isInList && isInList.isIncludedInMail) {

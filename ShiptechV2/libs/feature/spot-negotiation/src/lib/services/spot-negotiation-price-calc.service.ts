@@ -120,7 +120,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
           if (findProductIndex != -1) {
             let product = _.cloneDeep(rowData.requestOffers[findProductIndex]);
             let currentPrice = Number(product.price);
-            let findProduct = _.find(productList, function (item) {
+            let findProduct: any = _.find(productList, function (item) {
               return item.id == product.requestProductId;
             });
             if (findProduct) {
@@ -178,7 +178,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       (additionalCost.totalAmount * additionalCost.exchangeRateToBaseCurrency) / additionalCost.maxQuantity;
     if (additionalCost.isAllProductsCost || !productComponent) {
       rowData.requestOffers.forEach(reqOff => {
-        if(additionalCost.isAllProductsCost || reqOff.requestProductId == additionalCost.requestProductId){
+        if (additionalCost.isAllProductsCost || reqOff.requestProductId == additionalCost.requestProductId) {
           reqOff.cost = reqOff.cost + additionalCost.ratePerUom;
         }
       });
@@ -230,15 +230,15 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     let productList = [];
     requestLocation.requestProducts.forEach((product: any, index) => {
       //if (product.status != 'Stemmed') {
-        let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function (
-          object: any
-        ) {
-          return object.requestProductId == product.id && object.price;
-        });
-        if (findRowDataOfferIndex != -1) {
-          productList.push(product);
-        }
-     // }
+      let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function (
+        object: any
+      ) {
+        return object.requestProductId == product.id && object.price;
+      });
+      if (findRowDataOfferIndex != -1) {
+        productList.push(product);
+      }
+      // }
     });
     for (let i = 0; i < newProducts.length; i++) {
       let currentPrice = Number(newProducts[i].price);
@@ -328,12 +328,12 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
   async checkAdditionalCost(
     sellOffs,
     updatedRow
-  ) : Promise<any> {
-    let sellerOffers =  _.cloneDeep(sellOffs);
-    if(sellerOffers.requestOffers){
+  ): Promise<any> {
+    let sellerOffers = _.cloneDeep(sellOffs);
+    if (sellerOffers.requestOffers) {
       let offerAdditionCostsList = [];
       let locAdditionCostsList = [];
-      let request : any;
+      let request: any;
       this.locations = this.store.selectSnapshot<any>((state: any) => {
         return state.spotNegotiation.locations;
       });
@@ -373,100 +373,100 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
         //       // this.getSellerLine(updatedRow, colDef, newValue, elementidValue);
         //       return;
         //     } else {
-              // offerAdditionCostsList = response.offerAdditionalCosts;
-              // locAdditionCostsList = response.locationAdditionalCosts;
-              let {
-                productList,
-                reqProList,
-                applicableForItems,
+        // offerAdditionCostsList = response.offerAdditionalCosts;
+        // locAdditionCostsList = response.locationAdditionalCosts;
+        let {
+          productList,
+          reqProList,
+          applicableForItems,
+          totalMaxQuantity,
+          maxQuantityUomId
+        } = this.buildApplicableForItems(requestLocation, sellerOffers);
+
+        sellerOffers.requestOffers.forEach(reqOff => {
+          reqOff.cost = 0;
+        });
+        sellerOffers.hasAdditionalCost = false;
+        if (
+          offerAdditionCostsList.length > 0 ||
+          locAdditionCostsList.length > 0
+        ) {
+          sellerOffers.hasAdditionalCost = true;
+          sellerOffers = _.cloneDeep(sellerOffers);
+          await this.recalculateLocationAdditionalCosts(
+            locAdditionCostsList,
+            true,
+            reqProList,
+            offerAdditionCostsList,
+            sellerOffers,
+            locAdditionCostsList,
+            totalMaxQuantity,
+            maxQuantityUomId,
+            requestLocation
+          );
+
+
+          for (let i = 0; i < offerAdditionCostsList.length; i++) {
+            let cost = offerAdditionCostsList[i];
+            if (offerAdditionCostsList[i].isAllProductsCost) {
+              this.onApplicableForChange(
+                cost,
+                sellerOffers,
                 totalMaxQuantity,
                 maxQuantityUomId
-              } = this.buildApplicableForItems(requestLocation, sellerOffers);
-              
-              sellerOffers.requestOffers.forEach(reqOff => {
-                reqOff.cost = 0;
-              });
-              sellerOffers.hasAdditionalCost = false;
-              if (
-                offerAdditionCostsList.length > 0 ||
-                locAdditionCostsList.length > 0
-              ) {
-                sellerOffers.hasAdditionalCost = true;
-                sellerOffers = _.cloneDeep(sellerOffers);
-                await this.recalculateLocationAdditionalCosts(
-                  locAdditionCostsList,
-                  true,
-                  reqProList,
-                  offerAdditionCostsList,
-                  sellerOffers,
-                  locAdditionCostsList,
-                  totalMaxQuantity,
-                  maxQuantityUomId,
-                  requestLocation
-                );
+              );
 
-
-                for (let i = 0; i < offerAdditionCostsList.length; i++) {
-                  let cost = offerAdditionCostsList[i];
-                  if (offerAdditionCostsList[i].isAllProductsCost) {
-                    this.onApplicableForChange(
-                      cost,
-                      sellerOffers,
-                      totalMaxQuantity,
-                      maxQuantityUomId
-                    );
-
-                  }
-                  await this.additionalCostNameChanged(
-                    cost,
-                    offerAdditionCostsList,
-                    reqProList,
-                    sellerOffers,
-                    locAdditionCostsList,
-                    i,
-                    requestLocation
-                  );
-                  // else {
-                  //   offerAdditionCostsList[i].totalAmount = 0;
-                  //   this.calculateAdditionalCostAmounts(
-                  //     offerAdditionCostsList[i],
-                  //     false,
-                  //     productList,
-                  //     offerAdditionCostsList,
-                  //     sellerOffers,
-                  //     locAdditionCostsList,
-                  //     i
-                  //   );
-                  // }
-                }
-              }
-              let totalOffer = 0;
-              let totalCost = 0
-              reqProList.forEach(pro => {
-                sellerOffers.requestOffers.forEach(reqOff => {
-                    if (reqOff.requestProductId == pro.id) {
-                      reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
-                      reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
-                      // Target Difference = Total Price - Target Price
-                      reqOff.targetDifference = reqOff.totalPrice ? reqOff.totalPrice - (pro.requestGroupProducts
-                        ? pro.requestGroupProducts.targetPrice
-                        : 0): null;
-                      totalOffer += reqOff.amount;
-                      totalCost += reqOff.cost;
-                      reqOff.targetDifference = pro.requestGroupProducts.targetPrice == 0
-                          ? 0
-                          : reqOff.targetDifference;
-                    }
-                  });
-                });
-                sellerOffers.totalOffer = totalOffer;
-                sellerOffers.totalCost = totalCost;
-          //   }
-          // }
-          //});
+            }
+            await this.additionalCostNameChanged(
+              cost,
+              offerAdditionCostsList,
+              reqProList,
+              sellerOffers,
+              locAdditionCostsList,
+              i,
+              requestLocation
+            );
+            // else {
+            //   offerAdditionCostsList[i].totalAmount = 0;
+            //   this.calculateAdditionalCostAmounts(
+            //     offerAdditionCostsList[i],
+            //     false,
+            //     productList,
+            //     offerAdditionCostsList,
+            //     sellerOffers,
+            //     locAdditionCostsList,
+            //     i
+            //   );
+            // }
+          }
+        }
+        let totalOffer = 0;
+        let totalCost = 0
+        reqProList.forEach(pro => {
+          sellerOffers.requestOffers.forEach(reqOff => {
+            if (reqOff.requestProductId == pro.id) {
+              reqOff.totalPrice = (reqOff.price * reqOff.exchangeRateToBaseCurrency) + reqOff.cost;
+              reqOff.amount = reqOff.totalPrice * pro.maxQuantity;
+              // Target Difference = Total Price - Target Price
+              reqOff.targetDifference = reqOff.totalPrice ? reqOff.totalPrice - (pro.requestGroupProducts
+                ? pro.requestGroupProducts.targetPrice
+                : 0) : null;
+              totalOffer += reqOff.amount;
+              totalCost += reqOff.cost;
+              reqOff.targetDifference = pro.requestGroupProducts.targetPrice == 0
+                ? 0
+                : reqOff.targetDifference;
+            }
+          });
+        });
+        sellerOffers.totalOffer = totalOffer;
+        sellerOffers.totalCost = totalCost;
+        //   }
+        // }
+        //});
       }
     }
-  return sellerOffers;
+    return sellerOffers;
   }
 
   getSellerLine(sellerOffers, colDef, newValue, elementidValue) {
@@ -551,7 +551,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
           let requestLocations = e.requestLocations.map(reqLoc => {
             let requestProducts = reqLoc.requestProducts.map(reqPro =>
               productDetails.requestProductId == reqPro.id &&
-              reqPro.status.toLowerCase() == 'inquired'
+                reqPro.status.toLowerCase() == 'inquired'
                 ? { ...reqPro, status: 'Quoted' }
                 : reqPro
             );
@@ -597,25 +597,25 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     let totalMaxQuantity = 0;
     let maxQuantityUomId = null;
     requestLocation.requestProducts.forEach((product: any, index) => {
-        let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function (
-          object: any
-        ) {
-          return object.requestProductId == product.id && isNumeric(object.price);
+      let findRowDataOfferIndex = _.findIndex(rowData.requestOffers, function (
+        object: any
+      ) {
+        return object.requestProductId == product.id && isNumeric(object.price);
+      });
+      if (findRowDataOfferIndex != -1) {
+        applicableForItemsArray.push({
+          id: product.id,
+          name: product.productName,
+          productId: product.productId
         });
-        if (findRowDataOfferIndex != -1) {
-          applicableForItemsArray.push({
-            id: product.id,
-            name: product.productName,
-            productId: product.productId
-          });
 
-          totalMaxQuantity = totalMaxQuantity + product.maxQuantity;
-          maxQuantityUomId = product.uomId;
+        totalMaxQuantity = totalMaxQuantity + product.maxQuantity;
+        maxQuantityUomId = product.uomId;
         if (product.status != 'Stemmed') {
           productList.push(product);
         }
-          reqProList.push(product);
-        }
+        reqProList.push(product);
+      }
     });
     if (applicableForItemsArray.length > 1) {
       const allElement = { id: 0, name: 'All' };
@@ -805,8 +805,8 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       }
     } else {
       this.endpointCount += 1;
-      let response= await this.spotNegotiationService.getUomConversionFactor(payload);
-      if(response != null){
+      let response = await this.spotNegotiationService.getUomConversionFactor(payload);
+      if (response != null) {
         this.endpointCount -= 1;
         if (response?.message == 'Unauthorized') {
           return;
@@ -835,7 +835,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
       }
     }
   }
-  
+
   keyPressNumber(event) {
     const typedChar = String.fromCharCode(event.keyCode);
     if (typedChar == '.' || typedChar == ',') {
@@ -843,7 +843,7 @@ export class SpotNegotiationPriceCalcService extends BaseStoreService
     }
     if (/\d{1,6}(,\d{3})*(\.\d*)?$/.test(typedChar)) {
       return true;
-    }else {
+    } else {
       event.preventDefault();
       return false;
     }

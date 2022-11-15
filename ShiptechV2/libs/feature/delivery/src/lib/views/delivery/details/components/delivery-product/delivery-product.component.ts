@@ -619,7 +619,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   compareUomObjects(object1: any, object2: any) {
     return object1 && object2 && object1.id == object2.id;
@@ -1042,7 +1042,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     }
     if (variance != null) {
       if (conversionInfo.quantityReconciliation.name == 'Flat') {
-        if(variance < 0) { // negative
+        if (variance < 0) { // negative
           if (Math.abs(variance) <= conversionInfo.maxToleranceLimit) {
             this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
           }
@@ -1061,7 +1061,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
           (conversionInfo.maxToleranceLimit *
             Number(sellerConvertedValue)) /
           100;
-        if(variance < 0) { // negative
+        if (variance < 0) { // negative
           if (Math.abs(variance) <= maxValue) {
             this.formValues.temp.reconStatus[`product_${productIdx}`] = 2; // Unmatched Amber
           }
@@ -1093,10 +1093,10 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
       this.formValues.temp.variances[`mfm_color_${idx}`] = '';
     }
     // ckeck product_{{idx}}
-      // new color code
-      // 1. If the variance is Negative value and exceeds Max tolerance, then display the “Variance Qty” value field in “Red” colour
-      // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
-      // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
+    // new color code
+    // 1. If the variance is Negative value and exceeds Max tolerance, then display the “Variance Qty” value field in “Red” colour
+    // 2. If the variance is Negative value and less than Max tolerance, then display the “Variance Qty” value field in “Amber” colour
+    // 3. If the variance is Positive value, then display the “Variance Qty” value field in “Green” colour
 
     if (typeof this.formValues.temp.reconStatus == 'undefined') {
       this.formValues.temp.reconStatus = [];
@@ -1204,10 +1204,10 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   setDeliveredQuantityUomList(deliveryProductIndex) {
-    const bdnUom = (this.formValues.deliveryProducts[deliveryProductIndex])?this.formValues.deliveryProducts[deliveryProductIndex]
+    const bdnUom = (this.formValues.deliveryProducts[deliveryProductIndex]) ? this.formValues.deliveryProducts[deliveryProductIndex]
       .bdnQuantityUom : false;
     if (bdnUom) {
-      const verifyIfBdnUomIsMassUom = _.find(this.uomMass, function(object) {
+      const verifyIfBdnUomIsMassUom = _.find(this.uomMass, function (object: any) {
         return object.name == bdnUom.name && object.id == bdnUom.id;
       });
       if (verifyIfBdnUomIsMassUom) {
@@ -1249,7 +1249,7 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
     this.formValues.pumpingRate =
       this.formValues.deliveryProducts[prodIndex].bdnQuantityAmount /
       pumpingTime;
-    this.pumpingRateUom.forEach((val, key) => {
+    this.pumpingRateUom?.forEach((val, key) => {
       if (
         val.name.split('/')[0] ==
         this.formValues.deliveryProducts[prodIndex].bdnQuantityUom.name
@@ -1275,8 +1275,8 @@ export class DeliveryProductComponent extends DeliveryAutocompleteComponent
   }
 
   htmlDecode(str: any): any {
-    var decode = function(str) {
-      return str.replace(/&#(\d+);/g, function(match, dec) {
+    var decode = function (str) {
+      return str.replace(/&#(\d+);/g, function (match, dec) {
         return String.fromCharCode(dec);
       });
     };

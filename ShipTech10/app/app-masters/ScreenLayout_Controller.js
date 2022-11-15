@@ -1070,6 +1070,20 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 	                        }
                     	}
                     }
+                    if (vm.app_id == 'masters' && vm.screen_id == 'period') {                    
+                        setTimeout(() => {
+                            if($scope.formValues.periodType == 1){
+                                $(".edit_form_fields_Quarter_masters").hide(); 
+                                $(".edit_form_fields_Month_masters").show(); 
+                            }else if($scope.formValues.periodType == 2){
+                                $(".edit_form_fields_Month_masters").hide();  
+                                $(".edit_form_fields_Quarter_masters").show();  
+                            }else{
+                                $(".edit_form_fields_Quarter_masters").hide(); 
+                                $(".edit_form_fields_Month_masters").hide();
+                            }                       
+                        });  
+                    }
                     if (vm.app_id == 'masters' && vm.screen_id == 'additionalcost') {
 	                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit' || $scope.formValues.costType.name == 'Range' || $scope.formValues.costType.name == 'Total') {
 	                        $scope.formValues.componentType = null;
@@ -1253,14 +1267,6 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
 		    		];
 
 		    		$scope.filters = $scope.modal.filters;
-                }
-
-                if (clc == 'masters_companylist' && field_name == "OperatingCompany") {
-                    $scope.modal.filters = [
-			    		{
-			    			ColumnName: 'OperatingCompany',
-			    			Value: true
-			    		}];
                 }
 
                 if (clc == 'PreRequest') {
@@ -1587,7 +1593,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                         localStorage.setItem("uniqueModalTableIdentifier", "productsInTradeBookMapping");
                     }
                 }
-                if (filter == 'price_period_filter') {
+                if (filter == 'price_period_filter' && $scope.formValues.systemInstrument?.id != undefined) {
                     $scope.modal.filters = [
                         {
                             ColumnName: 'SystemInstrumentId',
