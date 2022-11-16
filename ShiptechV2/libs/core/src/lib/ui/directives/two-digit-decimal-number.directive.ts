@@ -28,4 +28,7 @@ export class TwoDigitDecimaNumberDirective {
   @HostListener('keydown.control.c',['$event']) onCtrlC() {
     navigator.clipboard.writeText(this.el.nativeElement.value);
   }
+  @HostListener('focus',['$event']) onFocus() {
+    this.el.nativeElement.select();
+  }
 }
