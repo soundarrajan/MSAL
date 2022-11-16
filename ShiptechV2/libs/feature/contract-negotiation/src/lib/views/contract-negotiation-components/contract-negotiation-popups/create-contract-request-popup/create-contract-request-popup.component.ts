@@ -377,6 +377,16 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.monthlyPeriod = this.generateMonthlyPeriod();
     this.yearlyPeriod = this.generateYearlyPeriod();
     this.semesterPeriod = this.generateSemesterPeriod();
+    this.localService.getMasterListData([
+      "Location",
+      "Product",
+      "QuantityType",
+      "SpecParameter",
+      "Uom" 
+
+    ]).subscribe((data) => {
+      console.log('getMasterListData::', data);
+    });
     this.contractNegotiationService.getStaticLists([
       'Location',
       'Product',
@@ -410,6 +420,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
       }
     })
+    this.addNewMainProduct(0);
   }
 
   originalOrder = (
@@ -844,6 +855,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
       }
     })*/
     console.log('mainLocations::', this.mainLocations);
+  }
+
+  onProductChange(prod) {
+
   }
 
   saveContract() {
