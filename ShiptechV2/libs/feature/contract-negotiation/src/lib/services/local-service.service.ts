@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { VesselDataModel, FuelDetails, VesselLocation, RequestDetail } from '../core/models/vessel.data.model';
 import { Router } from '@angular/router';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
+import _ from 'lodash';
 
 @Injectable({
     providedIn: 'root'
@@ -616,13 +617,14 @@ export class LocalService {
     }
 
     @ObservableException()
-    getMasterListData(items: string[]): Observable<any> {
+    getMasterListData(items: any): Observable<any> {
     let db;
     let dbReq = indexedDB.open('Shiptech', 10);
     return new Observable((observer) => {
             dbReq.onsuccess = function() {
                 db = dbReq.result;
-                let response = [];
+                let response: any;
+                let returnArr: any;
                 var objectStore;
                 var objectStoreRequest;
                 var transaction = db.transaction(['listsCache'], 'readonly');
@@ -630,11 +632,9 @@ export class LocalService {
                 objectStoreRequest = objectStore.getAll();
                 objectStoreRequest.onsuccess = function(event){
                     response = event.target.result[0].data;
-                    let returnArr = [];
                     if (response) {
-                        items.forEach((item) => {
-                            returnArr[item] = response[item];
-                        });
+                        returnArr = _.pick(response, items);
+                        console.log('returnArr::', returnArr);
                         observer.next(returnArr);
                         observer.complete();
                     }

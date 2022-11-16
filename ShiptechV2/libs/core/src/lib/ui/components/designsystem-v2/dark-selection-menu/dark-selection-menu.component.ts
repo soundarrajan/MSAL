@@ -28,9 +28,8 @@ export class DarkSelectionMenuComponent implements OnInit {
 
   @ViewChildren(MatOption) protected options: QueryList<MatOption>;
   @Input('dataSource') _dataSource$: Observable<any[]>;
-  @Input('value') selectedItem: number = 162;
+  @Input('value') selectedItem: any = '';
   @Input('columnSource') columnSource: any[];
-  @Input('hideOptions') hideOptions: boolean = false;
  
   @Output() onSelectionChange = new EventEmitter();
 
@@ -43,7 +42,7 @@ export class DarkSelectionMenuComponent implements OnInit {
     @Host() private select: MatSelect,
     private commonService: CommonService,
     private cd: ChangeDetectorRef
-  ) { console.log('child loaded'); }
+  ) {}
 
   ngOnInit(): void {
        if(this.dataSource.length === 0 && this.columnSource.length > 0) {
@@ -74,6 +73,9 @@ export class DarkSelectionMenuComponent implements OnInit {
    */
    protected initOptions(): void {
     // the observable is complete on destroy
+    this.options.changes.subscribe(options =>
+      this.registerSelectOptions(this.select, options)
+    );
     this.registerSelectOptions(this.select, this.options);
   }
 
@@ -119,8 +121,8 @@ export class DarkSelectionMenuComponent implements OnInit {
 
   onItemSelectionChange(item) {
     this.selectedItem = item.id;
-    console.log('selectedItem::', this.selectedItem);
     this.onSelectionChange.emit(item);
+    this.selectedItem = '';
   }
 
   search(value: string): void {
