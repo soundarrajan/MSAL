@@ -26,8 +26,8 @@ export class ContractRequestDetailsComponent implements OnInit {
   public newPresetsDialog: MatDialogRef<any>;
 
   public gridpageNavModel = {
-    pageSizeOptions: [5, 50, 75],
-    pageSize: 5,
+    pageSizeOptions: [25, 50, 75],
+    pageSize: 25,
     page: 1,
     totalItems: 0
   }
