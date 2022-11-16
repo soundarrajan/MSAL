@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, Inject, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { KeyValue } from '@angular/common';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -15,7 +15,6 @@ import { ContractNegotiationService } from '../../../../services/contract-negoti
 import moment from 'moment';
 import _ from 'lodash';
 import { Subject } from 'rxjs';
-import { ContentObserver } from '@angular/cdk/observers';
 
 export const MY_FORMATS = {
   parse: {
