@@ -12,7 +12,7 @@
                                 <div class="panel-title">
                                     <div>Location:</div>
                                     <div class="title" [matTooltip]="loc['location-name']"
-                                        matTooltipClass="lightTooltip">{{loc['location-id']}}</div>
+                                        matTooltipClass="lightTooltip">{{loc['location-name']}}</div>
                                 </div>
                                 <div class="counter-title">
                                     <div class="plus-icon" [matMenuTriggerFor]="clickmenu"
@@ -107,15 +107,17 @@
                                 <div class="product">
                                     <div class="title">M. Prdt:</div>
                                     <div class="w-65">
-                                        <div class="product-name" matTooltip="{{ loc['productId']}}" matTooltipClass="lightTooltip">
-                                            {{ loc['productId']}}</div>
+                                        <div class="product-name" matTooltip="{{ loc['productName']}}" matTooltipClass="lightTooltip">
+                                            {{ loc['productName']}}</div>
                                     </div>
                                 </div>
                                 <div class="b-r"></div>
                                 <div class="qty">
                                     <div class="title">Qty:</div>
-                                    <div class="qty-value" matTooltip="{{ loc['minQuantity'] }}MT Min-{{loc['maxQuantity']}}MT Max"
-                                        matTooltipClass="lightTooltip">{{ loc['minQuantity'] }}MT Min-{{loc['maxQuantity']}}MT Max </div>
+                                    <div class="qty-value" matTooltip="{{ loc['minQuantity'] }}{{ loc['contractualQuantityOption'] }} Min-{{loc['maxQuantity']}}{{ loc['contractualQuantityOption'] }} Max"
+                                        matTooltipClass="lightTooltip">
+                                        {{ loc['minQuantity'] }}{{ loc['contractualQuantityOption'] }} Min-{{loc['maxQuantity']}}{{ loc['contractualQuantityOption'] }} Max
+                                    </div>
                                 </div>
                                 <div class="b-r"></div>
                                 <div class="qty-tooltip">

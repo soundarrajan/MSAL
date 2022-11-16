@@ -54,6 +54,9 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   searchText: string = "";
   masterData: any;
   contractArray = { locations : []};
+  contractRequestId : String;
+  uniqueCounterPartyName : String; 
+  totalReqQty = {};
 
   constructor(
     private localService: LocalService,
@@ -64,32 +67,40 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    let id = this.localService.contractRequestDetails;
-
     const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
     if(contractRequestIdFromUrl && isNumeric(contractRequestIdFromUrl)){
       this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
       .subscribe(response => {
+        this.contractRequestId = response['id'];
         this.localService.contractRequestDetails = response;
-        this.localService.getMasterData().subscribe(res => {
-        this.masterData = res;
+        this.localService.getMasterListData(['Counterparty','Product','Location','Uom']).subscribe(data => {
+        this.masterData = data;
         this.contractRequestData(response);
-       });       
+        if(response['quantityDetails'].length > 0){
+         let minMaxDet =  response['quantityDetails'].find(el => el.contractualQuantityOptionId == 1);
+          let ContractualQuantityOption = this.masterData['Uom'].find(el => el.id == minMaxDet.uomId);
+          this.totalReqQty = minMaxDet;
+          this.totalReqQty['uomId'] = ContractualQuantityOption.name;
+        }
+     });      
       });
     }
     
-    //this.getJSONData();
+    this.getJSONData();
   }
-
   contractRequestData(response){
     let arrDet = {};
     let data = [];
     let arrMainDet = {};
+    let uniqueCounterParty = [];
         Object.entries(response['contractRequestProducts']).forEach(([key, res1]) => {
           this.contractArray['request-id'] = '001';
+          let location = this.masterData['Location'].find(el => el.id == res1['locationId']);
+          let mainProduct = this.masterData['Location'].find(el => el.id == res1['productId']);
+          uniqueCounterParty.push(location.name);
           Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
-           let counterparty = this.masterData['counterparty'].find(el => el.id == res2['counterpartyId']);
-           let product = this.masterData['product'].find(el => el.id == res2['productId']);
+          let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
+          let product = this.masterData['Product'].find(el => el.id == res2['productId']);           
             arrDet = {
               "check": false,
               "id": res2['id'],
@@ -136,19 +147,25 @@ export class ContractNegotiationHeaderComponent implements OnInit {
             data.push(arrDet);
             arrDet = {};
           });
+          let contractualQuantityOption = this.masterData['Uom'].find(el => el.id == res1['maxQuantityUomId']);
           arrMainDet = {
             'data' : data,
-            "location-name": "ROTTERDAM",
+            "location-name": location.name,
             "location-id": res1['locationId'],
             "port-id": "1",
             "period": "M",
             "productId" : res1['productId'],
+            "productName" : mainProduct.name,
             "minQuantity" : res1['minQuantity'],
-            "maxQuantity" : res1['maxQuantity']
+            "maxQuantity" : res1['maxQuantity'],
+            "contractualQuantityOption" : contractualQuantityOption.name
           }
           this.contractArray['locations'].push(arrMainDet);
           arrMainDet = {}; data = [];
-        });        
+        });    
+        
+        let unique = [...new Set(uniqueCounterParty)];       
+        this.uniqueCounterPartyName = unique.toString();
         this.allRequestDetails[0] = this.contractArray;
         this.store.dispatch(new ContractRequest([this.contractArray]));
     }
@@ -211,16 +228,16 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   }
 
   // ************************** Need to remove code after testing ***************** start
-  // private getJSONData() {
+   private getJSONData() {
   //   debugger;
   //   let allRequestDetails = [];
   //   var allRequestDetailsObservable = [];
-  //   var allRequestCommentsObservable = [];
+     var allRequestCommentsObservable = [];
   //   var allRequestLocationObservable = [];
-  //   this.requestOptions.forEach(r => {
-  //     allRequestDetailsObservable.push(this.localService.getContractRequestData(r.requestId));
-  //     allRequestCommentsObservable.push(this.localService.getContractNegoChatData(r.requestId));
-  //   });
+    this.requestOptions.forEach(r => {
+      //allRequestDetailsObservable.push(this.localService.getContractRequestData(r.requestId));
+      allRequestCommentsObservable.push(this.localService.getContractNegoChatData(r.requestId));
+    });
 
   //   forkJoin(allRequestDetailsObservable).subscribe(res => {
   //     debugger;
@@ -235,15 +252,17 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   //     ));
   //   })
     
-    // forkJoin(allRequestCommentsObservable).subscribe(res => {
-    //   this.allRequestComments = res;
-    //   if(this.allRequestComments[0].length > 0){
-    //     this.lightChatIcon = false;
-    //   }else{
-    //     this.lightChatIcon = true;
-    //   }
-    // })
-  //}
+    forkJoin(allRequestCommentsObservable).subscribe(res => {
+      this.allRequestComments = res;
+      if(this.allRequestComments[0].length > 0){
+        this.lightChatIcon = false;
+      }else{
+        this.lightChatIcon = true;
+      }
+      
+    });
+    
+    }
   // ************************** Need to remove code after testing ***************** end
 
 }
