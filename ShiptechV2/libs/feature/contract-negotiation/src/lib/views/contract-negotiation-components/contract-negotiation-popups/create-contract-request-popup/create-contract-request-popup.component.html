@@ -73,7 +73,7 @@
         <mat-form-field class="without-search" appearance="legacy">
           <mat-label>Start Date</mat-label>
           <input [(ngModel)]="reqObj.startDate" name="startDate" matInput (dateInput)="emptyPlanPeriod()" [matDatepicker]="startDate"
-            (focus)="startDate.open()" (dateChange)="comparisonStartdateValidator()" autocomplete="off" placeholder="Start Date">
+            (focus)="startDate.open()" (dateChange)="comparisonStartdateValidator()" autocomplete="off" placeholder="Start Date" required>
           <mat-datepicker-toggle matSuffix [for]="startDate">
             <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'" style="margin-top: -3px !important;">
             </mat-icon>

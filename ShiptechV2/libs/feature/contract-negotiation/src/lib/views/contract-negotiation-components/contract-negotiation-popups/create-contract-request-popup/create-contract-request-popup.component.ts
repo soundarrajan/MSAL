@@ -1,5 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -12,6 +11,7 @@ import { LocalService } from '../../../../services/local-service.service';
 import { SendRfqPopupComponent } from '../send-rfq-popup/send-rfq-popup.component';
 import { UpdateRfqPopupComponent } from '../update-rfq-popup/update-rfq-popup.component';
 import { ContractNegotiationService } from '../../../../services/contract-negotiation.service';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import moment from 'moment';
 import _ from 'lodash';
 import { Subject } from 'rxjs';
@@ -26,14 +26,6 @@ export const MY_FORMATS = {
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'YYYY',
   },
-};
-
-export const dateValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  const start = control.get('dateStart');
-  const end = control.get('dateEnd');
-  console.log("validators called");  
-  return start.value !== null && end.value !== null && start.value < end.value 
-  ? null :{ dateValid:true };
 };
 
 @Component({
@@ -252,12 +244,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   enableSendRfqBtn = false;
   enableUpdateRfqBtn = false;
   allowedProducts = [{ 'id': 0, 'allowedProducts': { 'id': 1, 'name': 'Product1', 'displayName': 'Product2' } }];
-  //minQuantity = "0.00";
-  //maxQuantity = "0.00";
-  tolerance = "0.00";
-  selectedUom = 'MT';
-  selectedContractualQuantity = 'Total Contract Qty';
-  uoms = ['BBL', 'GAL', 'MT'];
   contractualQuantityOptionList = [
     { name: 'Total Contract Qty' },
     { name: 'PerMonth' },
@@ -265,10 +251,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     { name: 'PerDay' },
     { name: 'PerLift' }
   ];
-  productData = ['Product1', 'Product2'];
-  public product = 'Product1';
-  specGroupData = ['specGroup1', 'specGroup2'];
-  public specGroup = 'specGroup1';
   contractQuarterColumns: string[] = ['quarter', 'blank'];
   selectedPlanPeriod = 'Quarter';
   selectedPlanValue = '';
@@ -289,21 +271,12 @@ export class CreateContractRequestPopupComponent implements OnInit {
   selectedAllowedLocation: any;
   displayedColumns: string[] = ['location'];
   showMainLocationDropdown: boolean = true;
-  //hideAllowedLocationDropdown: boolean = true;
-  hideAllowedLocationDropdown: any = {
-    0: true
-  };
+  hideAllowedLocationDropdown: any = { 0: true };
   public mainLocationName: any[] = [];
   public allowedLocationName: any[] = [];
   selectedMainLocationName;
   @ViewChild('mainLocationSelect') mainLocationSelect: MatSelect;
   @ViewChild('allowedLocationSelect') allowedLocationSelect: MatSelect;
-  locationDataSource = [
-    { location: 'Rotterdam' },
-    { location: 'Antwerp' }
-  ];
-  locationBasedSubArray = [];
-  public allowedProductsValue = [{ location: '', product: '' }];
   displayedLocColumns: string[] = ['name'];
   displayedColumns2: string[] = ['name',];
   
@@ -336,7 +309,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     sanitizer: DomSanitizer,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private contractNegotiationService: ContractNegotiationService,
-    private cdRef:ChangeDetectorRef
+    private format: TenantFormattingService
   ) {
     iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../assets/design-system-icons/shiptech/common-icons/calendar-dark.svg'));
     this.plan.quarterlyPeriod = this.generateQuarterlyPeriod();
@@ -354,7 +327,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.staticData = data;
       this.locationsList.next(data.Location);
     });
-    this.locationBasedSubArray = this.locationBasedProducts[0]?.mainProduct;
   }
 
   ngOnInit(): void {
@@ -438,7 +410,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   addNewAllowedLocation(prodIndex) {
     this.hideAllowedLocationDropdown[prodIndex] = false;
-    console.log('hideAllowedLocationDropdown', this.hideAllowedLocationDropdown);
     this.selectedAllowedLocation = '';
   }
 
@@ -449,19 +420,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   openAddAllowedLocationSelect() {
     this.allowedLocationSelect.open();
   }
-
-  /*addSelectedMainLocation(locationId) {
-    this.showMainLocationDropdown = false;
-    console.log('locationId',locationId);
-    this.mainLocations.forEach((loc) => {
-      if(loc.locationId === locationId)
-        loc.selected = true;
-      else
-        loc.selected = false;
-    })
-    console.log('mainLocations::click', this.mainLocations);
-    console.log('contractRequestProducts::click', this.reqObj.contractRequestProducts[0].locationId);
-  }*/
 
   addSelectedAllowedLocation(prodIndex, selectedAllowedLocation) {
     this.hideAllowedLocationDropdown[prodIndex] = true;
@@ -478,19 +436,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
         loc.selected = false;
       }
     })
-    console.log('allowedLocations::', this.productAllowedLocations[prodIndex]);
-    /* this.allowedLocationName.push(
-      {
-        location:selectedAllowedLocation,
-        selected:false
-      }
-      ); */
+    
     let addNewAllowedLoc = this.newAllowedLocations;
     addNewAllowedLoc.locationId = selectedAllowedLocation.id;
     this.reqObj.contractRequestProducts[prodIndex].allowedLocations.push(addNewAllowedLoc);
-    console.log('selectedAllowedLocation', selectedAllowedLocation);
     this.selectedAllowedLocation = '';
-    console.log('allowedLoc', this.reqObj.contractRequestProducts [prodIndex].allowedLocations);
   }
 
   deleteMainLocation(index) {
@@ -509,21 +459,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
       else
         loc.selected = false;
     })
-    console.log('mainLocations::click', this.mainLocations);
-    /*this.mainLocationName.forEach((element) => {
-      if (element.location == selectedProd)
-        element.selected = true;
-      else
-        element.selected = false;
-    })
-    this.locationBasedProducts.forEach((element) => {
-      if (element.mainLocationName == selectedProd.mainLocationName) {
-        element.selected = true;
-        this.locationBasedSubArray = element.mainProduct;
-      }
-      else
-        element.selected = false;
-    })*/
   }
 
   public trackByFnMainProduct(index: number, item: any): number {
@@ -545,14 +480,12 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
   setProductChange(value, prodIndex, index) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value
-    console.log(this.reqObj.contractRequestProducts[prodIndex].allowedProducts);
     this.selectedLocname = value.name;
     this.locationSelected = true;
     this.selectedLocindex = index;
   }
   setSpecGroupChange(value, prodIndex, index) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = value;
-    console.log(this.reqObj.contractRequestProducts[prodIndex].allowedProducts);
     this.selectedProname = value.pname;
     this.productSelected = true;
     this.selectedProindex = index;
@@ -562,44 +495,14 @@ export class CreateContractRequestPopupComponent implements OnInit {
     if(!this.reqObj.contractRequestProducts[prodIndex].allowedLocations[i]){
       this.reqObj.contractRequestProducts[prodIndex].allowedLocations.push(this.newAllowedLocations);
     }
-    // alert(i);
-    /*console.log('setAllowedLocations::');
-    if (value?.name?.name) {
-      this.selectedLocname = value.name.name;
-      this.locationSelected = true;
-      // this.productSelected = true;
-    }
-    else {
-      this.locationSelected = false;
-    }
-    if (value?.name?.name) {
-      this.selectedProname = value.name.name;
-      // this.locationSelected = true;
-      this.productSelected = true;
-    }
-    else {
-      this.productSelected = false;
-    }
-
-    this.selectedLocindex = i;
-    this.selectedProindex = i;*/
-
   }
   addNewAllowedProduct(prodIndex) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.push(this.newAllowedLocations);
-    console.log('contractRequestProducts::', this.reqObj.contractRequestProducts[prodIndex]);
-    /*this.locationSelected = false;
-    this.productSelected = false;
-    this.selectedLocname = "";
-    this.selectedProname = "";
-    this.selectedLocindex = 999;
-    this.selectedProindex = 999;*/
   }
   removeProductToContract(prodIndex, key) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.splice(key, 1);
   }
   sendRFQ() {
-    console.log(this.data)
     const dialogRef = this.dialog.open(SendRfqPopupComponent, {
       width: '425px',
       data: { message: 'You are sending this RFQ to all your preferred counterparty. Do you want to continue?', toastMsg: 'RFQ(s) sent successfully',createReqPopup:this.data.createReqPopup },
@@ -624,8 +527,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
         this.dialog.closeAll();
       }
     });
-
-
   }
   onSelectPlanPeriod(element) {
     this.selectedPlanPeriod = element.type;
@@ -801,7 +702,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     } else {
       this.addNewMainProduct(location.id);
     }
-    console.log('loc-id::', this.reqObj.contractRequestProducts);
   }
 
   validate(obj){
