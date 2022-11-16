@@ -1,12 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { GridOptions } from 'ag-grid-community';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from "@angular/router";
-import { AGGridMultiDataRendererComponent } from '../../../core/ag-grid-renderers/ag-grid-multi-data-renderer.component';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { FilterPreferenceModel, FilterPreferenceViewModel } from '@shiptech/core/services/user-settings/filter-preference.interface';
+import { GridOptions } from 'ag-grid-community';
 import { AGGridCellLinkRenderer } from '../../../core/ag-grid-renderers/ag-grid-cell-link-renderer.component';
-import { LocalService } from '../../../services/local-service.service';
-import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { AGGridMultiDataRendererComponent } from '../../../core/ag-grid-renderers/ag-grid-multi-data-renderer.component';
 import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
+import { LocalService } from '../../../services/local-service.service';
 
 @Component({
   selector: 'app-contract-request-details',
@@ -16,26 +18,41 @@ import { ContractNegotiationService } from '../../../services/contract-negotiati
 export class ContractRequestDetailsComponent implements OnInit {
   public switchTheme: boolean = true;
   public theme = false;
-  public gridOptions_data: GridOptions;
-  public rowCount: Number;
-  public rowSelection;
+  public gridOptions: GridOptions;
   public newScreen: boolean = true;
+  public gridId: any;
   public rowData_aggrid1 = [];
+  public filterPresets = [];
+  public newPresetsDialog: MatDialogRef<any>;
 
+  public gridpageNavModel = {
+    pageSizeOptions: [5, 50, 75],
+    pageSize: 5,
+    page: 1,
+    totalItems: 0
+  }
+  public preferenceNameFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(1),
+    Validators.pattern('^([?=_0-9a-zA-Z ]+)')
+  ]);
+
+  @ViewChild('createPreset', { static: false })
+  createPresetTemplate: TemplateRef<any>;
+
+  public defaultColFilterParams = {
+    buttons: ['reset', 'apply'],
+    precision: () => this.format.quantityPrecision
+  };
   ngOnInit(): void {
     this.localService.setTheme(this.theme);
+    this.loadPreferenceCount();
   }
   ngOnChanges() {
     // this.getGridData();
   }
   mainPage(id) {
     this.router.navigate([`contract-negotiation/requests/${id}`]);
-    /*this.router.navigate(['contract-request/request/0/details', id]);
-    if (this.router.url.includes("buyer"))
-      this.router.navigate(['shiptech/contractnegotiation/buyer/details', id]);
-    else if (this.router.url.includes("approver")) {
-      this.router.navigate(['shiptech/contractnegotiation/approver/details', id]);
-    }*/
   }
 
   filterList = {
@@ -47,64 +64,52 @@ export class ContractRequestDetailsComponent implements OnInit {
         selected: true,
         pinned: true,
         position: 0
-      },
-      {
-        name: 'All',
-        count: '12',
-        defaultFilter: false,
-        selected: false,
-        pinned: true,
-        position: 1
       }
+      // {
+      //   name: 'All',
+      //   count: '12',
+      //   defaultFilter: false,
+      //   selected: false,
+      //   pinned: true,
+      //   position: 1
+      // }
     ],
     enableMoreFilters: true,
     multiSelect: false
   }
 
 
-  dataSource: any = {
-    getRows: async (params: any) => {
-      let requestPayload = {
-        "skip": 0,
-        "take": 25,
-        "filters": {
-          "groupName": "string",
-          "columnValue": "string",
-          "columnType": 1,
-          "conditionValue": "string",
-          "values": [
-            "string"
-          ],
-          "filterOperator": 0,
-          "isComputedColumn": true,
-          "precision": 0
-        },
-        "sortList": {
-          "columnValue": "string",
-          "sortIndex": 0,
-          "sortParameter": 0,
-          "isComputedColumn": true
-        }
-      }
+  onPageChange(data: any) {
+    this.gridpageNavModel.pageSize = data.pageSize;
+    this.gridOptions.api.paginationSetPageSize(Number(this.gridpageNavModel.pageSize));
+    this.gridpageNavModel.page = 1;
+    this.gridOptions.api.paginationGoToPage(this.gridpageNavModel.page - 1);
+  }
 
-      this.contractService.getContractRequestList(requestPayload)
-        .subscribe(response => {
-          params.successCallback(response);
-        });
-    }
-  };
+  gotoPage(evt) {
+    this.gridpageNavModel.page = Number(evt.page)
+    this.gridOptions.api.paginationSetPageSize(Number(this.gridpageNavModel.pageSize));
+    this.gridOptions.api.paginationGoToPage(this.gridpageNavModel.page - 1);
 
-  constructor(public dialog: MatDialog, public router: Router, private localService: LocalService, private contractService: ContractNegotiationService) {
-    this.rowSelection = 'single';
-    this.gridOptions_data = <GridOptions>{
-      rowModelType: 'serverSide',
+  }
+
+  onPaginationChanged(any) {
+    console.log('onPaginationPageLoaded');
+  }
+
+  constructor(public dialog: MatDialog, public router: Router, private localService: LocalService, private contractService: ContractNegotiationService, private format: TenantFormattingService, public matDialog: MatDialog) {
+    this.gridOptions = <GridOptions>{
       defaultColDef: {
-        filter: true,
         sortable: true,
-        resizable: true
+        resizable: true,
+        filter: 'agTextColumnFilter',
+        filterParams: this.defaultColFilterParams
       },
       columnDefs: this.columnDef_aggrid,
       suppressCellSelection: true,
+      suppressPaginationPanel: true,
+      pagination: true,
+      paginationPageSize: this.gridpageNavModel.pageSize,
       headerHeight: 30,
       // rowHeight: 35,
       animateRows: true,
@@ -113,11 +118,9 @@ export class ContractRequestDetailsComponent implements OnInit {
       },
       rowSelection: 'single',
       onGridReady: (params) => {
-        this.gridOptions_data.api = params.api;
-        this.gridOptions_data.columnApi = params.columnApi;
-        this.gridOptions_data.api.setServerSideDatasource(this.dataSource);
-        this.gridOptions_data.api.sizeColumnsToFit();
-        this.rowCount = this.gridOptions_data.api.getDisplayedRowCount();
+        this.gridOptions.api = params.api;
+        this.gridOptions.columnApi = params.columnApi;
+        this.gridOptions.api.sizeColumnsToFit();
         params.api.sizeColumnsToFit();
         this.getGridData();
       },
@@ -153,11 +156,12 @@ export class ContractRequestDetailsComponent implements OnInit {
   }
 
   getGridData() {
-
-    // this.localService.getContractNegoRequestDetailsJSON('10001').subscribe((res: any) => {
-    //   this.rowData_aggrid1 = res;
-    //   this.gridOptions_data.api.setRowData(this.rowData_aggrid1)
-    // })
+    this.contractService.getContractRequestList()
+      .subscribe(res => {
+        this.rowData_aggrid1 = res;
+        this.gridOptions.api.setRowData(this.rowData_aggrid1)
+        this.gridpageNavModel.totalItems = this.gridOptions.api.getDisplayedRowCount();
+      });
   }
 
   private columnDef_aggrid = [
@@ -166,7 +170,7 @@ export class ContractRequestDetailsComponent implements OnInit {
       cellRenderer: "cellLinkRenderer", cellRendererParams: { onClick: this.mainPage.bind(this) }
     },
     {
-      headerName: 'Created Date', headerTooltip: 'Created Date', field: 'createdOn', width: 120, cellStyle: { 'padding-left': '15px' }
+      headerName: 'Created Date', headerTooltip: 'Created Date', field: 'createdOn', width: 120, cellStyle: { 'padding-left': '15px' }, filter: 'agDateColumnFilter', valueFormatter: params => this.format.date(params.value)
     },
     {
       headerName: 'Status', headerTooltip: 'Status', field: 'status', width: 80,
@@ -178,17 +182,16 @@ export class ContractRequestDetailsComponent implements OnInit {
       headerName: 'Buyer', headerTooltip: 'Buyer', field: 'buyer', width: 120
     },
     {
-      headerName: 'Start Date', headerTooltip: 'Start Date', field: 'startDate', width: 120
+      headerName: 'Start Date', headerTooltip: 'Start Date', field: 'startDate', width: 120, filter: 'agDateColumnFilter', valueFormatter: params => this.format.date(params.value)
     },
     {
-      headerName: 'End Date', headerTooltip: 'End Date', field: 'endDate', width: 120, cellClass: ['thick-right-border']
+      headerName: 'End Date', headerTooltip: 'End Date', field: 'endDate', width: 120, cellClass: ['thick-right-border'], filter: 'agDateColumnFilter', valueFormatter: params => this.format.date(params.value)
     },
     {
       headerName: 'Location', headerTooltip: 'Location', field: 'locations', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data border-left'], width: 120,
       cellRendererFramework: AGGridMultiDataRendererComponent,
       cellRendererParams: { label: 'locationName', type: 'chip-bg', cellClass: 'chip-rectangle' },
       valueGetter: function (params) {
-        console.log(params);
         return params.data.locations;
       }
     },
@@ -245,7 +248,63 @@ export class ContractRequestDetailsComponent implements OnInit {
   ];
 
   onResize(event) {
-    this.gridOptions_data.api.sizeColumnsToFit();
+    this.gridOptions.api.sizeColumnsToFit();
+  }
+
+  public openSaveAsPresetDialog(): void {
+    this.newPresetsDialog = this.matDialog.open(this.createPresetTemplate, {
+      width: '400px',
+      disableClose: false,
+      closeOnNavigation: true
+    });
+  }
+
+  loadPreferenceCount() {
+    this.contractService.getPreferenceCount()
+      .subscribe(response => {
+        this.filterList.filters[0].count = response['default'];
+        // this.filterList.filters[1].count = response['all'];
+      })
+
+    this.contractService.getUserFilterPresets()
+      .subscribe(res => {
+        console.log(res);
+        this.filterPresets = [];
+      })
+
+    // this.
+  }
+
+  createNewFilter() {
+    let matches = this.filterPresets.find(i => i.name.toLowerCase() != this.preferenceNameFormControl.value.toLowerCase());
+    if (!matches) {
+      const newFilter = new FilterPreferenceViewModel({
+        id: this.preferenceNameFormControl.value + Math.random(),
+        name: this.preferenceNameFormControl.value,
+        filterModels: { "contract-requestlist-filter-presets": this.gridOptions.api.getFilterModel() },
+        isPinned: true,
+        isActive: true
+      })
+      this.filterPresets.push(newFilter);
+      this.contractService.updateUserFilterPresets(this.filterPresets)
+        .subscribe(res => {
+          this.newPresetsDialog.close();
+        });
+    }
+    else {
+      alert("Name already exists")
+    }
+  }
+
+  getfilterPresets() {
+    this.contractService.getUserFilterPresets()
+      .subscribe(res => {
+        console.log(res)
+      });
+  }
+
+  setColumPreference() {
+
   }
 
 }
