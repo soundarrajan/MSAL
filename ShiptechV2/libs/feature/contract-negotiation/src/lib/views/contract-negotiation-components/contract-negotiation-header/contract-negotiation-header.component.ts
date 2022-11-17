@@ -103,7 +103,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
         Object.entries(response['contractRequestProducts']).forEach(([key, res1]) => {
           this.contractArray['request-id'] = '001';
           let location = this.masterData['Location'].find(el => el.id == res1['locationId']);
-          let mainProduct = this.masterData['Location'].find(el => el.id == res1['productId']);
+          let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
           uniqueCounterParty.push(location.name);
           Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
           this.setDisbale();
