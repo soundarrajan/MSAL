@@ -62,6 +62,7 @@ import { HeaderBreadcrumbComponent } from './views/contract-negotiation-componen
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
 
+import { SpotNegotiationService } from './../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 @NgModule({
   declarations: [
     MainContractNegotiationComponent,
@@ -142,7 +143,9 @@ import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag
       useClass: environment.production ? ContractNegotiationApi : ContractNegotiationApi
     },
     ContractNegotiationService,
-    ContractNegotiationModuleResolver
+    ContractNegotiationModuleResolver,
+    ContractNegotiationService,
+    SpotNegotiationService,
   ]
 })
 export class ContractNegotiationModule { }
