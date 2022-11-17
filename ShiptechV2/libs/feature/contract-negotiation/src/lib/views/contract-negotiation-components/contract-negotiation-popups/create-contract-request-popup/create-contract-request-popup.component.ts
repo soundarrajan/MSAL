@@ -698,13 +698,16 @@ export class CreateContractRequestPopupComponent implements OnInit {
     /* Quantity Details Validation - Start */
     let hasTotalContractualQuantity = false;
     let hasPerMonthQuantity = false;
+    let hasPerWeekQuantity = false;
     let hasPerDayQuantity = false;
     let hasPerLiftQuantity = false;
     let totalMaxQuantity = 0;
     let perMonthMaxQuantity = 0;
+    let perWeekMaxQuantity = 0;
     let perDayMaxQuantity = 0;
     let minQuantityValidationError = false;
     let perMonthQuantityValidationError = '';
+    let perWeekQuantityValidationError = '';
     let perDayQuantityValidationError = '';
     let perLiftQuantityValidationError = '';
     this.reqObj.quantityDetails.forEach((v, k) => {
@@ -731,14 +734,20 @@ export class CreateContractRequestPopupComponent implements OnInit {
           }
         }
         if (v.contractualQuantityOptionId == 3) {
+          perWeekMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
+          hasPerWeekQuantity = true;
+          if(hasPerMonthQuantity && perMonthMaxQuantity < perWeekMaxQuantity){
+            perWeekQuantityValidationError = 'Per Week Max Quantity must me smaller than Per Month Max Quantity';
+          }
+        }
+        if (v.contractualQuantityOptionId == 4) {
           perDayMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
           hasPerDayQuantity = true;
-          if(hasPerMonthQuantity && perMonthMaxQuantity < perDayMaxQuantity){
+          if(hasPerWeekQuantity && perWeekMaxQuantity < perDayMaxQuantity){
             perDayQuantityValidationError = 'Per Day Max Quantity must me smaller than Per Month Max Quantity';
           }
         }
-
-        if (v.contractualQuantityOptionId == 4) {
+        if (v.contractualQuantityOptionId == 5) {
           this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
           hasPerLiftQuantity = true;
           if(hasPerDayQuantity && perDayMaxQuantity < this.convertDecimalSeparatorStringToNumber(v.maxQuantity)){
@@ -759,7 +768,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       return false;
     }
 
-    if ((hasPerDayQuantity && !hasPerMonthQuantity) || (hasPerLiftQuantity && !hasPerDayQuantity)) {
+    if ((hasPerWeekQuantity && !hasPerMonthQuantity) || (hasPerDayQuantity && !hasPerWeekQuantity) || (hasPerLiftQuantity && !hasPerDayQuantity)) {
         this.toaster.error(
           'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift'
         );
