@@ -18,7 +18,7 @@
             <mat-menu class="hideshow no-boxshadow" #togglecolumn yPosition="below" xPosition="before"
                 [overlapTrigger]="false">
                 <div class="tbl-context no-border" [ngClass]="[theme ? 'dark-theme' : 'light-theme']">
-                    <div class="p-tb-10" id="Filter12">
+                    <div class="p-tb-10" id="Filter12" (click)="openSaveAsPresetDialog()">
                         <span>
                             <img class="p-r-10"
                                 [src]="theme ? './assets/design-system-icons/shiptech/modules/control-tower/context-save-as-dark.svg' : './assets/design-system-icons/shiptech/modules/control-tower/context-save-as-new.svg'"
@@ -54,14 +54,51 @@
     <div class="grid-container">
         <div class="agGrid-v2" style="margin: 0">
             <div style="width:100%;height: 100%;">
-                <ag-grid-angular [ngStyle]="{'height': 'calc( 100vh - 195px'}" style="width: 100%;"
-                    [gridOptions]="gridOptions_data" domLayout='normal' class="ag-theme-material ag-grid-v2 angular-v9"
-                    [rowSelection]="rowSelection" (window:resize)="onResize($event)"></ag-grid-angular>
+                <!-- <app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display> -->
+                <ag-grid-angular #agGridAngular [ngStyle]="{'height': 'calc( 100vh - 195px'}" style="width: 100%;"
+                    [gridOptions]="gridOptions" domLayout='normal' class="ag-theme-material ag-grid-v2 angular-v9"
+                    (window:resize)="onResize($event)" (paginationChanged)="onPaginationChanged($event)"
+                    [paginationPageSize]="gridpageNavModel.pageSize">
+                </ag-grid-angular>
             </div>
         </div>
     </div>
     <div class="footer">
-        <app-footer-v2 [id]="'contract-negotiation'" [singleGrid]="true" [doublePagination]="true" [rowCount]="rowCount"
-            [maxSize]="7"></app-footer-v2>
+        <app-ag-footer-new [page]="gridpageNavModel.page" [size]="gridpageNavModel.pageSize"
+            [count]="gridpageNavModel.totalItems" [singleGrid]="true" [doublePagination]="true"
+            [gridViewModel]="gridpageNavModel" id="{{ gridId }}" (pageChange)="gotoPage($event)"
+            (newPageSize)="onPageChange($event)">
+        </app-ag-footer-new>
     </div>
 </div>
+<ng-template #createPreset>
+    <div id="saveFilterPrefsPopup">
+        <h2 mat-dialog-title>
+            Name Your Preference
+            <mat-icon matSuffix id="dialogCloseButton" class="float-right" (click)="newPresetsDialog.close()">close
+            </mat-icon>
+        </h2>
+        <mat-dialog-content>
+            <div>Preference Name</div>
+            <mat-form-field class="preference-mat-field" appearance="outline">
+                <input id="name" required name="preferenceName" [formControl]="preferenceNameFormControl" matInput
+                    placeholder="Preference Name" />
+                <mat-error *ngIf="preferenceNameFormControl.touched && preferenceNameFormControl.errors?.required">
+                    Enter the filter name
+                </mat-error>
+                <mat-error *ngIf="preferenceNameFormControl.errors?.pattern">
+                    Special characters are not allowed other than underscore.
+                </mat-error>
+            </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-actions class="float-right">
+            <button mat-button [mat-dialog-close]="true" style="width: 150px; height: 40px;">
+                CANCEL
+            </button>
+            <button mat-button class="blue-button" style="width: 150px; height: 40px; margin-right: 0 !important;"
+                (click)="createNewFilter()">
+                SAVE
+            </button>
+        </mat-dialog-actions>
+    </div>
+</ng-template>

@@ -8,7 +8,7 @@ import { isObject } from 'lodash';
 @Component({
     selector: 'rating-chip-renderer',
     template: `
-    <div [ngClass]="params.cellClass"
+    <div [ngClass]="params.cellClass" *ngIf = "params.value.grating != null "
     (click)="sellerratingpopup(params.data, params.label)">
     <div  class="truncate-125 chip">
         <div class="m-lr-5">
@@ -17,7 +17,10 @@ import { isObject } from 'lodash';
         </div>
         <div>{{params.value.gprice}}</div>
     </div>
-</div>
+  </div>
+  <div  class="truncate-125 chip" *ngIf = "params.value.grating == null " style="background-color: rgb(196, 196, 196) !important">
+  <div class="m-lr-5">NA</div>
+  </div>
     `,
     styles: [
 
@@ -41,16 +44,16 @@ export class AGGridRatingChipRenderer implements ICellRendererAngularComp {
           width: '1164px',
           height: '562px',
           panelClass: 'additional-cost-popup',
-          /*data: {
-            sellerId: data.sellerCounterpartyId,
-            locationId : data.locationId,
-            popupType : type
-          }*/
           data: {
-            sellerId: 385,
-            locationId: 112,
-            popupType: type
+            sellerId: data.CounterpartyId,
+            locationId : data.LocationId,
+            popupType : type
           }
+          // data: {
+          //   sellerId: 385,
+          //   locationId: 112,
+          //   popupType: type
+          // }
         });
         dialogRef.afterClosed().subscribe(result => {
         });

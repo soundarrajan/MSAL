@@ -951,20 +951,40 @@ export class ContractNegotiationService extends BaseStoreService
     return this.contractNegotiationApi.removeFormula(requestOfferId, priceConfigId);
   }
 
-  /**
-  * @param payload
-  */
+  //Requres list
   @ObservableException()
-  getContractRequestList(payload): Observable<Blob> {
-    return this.contractNegotiationApi.contractRequestList(payload);
+  getContractRequestList(): Observable<any> {
+    return this.contractNegotiationApi.contractRequestList();
   }
 
-    /**
-  * @param contractRequestId
-  */
+  //Request detail
   @ObservableException()
-  getContractRequestDetails(contractRequestId): Observable<Blob> {
+  getContractRequestDetails(contractRequestId): Observable<any> {
     return this.contractNegotiationApi.getcontractRequestDetails(contractRequestId);
+  }
+
+  //PreferenceCount
+  @ObservableException()
+  getPreferenceCount(): Observable<any> {
+    return this.contractNegotiationApi.getContractPreferenceCount();
+  }
+
+  //UserFilterPreset
+  @ObservableException()
+  getUserFilterPresets(): Observable<any> {
+    return this.contractNegotiationApi.getContractUserFilterPreset();
+  }
+
+  //Savenew/ Update UserFilterPreset
+  @ObservableException()
+  updateUserFilterPresets(data: any): Observable<any> {
+    const payload = {
+      "Payload": {
+        "key": "contract-requestlist-filter-presets",
+        "value": (JSON.stringify(data))
+      }
+    }
+    return this.contractNegotiationApi.updateContractUserFilterPreset(payload);
   }
 
 }
