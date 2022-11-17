@@ -32,7 +32,7 @@ export class AgFooterNewComponent {
   @Input() footerWidth;
   @Input() footerPosition;
   @Input() showFooterDatepicker;
-  @Input() display : boolean = true;
+  @Input() display: boolean = true;
 
   @Output() pageChange: EventEmitter<any> = new EventEmitter();
 
@@ -82,12 +82,14 @@ export class AgFooterNewComponent {
     });
   }
 
-  onPageSizeChanged(pageSize: number){
-    this.newPageSize.emit({pageSize});
+  onPageSizeChanged(pageSize: number) {
+    this.newPageSize.emit({ pageSize });
   }
 
   onPageSizeChange(pageSize: number): void {
-    this.gridViewModel.pageSize = pageSize;
+    if (this.gridViewModel)
+      this.gridViewModel.pageSize = pageSize;
+    this.newPageSize.emit({ pageSize });
   }
 
   pageChanged(e) {

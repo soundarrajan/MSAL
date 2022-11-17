@@ -42,25 +42,25 @@
             </div>
             <div class="period-values">
               <div *ngIf="selectedPlanPeriod == 'Quarter'">
-                <div *ngFor="let item of quarterlyPeriod; let i = index;" class="plan-period-flex">
+                <div *ngFor="let item of plan.quarterlyPeriod; let i = index;" class="plan-period-flex">
                   <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
                     (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
                 </div>
               </div>
               <div *ngIf="selectedPlanPeriod == 'Month'">
-                <div *ngFor="let item of monthlyPeriod" class="plan-period-flex">
+                <div *ngFor="let item of plan.monthlyPeriod" class="plan-period-flex">
                   <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
                     (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
                 </div>
               </div>
               <div *ngIf="selectedPlanPeriod == 'Year'">
-                <div *ngFor="let item of yearlyPeriod" class="plan-period-flex">
+                <div *ngFor="let item of plan.yearlyPeriod" class="plan-period-flex">
                   <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
                     (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
                 </div>
               </div>
               <div *ngIf="selectedPlanPeriod == 'Semester'">
-                <div *ngFor="let item of semesterPeriod" class="plan-period-flex">
+                <div *ngFor="let item of plan.semesterPeriod" class="plan-period-flex">
                   <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
                     (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
                 </div>
@@ -73,7 +73,7 @@
         <mat-form-field class="without-search" appearance="legacy">
           <mat-label>Start Date</mat-label>
           <input [(ngModel)]="reqObj.startDate" name="startDate" matInput (dateInput)="emptyPlanPeriod()" [matDatepicker]="startDate"
-            (focus)="startDate.open()" (dateChange)="comparisonStartdateValidator()" autocomplete="off" placeholder="Start Date">
+            (focus)="startDate.open()" (dateChange)="comparisonStartdateValidator()" autocomplete="off" placeholder="Start Date" required>
           <mat-datepicker-toggle matSuffix [for]="startDate">
             <mat-icon matDatepickerToggleIcon [svgIcon]="'data-picker-gray'" style="margin-top: -3px !important;">
             </mat-icon>
@@ -154,7 +154,7 @@
                     <mat-form-field appearance="legacy" class="contract-quantity-select-container">
                       <mat-select [(ngModel)]="reqObj.quantityDetails[i].contractualQuantityOptionId" required disableOptionCentering
                         [panelClass]="'contract-quantity-select-container'">
-                        <mat-option *ngFor="let option of quantityTypeList" [value]="option.id">
+                        <mat-option *ngFor="let option of staticData.QuantityType" [value]="option.id">
                           <mat-radio-button [value]="option.id">
                             {{ option.name }}
                           </mat-radio-button>
@@ -180,7 +180,7 @@
                         (change)="minMaxValidation('quantityDetails', i, 'minQuantity')" />
                       </mat-form-field>
                       <div class="error-message" *ngIf="errors?.quantityDetails[i]?.minQuantity">
-                        <p *ngIf="errors.quantityDetails[i]?.minQuantity?.required">Quantity type is required</p>
+                        <p *ngIf="errors.quantityDetails[i]?.minQuantity?.required">Min is required</p>
                         <p *ngIf="errors.quantityDetails[i]?.minQuantity?.invalidNumberRange">Min should be less than max</p>
                       </div>
                     </div>
@@ -216,7 +216,7 @@
                       <mat-form-field class="without-search" appearance="legacy" style="width:60px">
                         <mat-select [(ngModel)]="reqObj.quantityDetails[i].uomId" (focus)="focus($event, 'uom')"
                           panelClass="general-info-select-container">
-                          <mat-option *ngFor="let option of uomList" [value]="option.id">
+                          <mat-option *ngFor="let option of staticData.Uom" [value]="option.id">
                               {{ option.name }}
                           </mat-option>
                         </mat-select>
@@ -279,7 +279,7 @@
         <div id="ADLOC34" class="select-product" [hidden]="!showMainLocationDropdown">
           <mat-form-field class="custom-select" appearance="fill" (click)="openAddMainLocationSelect()">
             <mat-select [disableOptionCentering]="true" #mainLocationSelect [(ngModel)]="selectedMainLocation"
-            [ngModelOptions]="{standalone: true}" placeholder="Add Location" (selectionChange)="addSelectedMainLocation(selectedMainLocation)"
+            [ngModelOptions]="{standalone: true}" placeholder="Add Location"
               panelClass="shiptech-select-product-container">
               <app-dark-selection-menu
                 [dataSource]="locationsList"
@@ -292,12 +292,13 @@
       </div>
       <div class="error-message" *ngIf="errors?.mainLocation">
         <p *ngIf="errors.mainLocation?.duplicate">Location already selected</p>
+        <p *ngIf="errors.mainLocation?.required">Atleast one main location should be selected</p>
       </div>
       <div>
-      <div class="main-product-section">
+      <div class="main-product-section" [ngStyle]="{'display': (mainLocations.length == 0) ? 'none' : 'block'}">
         <ng-container *ngFor="let prod of reqObj.contractRequestProducts; let i = index;">
-          <!--div *ngIf="reqObj.contractRequestProducts[i].locationId === selectedLocationId"-->
-          <div>
+          <div *ngIf="prod.locationId == selectedLocationId">
+          <!--div-->
             <div style="max-height: 50vh; margin-bottom: 45px;">
               <div class="main-product">
                 <div class="title">Main Product</div>
@@ -315,18 +316,52 @@
                                 <div id="PDDD39" class="custom-form-field custom-form-field-location lightTheme">
                                   <mat-form-field
                                     class="without-search contract-location-product-dropdown custom-dropdown"
-                                    appearance="legacy" style="width: 100% !important;"
-                                    (click)="openAddProdSelect()">
+                                    appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].productId" #prodSelect disableOptionCentering
-                                      [panelClass]="'shiptech-select-product-container'" required>
-                                      <app-dark-selection-menu #childProd
-                                        [dataSource]="productsList"
-                                        [columnSource]="prodColsToDispay"
-                                        (onSelectionChange)="onProductChange($event)">
-                                      </app-dark-selection-menu>
+                                    <mat-select [(value)]="reqObj.contractRequestProducts[i].productId"
+                                      [disableOptionCentering]="true" [panelClass]="'shiptech-select-product-container'" placeholder="Add Product" required>
+                                      <div [ngClass]="{
+                                                    'expand-select-location-container': expandLocation
+                                                  }">
+                                          <div class="col-md-12 header-container-product pd-0">
+                                            <div class="search-product-container col-md-10 pd-0">
+                                              <span id="PDDD41" class="search-product-lookup">
+                                              </span>
+                                              <input id="PDDD40" matInput placeholder="Search all and select a product"
+                                                class="search-product-input">
+                                            </div>
+  
+                                            <div id="PDDD42" class="col-md-2">
+                                              <img alt="Shiptech"
+                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
+                                            </div>
+                                          </div>
+                                          <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
+                                            mat-table [dataSource]="staticData.Product">
+                                            
+                                            <ng-container matColumnDef="name">
+                                              <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
+                                                Product
+                                              </th>
+                                              <td mat-cell *matCellDef="let element">
+                                                <mat-option [value]="element.id" class="no-padding"
+                                                  style="padding-left:0px; text-align: unset !important;">
+                                                  <mat-radio-button id="PDDD43" class="location-container-radio-button"
+                                                    [value]="element.id">
+                                                    {{ element.name }}
+                                                  </mat-radio-button>
+                                                </mat-option>
+                                              </td>
+                                            </ng-container>
+                                            <tr mat-header-row *matHeaderRowDef="displayedLocColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedLocColumns"></tr>
+                                          </table>
+                                        </div>
                                     </mat-select>
                                   </mat-form-field>
+                                  <div class="error-message" *ngIf="errors.contractRequestProducts[i]?.productId">
+                                    <p *ngIf="errors.contractRequestProducts[i].productId?.required">Product is required</p>
+                                  </div>
                                 </div>
                                 <div>
                                   <a class="product-divider-line remove-product-icon"
@@ -340,11 +375,8 @@
                                     <span>
 
                                     </span>
-                                    <mat-select #singleSelect disableOptionCentering
+                                    <mat-select [(value)]="reqObj.contractRequestProducts[i].specGroupId" #singleSelect disableOptionCentering
                                       [panelClass]="'shiptech-select-product-container'" required>
-                                      "
-
-                                      >
                                       <div style="margin-top: -20px;" [ngClass]="{
                                                       'expand-select-location-container': expandLocation
                                                     }">
@@ -362,7 +394,7 @@
                                           </div>
                                         </div>
                                         <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                          mat-table [dataSource]="productMasterSearchListOptions">
+                                          mat-table [dataSource]="staticData.SpecGroup">
                                           <!-- Location name Column -->
                                           <ng-container matColumnDef="name">
                                             <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
@@ -370,11 +402,11 @@
                                             </th>
                                             <td mat-cell *matCellDef="let element"
                                               style="padding-left:0px; text-align: unset !important;">
-                                              <mat-option [value]="element" class="no-padding"
+                                              <mat-option [value]="element.id" class="no-padding"
                                                 style="padding-left:0px; text-align: unset !important;">
                                                 <mat-radio-button id="SPEC48" class="location-container-radio-button"
-                                                  [value]="element">
-                                                  {{ element.pname }}
+                                                  [value]="element.id">
+                                                  {{ element.name }}
                                                 </mat-radio-button>
                                               </mat-option>
                                             </td>
@@ -393,6 +425,9 @@
                                       </div>
                                     </mat-select>
                                   </mat-form-field>
+                                  <div class="error-message" *ngIf="errors.contractRequestProducts[i]?.specGroupId">
+                                    <p *ngIf="errors.contractRequestProducts[i].specGroupId?.required">Spec Group is required</p>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -407,15 +442,20 @@
                         style="width: 64%;height: 30px !important;border: none;" placeholder="Minimum Qty"
                         appearance="legacy">
                         <mat-label>Minimum Qty</mat-label>
-                        <input matInput class="text-ellipsis" value="100">
+                        <input twoDigitDecimaNumber [(ngModel)]="reqObj.contractRequestProducts[i].minQuantity" matInput class="text-ellipsis" value="100"
+                        (change)="minMaxValidation('contractRequestProducts', i, 'minQuantity')">
                       </mat-form-field>
                       <mat-form-field class="long-label-field"
                         style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
                         appearance="legacy">
-                        <mat-select disableRipple [ngModel]="selectedUom" style="background-color: #EBECED !important;">
-                          <mat-option *ngFor="let option of uomList" [value]="option">{{option.name}}</mat-option>
+                        <mat-select disableRipple [(ngModel)]="reqObj.contractRequestProducts[i].minQuantityUomId" style="background-color: #EBECED !important;">
+                          <mat-option *ngFor="let option of staticData.Uom" [value]="option.id">{{option.name}}</mat-option>
                         </mat-select>
                       </mat-form-field>
+                      <div class="error-message" *ngIf="errors.contractRequestProducts[i]?.minQuantity">
+                        <p *ngIf="errors.contractRequestProducts[i].minQuantity?.required">Minimum Quantity is required</p>
+                        <p *ngIf="errors.contractRequestProducts[i].minQuantity?.invalidNumberRange">Minimum Quantity should be less than Maximum Quantity</p>
+                      </div>
                     </div>
                   </div>
                   <div id="custom-form-field" class=" lightTheme" style="margin:0px 10px;">
@@ -424,25 +464,32 @@
                         style="width: 64%;height: 30px !important;border: none;" placeholder="Maximum Qty"
                         appearance="legacy">
                         <mat-label>Maximum Qty</mat-label>
-                        <input matInput class="text-ellipsis" value="100">
+                        <input twoDigitDecimaNumber [(ngModel)]="reqObj.contractRequestProducts[i].maxQuantity" matInput class="text-ellipsis" value="100"
+                        (change)="minMaxValidation('contractRequestProducts', i, 'maxQuantity')">
                       </mat-form-field>
                       <mat-form-field class="long-label-field"
                         style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
                         appearance="legacy">
-                        <mat-select disableRipple [ngModel]="selectedUom" style="background-color: #EBECED !important;">
-                          <mat-option *ngFor="let uom of uoms" [value]="uom">{{uom}}</mat-option>
+                        <mat-select disableRipple [(ngModel)]="reqObj.contractRequestProducts[i].minQuantityUomId" style="background-color: #EBECED !important;">
+                          <mat-option *ngFor="let option of staticData.Uom" [value]="option.id">{{option.name}}</mat-option>
                         </mat-select>
                       </mat-form-field>
+                      <div class="error-message" *ngIf="errors.contractRequestProducts[i]?.maxQuantity">
+                        <p *ngIf="errors.contractRequestProducts[i].maxQuantity?.required">Maximum Quantity is required</p>
+                        <p *ngIf="errors.contractRequestProducts[i].maxQuantity?.invalidNumberRange">Maximum Quantity should be greater than Minimum Quantity</p>
+                      </div>
                     </div>
                   </div>
                   <div id="custom-form-field" class="lightTheme darkBorder" style="width: 198px;">
                     <mat-form-field id="PT51" class="without-search" appearance="legacy">
                       <mat-label>Pricing Type</mat-label>
-                      <mat-select required>
-                        <mat-option value="Option1">Formula</mat-option>
-                        <mat-option value="Option2">Fixed</mat-option>
+                      <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].pricingTypeId" required>
+                        <mat-option *ngFor="let option of staticData.PricingType" [value]="option.id">{{option.name}}</mat-option>
                       </mat-select>
                     </mat-form-field>
+                    <div class="error-message" *ngIf="errors.contractRequestProducts[i]?.pricingTypeId">
+                      <p *ngIf="errors.contractRequestProducts[i].pricingTypeId?.required">Pricing Type is required</p>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -450,48 +497,43 @@
                   style="width: 100% !important;">
                   <mat-form-field id="PC52" class="without-search" appearance="legacy" style="width: 100% !important;">
                     <mat-label>Pricing Comments</mat-label>
-                    <input matInput placeholder="Pricing Comments">
+                    <input [(ngModel)]="reqObj.contractRequestProducts[i].pricingComment" matInput placeholder="Pricing Comments">
                   </mat-form-field>
+                  <div class="error-message" *ngIf="errors.contractRequestProducts[i]?.pricingComment">
+                    <p *ngIf="errors.contractRequestProducts[i].pricingComment?.required">Pricing comment is required</p>
+                  </div>
                 </div>
               </div>
               <div>
                 <div class="sub-title">Allowed Products</div>
                 <div class="row multi-select-formfield">
                   <div class="col-12 no-padding">
-                    <a class="add-product-dropdown-icon" (click)="addNewAllowedProduct()"></a>
-                    <ng-container *ngFor="let contractProduct of allowedProductsValue | keyvalue: originalOrder;
-                            let i = index">
+                    <a class="add-product-dropdown-icon" (click)="addNewAllowedProduct(i)"></a>
+                    <ng-container *ngFor="let contractProduct of reqObj.contractRequestProducts[i].allowedProducts | keyvalue: originalOrder;
+                            let j = index">
                       <ng-container>
                         <div>
-                          <div class="contract-addProduct-separator" *ngIf="i > 0"></div>
+                          <div class="contract-addProduct-separator" *ngIf="j > 0"></div>
                           <div class="hoveraddedProduct">
-                            <div class="hover-remove-icon" *ngIf="allowedProductsValue.length > 1"
-                              (click)="removeProductToContract(i)"></div>
-                            <!-- <div
-                      *ngIf="allowedProductsValue.length > 1 &&
-                      ((selectedLocindex !=i || selectedProindex!=i)  && (contractProduct.value.name && contractProduct.value.pname))"
-                      class="fieldOverlayClass contract-location-with-product-container d-flex" style="margin-right:0"
-                      (click)="setAllowedLocations(contractProduct.value,i);setAllowedProducts(i)">
-                    </div> -->
-                            <div class="contract-location-with-product-container d-flex" [ngClass]="{
-                  'container-with-value': productSelected && selectedProindex==i}" style="margin-right:0"
-                              (click)="setAllowedLocations(contractProduct.value,i);setAllowedProducts(i)">
-                              <div id="ALPROD53" class="custom-form-field custom-form-field-location lightTheme" [ngClass]="{
-                    'container-location-with-value': locationSelected && selectedLocindex==i}">
+                            <div class="hover-remove-icon" *ngIf="j > 0"
+                              (click)="removeProductToContract(i, j)"></div>
+                            <div class="contract-location-with-product-container d-flex"
+                              [ngClass]="{'container-with-value': productSelected && selectedProindex==j}" style="margin-right:0"
+                              (click)="setAllowedLocations(i,j);">
+                              <div id="ALPROD53" class="custom-form-field custom-form-field-location lightTheme" 
+                                [ngClass]="{'container-location-with-value': locationSelected && selectedLocindex==j}">
                                 <mat-form-field class="without-search contract-location-product-dropdown"
                                   appearance="legacy" style="width: 100% !important; border-right: none !important;">
                                   <mat-label>Add Product</mat-label>
-                                  <mat-select [(ngModel)]="contractProduct.value.name" #locSelect disableOptionCentering
+                                  <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].productId" #locSelect disableOptionCentering
                                     [panelClass]="'shiptech-select-product-container'" (selectionChange)="
-                        setLocationChange(contractProduct.value.name,$event.value,i)">
-                                    <div [ngClass]="{
-                            'expand-select-location-container': expandLocation
-                          }">
+                                    setProductChange($event.value,i,j)">
+                                    <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                       <div class="col-md-12 header-container-product pd-0">
                                         <div class="search-product-container col-md-10 pd-0">
                                           <span id="ALPROD55" class="search-product-lookup">
                                           </span>
-                                          <input id="ALPROD54" matInput placeholder="Search all and select a product"
+                                          <input id="ALPROD54" matInput placeholder="Search and select a product"
                                             class="search-product-input">
                                         </div>
 
@@ -501,24 +543,22 @@
                                         </div>
                                       </div>
                                       <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                        mat-table [dataSource]="locationMasterSearchListOptions">
+                                        mat-table [dataSource]="staticData.Product">
                                         <!-- Location name Column -->
                                         <ng-container matColumnDef="name">
                                           <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
                                             Product
                                           </th>
                                           <td mat-cell *matCellDef="let element">
-                                            <mat-option [value]="element" class="no-padding"
+                                            <mat-option [value]="element.id" class="no-padding"
                                               style="padding-left:0px; text-align: unset !important;">
                                               <mat-radio-button id="ALPROD57" class="location-container-radio-button"
-                                                [value]="element">
+                                                [value]="element.id">
                                                 {{ element.name }}
                                               </mat-radio-button>
                                             </mat-option>
                                           </td>
                                         </ng-container>
-
-
                                         <tr mat-header-row *matHeaderRowDef="displayedLocColumns"></tr>
                                         <tr mat-row *matRowDef="let row; columns: displayedLocColumns"></tr>
                                       </table>
@@ -526,25 +566,24 @@
                                   </mat-select>
                                 </mat-form-field>
                               </div>
-                              <div [ngClass]="{
-                        'container-with-value': productSelected && selectedProindex==i}">
+                              <div [ngClass]="{'container-with-value': productSelected && selectedProindex==j}">
                                 <a class="remove-product-black-icon remove-product-icon"> </a>
                               </div>
-                              <div class="custom-form-field custom-form-field-location lightTheme" [ngClass]="{
-                        'container-product-with-value': productSelected && selectedProindex==i}">
+                              <div class="custom-form-field custom-form-field-location lightTheme" 
+                                [ngClass]="{'container-product-with-value': productSelected && selectedProindex==j}">
                                 <mat-form-field class="without-search contract-location-product-dropdown"
                                   appearance="legacy" style="width: 100% !important; border-left: none !important;">
                                   <mat-label>Spec Group</mat-label>
                                   <span></span>
-                                  <mat-select [(ngModel)]="contractProduct.value.pname" #singleSelect
+                                  <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].specGroupId" #singleSelect
                                     disableOptionCentering [panelClass]="'shiptech-select-product-container'"
-                                    (selectionChange)="setProductChange($event.value,i)">
+                                    (selectionChange)="setSpecGroupChange($event.value,i,j)">
                                     <div style="margin-top: -20px;" [ngClass]="{'expand-select-location-container': expandLocation}">
                                       <div class="col-md-12 header-container-product pd-0">
                                         <div class="search-product-container col-md-10 pd-0">
                                           <span class="search-product-lookup">
                                           </span>
-                                          <input matInput placeholder="Search all and select spec group"
+                                          <input matInput placeholder="Search and select spec group"
                                             class="search-product-input">
                                         </div>
 
@@ -554,7 +593,7 @@
                                         </div>
                                       </div>
                                       <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                        mat-table [dataSource]="productMasterSearchListOptions">
+                                        mat-table [dataSource]="staticData.SpecGroup">
                                         <!-- Location name Column -->
                                         <ng-container matColumnDef="name">
                                           <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
@@ -562,11 +601,11 @@
                                           </th>
                                           <td mat-cell *matCellDef="let element"
                                             style="padding-left:0px; text-align: unset !important;">
-                                            <mat-option [value]="element" class="no-padding"
+                                            <mat-option [value]="element.id" class="no-padding"
                                               style="padding-left:0px; text-align: unset !important;">
                                               <mat-radio-button class="location-container-radio-button"
-                                                [value]="element">
-                                                {{ element.pname }}
+                                                [value]="element.id">
+                                                {{ element.name }}
                                               </mat-radio-button>
                                             </mat-option>
                                           </td>
@@ -598,36 +637,35 @@
               <div>
                 <div class="sub-title">Allowed Locations</div>
                 <div>
-                  <a class="add-product-dropdown-icon" (click)="addNewAllowedLocation()"></a>
-                  <div class="product-tabs" *ngIf="allowedLocationName">
-                    <div class="addded-product" *ngFor="let allowedLocName of prod.allowedLocations; let i = index"
+                  <a class="add-product-dropdown-icon" (click)="addNewAllowedLocation(i)"></a>
+                  <div class="product-tabs" *ngIf="productAllowedLocations[i]">
+                    <div class="addded-product" *ngFor="let allowedLoc of productAllowedLocations[i]; let loc = index"
                       style="display: inline-flex; margin-right: 10px;">
-                      <div *ngIf="prod.allowedLocations.length > 1" class="remove-icon"
-                        (click)="deleteAllowedLocation(i)"></div>
-                      <div class="product-tab" [ngClass]="{'selected-product-container':allowedLocName.selected}"
-                        > <!-- (click)="onClick(allowedLocName.location)" -->
+                      <div *ngIf="productAllowedLocations[i][loc] > 1" class="remove-icon"
+                        (click)="deleteAllowedLocation(allowedLoc)"></div>
+                      <div class="product-tab"><!-- [ngClass]="{'selected-product-container':allowedLoc.selected}">-->
                         <div class="bootstrap-tagsinput">
                           <span class="tag label border-default text-ellipsis">
-                            {{allowedLocName.location}}
+                            {{allowedLoc.name}}
                           </span>
                         </div>
                       </div>
-                      <div class="divider" *ngIf="i != prod.allowedLocations.length - 1"></div>
+                      <div class="divider" *ngIf="loc != productAllowedLocations[i].length - 1"></div>
                     </div>
                   </div>
-                  <div class="select-product" *ngIf="!hideAllowedLocationDropdown">
+                  <div class="select-product" *ngIf="!hideAllowedLocationDropdown[i]">
                     <mat-form-field id="ALPROD58" class="custom-select" appearance="fill" (click)="openAddAllowedLocationSelect()">
                       <!-- <mat-label>Add product</mat-label> -->
                       <mat-select [disableOptionCentering]="true" #allowedLocationSelect [(ngModel)]="selectedAllowedLocation"
                         placeholder="Add Location"
-                        (selectionChange)="addSelectedAllowedLocation(prod,selectedAllowedLocation)"
+                        (selectionChange)="addSelectedAllowedLocation(i,selectedAllowedLocation)"
                         panelClass="shiptech-select-product-container">
 
                         <div class="col-md-12 header-container-product pd-0">
                           <div class="search-product-container col-md-10 pd-0">
                             <span id="ALPROD60" class="search-product-lookup">
                             </span>
-                            <input id="ALPROD59" matInput placeholder="Search all and select a location" class="search-product-input">
+                            <input id="ALPROD59" matInput placeholder="Search and select a location" class="search-product-input">
                           </div>
 
                           <div id="ALPROD61" class="col-md-2">
@@ -636,26 +674,28 @@
                           </div>
                         </div>
                         <table class="delivery-products-pop-up shiptech-delivery-popup col-md-12 no-padding" mat-table
-                          [dataSource]="locationDataSource">
+                          [dataSource]="staticData.Location">
 
                           <ng-container matColumnDef="location">
                             <th mat-header-cell *matHeaderCellDef style="padding-left:0px;"> Location </th>
                             <td mat-cell *matCellDef="let element">
-                              <mat-option [value]="element.location"
+                              <mat-option [value]="element"
                                 style="padding-left:0px; text-align: unset !important;">
-                                <mat-radio-button id="ALPROD62" [value]="element.location">
-                                  {{element.location}}
+                                <mat-radio-button id="ALPROD62" [value]="element">
+                                  {{element.name}}
                                 </mat-radio-button>
                               </mat-option>
                             </td>
                           </ng-container>
-
                           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                         </table>
-
                       </mat-select>
                     </mat-form-field>
+                    <div class="error-message" *ngIf="errors?.startDate">
+                      <p *ngIf="errors.startDate?.required">Start date is required</p>
+                      <p *ngIf="errors.startDate?.invaliddaterange">Start date should be lesser than End date</p>
+                    </div>
                   </div>
                 </div>
               </div>

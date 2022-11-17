@@ -60,6 +60,7 @@ import { MoreFilterChipComponent } from './views/contract-negotiation-components
 import { DocDragDropUploadComponent } from './views/contract-negotiation-components/doc-drag-drop-upload/doc-drag-drop-upload.component';
 import { HeaderBreadcrumbComponent } from './views/contract-negotiation-components/header-breadcrumb/header-breadcrumb.component';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
+import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
 
 @NgModule({
   declarations: [
@@ -120,7 +121,8 @@ import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
     AgGridModule.withComponents([]),
     ContractNegotiationRoutingModule,
     DSV2ComponentsModule,
-    BreadcrumbsModule
+    BreadcrumbsModule,
+    AgFooterNewModule
   ],
   entryComponents: [
     AGGridCellClickRendererComponent,
