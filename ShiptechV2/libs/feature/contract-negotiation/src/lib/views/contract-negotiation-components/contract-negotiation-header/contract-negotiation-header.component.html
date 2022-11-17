@@ -71,10 +71,10 @@
             <mat-divider vertical=true></mat-divider>
             <div class="d-flex align-items-center" style="max-width: 40%;">
                 <span class="label">Total Req. Qty: </span>
-                <span class="value">{{ totalReqQty.minQuantity }}
-                    <span class="no-bold">{{ totalReqQty.uomId }} Min -</span>
-                    {{ totalReqQty.maxQuantity}}
-                    <span class="no-bold"> {{ totalReqQty.uomId }} Max</span>
+                <span class="value">{{ totalReqQty?.minQuantity }}
+                    <span class="no-bold">{{ totalReqQty?.uomId }} Min -</span>
+                    {{ totalReqQty?.maxQuantity}}
+                    <span class="no-bold"> {{ totalReqQty?.uomId }} Max</span>
                 </span>
             </div>
             <button matTooltip="Open Request" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button

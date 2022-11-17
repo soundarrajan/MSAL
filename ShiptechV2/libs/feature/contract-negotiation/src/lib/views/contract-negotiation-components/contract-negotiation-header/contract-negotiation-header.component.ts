@@ -56,7 +56,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   contractArray = { locations : []};
   contractRequestId : String;
   uniqueCounterPartyName : String; 
-  totalReqQty = {};
+  totalReqQty;
 
   constructor(
     private localService: LocalService,
@@ -106,7 +106,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
               "id": res2['id'],
               "LocationId": res1['locationId'],
               "ProductId": res2['productId'],
-              "ProductName": product?.displayName,
+              //"ProductName": product?.displayName,
               "requestLocationId": '',
               "requestProductId": '',
               "RequestLocationSellerId": '',
@@ -118,10 +118,10 @@ export class ContractNegotiationHeaderComponent implements OnInit {
               "QuotedProductId": '',
               "SpecGroupId": '',
               "SpecGroupName": "",
-              "MinQuantity": res2['minQuantity'],
-              "MaxQuantity": res2['maxQuantity'],
+              //"MinQuantity": res2['minQuantity'],
+              //"MaxQuantity": res2['maxQuantity'],
               "UomId": '',
-              "OfferPrice": res2['offerPrice'],
+              //"OfferPrice": res2['offerPrice'],
               "PriceCurrencyId": '',
               "PriceCurrencyName": "",
               "ValidityDate": "",
