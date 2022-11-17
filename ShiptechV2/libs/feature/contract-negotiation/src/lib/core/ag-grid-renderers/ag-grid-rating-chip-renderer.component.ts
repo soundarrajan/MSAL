@@ -19,7 +19,7 @@ import { isObject } from 'lodash';
     </div>
   </div>
   <div  class="truncate-125 chip" *ngIf = "params.value.grating == null " style="background-color: rgb(196, 196, 196) !important">
-  <div class="m-lr-5">NAN</div>
+  <div class="m-lr-5">NA</div>
   </div>
     `,
     styles: [
