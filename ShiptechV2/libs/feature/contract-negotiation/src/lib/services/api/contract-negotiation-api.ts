@@ -965,7 +965,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   * @memberof ContractNegotiationApi
   */
   @ObservableException()
-  createContractRequest(requestPayload: IContractRequestDetailDto): Observable<IContractRequestDetailDto> {
+  createContractRequest(requestPayload: any): Observable<any> {
     return this.http
       .post<any>(
         `${this._shitechApiUrl}/${apiPaths.createContractRequest}`,
