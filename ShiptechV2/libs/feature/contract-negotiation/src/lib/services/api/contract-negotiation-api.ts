@@ -90,7 +90,10 @@ export const apiPaths = {
 
 export const ContractNegotiationApiPaths = {
   requestList: `api/ContractRequest/list`,
-  contractRequest: 'api/ContractRequest'
+  contractRequest: 'api/ContractRequest',
+  preferenceCount: `api/ContractRequest/getCounts`,
+  userSaveFilterPresets: 'api/user-settings/save/contract-requestlist-filter-presets',
+  userFilterPresets: 'api/user-settings/contract-requestlist-filter-presets'
 }
 
 
@@ -816,7 +819,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
         catchError((body: any) => this.handleErrorMessage(body))
       );
   }
-  
+
 
   @ObservableException()
   UpdateSellerComments(payload: any): Observable<any> {
@@ -953,7 +956,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
       );
   }
 
-  
+
 
   /**
   * Create new contract request
@@ -962,7 +965,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   * @memberof ContractNegotiationApi
   */
   @ObservableException()
-  createContractRequest(requestPayload: IContractRequestDetailDto): Observable<IContractRequestDetailDto> {
+  createContractRequest(requestPayload: any): Observable<any> {
     return this.http
       .post<any>(
         `${this._shitechApiUrl}/${apiPaths.createContractRequest}`,
@@ -1134,10 +1137,10 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   }
 
   @ObservableException()
-  contractRequestList(payload: any): Observable<any> {
+  contractRequestList(): Observable<any> {
     return this.http
-      .post<any>(
-        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.requestList}`, payload
+      .get<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.requestList}`
       )
       .pipe(
         map((body: any) => body),
@@ -1150,6 +1153,42 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     return this.http
       .get<any>(
         `${this._shitechApiUrl}/${ContractNegotiationApiPaths.contractRequest}/${contractRequestId}`)
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  getContractPreferenceCount(): Observable<any> {
+    return this.http
+      .get<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.preferenceCount}`
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  getContractUserFilterPreset(): Observable<any> {
+    return this.http
+      .get<any>(
+        `${this._infrastructureApiUrl}/${ContractNegotiationApiPaths.userFilterPresets}`
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  updateContractUserFilterPreset(payload): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._infrastructureApiUrl}/${ContractNegotiationApiPaths.userSaveFilterPresets}`, payload
+      )
       .pipe(
         map((body: any) => body),
         catchError((body: any) => this.handleErrorMessage(body))

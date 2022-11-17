@@ -4,7 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { EmailPreviewPopupComponent } from '../contract-negotiation-popups/email-preview-popup/email-preview-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { LocalService } from '../../../services/local-service.service';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
+
 import { isNumeric } from 'rxjs/internal-compatibility';
 import { CreateContractRequestPopupComponent } from '../contract-negotiation-popups/create-contract-request-popup/create-contract-request-popup.component';
 import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
@@ -30,7 +31,9 @@ export class MainPageComponent implements OnInit {
   isNegotiationClosed: boolean = true;
   public isBuyer:boolean = true;
   public rowSelected:boolean = false;
-  constructor(private _location: Location, private toaster: ToastrService, public dialog: MatDialog, private localService: LocalService, private route: ActivatedRoute, private contractService: ContractNegotiationService) { }
+  disableActionButtons : Boolean = true;
+  constructor(private _location: Location, private toaster: ToastrService, public dialog: MatDialog, private localService: LocalService,
+    private route: ActivatedRoute, private router : Router, private contractService: ContractNegotiationService) { }
 
   ngOnInit(): void {
     //const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
@@ -119,8 +122,14 @@ export class MainPageComponent implements OnInit {
       this.isBuyer = false;
     }*/
   }
+  
+  changeActionButtonStatus(val: boolean) {
+    
+    this.disableActionButtons = val;
+  }
+  
   goBack() {
-    this._location.back();
+    this.router.navigate(['/contract-negotiation/requests']);
   }
   onSubTabChange(tabs, tabIndex) {
     //alert(tabIndex);
