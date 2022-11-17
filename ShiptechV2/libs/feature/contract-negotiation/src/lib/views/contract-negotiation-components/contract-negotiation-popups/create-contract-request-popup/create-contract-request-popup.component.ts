@@ -372,8 +372,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   specGroupDataSource(prodId) {
-    let selectedProd = this.staticData.Product.find(p => p.id===prodId);
-    return this.staticData.SpecGroup.filter(p => { p.productTypeId===selectedProd.productTypeId});
+    return this.staticData.SpecGroup.filter(p => { p.databaseValue===prodId });
   }
 
   setProductChange(value, prodIndex, index) {
