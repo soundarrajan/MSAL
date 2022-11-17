@@ -180,6 +180,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
     SpecGroup: [],
     Uom: []
   };
+  mainSpecGroupOptions = [];
+  allowedSpecGroupOptions = [];
   locationsList = new Subject();
   public locColsToDispay: any[] = [
     { dispName: "Locations", propName: "name"},
@@ -206,7 +208,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       "Location",
       "Product",
       "PricingType",
-      "QuantityType",
+      "ContractualQuantityOption",
       "SpecGroup",
       "Uom"
     ]).subscribe((data) => {
@@ -364,11 +366,22 @@ export class CreateContractRequestPopupComponent implements OnInit {
     i=i+1;
     this.reqObj.contractRequestProducts.splice(i, 1);
   }
+
+  mainProductChange(prodId) {
+    this.mainSpecGroupOptions = this.specGroupDataSource(prodId);
+  }
+
+  specGroupDataSource(prodId) {
+    let selectedProd = this.staticData.Product.find(p => p.id===prodId);
+    return this.staticData.SpecGroup.filter(p => { p.productTypeId===selectedProd.productTypeId});
+  }
+
   setProductChange(value, prodIndex, index) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value
     this.selectedLocname = value.name;
     this.locationSelected = true;
     this.selectedLocindex = index;
+    this.allowedSpecGroupOptions[prodIndex][index] = this.specGroupDataSource(value);
   }
   setSpecGroupChange(value, prodIndex, index) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = value;
