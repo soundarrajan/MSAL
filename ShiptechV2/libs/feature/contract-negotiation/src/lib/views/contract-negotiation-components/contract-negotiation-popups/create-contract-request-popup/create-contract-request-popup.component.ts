@@ -197,7 +197,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     private store: Store,
     private router: Router
   ) {
-    iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../../../../../../../../assets/design-system-icons/shiptech/common-icons/calendar-dark.svg'));
+    iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../../../../../../../../v2/assets/design-system-icons/shiptech/common-icons/calendar-dark.svg'));
     this.plan.quarterlyPeriod = this.generateQuarterlyPeriod();
     this.plan.monthlyPeriod = this.generateMonthlyPeriod();
     this.plan.yearlyPeriod = this.generateYearlyPeriod();

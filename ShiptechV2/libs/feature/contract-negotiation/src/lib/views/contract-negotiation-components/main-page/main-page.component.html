@@ -8,7 +8,7 @@
                     (selectedIndexChange)="onSubTabChange(subTab,subTab.selectedIndex)">
                     <mat-tab label="Main Page">
                         <div class="" style="z-index: 9999;position: fixed; width: 100%;background-color: #F5F7FB;">
-                            <app-contract-negotiation-header [rfqSent]="rfqSent" [noQuote]="noQuote">
+                            <app-contract-negotiation-header [rfqSent]="rfqSent" [noQuote]="noQuote" (onHide)="changeActionButtonStatus($event)">
                             </app-contract-negotiation-header>
                         </div>
                         <div style="margin-top: -39px;">
@@ -33,15 +33,24 @@
                                         </div>
                                     </div>
                                     <div *ngIf="isBuyer" class="ht-100 d-flex align-items-center">
-                                        <button matTooltip="Send RFQ" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button
-                                            (click)="sendRFQ()" class="mid-blue-button cust-header-btn">Send
-                                            RFQ</button>
-                                        <button matTooltip="Send to Approve" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button
-                                            class="mid-blue-button cust-header-btn" (click)="sendToApproval()">Send
+                                        <button matTooltip="Send RFQ" matTooltipClass="lightTooltip"
+
+                                            matTooltipShowDelay="500"
+                                            mat-button [disabled] = "disableActionButtons"
+                                             
+                                                (click)="sendRFQ()" class="mid-blue-button cust-header-btn">
+                                            Send RFQ
+                                        </button>
+                                        <button matTooltip="Send to Approve" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button [disabled] = "disableActionButtons"
+                                        
+                                            class="mid-blue-button cust-header-btn"
+                                            (click)="sendToApproval()">Send
                                             to
                                             Approve</button>
-                                        <button matTooltip="Create Contract" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button
-                                            (click)="createContract()" class="mid-blue-button cust-header-btn">Create
+                                        <button matTooltip="Create Contract" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button [disabled] = "disableActionButtons"
+                                            (click)="createContract()"
+                                            
+                                            class="mid-blue-button cust-header-btn">Create
                                             Contract</button>
                                     </div>
                                     <div *ngIf="!isBuyer" class="ht-100 d-flex align-items-center">
@@ -50,6 +59,7 @@
                                             (click)="toApprove()">Approve</button>
                                         <button matTooltip="Reject" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button
                                             (click)="toReject()"
+
                                             class="w-104 mid-blue-button cust-header-btn">Reject</button>
                                     </div>
                                     <div class="menu-icon" matTooltip="View more options" matTooltipClass="lightTooltip"
