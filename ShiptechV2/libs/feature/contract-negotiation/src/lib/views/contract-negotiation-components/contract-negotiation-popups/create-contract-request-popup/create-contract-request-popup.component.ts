@@ -12,6 +12,9 @@ import { SendRfqPopupComponent } from '../send-rfq-popup/send-rfq-popup.componen
 import { UpdateRfqPopupComponent } from '../update-rfq-popup/update-rfq-popup.component';
 import { ContractNegotiationService } from '../../../../services/contract-negotiation.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
+import { Store } from '@ngxs/store';
+import { Router } from "@angular/router"
 import moment from 'moment';
 import _ from 'lodash';
 import { Subject } from 'rxjs';
@@ -43,6 +46,7 @@ export const MY_FORMATS = {
 })
 
 export class CreateContractRequestPopupComponent implements OnInit {
+  currentUserId = 0;
   /* Form Builder */
   isValidForm = false;
   mainProductCounter = 0;
@@ -88,11 +92,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
       pricingTypeId: 1,
       pricingComment: "",
       statusId: 1,
-      createdOn: "2022-10-31T10:46:32.596Z",
-      createdById: 1,
-      lastModifiedById: 1,
-      lastModifiedOn: "2022-10-31T10:46:32.596Z",
-      allowedProducts: [this.newAllowedProducts],
+      status: 'Open',
+      createdById: 0,
+      lastModifiedById: 0,
+      allowedProducts: [],
       allowedLocations: [],
       contractRequestProductOffers: []
     }
@@ -107,136 +110,17 @@ export class CreateContractRequestPopupComponent implements OnInit {
     minValidity: new Date(),
     supplierComments: "",
     statusId: 1,
-    createdOn: "2022-10-31T10:46:32.596Z",
-    createdById: 1,
-    lastModifiedById: 1,
-    lastModifiedOn: "2022-10-31T10:46:32.596Z",
+    status: 'Open',
+    createdById: 0,
+    lastModifiedById: 0,
     quantityDetails: [this.newQuantityDetails],
     contractRequestProducts: []
-  }
-
-  errors: any = {
-    startDate: { required: false, invalidDateRange: false },
-    endDate: { required: false, invalidDateRange: false },
-    quoteByDate: { required: false, invalidDateRange: false },
-    mainLocation: { required: false, duplicate: false },
-    minValidity: { required: false, invalidDateRange: false },
-    quantityDetails: [{
-      contractualQuantityOptionId: { required: false },
-      minQuantity: { required: false, invalidNumberRange: false },
-      maxQuantity: { required: false, invalidNumberRange: false },
-      uomId: { required: false },
-      tolerancePercentage: { required: false }
-    }],
-    contractRequestProducts: [{
-      productId: { required: false },
-      specGroupId: { required: false },
-      minQuantity: { required: false, invalidNumberRange: false },
-      minQuantityUomId: { required: false },
-      maxQuantity: { required: false, invalidNumberRange: false },
-      maxQuantityUomId: { required: false },
-      pricingTypeId: { required: false },
-      pricingComment: { required: false },
-      allowedProducts: { required: false, duplicate: false },
-      allowedLocation: { required: false, duplicate: false }
-    }]
-  };
-  
-  get newQuantityDetailsErrors() {
-    return {
-      contractualQuantityOptionId: { required: false },
-      minQuantity: { required: false, invalidNumberRange: false },
-      maxQuantity: { required: false, invalidNumberRange: false },
-      uomId: { required: false },
-      tolerancePercentage: { required: false }
-    }
-  }
-
-  get newContractRequestProductsErrors() {
-    return {
-      productId: { required: false },
-      specGroupId: { required: false },
-      minQuantity: { required: false, invalidNumberRange: false },
-      minQuantityUomId: { required: false },
-      maxQuantity: { required: false, invalidNumberRange: false },
-      maxQuantityUomId: { required: false },
-      pricingTypeId: { required: false },
-      pricingComment: { required: false }
-    }
-  }
-
-  setErrorsToFalse(controlName = '') {
-    if(controlName !== '') {
-      Object.keys(this.errors[controlName]).forEach(eType => this.errors[controlName][eType] = false)
-    } else {
-      Object.keys(this.errors).forEach(controls => {
-        Object.keys(controls).forEach(eType => controls[eType] = false)
-      })
-    }
-  }
-    
-  setErrors(controlName, errorType, error: boolean = true) {
-    console.log('setErrors:controlName::'+ controlName + ', errorType::'+errorType+', error::'+error);
-    if(this.errors[controlName] === undefined) this.errors[controlName];
-    this.errors[controlName][errorType] = error;
   }
 
   getLocationProducts(locationId) {
     this.reqObj.contractRequestProducts.filter((x) => x.locationId === locationId);
   }
-
-  comparisonEnddateValidator(): any {
-    this.setErrorsToFalse('startDate');
-    this.setErrorsToFalse('endDate');
-    if(!this.reqObj.startDate) this.setErrors('startDate', 'required');
-    if(!this.reqObj.endDate) this.setErrors('endDate', 'required');
-    let startnew = new Date(this.reqObj.startDate);
-    let endnew = new Date(this.reqObj.endDate);
-    if (endnew < startnew) {
-      this.setErrors('endDate', 'invalidDaterange');
-    } else {
-      this.setErrors('endDate', 'invalidDaterange', false);
-    }
-  }
-
-  comparisonStartdateValidator(): any {
-    this.setErrorsToFalse('startDate');
-    this.setErrorsToFalse('endDate');
-    if(!this.reqObj.startDate) this.setErrors('startDate', 'required');
-    if(!this.reqObj.endDate) this.setErrors('endDate', 'required');
-    let startnew = new Date(this.reqObj.startDate);
-    let endnew = new Date(this.reqObj.endDate);
-    if (startnew > endnew) {
-      this.setErrors('startDate', 'invalidDaterange');
-    } else {
-      this.setErrors('startDate', 'invalidDaterange', false);
-    }
-  }
-
-  isBeforePlanPeriod(controlName) {
-    this.setErrorsToFalse(controlName);
-    let startnew = new Date(this.reqObj.startDate);
-    let dateToCheck = new Date(this.reqObj[controlName]);
-    if(dateToCheck > startnew) {
-      this.setErrors(controlName, 'invalidDaterange');
-    } else {
-      this.setErrors(controlName, 'invalidDaterange', false);
-    }
-  }
-
-  minMaxValidation(parentProperty, index, controlName) {
-    this.errors[parentProperty][index]['minQuantity'].invalidNumberRange = false;
-    this.errors[parentProperty][index]['maxQuantity'].invalidNumberRange = false;
-    let minValue: number = +this.reqObj[parentProperty][index]['minQuantity'];
-    let maxValue: number = +this.reqObj[parentProperty][index]['maxQuantity'];
-    if(minValue != undefined && maxValue != undefined && minValue > maxValue) {
-      this.errors[parentProperty][index][controlName].invalidNumberRange = true;
-    } else {
-      this.errors[parentProperty][index][controlName].invalidNumberRange = false;
-    }
-  }
   /* Form Builder */
-
 
   @Input() rfqSent;
   enableSaveBtn = true;
@@ -309,9 +193,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
     sanitizer: DomSanitizer,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private contractNegotiationService: ContractNegotiationService,
-    private format: TenantFormattingService
+    private format: TenantFormattingService,
+    private store: Store,
+    private router: Router
   ) {
-    iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../assets/design-system-icons/shiptech/common-icons/calendar-dark.svg'));
+    iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../../../../../../../../assets/design-system-icons/shiptech/common-icons/calendar-dark.svg'));
     this.plan.quarterlyPeriod = this.generateQuarterlyPeriod();
     this.plan.monthlyPeriod = this.generateMonthlyPeriod();
     this.plan.yearlyPeriod = this.generateYearlyPeriod();
@@ -327,6 +213,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.staticData = data;
       this.locationsList.next(data.Location);
     });
+
+    this.currentUserId = this.store.selectSnapshot(UserProfileState.user).id;
   }
 
   ngOnInit(): void {
@@ -387,12 +275,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   addContractQuantityDetail() {
     this.reqObj.quantityDetails.push(this.newQuantityDetails);
-    this.errors.quantityDetails.push(this.newQuantityDetailsErrors)
   }
 
   removeContractQuantityDetail(i) {
     this.reqObj.quantityDetails.splice(i, 1);
-    this.errors.quantityDetails.splice(i, 1)
   }
 
   addAllowedProducts() {
@@ -447,8 +333,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.mainLocations.splice(index, 1);
   }
 
-  deleteAllowedLocation(index) {
-    this.allowedLocationName.splice(index, 1);
+  deleteAllowedLocation(prodIndex, index) {
+    this.reqObj.contractRequestProducts[prodIndex].allowedLocations.splice(index, 1);
+    this.productAllowedLocations[prodIndex].splice(index, 1);
   }
 
   onClick(selectedProd) {
@@ -468,10 +355,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
   addNewMainProduct(locationId) {
     this.selectedLocationId = locationId
     let newMainProduct = this.newContractRequestProducts;
-    newMainProduct.id = ++this.mainProductCounter;
+    //newMainProduct.id = ++this.mainProductCounter;
     newMainProduct.locationId = locationId;
     this.reqObj.contractRequestProducts.push(newMainProduct);
-    this.errors.contractRequestProducts.push(this.newContractRequestProductsErrors);
   }
 
   deleteNewMainProduct(i) {
@@ -491,13 +377,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.selectedProindex = index;
   }
 
-  setAllowedLocations(prodIndex, i) {
-    if(!this.reqObj.contractRequestProducts[prodIndex].allowedLocations[i]){
-      this.reqObj.contractRequestProducts[prodIndex].allowedLocations.push(this.newAllowedLocations);
-    }
-  }
   addNewAllowedProduct(prodIndex) {
-    this.reqObj.contractRequestProducts[prodIndex].allowedProducts.push(this.newAllowedLocations);
+    this.reqObj.contractRequestProducts[prodIndex].allowedProducts.push(this.newAllowedProducts);
   }
   removeProductToContract(prodIndex, key) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.splice(key, 1);
@@ -674,11 +555,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   onLocationChange(location) {
-    this.errors.mainLocation.duplicate = false;
     this.mainLocationSelect.close();
     this.selectedLocationId = location.id;
     if(this.mainLocations.findIndex((loc) => loc.locationId === location.id) !== -1){
-      this.errors.mainLocation.duplicate = true;
+      //this.errors.mainLocation.duplicate = true;
       return;
     }
     let firstLocation = (this.mainLocations.length > 0) ? false : true;
@@ -704,31 +584,257 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
   }
 
-  validate(obj){
-    this.isValidForm = true;
-    this.iterate(obj);
-  }
-  
-  iterate = (obj) => {
-    Object.keys(obj).forEach(key => {
-      if (typeof obj[key] === 'object') {
-        this.iterate(obj[key])
+  convertDecimalSeparatorStringToNumber(number) {
+    let numberToReturn = number;
+    let decimalSeparator, thousandsSeparator;
+    if (typeof number == 'string') {
+      if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
+        if (number.indexOf(',') > number.indexOf('.')) {
+          decimalSeparator = ',';
+          thousandsSeparator = '.';
+        } else {
+          thousandsSeparator = ',';
+          decimalSeparator = '.';
+        }
+        numberToReturn =
+          parseFloat(
+            number
+              .split(decimalSeparator)[0]
+              .replace(new RegExp(thousandsSeparator, 'g'), '')
+          ) + parseFloat(`0.${number.split(decimalSeparator)[1]}`);
       } else {
-        if(obj[key] === true){
-          this.isValidForm = false;
+        numberToReturn = parseFloat(number);
+      }
+    }
+    if (isNaN(numberToReturn)) {
+      numberToReturn = 0;
+    }
+    return parseFloat(numberToReturn);
+  }
+
+  assignUserIdToReqObj() {
+    this.reqObj.createdById = this.currentUserId;
+    this.reqObj.lastModifiedById = this.currentUserId;
+    if(this.reqObj.contractRequestProducts.length > 0){
+      this.reqObj.contractRequestProducts.forEach( product => {
+        product.createdById = this.currentUserId;
+        product.lastModifiedById = this.currentUserId;
+      })
+    }
+  }
+
+  testForValidDates() {
+    let notValidDates = false;
+    const start = new Date(this.reqObj.startDate);
+    const startDate = start.getTime();
+    const end = new Date(this.reqObj.endDate);
+    const endDate = end.getTime();
+    const quote = new Date(this.reqObj.quoteByDate);
+    const quoteDate = quote.getTime();
+    const minValidity = new Date(this.reqObj.minValidity);
+    const minValidityDate = minValidity.getTime();
+
+    if (startDate > endDate) {
+      this.toaster.error(
+        'Contract Start Date must be lesser than Contract End Date'
+      );
+      notValidDates = true;
+    }
+    if (startDate < quoteDate) {
+      this.toaster.error(
+        'Quote By Date should be less than  Contract Period'
+      );
+      notValidDates = true;
+    }
+    if (startDate < minValidityDate) {
+      this.toaster.error(
+        'Minimum Validity Date should be less than the Contract Period'
+      );
+      notValidDates = true;
+    }
+    return notValidDates;
+  }
+
+  showFormErrors(): boolean {
+    let message: string = 'Please fill in required fields:';
+    if (!this.reqObj.startDate) {
+      message += ' Start Date,';
+    }
+    if (!this.reqObj.endDate) {
+      message += ' End Date,';
+    }
+    if (!this.reqObj.quoteByDate) {
+      message += ' Quote By Date,';
+    }
+    if (!this.reqObj.minValidity) {
+      message += ' Minimum Validity Date,';
+    }
+    if (message != 'Please fill in required fields:') {
+      if (message[message.length - 1] == ',') {
+        message = message.substring(0, message.length - 1);
+      }
+      this.toaster.error(message);
+      return;
+    }
+
+    // Date fields Valiation
+    const notValid = this.testForValidDates();
+    if (notValid) {
+      return false;
+    }
+
+    /* Quantity Details Validation - Start */
+    let hasTotalContractualQuantity = false;
+    let hasPerMonthQuantity = false;
+    let hasPerDayQuantity = false;
+    let hasPerLiftQuantity = false;
+    let totalMaxQuantity = 0;
+    let perMonthMaxQuantity = 0;
+    let perDayMaxQuantity = 0;
+    let minQuantityValidationError = false;
+    let perMonthQuantityValidationError = '';
+    let perDayQuantityValidationError = '';
+    let perLiftQuantityValidationError = '';
+    this.reqObj.quantityDetails.forEach((v, k) => {
+      if (typeof v != 'undefined') {
+        if (typeof v.contractualQuantityOptionId != 'undefined') {
+          if (v.contractualQuantityOptionId == 1) {
+            totalMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
+            hasTotalContractualQuantity = true;
+          }
+        }
+        if (v.minQuantity && v.maxQuantity) {
+          if (
+            this.convertDecimalSeparatorStringToNumber(v.minQuantity) >
+            this.convertDecimalSeparatorStringToNumber(v.maxQuantity)
+          ) {
+            minQuantityValidationError = true;
+          }
+        }
+        if (v.contractualQuantityOptionId == 2) {
+          perMonthMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
+          hasPerMonthQuantity = true;
+          if(hasTotalContractualQuantity && totalMaxQuantity < perMonthMaxQuantity){
+            perMonthQuantityValidationError = 'Per Month Max Quantity must me smaller than Total ContractualQuantity Max Quantity';
+          }
+        }
+        if (v.contractualQuantityOptionId == 3) {
+          perDayMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
+          hasPerDayQuantity = true;
+          if(hasPerMonthQuantity && perMonthMaxQuantity < perDayMaxQuantity){
+            perDayQuantityValidationError = 'Per Day Max Quantity must me smaller than Per Month Max Quantity';
+          }
+        }
+
+        if (v.contractualQuantityOptionId == 4) {
+          this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
+          hasPerLiftQuantity = true;
+          if(hasPerDayQuantity && perDayMaxQuantity < this.convertDecimalSeparatorStringToNumber(v.maxQuantity)){
+            perLiftQuantityValidationError = 'Per Lift Max Quantity must me smaller than Per Day Max Quantity';
+          }
         }
       }
-    })
+    });
+
+    if (minQuantityValidationError) {
+      this.toaster.error('Min Quantity must be smaller than Max Quantity ');
+      return false;
+    }
+    if (!hasTotalContractualQuantity) {
+      this.toaster.error(
+        'Total ContractualQuantity option is required in Contractual Quantity section'
+      );
+      return false;
+    }
+
+    if ((hasPerDayQuantity && !hasPerMonthQuantity) || (hasPerLiftQuantity && !hasPerDayQuantity)) {
+        this.toaster.error(
+          'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift'
+        );
+        return false;
+    }
+    if (perMonthQuantityValidationError != '') {
+      this.toaster.error(perMonthQuantityValidationError);
+      return false;
+    }
+    if (perDayQuantityValidationError != '') {
+      this.toaster.error(perDayQuantityValidationError);
+      return false;
+    }
+    if (perLiftQuantityValidationError != '') {
+      this.toaster.error(perLiftQuantityValidationError);
+      return false;
+    }
+    /* Quantity Details Validation - End */
+    
+    if(this.mainLocations.length == 0){
+      this.toaster.error(
+        'Atleast one location should be added'
+      );
+      return false;
+    }
+
+    /* Contract Request Product Validation - Start */
+    message = 'Please fill in required fields:';
+    this.reqObj.contractRequestProducts.forEach((v, k) => {
+      if (typeof v != 'undefined') {
+        if (!v.productId) {
+          message += ' Product,';
+        }
+        if (!v.specGroupId) {
+          message += ' Spec Group,';
+        }
+        if (!v.pricingTypeId) {
+          message += ' Pricing Type,';
+        }
+        if (v.minQuantity && v.maxQuantity) {
+          if (
+            this.convertDecimalSeparatorStringToNumber(v.minQuantity) >
+            this.convertDecimalSeparatorStringToNumber(v.maxQuantity)
+          ) {
+            minQuantityValidationError = true;
+          }
+        }
+        if (v.allowedProducts && v.allowedProducts.length > 0) {
+          v.allowedProducts.forEach((vv, kk) => {
+            if(vv.productId && !vv.specGroupId){
+              message += 'Allowed Product -> Spec Group,'
+            }
+          });
+        }
+      }
+    });
+    if (message != 'Please fill in required fields:') {
+      if (message[message.length - 1] == ',') {
+        message = message.substring(0, message.length - 1);
+      }
+      this.toaster.error(message);
+      return false;
+    }
+    if(minQuantityValidationError){
+      this.toaster.error(
+        'Min Quantity must be smaller than Max Quantity '
+      );
+      return false;
+    }
+    /* Contract Request Product Validation - End */
+    return true;
   }
 
   saveContract() {
-    this.comparisonEnddateValidator();
-    this.comparisonStartdateValidator();
-    if(!(this.mainLocations.length > 0)) {
-      this.setErrors('mainLocations', 'required');
+    this.assignUserIdToReqObj();
+    const isValid = this.showFormErrors();
+    if (!isValid) {
+      return;
     }
-    this.validate(this.errors);
-    console.log('is planDateForm valid ? ', this.errors);
+    this.contractNegotiationService.createContractRequest(this.reqObj).subscribe( requestId => {
+      if(typeof requestId == 'number' && requestId > 0){
+        this.toaster.success('Contract Request has been created successfully');
+        this.router.navigate(['/contract-negotiation/requests/'+requestId]);
+        this.dialog.closeAll();
+      } else {
+        this.toaster.error(requestId.toString());
+      }
+    });
   }
-
 }
