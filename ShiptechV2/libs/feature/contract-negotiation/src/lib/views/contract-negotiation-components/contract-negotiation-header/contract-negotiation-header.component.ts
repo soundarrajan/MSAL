@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { LocalService } from '../../../services/local-service.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,6 +23,12 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   @ViewChild(ContractNegotiationDetailsComponent) child: ContractNegotiationDetailsComponent;
   @ViewChild(OfferChatComponent) childChat: OfferChatComponent;
   @ViewChild('ports') ports: ElementRef;
+
+  @Output() onHide = new EventEmitter<boolean>();
+    setDisbale(){
+       this.onHide.emit(false);
+    }
+    
   allRequestDetails = {};
   allRequestComments = [];
   contractReq;
@@ -57,6 +63,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   contractRequestId : String;
   uniqueCounterPartyName : String; 
   totalReqQty;
+  
 
   constructor(
     private localService: LocalService,
@@ -96,9 +103,10 @@ export class ContractNegotiationHeaderComponent implements OnInit {
         Object.entries(response['contractRequestProducts']).forEach(([key, res1]) => {
           this.contractArray['request-id'] = '001';
           let location = this.masterData['Location'].find(el => el.id == res1['locationId']);
-          let mainProduct = this.masterData['Location'].find(el => el.id == res1['productId']);
+          let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
           uniqueCounterParty.push(location.name);
           Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
+          this.setDisbale();
           let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
           let product = this.masterData['Product'].find(el => el.id == res2['productId']);           
             arrDet = {
@@ -167,6 +175,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
         let unique = [...new Set(uniqueCounterParty)];       
         this.uniqueCounterPartyName = unique.toString();
         this.allRequestDetails[0] = this.contractArray;
+        
         this.store.dispatch(new ContractRequest([this.contractArray]));
     }
 
