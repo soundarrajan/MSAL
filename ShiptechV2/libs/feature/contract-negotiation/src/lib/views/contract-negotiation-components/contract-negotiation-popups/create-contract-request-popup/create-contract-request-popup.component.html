@@ -215,7 +215,13 @@
                   <div id="TOL31" class="value">
                       <div class="custom-form-field custom-field-contract-quantity lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
-                          <input quantityFormat [(ngModel)]="reqObj.quantityDetails[i].tolerancePercentage" matInput (focus)="focus($event, 'tol')">
+                          <input quantityFormat 
+                          [(ngModel)]="reqObj.quantityDetails[i].tolerancePercentage"
+                          matInput
+                          (focus)="focus($event, 'tol')"
+                          (focusout)="focusOut($event, 'tol')"
+                          (keypress)="keyPressNumber($event)"
+                          autocomplete="off" />
                         </mat-form-field>
                       </div>
                   </div>
@@ -298,7 +304,7 @@
                                             <div class="search-product-container col-md-10 pd-0">
                                               <span id="PDDD41" class="search-product-lookup">
                                               </span>
-                                              <input id="PDDD40" [(ngModel)]="mainProductSearchBox" matInput placeholder="Search and select a product"
+                                              <input id="PDDD40" matInput placeholder="Search all and select a product"
                                                 class="search-product-input">
                                             </div>
   
@@ -308,14 +314,14 @@
                                             </div>
                                           </div>
                                           <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                            mat-table [dataSource]="productDataSource(mainProductSearchBox)">
+                                            mat-table [dataSource]="staticData.Product">
                                             
                                             <ng-container matColumnDef="name">
                                               <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
                                                 Product
                                               </th>
                                               <td mat-cell *matCellDef="let element">
-                                                <mat-option [value]="element.id" (change)="clearValue()" class="no-padding"
+                                                <mat-option [value]="element.id" class="no-padding"
                                                   style="padding-left:0px; text-align: unset !important;">
                                                   <mat-radio-button id="PDDD43" class="location-container-radio-button"
                                                     [value]="element.id">
@@ -407,7 +413,14 @@
                         style="width: 64%;height: 30px !important;border: none;" placeholder="Minimum Qty"
                         appearance="legacy">
                         <mat-label>Minimum Qty</mat-label>
-                        <input quantityFormat [(ngModel)]="reqObj.contractRequestProducts[i].minQuantity" matInput class="text-ellipsis" value="100">
+                        <input quantityFormat class="text-ellipsis" value="100"
+                          [(ngModel)]="reqObj.contractRequestProducts[i].minQuantity"
+                          matInput
+                          (focus)="focus($event, 'min')"
+                          (focusout)="focusOut($event, 'min')"
+                          (keypress)="keyPressNumber($event)"
+                          autocomplete="off"
+                          >
                       </mat-form-field>
                       <mat-form-field class="long-label-field"
                         style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
@@ -424,7 +437,14 @@
                         style="width: 64%;height: 30px !important;border: none;" placeholder="Maximum Qty"
                         appearance="legacy">
                         <mat-label>Maximum Qty</mat-label>
-                        <input quantityFormat [(ngModel)]="reqObj.contractRequestProducts[i].maxQuantity" matInput class="text-ellipsis" value="100">
+                        <input quantityFormat class="text-ellipsis" value="100"
+                          [(ngModel)]="reqObj.contractRequestProducts[i].maxQuantity"
+                          matInput
+                          (focus)="focus($event, 'max')"
+                          (focusout)="focusOut($event, 'max')"
+                          (keypress)="keyPressNumber($event)"
+                          autocomplete="off"
+                          >
                       </mat-form-field>
                       <mat-form-field class="long-label-field"
                         style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
@@ -479,7 +499,7 @@
                                         <div class="search-product-container col-md-10 pd-0">
                                           <span id="ALPROD55" class="search-product-lookup">
                                           </span>
-                                          <input id="ALPROD54" [(ngModel)]="mainProductSearchBox" matInput placeholder="Search and select a product"
+                                          <input id="ALPROD54" matInput placeholder="Search and select a product"
                                             class="search-product-input">
                                         </div>
 
@@ -489,14 +509,14 @@
                                         </div>
                                       </div>
                                       <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                        mat-table [dataSource]="productDataSource(mainProductSearchBox)">
+                                        mat-table [dataSource]="staticData.Product">
                                         <!-- Location name Column -->
                                         <ng-container matColumnDef="name">
                                           <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
                                             Product
                                           </th>
                                           <td mat-cell *matCellDef="let element">
-                                            <mat-option [value]="element.id" (change)="mainProductSearchBox='';" class="no-padding"
+                                            <mat-option [value]="element.id" class="no-padding"
                                               style="padding-left:0px; text-align: unset !important;">
                                               <mat-radio-button id="ALPROD57" class="location-container-radio-button"
                                                 [value]="element.id">
