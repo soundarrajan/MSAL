@@ -184,6 +184,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     Uom: []
   };
   mainSpecGroupOptions = [];
+  productSearchString = "";
   locationsList = new Subject();
   public locColsToDispay: any[] = [
     { dispName: "Locations", propName: "name"},

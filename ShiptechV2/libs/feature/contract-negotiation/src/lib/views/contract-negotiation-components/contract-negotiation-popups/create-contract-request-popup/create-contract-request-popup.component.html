@@ -304,7 +304,7 @@
                                             <div class="search-product-container col-md-10 pd-0">
                                               <span id="PDDD41" class="search-product-lookup">
                                               </span>
-                                              <input id="PDDD40" matInput placeholder="Search all and select a product"
+                                              <input id="PDDD40" [(ngModel)]="productSearchString" matInput placeholder="Search all and select a product"
                                                 class="search-product-input" (keydown)="$event.stopPropagation();">
                                             </div>
   
@@ -314,7 +314,7 @@
                                             </div>
                                           </div>
                                           <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                            mat-table [dataSource]="staticData.Product">
+                                            mat-table [dataSource]="productDataSource(productSearchString)">
                                             
                                             <ng-container matColumnDef="name">
                                               <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
