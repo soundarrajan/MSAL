@@ -181,7 +181,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     Uom: []
   };
   mainSpecGroupOptions = [];
-  allowedSpecGroupOptions = [];
   locationsList = new Subject();
   public locColsToDispay: any[] = [
     { dispName: "Locations", propName: "name"},
@@ -380,7 +379,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.selectedLocname = value.name;
     this.locationSelected = true;
     this.selectedLocindex = index;
-    this.allowedSpecGroupOptions[prodIndex][index] = this.specGroupDataSource(value);
   }
   setSpecGroupChange(value, prodIndex, index) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = value;
