@@ -138,7 +138,7 @@
                     <mat-form-field appearance="legacy" class="contract-quantity-select-container">
                       <mat-select [(ngModel)]="reqObj.quantityDetails[i].contractualQuantityOptionId" required disableOptionCentering
                         [panelClass]="'contract-quantity-select-container'">
-                        <mat-option *ngFor="let option of staticData.QuantityType" [value]="option.id">
+                        <mat-option *ngFor="let option of staticData.ContractualQuantityOption" [value]="option.id">
                           <mat-radio-button [value]="option.id">
                             {{ option.name }}
                           </mat-radio-button>
@@ -279,11 +279,9 @@
                                     class="without-search contract-location-product-dropdown custom-dropdown"
                                     appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select [(value)]="reqObj.contractRequestProducts[i].productId"
-                                      [disableOptionCentering]="true" [panelClass]="'shiptech-select-product-container'" placeholder="Add Product" required>
-                                      <div [ngClass]="{
-                                                    'expand-select-location-container': expandLocation
-                                                  }">
+                                    <mat-select [(value)]="reqObj.contractRequestProducts[i].productId" (selectionChange)="mainProductChange($event.value)"
+                                      disableOptionCentering [panelClass]="'shiptech-select-product-container'" required>
+                                      <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                           <div class="col-md-12 header-container-product pd-0">
                                             <div class="search-product-container col-md-10 pd-0">
                                               <span id="PDDD41" class="search-product-lookup">
@@ -352,7 +350,7 @@
                                           </div>
                                         </div>
                                         <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                          mat-table [dataSource]="staticData.SpecGroup">
+                                          mat-table [dataSource]="mainSpecGroupOptions">
                                           <!-- Location name Column -->
                                           <ng-container matColumnDef="name">
                                             <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
@@ -439,7 +437,7 @@
                   style="width: 100% !important;">
                   <mat-form-field id="PC52" class="without-search" appearance="legacy" style="width: 100% !important;">
                     <mat-label>Pricing Comments</mat-label>
-                    <input [(ngModel)]="reqObj.contractRequestProducts[i].pricingComment" matInput placeholder="Pricing Comments">
+                    <input [(ngModel)]="reqObj.contractRequestProducts[i].pricingComment" matInput placeholder="Pricing Comments/Formula details">
                   </mat-form-field>
                 </div>
               </div>
@@ -529,7 +527,7 @@
                                         </div>
                                       </div>
                                       <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                        mat-table [dataSource]="staticData.SpecGroup">
+                                        mat-table [dataSource]="specGroupDataSource(reqObj.contractRequestProducts[i].allowedProducts[j].productId)">
                                         <!-- Location name Column -->
                                         <ng-container matColumnDef="name">
                                           <th mat-header-cell *matHeaderCellDef style="padding-left:5px">

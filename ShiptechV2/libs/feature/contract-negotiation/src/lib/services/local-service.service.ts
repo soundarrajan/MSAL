@@ -634,7 +634,6 @@ export class LocalService {
                     response = event.target.result[0].data;
                     if (response) {
                         returnArr = _.pick(response, items);
-                        console.log('returnArr::', returnArr);
                         observer.next(returnArr);
                         observer.complete();
                     }

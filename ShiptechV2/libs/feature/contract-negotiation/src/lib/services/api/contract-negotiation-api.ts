@@ -850,9 +850,9 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   handleErrorMessage(body: any) {
     return of(
       body instanceof HttpErrorResponse && body.status != 401
-        ? body.error.ErrorMessage
-          ? body.error.ErrorMessage
-          : (body.error.errors) ? body.error.errors : body.error.errorMessage
+        ? body?.error?.ErrorMessage
+          ? body?.error?.ErrorMessage
+          : (body?.error?.errors) ? body?.error?.errors : body?.error?.errorMessage
         : { message: 'Unauthorized' }
     );
   }

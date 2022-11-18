@@ -18,6 +18,8 @@ import { Router } from "@angular/router"
 import moment from 'moment';
 import _ from 'lodash';
 import { Subject } from 'rxjs';
+import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 
 export const MY_FORMATS = {
   parse: {
@@ -60,7 +62,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       contractualQuantityOptionId: 1,
       minQuantity: '0.00',
       maxQuantity: '0.00',
-      uomId: 5,
+      uomId: this.defaultUOM.id,
       tolerancePercentage: '0.00'
     }
   }
@@ -86,9 +88,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       productId: '',
       specGroupId: '',
       minQuantity: '0.00',
-      minQuantityUomId: 5,
+      minQuantityUomId: this.defaultUOM.id,
       maxQuantity: '0.00',
-      maxQuantityUomId: 5,
+      maxQuantityUomId: this.defaultUOM.id,
       pricingTypeId: 1,
       pricingComment: "",
       statusId: 1,
@@ -113,7 +115,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     status: 'Open',
     createdById: 0,
     lastModifiedById: 0,
-    quantityDetails: [this.newQuantityDetails],
+    quantityDetails: [],
     contractRequestProducts: []
   }
 
@@ -180,10 +182,13 @@ export class CreateContractRequestPopupComponent implements OnInit {
     SpecGroup: [],
     Uom: []
   };
+  mainSpecGroupOptions = [];
   locationsList = new Subject();
   public locColsToDispay: any[] = [
     { dispName: "Locations", propName: "name"},
   ];
+  generalTenantSettings: any;
+  defaultUOM: any;
 
   constructor(
     private localService: LocalService,
@@ -195,7 +200,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
     private contractNegotiationService: ContractNegotiationService,
     private format: TenantFormattingService,
     private store: Store,
-    private router: Router
+    private router: Router,
+    private tenantSettingsService: TenantSettingsService,
   ) {
     iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../../../../../../../../v2/assets/design-system-icons/shiptech/common-icons/calendar-dark.svg'));
     this.plan.quarterlyPeriod = this.generateQuarterlyPeriod();
@@ -206,14 +212,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
       "Location",
       "Product",
       "PricingType",
-      "QuantityType",
+      "ContractualQuantityOption",
       "SpecGroup",
       "Uom"
     ]).subscribe((data) => {
       this.staticData = data;
       this.locationsList.next(data.Location);
     });
-
+    this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
+    this.defaultUOM = this.generalTenantSettings.tenantFormats.uom;
     this.currentUserId = this.store.selectSnapshot(UserProfileState.user).id;
   }
 
@@ -229,7 +236,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
           this.enableSendRfqBtn = false
         }
       }
-    })
+    });
+    this.reqObj.quantityDetails.push(this.newQuantityDetails);
     this.addNewMainProduct(0);
   }
 
@@ -364,6 +372,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
     i=i+1;
     this.reqObj.contractRequestProducts.splice(i, 1);
   }
+
+  mainProductChange(prodId) {
+    this.mainSpecGroupOptions = this.specGroupDataSource(prodId);
+  }
+
+  specGroupDataSource(prodId) {
+    return this.staticData.SpecGroup.filter(p => p.databaseValue === prodId );
+  }
+
   setProductChange(value, prodIndex, index) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value
     this.selectedLocname = value.name;
@@ -686,13 +703,16 @@ export class CreateContractRequestPopupComponent implements OnInit {
     /* Quantity Details Validation - Start */
     let hasTotalContractualQuantity = false;
     let hasPerMonthQuantity = false;
+    let hasPerWeekQuantity = false;
     let hasPerDayQuantity = false;
     let hasPerLiftQuantity = false;
     let totalMaxQuantity = 0;
     let perMonthMaxQuantity = 0;
+    let perWeekMaxQuantity = 0;
     let perDayMaxQuantity = 0;
     let minQuantityValidationError = false;
     let perMonthQuantityValidationError = '';
+    let perWeekQuantityValidationError = '';
     let perDayQuantityValidationError = '';
     let perLiftQuantityValidationError = '';
     this.reqObj.quantityDetails.forEach((v, k) => {
@@ -719,14 +739,20 @@ export class CreateContractRequestPopupComponent implements OnInit {
           }
         }
         if (v.contractualQuantityOptionId == 3) {
+          perWeekMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
+          hasPerWeekQuantity = true;
+          if(hasPerMonthQuantity && perMonthMaxQuantity < perWeekMaxQuantity){
+            perWeekQuantityValidationError = 'Per Week Max Quantity must me smaller than Per Month Max Quantity';
+          }
+        }
+        if (v.contractualQuantityOptionId == 4) {
           perDayMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
           hasPerDayQuantity = true;
-          if(hasPerMonthQuantity && perMonthMaxQuantity < perDayMaxQuantity){
+          if(hasPerWeekQuantity && perWeekMaxQuantity < perDayMaxQuantity){
             perDayQuantityValidationError = 'Per Day Max Quantity must me smaller than Per Month Max Quantity';
           }
         }
-
-        if (v.contractualQuantityOptionId == 4) {
+        if (v.contractualQuantityOptionId == 5) {
           this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
           hasPerLiftQuantity = true;
           if(hasPerDayQuantity && perDayMaxQuantity < this.convertDecimalSeparatorStringToNumber(v.maxQuantity)){
@@ -747,7 +773,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       return false;
     }
 
-    if ((hasPerDayQuantity && !hasPerMonthQuantity) || (hasPerLiftQuantity && !hasPerDayQuantity)) {
+    if ((hasPerWeekQuantity && !hasPerMonthQuantity) || (hasPerDayQuantity && !hasPerWeekQuantity) || (hasPerLiftQuantity && !hasPerDayQuantity)) {
         this.toaster.error(
           'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift'
         );
