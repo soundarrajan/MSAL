@@ -91,7 +91,6 @@ export class ContractNegoEmaillogComponent implements OnInit {
         rowHeight: 35,
         animateRows: false,
         onGridReady: params => {
-          debugger;
           this.gridOptions_data.api = params.api;
           this.gridOptions_data.columnApi = params.columnApi;
           params.api?.sizeColumnsToFit();
@@ -128,6 +127,20 @@ export class ContractNegoEmaillogComponent implements OnInit {
       width: 345,
       suppressSizeToFit: false,
       tooltipValueGetter: params => params.value
+    },
+    {
+      headerName: '',
+      field: 'check',
+      filter: true,
+      suppressMenu: true,
+      maxWidth: 30,
+      headerCheckboxSelection: true,
+      checkboxSelection: true,
+      resizable: false,
+      suppressNavigable: true, lockPosition: true,
+      headerClass: 'header-checkbox-center checkbox-center ag-checkbox-v2',
+      cellClass: 'p-1 checkbox-center ag-checkbox-v2',
+      cellRendererFramework: AGGridCellActionsComponent, cellRendererParams: { type: 'row-remove-icon-cell-hover' }
     },
     {
       headerName: 'Status',
@@ -175,7 +188,6 @@ export class ContractNegoEmaillogComponent implements OnInit {
     }
   }
    getEmailLogs() {
-    debugger;
     const groupRequestIdFromUrl = this.route.snapshot.params.requestId;
     this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
     this.pageSize = 25;

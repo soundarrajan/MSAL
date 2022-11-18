@@ -4,5 +4,5 @@ export enum KnownContractNegotiationRoutes {
   RequestIdParam = 'requestId',
   ContractAuditPath = 'audit-log',
   ContractDocumentsPath = 'documents',
-  ContractEmailLogPath = 'email-log',
+  ContractEmailLogPath = 'email-log'
 }
