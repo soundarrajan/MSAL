@@ -59,7 +59,6 @@ export class DarkSelectionMenuComponent implements OnInit {
     if(change._dataSource$){
       change._dataSource$.currentValue.subscribe(item => {
         this.dataSource = this.dataSourceCopy = item;
-        console.log('dark-selection-dataSource::', this.dataSource);
         this.initOptions();
       });
     }
