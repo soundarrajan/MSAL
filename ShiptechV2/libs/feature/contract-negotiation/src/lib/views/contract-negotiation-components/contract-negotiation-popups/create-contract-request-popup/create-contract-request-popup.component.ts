@@ -20,6 +20,7 @@ import _ from 'lodash';
 import { Subject } from 'rxjs';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { DecimalPipe } from '@angular/common';
 
 export const MY_FORMATS = {
   parse: {
@@ -60,10 +61,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
   get newQuantityDetails(): any {
     return {
       contractualQuantityOptionId: 1,
-      minQuantity: '0.00',
-      maxQuantity: '0.00',
+      minQuantity: this.quantityFormatValue(0),
+      maxQuantity: this.quantityFormatValue(0),
       uomId: this.defaultUOM.id,
-      tolerancePercentage: '0.00'
+      tolerancePercentage: this.quantityFormatValue(0)
     }
   }
 
@@ -87,9 +88,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       locationId: '',
       productId: '',
       specGroupId: '',
-      minQuantity: '0.00',
+      minQuantity: this.quantityFormatValue(0),
       minQuantityUomId: this.defaultUOM.id,
-      maxQuantity: '0.00',
+      maxQuantity: this.quantityFormatValue(0),
       maxQuantityUomId: this.defaultUOM.id,
       pricingTypeId: 1,
       pricingComment: "",
@@ -183,12 +184,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
     Uom: []
   };
   mainSpecGroupOptions = [];
+  productSearchString = "";
   locationsList = new Subject();
   public locColsToDispay: any[] = [
     { dispName: "Locations", propName: "name"},
   ];
-  generalTenantSettings: any;
+  generalTenantSettings: IGeneralTenantSettings;
   defaultUOM: any;
+  quantityPrecision: number = 3;
+  quantityFormat: string;
 
   constructor(
     private localService: LocalService,
@@ -197,6 +201,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(DecimalPipe) private _decimalPipe,
     private contractNegotiationService: ContractNegotiationService,
     private format: TenantFormattingService,
     private store: Store,
@@ -219,8 +224,14 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.staticData = data;
       this.locationsList.next(data.Location);
     });
-    this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
+    this.generalTenantSettings = this.tenantSettingsService.getGeneralTenantSettings();
     this.defaultUOM = this.generalTenantSettings.tenantFormats.uom;
+    this.quantityPrecision = this.format.quantityPrecision;
+    this.quantityFormat =
+      '1.' +
+      this.quantityPrecision +
+      '-' +
+      this.quantityPrecision;
     this.currentUserId = this.store.selectSnapshot(UserProfileState.user).id;
   }
 
@@ -239,6 +250,21 @@ export class CreateContractRequestPopupComponent implements OnInit {
     });
     this.reqObj.quantityDetails.push(this.newQuantityDetails);
     this.addNewMainProduct(0);
+  }
+
+  quantityFormatValue(value) {
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if (this.quantityPrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.quantityFormat);
+      }
+    }
   }
 
   originalOrder = (
@@ -279,6 +305,46 @@ export class CreateContractRequestPopupComponent implements OnInit {
       e.target.parentElement.lastChild.classList.add('remove-label');
     }
 
+  }
+  focusOut(e, type) {
+    console.log('event', e);
+    if (type == 'min') {
+      e.target.parentElement
+        .closest('.minInputFocus')
+        .classList.remove('mininputFocussed');
+      e.target.parentElement.lastChild.classList.remove('remove-label');
+      e.target.parentElement.lastChild.classList.add('add-label');
+    }
+
+    if (type == 'max') {
+      e.target.parentElement
+        .closest('.maxInputFocus')
+        .classList.remove('maxinputFocussed');
+      e.target.parentElement.lastChild.classList.remove('remove-label');
+      e.target.parentElement.lastChild.classList.add('add-label');
+    }
+
+    if (type == 'tol') {
+      e.target.parentElement
+        .closest('.tolInputFocus')
+        .classList.remove('tolinputFocussed');
+      e.target.parentElement.lastChild.classList.remove('remove-label');
+      e.target.parentElement.lastChild.classList.add('add-label');
+    }
+  }
+  // Only Number
+  keyPressNumber(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    
+    if (inp == '.' || inp == ',' || inp == '-') {
+      return true;
+    }
+    if (/^[-,+]*\d{1,6}(,\d{})*(\.\d*)?$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
 
   addContractQuantityDetail() {
@@ -601,6 +667,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
   }
 
+  productDataSource(value) {
+    if(value && value != ''){
+      let filterValue = value.toString().toLowerCase();
+    return this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue) );
+    } else {
+      return this.staticData.Product;
+    }
+  }
+
   convertDecimalSeparatorStringToNumber(number) {
     let numberToReturn = number;
     let decimalSeparator, thousandsSeparator;
@@ -715,8 +790,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
     let perWeekQuantityValidationError = '';
     let perDayQuantityValidationError = '';
     let perLiftQuantityValidationError = '';
+    message = 'Please fill in required fields:';
     this.reqObj.quantityDetails.forEach((v, k) => {
       if (typeof v != 'undefined') {
+        if (!v.minQuantity) {
+          message += ' Min,';
+        }
+        if (!v.maxQuantity) {
+          message += ' Max,';
+        }
         if (typeof v.contractualQuantityOptionId != 'undefined') {
           if (v.contractualQuantityOptionId == 1) {
             totalMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
@@ -761,7 +843,13 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
       }
     });
-
+    if (message != 'Please fill in required fields:') {
+      if (message[message.length - 1] == ',') {
+        message = message.substring(0, message.length - 1);
+      }
+      this.toaster.error(message);
+      return;
+    }
     if (minQuantityValidationError) {
       this.toaster.error('Min Quantity must be smaller than Max Quantity ');
       return false;

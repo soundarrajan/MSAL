@@ -157,7 +157,13 @@
                   <div class="value" id="MIN28">
                     <div class="custom-form-field custom-field-contract-quantity lightTheme">
                       <mat-form-field class="without-search quantity-container" appearance="legacy">
-                        <input twoDigitDecimaNumber [(ngModel)]="reqObj.quantityDetails[i].minQuantity" matInput (focus)="focus($event, 'min')" autocomplete="off"/>
+                        <input quantityFormat 
+                        [(ngModel)]="reqObj.quantityDetails[i].minQuantity"
+                        matInput
+                        (focus)="focus($event, 'min')"
+                        (focusout)="focusOut($event, 'min')"
+                        (keypress)="keyPressNumber($event)"
+                        autocomplete="off"/>
                       </mat-form-field>
                     </div>
                   </div>
@@ -172,7 +178,13 @@
                   <div id="MAX29" class="value">
                       <div class="custom-form-field custom-field-contract-quantity lightTheme">
                         <mat-form-field class="without-search quantity-container" appearance="legacy">
-                          <input twoDigitDecimaNumber [(ngModel)]="reqObj.quantityDetails[i].maxQuantity" matInput (focus)="focus($event, 'max')" autocomplete="off" />
+                          <input quantityFormat
+                          [(ngModel)]="reqObj.quantityDetails[i].maxQuantity"
+                          matInput
+                          (focus)="focus($event, 'max')"
+                          (focusout)="focusOut($event, 'max')"
+                          (keypress)="keyPressNumber($event)"
+                          autocomplete="off" />
                         </mat-form-field>
                       </div>
                   </div>
@@ -203,7 +215,13 @@
                   <div id="TOL31" class="value">
                       <div class="custom-form-field custom-field-contract-quantity lightTheme">
                         <mat-form-field class="without-search" appearance="legacy">
-                          <input twoDigitDecimaNumber [(ngModel)]="reqObj.quantityDetails[i].tolerancePercentage" matInput (focus)="focus($event, 'tol')">
+                          <input quantityFormat 
+                          [(ngModel)]="reqObj.quantityDetails[i].tolerancePercentage"
+                          matInput
+                          (focus)="focus($event, 'tol')"
+                          (focusout)="focusOut($event, 'tol')"
+                          (keypress)="keyPressNumber($event)"
+                          autocomplete="off" />
                         </mat-form-field>
                       </div>
                   </div>
@@ -286,7 +304,7 @@
                                             <div class="search-product-container col-md-10 pd-0">
                                               <span id="PDDD41" class="search-product-lookup">
                                               </span>
-                                              <input id="PDDD40" matInput placeholder="Search all and select a product"
+                                              <input id="PDDD40" [(ngModel)]="productSearchString" matInput placeholder="Search all and select a product"
                                                 class="search-product-input" (keydown)="$event.stopPropagation();">
                                             </div>
   
@@ -296,7 +314,7 @@
                                             </div>
                                           </div>
                                           <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                            mat-table [dataSource]="staticData.Product">
+                                            mat-table [dataSource]="productDataSource(productSearchString)">
                                             
                                             <ng-container matColumnDef="name">
                                               <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
@@ -395,7 +413,14 @@
                         style="width: 64%;height: 30px !important;border: none;" placeholder="Minimum Qty"
                         appearance="legacy">
                         <mat-label>Minimum Qty</mat-label>
-                        <input twoDigitDecimaNumber [(ngModel)]="reqObj.contractRequestProducts[i].minQuantity" matInput class="text-ellipsis" value="100">
+                        <input quantityFormat class="text-ellipsis" value="100"
+                          [(ngModel)]="reqObj.contractRequestProducts[i].minQuantity"
+                          matInput
+                          (focus)="focus($event, 'min')"
+                          (focusout)="focusOut($event, 'min')"
+                          (keypress)="keyPressNumber($event)"
+                          autocomplete="off"
+                          >
                       </mat-form-field>
                       <mat-form-field class="long-label-field"
                         style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
@@ -412,7 +437,14 @@
                         style="width: 64%;height: 30px !important;border: none;" placeholder="Maximum Qty"
                         appearance="legacy">
                         <mat-label>Maximum Qty</mat-label>
-                        <input twoDigitDecimaNumber [(ngModel)]="reqObj.contractRequestProducts[i].maxQuantity" matInput class="text-ellipsis" value="100">
+                        <input quantityFormat class="text-ellipsis" value="100"
+                          [(ngModel)]="reqObj.contractRequestProducts[i].maxQuantity"
+                          matInput
+                          (focus)="focus($event, 'max')"
+                          (focusout)="focusOut($event, 'max')"
+                          (keypress)="keyPressNumber($event)"
+                          autocomplete="off"
+                          >
                       </mat-form-field>
                       <mat-form-field class="long-label-field"
                         style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
