@@ -280,10 +280,8 @@
                                     appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Add Product</mat-label>
                                     <mat-select [(value)]="reqObj.contractRequestProducts[i].productId" (selectionChange)="mainProductChange($event.value)"
-                                      [disableOptionCentering]="true" [panelClass]="'shiptech-select-product-container'" placeholder="Add Product" required>
-                                      <div [ngClass]="{
-                                                    'expand-select-location-container': expandLocation
-                                                  }">
+                                      disableOptionCentering [panelClass]="'shiptech-select-product-container'" required>
+                                      <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                           <div class="col-md-12 header-container-product pd-0">
                                             <div class="search-product-container col-md-10 pd-0">
                                               <span id="PDDD41" class="search-product-lookup">
@@ -529,7 +527,7 @@
                                         </div>
                                       </div>
                                       <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                        mat-table [dataSource]="allowedSpecGroupOptions[i][j]">
+                                        mat-table [dataSource]="specGroupDataSource(reqObj.contractRequestProducts[i].allowedProducts[j].productId)">
                                         <!-- Location name Column -->
                                         <ng-container matColumnDef="name">
                                           <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
