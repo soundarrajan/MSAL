@@ -305,7 +305,7 @@
                                             <div class="search-product-container col-md-10 pd-0">
                                               <span id="PDDD41" class="search-product-lookup">
                                               </span>
-                                              <input id="PDDD40" [(ngModel)]="productSearchString" matInput placeholder="Search all and select a product"
+                                              <input id="PDDD40" [(ngModel)]="searchFilterString[i].mainProduct" matInput placeholder="Search all and select a product"
                                                 class="search-product-input" (keydown)="$event.stopPropagation();">
                                             </div>
   
@@ -315,7 +315,7 @@
                                             </div>
                                           </div>
                                           <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                            mat-table [dataSource]="productDataSource(productSearchString)">
+                                            mat-table [dataSource]="productDataSource(searchFilterString[i].mainProduct)">
                                             
                                             <ng-container matColumnDef="name">
                                               <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
@@ -500,7 +500,7 @@
                                         <div class="search-product-container col-md-10 pd-0">
                                           <span id="ALPROD55" class="search-product-lookup">
                                           </span>
-                                          <input id="ALPROD54" [(ngModel)]="allowedSearchFilter[i].allowedProducts[j].value" matInput placeholder="Search and select a product"
+                                          <input id="ALPROD54" [(ngModel)]="searchFilterString[i].allowedProducts[j].value" matInput placeholder="Search and select a product"
                                             class="search-product-input" (keydown)="$event.stopPropagation();" >
                                         </div>
 
@@ -510,7 +510,7 @@
                                         </div>
                                       </div>
                                       <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                        mat-table [dataSource]="productDataSource(allowedSearchFilter[i].allowedProducts[j].value)">
+                                        mat-table [dataSource]="productDataSource(searchFilterString[i].allowedProducts[j].value)">
                                         <!-- Location name Column -->
                                         <ng-container matColumnDef="name">
                                           <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
@@ -631,7 +631,7 @@
                           <div class="search-product-container col-md-10 pd-0">
                             <span id="ALPROD60" class="search-product-lookup">
                             </span>
-                            <input id="allowedLocInp" [(ngModel)]="allowedLocationSearch" matInput placeholder="Search and select a location" class="search-product-input" (keydown)="$event.stopPropagation();">
+                            <input id="allowedLocInp" [(ngModel)]="searchFilterString[i].allowedLocations" matInput placeholder="Search and select a location" class="search-product-input" (keydown)="$event.stopPropagation();">
                           </div>
 
                           <div id="ALPROD61" class="col-md-2">
@@ -640,7 +640,7 @@
                           </div>
                         </div>
                         <table class="delivery-products-pop-up shiptech-delivery-popup col-md-12 no-padding" mat-table
-                          [dataSource]="locationDataSource(allowedLocationSearch)">
+                          [dataSource]="locationDataSource(searchFilterString[i].allowedLocations)">
                           <ng-container matColumnDef="location">
                             <th mat-header-cell *matHeaderCellDef style="padding-left:0px;"> Location </th>
                             <td mat-cell *matCellDef="let element">

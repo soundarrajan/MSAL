@@ -187,9 +187,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     Uom: []
   };
   mainSpecGroupOptions = [];
-  productSearchString = "";
-  allowedSearchFilter: any[] = [];
-  allowedLocationSearch =  "";
+  searchFilterString: any[] = [];
   locationsList = new Subject();
   public locColsToDispay: any[] = [
     { dispName: "Locations", propName: "name"},
@@ -450,13 +448,17 @@ export class CreateContractRequestPopupComponent implements OnInit {
     //newMainProduct.id = ++this.mainProductCounter;
     newMainProduct.locationId = locationId;
     this.reqObj.contractRequestProducts.push(newMainProduct);
-    this.allowedSearchFilter.push({allowedProducts:[]});
+    this.searchFilterString.push({ 
+      mainProduct:"",
+      allowedProducts:[],
+      allowedLocations: ""
+    });
   }
 
   deleteNewMainProduct(i) {
     i=i+1;
     this.reqObj.contractRequestProducts.splice(i, 1);
-    this.allowedSearchFilter.splice(i, 1);
+    this.searchFilterString.splice(i, 1);
   }
 
   mainProductChange(prodId) {
@@ -482,11 +484,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   addNewAllowedProduct(prodIndex) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.push(this.newAllowedProducts);
-    this.allowedSearchFilter[prodIndex].allowedProducts.push({value: ''});
+    this.searchFilterString[prodIndex].allowedProducts.push({value: ''});
   }
   removeProductToContract(prodIndex, key) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.splice(key, 1);
-    this.allowedSearchFilter[prodIndex].splice(key, 1);
+    this.searchFilterString[prodIndex].splice(key, 1);
   }
   sendRFQ() {
     const dialogRef = this.dialog.open(SendRfqPopupComponent, {
