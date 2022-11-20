@@ -140,6 +140,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
   ];
   contractQuarterColumns: string[] = ['quarter', 'blank'];
   selectedPlanPeriod = 'Quarter';
+  planStartDate: any;
+  planEndDate: any;
+  planLabel: any;
   selectedPlanValue = '';
   planPeriod = [
     { 'type': 'Quarter', 'selected': true },
@@ -185,6 +188,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
   };
   mainSpecGroupOptions = [];
   productSearchString = "";
+  allowedSearchFilter: any[] = [];
+  allowedLocationSearch =  "";
   locationsList = new Subject();
   public locColsToDispay: any[] = [
     { dispName: "Locations", propName: "name"},
@@ -250,6 +255,24 @@ export class CreateContractRequestPopupComponent implements OnInit {
     });
     this.reqObj.quantityDetails.push(this.newQuantityDetails);
     this.addNewMainProduct(0);
+
+    this.planStartDate = new Date(this.plan.quarterlyPeriod[0].startDate);
+    this.planEndDate = new Date(this.plan.quarterlyPeriod[0].endDate);
+    this.planLabel = this.plan.quarterlyPeriod[0].label;
+    this.applyPlanPeriod();
+    this.reqObj.quoteByDate = this.reqObj.minValidity = this.getPreviousDay(this.planStartDate);
+  }
+
+  applyPlanPeriod(){
+    this.reqObj.startDate = this.planStartDate;
+    this.reqObj.endDate = this.planEndDate;
+    this.selectedPlanValue = this.planLabel;
+  }
+
+  getPreviousDay(date = new Date()) {
+    const previous = new Date(date.getTime());
+    previous.setDate(date.getDate() - 1);
+    return previous;
   }
 
   quantityFormatValue(value) {
@@ -307,7 +330,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   }
   focusOut(e, type) {
-    console.log('event', e);
     if (type == 'min') {
       e.target.parentElement
         .closest('.minInputFocus')
@@ -334,12 +356,16 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
   // Only Number
   keyPressNumber(event) {
+    let currStr = event.srcElement.value;
     var inp = String.fromCharCode(event.keyCode);
-    
+    if(inp == "." && currStr.includes(".")){
+      return false;
+    }
     if (inp == '.' || inp == ',' || inp == '-') {
       return true;
     }
-    if (/^[-,+]*\d{1,6}(,\d{})*(\.\d*)?$/.test(inp)) {
+    event.srcElement.value = (currStr.indexOf(".") >= 0) ? (currStr.substr(0, currStr.indexOf(".")) + currStr.substr(currStr.indexOf("."), this.quantityPrecision)) : currStr;
+    if (/^[0-9]+\.?[0-9]*$/.test(inp)) {
       return true;
     } else {
       event.preventDefault();
@@ -353,14 +379,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   removeContractQuantityDetail(i) {
     this.reqObj.quantityDetails.splice(i, 1);
-  }
-
-  addAllowedProducts() {
-    this.allowedProducts.push({ 'id': 0, 'allowedProducts': { 'id': 1, 'name': 'Manifold', 'displayName': 'Manifold' } });
-  }
-
-  removeAllowedProducts(index) {
-    this.allowedProducts.splice(index, 1);
   }
 
   addNewMainLocation() {
@@ -432,11 +450,13 @@ export class CreateContractRequestPopupComponent implements OnInit {
     //newMainProduct.id = ++this.mainProductCounter;
     newMainProduct.locationId = locationId;
     this.reqObj.contractRequestProducts.push(newMainProduct);
+    this.allowedSearchFilter.push({allowedProducts:[]});
   }
 
   deleteNewMainProduct(i) {
     i=i+1;
     this.reqObj.contractRequestProducts.splice(i, 1);
+    this.allowedSearchFilter.splice(i, 1);
   }
 
   mainProductChange(prodId) {
@@ -462,9 +482,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   addNewAllowedProduct(prodIndex) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.push(this.newAllowedProducts);
+    this.allowedSearchFilter[prodIndex].allowedProducts.push({value: ''});
   }
   removeProductToContract(prodIndex, key) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.splice(key, 1);
+    this.allowedSearchFilter[prodIndex].splice(key, 1);
   }
   sendRFQ() {
     const dialogRef = this.dialog.open(SendRfqPopupComponent, {
@@ -509,56 +531,56 @@ export class CreateContractRequestPopupComponent implements OnInit {
       let loopIndex = 0;
       this.plan.quarterlyPeriod.filter((i) => {
         if (i.id <= item.id) {
-          if(loopIndex == 0) this.reqObj.startDate = new Date(i.startDate);
+          if(loopIndex == 0) this.planStartDate = new Date(i.startDate);
           i.selected = true;
-          this.reqObj.endDate = new Date(i.endDate);
+          this.planEndDate = new Date(i.endDate);
           selectedQuarters.push(i.label);
           loopIndex++;
         } else i.selected = false;
       })
-      this.selectedPlanValue = selectedQuarters.join();
+      this.planLabel = selectedQuarters.join();
     }
     if (selectedPlanPeriod == 'Month') {
       let selectedMonths = [];
       let loopIndex = 0;
       this.plan.monthlyPeriod.filter((i) => {
         if (i.id <= item.id) {
-          if(loopIndex == 0) this.reqObj.startDate = new Date(i.startDate);
+          if(loopIndex == 0) this.planStartDate = new Date(i.startDate);
           i.selected = true;
-          this.reqObj.endDate = new Date(i.endDate);
+          this.planEndDate = new Date(i.endDate);
           selectedMonths.push(i.label);
           loopIndex++;
         } else i.selected = false;
       })
-      this.selectedPlanValue = selectedMonths.join();
+      this.planLabel = selectedMonths.join();
     }
     if (selectedPlanPeriod == 'Year') {
       let selectedYears = [];
       let loopIndex = 0;
       this.plan.yearlyPeriod.filter((i) => {
         if (i.id <= item.id) {
-          if(loopIndex == 0) this.reqObj.startDate = new Date(i.startDate);
+          if(loopIndex == 0) this.planStartDate = new Date(i.startDate);
           i.selected = true;
-          this.reqObj.endDate = new Date(i.endDate);
+          this.planEndDate = new Date(i.endDate);
           selectedYears.push(i.label);
           loopIndex++;
         } else i.selected = false;
       })
-      this.selectedPlanValue = selectedYears.join();
+      this.planLabel = selectedYears.join();
     }
     if (selectedPlanPeriod == 'Semester') {
       let selectedSemesters = [];
       let loopIndex = 0;
       this.plan.semesterPeriod.filter((i) => {
         if (i.id <= item.id) {
-          if(loopIndex == 0) this.reqObj.startDate = new Date(i.startDate);
+          if(loopIndex == 0) this.planStartDate = new Date(i.startDate);
           i.selected = true;
-          this.reqObj.endDate = new Date(i.endDate);
+          this.planEndDate = new Date(i.endDate);
           selectedSemesters.push(i.label);
           loopIndex++;
         } else i.selected = false;
       })
-      this.selectedPlanValue = selectedSemesters.join();
+      this.planLabel = selectedSemesters.join();
     }
   }
 
@@ -673,6 +695,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
     return this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue) );
     } else {
       return this.staticData.Product;
+    }
+  }
+
+  locationDataSource(value){
+    if(value && value != ''){
+      let filterValue = value.toString().toLowerCase();
+    return this.staticData.Location.filter(p => p.name.toString().toLowerCase().includes(filterValue) );
+    } else {
+      return this.staticData.Location;
     }
   }
 
@@ -793,10 +824,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
     message = 'Please fill in required fields:';
     this.reqObj.quantityDetails.forEach((v, k) => {
       if (typeof v != 'undefined') {
-        if (!v.minQuantity) {
+        if (!v.minQuantity || this.convertDecimalSeparatorStringToNumber(v.minQuantity) == 0) {
           message += ' Min,';
         }
-        if (!v.maxQuantity) {
+        if (!v.maxQuantity || this.convertDecimalSeparatorStringToNumber(v.maxQuantity) == 0) {
           message += ' Max,';
         }
         if (typeof v.contractualQuantityOptionId != 'undefined') {
@@ -869,6 +900,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
     if (perMonthQuantityValidationError != '') {
       this.toaster.error(perMonthQuantityValidationError);
+      return false;
+    }
+    if (perWeekQuantityValidationError != '') {
+      this.toaster.error(perWeekQuantityValidationError);
       return false;
     }
     if (perDayQuantityValidationError != '') {
