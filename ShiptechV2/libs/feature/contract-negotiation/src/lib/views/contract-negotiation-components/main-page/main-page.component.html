@@ -13,11 +13,19 @@
                         </div>
                         <div style="margin-top: -39px;">
                             <div class="tab-header-buttons">
-                                <div *ngIf="isNegotiationClosed" class="tabheader-btn-icons ht-100">
+                                <div *ngIf="!isNegotiationClosed" class="tabheader-btn-icons ht-100">
                                     <div class="header-icons ht-100 d-flex align-items-center">
                                         <!-- <div class="calculate-icon-btn">
                                                 <span class="calculate-icon"></span>
                                             </div> -->
+                                        <div class="status-msg">
+                                            <span class="p-lr-5">Status : </span>
+                                            <div class="status-circle d-flex">
+                                                <span class="circle"
+                                                    [ngClass]="contractStatus"></span>
+                                            </div>
+                                            <span>{{contractStatus}}</span>
+                                        </div>
                                         <div class="email-icon-btn" matTooltip="Preview approval"
                                             *ngIf="showPreviewEmail" matTooltipClass="lightTooltip"
                                             (click)="emailPreviewApproval()">
@@ -67,8 +75,19 @@
 
                                     </div>
                                 </div>
-                                <div class="close-negotiation" *ngIf="!isNegotiationClosed">
-                                    <span class="">Negotiation <b>Closed</b> on <b>12/06/2022</b></span>
+                                <div *ngIf="isNegotiationClosed" class="tabheader-btn-icons ht-100">
+                                    <div class="header-icons ht-100 d-flex align-items-center">
+                                        <div class="status-msg m-lr-15">
+                                            <span class="p-lr-5">Status : </span>
+                                            <div class="status-circle d-flex">
+                                                <span class="circle Closed"></span>
+                                            </div>
+                                            <span>Closed</span>
+                                        </div>
+                                    </div>
+                                    <div class="menu-icon" matTooltip="View more options" matTooltipClass="lightTooltip"
+                                        [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger">
+                                    </div>
                                 </div>
                                 <mat-menu #clickmenupopup="matMenu" class="menu-panel-eta small-menu darkPanel">
                                     <div class="p-t-0 p-tb-7" style="display:flex;align-items:center;">
