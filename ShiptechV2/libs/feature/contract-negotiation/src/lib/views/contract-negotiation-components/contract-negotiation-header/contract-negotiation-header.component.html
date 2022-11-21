@@ -87,7 +87,9 @@
         <span *ngFor="let item of allRequestDetails[selReqIndex]?.locations; let i = index;let l = count">
             <button class="circle-btn1" (click)="scrollPort1(i,i+1,l)">{{i+1}}</button>
         </span>
-        <button class="comments-icon-btn" [ngClass]="{'dark' : !lightChatIcon}">
+        <button class="comments-icon-btn" [ngClass]="{'chatAvailableIcon' : chatAvailable}"
+            [matTooltip]="chatAvailable?'Chat available':'No Chat available'"
+            matTooltipClass="lightTooltip">
             <span class="blue-circle"></span><span class="comments-icon" (click)="scrollComments(comments)"></span>
         </button>
     </div>

@@ -31,6 +31,7 @@ export class MainPageComponent implements OnInit {
   isNegotiationClosed: boolean = true;
   public isBuyer:boolean = true;
   public rowSelected:boolean = false;
+  contractStatus;
   disableActionButtons : Boolean = true;
   constructor(private _location: Location, private toaster: ToastrService, public dialog: MatDialog, private localService: LocalService,
     private route: ActivatedRoute, private router : Router, private contractService: ContractNegotiationService) { }
@@ -121,6 +122,7 @@ export class MainPageComponent implements OnInit {
     }else{
       this.isBuyer = false;
     }*/
+    this.contractStatus= 'New';
   }
   
   changeActionButtonStatus(val: boolean) {
@@ -164,6 +166,7 @@ export class MainPageComponent implements OnInit {
     if(this.rowSelected){
     this.localService.updateSendRFQStatus(true);
     this.displaySuccessMsg('RFQ Sent successfully!');
+    this.contractStatus=this.showCalculatedValue?"Quoted":"Inquired";
     }
   }
   displaySuccessMsg(msg) {
@@ -207,8 +210,11 @@ export class MainPageComponent implements OnInit {
   }
 
   calculatePrice() {
-    this.showCalculatedValue = true;
-    this.localService.updatecalculatePriceStatus(true);
+    if(this.rfqSent){
+      this.showCalculatedValue = true;
+      this.localService.updatecalculatePriceStatus(true);
+      this.contractStatus = "Quoted";
+    }
   }
 
   emailPreviewApproval() {
