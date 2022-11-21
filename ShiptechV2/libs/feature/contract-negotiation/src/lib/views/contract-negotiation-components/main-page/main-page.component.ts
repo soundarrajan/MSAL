@@ -28,7 +28,7 @@ export class MainPageComponent implements OnInit {
   showPreviewEmail:boolean;
   showNoQuote:boolean;
   noQuote: boolean;
-  isNegotiationClosed: boolean = true;
+  isNegotiationClosed: boolean = false;
   public isBuyer:boolean = true;
   public rowSelected:boolean = false;
   contractStatus;
@@ -206,7 +206,7 @@ export class MainPageComponent implements OnInit {
       toastClass: "toast-alert toast-green", // toast-green, toast-amber, toast-red, toast-grey
       timeOut: 2000
     });
-    this.isNegotiationClosed = false;
+    this.isNegotiationClosed = true;
   }
 
   calculatePrice() {
