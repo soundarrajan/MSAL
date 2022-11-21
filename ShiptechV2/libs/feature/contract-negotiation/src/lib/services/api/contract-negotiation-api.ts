@@ -93,7 +93,9 @@ export const ContractNegotiationApiPaths = {
   contractRequest: 'api/ContractRequest',
   preferenceCount: `api/ContractRequest/getCounts`,
   userSaveFilterPresets: 'api/user-settings/save/contract-requestlist-filter-presets',
-  userFilterPresets: 'api/user-settings/contract-requestlist-filter-presets'
+  userFilterPresets: 'api/user-settings/contract-requestlist-filter-presets',
+  savecolumnPreference: 'api/api/user-settings/save/control-tower-quantity-claims-list-grid-10_ColumnPreference',
+  columnPreference: 'api/user-settings/control-tower-quantity-claims-list-grid-10_ColumnPreference'
 }
 
 
@@ -1188,6 +1190,18 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     return this.http
       .post<any>(
         `${this._infrastructureApiUrl}/${ContractNegotiationApiPaths.userSaveFilterPresets}`, payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  getColumnPreference(): Observable<any> {
+    return this.http
+      .get<any>(
+        `${this._infrastructureApiUrl}/${ContractNegotiationApiPaths.userFilterPresets}`
       )
       .pipe(
         map((body: any) => body),

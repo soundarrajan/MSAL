@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from "@angular/router";
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import { FilterPreferenceModel, FilterPreferenceViewModel } from '@shiptech/core/services/user-settings/filter-preference.interface';
+import { FilterPreferenceViewModel } from '@shiptech/core/services/user-settings/filter-preference.interface';
 import { GridOptions } from 'ag-grid-community';
 import { AGGridCellLinkRenderer } from '../../../core/ag-grid-renderers/ag-grid-cell-link-renderer.component';
 import { AGGridMultiDataRendererComponent } from '../../../core/ag-grid-renderers/ag-grid-multi-data-renderer.component';
@@ -24,6 +24,26 @@ export class ContractRequestDetailsComponent implements OnInit {
   public rowData_aggrid1 = [];
   public filterPresets = [];
   public newPresetsDialog: MatDialogRef<any>;
+  public presetActiveIndex = 0;
+  public showPresets = false;
+
+  @ViewChild('createPreset', { static: false })
+  createPresetTemplate: TemplateRef<any>;
+
+  public filterList = {
+    filters: <any>[
+      {
+        name: 'Default',
+        count: '9',
+        defaultFilter: true,
+        selected: true,
+        pinned: true,
+        position: 0
+      }
+    ],
+    enableMoreFilters: true,
+    multiSelect: false
+  }
 
   public gridpageNavModel = {
     pageSizeOptions: [25, 50, 75],
@@ -31,19 +51,18 @@ export class ContractRequestDetailsComponent implements OnInit {
     page: 1,
     totalItems: 0
   }
+
   public preferenceNameFormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(1),
     Validators.pattern('^([?=_0-9a-zA-Z ]+)')
   ]);
 
-  @ViewChild('createPreset', { static: false })
-  createPresetTemplate: TemplateRef<any>;
-
   public defaultColFilterParams = {
     buttons: ['reset', 'apply'],
     precision: () => this.format.quantityPrecision
   };
+
   ngOnInit(): void {
     this.localService.setTheme(this.theme);
     this.loadPreferenceCount();
@@ -54,30 +73,6 @@ export class ContractRequestDetailsComponent implements OnInit {
   mainPage(id) {
     this.router.navigate([`contract-negotiation/requests/${id}`]);
   }
-
-  filterList = {
-    filters: [
-      {
-        name: 'Default',
-        count: '9',
-        defaultFilter: true,
-        selected: true,
-        pinned: true,
-        position: 0
-      }
-      // {
-      //   name: 'All',
-      //   count: '12',
-      //   defaultFilter: false,
-      //   selected: false,
-      //   pinned: true,
-      //   position: 1
-      // }
-    ],
-    enableMoreFilters: true,
-    multiSelect: false
-  }
-
 
   onPageChange(data: any) {
     this.gridpageNavModel.pageSize = data.pageSize;
@@ -153,15 +148,6 @@ export class ContractRequestDetailsComponent implements OnInit {
       }
     }
 
-  }
-
-  getGridData() {
-    this.contractService.getContractRequestList()
-      .subscribe(res => {
-        this.rowData_aggrid1 = res;
-        this.gridOptions.api.setRowData(this.rowData_aggrid1)
-        this.gridpageNavModel.totalItems = this.gridOptions.api.getDisplayedRowCount();
-      });
   }
 
   private columnDef_aggrid = [
@@ -247,11 +233,20 @@ export class ContractRequestDetailsComponent implements OnInit {
 
   ];
 
+  getGridData() {
+    this.contractService.getContractRequestList()
+      .subscribe(res => {
+        this.rowData_aggrid1 = res;
+        this.gridOptions.api.setRowData(this.rowData_aggrid1)
+        this.gridpageNavModel.totalItems = this.gridOptions.api.getDisplayedRowCount();
+      });
+  }
+
   onResize(event) {
     this.gridOptions.api.sizeColumnsToFit();
   }
 
-  public openSaveAsPresetDialog(): void {
+  openSaveAsPresetDialog(): void {
     this.newPresetsDialog = this.matDialog.open(this.createPresetTemplate, {
       width: '400px',
       disableClose: false,
@@ -262,21 +257,27 @@ export class ContractRequestDetailsComponent implements OnInit {
   loadPreferenceCount() {
     this.contractService.getPreferenceCount()
       .subscribe(response => {
+        typeof (this.filterList.filters);
         this.filterList.filters[0].count = response['default'];
         // this.filterList.filters[1].count = response['all'];
       })
 
     this.contractService.getUserFilterPresets()
       .subscribe(res => {
-        console.log(res);
-        this.filterPresets = [];
+        if (res && res.value) {
+          this.filterPresets = [...res.value];
+          res.value.map(item => {
+            item['pinned'] = item.isPinned
+          })
+          // this.filterPresets = JSON.parse(res.value);
+          this.filterList.filters = this.filterList.filters.concat(res.value);
+        }
+        this.showPresets = true;
       })
-
-    // this.
   }
 
   createNewFilter() {
-    let matches = this.filterPresets.find(i => i.name.toLowerCase() != this.preferenceNameFormControl.value.toLowerCase());
+    let matches = this.filterPresets.find(i => i.name.toLowerCase() == this.preferenceNameFormControl.value.toLowerCase());
     if (!matches) {
       const newFilter = new FilterPreferenceViewModel({
         id: this.preferenceNameFormControl.value + Math.random(),
@@ -287,7 +288,10 @@ export class ContractRequestDetailsComponent implements OnInit {
       })
       this.filterPresets.push(newFilter);
       this.contractService.updateUserFilterPresets(this.filterPresets)
+        // this.contractService.updateUserFilterPresets(null)
         .subscribe(res => {
+          newFilter['pinned'] = true;
+          this.filterList.filters.push(newFilter);
           this.newPresetsDialog.close();
         });
     }
@@ -296,12 +300,29 @@ export class ContractRequestDetailsComponent implements OnInit {
     }
   }
 
-  getfilterPresets() {
-    this.contractService.getUserFilterPresets()
-      .subscribe(res => {
-        console.log(res)
-      });
+  activeFilterPreset(evt) {
+    if (evt.filterModels)
+      this.gridOptions.api.setFilterModel(evt.filterModels['contract-requestlist-filter-presets'])
+    else
+      this.gridOptions.api.setFilterModel(null)
   }
+
+  saveColumnPreference() {
+
+  }
+
+  // getfilterPresets() {
+  //   this.contractService.getUserFilterPresets()
+  //     .subscribe(res => {
+  //       console.log(res);
+  //       alert(1)
+  //       if (res) {
+  //         alert(2);
+  //         this.filterList.filters.push(res.value);
+  //         console.log(this.filterList.filters)
+  //       }
+  //     });
+  // }
 
   setColumPreference() {
 

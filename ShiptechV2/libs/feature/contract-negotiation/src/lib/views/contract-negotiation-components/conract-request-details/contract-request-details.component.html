@@ -46,7 +46,8 @@
                 </div>
             </mat-menu>
             <div class="filter-list-containerV2">
-                <app-filter-list style="height: inherit;" [filterList]="filterList" [switchTheme]="theme">
+                <app-filter-list *ngIf="showPresets" style="height: inherit;" [filterList]="filterList"
+                    [switchTheme]="theme" (toggleChipSelected)="activeFilterPreset($event)">
                 </app-filter-list>
             </div>
         </div>
