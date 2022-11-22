@@ -987,4 +987,10 @@ export class ContractNegotiationService extends BaseStoreService
     return this.contractNegotiationApi.updateContractUserFilterPreset(payload);
   }
 
+  //GetColumnpreference
+  @ObservableException()
+  getColumnpreference(): Observable<any> {
+    return this.contractNegotiationApi.getColumnPreference();
+  }
+
 }

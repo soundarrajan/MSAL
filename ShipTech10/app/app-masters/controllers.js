@@ -3580,7 +3580,9 @@
                                 $scope.formValues.toDate = moment('');
                                 obj = [];
                                 $.each(response.periods, (key, value) => {
-                                    obj.push(value.period);
+                                    if(!value.period.isDeleted){
+                                       obj.push(value.period);
+                                    }
                                 });
                                 $scope.options.systemInstrumentPeriod = obj;
                             }

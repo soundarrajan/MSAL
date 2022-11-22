@@ -43,16 +43,26 @@
             <div class="col-md-12 formula-description-header m-b-10"> Formula Description 
               <span class="toggle-arrow"></span>
             </div>
-            <div class="col-md-12" style="height: 50px;
-            align-items: center;
-            display: flex;">
-            
-        <div class="custom-form-field lightTheme" style="width: 100% !important;margin:0px">
-          <mat-form-field class="without-search" style="width:100%;border-radius: 4px;">
-            <mat-label>Formula Name</mat-label>
-            <input matInput (keypress)="typeFormula()"  [(ngModel)]="formulaDesc" name="formula-name" placeholder="Formula Name">
-          </mat-form-field>
-        </div>
+            <div class="col-md-12" style="height: 50px;align-items: center;display: flex;">
+              <div class="custom-form-field lightTheme" style="width: 100% !important;margin:0px">
+                <mat-form-field class="without-search" style="width:100%;border-radius: 4px;">
+                  <mat-label>Formula Name</mat-label>
+                  <input matInput (keypress)="typeFormula()"  [(ngModel)]="formulaDesc" name="formula-name" placeholder="Formula Name">
+                </mat-form-field>
+              </div>
+              <div id="custom-form-field" class="lightTheme darkBorder" style="margin: 0px 0px 0px 20px !important;">
+                <mat-form-field class="without-search" appearance="legacy">
+                    <mat-label>Max contract period</mat-label>
+                    <mat-select [ngModel]="maxPeriod">
+                        <mat-option value="1">1 months</mat-option>
+                        <mat-option value="2">2 months</mat-option>
+                        <mat-option value="3">3 months</mat-option>
+                        <mat-option value="4">4 months</mat-option>
+                        <mat-option value="5">5 months</mat-option>
+                        <mat-option value="6">6 months</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
             </div>
           </div>
           <div class="row d-flex col-md-12" style="padding: 15px 30px 0;">

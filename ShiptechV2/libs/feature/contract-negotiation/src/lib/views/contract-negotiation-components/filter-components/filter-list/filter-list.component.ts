@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-filter-list',
@@ -28,7 +28,7 @@ export class FilterListComponent implements OnInit {
       this.filterList.filters.forEach(element => {
         if (element.name == filter.name) {
           element.selected = true;
-          this.toggleChipSelected.emit(filter.name);
+          this.toggleChipSelected.emit(filter);
         }
         else
           element.selected = false;
@@ -44,4 +44,9 @@ export class FilterListComponent implements OnInit {
       this.sortByPosition();
     }
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // alert();
+  }
+
 }

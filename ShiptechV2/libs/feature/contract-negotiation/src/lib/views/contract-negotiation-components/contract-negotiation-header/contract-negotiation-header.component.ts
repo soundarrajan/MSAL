@@ -56,7 +56,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   ];
   selReqIndex = 0;
   expandedSearch: boolean = false;
-  lightChatIcon:boolean = true;
+  chatAvailable:boolean = true
   searchText: string = "";
   masterData: any;
   contractArray = { locations : []};
@@ -264,9 +264,9 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     forkJoin(allRequestCommentsObservable).subscribe(res => {
       this.allRequestComments = res;
       if(this.allRequestComments[0].length > 0){
-        this.lightChatIcon = false;
+        this.chatAvailable = true;
       }else{
-        this.lightChatIcon = true;
+        this.chatAvailable = false;
       }
       
     });
