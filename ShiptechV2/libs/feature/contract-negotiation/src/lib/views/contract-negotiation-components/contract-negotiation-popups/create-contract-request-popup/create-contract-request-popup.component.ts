@@ -16,7 +16,7 @@ import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-
 import { Store } from '@ngxs/store';
 import { Router } from "@angular/router"
 import moment from 'moment';
-import _ from 'lodash';
+import _, { first } from 'lodash';
 import { Subject } from 'rxjs';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
@@ -57,6 +57,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   productAllowedLocations = [];
   locationBasedProducts = [];
   selectedLocationId = 0;
+  isNewRequest = true;
 
   get newQuantityDetails(): any {
     return {
@@ -92,7 +93,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       minQuantityUomId: this.defaultUOM.id,
       maxQuantity: this.quantityFormatValue(0),
       maxQuantityUomId: this.defaultUOM.id,
-      pricingTypeId: 1,
+      pricingTypeId: 2,
       pricingComment: "",
       statusId: 1,
       status: 'Open',
@@ -103,7 +104,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
       contractRequestProductOffers: []
     }
   }
-
 
   reqObj: any = {
     id: 0,
@@ -124,20 +124,13 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.reqObj.contractRequestProducts.filter((x) => x.locationId === locationId);
   }
   /* Form Builder */
+  
 
   @Input() rfqSent;
   enableSaveBtn = true;
   enableRFQBtn = false;
   enableSendRfqBtn = false;
   enableUpdateRfqBtn = false;
-  allowedProducts = [{ 'id': 0, 'allowedProducts': { 'id': 1, 'name': 'Product1', 'displayName': 'Product2' } }];
-  contractualQuantityOptionList = [
-    { name: 'Total Contract Qty' },
-    { name: 'PerMonth' },
-    { name: 'PerWeek' },
-    { name: 'PerDay' },
-    { name: 'PerLift' }
-  ];
   contractQuarterColumns: string[] = ['quarter', 'blank'];
   selectedPlanPeriod = 'Quarter';
   planStartDate: any;
@@ -226,6 +219,60 @@ export class CreateContractRequestPopupComponent implements OnInit {
     ]).subscribe((data) => {
       this.staticData = data;
       this.locationsList.next(data.Location);
+      //this.staticData.SpecGroup.filter(p => p.id === 68 ).map(x => x.databaseValue = 158);
+      if(this.data.requestDetails){
+        this.isNewRequest = false;
+        this.reqObj = this.data.requestDetails;
+        this.reqObj.quantityDetails.forEach((q, i) => {
+          q.minQuantity = this.quantityFormatValue(q.minQuantity);
+          q.maxQuantity = this.quantityFormatValue(q.maxQuantity);
+        })
+        this.reqObj.contractRequestProducts.forEach( (item, i) => {
+          this.mainProductChange(item.productId);
+          let location = this.staticData.Location.find( x => x.id == item.locationId);
+          let newLocation = {
+            locationId: location.id,
+            locationName: location.name,
+            selected: (i == 0)?true:false
+          };
+          if (this.mainLocations.indexOf(newLocation) === -1) this.mainLocations.push(newLocation);
+          this.searchFilterString.push({ mainProduct: '', allowedProducts: [], allowedLocations: '', });
+          item.minQuantity = this.quantityFormatValue(item.minQuantity);
+          item.maxQuantity = this.quantityFormatValue(item.maxQuantity);
+          if(item.allowedProducts.length > 0) {
+            this.searchFilterString[i].allowedProducts.push({product: '', specGroup:'' });
+          }
+          if(item.allowedProducts.length > 0) {
+            item.allowedProducts.forEach( (proItem, j) => {
+              this.setProductChange(proItem.productId,i,j);
+            });
+          }
+          if(item.allowedLocations.length > 0) {
+            this.productAllowedLocations[i] = [];
+            item.allowedLocations.forEach( (locItem) => {
+              let location = this.staticData.Location.find( x => x.id == locItem.locationId);
+              this.productAllowedLocations[i].push({
+                id: location.id,
+                name: location.name,
+                selected: true
+              })
+            })
+          }
+        });
+        this.selectedLocationId = this.mainLocations[0].locationId;
+        this.showMainLocationDropdown = true;
+      }
+      if(this.isNewRequest) {
+        this.planStartDate = new Date(this.plan.quarterlyPeriod[0].startDate);
+        this.planEndDate = new Date(this.plan.quarterlyPeriod[0].endDate);
+        this.planLabel = this.plan.quarterlyPeriod[0].label;
+        this.applyPlanPeriod();
+        this.reqObj.quoteByDate = this.reqObj.minValidity = this.getPreviousDay(this.planStartDate);
+        this.reqObj.quantityDetails.push(this.newQuantityDetails);
+        this.addNewMainProduct(0);
+      } else {
+  
+      }
     });
     this.generalTenantSettings = this.tenantSettingsService.getGeneralTenantSettings();
     this.defaultUOM = this.generalTenantSettings.tenantFormats.uom;
@@ -251,14 +298,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
       }
     });
-    this.reqObj.quantityDetails.push(this.newQuantityDetails);
-    this.addNewMainProduct(0);
-
-    this.planStartDate = new Date(this.plan.quarterlyPeriod[0].startDate);
-    this.planEndDate = new Date(this.plan.quarterlyPeriod[0].endDate);
-    this.planLabel = this.plan.quarterlyPeriod[0].label;
-    this.applyPlanPeriod();
-    this.reqObj.quoteByDate = this.reqObj.minValidity = this.getPreviousDay(this.planStartDate);
   }
 
   applyPlanPeriod(){
@@ -325,7 +364,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       e.target.parentElement.lastChild.classList.remove('add-label');
       e.target.parentElement.lastChild.classList.add('remove-label');
     }
-
+    if(type !== 'uom') e.target.select();
   }
   focusOut(e, type) {
     if (type == 'min') {
@@ -351,6 +390,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
     }
+    let value = (e.srcElement.value)?e.srcElement.value:0;
+    e.srcElement.value = this.quantityFormatValue(value);
   }
   // Only Number
   keyPressNumber(event) {
@@ -362,7 +403,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     if (inp == '.' || inp == ',' || inp == '-') {
       return true;
     }
-    event.srcElement.value = (currStr.indexOf(".") >= 0) ? (currStr.substr(0, currStr.indexOf(".")) + currStr.substr(currStr.indexOf("."), this.quantityPrecision)) : currStr;
     if (/^[0-9]+\.?[0-9]*$/.test(inp)) {
       return true;
     } else {
@@ -470,8 +510,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   setProductChange(value, prodIndex, index) {
-    this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value
-    this.selectedLocname = value.name;
+    this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value;
     this.locationSelected = true;
     this.selectedLocindex = index;
   }
@@ -526,64 +565,58 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.plan.semesterPeriod.filter((item, i) => { if(i != 0) item.selected = false });
     this.selectedPlanValue = '';
   }
+
   selectPlanPeriod(event, item, selectedPlanPeriod) {
     event.stopPropagation();
-    if (selectedPlanPeriod == 'Quarter') {
-      let selectedQuarters = [];
-      let loopIndex = 0;
-      this.plan.quarterlyPeriod.filter((i) => {
-        if (i.id <= item.id) {
-          if(loopIndex == 0) this.planStartDate = new Date(i.startDate);
-          i.selected = true;
-          this.planEndDate = new Date(i.endDate);
-          selectedQuarters.push(i.label);
-          loopIndex++;
-        } else i.selected = false;
-      })
-      this.planLabel = selectedQuarters.join();
+    let periodData = [];
+    let selectedItemLabels = this.planLabel.split(',');
+    if (selectedPlanPeriod == 'Quarter') { periodData = this.plan.quarterlyPeriod; }
+    if (selectedPlanPeriod == 'Month') { periodData = this.plan.monthlyPeriod; }
+    if (selectedPlanPeriod == 'Year') { periodData = this.plan.yearlyPeriod; }
+    if (selectedPlanPeriod == 'Semester') { periodData = this.plan.semesterPeriod; }
+    let selectedItems = periodData.filter(i => i.selected == true).map(x => x.id);
+    let firstId = selectedItems[0];
+    let lastId = selectedItems[selectedItems.length - 1];
+    let deselectedInMiddle = false;
+    if(item.selected == true){
+      if(item.id == firstId || item.id == lastId) {
+        periodData.filter(i => i.id == item.id).map(i => i.selected = false);
+      } else {
+        deselectedInMiddle = true;
+        periodData.filter(i => i.id > item.id).map(i => i.selected = false);
+      }
+    } else {
+      periodData.filter(i => i.id == item.id).map(i => i.selected = !i.selected);
     }
-    if (selectedPlanPeriod == 'Month') {
-      let selectedMonths = [];
-      let loopIndex = 0;
-      this.plan.monthlyPeriod.filter((i) => {
-        if (i.id <= item.id) {
-          if(loopIndex == 0) this.planStartDate = new Date(i.startDate);
-          i.selected = true;
-          this.planEndDate = new Date(i.endDate);
-          selectedMonths.push(i.label);
-          loopIndex++;
-        } else i.selected = false;
+    selectedItems = periodData.filter(i => i.selected == true).map(x => x.id);
+    selectedItemLabels = [];
+    if(selectedItems.length > 1){
+      firstId = selectedItems[0];
+      lastId = selectedItems[selectedItems.length - 1];
+      let selectedValue = false;
+      periodData.forEach(x => {
+        if(firstId == x.id) selectedValue = true;
+        if(selectedValue == true) {
+          if(firstId == x.id) this.planStartDate = new Date(x.startDate);
+          if(lastId == x.id) this.planEndDate = new Date(x.endDate);
+          selectedItemLabels.push(x.label);
+        }
+        x.selected = selectedValue;
+        if(lastId == x.id) selectedValue = false;
+      });
+    } else {
+      periodData.filter(x => x.selected == true).map( i => {
+        selectedItemLabels.push(i.label);
+        this.planStartDate = new Date(i.startDate);
+        this.planEndDate = new Date(i.endDate);
+        return i;
       })
-      this.planLabel = selectedMonths.join();
     }
-    if (selectedPlanPeriod == 'Year') {
-      let selectedYears = [];
-      let loopIndex = 0;
-      this.plan.yearlyPeriod.filter((i) => {
-        if (i.id <= item.id) {
-          if(loopIndex == 0) this.planStartDate = new Date(i.startDate);
-          i.selected = true;
-          this.planEndDate = new Date(i.endDate);
-          selectedYears.push(i.label);
-          loopIndex++;
-        } else i.selected = false;
-      })
-      this.planLabel = selectedYears.join();
+    if(selectedItemLabels.length == 0){
+      this.planStartDate = '';
+      this.planEndDate = '';
     }
-    if (selectedPlanPeriod == 'Semester') {
-      let selectedSemesters = [];
-      let loopIndex = 0;
-      this.plan.semesterPeriod.filter((i) => {
-        if (i.id <= item.id) {
-          if(loopIndex == 0) this.planStartDate = new Date(i.startDate);
-          i.selected = true;
-          this.planEndDate = new Date(i.endDate);
-          selectedSemesters.push(i.label);
-          loopIndex++;
-        } else i.selected = false;
-      })
-      this.planLabel = selectedSemesters.join();
-    }
+    this.planLabel = selectedItemLabels.join();
   }
 
   /* Generating Plan Period related arrays - Start */
@@ -604,8 +637,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   generateMonthlyPeriod() {
     let monthlyPeriod = [];
-    let limit = (12 - (moment().month()) === 0) ? 12 : 12 - (moment().month());
-    for (var i=0; i < limit; i++) {
+    for (var i=0; i < 12; i++) {
       let obj = moment().add(i, "month");
       monthlyPeriod.push({ 
         'id': i.toString(),
@@ -665,8 +697,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.mainLocationSelect.close();
     this.selectedLocationId = location.id;
     if(this.mainLocations.findIndex((loc) => loc.locationId === location.id) !== -1){
-      //this.errors.mainLocation.duplicate = true;
-      return;
+      this.toaster.error(location.name + ' already added as main location.');
+      return false;
     }
     let firstLocation = (this.mainLocations.length > 0) ? false : true;
     this.showMainLocationDropdown = false;

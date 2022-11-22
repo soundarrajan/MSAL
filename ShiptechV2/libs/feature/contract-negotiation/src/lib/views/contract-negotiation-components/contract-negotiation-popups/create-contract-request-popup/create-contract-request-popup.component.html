@@ -290,8 +290,7 @@
                           <div>
                             <div class="hoveraddedProduct">
                               <div class="custom-product-container contract-location-with-product-container d-flex"
-                                [ngClass]="{
-                                        'container-with-value': productSelected && selectedProindex==i}"
+                                [ngClass]="{'container-with-value': productSelected && selectedProindex==i}"
                                 style="margin-right:15px;">
                                 <div id="PDDD39" class="custom-form-field custom-form-field-location lightTheme">
                                   <mat-form-field
@@ -350,7 +349,7 @@
                                     <span>
 
                                     </span>
-                                    <mat-select [(value)]="reqObj.contractRequestProducts[i].specGroupId" #singleSelect disableOptionCentering
+                                    <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].specGroupId" #singleSelect disableOptionCentering
                                       [panelClass]="'shiptech-select-product-container'" required>
                                       <div style="margin-top: -20px;" [ngClass]="{
                                                       'expand-select-location-container': expandLocation
@@ -359,7 +358,7 @@
                                           <div class="search-product-container col-md-10 pd-0">
                                             <span id="SPEC46" class="search-product-lookup">
                                             </span>
-                                            <input id="SPEC45" matInput placeholder="Search all and select spec group"
+                                            <input id="SPEC45" [(ngModel)]="searchFilterString[i].mainSpecGroup" matInput placeholder="Search all and select spec group"
                                               class="search-product-input" (keydown)="$event.stopPropagation();">
                                           </div>
 
@@ -493,14 +492,13 @@
                                   appearance="legacy" style="width: 100% !important; border-right: none !important;">
                                   <mat-label>Add Product</mat-label>
                                   <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].productId" #locSelect disableOptionCentering
-                                    [panelClass]="'shiptech-select-product-container'" (selectionChange)="
-                                    setProductChange($event.value,i,j)">
+                                    [panelClass]="'shiptech-select-product-container'" (selectionChange)="setProductChange($event.value,i,j)">
                                     <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                       <div class="col-md-12 header-container-product pd-0">
                                         <div class="search-product-container col-md-10 pd-0">
                                           <span id="ALPROD55" class="search-product-lookup">
                                           </span>
-                                          <input id="ALPROD54" [(ngModel)]="searchFilterString[i].allowedProducts[j].value" matInput placeholder="Search and select a product"
+                                          <input id="ALPROD54" [(ngModel)]="searchFilterString[i].allowedProducts[j].product" matInput placeholder="Search and select a product"
                                             class="search-product-input" (keydown)="$event.stopPropagation();" >
                                         </div>
 
@@ -510,7 +508,7 @@
                                         </div>
                                       </div>
                                       <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                        mat-table [dataSource]="productDataSource(searchFilterString[i].allowedProducts[j].value)">
+                                        mat-table [dataSource]="productDataSource(searchFilterString[i].allowedProducts[j].product)">
                                         <!-- Location name Column -->
                                         <ng-container matColumnDef="name">
                                           <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
@@ -550,7 +548,7 @@
                                         <div class="search-product-container col-md-10 pd-0">
                                           <span class="search-product-lookup">
                                           </span>
-                                          <input matInput placeholder="Search and select spec group" (keydown)="$event.stopPropagation();"
+                                          <input [(ngModel)]="searchFilterString[i].allowedProducts[j].specGroup" matInput placeholder="Search and select spec group" (keydown)="$event.stopPropagation();"
                                             class="search-product-input">
                                         </div>
 
