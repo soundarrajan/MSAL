@@ -29,7 +29,8 @@ export class FormulaPricingPopupComponent implements OnInit {
   public switchTheme:boolean = false;
   public selectedFormulaTab='Pricing formula';
   // public initialized;
-   public initialized = 1;
+  maxPeriod = 6;
+  public initialized = 1;
   public showFormula: boolean = false;
   public formulaValue: string = "";
   public formulaDesc: string = "";

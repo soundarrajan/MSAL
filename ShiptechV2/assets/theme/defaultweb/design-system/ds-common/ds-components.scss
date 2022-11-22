@@ -448,7 +448,7 @@ $light-blue : #74CDEA;
       }
 
       box-sizing: border-box;
-      height: 40px;
+      height: 40px !important;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -2509,6 +2509,7 @@ $light-blue : #74CDEA;
 
   table {
     width: 100%;
+    border-spacing: 0px !important;
 
     .w-150 {
       width: 150px;
