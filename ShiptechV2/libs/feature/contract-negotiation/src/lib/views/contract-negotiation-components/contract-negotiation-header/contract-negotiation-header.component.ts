@@ -79,7 +79,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
       this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
       .subscribe(response => {
         this.contractRequestId = response['id'];
-        this.localService.contractRequestDetails = response;
+        this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
         this.localService.getMasterListData(['Counterparty','Product','Location','Uom']).subscribe(data => {
         this.masterData = data;
         this.contractRequestData(response);
@@ -198,7 +198,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
       minHeight: '90vh',
       maxHeight: '100vh',
       panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
-      data: { createReqPopup:false,rfqStatus: this.rfqSent }
+      data: { createReqPopup:false,rfqStatus: this.rfqSent, requestDetails: this.localService.contractRequestDetails }
     });
 
     dialogRef.afterClosed().subscribe(result => {
