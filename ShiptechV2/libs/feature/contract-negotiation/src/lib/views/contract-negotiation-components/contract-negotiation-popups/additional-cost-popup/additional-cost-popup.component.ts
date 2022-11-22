@@ -69,26 +69,36 @@ export class AdditionalCostPopupComponent implements OnInit {
   additionalcoast=[
   {
     costname: 'Surveyor Fee',
-    costtype: 'Flat',
+    itemname: 'TAX',
+    costtype: 'Unit',
     maxqty: '1500  MT',
     price: '5000',
+    priceuom: 'MT',
     applicationFor:'',
-    extra: '5.5',
+    extra: '0',
+    amount: '2.00',
     extraamt: '5000',
     totalamt: '',
     rate: '',
+    currency: 'US dollars',
+    comment: '',
     checked: false
   },
   {
     costname: 'Barge Fee',
-    costtype: 'Flat',
+    itemname: 'TAX',
+    costtype: 'Unit',
     maxqty: '1500  MT',
     price: '5000',
+    priceuom: 'MT',
     applicationFor:'',
-    extra: '5.5',
+    extra: '0',
+    amount: '2.00',
     extraamt: '5000',
     totalamt: '',
     rate: '',
+    currency: 'US dollars',
+    comment: '',
     checked: false
   }
 ];
