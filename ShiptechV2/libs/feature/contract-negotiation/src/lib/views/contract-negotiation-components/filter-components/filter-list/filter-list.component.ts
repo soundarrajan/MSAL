@@ -9,6 +9,7 @@ export class FilterListComponent implements OnInit {
   @Input('filterList') filterList;
   @Input('switchTheme') switchTheme?;
   @Output() toggleChipSelected = new EventEmitter();
+  @Output() updateFilter = new EventEmitter();
 
   selectedFilterList = [];
   constructor() { }
@@ -42,11 +43,16 @@ export class FilterListComponent implements OnInit {
       this.filterList.filters = filter;
       this.selectedFilterList = this.filterList.filters.filter((element) => element.pinned == true || element.selected == true);
       this.sortByPosition();
+      this.updateFilter.emit(filter);
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    // alert();
+  refreshData(filter) {
+    if (filter) {
+      this.filterList.filters = filter;
+      this.selectedFilterList = this.filterList.filters.filter((element) => element.pinned == true || element.selected == true);
+      this.sortByPosition();
+    }
   }
 
 }

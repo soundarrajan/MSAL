@@ -63,6 +63,7 @@ import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
 
 import { SpotNegotiationService } from './../../../spot-negotiation/src/lib/services/spot-negotiation.service';
+import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 @NgModule({
   declarations: [
     MainContractNegotiationComponent,
@@ -117,6 +118,7 @@ import { SpotNegotiationService } from './../../../spot-negotiation/src/lib/serv
       : AuthenticationAdalModule.forFeature(),
     UIModule,
     FilterPresetsModule,
+    AgFilterDisplayModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AgGridModule.withComponents([]),
