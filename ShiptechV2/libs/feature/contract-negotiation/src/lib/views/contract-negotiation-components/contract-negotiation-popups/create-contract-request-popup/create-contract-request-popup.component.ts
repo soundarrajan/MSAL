@@ -219,16 +219,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
     ]).subscribe((data) => {
       this.staticData = data;
       this.locationsList.next(data.Location);
-      //this.staticData.SpecGroup.filter(p => p.id === 68 ).map(x => x.databaseValue = 158);
       if(this.data.requestDetails){
         this.isNewRequest = false;
         this.reqObj = this.data.requestDetails;
         this.reqObj.quantityDetails.forEach((q, i) => {
           q.minQuantity = this.quantityFormatValue(q.minQuantity);
           q.maxQuantity = this.quantityFormatValue(q.maxQuantity);
+          q.tolerancePercentage = this.quantityFormatValue(q.tolerancePercentage);
         })
         this.reqObj.contractRequestProducts.forEach( (item, i) => {
-          this.mainProductChange(item.productId);
           let location = this.staticData.Location.find( x => x.id == item.locationId);
           let newLocation = {
             locationId: location.id,
@@ -501,9 +500,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.searchFilterString.splice(i, 1);
   }
 
-  mainProductChange(prodId) {
-    this.mainSpecGroupOptions = this.specGroupDataSource(prodId);
-  }
 
   specGroupDataSource(prodId) {
     return this.staticData.SpecGroup.filter(p => p.databaseValue === prodId );
@@ -882,28 +878,28 @@ export class CreateContractRequestPopupComponent implements OnInit {
           perMonthMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
           hasPerMonthQuantity = true;
           if(hasTotalContractualQuantity && totalMaxQuantity < perMonthMaxQuantity){
-            perMonthQuantityValidationError = 'Per Month Max Quantity must me smaller than Total ContractualQuantity Max Quantity';
+            perMonthQuantityValidationError = 'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift';
           }
         }
         if (v.contractualQuantityOptionId == 3) {
           perWeekMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
           hasPerWeekQuantity = true;
           if(hasPerMonthQuantity && perMonthMaxQuantity < perWeekMaxQuantity){
-            perWeekQuantityValidationError = 'Per Week Max Quantity must me smaller than Per Month Max Quantity';
+            perWeekQuantityValidationError = 'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift';
           }
         }
         if (v.contractualQuantityOptionId == 4) {
           perDayMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
           hasPerDayQuantity = true;
           if(hasPerWeekQuantity && perWeekMaxQuantity < perDayMaxQuantity){
-            perDayQuantityValidationError = 'Per Day Max Quantity must me smaller than Per Month Max Quantity';
+            perDayQuantityValidationError = 'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift';
           }
         }
         if (v.contractualQuantityOptionId == 5) {
           this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
           hasPerLiftQuantity = true;
           if(hasPerDayQuantity && perDayMaxQuantity < this.convertDecimalSeparatorStringToNumber(v.maxQuantity)){
-            perLiftQuantityValidationError = 'Per Lift Max Quantity must me smaller than Per Day Max Quantity';
+            perLiftQuantityValidationError = 'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift';
           }
         }
       }

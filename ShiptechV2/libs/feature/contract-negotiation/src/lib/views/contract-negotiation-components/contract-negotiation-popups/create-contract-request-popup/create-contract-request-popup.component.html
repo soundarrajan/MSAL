@@ -297,7 +297,7 @@
                                     class="without-search contract-location-product-dropdown custom-dropdown"
                                     appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select [(value)]="reqObj.contractRequestProducts[i].productId" (selectionChange)="mainProductChange($event.value)"
+                                    <mat-select [(value)]="reqObj.contractRequestProducts[i].productId"
                                       disableOptionCentering [panelClass]="'shiptech-select-product-container'" required>
                                       <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                           <div class="col-md-12 header-container-product pd-0">
@@ -368,7 +368,7 @@
                                           </div>
                                         </div>
                                         <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                          mat-table [dataSource]="mainSpecGroupOptions">
+                                          mat-table [dataSource]="specGroupDataSource(reqObj.contractRequestProducts[i].productId)">
                                           <!-- Location name Column -->
                                           <ng-container matColumnDef="name">
                                             <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
