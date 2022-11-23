@@ -69,7 +69,7 @@
         <app-ag-footer-new [page]="gridpageNavModel.page" [size]="gridpageNavModel.pageSize"
             [count]="gridpageNavModel.totalItems" [singleGrid]="true" [doublePagination]="true"
             [gridViewModel]="gridpageNavModel" id="{{ gridId }}" (pageChange)="gotoPage($event)"
-            (newPageSize)="onPageChange($event)">
+            (newPageSize)="onPageChange($event)" [exportDisplay]="true" (exportClick)="exportData($event)">
         </app-ag-footer-new>
     </div>
 </div>

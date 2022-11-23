@@ -33,10 +33,13 @@ export class AgFooterNewComponent {
   @Input() footerPosition;
   @Input() showFooterDatepicker;
   @Input() display: boolean = true;
+  @Input() exportDisplay: boolean = false;
 
   @Output() pageChange: EventEmitter<any> = new EventEmitter();
 
   @Output() newPageSize: EventEmitter<any> = new EventEmitter();
+
+  @Output() exportClick: EventEmitter<any> = new EventEmitter();
 
   @Input()
   set size(val: number) {
@@ -96,5 +99,9 @@ export class AgFooterNewComponent {
     this.page = e;
     //console.(e);
     //this.pageChange.emit(event)
+  }
+
+  export(type) {
+    this.exportClick.emit(type);
   }
 }
