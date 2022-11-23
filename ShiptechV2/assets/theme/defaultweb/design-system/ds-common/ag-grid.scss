@@ -43,15 +43,15 @@ $white : #FFFFFF;
 }
 
 @mixin aggrid-rowribbon-thin($ribboncolor) {
-    box-shadow: inset 3px 0 0 0 $ribboncolor, 1px 0 0 0 $gridborder  !important;
+    box-shadow: inset 3px 0 0 0 $ribboncolor, 1px 0 0 0 $gridborder !important;
 }
 
 @mixin aggrid-rowribbon-imp($ribboncolor) {
-    box-shadow: inset 5px 0 0 0 $ribboncolor, 1px 0 0 0 $gridborder  !important;
+    box-shadow: inset 5px 0 0 0 $ribboncolor, 1px 0 0 0 $gridborder !important;
 }
 
 @mixin aggrid-rowribbon-darktheme($ribboncolor) {
-    box-shadow: inset 5px 0 0 0 $ribboncolor  !important;
+    box-shadow: inset 5px 0 0 0 $ribboncolor !important;
 }
 
 @mixin aggrid-cell-bgcolor($bgcolor) {
@@ -320,7 +320,7 @@ $white : #FFFFFF;
     }
 
     .ag-row-selected {
-        background-color: $grid_rowselection  !important;
+        background-color: $grid_rowselection !important;
 
         .aggrid-innershadow {
             background-color: $grid_rowselection;
@@ -1375,7 +1375,7 @@ $white : #FFFFFF;
     }
 
     .aggrid-row-good-selection {
-        background-color: $grid_rowhover  !important;
+        background-color: $grid_rowhover !important;
     }
 
     aggrid-cell-data,
@@ -1415,8 +1415,8 @@ $white : #FFFFFF;
 
 
     .aggrid-roundchip {
-        background: $chipround  !important;
-        color: $chipfont  !important;
+        background: $chipround !important;
+        color: $chipfont !important;
         font-weight: normal;
         border-radius: 50%;
         min-height: 33px !important;
@@ -1563,7 +1563,7 @@ $white : #FFFFFF;
     }
 
     .aggrid-columgroup-splitter {
-        box-shadow: 1px 0px 0px 0px #EAECEE, 6px 0px 0px 0px $gridborder  !important;
+        box-shadow: 1px 0px 0px 0px #EAECEE, 6px 0px 0px 0px $gridborder !important;
     }
 
     .aggrid-columgroup-splitter-left {
@@ -1576,7 +1576,7 @@ $white : #FFFFFF;
     .aggrid-columgroup-splitter-left:not(.ag-header-cell) {
         // box-shadow: inset 6px 0 0 0 $gridborder;  
         // box-shadow: inset 6px 0 0 0 $gridborder !important;
-        box-shadow: -6px 0px 0px 0px #EAECEE, 1px 0px 0px 0px $gridborder  !important;
+        box-shadow: -6px 0px 0px 0px #EAECEE, 1px 0px 0px 0px $gridborder !important;
         border-right: none;
     }
 
@@ -1653,7 +1653,7 @@ $white : #FFFFFF;
     }
 
     .aggrid-hoverbg {
-        background-color: $grid_rowhover  !important;
+        background-color: $grid_rowhover !important;
     }
 
     .aggrid-oddrow-bg,
@@ -2571,7 +2571,7 @@ $white : #FFFFFF;
         right: 0px;
         border: solid 1px $blue;
         padding: 5px;
-        color: $blue  !important;
+        color: $blue !important;
         text-decoration: none !important;
         font-size: 12px;
 
@@ -2868,7 +2868,7 @@ $white : #FFFFFF;
     }
 
     .ag-row-hover {
-        background-color: $grid_rowhover  !important;
+        background-color: $grid_rowhover !important;
     }
 
     //loading effect
@@ -3231,7 +3231,7 @@ $white : #FFFFFF;
     }
 
     .ag-menu {
-        z-index: 1000;
+        z-index: 0;
     }
 
     .ag-cell {
@@ -4932,6 +4932,7 @@ ag-grid-angular {
             content: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='1' y='1' width='10' height='10' fill='%23BD7306'/%3E%3Cpath d='M10.6667 1.33333V10.6667H1.33333V1.33333H10.6667ZM10.6667 0H1.33333C0.6 0 0 0.6 0 1.33333V10.6667C0 11.4 0.6 12 1.33333 12H10.6667C11.4 12 12 11.4 12 10.6667V1.33333C12 0.6 11.4 0 10.6667 0Z' fill='%23BD7306'/%3E%3Cpath d='M9.57828 2.05362C9.22069 1.86107 8.82184 2.23241 8.58804 2.45246C8.05168 2.97509 7.59782 3.58023 7.08893 4.13036C6.52504 4.73551 6.00242 5.34065 5.42478 5.93207C5.0947 6.26215 4.73712 6.61973 4.51706 7.03233C4.02195 6.55094 3.59559 6.02832 3.04546 5.60199C2.64662 5.29942 1.98646 5.07936 2.00021 5.80829C2.02772 6.75729 2.86667 7.77503 3.48557 8.42141C3.74688 8.69648 4.09071 8.9853 4.48956 8.99905C4.97092 9.02656 5.46604 8.44892 5.75486 8.13259C6.26375 7.58246 6.67635 6.96354 7.14394 6.39968C7.74909 5.657 8.36799 4.92806 8.95938 4.17162C9.33072 3.70401 10.4997 2.54871 9.57828 2.05362ZM2.60533 5.75327C2.59158 5.75327 2.57783 5.75328 2.55032 5.76701C2.49531 5.75328 2.45405 5.7395 2.39903 5.71199C2.44029 5.68449 2.50906 5.69824 2.60533 5.75327Z' fill='white'/%3E%3C/svg%3E%0A");
         }
     }
+
     .red-checkbox {
         .checkbox-svg {
             padding-right: 5px;
@@ -4946,6 +4947,7 @@ ag-grid-angular {
 
     .tick-mark {
         padding-right: 5px;
+
         .tick-mark-svg {
             content: url("data:image/svg+xml,%3Csvg width='14' height='13' viewBox='0 0 14 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.3886 0.0995749C12.7569 -0.258011 12.0522 0.431619 11.6392 0.840288C10.6916 1.81088 9.88974 2.93472 8.99067 3.95639C7.99445 5.08023 7.07112 6.20407 6.0506 7.30241C5.46744 7.91542 4.83569 8.5795 4.44693 9.34576C3.57219 8.45175 2.81895 7.48116 1.84703 6.68941C1.14238 6.12749 -0.0239244 5.71882 0.000373684 7.07254C0.0489699 8.83496 1.53115 10.7251 2.62457 11.9255C3.08623 12.4363 3.69368 12.9727 4.39833 12.9982C5.24876 13.0493 6.12349 11.9766 6.63375 11.3891C7.53282 10.3674 8.26177 9.21801 9.08786 8.17083C10.157 6.79157 11.2504 5.43782 12.2952 4.03302C12.9513 3.16459 15.0166 1.01904 13.3886 0.0995749ZM1.06945 6.97037C1.04515 6.97037 1.02085 6.97037 0.972258 6.99587C0.875065 6.97037 0.802171 6.94478 0.704979 6.8937C0.777873 6.84262 0.899364 6.86816 1.06945 6.97037Z' fill='%231F8B24'/%3E%3C/svg%3E%0A");
         }
@@ -4974,7 +4976,7 @@ ag-grid-angular {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    
+
     .chip {
         width: auto;
         height: 20px;
@@ -5013,7 +5015,7 @@ ag-grid-angular {
         width: 50px;
     }
 
-    .mat-form-field-wrapper { 
+    .mat-form-field-wrapper {
         padding: 0px;
     }
 }

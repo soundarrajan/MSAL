@@ -260,7 +260,6 @@ export class ContractRequestDetailsComponent implements OnInit {
 
     this.contractService.getColumnpreference()
       .subscribe(res => {
-        console.log(res);
         if (res)
           this.gridOptions.columnApi.setColumnState(res.value.columnState);
       })
