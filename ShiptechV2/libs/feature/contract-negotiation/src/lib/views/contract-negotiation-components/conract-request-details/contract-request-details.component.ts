@@ -3,7 +3,9 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from "@angular/router";
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { EmptyFilterName, PreferenceAlreadyExists, ToastPosition } from '@shiptech/core/ui/components/filter-preferences/filter-preferences-messages';
 import { GridOptions } from 'ag-grid-community';
+import { ToastrService } from 'ngx-toastr';
 import { AGGridCellLinkRenderer } from '../../../core/ag-grid-renderers/ag-grid-cell-link-renderer.component';
 import { AGGridMultiDataRendererComponent } from '../../../core/ag-grid-renderers/ag-grid-multi-data-renderer.component';
 import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
@@ -72,7 +74,8 @@ export class ContractRequestDetailsComponent implements OnInit {
     this.router.navigate([`contract-negotiation/requests/${id}`]);
   }
 
-  constructor(public dialog: MatDialog, public router: Router, private localService: LocalService, private contractService: ContractNegotiationService, private format: TenantFormattingService, public matDialog: MatDialog, private chRef: ChangeDetectorRef) {
+  constructor(public dialog: MatDialog, public router: Router, private localService: LocalService, private contractService: ContractNegotiationService,
+    private format: TenantFormattingService, public matDialog: MatDialog, private chRef: ChangeDetectorRef, private toastr: ToastrService) {
     this.gridOptions = <GridOptions>{
       defaultColDef: {
         sortable: true,
@@ -257,8 +260,9 @@ export class ContractRequestDetailsComponent implements OnInit {
 
     this.contractService.getColumnpreference()
       .subscribe(res => {
+        console.log(res);
         if (res)
-          this.gridOptions.columnApi.setColumnState(res);
+          this.gridOptions.columnApi.setColumnState(res.value.columnState);
       })
   }
 
@@ -289,28 +293,33 @@ export class ContractRequestDetailsComponent implements OnInit {
   }
 
   createNewFilter() {
-    const matches = this.filterList.filters.find(i => i.name.toLowerCase() == this.preferenceNameFormControl.value.toLowerCase());
-    if (!matches) {
-      const newFilter = {
-        id: this.preferenceNameFormControl.value + Math.random(),
-        name: this.preferenceNameFormControl.value,
-        filterModels: { "contract-requestlist-filter-presets": this.gridOptions.api.getFilterModel() },
-        pinned: true,
-        selected: true
+    if (this.preferenceNameFormControl.value.trim() != "") {
+      const matches = this.filterList.filters.find(i => i.name.toLowerCase() == this.preferenceNameFormControl.value.toLowerCase());
+      if (!matches) {
+        const newFilter = {
+          id: this.preferenceNameFormControl.value + Math.random(),
+          name: this.preferenceNameFormControl.value,
+          filterModels: { "contract-requestlist-filter-presets": this.gridOptions.api.getFilterModel() },
+          pinned: true,
+          selected: true
+        }
+        this.filterList.filters.map(i => i['selected'] = false);
+        this.filterList.filters.push(newFilter);
+        this.filterList.filters.map(i => i['count'] = null);
+        this.presetComponent.refreshData(this.filterList.filters);
+        this.chRef.detectChanges();
+        this.contractService.updateUserFilterPresets(this.filterList.filters)
+          .subscribe(res => {
+            this.updateColumnPreference();
+            this.newPresetsDialog.close();
+          });
       }
-      this.filterList.filters.map(i => i['selected'] = false);
-      this.filterList.filters.push(newFilter);
-      this.filterList.filters.map(i => i['count'] = null);
-      this.presetComponent.refreshData(this.filterList.filters);
-      this.chRef.detectChanges();
-      this.contractService.updateUserFilterPresets(this.filterList.filters)
-        .subscribe(res => {
-          this.updateColumnPreference();
-          this.newPresetsDialog.close();
-        });
+      else {
+        this.toastr.error(PreferenceAlreadyExists, '', ToastPosition);
+      }
     }
     else {
-      alert("Name already exists")
+      this.toastr.error(EmptyFilterName, '', ToastPosition);
     }
   }
 
@@ -326,7 +335,7 @@ export class ContractRequestDetailsComponent implements OnInit {
       }
     }
     else if (this.filterList.filters) {
-      this.filterList.filters.find(i => i.selected ?
+      this.filterList.filters.find(i => i.selected && !i.defaultFilter ?
         i['filterModels'] = { "contract-requestlist-filter-presets": this.gridOptions.api.getFilterModel() } : null);
       this.contractService.updateUserFilterPresets(this.filterList.filters)
         .subscribe(res => {

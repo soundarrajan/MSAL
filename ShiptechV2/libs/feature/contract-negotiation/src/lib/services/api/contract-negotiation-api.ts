@@ -94,7 +94,7 @@ export const ContractNegotiationApiPaths = {
   preferenceCount: `api/ContractRequest/getCounts`,
   userSaveFilterPresets: 'api/user-settings/save/contract-requestlist-filter-presets',
   userFilterPresets: 'api/user-settings/contract-requestlist-filter-presets',
-  savecolumnPreference: 'api/api/user-settings/save/contract-request-list-grid_ColumnPreference',
+  savecolumnPreference: 'api/user-settings/save/contract-request-list-grid_ColumnPreference',
   columnPreference: 'api/user-settings/contract-request-list-grid_ColumnPreference'
 }
 
