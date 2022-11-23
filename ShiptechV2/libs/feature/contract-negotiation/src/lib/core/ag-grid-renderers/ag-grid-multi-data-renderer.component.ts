@@ -5,7 +5,7 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     selector: 'ag-grid-multi-data-renderer',
     template: `
     <div class="multi-data">
-    <div *ngFor="let item of params.value; let i = index" class="container">
+    <div *ngFor="let item of params.data['locations']; let i = index" class="container">
         <div style="height:7px"></div>
         <ng-container *ngIf="item[params.label]!='' && params.label=='locationName'">            
             <div *ngIf="item[params.label]!='' && params.label=='locationName'"

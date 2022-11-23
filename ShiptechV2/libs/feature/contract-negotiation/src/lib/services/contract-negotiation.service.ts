@@ -993,4 +993,16 @@ export class ContractNegotiationService extends BaseStoreService
     return this.contractNegotiationApi.getColumnPreference();
   }
 
+  //Savenew/ Update Columnpreference
+  @ObservableException()
+  updateColumnpreference(data: any): Observable<any> {
+    const payload = {
+      "Payload": {
+        "key": "contract-requestlist-filter-presets_ColumnPreference",
+        "value": (JSON.stringify(data))
+      }
+    }
+    return this.contractNegotiationApi.updateColumnPreference(payload);
+  }
+
 }
