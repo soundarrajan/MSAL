@@ -523,7 +523,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
   removeProductToContract(prodIndex, key) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.splice(key, 1);
-    this.searchFilterString[prodIndex].splice(key, 1);
+    this.searchFilterString[prodIndex].allowedProducts.splice(key, 1);
   }
   sendRFQ() {
     const dialogRef = this.dialog.open(SendRfqPopupComponent, {
