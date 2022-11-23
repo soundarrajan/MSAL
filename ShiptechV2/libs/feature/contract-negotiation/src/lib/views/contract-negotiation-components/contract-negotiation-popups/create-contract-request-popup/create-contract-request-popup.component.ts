@@ -109,8 +109,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
     id: 0,
     startDate: new Date(),
     endDate: new Date(),
-    quoteByDate: new Date(),
-    minValidity: new Date(),
+    quoteByDate: "",
+    minValidity: "",
     supplierComments: "",
     statusId: 1,
     status: 'Open',
@@ -266,7 +266,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
         this.planEndDate = new Date(this.plan.quarterlyPeriod[0].endDate);
         this.planLabel = this.plan.quarterlyPeriod[0].label;
         this.applyPlanPeriod();
-        this.reqObj.quoteByDate = this.reqObj.minValidity = this.getPreviousDay(this.planStartDate);
         this.reqObj.quantityDetails.push(this.newQuantityDetails);
         this.addNewMainProduct(0);
       } else {
@@ -305,11 +304,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.selectedPlanValue = this.planLabel;
   }
 
-  getPreviousDay(date = new Date()) {
-    const previous = new Date(date.getTime());
-    previous.setDate(date.getDate() - 1);
-    return previous;
-  }
 
   quantityFormatValue(value) {
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -804,13 +798,19 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
     if (startDate < quoteDate) {
       this.toaster.error(
-        'Quote By Date should be less than  Contract Period'
+        'Quote By Date should be less than Contract Period'
       );
       notValidDates = true;
     }
     if (startDate < minValidityDate) {
       this.toaster.error(
         'Minimum Validity Date should be less than the Contract Period'
+      );
+      notValidDates = true;
+    }
+    if (quoteDate > minValidityDate) {
+      this.toaster.error(
+        'Quote By Date should be less than Minimum Validity Date'
       );
       notValidDates = true;
     }
@@ -836,7 +836,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
         message = message.substring(0, message.length - 1);
       }
       this.toaster.error(message);
-      return;
+      return false;
     }
 
     // Date fields Valiation
@@ -958,7 +958,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     
     if(this.mainLocations.length == 0){
       this.toaster.error(
-        'Atleast one location should be added'
+        'You must add at least one main location in the contract request'
       );
       return false;
     }
