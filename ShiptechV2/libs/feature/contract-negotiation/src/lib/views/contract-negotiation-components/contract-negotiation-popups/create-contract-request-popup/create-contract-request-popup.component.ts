@@ -365,13 +365,18 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
     if(type !== 'uom') e.target.select();
   }
-  focusOut(e, type) {
+  focusOut(e, type, objName, i) {
+    let value = (e.target.value)?e.target.value:0;
     if (type == 'min') {
       e.target.parentElement
         .closest('.minInputFocus')
         .classList.remove('mininputFocussed');
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
+      if(objName == 'quantity')
+        this.reqObj.quantityDetails[i].minQuantity = this.quantityFormatValue(value);
+      if(objName == 'product')
+        this.reqObj.contractRequestProducts[i].minQuantity = this.quantityFormatValue(value);
     }
 
     if (type == 'max') {
@@ -380,6 +385,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
         .classList.remove('maxinputFocussed');
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
+      if(objName == 'quantity')
+        this.reqObj.quantityDetails[i].maxQuantity = this.quantityFormatValue(value);
+      if(objName == 'product')
+        this.reqObj.contractRequestProducts[i].maxQuantity = this.quantityFormatValue(value);
     }
 
     if (type == 'tol') {
@@ -388,9 +397,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
         .classList.remove('tolinputFocussed');
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
+      if(objName == 'quantity')
+        this.reqObj.quantityDetails[i].tolerancePercentage = this.quantityFormatValue(value);
     }
-    let value = (e.srcElement.value)?e.srcElement.value:0;
-    e.srcElement.value = this.quantityFormatValue(value);
   }
   // Only Number
   keyPressNumber(event) {
@@ -854,7 +863,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
     message = 'Please fill in required fields:';
     this.reqObj.quantityDetails.forEach((v, k) => {
       if (typeof v != 'undefined') {
-        if (!v.minQuantity || this.convertDecimalSeparatorStringToNumber(v.minQuantity) == 0) {
+        console.log('minQuantity', v.minQuantity);
+        if (v.minQuantity.toString() === '') {
           message += ' Min,';
         }
         if (!v.maxQuantity || this.convertDecimalSeparatorStringToNumber(v.maxQuantity) == 0) {
