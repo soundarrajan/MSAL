@@ -855,22 +855,40 @@ export class CreateContractRequestPopupComponent implements OnInit {
     let perMonthMaxQuantity = 0;
     let perWeekMaxQuantity = 0;
     let perDayMaxQuantity = 0;
+    let perLiftMaxQuantity = 0;
     let minQuantityValidationError = false;
-    let perMonthQuantityValidationError = '';
-    let perWeekQuantityValidationError = '';
-    let perDayQuantityValidationError = '';
-    let perLiftQuantityValidationError = '';
+    let duplicateQuantityType = [];
+    let maxZeroValidationError = '';
     message = 'Please fill in required fields:';
+
     this.reqObj.quantityDetails.forEach((v, k) => {
       if (typeof v != 'undefined') {
-        console.log('minQuantity', v.minQuantity);
         if (v.minQuantity.toString() === '') {
           message += ' Min,';
         }
-        if (!v.maxQuantity || this.convertDecimalSeparatorStringToNumber(v.maxQuantity) == 0) {
+        if (v.maxQuantity.toString() === '') {
           message += ' Max,';
         }
+        if (v.maxQuantity && this.convertDecimalSeparatorStringToNumber(v.maxQuantity) == 0) {
+          maxZeroValidationError = 'In Quantity section Max field cannot be ' + this.quantityFormatValue(0);
+        }
         if (typeof v.contractualQuantityOptionId != 'undefined') {
+          if(hasTotalContractualQuantity && v.contractualQuantityOptionId == 1){
+            duplicateQuantityType.push('Total Contractual Quantity');
+          }
+          if(hasPerMonthQuantity && v.contractualQuantityOptionId == 2){
+            duplicateQuantityType.push('Per Month');
+          }
+          if(hasPerWeekQuantity && v.contractualQuantityOptionId == 3){
+            duplicateQuantityType.push('Per Week');
+          }
+          if(hasPerDayQuantity && v.contractualQuantityOptionId == 4){
+            duplicateQuantityType.push('Per Day');
+          }
+          if(hasPerLiftQuantity && v.contractualQuantityOptionId == 5){
+            duplicateQuantityType.push('Per Lift');
+          }
+          
           if (v.contractualQuantityOptionId == 1) {
             totalMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
             hasTotalContractualQuantity = true;
@@ -887,71 +905,57 @@ export class CreateContractRequestPopupComponent implements OnInit {
         if (v.contractualQuantityOptionId == 2) {
           perMonthMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
           hasPerMonthQuantity = true;
-          if(hasTotalContractualQuantity && totalMaxQuantity < perMonthMaxQuantity){
-            perMonthQuantityValidationError = 'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift';
-          }
         }
         if (v.contractualQuantityOptionId == 3) {
           perWeekMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
           hasPerWeekQuantity = true;
-          if(hasPerMonthQuantity && perMonthMaxQuantity < perWeekMaxQuantity){
-            perWeekQuantityValidationError = 'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift';
-          }
         }
         if (v.contractualQuantityOptionId == 4) {
           perDayMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
           hasPerDayQuantity = true;
-          if(hasPerWeekQuantity && perWeekMaxQuantity < perDayMaxQuantity){
-            perDayQuantityValidationError = 'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift';
-          }
         }
         if (v.contractualQuantityOptionId == 5) {
-          this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
+          perLiftMaxQuantity = this.convertDecimalSeparatorStringToNumber(v.maxQuantity);
           hasPerLiftQuantity = true;
-          if(hasPerDayQuantity && perDayMaxQuantity < this.convertDecimalSeparatorStringToNumber(v.maxQuantity)){
-            perLiftQuantityValidationError = 'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift';
-          }
         }
       }
     });
-    if (message != 'Please fill in required fields:') {
-      if (message[message.length - 1] == ',') {
-        message = message.substring(0, message.length - 1);
-      }
-      this.toaster.error(message);
-      return;
-    }
-    if (minQuantityValidationError) {
-      this.toaster.error('Min Quantity must be smaller than Max Quantity ');
-      return false;
-    }
     if (!hasTotalContractualQuantity) {
       this.toaster.error(
         'Total ContractualQuantity option is required in Contractual Quantity section'
       );
       return false;
     }
-
-    if ((hasPerWeekQuantity && !hasPerMonthQuantity) || (hasPerDayQuantity && !hasPerWeekQuantity) || (hasPerLiftQuantity && !hasPerDayQuantity)) {
-        this.toaster.error(
-          'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift'
-        );
-        return false;
-    }
-    if (perMonthQuantityValidationError != '') {
-      this.toaster.error(perMonthQuantityValidationError);
+    if((hasPerWeekQuantity && !hasPerMonthQuantity)
+      || (hasPerDayQuantity && !hasPerWeekQuantity)
+      || (hasPerLiftQuantity && !hasPerDayQuantity)
+      || (hasTotalContractualQuantity && totalMaxQuantity < perMonthMaxQuantity)
+      || (hasPerMonthQuantity && perMonthMaxQuantity < perWeekMaxQuantity)
+      || (hasPerWeekQuantity && perWeekMaxQuantity < perDayMaxQuantity)
+      || (hasPerDayQuantity && perDayMaxQuantity < perLiftMaxQuantity)) {
+      this.toaster.error(
+        'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift'
+      );
       return false;
     }
-    if (perWeekQuantityValidationError != '') {
-      this.toaster.error(perWeekQuantityValidationError);
+    if(duplicateQuantityType.length > 0){
+      this.toaster.error(
+        'You cannot define ' + duplicateQuantityType.join(', ') + 'multiple times'
+      );
+    }
+    if (message != 'Please fill in required fields:') {
+      if (message[message.length - 1] == ',') {
+        message = message.substring(0, message.length - 1);
+      }
+      this.toaster.error(message);
       return false;
     }
-    if (perDayQuantityValidationError != '') {
-      this.toaster.error(perDayQuantityValidationError);
+    if(maxZeroValidationError != '') {
+      this.toaster.error(maxZeroValidationError);
       return false;
     }
-    if (perLiftQuantityValidationError != '') {
-      this.toaster.error(perLiftQuantityValidationError);
+    if (minQuantityValidationError) {
+      this.toaster.error('Min Quantity must be smaller than Max Quantity ');
       return false;
     }
     /* Quantity Details Validation - End */
