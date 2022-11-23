@@ -219,16 +219,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
     ]).subscribe((data) => {
       this.staticData = data;
       this.locationsList.next(data.Location);
-      //this.staticData.SpecGroup.filter(p => p.id === 68 ).map(x => x.databaseValue = 158);
       if(this.data.requestDetails){
         this.isNewRequest = false;
         this.reqObj = this.data.requestDetails;
         this.reqObj.quantityDetails.forEach((q, i) => {
           q.minQuantity = this.quantityFormatValue(q.minQuantity);
           q.maxQuantity = this.quantityFormatValue(q.maxQuantity);
+          q.tolerancePercentage = this.quantityFormatValue(q.tolerancePercentage);
         })
         this.reqObj.contractRequestProducts.forEach( (item, i) => {
-          this.mainProductChange(item.productId);
           let location = this.staticData.Location.find( x => x.id == item.locationId);
           let newLocation = {
             locationId: location.id,
@@ -501,9 +500,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.searchFilterString.splice(i, 1);
   }
 
-  mainProductChange(prodId) {
-    this.mainSpecGroupOptions = this.specGroupDataSource(prodId);
-  }
 
   specGroupDataSource(prodId) {
     return this.staticData.SpecGroup.filter(p => p.databaseValue === prodId );
