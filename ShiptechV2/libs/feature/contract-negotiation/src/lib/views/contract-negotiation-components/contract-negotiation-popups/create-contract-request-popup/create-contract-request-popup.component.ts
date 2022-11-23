@@ -725,11 +725,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   onMainProductChange(prodId, i){
     let prod = this.staticData.Product.find(p => p.id == prodId);
-    console.log('prod::',prod);
     let prodType = this.staticData.ProductType.find(pt => pt.id == prod.productTypeId);
-    console.log('prodType::',prodType);
     let prodTypeGroup = this.staticData.ProductTypeGroup.find(ptg => ptg.id == prodType.databaseValue);
-    console.log('prodTypeGroup::',prodTypeGroup);
     this.reqObj.contractRequestProducts[i].minQuantityUomId = prodTypeGroup.databaseValue;
     this.reqObj.contractRequestProducts[i].maxQuantityUomId = prodTypeGroup.databaseValue;
   }
