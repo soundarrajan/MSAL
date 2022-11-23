@@ -16,7 +16,6 @@ import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-
 import { Store } from '@ngxs/store';
 import { Router } from "@angular/router"
 import moment from 'moment';
-import _, { first } from 'lodash';
 import { Subject } from 'rxjs';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
@@ -212,6 +211,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.localService.getMasterListData([
       "Location",
       "Product",
+      "ProductType",
+      "ProductTypeGroup",
       "PricingType",
       "ContractualQuantityOption",
       "SpecGroup",
@@ -569,14 +570,14 @@ export class CreateContractRequestPopupComponent implements OnInit {
     event.stopPropagation();
     let periodData = [];
     let selectedItemLabels = this.planLabel.split(',');
-    if (selectedPlanPeriod == 'Quarter') { periodData = this.plan.quarterlyPeriod; }
-    if (selectedPlanPeriod == 'Month') { periodData = this.plan.monthlyPeriod; }
-    if (selectedPlanPeriod == 'Year') { periodData = this.plan.yearlyPeriod; }
-    if (selectedPlanPeriod == 'Semester') { periodData = this.plan.semesterPeriod; }
     let selectedItems = periodData.filter(i => i.selected == true).map(x => x.id);
     let firstId = selectedItems[0];
     let lastId = selectedItems[selectedItems.length - 1];
     let deselectedInMiddle = false;
+    if (selectedPlanPeriod == 'Quarter') { periodData = this.plan.quarterlyPeriod; }
+    if (selectedPlanPeriod == 'Month') { periodData = this.plan.monthlyPeriod; }
+    if (selectedPlanPeriod == 'Year') { periodData = this.plan.yearlyPeriod; }
+    if (selectedPlanPeriod == 'Semester') { periodData = this.plan.semesterPeriod; }
     if(item.selected == true){
       if(item.id == firstId || item.id == lastId) {
         periodData.filter(i => i.id == item.id).map(i => i.selected = false);
@@ -720,6 +721,17 @@ export class CreateContractRequestPopupComponent implements OnInit {
     } else {
       this.addNewMainProduct(location.id);
     }
+  }
+
+  onMainProductChange(prodId, i){
+    let prod = this.staticData.Product.find(p => p.id == prodId);
+    console.log('prod::',prod);
+    let prodType = this.staticData.ProductType.find(pt => pt.id == prod.productTypeId);
+    console.log('prodType::',prodType);
+    let prodTypeGroup = this.staticData.ProductTypeGroup.find(ptg => ptg.id == prodType.databaseValue);
+    console.log('prodTypeGroup::',prodTypeGroup);
+    this.reqObj.contractRequestProducts[i].minQuantityUomId = prodTypeGroup.databaseValue;
+    this.reqObj.contractRequestProducts[i].maxQuantityUomId = prodTypeGroup.databaseValue;
   }
 
   productDataSource(value) {
@@ -940,7 +952,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
     if(duplicateQuantityType.length > 0){
       this.toaster.error(
-        'You cannot define ' + duplicateQuantityType.join(', ') + 'multiple times'
+        'You cannot define ' + duplicateQuantityType.join(', ') + ' multiple times'
       );
     }
     if (message != 'Please fill in required fields:') {

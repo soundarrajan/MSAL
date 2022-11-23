@@ -297,7 +297,7 @@
                                     class="without-search contract-location-product-dropdown custom-dropdown"
                                     appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select [(value)]="reqObj.contractRequestProducts[i].productId"
+                                    <mat-select [(value)]="reqObj.contractRequestProducts[i].productId" (selectionChange)="onMainProductChange($event.value, i)"
                                       disableOptionCentering [panelClass]="'shiptech-select-product-container'" required>
                                       <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                           <div class="col-md-12 header-container-product pd-0">
@@ -449,7 +449,7 @@
                       <mat-form-field class="long-label-field"
                         style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
                         appearance="legacy">
-                        <mat-select disableRipple [(ngModel)]="reqObj.contractRequestProducts[i].minQuantityUomId" style="background-color: #EBECED !important;">
+                        <mat-select disableRipple [(ngModel)]="reqObj.contractRequestProducts[i].maxQuantityUomId" style="background-color: #EBECED !important;">
                           <mat-option *ngFor="let option of staticData.Uom" [value]="option.id">{{option.name}}</mat-option>
                         </mat-select>
                       </mat-form-field>
