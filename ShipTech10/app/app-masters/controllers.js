@@ -5146,7 +5146,11 @@
                 if (!val.isDeleted) {
                     length++;
                 }
-            });
+            });    
+            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
+                obj.splice(index, 1);
+                return;
+            }         
             if (vm.screen_id == 'invoice' && vm.app_id == 'invoices') {
             	if ($scope.formValues.status) {
 	                if ($scope.formValues.status.name == 'Approved') {

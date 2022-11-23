@@ -235,6 +235,8 @@ export class ContractRequestDetailsComponent implements OnInit {
         this.filterList.filters[0].count = this.gridOptions.api.getDisplayedRowCount();
         this.gridpageNavModel.totalItems = this.gridOptions.api.getDisplayedRowCount();
         this.filterList.filters.find(i => i.selected ? this.activeFilterPreset(i) : null);
+        const sort = [{ colId: "id", sort: "desc" }];
+        this.gridOptions.api.setSortModel(sort);
         this.chRef.detectChanges();
       });
   }
@@ -327,6 +329,7 @@ export class ContractRequestDetailsComponent implements OnInit {
       this.filterList.filters = evt;
       this.filterList.filters.find(i => i.selected ? this.activeFilterPreset(i) : null);
       if (this.filterList.filters) {
+        this.filterList.filters.map(i => i['count'] = null);
         this.contractService.updateUserFilterPresets(this.filterList.filters)
           .subscribe(res => {
             this.updateColumnPreference();
@@ -366,6 +369,26 @@ export class ContractRequestDetailsComponent implements OnInit {
 
   showfilterDesc() {
     document.querySelector<HTMLElement>("app-ag-filter-display").hidden = false;
+  }
+
+  exportData(evt) {
+    if (evt == 'excel')
+      this.gridOptions.api.exportDataAsExcel({ fileName: 'contract-negotiation' })
+    else
+      this.print()
+  }
+
+  print(): void {
+    const eGridDiv = document.querySelector<HTMLElement>('ag-grid-angular')! as any;
+    eGridDiv.style.width = '';
+    eGridDiv.style.height = '';
+    this.gridOptions.api.setDomLayout('print');
+    setTimeout(() => {
+      window.print();
+      document.querySelector<HTMLElement>('ag-grid-angular').style.height =
+        'calc( 100vh - 220px )';
+      this.gridOptions.api.setDomLayout(null);
+    }, 1000);
   }
 
 }

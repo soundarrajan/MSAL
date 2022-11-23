@@ -1,7 +1,4 @@
-<div
-  class="product-footer"
-  [ngStyle]="{ width: footerWidth, bottom: footerPosition }"
->
+<div class="product-footer" [ngStyle]="{ width: footerWidth, bottom: footerPosition }">
   <div class="page-details p-r-5">
     <div class="total-results" style="margin-right: 7px;" *ngIf="enabler == false">
       <div style="float:left">
@@ -22,17 +19,13 @@
       </span>
     </div>
 
-    <div  *ngIf="enabler == false">
-      <shiptech-export-new
-      [gridId]="id"
-      [gridModel]="gridViewModel"
-      [serverKeys]="serverKeys"
-    ></shiptech-export-new>
+    <div *ngIf="enabler == false && !exportDisplay">
+      <shiptech-export-new [gridId]="id" [gridModel]="gridViewModel" [serverKeys]="serverKeys"></shiptech-export-new>
     </div>
-    <div *ngIf="(enabler == true && display == true)" >
+    <div *ngIf="(enabler == true && display == true)||exportDisplay">
       <div class="export-excel">
-        <div class="excel-icon"></div>
-        <div class="export-icon"></div>
+        <div class="excel-icon" (click)="export('excel')"></div>
+        <div class="export-icon" (click)="export('print')"></div>
       </div>
     </div>
   </div>
@@ -41,11 +34,8 @@
     <span>Show</span>
 
     <span *ngIf="enabler == false">
-      <app-page-size-selector-new
-        (selectedOptionChange)="onPageSizeChange($event)"
-        [options]="gridViewModel.pageSizeOptions"
-        [selectedOption]="gridViewModel.pageSize"
-      >
+      <app-page-size-selector-new (selectedOptionChange)="onPageSizeChange($event)"
+        [options]="gridViewModel.pageSizeOptions" [selectedOption]="gridViewModel.pageSize">
       </app-page-size-selector-new>
     </span>
 
@@ -74,28 +64,14 @@
     <span>Rows</span>
   </div>
 
-  <app-ag-paging-new
-    [pagerLeftArrowIcon]="'fa fa-chevron-left'"
-    [pagerRightArrowIcon]="'fa fa-chevron-right'"
-    [count]="count"
-    [page]="page"
-    [size]="size"
-    [useInputAsPageSelect]="true"
-    (pageChange)="onPageChange($event.page)"
-  >
+  <app-ag-paging-new [pagerLeftArrowIcon]="'fa fa-chevron-left'" [pagerRightArrowIcon]="'fa fa-chevron-right'"
+    [count]="count" [page]="page" [size]="size" [useInputAsPageSelect]="true" (pageChange)="onPageChange($event.page)">
   </app-ag-paging-new>
 
   <div class="pagination">
-    <app-ag-pagination-new
-      [pagerLeftArrowIcon]="'fa fa-chevron-left'"
-      [pagerRightArrowIcon]="'fa fa-chevron-right'"
-      [count]="count"
-      [page]="page"
-      [size]="size"
-      [id]="id"
-      [useInputAsPageSelect]="true"
-      (pageChange)="onPageChange($event.page)"
-    >
+    <app-ag-pagination-new [pagerLeftArrowIcon]="'fa fa-chevron-left'" [pagerRightArrowIcon]="'fa fa-chevron-right'"
+      [count]="count" [page]="page" [size]="size" [id]="id" [useInputAsPageSelect]="true"
+      (pageChange)="onPageChange($event.page)">
     </app-ag-pagination-new>
   </div>
 </div>

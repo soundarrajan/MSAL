@@ -2954,6 +2954,14 @@
                 rowEditWaitInterval: -1, // Important for skipping the promise
                 columnDefs: [
                     {
+                        name: '  ',
+                        width: 40,
+                        enableCellEdit: false,
+                        enableSorting: false,
+                        cellClass: 'actionsCol',
+                        cellTemplate: $scope.dataTableTemplates.remRow,                     
+                    },
+                    {
                         name: '   ',
                         width: 40,
                         enableCellEdit: false,
@@ -4142,7 +4150,7 @@
             //     productTypeId: 0,
             //     transactionTypeId: 0
             // }];
-            console.log('*************hoooooo');
+          
             console.log($scope.formValues.locations);
         };
         $scope.addProductTypeMasterService = function(rowIdx, item, fVal) {
