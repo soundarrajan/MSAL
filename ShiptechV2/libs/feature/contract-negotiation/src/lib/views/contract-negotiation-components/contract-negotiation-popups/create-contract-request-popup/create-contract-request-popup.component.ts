@@ -109,8 +109,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
     id: 0,
     startDate: new Date(),
     endDate: new Date(),
-    quoteByDate: new Date(),
-    minValidity: new Date(),
+    quoteByDate: "",
+    minValidity: "",
     supplierComments: "",
     statusId: 1,
     status: 'Open',
@@ -266,7 +266,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
         this.planEndDate = new Date(this.plan.quarterlyPeriod[0].endDate);
         this.planLabel = this.plan.quarterlyPeriod[0].label;
         this.applyPlanPeriod();
-        this.reqObj.quoteByDate = this.reqObj.minValidity = this.getPreviousDay(this.planStartDate);
         this.reqObj.quantityDetails.push(this.newQuantityDetails);
         this.addNewMainProduct(0);
       } else {
@@ -305,11 +304,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.selectedPlanValue = this.planLabel;
   }
 
-  getPreviousDay(date = new Date()) {
-    const previous = new Date(date.getTime());
-    previous.setDate(date.getDate() - 1);
-    return previous;
-  }
 
   quantityFormatValue(value) {
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -365,13 +359,18 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
     if(type !== 'uom') e.target.select();
   }
-  focusOut(e, type) {
+  focusOut(e, type, objName, i) {
+    let value = (e.target.value)?e.target.value:0;
     if (type == 'min') {
       e.target.parentElement
         .closest('.minInputFocus')
         .classList.remove('mininputFocussed');
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
+      if(objName == 'quantity')
+        this.reqObj.quantityDetails[i].minQuantity = this.quantityFormatValue(value);
+      if(objName == 'product')
+        this.reqObj.contractRequestProducts[i].minQuantity = this.quantityFormatValue(value);
     }
 
     if (type == 'max') {
@@ -380,6 +379,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
         .classList.remove('maxinputFocussed');
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
+      if(objName == 'quantity')
+        this.reqObj.quantityDetails[i].maxQuantity = this.quantityFormatValue(value);
+      if(objName == 'product')
+        this.reqObj.contractRequestProducts[i].maxQuantity = this.quantityFormatValue(value);
     }
 
     if (type == 'tol') {
@@ -388,9 +391,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
         .classList.remove('tolinputFocussed');
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
+      if(objName == 'quantity')
+        this.reqObj.quantityDetails[i].tolerancePercentage = this.quantityFormatValue(value);
     }
-    let value = (e.srcElement.value)?e.srcElement.value:0;
-    e.srcElement.value = this.quantityFormatValue(value);
   }
   // Only Number
   keyPressNumber(event) {
@@ -523,7 +526,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
   removeProductToContract(prodIndex, key) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.splice(key, 1);
-    this.searchFilterString[prodIndex].splice(key, 1);
+    this.searchFilterString[prodIndex].allowedProducts.splice(key, 1);
   }
   sendRFQ() {
     const dialogRef = this.dialog.open(SendRfqPopupComponent, {
@@ -795,13 +798,19 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
     if (startDate < quoteDate) {
       this.toaster.error(
-        'Quote By Date should be less than  Contract Period'
+        'Quote By Date should be less than Contract Period'
       );
       notValidDates = true;
     }
     if (startDate < minValidityDate) {
       this.toaster.error(
         'Minimum Validity Date should be less than the Contract Period'
+      );
+      notValidDates = true;
+    }
+    if (quoteDate > minValidityDate) {
+      this.toaster.error(
+        'Quote By Date should be less than Minimum Validity Date'
       );
       notValidDates = true;
     }
@@ -827,7 +836,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
         message = message.substring(0, message.length - 1);
       }
       this.toaster.error(message);
-      return;
+      return false;
     }
 
     // Date fields Valiation
@@ -854,7 +863,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
     message = 'Please fill in required fields:';
     this.reqObj.quantityDetails.forEach((v, k) => {
       if (typeof v != 'undefined') {
-        if (!v.minQuantity || this.convertDecimalSeparatorStringToNumber(v.minQuantity) == 0) {
+        console.log('minQuantity', v.minQuantity);
+        if (v.minQuantity.toString() === '') {
           message += ' Min,';
         }
         if (!v.maxQuantity || this.convertDecimalSeparatorStringToNumber(v.maxQuantity) == 0) {
@@ -948,7 +958,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     
     if(this.mainLocations.length == 0){
       this.toaster.error(
-        'Atleast one location should be added'
+        'You must add at least one main location in the contract request'
       );
       return false;
     }

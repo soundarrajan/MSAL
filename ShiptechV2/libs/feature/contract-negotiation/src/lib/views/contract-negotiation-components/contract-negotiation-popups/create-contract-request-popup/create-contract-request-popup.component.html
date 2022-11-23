@@ -161,7 +161,7 @@
                         [(ngModel)]="reqObj.quantityDetails[i].minQuantity"
                         matInput
                         (focus)="focus($event, 'min')"
-                        (focusout)="focusOut($event, 'min')"
+                        (focusout)="focusOut($event, 'min', 'quantity', i)"
                         (keypress)="keyPressNumber($event)"
                         autocomplete="off"/>
                       </mat-form-field>
@@ -182,7 +182,7 @@
                           [(ngModel)]="reqObj.quantityDetails[i].maxQuantity"
                           matInput
                           (focus)="focus($event, 'max')"
-                          (focusout)="focusOut($event, 'max')"
+                          (focusout)="focusOut($event, 'max', 'quantity', i)"
                           (keypress)="keyPressNumber($event)"
                           autocomplete="off" 
                           required/>
@@ -220,7 +220,7 @@
                           [(ngModel)]="reqObj.quantityDetails[i].tolerancePercentage"
                           matInput
                           (focus)="focus($event, 'tol')"
-                          (focusout)="focusOut($event, 'tol')"
+                          (focusout)="focusOut($event, 'tol', 'quantity', i)"
                           (keypress)="keyPressNumber($event)"
                           autocomplete="off" />
                         </mat-form-field>
@@ -417,7 +417,7 @@
                           [(ngModel)]="reqObj.contractRequestProducts[i].minQuantity"
                           matInput
                           (focus)="focus($event, 'min')"
-                          (focusout)="focusOut($event, 'min')"
+                          (focusout)="focusOut($event, 'min', 'product', i)"
                           (keypress)="keyPressNumber($event)"
                           autocomplete="off"
                           >
@@ -441,7 +441,7 @@
                           [(ngModel)]="reqObj.contractRequestProducts[i].maxQuantity"
                           matInput
                           (focus)="focus($event, 'max')"
-                          (focusout)="focusOut($event, 'max')"
+                          (focusout)="focusOut($event, 'max', 'product', i)"
                           (keypress)="keyPressNumber($event)"
                           autocomplete="off"
                           >
