@@ -2979,7 +2979,8 @@
                             Type: 'lookup',
                             masterSource: 'Period',
                             clc_id: 'masters_periodlist',
-                            customChangeAction: 'siPeriodSelection(rowRenderIndex, grid.appScope.fVal().formValues)'
+                            customChangeAction: 'siPeriodSelection(rowRenderIndex, grid.appScope.fVal().formValues)',
+                            customKeyPressAction:'periodKeyPress(rowRenderIndex, grid.appScope.fVal().formValues)'
                         }
                     },
                     {

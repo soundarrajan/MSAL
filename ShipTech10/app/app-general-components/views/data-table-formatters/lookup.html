@@ -21,6 +21,7 @@ data-original-title="{{MODEL_COL_FIELD.name | decodeReadOnly}}">
     typeahead-on-select="triggerChangeFields(col.colDef.name); $eval(col.colDef.cellObject.customChangeAction); grid.element[0].id == 'grid_specGroupParameters' ? MODEL_COL_FIELD.name = CM.decodeHtml(MODEL_COL_FIELD.name) : ''" 
     data-cell-id="{{MODEL_COL_FIELD.id}}" 
     ng-disabled="$eval(col.colDef.cellObject.Disabled)"
+    ng-keyup="$eval(col.colDef.cellObject.customKeyPressAction);"
     ng-blur="col.colDef.cellObject.resetIfEmpty && !MODEL_COL_FIELD.id
     && (col.colDef.cellObject.required == true || col.colDef.required == true)
     ? MODEL_COL_FIELD = col.colDef.cellObject.origCopy[grid.element[0].id + '_' + col.colDef.name + '_' + rowRenderIndex]

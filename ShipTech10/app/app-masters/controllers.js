@@ -1101,13 +1101,12 @@
                 let periods = [];
                 if($scope.formValues && $scope.formValues.periods) {
                     for (var i = 0; i < $scope.formValues.periods.length; i++) {
-                        if ($scope.formValues.periods[i].period && $scope.formValues.periods[i].validFrom && $scope.formValues.periods[i].validTo) {
+                        if ($scope.formValues.periods[i].period && $scope.formValues.periods[i].period.name && $scope.formValues.periods[i].validFrom && $scope.formValues.periods[i].validTo) {
                             periods.push($scope.formValues.periods[i]);
                         }
                     }
                 }
-
-                let periodData = $scope.formValues.periods.map(el => el.validFrom+'-'+el.validTo);
+                let periodData = periods.map(el => el.validFrom+'-'+el.validTo);
                 let findDuplicates = periodData.filter((item, index) => periodData.indexOf(item) != index);
                 if(findDuplicates.length > 0){
                     toastr.error('P​eriod Overlapped, Please Change the Period');
@@ -5146,8 +5145,9 @@
                 if (!val.isDeleted) {
                     length++;
                 }
-            });    
-            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
+            });  
+            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument' && initialObject == "formValues.periods") { 
+                row.isDeleted = true;
                 obj.splice(index, 1);
                 return;
             }         
@@ -5173,6 +5173,7 @@
                 	 	}
                 	 });
                 } else if (row.id > 0 || !row.id) {
+                  
 	                    row.isDeleted = true;
 	                } else {
 	                    // row.isDeleted = true;
@@ -5181,14 +5182,15 @@
                 return;
             }
 
-
             if (length > 1) {
+      
                 if (row.id > 0) {
                     row.isDeleted = true;
                 } else {
                     obj.splice(index, 1);
                 }
             } else if (row.id > 0) {
+       
                 row.isDeleted = true;
                 if(vm.app_id !== 'claims' && vm.screen_id !== 'claims') {
                     if (vm.app_id == 'default' && (window.location.href.indexOf('request') != -1 || window.location.href.indexOf('order') != -1) || (vm.app_id == 'labs' && vm.screen_id == 'labresult')) {
@@ -5202,11 +5204,13 @@
                 }
 
             } else {
+           
                 obj.splice(index, 1);
             }
             if (autoSave) {
                 $scope.autoSaveNotes(obj);
             }
+            
         };
         $scope.showRow = function(row, grid) {
             if (angular.equals(grid.options.data, 'formValues.periods')) {
@@ -6019,10 +6023,21 @@
             $scope.triggerChangeFields(field_name, elements[1], true);
         };
 
+        /*Custom KEYPRESS action for System instrument Period*/
+        $scope.periodKeyPress  = function(index,formValues,fVal){ 
+            console.log(formValues.periods[index].period);
+             if(!formValues.periods[index].period){
+              formValues.periods[index].validFrom = moment('',"YYYY-MM-DD"); 
+              formValues.periods[index].validTo =  moment('',"YYYY-MM-DD"); 
+             } 
+             return false;
+        };
+
         $scope.siPeriodSelection = function(index,formValues,fVal){
            let checkFlag = false;
            Factory_Master.get_master_entity(formValues.periods[index].period.id, 'period', 'masters', (response) => {
                if (response) {
+                console.log(formValues.periods);
                 if(formValues.periods.length > 1){
                     let arrVal = formValues.periods.map(el => el.validFrom+'-'+el.validTo);
                     arrVal.find( (el,chkIndex) => {
@@ -6033,6 +6048,8 @@
                     );
                 }
                 if(checkFlag) {
+                    formValues.periods[index].validFrom = moment('',"YYYY-MM-DD"); 
+                    formValues.periods[index].validTo = moment('',"YYYY-MM-DD"); 
                     toastr.error('P​eriod Overlapped, Please Change the Period');
                     return;
                 }
