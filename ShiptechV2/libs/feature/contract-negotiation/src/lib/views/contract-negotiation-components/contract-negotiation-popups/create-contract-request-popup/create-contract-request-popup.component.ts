@@ -564,15 +564,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
   selectPlanPeriod(event, item, selectedPlanPeriod) {
     event.stopPropagation();
     let periodData = [];
+    if (selectedPlanPeriod == 'Quarter') { periodData = this.plan.quarterlyPeriod; }
+    if (selectedPlanPeriod == 'Month') { periodData = this.plan.monthlyPeriod; }
+    if (selectedPlanPeriod == 'Year') { periodData = this.plan.yearlyPeriod; }
+    if (selectedPlanPeriod == 'Semester') { periodData = this.plan.semesterPeriod; }
     let selectedItemLabels = this.planLabel.split(',');
     let selectedItems = periodData.filter(i => i.selected == true).map(x => x.id);
     let firstId = selectedItems[0];
     let lastId = selectedItems[selectedItems.length - 1];
     let deselectedInMiddle = false;
-    if (selectedPlanPeriod == 'Quarter') { periodData = this.plan.quarterlyPeriod; }
-    if (selectedPlanPeriod == 'Month') { periodData = this.plan.monthlyPeriod; }
-    if (selectedPlanPeriod == 'Year') { periodData = this.plan.yearlyPeriod; }
-    if (selectedPlanPeriod == 'Semester') { periodData = this.plan.semesterPeriod; }
     if(item.selected == true){
       if(item.id == firstId || item.id == lastId) {
         periodData.filter(i => i.id == item.id).map(i => i.selected = false);
