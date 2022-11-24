@@ -592,9 +592,9 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                         }
                                     });
                                     $scope.formValues.id = 0;
-                                    console.log("6666666666666 vm.screen_id", vm.screen_id);
-                                    console.log("6666666666666 $scope.formValues", $scope.formValues);
-                                    console.log("6666666666666 $scope.formValues.counterpartyLocations", $scope.formValues.counterpartyLocations);
+                                    console.log("vm.screen_id", vm.screen_id);
+                                    console.log("$scope.formValues", $scope.formValues);
+                                    console.log("$scope.formValues.counterpartyLocations", $scope.formValues.counterpartyLocations);
                                     if (vm.screen_id == 'counterparty') {
                                     	$scope.formValues.address.id = 0;
                                     	$.each($scope.formValues.counterpartyLocations, (key, val) => {
@@ -734,7 +734,7 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     	$.each($scope.formValues.robs, function(k,v){
                                     		v.vesselTypeId = null;
                                     	})
-                                    }
+                                    }                                    
 				                    $('#header_action_verify').attr('disabled', 'disabled');
                                     toastr.success('Entity copied');
                                     $scope.$emit('formValues', $scope.formValues);

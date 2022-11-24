@@ -3004,9 +3004,11 @@
                 ],
                 onRegisterApi: function(api) {
                     setTimeout(() => {
-                        api.core.handleWindowResize();
-                        if (angular.equals($scope.formValues, {}) || !$scope.formValues.periods || angular.equals($scope.formValues.periods, [])) {
-                            $scope.formValues.periods = [ {} ];
+                        api.core.handleWindowResize();                       
+                        if (angular.equals($scope.formValues, {}) || !$scope.formValues.periods) {
+                            $scope.formValues.periods = [];
+                        } else if (angular.equals($scope.formValues.periods, [])) {
+                            $scope.formValues.periods = [];
                         }
                     }, 10);
                 }

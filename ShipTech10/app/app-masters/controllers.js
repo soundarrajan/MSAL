@@ -1097,22 +1097,28 @@
 
             }
 
-            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {                
+            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {  
+
+                var periodRows = $scope.formValues.periods;
+                var deletedRows = $scope.deletedRows;
+                var allPeriodRows = periodRows.concat(deletedRows);
+
                 let periods = [];
-                if($scope.formValues && $scope.formValues.periods) {
-                    for (var i = 0; i < $scope.formValues.periods.length; i++) {
-                        if ($scope.formValues.periods[i].period && $scope.formValues.periods[i].period.name && $scope.formValues.periods[i].validFrom && $scope.formValues.periods[i].validTo) {
-                            periods.push($scope.formValues.periods[i]);
+                if($scope.formValues && allPeriodRows) {                
+                    for (var i = 0; i < allPeriodRows.length; i++) {
+
+                        if (allPeriodRows[i].period && allPeriodRows[i].period.name && allPeriodRows[i].validFrom && allPeriodRows[i].validTo) {
+                            periods.push(allPeriodRows[i]);
                         }
                     }
-                }
+                }       
                 let periodData = periods.map(el => el.validFrom+'-'+el.validTo);
                 let findDuplicates = periodData.filter((item, index) => periodData.indexOf(item) != index);
                 if(findDuplicates.length > 0){
                     toastr.error('P​eriod Overlapped, Please Change the Period');
                     return;
                 }
-                $scope.formValues.periods = periods;
+                // $scope.formValues.periods = periods;               
                 if ($scope.formValues && $scope.formValues.productsLocations) {
                     let errors = '';
                     let products = [];
@@ -5132,6 +5138,7 @@
                 });
             }
         };
+        $scope.deletedRows = [];
         $scope.remData = function(obj, row, idx) {
             let initialObject = angular.copy(obj);
             let autoSave = false;
@@ -5147,9 +5154,14 @@
                 }
             });  
             if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument' && initialObject == "formValues.periods") { 
+                console.log(obj);
                 row.isDeleted = true;
+                var oldRow = row;
                 obj.splice(index, 1);
-                return;
+               console.log(oldRow);
+            
+               $scope.deletedRows.push(oldRow);
+               return;
             }         
             if (vm.screen_id == 'invoice' && vm.app_id == 'invoices') {
             	if ($scope.formValues.status) {
