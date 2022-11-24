@@ -17,7 +17,7 @@ const routes: Routes = [
         path: `${KnownContractNegotiationRoutes.RequestsList}`,
         data: {
           title: 'Contract Requests List',
-          breadcrumb: 'Requests List'
+          breadcrumb: 'Request List'
         },
         children: [
           {
@@ -25,8 +25,8 @@ const routes: Routes = [
             component: ContractNegotiationComponent,
             pathMatch: 'full',
             data: {
-              title: 'Contract Requests List',
-              breadcrumb: 'Requests List'
+              title: 'Request List',
+              breadcrumb: 'Request List'
             },
           },
           {
