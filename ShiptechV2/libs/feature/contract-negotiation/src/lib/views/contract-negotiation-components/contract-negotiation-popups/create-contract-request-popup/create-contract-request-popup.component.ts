@@ -799,25 +799,25 @@ export class CreateContractRequestPopupComponent implements OnInit {
     const minValidity = new Date(this.reqObj.minValidity);
     const minValidityDate = minValidity.getTime();
 
-    if (startDate > endDate) {
+    if (startDate >= endDate) {
       this.toaster.error(
         'Contract Start Date must be lesser than Contract End Date'
       );
       notValidDates = true;
     }
-    if (startDate < quoteDate) {
+    if (startDate <= quoteDate) {
       this.toaster.error(
         'Quote By Date should be less than Contract Period'
       );
       notValidDates = true;
     }
-    if (startDate < minValidityDate) {
+    if (startDate <= minValidityDate) {
       this.toaster.error(
         'Minimum Validity Date should be less than the Contract Period'
       );
       notValidDates = true;
     }
-    if (quoteDate > minValidityDate) {
+    if (quoteDate >= minValidityDate) {
       this.toaster.error(
         'Quote By Date should be less than Minimum Validity Date'
       );
