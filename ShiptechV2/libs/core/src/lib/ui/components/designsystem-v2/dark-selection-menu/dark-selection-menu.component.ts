@@ -37,6 +37,7 @@ export class DarkSelectionMenuComponent implements OnInit {
   dataSourceCopy: any[] = [];
   columnKeys: any[] = [];
   expandLocation: boolean = false;
+  searchText = "";
   
   constructor(
     @Host() private select: MatSelect,
@@ -122,6 +123,8 @@ export class DarkSelectionMenuComponent implements OnInit {
     this.selectedItem = item.id;
     this.onSelectionChange.emit(item);
     this.selectedItem = '';
+    this.searchText = "";
+    this.dataSource = this.dataSourceCopy;
   }
 
   search(value: string): void {

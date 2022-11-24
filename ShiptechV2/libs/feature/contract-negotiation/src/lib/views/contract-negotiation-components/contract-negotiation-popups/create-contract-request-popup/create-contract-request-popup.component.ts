@@ -178,7 +178,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     SpecGroup: [],
     Uom: []
   };
-  mainSpecGroupOptions = [];
   searchFilterString: any[] = [];
   locationsList = new Subject();
   public locColsToDispay: any[] = [
@@ -460,6 +459,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     addNewAllowedLoc.locationId = selectedAllowedLocation.id;
     this.reqObj.contractRequestProducts[prodIndex].allowedLocations.push(addNewAllowedLoc);
     this.selectedAllowedLocation = '';
+    this.searchFilterString[prodIndex].allowedLocations = "";
   }
 
   deleteMainLocation(index) {
@@ -481,14 +481,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
     })
   }
 
-  public trackByFnMainProduct(index: number, item: any): number {
-    return item.id;
-  }
-
   addNewMainProduct(locationId) {
     this.selectedLocationId = locationId
     let newMainProduct = this.newContractRequestProducts;
-    //newMainProduct.id = ++this.mainProductCounter;
     newMainProduct.locationId = locationId;
     this.reqObj.contractRequestProducts.push(newMainProduct);
     this.searchFilterString.push({ 
@@ -729,12 +724,13 @@ export class CreateContractRequestPopupComponent implements OnInit {
     let prodTypeGroup = this.staticData.ProductTypeGroup.find(ptg => ptg.id == prodType.databaseValue);
     this.reqObj.contractRequestProducts[i].minQuantityUomId = prodTypeGroup.databaseValue;
     this.reqObj.contractRequestProducts[i].maxQuantityUomId = prodTypeGroup.databaseValue;
+    this.searchFilterString[i].mainProduct = "";
   }
 
   productDataSource(value) {
     if(value && value != ''){
       let filterValue = value.toString().toLowerCase();
-    return this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue) );
+      return this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue) );
     } else {
       return this.staticData.Product;
     }
