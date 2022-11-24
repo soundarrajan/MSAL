@@ -118,10 +118,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     quantityDetails: [],
     contractRequestProducts: []
   }
-
-  getLocationProducts(locationId) {
-    this.reqObj.contractRequestProducts.filter((x) => x.locationId === locationId);
-  }
   /* Form Builder */
   
 
@@ -234,7 +230,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
             locationName: location.name,
             selected: (i == 0)?true:false
           };
-          if (this.mainLocations.indexOf(newLocation) === -1) this.mainLocations.push(newLocation);
+          if (this.mainLocations.findIndex((l) => l.locationId == item.locationId) === -1) this.mainLocations.push(newLocation);
           this.searchFilterString.push({ mainProduct: '', allowedProducts: [], allowedLocations: '', });
           item.minQuantity = this.quantityFormatValue(item.minQuantity);
           item.maxQuantity = this.quantityFormatValue(item.maxQuantity);
@@ -296,6 +292,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
       }
     });
+  }
+
+  getLocationProducts(locationId) {
+    return this.reqObj.contractRequestProducts.filter((x) => x.locationId === locationId);
   }
 
   applyPlanPeriod(){
@@ -1025,6 +1025,16 @@ export class CreateContractRequestPopupComponent implements OnInit {
     if (!isValid) {
       return;
     }
+    //Format values before send
+    this.reqObj.quantityDetails.forEach((q) => {
+      q.maxQuantity = this.convertDecimalSeparatorStringToNumber(q.maxQuantity);
+      q.minQuantity = this.convertDecimalSeparatorStringToNumber(q.minQuantity);
+      q.tolerancePercentage = this.convertDecimalSeparatorStringToNumber(q.tolerancePercentage);
+    });
+    this.reqObj.contractRequestProducts.forEach((pro) => {
+      pro.maxQuantity = this.convertDecimalSeparatorStringToNumber(pro.maxQuantity);
+      pro.minQuantity = this.convertDecimalSeparatorStringToNumber(pro.minQuantity);
+    });
     this.contractNegotiationService.createContractRequest(this.reqObj).subscribe( requestId => {
       if(typeof requestId == 'number' && requestId > 0){
         this.toaster.success('Contract Request has been created successfully');
