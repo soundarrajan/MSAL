@@ -4,8 +4,8 @@
     <div class="col-md-12 header-container-product pd-0">
         <div class="search-product-container col-md-10 pd-0">
             <span id="PDDD41" class="search-product-lookup"></span>
-            <input id="PDDD40" matInput placeholder="Search all and select a product" class="search-product-input"
-            (click)="$event.stopPropagation(); $event.preventDefault();" (input)="search($event.target.value)">
+            <input id="PDDD40" [(ngModel)]="searchText" matInput placeholder="Search all and select a product" class="search-product-input"
+            (click)="$event.stopPropagation(); $event.preventDefault();" (input)="search(searchText)">
         </div>
 
         <div id="PDDD42" class="col-md-2">

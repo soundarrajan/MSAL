@@ -178,7 +178,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     SpecGroup: [],
     Uom: []
   };
-  mainSpecGroupOptions = [];
   searchFilterString: any[] = [];
   locationsList = new Subject();
   public locColsToDispay: any[] = [
@@ -460,6 +459,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     addNewAllowedLoc.locationId = selectedAllowedLocation.id;
     this.reqObj.contractRequestProducts[prodIndex].allowedLocations.push(addNewAllowedLoc);
     this.selectedAllowedLocation = '';
+    this.searchFilterString[prodIndex].allowedLocations = "";
   }
 
   deleteMainLocation(index) {
@@ -481,14 +481,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
     })
   }
 
-  public trackByFnMainProduct(index: number, item: any): number {
-    return item.id;
-  }
-
   addNewMainProduct(locationId) {
     this.selectedLocationId = locationId
     let newMainProduct = this.newContractRequestProducts;
-    //newMainProduct.id = ++this.mainProductCounter;
     newMainProduct.locationId = locationId;
     this.reqObj.contractRequestProducts.push(newMainProduct);
     this.searchFilterString.push({ 
@@ -569,15 +564,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
   selectPlanPeriod(event, item, selectedPlanPeriod) {
     event.stopPropagation();
     let periodData = [];
+    if (selectedPlanPeriod == 'Quarter') { periodData = this.plan.quarterlyPeriod; }
+    if (selectedPlanPeriod == 'Month') { periodData = this.plan.monthlyPeriod; }
+    if (selectedPlanPeriod == 'Year') { periodData = this.plan.yearlyPeriod; }
+    if (selectedPlanPeriod == 'Semester') { periodData = this.plan.semesterPeriod; }
     let selectedItemLabels = this.planLabel.split(',');
     let selectedItems = periodData.filter(i => i.selected == true).map(x => x.id);
     let firstId = selectedItems[0];
     let lastId = selectedItems[selectedItems.length - 1];
     let deselectedInMiddle = false;
-    if (selectedPlanPeriod == 'Quarter') { periodData = this.plan.quarterlyPeriod; }
-    if (selectedPlanPeriod == 'Month') { periodData = this.plan.monthlyPeriod; }
-    if (selectedPlanPeriod == 'Year') { periodData = this.plan.yearlyPeriod; }
-    if (selectedPlanPeriod == 'Semester') { periodData = this.plan.semesterPeriod; }
     if(item.selected == true){
       if(item.id == firstId || item.id == lastId) {
         periodData.filter(i => i.id == item.id).map(i => i.selected = false);
@@ -729,12 +724,13 @@ export class CreateContractRequestPopupComponent implements OnInit {
     let prodTypeGroup = this.staticData.ProductTypeGroup.find(ptg => ptg.id == prodType.databaseValue);
     this.reqObj.contractRequestProducts[i].minQuantityUomId = prodTypeGroup.databaseValue;
     this.reqObj.contractRequestProducts[i].maxQuantityUomId = prodTypeGroup.databaseValue;
+    this.searchFilterString[i].mainProduct = "";
   }
 
   productDataSource(value) {
     if(value && value != ''){
       let filterValue = value.toString().toLowerCase();
-    return this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue) );
+      return this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue) );
     } else {
       return this.staticData.Product;
     }
@@ -799,25 +795,25 @@ export class CreateContractRequestPopupComponent implements OnInit {
     const minValidity = new Date(this.reqObj.minValidity);
     const minValidityDate = minValidity.getTime();
 
-    if (startDate > endDate) {
+    if (startDate >= endDate) {
       this.toaster.error(
         'Contract Start Date must be lesser than Contract End Date'
       );
       notValidDates = true;
     }
-    if (startDate < quoteDate) {
+    if (startDate <= quoteDate) {
       this.toaster.error(
         'Quote By Date should be less than Contract Period'
       );
       notValidDates = true;
     }
-    if (startDate < minValidityDate) {
+    if (startDate <= minValidityDate) {
       this.toaster.error(
         'Minimum Validity Date should be less than the Contract Period'
       );
       notValidDates = true;
     }
-    if (quoteDate > minValidityDate) {
+    if (quoteDate >= minValidityDate) {
       this.toaster.error(
         'Quote By Date should be less than Minimum Validity Date'
       );

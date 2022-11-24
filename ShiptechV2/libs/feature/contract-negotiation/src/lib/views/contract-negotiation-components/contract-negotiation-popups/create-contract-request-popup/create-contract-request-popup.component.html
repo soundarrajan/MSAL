@@ -297,7 +297,7 @@
                                     class="without-search contract-location-product-dropdown custom-dropdown"
                                     appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select [(value)]="reqObj.contractRequestProducts[i].productId" (selectionChange)="onMainProductChange($event.value, i)"
+                                    <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].productId" (selectionChange)="onMainProductChange($event.value, i);this.searchFilterString[i].mainProduct = '';"
                                       disableOptionCentering [panelClass]="'shiptech-select-product-container'" required>
                                       <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                           <div class="col-md-12 header-container-product pd-0">
@@ -323,7 +323,7 @@
                                               <td mat-cell *matCellDef="let element">
                                                 <mat-option [value]="element.id" class="no-padding" id="productPrdRadio"
                                                   style="padding-left:0px; text-align: unset !important;">
-                                                  <mat-radio-button  class="location-container-radio-button"
+                                                  <mat-radio-button class="location-container-radio-button"
                                                     [value]="element.id">
                                                     {{ element.name }}
                                                   </mat-radio-button>
