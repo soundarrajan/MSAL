@@ -2979,7 +2979,8 @@
                             Type: 'lookup',
                             masterSource: 'Period',
                             clc_id: 'masters_periodlist',
-                            customChangeAction: 'siPeriodSelection(rowRenderIndex, grid.appScope.fVal().formValues)'
+                            customChangeAction: 'siPeriodSelection(rowRenderIndex, grid.appScope.fVal().formValues)',
+                            customKeyPressAction:'periodKeyPress(rowRenderIndex, grid.appScope.fVal().formValues)'
                         }
                     },
                     {
@@ -4064,6 +4065,14 @@
                 toastr.error(errors);
             }
         };
+
+        $scope.getRowNumbers1 = function(rowIdx, item, fVal) {
+            if (vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
+               console.log(rowIdx);
+               console.log(item);
+               console.log(fVal);
+            }
+        }
 
         $scope.getRowNumbers = function(rowIdx, item, fVal) {
             if (vm.app_id == 'masters' && vm.screen_id == 'service') {
