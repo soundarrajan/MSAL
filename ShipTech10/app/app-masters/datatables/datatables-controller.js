@@ -4066,14 +4066,6 @@
             }
         };
 
-        $scope.getRowNumbers1 = function(rowIdx, item, fVal) {
-            if (vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
-               console.log(rowIdx);
-               console.log(item);
-               console.log(fVal);
-            }
-        }
-
         $scope.getRowNumbers = function(rowIdx, item, fVal) {
             if (vm.app_id == 'masters' && vm.screen_id == 'service') {
                 let currentRowIdx = 0;
