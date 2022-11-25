@@ -973,23 +973,48 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
       }
     });
+    let qtyToMatch = 0;
     if (!hasTotalContractualQuantity) {
       this.toaster.error(
         'Total ContractualQuantity option is required in Contractual Quantity section'
       );
       return false;
+    } else qtyToMatch = totalMaxQuantity;
+    if(hasPerMonthQuantity){
+      if(qtyToMatch <= perMonthMaxQuantity){
+        this.toaster.error(
+          'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift'
+        );
+        return false;  
+      }
+      qtyToMatch = perMonthMaxQuantity;
     }
-    if((hasPerWeekQuantity && !hasPerMonthQuantity)
-      || (hasPerDayQuantity && !hasPerWeekQuantity)
-      || (hasPerLiftQuantity && !hasPerDayQuantity)
-      || (hasTotalContractualQuantity && totalMaxQuantity < perMonthMaxQuantity)
-      || (hasPerMonthQuantity && perMonthMaxQuantity < perWeekMaxQuantity)
-      || (hasPerWeekQuantity && perWeekMaxQuantity < perDayMaxQuantity)
-      || (hasPerDayQuantity && perDayMaxQuantity < perLiftMaxQuantity)) {
-      this.toaster.error(
-        'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift'
-      );
-      return false;
+    if(hasPerWeekQuantity){
+      if(qtyToMatch <= perWeekMaxQuantity){
+        this.toaster.error(
+          'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift'
+        );
+        return false;  
+      }
+      qtyToMatch = perWeekMaxQuantity;
+    }
+    if(hasPerDayQuantity){
+      if(qtyToMatch <= perDayMaxQuantity){
+        this.toaster.error(
+          'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift'
+        );
+        return false;  
+      }
+      qtyToMatch = perWeekMaxQuantity;
+    }
+    if(hasPerLiftQuantity){
+      if(qtyToMatch <= perLiftMaxQuantity){
+        this.toaster.error(
+          'The contract hierarchy of the quantity limit is as follows: Contractual Quantity > Per Month > Per Week > Per Day > Per Lift'
+        );
+        return false;  
+      }
+      qtyToMatch = perWeekMaxQuantity;
     }
     if(duplicateQuantityType.length > 0){
       this.toaster.error(
