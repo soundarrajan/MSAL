@@ -35,7 +35,7 @@
                         <span>Update Preference</span>
                     </div>
                     <div class="b-top p-0 m-b-5"></div>
-                    <div class="p-tb-10" id="Filter14" style="cursor: pointer;" (click)="showfilterDesc()">
+                    <div class="p-tb-10" id="Filter14" style="cursor: pointer;" (click)="showFilterDesc()">
                         <span>
                             <img class="p-r-10"
                                 [src]="theme ? './assets/design-system-icons/shiptech/modules/control-tower/filter-desc-dark.svg' : './assets/design-system-icons/shiptech/modules/control-tower/filter-desc-light.svg'"
@@ -56,11 +56,14 @@
         <div class="agGrid-v2" style="margin: 0">
             <div style="width:100%;height: 100%;">
                 <div class="col-12 d-flex p-t-4">
-                    <app-ag-filter-display [grid]="agGridAngular"></app-ag-filter-display>
+                    <app-ag-filter-display [grid]="agGridAngular" (closed)="showFilterDescSwitch=false">
+                    </app-ag-filter-display>
                 </div>
-                <ag-grid-angular #agGridAngular [ngStyle]="{'height': 'calc( 100vh - 220px'}" style="width: 100%;"
-                    [gridOptions]="gridOptions" domLayout='normal' class="ag-theme-material ag-grid-v2 angular-v9"
-                    (window:resize)="onResize($event)" [paginationPageSize]="gridpageNavModel.pageSize">
+                <ag-grid-angular #agGridAngular
+                    [ngStyle]="{'height': showFilterDesc?'calc( 100vh - 220px)':'calc( 100vh - 194px)'}"
+                    style="width: 100%;" [gridOptions]="gridOptions" domLayout='normal'
+                    class="ag-theme-material ag-grid-v2 angular-v9" (window:resize)="onResize($event)"
+                    [paginationPageSize]="gridpageNavModel.pageSize">
                 </ag-grid-angular>
             </div>
         </div>
@@ -76,20 +79,23 @@
 <ng-template #createPreset>
     <div id="saveFilterPrefsPopup">
         <h2 mat-dialog-title>
-            Name Your Preference
+            Name your preference
             <mat-icon matSuffix id="dialogCloseButton" class="float-right" (click)="newPresetsDialog.close()">close
             </mat-icon>
         </h2>
         <mat-dialog-content>
-            <div>Preference Name</div>
+            <div>Preference name</div>
             <mat-form-field class="preference-mat-field" appearance="outline">
                 <input id="name" required name="preferenceName" [formControl]="preferenceNameFormControl" matInput
-                    placeholder="Preference Name" />
+                    placeholder="Preference name" autocomplete="off" />
                 <mat-error *ngIf="preferenceNameFormControl.touched && preferenceNameFormControl.errors?.required">
                     Enter the filter name
                 </mat-error>
                 <mat-error *ngIf="preferenceNameFormControl.errors?.pattern">
-                    Special characters are not allowed other than underscore.
+                    Special characters are not allowed other than underscore ( _ ).
+                </mat-error>
+                <mat-error *ngIf="preferenceNameFormControl.errors?.duplicate">
+                    Filter name ' {{preferenceNameFormControl.value}} ' is already present. Enter unique filter name.
                 </mat-error>
             </mat-form-field>
         </mat-dialog-content>
@@ -97,8 +103,8 @@
             <button mat-button [mat-dialog-close]="true" style="width: 150px; height: 40px;">
                 CANCEL
             </button>
-            <button mat-button class="blue-button" style="width: 150px; height: 40px; margin-right: 0 !important;"
-                (click)="createNewFilter()">
+            <button class="btnV2 primary" style="width: 150px; height: 40px; margin-right: 0 !important;"
+                [disabled]="preferenceNameFormControl.errors" (click)="createNewFilter()">
                 SAVE
             </button>
         </mat-dialog-actions>
