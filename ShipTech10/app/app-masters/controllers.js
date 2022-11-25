@@ -5153,15 +5153,12 @@
                     length++;
                 }
             });  
-            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument' && initialObject == "formValues.periods") { 
-                console.log(obj);
+            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument' && initialObject == "formValues.periods") {               
                 row.isDeleted = true;
                 var oldRow = row;
                 obj.splice(index, 1);
-               console.log(oldRow);
-            
-               $scope.deletedRows.push(oldRow);
-               return;
+                $scope.deletedRows.push(oldRow);
+                return;
             }         
             if (vm.screen_id == 'invoice' && vm.app_id == 'invoices') {
             	if ($scope.formValues.status) {
