@@ -2981,7 +2981,8 @@
                             clc_id: 'masters_periodlist',
                             customChangeAction: 'siPeriodSelection(rowRenderIndex, grid.appScope.fVal().formValues)',
                             customKeyPressAction:'periodKeyPress(rowRenderIndex, grid.appScope.fVal().formValues)'
-                        }
+                        },
+                        required: true
                     },
                     {
                         name: 'validFrom',
