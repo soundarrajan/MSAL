@@ -1118,7 +1118,7 @@
                     toastr.error('P​eriod Overlapped, Please Change the Period');
                     return;
                 }
-                // $scope.formValues.periods = periods;               
+                 $scope.formValues.periods = periods;               
                 if ($scope.formValues && $scope.formValues.productsLocations) {
                     let errors = '';
                     let products = [];
