@@ -425,7 +425,7 @@
                       <mat-form-field class="long-label-field"
                         style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
                         appearance="legacy">
-                        <mat-select disableRipple [(ngModel)]="reqObj.contractRequestProducts[i].minQuantityUomId" style="background-color: #EBECED !important;">
+                        <mat-select disableRipple [(ngModel)]="reqObj.contractRequestProducts[i].minQuantityUomId" (selectionChange)="syncMinMaxUom('min', i)" style="background-color: #EBECED !important;">
                           <mat-option *ngFor="let option of staticData.Uom" [value]="option.id">{{option.name}}</mat-option>
                         </mat-select>
                       </mat-form-field>
@@ -449,7 +449,7 @@
                       <mat-form-field class="long-label-field"
                         style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
                         appearance="legacy">
-                        <mat-select disableRipple [(ngModel)]="reqObj.contractRequestProducts[i].maxQuantityUomId" style="background-color: #EBECED !important;">
+                        <mat-select disableRipple [(ngModel)]="reqObj.contractRequestProducts[i].maxQuantityUomId" (selectionChange)="syncMinMaxUom('max', i)" style="background-color: #EBECED !important;">
                           <mat-option *ngFor="let option of staticData.Uom" [value]="option.id">{{option.name}}</mat-option>
                         </mat-select>
                       </mat-form-field>
