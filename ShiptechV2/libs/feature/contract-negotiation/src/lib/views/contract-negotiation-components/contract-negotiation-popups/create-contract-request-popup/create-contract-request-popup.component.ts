@@ -164,7 +164,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   public selectedLocindex: number;
   public selectedProindex: number;
   public selectedProname;
-  expandLocation: boolean = false;
+  public expandLocation: boolean = false;
 
   staticData: any = {
     Location: [],
@@ -176,6 +176,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   };
   searchFilterString: any[] = [];
   locationsList = new Subject();
+  private tmpSpecGroupId: number = 0;
   public locColsToDispay: any[] = [
     { dispName: "Locations", propName: "name"},
   ];
@@ -516,7 +517,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   specGroupDataSource(prodId) {
-    return this.staticData.SpecGroup.filter(p => p.databaseValue === prodId );
+    let specGroupArr = [];
+    if(prodId == '') return specGroupArr;
+    let prod = this.staticData.Product.find(p => p.id == prodId);
+    if(prod.databaseValue != 0){
+      specGroupArr = this.staticData.SpecGroup.filter(sg => sg.databaseValue === prodId || sg.id == prod.databaseValue);
+    } else {
+      specGroupArr = this.staticData.SpecGroup.filter(sg => sg.databaseValue === prodId);
+    }
+    return specGroupArr;
   }
 
   setProductChange(value, prodIndex, index) {
@@ -533,6 +542,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value;
       this.locationSelected = true;
       this.selectedLocindex = index;
+      if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
+        this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = prod.databaseValue;
+      }
     }
   }
   setSpecGroupChange(value, prodIndex, index) {
@@ -758,6 +770,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
     let prodTypeGroup = this.staticData.ProductTypeGroup.find(ptg => ptg.id == prodType.databaseValue);
     this.reqObj.contractRequestProducts[i].minQuantityUomId = prodTypeGroup.databaseValue;
     this.reqObj.contractRequestProducts[i].maxQuantityUomId = prodTypeGroup.databaseValue;
+    if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
+      this.reqObj.contractRequestProducts[i].specGroupId = prod.databaseValue;
+    }
     this.searchFilterString[i].mainProduct = "";
   }
 
