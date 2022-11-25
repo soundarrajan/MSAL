@@ -118,10 +118,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     quantityDetails: [],
     contractRequestProducts: []
   }
-
-  getLocationProducts(locationId) {
-    this.reqObj.contractRequestProducts.filter((x) => x.locationId === locationId);
-  }
   /* Form Builder */
   
 
@@ -156,7 +152,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   hideAllowedLocationDropdown: any = { 0: true };
   public mainLocationName: any[] = [];
   public allowedLocationName: any[] = [];
-  selectedMainLocationName;
+  selectedMainLocationName: string;
   @ViewChild('mainLocationSelect') mainLocationSelect: MatSelect;
   @ViewChild('allowedLocationSelect') allowedLocationSelect: MatSelect;
   displayedLocColumns: string[] = ['name'];
@@ -168,7 +164,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   public selectedLocindex: number;
   public selectedProindex: number;
   public selectedProname;
-  expandLocation: boolean = false;
+  public expandLocation: boolean = false;
 
   staticData: any = {
     Location: [],
@@ -180,6 +176,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   };
   searchFilterString: any[] = [];
   locationsList = new Subject();
+  private tmpSpecGroupId: number = 0;
   public locColsToDispay: any[] = [
     { dispName: "Locations", propName: "name"},
   ];
@@ -234,8 +231,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
             locationName: location.name,
             selected: (i == 0)?true:false
           };
-          if (this.mainLocations.indexOf(newLocation) === -1) this.mainLocations.push(newLocation);
+          if(newLocation.selected == true) this.selectedMainLocationName = newLocation.locationName;
+          if (this.mainLocations.findIndex((l) => l.locationId == item.locationId) === -1) this.mainLocations.push(newLocation);
           this.searchFilterString.push({ mainProduct: '', allowedProducts: [], allowedLocations: '', });
+          this.hideAllowedLocationDropdown[i] = true;
           item.minQuantity = this.quantityFormatValue(item.minQuantity);
           item.maxQuantity = this.quantityFormatValue(item.maxQuantity);
           if(item.allowedProducts.length > 0) {
@@ -298,12 +297,19 @@ export class CreateContractRequestPopupComponent implements OnInit {
     });
   }
 
+  getLocationProducts() {
+    return this.reqObj.contractRequestProducts.filter((x) => x.locationId === this.selectedLocationId);
+  }
+
+  getLocationProductIndex(index){
+    return this.reqObj.contractRequestProducts.filter((e, i) => (i <= index && e.locationId == this.selectedLocationId)).length;
+  }
+
   applyPlanPeriod(){
     this.reqObj.startDate = this.planStartDate;
     this.reqObj.endDate = this.planEndDate;
     this.selectedPlanValue = this.planLabel;
   }
-
 
   quantityFormatValue(value) {
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -440,26 +446,34 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   addSelectedAllowedLocation(prodIndex, selectedAllowedLocation) {
-    this.hideAllowedLocationDropdown[prodIndex] = true;
-    if(!this.productAllowedLocations[prodIndex]) this.productAllowedLocations[prodIndex] = [];
-    this.productAllowedLocations[prodIndex].push({
-      id: selectedAllowedLocation.id,
-      name: selectedAllowedLocation.name,
-      selected: true
-    })
-    this.productAllowedLocations[prodIndex].forEach(loc => {
-      if(loc.id == selectedAllowedLocation.id) {
-        loc.selected = true;
-      } else {
-        loc.selected = false;
-      }
-    })
-    
-    let addNewAllowedLoc = this.newAllowedLocations;
-    addNewAllowedLoc.locationId = selectedAllowedLocation.id;
-    this.reqObj.contractRequestProducts[prodIndex].allowedLocations.push(addNewAllowedLoc);
-    this.selectedAllowedLocation = '';
-    this.searchFilterString[prodIndex].allowedLocations = "";
+    let prod = this.staticData.Product.find( p => p.id == this.reqObj.contractRequestProducts[prodIndex].productId);
+    if(this.reqObj.contractRequestProducts[prodIndex].allowedLocations.findIndex(al => al.locationId == selectedAllowedLocation.id) > -1){
+      let prodNameMsg = (prod && prod.name)?' to '+ prod.name:'';
+      this.toaster.warning(
+        selectedAllowedLocation.name + ' already added' + prodNameMsg + ' as allowed location'
+      );
+      return false;
+    } else {
+      this.hideAllowedLocationDropdown[prodIndex] = true;
+      if(!this.productAllowedLocations[prodIndex]) this.productAllowedLocations[prodIndex] = [];
+      this.productAllowedLocations[prodIndex].push({
+        id: selectedAllowedLocation.id,
+        name: selectedAllowedLocation.name,
+        selected: true
+      });
+      this.productAllowedLocations[prodIndex].forEach(loc => {
+        if(loc.id == selectedAllowedLocation.id) {
+          loc.selected = true;
+        } else {
+          loc.selected = false;
+        }
+      });
+      let addNewAllowedLoc = this.newAllowedLocations;
+      addNewAllowedLoc.locationId = selectedAllowedLocation.id;
+      this.reqObj.contractRequestProducts[prodIndex].allowedLocations.push(addNewAllowedLoc);
+      this.selectedAllowedLocation = '';
+      this.searchFilterString[prodIndex].allowedLocations = "";
+    }
   }
 
   deleteMainLocation(index) {
@@ -471,14 +485,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.productAllowedLocations[prodIndex].splice(index, 1);
   }
 
-  onClick(selectedProd) {
-    this.selectedLocationId = selectedProd.locationId;
+  onClick(selectedLoc) {
+    this.selectedLocationId = selectedLoc.locationId;
     this.mainLocations.forEach((loc) => {
-      if(loc.locationId === selectedProd.locationId)
+      if(loc.locationId === selectedLoc.locationId)
         loc.selected = true;
       else
         loc.selected = false;
-    })
+    });
+    this.selectedMainLocationName = selectedLoc.locationName;
   }
 
   addNewMainProduct(locationId) {
@@ -496,18 +511,41 @@ export class CreateContractRequestPopupComponent implements OnInit {
   deleteNewMainProduct(i) {
     i=i+1;
     this.reqObj.contractRequestProducts.splice(i, 1);
+    this.productAllowedLocations.splice(i, 1);
     this.searchFilterString.splice(i, 1);
+    this.hideAllowedLocationDropdown.splice(i, 1);
   }
 
-
   specGroupDataSource(prodId) {
-    return this.staticData.SpecGroup.filter(p => p.databaseValue === prodId );
+    let specGroupArr = [];
+    if(prodId == '') return specGroupArr;
+    let prod = this.staticData.Product.find(p => p.id == prodId);
+    if(prod.databaseValue != 0){
+      specGroupArr = this.staticData.SpecGroup.filter(sg => sg.databaseValue === prodId || sg.id == prod.databaseValue);
+    } else {
+      specGroupArr = this.staticData.SpecGroup.filter(sg => sg.databaseValue === prodId);
+    }
+    return specGroupArr;
   }
 
   setProductChange(value, prodIndex, index) {
-    this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value;
-    this.locationSelected = true;
-    this.selectedLocindex = index;
+    this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = '';
+    let prod = this.staticData.Product.find(p => p.id == value);
+    let mainProd = this.staticData.Product.find(mp => mp.id == this.reqObj.contractRequestProducts[prodIndex].productId);
+    if(this.reqObj.contractRequestProducts[prodIndex].allowedProducts.findIndex(ap => ap.productId == value) > -1) {
+      let prodNameMsg = (mainProd && mainProd.name)?' to '+ mainProd.name:'';
+      this.toaster.warning(
+        prod.name + ' already added' + prodNameMsg + ' as allowed product'
+      );
+      this.removeProductToContract(prodIndex, index);
+    } else {
+      this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value;
+      this.locationSelected = true;
+      this.selectedLocindex = index;
+      if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
+        this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = prod.databaseValue;
+      }
+    }
   }
   setSpecGroupChange(value, prodIndex, index) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = value;
@@ -692,7 +730,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.mainLocationSelect.close();
     this.selectedLocationId = location.id;
     if(this.mainLocations.findIndex((loc) => loc.locationId === location.id) !== -1){
-      this.toaster.error(location.name + ' already added as main location.');
+      this.toaster.warning(location.name + ' already added as main location.');
       return false;
     }
     let firstLocation = (this.mainLocations.length > 0) ? false : true;
@@ -709,6 +747,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
         loc.selected = false;
       } 
     })
+    this.selectedMainLocationName = location.name;
     if(firstLocation) {
       this.reqObj.contractRequestProducts.forEach( prod => {
         prod.locationId = location.id
@@ -719,29 +758,47 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   onMainProductChange(prodId, i){
+    this.reqObj.contractRequestProducts[i].productId = '';
     let prod = this.staticData.Product.find(p => p.id == prodId);
+    if(this.getLocationProducts().findIndex(p => p.productId == prodId) > -1){
+      this.toaster.warning(
+        'Product ' + prod.name + ' already added as main product for ' + this.selectedMainLocationName + ' location'
+      );
+      return false;
+    } else this.reqObj.contractRequestProducts[i].productId = prodId;
     let prodType = this.staticData.ProductType.find(pt => pt.id == prod.productTypeId);
     let prodTypeGroup = this.staticData.ProductTypeGroup.find(ptg => ptg.id == prodType.databaseValue);
     this.reqObj.contractRequestProducts[i].minQuantityUomId = prodTypeGroup.databaseValue;
     this.reqObj.contractRequestProducts[i].maxQuantityUomId = prodTypeGroup.databaseValue;
+    if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
+      this.reqObj.contractRequestProducts[i].specGroupId = prod.databaseValue;
+    }
     this.searchFilterString[i].mainProduct = "";
   }
 
   productDataSource(value) {
     if(value && value != ''){
       let filterValue = value.toString().toLowerCase();
-      return this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue) );
+      return this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue)).slice(0, 10);
     } else {
-      return this.staticData.Product;
+      return this.staticData.Product.slice(0, 10);
+    }
+  }
+
+  syncMinMaxUom(type, i) {
+    if(type == 'min'){
+      this.reqObj.contractRequestProducts[i].maxQuantityUomId = this.reqObj.contractRequestProducts[i].minQuantityUomId;
+    } else if(type == 'max') {
+      this.reqObj.contractRequestProducts[i].minQuantityUomId = this.reqObj.contractRequestProducts[i].maxQuantityUomId;
     }
   }
 
   locationDataSource(value){
     if(value && value != ''){
       let filterValue = value.toString().toLowerCase();
-    return this.staticData.Location.filter(p => p.name.toString().toLowerCase().includes(filterValue) );
+    return this.staticData.Location.filter(p => p.name.toString().toLowerCase().includes(filterValue)).slice(0, 10);
     } else {
-      return this.staticData.Location;
+      return this.staticData.Location.slice(0, 10);
     }
   }
 
@@ -1025,6 +1082,16 @@ export class CreateContractRequestPopupComponent implements OnInit {
     if (!isValid) {
       return;
     }
+    //Format values before send
+    this.reqObj.quantityDetails.forEach((q) => {
+      q.maxQuantity = this.convertDecimalSeparatorStringToNumber(q.maxQuantity);
+      q.minQuantity = this.convertDecimalSeparatorStringToNumber(q.minQuantity);
+      q.tolerancePercentage = this.convertDecimalSeparatorStringToNumber(q.tolerancePercentage);
+    });
+    this.reqObj.contractRequestProducts.forEach((pro) => {
+      pro.maxQuantity = this.convertDecimalSeparatorStringToNumber(pro.maxQuantity);
+      pro.minQuantity = this.convertDecimalSeparatorStringToNumber(pro.minQuantity);
+    });
     this.contractNegotiationService.createContractRequest(this.reqObj).subscribe( requestId => {
       if(typeof requestId == 'number' && requestId > 0){
         this.toaster.success('Contract Request has been created successfully');

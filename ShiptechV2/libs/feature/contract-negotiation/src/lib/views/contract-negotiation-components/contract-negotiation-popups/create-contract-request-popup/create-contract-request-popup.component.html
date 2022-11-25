@@ -351,7 +351,7 @@
                                     </span>
                                     <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].specGroupId" #singleSelect disableOptionCentering
                                       [panelClass]="'shiptech-select-product-container'" required>
-                                      <div style="margin-top: -20px;" [ngClass]="{
+                                      <div [ngClass]="{
                                                       'expand-select-location-container': expandLocation
                                                     }">
                                         <div class="col-md-12 header-container-product pd-0">
@@ -425,7 +425,7 @@
                       <mat-form-field class="long-label-field"
                         style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
                         appearance="legacy">
-                        <mat-select disableRipple [(ngModel)]="reqObj.contractRequestProducts[i].minQuantityUomId" style="background-color: #EBECED !important;">
+                        <mat-select disableRipple [(ngModel)]="reqObj.contractRequestProducts[i].minQuantityUomId" (selectionChange)="syncMinMaxUom('min', i)" style="background-color: #EBECED !important;">
                           <mat-option *ngFor="let option of staticData.Uom" [value]="option.id">{{option.name}}</mat-option>
                         </mat-select>
                       </mat-form-field>
@@ -449,7 +449,7 @@
                       <mat-form-field class="long-label-field"
                         style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
                         appearance="legacy">
-                        <mat-select disableRipple [(ngModel)]="reqObj.contractRequestProducts[i].maxQuantityUomId" style="background-color: #EBECED !important;">
+                        <mat-select disableRipple [(ngModel)]="reqObj.contractRequestProducts[i].maxQuantityUomId" (selectionChange)="syncMinMaxUom('max', i)" style="background-color: #EBECED !important;">
                           <mat-option *ngFor="let option of staticData.Uom" [value]="option.id">{{option.name}}</mat-option>
                         </mat-select>
                       </mat-form-field>
@@ -543,7 +543,7 @@
                                   <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].specGroupId" #singleSelect
                                     disableOptionCentering [panelClass]="'shiptech-select-product-container'"
                                     (selectionChange)="setSpecGroupChange($event.value,i,j)">
-                                    <div style="margin-top: -20px;" [ngClass]="{'expand-select-location-container': expandLocation}">
+                                    <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                       <div class="col-md-12 header-container-product pd-0">
                                         <div class="search-product-container col-md-10 pd-0">
                                           <span class="search-product-lookup">
@@ -660,11 +660,11 @@
               </div>
             </div>
             <div class="section-divider-line"></div>
-            <div class="form-fields-with-flex" *ngIf="i == reqObj.contractRequestProducts.length - 1">
+            <div class="form-fields-with-flex" *ngIf="getLocationProductIndex(i) != getLocationProducts().length - 1">
               <a id="ADMN63" class="add-icon" (click)="addNewMainProduct(selectedLocationId)"></a>
               <div class="title" (click)="addNewMainProduct(selectedLocationId)">Main Product</div>
             </div>
-            <div class="form-fields-with-flex" *ngIf="i != reqObj.contractRequestProducts.length - 1">
+            <div class="form-fields-with-flex" *ngIf="getLocationProductIndex(i) == getLocationProducts().length - 1">
               <a id="ADMN64" class="remove-product-icon" (click)="deleteNewMainProduct(i)"></a>
               <div class="title" (click)="deleteNewMainProduct(i)">Remove Product</div>
             </div>
