@@ -176,7 +176,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   };
   searchFilterString: any[] = [];
   locationsList = new Subject();
-  private tmpSpecGroupId: number = 0;
   public locColsToDispay: any[] = [
     { dispName: "Locations", propName: "name"},
   ];
@@ -802,6 +801,17 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
   }
 
+  getValue(fieldName): any {
+    let valueField = moment(this.reqObj[fieldName]);
+    // adjust 0 before single digit date
+    let date = ('0' + valueField.date()).slice(-2);
+    // current month
+    let month = ('0' + (valueField.month() + 1)).slice(-2);
+    // current year
+    let year = valueField.year();
+    return moment.utc(month + '/' + date + '/' + year, 'MM/DD/YYYY');
+  }
+
   convertDecimalSeparatorStringToNumber(number) {
     let numberToReturn = number;
     let decimalSeparator, thousandsSeparator;
@@ -841,44 +851,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
   }
 
-  testForValidDates() {
-    let notValidDates = false;
-    const start = new Date(this.reqObj.startDate);
-    const startDate = start.getTime();
-    const end = new Date(this.reqObj.endDate);
-    const endDate = end.getTime();
-    const quote = new Date(this.reqObj.quoteByDate);
-    const quoteDate = quote.getTime();
-    const minValidity = new Date(this.reqObj.minValidity);
-    const minValidityDate = minValidity.getTime();
-
-    if (startDate >= endDate) {
-      this.toaster.error(
-        'Contract Start Date must be lesser than Contract End Date'
-      );
-      notValidDates = true;
-    }
-    if (startDate <= quoteDate) {
-      this.toaster.error(
-        'Quote By Date should be less than Contract Period'
-      );
-      notValidDates = true;
-    }
-    if (startDate <= minValidityDate) {
-      this.toaster.error(
-        'Minimum Validity Date should be less than the Contract Period'
-      );
-      notValidDates = true;
-    }
-    if (quoteDate >= minValidityDate) {
-      this.toaster.error(
-        'Quote By Date should be less than Minimum Validity Date'
-      );
-      notValidDates = true;
-    }
-    return notValidDates;
-  }
-
   showFormErrors(): boolean {
     let message: string = 'Please fill in required fields:';
     if (!this.reqObj.startDate) {
@@ -901,9 +873,28 @@ export class CreateContractRequestPopupComponent implements OnInit {
       return false;
     }
 
-    // Date fields Valiation
-    const notValid = this.testForValidDates();
-    if (notValid) {
+    if(!moment(this.reqObj.startDate).isBefore(this.reqObj.endDate)){
+      this.toaster.error(
+        'Contract Start Date must be lesser than Contract End Date'
+      );
+      return false;
+    }
+    if(!moment(this.reqObj.quoteByDate).isBefore(this.reqObj.startDate)){
+      this.toaster.error(
+        'Quote By Date should be less than Contract Period'
+      );
+      return false;
+    }
+    if(!moment(this.reqObj.minValidity).isBefore(this.reqObj.startDate)){
+      this.toaster.error(
+        'Minimum Validity Date should be less than the Contract Period'
+      );
+      return false;
+    }
+    if(!moment(this.reqObj.quoteByDate).isBefore(this.reqObj.minValidity)){
+      this.toaster.error(
+        'Quote By Date should be less than Minimum Validity Date'
+      );
       return false;
     }
 
@@ -1083,6 +1074,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
       return;
     }
     //Format values before send
+    this.reqObj.startDate = this.getValue('startDate');
+    this.reqObj.endDate = this.getValue('endDate');
+    this.reqObj.quoteByDate = this.getValue('quoteByDate');
+    this.reqObj.minValidity = this.getValue('minValidity');
+
     this.reqObj.quantityDetails.forEach((q) => {
       q.maxQuantity = this.convertDecimalSeparatorStringToNumber(q.maxQuantity);
       q.minQuantity = this.convertDecimalSeparatorStringToNumber(q.minQuantity);
