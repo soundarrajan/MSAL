@@ -1099,26 +1099,41 @@
 
             if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {  
 
-                var periodRows = $scope.formValues.periods;
-                var deletedRows = $scope.deletedRows;
-                var allPeriodRows = periodRows.concat(deletedRows);
-
+                let periodRows = $scope.formValues.periods;
+                let deletedRows = $scope.deletedRows;
+                let allPeriodRows = periodRows.concat(deletedRows);
+                for (var i = 0; i < periodRows.length; i++) {
+                    periodRows[i].isDeleted = false;
+                }               
                 let periods = [];
+                let removedPeriods = [];
+                let periodList = [];
                 if($scope.formValues && allPeriodRows) {                
                     for (var i = 0; i < allPeriodRows.length; i++) {
-
                         if (allPeriodRows[i].period && allPeriodRows[i].period.name && allPeriodRows[i].validFrom && allPeriodRows[i].validTo) {
-                            periods.push(allPeriodRows[i]);
+                                periods.push(allPeriodRows[i]);                          
+                            if(allPeriodRows[i].isDeleted == false){
+                                periodList.push(allPeriodRows[i]);
+                            }                            
+                        }else{
+                            removedPeriods.push(allPeriodRows[i]);
                         }
                     }
-                }       
-                let periodData = periods.map(el => el.validFrom+'-'+el.validTo);
+                }  
+              
+                let periodData = periodList.map(el => el.validFrom+'-'+el.validTo);              
                 let findDuplicates = periodData.filter((item, index) => periodData.indexOf(item) != index);
                 if(findDuplicates.length > 0){
                     toastr.error('P​eriod Overlapped, Please Change the Period');
                     return;
                 }
-                 $scope.formValues.periods = periods;               
+                if(removedPeriods.length > 0){
+                    let allPeriodRows = [];
+                    allPeriodRows = periods.concat(removedPeriods);
+                }
+              
+                // $scope.formValues.systemInstrumentPeriods = allPeriodRows;   
+                 $scope.formValues.periods = allPeriodRows;            
                 if ($scope.formValues && $scope.formValues.productsLocations) {
                     let errors = '';
                     let products = [];
