@@ -46,6 +46,9 @@ export class AvailableFiltersPreferencesComponent implements OnInit {
     // phElement.style.display = 'none';
     // phElement.parentNode.removeChild(phElement);
   }
+  btnClose() {
+    this.dialogRef.close();
+  }
   closeDialog() {
     let overlay = document.querySelector('.cdk-overlay-container');
     overlay.classList.remove('unset-z-index');
@@ -54,17 +57,18 @@ export class AvailableFiltersPreferencesComponent implements OnInit {
   saveFilterChips() {
     this.enableEdit = false;
     this.data = this.filterList;
+    this.closeDialog();
   }
   toggleChipSelection(filter, i) {
     if (filter.selected && filter.pinned)//If this was the pinned filter, unpin it
       filter.selected = false;
-
-    if (!filter.pinned) {//When you pin a chip, move it to the first of the list after the default filter
-      moveItemInArray(this.filterList, i, this.defaultFilterCount > 0 ? this.defaultFilterCount : 0);
-    }
-    else {//When you unpin a chip, move it to the end of the list
-      moveItemInArray(this.filterList, i, this.filterList.length);
-    }
+    //Rearranging is not required !
+    // if (!filter.pinned) {//When you pin a chip, move it to the first of the list after the default filter
+    //   moveItemInArray(this.filterList, i, this.defaultFilterCount > 0 ? this.defaultFilterCount : 0);
+    // }
+    // else {//When you unpin a chip, move it to the end of the list
+    //   moveItemInArray(this.filterList, i, this.filterList.length);
+    // }
     filter.pinned = !filter.pinned;
     this.data = this.filterList;
   }

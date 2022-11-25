@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from "@angular/router";
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import { EmptyFilterName, PreferenceAlreadyExists, ToastPosition } from '@shiptech/core/ui/components/filter-preferences/filter-preferences-messages';
+import { EmptyFilterName, FilterExists, ToastPosition } from '@shiptech/core/ui/components/filter-preferences/filter-preferences-messages';
 import { GridOptions } from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
 import { AGGridCellLinkRenderer } from '../../../core/ag-grid-renderers/ag-grid-cell-link-renderer.component';
@@ -26,6 +26,8 @@ export class ContractRequestDetailsComponent implements OnInit {
   public rowData_aggrid1 = [];
   public newPresetsDialog: MatDialogRef<any>;
   public presetActiveIndex = 0;
+  public showFilterDescSwitch = true;
+  public currentSelectedFilter;
 
   @ViewChild('createPreset', { static: false })
   createPresetTemplate: TemplateRef<any>;
@@ -57,7 +59,8 @@ export class ContractRequestDetailsComponent implements OnInit {
   public preferenceNameFormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(1),
-    Validators.pattern('^([?=_0-9a-zA-Z ]+)')
+    Validators.pattern('^([?=_0-9a-zA-Z ]+)'),
+    Validators.pattern(/^\S*$/)
   ]);
 
   public defaultColFilterParams = {
@@ -129,6 +132,11 @@ export class ContractRequestDetailsComponent implements OnInit {
       onFilterChanged: (params) => {
         this.gridpageNavModel.page = 1;
         this.gridpageNavModel.totalItems = this.gridOptions.api.getDisplayedRowCount();
+        if (this.gridOptions.api.getDisplayedRowCount() === 0) {
+          this.gridOptions.api.showNoRowsOverlay();
+        } else {
+          this.gridOptions.api.hideOverlay();
+        }
       },
       frameworkComponents: {
         cellLinkRenderer: AGGridCellLinkRenderer
@@ -143,10 +151,10 @@ export class ContractRequestDetailsComponent implements OnInit {
       cellRenderer: "cellLinkRenderer", cellRendererParams: { onClick: this.mainPage.bind(this) }
     },
     {
-      headerName: 'Created Date', headerTooltip: 'Created Date', field: 'createdOn', width: 120, cellStyle: { 'padding-left': '15px' }, filter: 'agDateColumnFilter', valueFormatter: params => this.format.date(params.value), filterParams: { comparator: dateCompare }
+      headerName: 'Request date', headerTooltip: 'Created Date', field: 'createdOn', width: 160, cellStyle: { 'padding-left': '15px' }, filter: 'agDateColumnFilter', valueFormatter: params => this.format.date(params.value), filterParams: { comparator: dateCompare }
     },
     {
-      headerName: 'Status', headerTooltip: 'Status', field: 'status', width: 80,
+      headerName: 'Status', headerTooltip: 'Status', field: 'status', width: 90,
       cellRenderer: function (params) {
         return `<div class="status-circle"><span class="circle ` + params.value + `"></span>` + params.value + `</div>`;
       }
@@ -155,10 +163,10 @@ export class ContractRequestDetailsComponent implements OnInit {
       headerName: 'Buyer', headerTooltip: 'Buyer', field: 'buyer', width: 120
     },
     {
-      headerName: 'Start Date', headerTooltip: 'Start Date', field: 'startDate', width: 120, filter: 'agDateColumnFilter', valueFormatter: params => this.format.date(params.value), filterParams: { comparator: dateCompare }
+      headerName: 'Start Date', headerTooltip: 'Start Date', field: 'startDate', width: 160, filter: 'agDateColumnFilter', valueFormatter: params => this.format.date(params.value), filterParams: { comparator: dateCompare }
     },
     {
-      headerName: 'End Date', headerTooltip: 'End Date', field: 'endDate', width: 120, cellClass: ['thick-right-border'], filter: 'agDateColumnFilter', valueFormatter: params => this.format.date(params.value), filterParams: { comparator: dateCompare }
+      headerName: 'End Date', headerTooltip: 'End Date', field: 'endDate', width: 160, cellClass: ['thick-right-border'], filter: 'agDateColumnFilter', valueFormatter: params => this.format.date(params.value), filterParams: { comparator: dateCompare }
     },
     {
       headerName: 'Location', headerTooltip: 'Location', field: 'locations', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data border-left'], width: 120,
@@ -179,7 +187,7 @@ export class ContractRequestDetailsComponent implements OnInit {
       },
     },
     {
-      headerName: 'Offers', headerTooltip: 'Offers', field: 'offers', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 120,
+      headerName: 'Offers', headerTooltip: 'Offers', field: 'offers', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 90,
       cellRendererFramework: AGGridMultiDataRendererComponent,
       cellRendererParams: { label: 'offers', type: 'text' },
       valueGetter: function (params) {
@@ -188,7 +196,7 @@ export class ContractRequestDetailsComponent implements OnInit {
       },
     },
     {
-      headerName: 'Awaiting app.', headerTooltip: 'Awaiting app.', field: 'awaitingApproval', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 120,
+      headerName: 'Awaiting app.', headerTooltip: 'Awaiting app.', field: 'awaitingApproval', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 100,
       cellRendererFramework: AGGridMultiDataRendererComponent,
       cellRendererParams: { label: 'awaitingApproval', cellClass: 'chip-circle await' },
       valueGetter: function (params) {
@@ -197,7 +205,7 @@ export class ContractRequestDetailsComponent implements OnInit {
       },
     },
     {
-      headerName: 'Approved', headerTooltip: 'Approved', field: 'approved', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 120,
+      headerName: 'Approved', headerTooltip: 'Approved', field: 'approved', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 100,
       cellRendererFramework: AGGridMultiDataRendererComponent,
       cellRendererParams: { label: 'approved', cellClass: 'chip-circle approve' },
       valueGetter: function (params) {
@@ -207,7 +215,7 @@ export class ContractRequestDetailsComponent implements OnInit {
     },
 
     {
-      headerName: 'Rejected', headerTooltip: 'Rejected', field: 'rejected', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 120,
+      headerName: 'Rejected', headerTooltip: 'Rejected', field: 'rejected', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 100,
       cellRendererFramework: AGGridMultiDataRendererComponent,
       cellRendererParams: { label: 'rejected', cellClass: 'chip-circle reject' },
       valueGetter: function (params) {
@@ -216,7 +224,7 @@ export class ContractRequestDetailsComponent implements OnInit {
       },
     },
     {
-      headerName: 'Contract Created', headerTooltip: 'Contract Created', field: 'contracted', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 120,
+      headerName: 'Contract Created', headerTooltip: 'Contract Created', field: 'contracted', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 100,
       cellRendererFramework: AGGridMultiDataRendererComponent,
       cellRendererParams: { label: 'contracted', cellClass: 'chip-circle create' },
       valueGetter: function (params) {
@@ -234,23 +242,14 @@ export class ContractRequestDetailsComponent implements OnInit {
         this.gridOptions.api.setRowData(this.rowData_aggrid1);
         this.filterList.filters[0].count = this.gridOptions.api.getDisplayedRowCount();
         this.gridpageNavModel.totalItems = this.gridOptions.api.getDisplayedRowCount();
-        this.filterList.filters.find(i => i.selected ? this.activeFilterPreset(i) : null);
-        const sort = [{ colId: "id", sort: "desc" }];
+        this.filterList.filters.find(i => i.selected ? this.activeFilterPreset(i) : null);//default selected filter
+        const sort = [{ colId: "id", sort: "desc" }];// default sort id
         this.gridOptions.api.setSortModel(sort);
         this.chRef.detectChanges();
       });
   }
 
   loadPreference() {
-    //PreferenceCount is total records bz switched to client side model 
-    // this.contractService.getPreferenceCount()
-    //   .subscribe(response => {
-    //     if (this.filterList.filters.length > 0) {
-    //       this.filterList.filters[0].count = response['default'];
-    //       this.chRef.detectChanges();
-    //     }
-    //   })
-
     this.contractService.getUserFilterPresets()
       .subscribe(res => {
         if (res && res.value) {
@@ -286,6 +285,7 @@ export class ContractRequestDetailsComponent implements OnInit {
   }
 
   openSaveAsPresetDialog(): void {
+    this.preferenceNameFormControl.setErrors({ "duplicate": null });
     this.newPresetsDialog = this.matDialog.open(this.createPresetTemplate, {
       width: '400px',
       disableClose: false,
@@ -311,16 +311,18 @@ export class ContractRequestDetailsComponent implements OnInit {
         this.chRef.detectChanges();
         this.contractService.updateUserFilterPresets(this.filterList.filters)
           .subscribe(res => {
-            this.updateColumnPreference();
+            this.toastr.success(`Grid Preference - '${newFilter.name}' has been saved successfully`);
             this.newPresetsDialog.close();
+            this.preferenceNameFormControl.setValue("");
+            this.preferenceNameFormControl.markAsUntouched();
           });
       }
       else {
-        this.toastr.error(PreferenceAlreadyExists, '', ToastPosition);
+        this.preferenceNameFormControl.setErrors({ "duplicate": "name already exists" });
       }
     }
     else {
-      this.toastr.error(EmptyFilterName, '', ToastPosition);
+      this.toastr.info(EmptyFilterName, '', ToastPosition);
     }
   }
 
@@ -329,7 +331,6 @@ export class ContractRequestDetailsComponent implements OnInit {
       this.filterList.filters = evt;
       this.filterList.filters.find(i => i.selected ? this.activeFilterPreset(i) : null);
       if (this.filterList.filters) {
-        this.filterList.filters.map(i => i['count'] = null);
         this.contractService.updateUserFilterPresets(this.filterList.filters)
           .subscribe(res => {
             this.updateColumnPreference();
@@ -350,9 +351,17 @@ export class ContractRequestDetailsComponent implements OnInit {
     if (evt.filterModels) {
       this.gridOptions.api.setFilterModel(evt.filterModels['contract-requestlist-filter-presets']);
       evt.count = this.gridOptions.api.getDisplayedRowCount();
+      this.gridpageNavModel.totalItems = this.gridOptions.api.getDisplayedRowCount();
     }
     else
-      this.gridOptions.api.setFilterModel(null)
+      this.gridOptions.api.setFilterModel(null);
+
+    this.currentSelectedFilter = evt;
+    if (evt.defaultFilter && evt.name == 'Default')
+      document.querySelector<HTMLElement>("app-ag-filter-display").hidden = true;
+    else if (this.showFilterDescSwitch)
+      this.showFilterDesc();
+
   }
 
   updateColumnPreference() {
@@ -364,11 +373,15 @@ export class ContractRequestDetailsComponent implements OnInit {
       .subscribe(res => {
         if (res)
           this.gridOptions.columnApi.setColumnState(res);
+        this.toastr.success("Preference was succesfully updated");
       })
   }
 
-  showfilterDesc() {
-    document.querySelector<HTMLElement>("app-ag-filter-display").hidden = false;
+  showFilterDesc() {
+    this.showFilterDescSwitch = true;
+    if (this.currentSelectedFilter['name'] != 'Default') {
+      document.querySelector<HTMLElement>("app-ag-filter-display").hidden = false;
+    }
   }
 
   exportData(evt) {
@@ -395,11 +408,9 @@ export class ContractRequestDetailsComponent implements OnInit {
 
 function dateCompare(filterLocalDateAtMidnight, cellValue) {
   const dateAsString = cellValue;
-
   if (dateAsString == null) {
     return 0;
   }
-
   const onlydateAsString = dateAsString.split("T")[0];
   const dateParts = onlydateAsString.split('-');
   const year = Number(dateParts[0]);
