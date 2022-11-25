@@ -735,6 +735,9 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                                     		v.vesselTypeId = null;
                                     	})
                                     }
+                                    if (vm.app_id == 'masters' && vm.screen_id == 'period') { 
+                                        $scope.formValues.code = null;                                    
+                                    }
 				                    $('#header_action_verify').attr('disabled', 'disabled');
                                     toastr.success('Entity copied');
                                     $scope.$emit('formValues', $scope.formValues);
