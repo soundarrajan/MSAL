@@ -177,7 +177,7 @@ import { ControlTowerQualityClaimsListGridViewModel } from 'libs/feature/control
         <div class="optionsText">
           <div class="qty-tooltip">
             <div class="qty">
-              <span class="title"style="font-size:12px">Qty:</span>
+              <span class="title"style="font-size:14px">Qty:</span>
               <span>
                 <span
                 class="value"
