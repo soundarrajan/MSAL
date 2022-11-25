@@ -294,8 +294,12 @@ export class CreateContractRequestPopupComponent implements OnInit {
     });
   }
 
-  getLocationProducts(locationId) {
-    return this.reqObj.contractRequestProducts.filter((x) => x.locationId === locationId);
+  getLocationProducts() {
+    return this.reqObj.contractRequestProducts.filter((x) => x.locationId === this.selectedLocationId);
+  }
+
+  getLocationProductIndex(index){
+    return this.reqObj.contractRequestProducts.filter((e, i) => (i <= index && e.locationId == this.selectedLocationId)).length;
   }
 
   applyPlanPeriod(){
@@ -303,7 +307,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.reqObj.endDate = this.planEndDate;
     this.selectedPlanValue = this.planLabel;
   }
-
 
   quantityFormatValue(value) {
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
@@ -496,6 +499,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   deleteNewMainProduct(i) {
     i=i+1;
     this.reqObj.contractRequestProducts.splice(i, 1);
+    this.productAllowedLocations.splice(i, 1);
     this.searchFilterString.splice(i, 1);
   }
 

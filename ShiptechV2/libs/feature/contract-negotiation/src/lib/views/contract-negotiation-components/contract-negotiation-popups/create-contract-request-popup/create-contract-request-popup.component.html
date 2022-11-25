@@ -660,11 +660,11 @@
               </div>
             </div>
             <div class="section-divider-line"></div>
-            <div class="form-fields-with-flex" *ngIf="i == reqObj.contractRequestProducts.length - 1">
+            <div class="form-fields-with-flex" *ngIf="getLocationProductIndex(i) != getLocationProducts().length - 1">
               <a id="ADMN63" class="add-icon" (click)="addNewMainProduct(selectedLocationId)"></a>
               <div class="title" (click)="addNewMainProduct(selectedLocationId)">Main Product</div>
             </div>
-            <div class="form-fields-with-flex" *ngIf="i != reqObj.contractRequestProducts.length - 1">
+            <div class="form-fields-with-flex" *ngIf="getLocationProductIndex(i) == getLocationProducts().length - 1">
               <a id="ADMN64" class="remove-product-icon" (click)="deleteNewMainProduct(i)"></a>
               <div class="title" (click)="deleteNewMainProduct(i)">Remove Product</div>
             </div>
