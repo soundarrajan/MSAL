@@ -9,7 +9,7 @@ import { EmailPreviewPopupComponent } from '../../views/contract-negotiation-com
   template: `
     <div class="fly-away">
       <div class="hover-cell-lookup d-flex align-items-center ">
-        <span class="info-flag" *ngIf="params.data.isSellerSuspended" matTooltipClass="lightTooltip" matTooltip="Temporary suspended counterparty"></span>
+        <span class="info-flag" *ngIf="params.node.data?.isSellerSuspended" matTooltipClass="lightTooltip" matTooltip="Temporary suspended counterparty"></span>
 
         <div class="m-l-7 ellipsis" style="cursor: pointer;" matTooltip="{{ params.value }}" matTooltipClass="lightTooltip" [matMenuTriggerFor]="clickmenupopup" #menuPopupTrigger="matMenuTrigger" [matMenuTriggerData]="{ data: params.value }" (contextmenu)="$event.preventDefault(); $event.stopPropagation(); menuPopupTrigger.openMenu()">
           {{ params.value }}
