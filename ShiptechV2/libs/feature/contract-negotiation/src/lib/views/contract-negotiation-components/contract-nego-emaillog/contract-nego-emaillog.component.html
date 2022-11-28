@@ -1,55 +1,4 @@
 <div class="emailLog-content list-page">
-    <div class="header-content">
-        <div class="filters">
-            <div id="menu-button" style="float: left;" [matMenuTriggerFor]="togglecolumn">
-                <div class="menu-icon-img"></div>
-                <div id="menu-button-dots">
-                    <div id="dot1" class="dot"></div>
-                    <div id="dot2" class="dot"></div>
-                    <div id="dot3" class="dot"></div>
-                    <div id="dot4" class="dot"></div>
-                    <div id="dot5" class="dot"></div>
-                    <div id="dot6" class="dot"></div>
-                    <div id="dot7" class="dot"></div>
-                    <div id="dot8" class="dot"></div>
-                    <div id="dot9" class="dot"></div>
-                </div>
-            </div>
-            <mat-menu class="hideshow no-boxshadow" #togglecolumn yPosition="below" xPosition="before" [overlapTrigger]="false">
-                <div class="tbl-context no-border" [ngClass]="[theme ? 'dark-theme' : 'light-theme']">
-                    <div class="p-tb-10">
-                        <span>
-                            <img class="p-r-10"
-                                [src]="theme ? './assets/design-system-icons/shiptech/modules/control-tower/context-save-as-dark.svg' : './assets/design-system-icons/shiptech/modules/control-tower/context-save-as-new.svg'"
-                                alt="Savc As icon">
-                        </span>
-                        <span>Save New Preference</span>
-                    </div>
-                    <div class="p-tb-10">
-                        <span>
-                            <img class="p-r-10"
-                                [src]="theme ? './assets/design-system-icons/shiptech/modules/control-tower/context-update-dark.svg' : './assets/design-system-icons/shiptech/modules/control-tower/context-update.svg'"
-                                alt="Savc As icon">
-                        </span>
-                        <span>Update Preference</span>
-                    </div>
-                    <div class="b-top p-0 m-b-5"></div>
-                    <div class="p-tb-10" style="cursor: pointer;">
-                        <span>
-                            <img class="p-r-10"
-                                [src]="theme ? './assets/design-system-icons/shiptech/modules/control-tower/filter-desc-dark.svg' : './assets/design-system-icons/shiptech/modules/control-tower/filter-desc-light.svg'"
-                                alt="Savc As icon">
-                        </span>
-                        <span>Show Filter description</span>
-                    </div>
-                </div>
-            </mat-menu>
-            <div class="filter-list-containerV2">
-                <app-filter-list style="height: inherit;" [filterList]="filterList"
-                    [switchTheme]="theme"></app-filter-list>
-            </div>
-        </div>
-    </div>
     <div class="grid-container">
         <div class="agGrid-v2" style="margin: 0">
             <div style="width:100%;height: 100%;">
@@ -68,4 +17,3 @@
         <app-footer-v2 [id]="'contract-negotiation'" [singleGrid]="true" [doublePagination]="true"
             [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>
     </div> -->
-</div>
