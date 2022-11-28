@@ -20,6 +20,7 @@ import { Subject } from 'rxjs';
 import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/general-tenant-settings.interface';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { DecimalPipe } from '@angular/common';
+import _ from 'lodash';
 
 export const MY_FORMATS = {
   parse: {
@@ -57,6 +58,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
   locationBasedProducts = [];
   selectedLocationId = 0;
   isNewRequest = true;
+  //listData: any = {};
+  listData: any[] = [];
+  productsListData: any = {};
 
   get newQuantityDetails(): any {
     return {
@@ -120,7 +124,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
   /* Form Builder */
   
-
   @Input() rfqSent;
   enableSaveBtn = true;
   enableRFQBtn = false;
@@ -149,7 +152,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   selectedAllowedLocation: any;
   displayedColumns: string[] = ['location'];
   showMainLocationDropdown: boolean = true;
-  hideAllowedLocationDropdown: any = { 0: true };
+  hideAllowedLocationDropdown: any[] = [];
   public mainLocationName: any[] = [];
   public allowedLocationName: any[] = [];
   selectedMainLocationName: string;
@@ -213,7 +216,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
       "SpecGroup",
       "Uom"
     ]).subscribe((data) => {
-      this.staticData = data;
+      this.staticData = _.cloneDeep(data);
+      this.hideAllowedLocationDropdown[0] = true
       this.locationsList.next(data.Location);
       if(this.data.requestDetails){
         this.isNewRequest = false;
@@ -234,6 +238,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
           if (this.mainLocations.findIndex((l) => l.locationId == item.locationId) === -1) this.mainLocations.push(newLocation);
           this.searchFilterString.push({ mainProduct: '', allowedProducts: [], allowedLocations: '', });
           this.hideAllowedLocationDropdown[i] = true;
+          this.listData[i].mainProduct = (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
           item.minQuantity = this.quantityFormatValue(item.minQuantity);
           item.maxQuantity = this.quantityFormatValue(item.maxQuantity);
           if(item.allowedProducts.length > 0) {
@@ -241,12 +246,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
           }
           if(item.allowedProducts.length > 0) {
             item.allowedProducts.forEach( (proItem, j) => {
+              this.listData[i].allowedProducts[j].products = (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
+              this.listData[i].allowedProducts[j].specGroup = [];
               this.setProductChange(proItem.productId,i,j);
             });
           }
           if(item.allowedLocations.length > 0) {
             this.productAllowedLocations[i] = [];
-            item.allowedLocations.forEach( (locItem) => {
+            item.allowedLocations.forEach( (locItem, j) => {
+              this.listData[i].allowedLocations[j].products = (_.cloneDeep(this.staticData.Location)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
               let location = this.staticData.Location.find( x => x.id == locItem.locationId);
               this.productAllowedLocations[i].push({
                 id: location.id,
@@ -500,6 +508,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
     let newMainProduct = this.newContractRequestProducts;
     newMainProduct.locationId = locationId;
     this.reqObj.contractRequestProducts.push(newMainProduct);
+    this.listData.push({
+      mainProduct: (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10),
+      allowedProducts:[],
+      allowedLocations:[]
+    });
     this.searchFilterString.push({ 
       mainProduct:"",
       allowedProducts:[],
@@ -512,6 +525,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.reqObj.contractRequestProducts.splice(i, 1);
     this.productAllowedLocations.splice(i, 1);
     this.searchFilterString.splice(i, 1);
+    this.listData.splice(i, 1);
     this.hideAllowedLocationDropdown.splice(i, 1);
   }
 
@@ -544,8 +558,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
       if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
         this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = prod.databaseValue;
       }
+      this.listData[prodIndex].allowedProducts[index].specGroup = this.specGroupDataSource(value);
     }
   }
+  
   setSpecGroupChange(value, prodIndex, index) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = value;
     this.selectedProname = value.pname;
@@ -556,10 +572,13 @@ export class CreateContractRequestPopupComponent implements OnInit {
   addNewAllowedProduct(prodIndex) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.push(this.newAllowedProducts);
     this.searchFilterString[prodIndex].allowedProducts.push({value: ''});
+    this.listData[prodIndex].allowedProducts.push({products: (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10),})
+    console.log('listData::', this.listData);
   }
   removeProductToContract(prodIndex, key) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.splice(key, 1);
     this.searchFilterString[prodIndex].allowedProducts.splice(key, 1);
+    this.listData[prodIndex].allowedProducts.splice(key, 1);
   }
   sendRFQ() {
     const dialogRef = this.dialog.open(SendRfqPopupComponent, {
@@ -772,7 +791,39 @@ export class CreateContractRequestPopupComponent implements OnInit {
     if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
       this.reqObj.contractRequestProducts[i].specGroupId = prod.databaseValue;
     }
-    this.searchFilterString[i].mainProduct = "";
+    this.listData[i].specGroup = this.specGroupDataSource(prodId);
+  }
+
+  onMainProdSearchChange(value, i){
+    if(value && value != ''){
+      let filterValue = value.toString().toLowerCase();
+      this.listData[i].mainProduct = this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue)).slice(0, 10);
+    } else {
+      this.listData[i].mainProduct =  _.cloneDeep(this.staticData.Product).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 10);
+    }
+    if(this.reqObj.contractRequestProducts[i].productId != ''){
+      let selectedProd = this.staticData.Product.find(p => p.id == this.reqObj.contractRequestProducts[i].productId);
+      if(this.listData[i].mainProduct.findIndex(p => p.id == selectedProd.id) == -1) {
+        this.listData[i].mainProduct.push(selectedProd);
+      }
+    }
+  }
+
+  onAllowedProdSearchChange(value, i, j) {
+    if(value && value != ''){
+      let filterValue = value.toString().toLowerCase();
+      this.listData[i].allowedProducts[j].products = this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue)).slice(0, 10);
+      this.listData[i].allowedProducts[j].specGroup = [];
+    } else {
+      this.listData[i].allowedProducts[j].products =  _.cloneDeep(this.staticData.Product).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 10);
+      this.listData[i].allowedProducts[j].specGroup = [];
+    }
+    if(this.reqObj.contractRequestProducts[i].productId != ''){
+      let selectedProd = this.staticData.Product.find(p => p.id == this.reqObj.contractRequestProducts[i].productId);
+      if(this.listData[i].allowedProducts[j].products.findIndex(p => p.id == selectedProd.id) == -1) {
+        this.listData[i].allowedProducts[j].products.push(selectedProd);
+      }
+    }
   }
 
   productDataSource(value) {
@@ -795,9 +846,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
   locationDataSource(value){
     if(value && value != ''){
       let filterValue = value.toString().toLowerCase();
-    return this.staticData.Location.filter(p => p.name.toString().toLowerCase().includes(filterValue)).slice(0, 10);
+    return this.staticData.Location.filter(p => p.name.toString().toLowerCase().includes(filterValue))
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .slice(0, 10);
     } else {
-      return this.staticData.Location.slice(0, 10);
+      return this.staticData.Location.sort((a, b) => a.name.localeCompare(b.name)).slice(0, 10);
     }
   }
 

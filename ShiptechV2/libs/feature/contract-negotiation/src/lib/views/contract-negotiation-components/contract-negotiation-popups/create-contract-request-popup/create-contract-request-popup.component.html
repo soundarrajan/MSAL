@@ -297,14 +297,18 @@
                                     class="without-search contract-location-product-dropdown custom-dropdown"
                                     appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].productId" (selectionChange)="onMainProductChange($event.value, i);this.searchFilterString[i].mainProduct = '';"
+                                    <mat-select [value]="reqObj.contractRequestProducts[i].productId" 
+                                      [(ngModel)]="reqObj.contractRequestProducts[i].productId" 
+                                      (selectionChange)="onMainProductChange($event.value, i);"
                                       disableOptionCentering [panelClass]="'shiptech-select-product-container'" required>
                                       <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                           <div class="col-md-12 header-container-product pd-0">
                                             <div class="search-product-container col-md-10 pd-0">
                                               <span id="PDDD41" class="search-product-lookup">
                                               </span>
-                                              <input id="PDDD40" [(ngModel)]="searchFilterString[i].mainProduct" matInput placeholder="Search all and select a product"
+                                              <input id="PDDD40" [(ngModel)]="searchFilterString[i].mainProduct" matInput 
+                                                (input)="onMainProdSearchChange($event.target.value, i)" 
+                                                placeholder="Search and select a product"
                                                 class="search-product-input" (keydown)="$event.stopPropagation();">
                                             </div>
   
@@ -313,8 +317,10 @@
                                                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
                                             </div>
                                           </div>
+                                          <!--table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
+                                            mat-table [dataSource]="productDataSource(searchFilterString[i].mainProduct)"-->
                                           <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                            mat-table [dataSource]="productDataSource(searchFilterString[i].mainProduct)">
+                                            mat-table [dataSource]="this.listData[i].mainProduct">
                                             
                                             <ng-container matColumnDef="name">
                                               <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
@@ -349,7 +355,7 @@
                                     <span>
 
                                     </span>
-                                    <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].specGroupId" #singleSelect disableOptionCentering
+                                    <mat-select [value]="reqObj.contractRequestProducts[i].specGroupId" [(ngModel)]="reqObj.contractRequestProducts[i].specGroupId" #singleSelect disableOptionCentering
                                       [panelClass]="'shiptech-select-product-container'" required>
                                       <div [ngClass]="{
                                                       'expand-select-location-container': expandLocation
@@ -368,7 +374,7 @@
                                           </div>
                                         </div>
                                         <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                          mat-table [dataSource]="specGroupDataSource(reqObj.contractRequestProducts[i].productId)">
+                                          mat-table [dataSource]="listData[i].specGroup">
                                           <!-- Location name Column -->
                                           <ng-container matColumnDef="name">
                                             <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
@@ -498,7 +504,9 @@
                                         <div class="search-product-container col-md-10 pd-0">
                                           <span id="ALPROD55" class="search-product-lookup">
                                           </span>
-                                          <input id="ALPROD54" [(ngModel)]="searchFilterString[i].allowedProducts[j].product" matInput placeholder="Search and select a product"
+                                          <input id="ALPROD54" [(ngModel)]="searchFilterString[i].allowedProducts[j].product" matInput 
+                                            (input)="onAllowedProdSearchChange($event.target.value, i, j)"
+                                            placeholder="Search and select a product"
                                             class="search-product-input" (keydown)="$event.stopPropagation();" >
                                         </div>
 
@@ -507,8 +515,10 @@
                                             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
                                         </div>
                                       </div>
+                                      <!--table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
+                                        mat-table [dataSource]="productDataSource(searchFilterString[i].allowedProducts[j].product)"-->
                                       <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                        mat-table [dataSource]="productDataSource(searchFilterString[i].allowedProducts[j].product)">
+                                        mat-table [dataSource]="this.listData[i].allowedProducts[j].products">
                                         <!-- Location name Column -->
                                         <ng-container matColumnDef="name">
                                           <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
@@ -558,7 +568,7 @@
                                         </div>
                                       </div>
                                       <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
-                                        mat-table [dataSource]="specGroupDataSource(reqObj.contractRequestProducts[i].allowedProducts[j].productId)">
+                                        mat-table [dataSource]="listData[i].allowedProducts[j].specGroup">
                                         <!-- Location name Column -->
                                         <ng-container matColumnDef="name">
                                           <th mat-header-cell *matHeaderCellDef style="padding-left:5px">
