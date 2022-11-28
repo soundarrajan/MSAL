@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-filter-list',
@@ -50,7 +50,7 @@ export class FilterListComponent implements OnInit {
   refreshData(filter) {
     if (filter) {
       this.filterList.filters = filter;
-      this.selectedFilterList = this.filterList.filters.filter((element) => element.pinned == true || element.selected == true);
+      this.selectedFilterList = this.filterList.filters?.filter((element) => element?.pinned == true || element?.selected == true);
       this.sortByPosition();
     }
   }

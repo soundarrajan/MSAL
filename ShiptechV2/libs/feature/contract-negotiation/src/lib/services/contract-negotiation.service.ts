@@ -241,6 +241,15 @@ export class ContractNegotiationService extends BaseStoreService
   }
 
   /**
+   * Amend RFQ
+   * @param payload =
+   */
+  @ObservableException()
+  updateContractRequest(payload: any): Observable<unknown> {
+    return this.contractNegotiationApi.updateContractRequest(payload);
+  }
+
+  /**
    * Preview RFQ email
    * @param payload =
    */

@@ -2,10 +2,10 @@
     <div class="header">
         <div class="title">Filters and Preferences</div>
         <div class="header-btn">
-            <button class="blue-button" (click)="enableEdit = true;">Edit</button>
-            <button [disabled]="!enableEdit" (click)="saveFilterChips()" class="blue-button">Save</button>
+            <button class="blue-button" (click)="enableEdit=!enableEdit">{{enableEdit?'Done':'Edit'}}</button>
+            <button (click)="saveFilterChips()" class="blue-button">Save</button>
             <mat-divider [vertical]="true"></mat-divider>
-            <span id="dialogCloseButton" class="close" (click)="closeDialog()"></span>
+            <span id="dialogCloseButton" class="close" (click)="btnClose()"></span>
         </div>
     </div>
     <div *ngIf="!enableEdit; else editableBlock" cdkDropListGroup>

@@ -111,8 +111,8 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
       breadcrumbs[0].url = '/#/invoices/invoice';
     }
         
-    if (this.router.url.includes('contract-negotiation/requests')) {
-      breadcrumbs[0].url = '/v2/contract-negotiation/requests';       
+    if (this.router.url.includes('contract-negotiation/requests')) {     
+      breadcrumbs[0].routerLink = '/contract-negotiation/requests';            
     }
 
     return this.createBreadcrumbs(child, url, breadcrumbs);

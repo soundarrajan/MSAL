@@ -2979,8 +2979,10 @@
                             Type: 'lookup',
                             masterSource: 'Period',
                             clc_id: 'masters_periodlist',
-                            customChangeAction: 'siPeriodSelection(rowRenderIndex, grid.appScope.fVal().formValues)'
-                        }
+                            customChangeAction: 'siPeriodSelection(rowRenderIndex, grid.appScope.fVal().formValues)',
+                            customKeyPressAction:'periodKeyPress(rowRenderIndex, grid.appScope.fVal().formValues)'
+                        },
+                        required: true
                     },
                     {
                         name: 'validFrom',
@@ -3003,9 +3005,11 @@
                 ],
                 onRegisterApi: function(api) {
                     setTimeout(() => {
-                        api.core.handleWindowResize();
-                        if (angular.equals($scope.formValues, {}) || !$scope.formValues.periods || angular.equals($scope.formValues.periods, [])) {
-                            $scope.formValues.periods = [ {} ];
+                        api.core.handleWindowResize();                       
+                        if (angular.equals($scope.formValues, {}) || !$scope.formValues.periods) {
+                            $scope.formValues.periods = [];
+                        } else if (angular.equals($scope.formValues.periods, [])) {
+                            $scope.formValues.periods = [];
                         }
                     }, 10);
                 }

@@ -37,6 +37,7 @@ export class DarkSelectionMenuComponent implements OnInit {
   dataSourceCopy: any[] = [];
   columnKeys: any[] = [];
   expandLocation: boolean = false;
+  searchText = "";
   
   constructor(
     @Host() private select: MatSelect,
@@ -58,7 +59,9 @@ export class DarkSelectionMenuComponent implements OnInit {
   ngOnChanges(change): void {
     if(change._dataSource$){
       change._dataSource$.currentValue.subscribe(item => {
-        this.dataSource = this.dataSourceCopy = item;
+        this.dataSourceCopy = _.cloneDeep(item.sort((a, b) => a.name.localeCompare(b.name)));
+        this.dataSource = _.cloneDeep(item.sort((a, b) => a.name.localeCompare(b.name)));
+        this.dataSource = this.dataSource.splice(0, 10);
         this.initOptions();
       });
     }
@@ -101,14 +104,14 @@ export class DarkSelectionMenuComponent implements OnInit {
   private _filter(value: string) {
     if(value!=''){
       const filterValue = value.toLowerCase();
-      var dataSrc = [...this.dataSourceCopy];
+      var dataSrc = _.cloneDeep(this.dataSourceCopy);
       var recordsSorted = [];
       var _tempArr = [];
       this.columnKeys.forEach(col => {
           _tempArr = [];
           _tempArr.push(dataSrc.filter(option => {
             return (option[col] && option[col].toString().toLowerCase().includes(filterValue));
-          }));
+          }).sort((a, b) => a.name.localeCompare(b.name)));
           recordsSorted = (_tempArr.length > 0 ) ? [...recordsSorted, ..._tempArr[0]] : recordsSorted;
       });
       return recordsSorted;
@@ -122,10 +125,12 @@ export class DarkSelectionMenuComponent implements OnInit {
     this.selectedItem = item.id;
     this.onSelectionChange.emit(item);
     this.selectedItem = '';
+    this.searchText = "";
+    this.dataSource = _.cloneDeep(this.dataSourceCopy).splice(0, 10);
   }
 
   search(value: string): void {
-    this.dataSource = this._filter(value);
+    this.dataSource = _.cloneDeep(this._filter(value)).splice(0, 10);
   }
 
   isChecked(elId) { return (elId === this.selectedItem)?true:false }

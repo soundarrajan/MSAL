@@ -2,9 +2,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   OnDestroy,
-  OnInit
+  OnInit,
+  Output
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -82,6 +84,7 @@ export class AgFilterDisplayComponent implements OnInit, OnDestroy {
   filterPartType = PartType.filter;
 
   @Input() grid: AgGridAngular;
+  @Output() closed = new EventEmitter();
 
   filterParts: FilterPart[];
 
@@ -90,7 +93,7 @@ export class AgFilterDisplayComponent implements OnInit, OnDestroy {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private tenantFormat: TenantFormattingService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.grid.filterChanged
@@ -163,7 +166,8 @@ export class AgFilterDisplayComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  hideFilters() : void {
+  hideFilters(): void {
+    this.closed.emit("closed");
     document.querySelector<HTMLElement>("app-ag-filter-display").hidden = true;
   }
 
@@ -196,15 +200,14 @@ export class AgFilterDisplayComponent implements OnInit, OnDestroy {
       case AgGridKnownFilterTypes.Date:
         return condition === AgGridConditionTypeEnum.IN_RANGE
           ? `${this.tenantFormat.date(
-              (<IAgGridDateFilter>value).dateFrom
-            )} - ${this.tenantFormat.date((<IAgGridDateFilter>value).dateTo)}`
+            (<IAgGridDateFilter>value).dateFrom
+          )} - ${this.tenantFormat.date((<IAgGridDateFilter>value).dateTo)}`
           : this.tenantFormat.date((<IAgGridDateFilter>value).dateFrom);
 
       case AgGridKnownFilterTypes.Number:
         return condition === AgGridConditionTypeEnum.IN_RANGE
-          ? `${(<IAgGridNumberFilter>value).filter} - ${
-              (<IAgGridNumberFilter>value).filterTo
-            }`
+          ? `${(<IAgGridNumberFilter>value).filter} - ${(<IAgGridNumberFilter>value).filterTo
+          }`
           : (<IAgGridNumberFilter>value).filter.toString();
     }
   }
