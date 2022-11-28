@@ -573,7 +573,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.push(this.newAllowedProducts);
     this.searchFilterString[prodIndex].allowedProducts.push({value: ''});
     this.listData[prodIndex].allowedProducts.push({products: (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10),})
-    console.log('listData::', this.listData);
   }
   removeProductToContract(prodIndex, key) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts.splice(key, 1);
