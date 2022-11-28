@@ -32,6 +32,7 @@ export const apiPaths = {
   tenantConfiguration: `Groups/getTenantConfiguration`,
   staticLists: `api/infrastructure/static/lists`,
   createContractRequest: `api/ContractRequest/create`,
+  updateContractRequest: `api/ContractRequest/update`,
   counterpartyLists: `api/masters/counterparties/listbyTypes`,
   counterpartyListsByName: `counterparty/getCounterpartyList`,
   addCounterparties: `groups/addSellers`,
@@ -971,6 +972,25 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     return this.http
       .post<any>(
         `${this._shitechApiUrl}/${apiPaths.createContractRequest}`,
+        requestPayload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  /**
+  * Create new contract request
+  * @param {*} {requestPayload<IContractRequestDetailDto>}
+  * @return {*}  {Observable<any>}
+  * @memberof ContractNegotiationApi
+  */
+  @ObservableException()
+  updateContractRequest(requestPayload: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._shitechApiUrl}/${apiPaths.updateContractRequest}`,
         requestPayload
       )
       .pipe(
