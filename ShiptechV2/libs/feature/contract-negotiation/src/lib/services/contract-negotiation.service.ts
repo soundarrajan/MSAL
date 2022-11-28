@@ -972,6 +972,11 @@ export class ContractNegotiationService extends BaseStoreService
     return this.contractNegotiationApi.getcontractRequestDetails(contractRequestId);
   }
 
+  @ObservableException()
+  counterPartSelectionToggle(counterPartyIds):Observable<any> {
+  return this.contractNegotiationApi.counterPartSelectionToggle(counterPartyIds);
+  }
+
   //PreferenceCount
   @ObservableException()
   getPreferenceCount(): Observable<any> {

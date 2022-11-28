@@ -64,6 +64,7 @@ import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag
 
 import { SpotNegotiationService } from './../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
+import { CounterpartieNameCellComponent } from './core/ag-grid-renderers/counterpartie-name-cell.component';
 @NgModule({
   declarations: [
     MainContractNegotiationComponent,
@@ -104,6 +105,7 @@ import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-di
     fullWidthCellRenderer,
     MatCheckboxHeaderComponent,
     HeaderBreadcrumbComponent,
+    CounterpartieNameCellComponent,
   ],
   imports: [
     CommonModule,
