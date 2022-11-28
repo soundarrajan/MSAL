@@ -238,7 +238,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
           if (this.mainLocations.findIndex((l) => l.locationId == item.locationId) === -1) this.mainLocations.push(newLocation);
           this.searchFilterString.push({ mainProduct: '', allowedProducts: [], allowedLocations: '', });
           this.hideAllowedLocationDropdown[i] = true;
+          this.listData[i] = {mainProduct: [], specGroup: [], allowedProducts: [], allowedLocations: []};
           this.listData[i].mainProduct = (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
+          this.onMainProductChange(this.reqObj.contractRequestProducts[i].productId, i);
           item.minQuantity = this.quantityFormatValue(item.minQuantity);
           item.maxQuantity = this.quantityFormatValue(item.maxQuantity);
           if(item.allowedProducts.length > 0) {
@@ -246,7 +248,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
           }
           if(item.allowedProducts.length > 0) {
             item.allowedProducts.forEach( (proItem, j) => {
-              this.listData[i].allowedProducts[j].products = (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
+              this.listData[i].allowedProducts[j] = {products:[], specGroup: []};
+              this.listData[i].allowedProducts[j].products.push((_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10));
               this.listData[i].allowedProducts[j].specGroup = [];
               this.setProductChange(proItem.productId,i,j);
             });
@@ -254,7 +257,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
           if(item.allowedLocations.length > 0) {
             this.productAllowedLocations[i] = [];
             item.allowedLocations.forEach( (locItem, j) => {
-              this.listData[i].allowedLocations[j].products = (_.cloneDeep(this.staticData.Location)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
               let location = this.staticData.Location.find( x => x.id == locItem.locationId);
               this.productAllowedLocations[i].push({
                 id: location.id,
@@ -551,15 +553,18 @@ export class CreateContractRequestPopupComponent implements OnInit {
         prod.name + ' already added' + prodNameMsg + ' as allowed product'
       );
       this.removeProductToContract(prodIndex, index);
-    } else {
-      this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value;
-      this.locationSelected = true;
-      this.selectedLocindex = index;
-      if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
-        this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = prod.databaseValue;
-      }
-      this.listData[prodIndex].allowedProducts[index].specGroup = this.specGroupDataSource(value);
+      return false;
     }
+    this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value;
+    this.locationSelected = true;
+    this.selectedLocindex = index;
+    if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
+      this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = prod.databaseValue;
+    }
+    if(this.listData[prodIndex].allowedProducts[index].products.findIndex(p => p.id == prod.id) == -1) {
+      this.listData[prodIndex].allowedProducts[index].products.push(prod);
+    }
+    this.listData[prodIndex].allowedProducts[index].specGroup = this.specGroupDataSource(value);
   }
   
   setSpecGroupChange(value, prodIndex, index) {
@@ -782,13 +787,17 @@ export class CreateContractRequestPopupComponent implements OnInit {
         'Product ' + prod.name + ' already added as main product for ' + this.selectedMainLocationName + ' location'
       );
       return false;
-    } else this.reqObj.contractRequestProducts[i].productId = prodId;
+    }
+    this.reqObj.contractRequestProducts[i].productId = prodId;
     let prodType = this.staticData.ProductType.find(pt => pt.id == prod.productTypeId);
     let prodTypeGroup = this.staticData.ProductTypeGroup.find(ptg => ptg.id == prodType.databaseValue);
     this.reqObj.contractRequestProducts[i].minQuantityUomId = prodTypeGroup.databaseValue;
     this.reqObj.contractRequestProducts[i].maxQuantityUomId = prodTypeGroup.databaseValue;
     if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
       this.reqObj.contractRequestProducts[i].specGroupId = prod.databaseValue;
+    }
+    if(this.listData[i].mainProduct.findIndex(p => p.id == prod.id) == -1) {
+      this.listData[i].mainProduct.push(prod);
     }
     this.listData[i].specGroup = this.specGroupDataSource(prodId);
   }
@@ -892,12 +901,12 @@ export class CreateContractRequestPopupComponent implements OnInit {
     return parseFloat(numberToReturn);
   }
 
-  assignUserIdToReqObj() {
-    this.reqObj.createdById = this.currentUserId;
+  assignUserIdToReqObj(isNew) {
+    if(isNew) this.reqObj.createdById = this.currentUserId;
     this.reqObj.lastModifiedById = this.currentUserId;
     if(this.reqObj.contractRequestProducts.length > 0){
       this.reqObj.contractRequestProducts.forEach( product => {
-        product.createdById = this.currentUserId;
+        if(isNew) product.createdById = this.currentUserId;
         product.lastModifiedById = this.currentUserId;
       })
     }
@@ -1145,7 +1154,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   saveContract() {
-    this.assignUserIdToReqObj();
+    this.assignUserIdToReqObj(this.isNewRequest);
     const isValid = this.showFormErrors();
     if (!isValid) {
       return;
@@ -1155,7 +1164,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.reqObj.endDate = this.getValue('endDate');
     this.reqObj.quoteByDate = this.getValue('quoteByDate');
     this.reqObj.minValidity = this.getValue('minValidity');
-
+    if(this.isNewRequest) this.reqObj.createdOn = moment.utc().format();
+    this.reqObj.lastModifiedOn = moment.utc().format();
     this.reqObj.quantityDetails.forEach((q) => {
       q.maxQuantity = this.convertDecimalSeparatorStringToNumber(q.maxQuantity);
       q.minQuantity = this.convertDecimalSeparatorStringToNumber(q.minQuantity);
@@ -1165,14 +1175,25 @@ export class CreateContractRequestPopupComponent implements OnInit {
       pro.maxQuantity = this.convertDecimalSeparatorStringToNumber(pro.maxQuantity);
       pro.minQuantity = this.convertDecimalSeparatorStringToNumber(pro.minQuantity);
     });
-    this.contractNegotiationService.createContractRequest(this.reqObj).subscribe( requestId => {
-      if(typeof requestId == 'number' && requestId > 0){
-        this.toaster.success('Contract Request has been created successfully');
-        this.router.navigate(['/contract-negotiation/requests/'+requestId]);
-        this.dialog.closeAll();
-      } else {
-        this.toaster.error(requestId.toString());
-      }
-    });
+    if(this.isNewRequest){
+      this.contractNegotiationService.createContractRequest(this.reqObj).subscribe( requestId => {
+        if(typeof requestId == 'number' && requestId > 0){
+          this.toaster.success('Contract Request has been created successfully');
+          this.router.navigate(['/contract-negotiation/requests/'+requestId]);
+          this.dialog.closeAll();
+        } else {
+          this.toaster.error(requestId.toString());
+        }
+      });
+    } else {
+      this.contractNegotiationService.updateContractRequest(this.reqObj).subscribe( response => {
+        if(response){
+          this.toaster.success('Contract Request has been updated successfully');
+          this.dialog.closeAll();
+        } else {
+          this.toaster.error(response.toString());
+        }
+      });
+    }
   }
 }
