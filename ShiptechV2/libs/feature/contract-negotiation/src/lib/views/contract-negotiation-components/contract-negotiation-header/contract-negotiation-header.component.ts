@@ -114,6 +114,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
               "id": res2['id'],
               "LocationId": res1['locationId'],
               "ProductId": res2['productId'],
+              "isSellerSuspended": res2['isSellerSuspended'],
               //"ProductName": product?.displayName,
               "requestLocationId": '',
               "requestProductId": '',

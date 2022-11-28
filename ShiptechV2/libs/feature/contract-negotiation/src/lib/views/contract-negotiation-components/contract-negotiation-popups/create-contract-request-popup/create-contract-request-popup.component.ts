@@ -1172,6 +1172,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
       q.tolerancePercentage = this.convertDecimalSeparatorStringToNumber(q.tolerancePercentage);
     });
     this.reqObj.contractRequestProducts.forEach((pro) => {
+      if(this.isNewRequest) pro.createdOn = moment.utc().format();
+      pro.lastModifiedOn = moment.utc().format();
       pro.maxQuantity = this.convertDecimalSeparatorStringToNumber(pro.maxQuantity);
       pro.minQuantity = this.convertDecimalSeparatorStringToNumber(pro.minQuantity);
     });
