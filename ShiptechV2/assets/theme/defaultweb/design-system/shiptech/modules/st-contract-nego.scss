@@ -1809,6 +1809,12 @@
         }
       }
     }
+
+    .ag-theme-material .ag-menu {
+      z-index: 1000 !important;
+      top: 9px !important;
+    }
+
   }
 
   /* Contract Negotiation - Details- End */
