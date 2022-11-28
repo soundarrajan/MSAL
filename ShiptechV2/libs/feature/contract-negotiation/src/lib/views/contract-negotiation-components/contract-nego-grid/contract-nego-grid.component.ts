@@ -13,6 +13,8 @@ import { GroupRowInnerRenderer } from '../../../core/ag-grid-renderers/groupRowI
 import { AGGridCheckboxRenderer } from '../../../core/ag-grid-renderers/ag-grid-checkbox-renderer.component';
 import { ContractNegotiationStoreModel } from '../../../store/contract-negotiation.store';
 import { Store } from '@ngxs/store';
+import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
+import { CounterpartieNameCellComponent } from '../../../core/ag-grid-renderers/counterpartie-name-cell.component';
 @Component({
   selector: 'app-contract-nego-grid',
   templateUrl: './contract-nego-grid.component.html',
@@ -49,7 +51,10 @@ export class ContractNegoGridComponent implements OnInit {
   public rowSelected: boolean = false;
   public isCalculated: boolean = false;
   showProgressBar: boolean = false;
-  constructor(private localService: LocalService, private store : Store) {
+  blockHttpCall : boolean = false;
+  checkBoxSelectionstatus : boolean;
+  sellerIds = [];
+  constructor(private localService: LocalService, private store : Store,private contractService: ContractNegotiationService) {
     this.context = { componentParent: this };
   }
   ngOnInit(): void {
@@ -78,6 +83,7 @@ export class ContractNegoGridComponent implements OnInit {
       },
       rowSelection: 'multiple',
       onGridReady: params => {
+        setTimeout(() => this.blockHttpCall = true,3000);
         this.gridOptions_forecast.api = params.api;
         this.gridOptions_forecast.columnApi = params.columnApi;
         this.gridOptions_forecast.api.sizeColumnsToFit();
@@ -369,8 +375,11 @@ export class ContractNegoGridComponent implements OnInit {
           width: 20,
           headerCheckboxSelection: true,
           checkboxSelection: params => {
-            return params.node.level != 0 ? true : false;
+             return params.node.level != 0 ? true : false;
           },
+          cellRenderer: (params) => {
+            params.node.setSelected(params.value);
+         },   
           resizable: false,
           suppressNavigable: true,
           lockPosition: true,
@@ -390,7 +399,7 @@ export class ContractNegoGridComponent implements OnInit {
           headerClass: 'm-l-7',
           suppressNavigable: true,
           lockPosition: true,
-          cellRendererFramework: AGGridCellClickRendererComponent,
+          cellRendererFramework: CounterpartieNameCellComponent,
           cellRendererParams: {
             label: 'hover-cell-lookup',
             type: 'hover-cell-lookup',
@@ -748,7 +757,12 @@ export class ContractNegoGridComponent implements OnInit {
       return { cellClass: classArray.length > 0 ? classArray : null, isClickable: clickEvent, cellValueClass: params.value == 113 || params.value == 106 ? 'best-price' : '', status: status };
     }
   }
-  onRowSelected(e) {
+  onRowSelected(e) {    
+    console.log("e.data",e);
+    if(e.data && this.blockHttpCall){
+      this.sellerIds.push(e.data.id);
+      this.checkBoxSelectionstatus = e.node.selected;
+    }
     this.localService.sendRFQUpdate.subscribe(r => {
       if (r == true) {
         this.gridOptions_forecast.api.forEachNode((rowNode, index) => {
@@ -769,6 +783,17 @@ export class ContractNegoGridComponent implements OnInit {
     }
   }
 
+  onSelectionChanged(event) {
+    if(this.blockHttpCall){
+        let requestPayload = {
+        "contractRequestProductOfferIds" : this.sellerIds,
+        "isSelected" : this.checkBoxSelectionstatus
+        }
+        this.sellerIds = [];
+        this.contractService.counterPartSelectionToggle(requestPayload).subscribe();
+    }   
+  }
+  
   toggleProgressBar(row) {
     this.showProgressBar = !this.showProgressBar;
     row.Status = 'OfferCreated';

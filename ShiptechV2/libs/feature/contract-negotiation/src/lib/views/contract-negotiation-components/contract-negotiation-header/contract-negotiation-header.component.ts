@@ -110,7 +110,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
           let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
           let product = this.masterData['Product'].find(el => el.id == res2['productId']);           
             arrDet = {
-              "check": false,
+              "check": res2['isSelected'],
               "id": res2['id'],
               "LocationId": res1['locationId'],
               "ProductId": res2['productId'],

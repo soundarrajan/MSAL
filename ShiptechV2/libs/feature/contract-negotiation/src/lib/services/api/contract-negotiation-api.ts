@@ -95,7 +95,8 @@ export const ContractNegotiationApiPaths = {
   userSaveFilterPresets: 'api/user-settings/save/contract-requestlist-filter-presets',
   userFilterPresets: 'api/user-settings/contract-requestlist-filter-presets',
   savecolumnPreference: 'api/user-settings/save/contract-request-list-grid_ColumnPreference',
-  columnPreference: 'api/user-settings/contract-request-list-grid_ColumnPreference'
+  columnPreference: 'api/user-settings/contract-request-list-grid_ColumnPreference',
+  counterPartSelectionToggle : 'api/ContractNegotiation/toggleConReqSellerSelection'
 }
 
 
@@ -1160,6 +1161,20 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
         catchError((body: any) => this.handleErrorMessage(body))
       );
   }
+
+  @ObservableException()
+  counterPartSelectionToggle(sellerIds): Observable<any> {
+      return this.http
+      .put<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.counterPartSelectionToggle}`,
+        sellerIds
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+  
 
   @ObservableException()
   getContractPreferenceCount(): Observable<any> {
