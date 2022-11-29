@@ -133,7 +133,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   selectedPlanPeriod = 'Quarter';
   planStartDate: any;
   planEndDate: any;
-  planLabel: any;
+  planLabel: string = "";
   selectedPlanValue = '';
   planPeriod = [
     { 'type': 'Quarter', 'selected': true },
@@ -240,7 +240,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
           this.hideAllowedLocationDropdown[i] = true;
           this.listData[i] = {mainProduct: [], specGroup: [], allowedProducts: [], allowedLocations: []};
           this.listData[i].mainProduct = (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
-          this.onMainProductChange(this.reqObj.contractRequestProducts[i].productId, i);
+          this.onMainProductChange(this.reqObj.contractRequestProducts[i].productId, i, false);
           item.minQuantity = this.quantityFormatValue(item.minQuantity);
           item.maxQuantity = this.quantityFormatValue(item.maxQuantity);
           if(item.allowedProducts.length > 0) {
@@ -251,7 +251,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
               this.listData[i].allowedProducts[j] = {products:[], specGroup: []};
               this.listData[i].allowedProducts[j].products.push((_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10));
               this.listData[i].allowedProducts[j].specGroup = [];
-              this.setProductChange(proItem.productId,i,j);
+              this.setProductChange(proItem.productId,i,j, false);
             });
           }
           if(item.allowedLocations.length > 0) {
@@ -543,7 +543,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     return specGroupArr;
   }
 
-  setProductChange(value, prodIndex, index) {
+  setProductChange(value, prodIndex, index, updateSpecGroupId:boolean = true) {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = '';
     let prod = this.staticData.Product.find(p => p.id == value);
     let mainProd = this.staticData.Product.find(mp => mp.id == this.reqObj.contractRequestProducts[prodIndex].productId);
@@ -558,7 +558,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value;
     this.locationSelected = true;
     this.selectedLocindex = index;
-    if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
+    if(updateSpecGroupId && this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
       this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = prod.databaseValue;
     }
     if(this.listData[prodIndex].allowedProducts[index].products.findIndex(p => p.id == prod.id) == -1) {
@@ -622,6 +622,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   selectPlanPeriod(event, item, selectedPlanPeriod) {
+    debugger;
     event.stopPropagation();
     let periodData = [];
     if (selectedPlanPeriod == 'Quarter') { periodData = this.plan.quarterlyPeriod; }
@@ -779,7 +780,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
   }
 
-  onMainProductChange(prodId, i){
+  onMainProductChange(prodId, i, updateSpecGroupId:boolean = true){
     this.reqObj.contractRequestProducts[i].productId = '';
     let prod = this.staticData.Product.find(p => p.id == prodId);
     if(this.getLocationProducts().findIndex(p => p.productId == prodId) > -1){
@@ -791,9 +792,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.reqObj.contractRequestProducts[i].productId = prodId;
     let prodType = this.staticData.ProductType.find(pt => pt.id == prod.productTypeId);
     let prodTypeGroup = this.staticData.ProductTypeGroup.find(ptg => ptg.id == prodType.databaseValue);
-    this.reqObj.contractRequestProducts[i].minQuantityUomId = prodTypeGroup.databaseValue;
-    this.reqObj.contractRequestProducts[i].maxQuantityUomId = prodTypeGroup.databaseValue;
-    if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
+    if(updateSpecGroupId){
+      this.reqObj.contractRequestProducts[i].minQuantityUomId = prodTypeGroup.databaseValue;
+      this.reqObj.contractRequestProducts[i].maxQuantityUomId = prodTypeGroup.databaseValue;
+    }
+    if(updateSpecGroupId && this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
       this.reqObj.contractRequestProducts[i].specGroupId = prod.databaseValue;
     }
     if(this.listData[i].mainProduct.findIndex(p => p.id == prod.id) == -1) {
