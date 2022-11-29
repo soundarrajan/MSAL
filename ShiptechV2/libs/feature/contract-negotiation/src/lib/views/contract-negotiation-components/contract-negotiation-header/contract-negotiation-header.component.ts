@@ -203,10 +203,9 @@ export class ContractNegotiationHeaderComponent implements OnInit {
       const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
       this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
       .subscribe(response => {
-        console.log(response);
+        this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
         this.contractRequestData(response);
         this.totalRequestQty(response);
-        this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
       });
     });
   }
