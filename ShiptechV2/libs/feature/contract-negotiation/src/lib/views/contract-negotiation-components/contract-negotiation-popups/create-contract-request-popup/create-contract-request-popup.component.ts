@@ -622,6 +622,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   selectPlanPeriod(event, item, selectedPlanPeriod) {
+    debugger;
     event.stopPropagation();
     let periodData = [];
     if (selectedPlanPeriod == 'Quarter') { periodData = this.plan.quarterlyPeriod; }
@@ -638,7 +639,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
         periodData.filter(i => i.id == item.id).map(i => i.selected = false);
       } else {
         deselectedInMiddle = true;
-        periodData.filter(i => i.id > item.id).map(i => i.selected = false);
+        periodData.filter(i => Number(i.id) > Number(item.id)).map(i => i.selected = false);
       }
     } else {
       periodData.filter(i => i.id == item.id).map(i => i.selected = !i.selected);
