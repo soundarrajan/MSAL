@@ -2989,6 +2989,7 @@
                         displayName: 'Period From',
                         cellTemplate: $scope.dataTableTemplates.date,
                         cellCondition : true,
+                        required: true
                         
                     },
                     {
@@ -2996,6 +2997,7 @@
                         displayName: 'Period To',
                         cellTemplate: $scope.dataTableTemplates.date,
                         cellCondition : true,
+                        required: true
                     },
                     {
                         name: 'isDeleted',

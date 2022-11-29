@@ -1098,42 +1098,9 @@
             }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {  
+           
 
-                let periodRows = $scope.formValues.periods;
-                let deletedRows = $scope.deletedRows;
-                let allPeriodRows = periodRows.concat(deletedRows);
-                for (var i = 0; i < periodRows.length; i++) {
-                    periodRows[i].isDeleted = false;
-                }               
-                let periods = [];
-                let removedPeriods = [];
-                let periodList = [];
-                if($scope.formValues && allPeriodRows) {                
-                    for (var i = 0; i < allPeriodRows.length; i++) {
-                        if (allPeriodRows[i].period && allPeriodRows[i].period.name && allPeriodRows[i].validFrom && allPeriodRows[i].validTo) {
-                                periods.push(allPeriodRows[i]);                          
-                            if(allPeriodRows[i].isDeleted == false){
-                                periodList.push(allPeriodRows[i]);
-                            }                            
-                        }else{
-                            removedPeriods.push(allPeriodRows[i]);
-                        }
-                    }
-                }  
-              
-                let periodData = periodList.map(el => el.validFrom+'-'+el.validTo);              
-                let findDuplicates = periodData.filter((item, index) => periodData.indexOf(item) != index);
-                if(findDuplicates.length > 0){
-                    toastr.error('P​eriod Overlapped, Please Change the Period');
-                    return;
-                }
-                if(removedPeriods.length > 0){
-                    let allPeriodRows = [];
-                    allPeriodRows = periods.concat(removedPeriods);
-                }
-              
-                // $scope.formValues.systemInstrumentPeriods = allPeriodRows;   
-                 $scope.formValues.periods = allPeriodRows;            
+            
                 if ($scope.formValues && $scope.formValues.productsLocations) {
                     let errors = '';
                     let products = [];
@@ -2163,14 +2130,22 @@
                                 message = `${message }<br> FromDate`;
                             }
                         }
-                    }else{
-                        if (names.indexOf(val.$name) == -1) {
-                            message = `${message }<br>${ val.$name ? val.$name : val.$$attr.id}`;
+                    } else if (vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') { 
+                    
                             hasMessage = true;
-                        }
+                            if (val.$name == "validFrom") {
+                                message = `${message }<br> Period From`;
+                            }
+                            else if(val.$name == "validTo"){
+                                message = `${message }<br> Period To`;
+                            }else{                      
+                                if (names.indexOf(val.$name) == -1) {
+                                    message = `${message }<br>${ val.$name ? val.$name : val.$$attr.id}`;
+                                    hasMessage = true;
+                                }
+                            } 
+                            names = names + (val.$name ? val.$name : val.$$attr.id);
                     }
-                   
-                    names = names + (val.$name ? val.$name : val.$$attr.id);
                 });
                 i = 0;
                 $.each(vm.editInstance.$error.pattern, (key, val) => {
@@ -5168,13 +5143,7 @@
                     length++;
                 }
             });  
-            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument' && initialObject == "formValues.periods") {               
-                row.isDeleted = true;
-                var oldRow = row;
-                obj.splice(index, 1);
-                $scope.deletedRows.push(oldRow);
-                return;
-            }         
+                
             if (vm.screen_id == 'invoice' && vm.app_id == 'invoices') {
             	if ($scope.formValues.status) {
 	                if ($scope.formValues.status.name == 'Approved') {
@@ -5237,9 +5206,7 @@
             
         };
         $scope.showRow = function(row, grid) {
-            if (angular.equals(grid.options.data, 'formValues.periods')) {
-                return true;
-            }
+           
             return !row.isDeleted;
         };
         $scope.setDefaultValue = function(id, val) {
@@ -6058,31 +6025,36 @@
         };
 
         $scope.siPeriodSelection = function(index,formValues,fVal){
-           let checkFlag = false;
+           let checkFlag = 0;
+           let arrVal = [];
+
            Factory_Master.get_master_entity(formValues.periods[index].period.id, 'period', 'masters', (response) => {
-               if (response) {
-                console.log(formValues.periods);
-                if(formValues.periods.length > 1){
-                    let arrVal = formValues.periods.map(el => el.validFrom+'-'+el.validTo);
-                    arrVal.find( (el,chkIndex) => {
-                            if(el == response.fromDate+'-'+response.toDate && index != chkIndex){
-                                checkFlag = true;
-                            }
-                        }
-                    );
-                }
-                if(checkFlag) {
-                    formValues.periods[index].validFrom = moment('',"YYYY-MM-DD"); 
-                    formValues.periods[index].validTo = moment('',"YYYY-MM-DD"); 
-                    toastr.error('P​eriod Overlapped, Please Change the Period');
-                    return;
-                }
+               if (response) {             
+                if(formValues.periods.length > 0){        
+                    $.each(formValues.periods, (k, period) => {                      
+                        if((period.isDeleted == false || period.id == 0) ){   
+                            var dateVal = period.validFrom+"-"+period.validTo;
+                            arrVal.push(dateVal);                            
+                        }                        
+                    });                  
+                    checkFlag =  arrVal.indexOf(response.fromDate+'-'+response.toDate);
                 
-                   formValues.periods[index].validFrom = response.fromDate;
-                   formValues.periods[index].validTo = response.toDate;
+                    if(checkFlag == -1){                     
+                        formValues.periods[index].validFrom = response.fromDate;
+                        formValues.periods[index].validTo = response.toDate;
+                    }else{
+                        formValues.periods[index].validFrom = moment('',"YYYY-MM-DD"); 
+                        formValues.periods[index].validTo = moment('',"YYYY-MM-DD"); 
+                        formValues.periods[index].validFrom =null;
+                        formValues.periods[index].validTo =null;
+                        toastr.error('P​eriod Overlapped, Please Change the Period');
+                        return;
+                    }
+                }
                }
            });
-        };
+        
+    }
 
         $scope.assignObjValue = function(obj, keyPath, value) {
             var lastKeyIndex = keyPath.length - 1;
