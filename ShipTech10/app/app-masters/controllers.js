@@ -1098,9 +1098,7 @@
             }
 
             if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {  
-           
-
-            
+   
                 if ($scope.formValues && $scope.formValues.productsLocations) {
                     let errors = '';
                     let products = [];
@@ -6043,10 +6041,9 @@
                         formValues.periods[index].validFrom = response.fromDate;
                         formValues.periods[index].validTo = response.toDate;
                     }else{
-                        formValues.periods[index].validFrom = moment('',"YYYY-MM-DD"); 
-                        formValues.periods[index].validTo = moment('',"YYYY-MM-DD"); 
-                        formValues.periods[index].validFrom =null;
-                        formValues.periods[index].validTo =null;
+                        formValues.periods[index].validFrom = undefined;
+                        formValues.periods[index].validTo = undefined;             
+                        
                         toastr.error('P​eriod Overlapped, Please Change the Period');
                         return;
                     }
