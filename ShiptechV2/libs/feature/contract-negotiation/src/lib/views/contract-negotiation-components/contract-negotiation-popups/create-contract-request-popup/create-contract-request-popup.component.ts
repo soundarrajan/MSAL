@@ -622,7 +622,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   selectPlanPeriod(event, item, selectedPlanPeriod) {
-    debugger;
     event.stopPropagation();
     let periodData = [];
     if (selectedPlanPeriod == 'Quarter') { periodData = this.plan.quarterlyPeriod; }
