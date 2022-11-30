@@ -1076,7 +1076,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
         );
         return false;  
       }
-      qtyToMatch = perWeekMaxQuantity;
+      qtyToMatch = perDayMaxQuantity;
     }
     if(hasPerLiftQuantity){
       if(qtyToMatch <= perLiftMaxQuantity){
@@ -1085,7 +1085,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
         );
         return false;  
       }
-      qtyToMatch = perWeekMaxQuantity;
     }
     if(duplicateQuantityType.length > 0){
       this.toaster.error(
