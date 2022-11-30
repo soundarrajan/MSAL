@@ -272,13 +272,18 @@ angular.module("shiptech.pages").controller("ScheduleTimelineController", ["$sco
 
                     if(!hasSellerConfirmationDocument && detail.voyageDetail.request.requestDetail?.orderStatus?.displayName){
                         hasorderStatusGTEConfirmed =
-                        (detail.voyageDetail.request.requestDetail?.orderStatus?.displayName == 'Stemmed') ? false : true; 
+                        (detail.voyageDetail.request.requestDetail?.orderStatus?.displayName == 'Stemmed') ? false : true;                    
                     }
 
                     if (typeof(ctrl.vesselWithPbBucket[detail.VesselId]) == "undefined" || !ctrl.vesselWithPbBucket[detail.VesselId])  {
-                        if (hasrequestStatusGTEValidated &&  hasorderStatusGTEConfirmed && 
-                            (!hasOpsValidation  || !hasSellerConfirmationDocument || noSchedule)) {
-                            ctrl.vesselWithPbBucket[detail.VesselId] = true;
+                       
+                       if((detail.voyageDetail.request.requestName && hasrequestStatusGTEValidated && !hasOpsValidation) || (noSchedule)){                           
+                            if((hasrequestStatusGTEValidated && !hasOpsValidation) || (!hasorderStatusGTEConfirmed && !hasSellerConfirmationDocument && !hasOpsValidation) || (noSchedule) ){                              
+                                ctrl.vesselWithPbBucket[detail.VesselId] = true;                           
+                            }                                            
+                        }
+                        if(hasorderStatusGTEConfirmed && !hasSellerConfirmationDocument) {
+                            ctrl.vesselWithPbBucket[detail.VesselId] = true; 
                         }
 
                     }
