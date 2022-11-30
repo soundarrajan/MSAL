@@ -249,7 +249,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
           if(item.allowedProducts.length > 0) {
             item.allowedProducts.forEach( (proItem, j) => {
               this.listData[i].allowedProducts[j] = {products:[], specGroup: []};
-              this.listData[i].allowedProducts[j].products.push((_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10));
+              this.listData[i].allowedProducts[j].products = (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
               this.listData[i].allowedProducts[j].specGroup = [];
               this.setProductChange(proItem.productId,i,j, false);
             });
