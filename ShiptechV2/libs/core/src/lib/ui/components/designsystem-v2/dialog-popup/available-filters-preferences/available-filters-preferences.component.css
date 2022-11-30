@@ -6,3 +6,9 @@
     height: 15px;
     width: 15px;
 }
+
+.duplicate-name {
+    border-color: red;
+    border-width: 2px;
+    color: red !important;
+}

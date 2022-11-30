@@ -19,6 +19,8 @@ export class AvailableFiltersPreferencesComponent implements OnInit {
   public targetIndex: number;
   public source;
   public sourceIndex: number;
+  public isDuplicate;
+  public nameDuplicate_indices = [];
 
   //selected - Filter chip which is currently selected/applied on grid
   //pinned - Filter chips which are pinned for displaying on screen
@@ -55,9 +57,13 @@ export class AvailableFiltersPreferencesComponent implements OnInit {
     this.dialogRef.close(this.data.filter((element) => !element["deleted"] || element["deleted"] != true));
   }
   saveFilterChips() {
-    this.enableEdit = false;
+    this.validate();
     this.data = this.filterList;
-    this.closeDialog();
+    if (!this.isDuplicate) {
+      this.closeDialog();
+      this.enableEdit = false;
+    }
+
   }
   toggleChipSelection(filter, i) {
     if (filter.selected && filter.pinned)//If this was the pinned filter, unpin it
@@ -141,6 +147,16 @@ export class AvailableFiltersPreferencesComponent implements OnInit {
     moveItemInArray(this.filterList, event.previousContainer.data.index, event.container.data.index);
     this.rePositionFilters();
   }
+
+  validate() {
+    var valueArr = this.filterList.map(function (item) { return item.name.toLowerCase() });
+    this.nameDuplicate_indices = valueArr.map(function (item, idx) {
+      return (valueArr.indexOf(item) != idx || valueArr.lastIndexOf(item) != idx) ? true : false
+    });
+    this.isDuplicate = this.nameDuplicate_indices.indexOf(true) > -1;
+    this.enableEdit = this.isDuplicate ? true : !this.enableEdit;
+  }
+
 }
 
 function __indexOf(collection, node) {

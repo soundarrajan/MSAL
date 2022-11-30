@@ -189,7 +189,7 @@ export class ContractRequestDetailsComponent implements OnInit {
     {
       headerName: 'Offers', headerTooltip: 'Offers', field: 'offers', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 90,
       cellRendererFramework: AGGridMultiDataRendererComponent,
-      cellRendererParams: { label: 'offers', type: 'text' },
+      cellRendererParams: { label: 'offers', type: 'text' }, sortable: false, menuTabs: ['generalMenuTab', 'columnsMenuTab'],
       valueGetter: function (params) {
         const offers = params.data.locations.map((el) => el.products.map((p) => p.offers));
         return offers.toString();
@@ -198,7 +198,7 @@ export class ContractRequestDetailsComponent implements OnInit {
     {
       headerName: 'Awaiting app.', headerTooltip: 'Awaiting app.', field: 'awaitingApproval', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 100,
       cellRendererFramework: AGGridMultiDataRendererComponent,
-      cellRendererParams: { label: 'awaitingApproval', cellClass: 'chip-circle await' },
+      cellRendererParams: { label: 'awaitingApproval', cellClass: 'chip-circle await' }, sortable: false, menuTabs: ['generalMenuTab', 'columnsMenuTab'],
       valueGetter: function (params) {
         const awaitingApproval = params.data.locations.map((el) => el.products.map((p) => p.awaitingApproval));
         return awaitingApproval.toString();
@@ -207,7 +207,7 @@ export class ContractRequestDetailsComponent implements OnInit {
     {
       headerName: 'Approved', headerTooltip: 'Approved', field: 'approved', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 100,
       cellRendererFramework: AGGridMultiDataRendererComponent,
-      cellRendererParams: { label: 'approved', cellClass: 'chip-circle approve' },
+      cellRendererParams: { label: 'approved', cellClass: 'chip-circle approve' }, sortable: false, menuTabs: ['generalMenuTab', 'columnsMenuTab'],
       valueGetter: function (params) {
         const approved = params.data.locations.map((el) => el.products.map((p) => p.approved));
         return approved.toString();
@@ -217,7 +217,7 @@ export class ContractRequestDetailsComponent implements OnInit {
     {
       headerName: 'Rejected', headerTooltip: 'Rejected', field: 'rejected', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 100,
       cellRendererFramework: AGGridMultiDataRendererComponent,
-      cellRendererParams: { label: 'rejected', cellClass: 'chip-circle reject' },
+      cellRendererParams: { label: 'rejected', cellClass: 'chip-circle reject' }, sortable: false, menuTabs: ['generalMenuTab', 'columnsMenuTab'],
       valueGetter: function (params) {
         const rejected = params.data.locations.map((el) => el.products.map((p) => p.rejected));
         return rejected.toString();
@@ -226,7 +226,7 @@ export class ContractRequestDetailsComponent implements OnInit {
     {
       headerName: 'Contract Created', headerTooltip: 'Contract Created', field: 'contracted', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data'], width: 100,
       cellRendererFramework: AGGridMultiDataRendererComponent,
-      cellRendererParams: { label: 'contracted', cellClass: 'chip-circle create' },
+      cellRendererParams: { label: 'contracted', cellClass: 'chip-circle create' }, sortable: false, menuTabs: ['generalMenuTab', 'columnsMenuTab'],
       valueGetter: function (params) {
         const contracted = params.data.locations.map((el) => el.products.map((p) => p.contracted));
         return contracted.toString();
@@ -294,6 +294,7 @@ export class ContractRequestDetailsComponent implements OnInit {
   }
 
   createNewFilter() {
+    this.toastr.success("Preference was succesfully updated");
     if (this.preferenceNameFormControl.value.trim() != "") {
       const matches = this.filterList.filters.find(i => i.name.toLowerCase() == this.preferenceNameFormControl.value.toLowerCase());
       if (!matches) {

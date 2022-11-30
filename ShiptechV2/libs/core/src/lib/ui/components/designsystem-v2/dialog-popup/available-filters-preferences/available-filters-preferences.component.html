@@ -2,8 +2,8 @@
     <div class="header">
         <div class="title">Filters and Preferences</div>
         <div class="header-btn">
-            <button class="blue-button" (click)="enableEdit=!enableEdit">{{enableEdit?'Done':'Edit'}}</button>
-            <button (click)="saveFilterChips()" class="blue-button">Save</button>
+            <button class="blue-button" (click)="validate()">{{enableEdit?'Done':'Edit'}}</button>
+            <button (click)="saveFilterChips()" class="blue-button" [disabled]="isDuplicate">Save</button>
             <mat-divider [vertical]="true"></mat-divider>
             <span id="dialogCloseButton" class="close" (click)="btnClose()"></span>
         </div>
@@ -69,10 +69,12 @@
                 <div class="available-filters-chips"
                     [ngClass]="{'removeFilterChip':filter?.deleted && filter.deleted==true}">
                     <!-- Set chip to disabled or user wont be able to change chip text properly -->
-                    <div disabled [ngClass]="filter.defaultFilter?'inactive-chip':'editable-chip'" class="filter-chip">
+                    <div disabled
+                        [ngClass]="{'inactive-chip':filter.defaultFilter,'editable-chip':!filter.defaultFilter,'duplicate-name':nameDuplicate_indices[i]}"
+                        class="filter-chip">
                         <div class="chip-holder">
                             <div class="filter-name" matTooltip="{{filter.name}}">
-                                <input matInput [(ngModel)]="filter.name" type="text">
+                                <input matInput [(ngModel)]="filter.name" type="text" [disabled]="filter.defaultFilter">
                             </div>
                             <div class="filter-pin" [ngStyle]="{'cursor':filter.defaultFilter?'unset':'pointer'}"
                                 (click)="!filter.defaultFilter && deleteFilterChip(filter)">
