@@ -1090,6 +1090,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.toaster.error(
         'You cannot define ' + duplicateQuantityType.join(', ') + ' multiple times'
       );
+      return false;
     }
     if (message != 'Please fill in required fields:') {
       if (message[message.length - 1] == ',') {
