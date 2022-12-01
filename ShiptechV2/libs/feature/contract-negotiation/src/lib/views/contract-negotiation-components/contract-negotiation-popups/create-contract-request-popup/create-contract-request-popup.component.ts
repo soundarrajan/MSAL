@@ -906,18 +906,18 @@ export class CreateContractRequestPopupComponent implements OnInit {
   assignUserIdToReqObj(isNew) {
     if(isNew){
       this.reqObj.createdById = this.currentUserId;
-      this.reqObj.createdOn = moment.utc().format();
+      this.reqObj.createdOn = moment().format('YYYY-MM-DDTHH:mm:ss');
     }
-    this.reqObj.lastModifiedOn = moment.utc().format();
+    this.reqObj.lastModifiedOn = moment().format('YYYY-MM-DDTHH:mm:ss');
     this.reqObj.lastModifiedById = this.currentUserId;
     if(this.reqObj.contractRequestProducts.length > 0){
       this.reqObj.contractRequestProducts.forEach( product => {
         if(isNew){
           product.createdById = this.currentUserId;
-          product.createdOn = moment.utc().format();
+          product.createdOn = moment().format('YYYY-MM-DDTHH:mm:ss');
         }
         product.lastModifiedById = this.currentUserId;
-        product.lastModifiedOn = moment.utc().format();
+        product.lastModifiedOn = moment().format('YYYY-MM-DDTHH:mm:ss');
       })
     }
   }
@@ -1180,8 +1180,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
       q.tolerancePercentage = this.convertDecimalSeparatorStringToNumber(q.tolerancePercentage);
     });
     this.reqObj.contractRequestProducts.forEach((pro) => {
-      if(this.isNewRequest) pro.createdOn = moment.utc().format();
-      pro.lastModifiedOn = moment.utc().format();
       pro.maxQuantity = this.convertDecimalSeparatorStringToNumber(pro.maxQuantity);
       pro.minQuantity = this.convertDecimalSeparatorStringToNumber(pro.minQuantity);
     });
