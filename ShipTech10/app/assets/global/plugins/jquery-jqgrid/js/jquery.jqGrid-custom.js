@@ -629,6 +629,32 @@ var Cfg = {
                             v.column.columnName = v.column.columnName.replace('Operator', 'Service');
                         }
                     }
+            
+                    if (v.column.columnRoute == 'masters/period' || v.column.columnRoute == 'masters/masters_periodlist' || v.column.columnRoute == 'masters/masters_period_price') {
+                       
+                        if (v.column.columnValue == 'Name') {
+                                v.column.columnName = 'Period Name';
+                        }                        
+                       
+                        if(v.column.columnRoute == 'masters/period' || v.column.columnRoute == 'masters/masters_periodlist'){
+                            if (v.column.columnValue == 'FromDate') {
+                                v.column.columnName = 'Period From';
+                            }
+                            if (v.column.columnValue == 'ToDate') {
+                                v.column.columnName = 'Period To';
+                            }
+                        }else{
+                            if (v.column.columnValue == 'FromDate') {
+                                v.column.columnName = 'From Date';
+                            }
+                            if (v.column.columnValue == 'ToDate') {
+                                v.column.columnName = 'To Date';
+                            }
+                        }
+                        
+                       
+                    }
+                   
                     if (v.column.columnRoute == 'invoices/complete_view') {
                         if (v.column.columnValue == 'ValidationDate') {
                             v.column.columnName = 'Validation Date';
