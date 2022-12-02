@@ -904,20 +904,21 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   assignUserIdToReqObj(isNew) {
+    let currentDateTime = moment.utc();
     if(isNew){
       this.reqObj.createdById = this.currentUserId;
-      this.reqObj.createdOn = moment().format('YYYY-MM-DDTHH:mm:ss');
+      this.reqObj.createdOn = currentDateTime;
     }
-    this.reqObj.lastModifiedOn = moment().format('YYYY-MM-DDTHH:mm:ss');
+    this.reqObj.lastModifiedOn = currentDateTime;
     this.reqObj.lastModifiedById = this.currentUserId;
     if(this.reqObj.contractRequestProducts.length > 0){
       this.reqObj.contractRequestProducts.forEach( product => {
         if(isNew){
           product.createdById = this.currentUserId;
-          product.createdOn = moment().format('YYYY-MM-DDTHH:mm:ss');
+          product.createdOn = currentDateTime;
         }
         product.lastModifiedById = this.currentUserId;
-        product.lastModifiedOn = moment().format('YYYY-MM-DDTHH:mm:ss');
+        product.lastModifiedOn = currentDateTime;
       })
     }
   }
