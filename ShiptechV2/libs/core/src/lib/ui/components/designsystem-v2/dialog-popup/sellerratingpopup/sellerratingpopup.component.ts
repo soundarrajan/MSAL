@@ -5,7 +5,6 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { CommonService } from '@shiptech/core/services/common/common-service.service';
 import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
-
 @Component({
   selector: 'app-sellerratingpopup',
   templateUrl: './sellerratingpopup.component.html',
@@ -32,19 +31,14 @@ export class SellerratingpopupComponent implements OnInit {
       this.popupType = data.popupType;
       this.locationId = data.locationId;
       this.counterpartyId = data.sellerId;
+      this.counterpartyName = data.sellerName;
+      this.commonService.getMasterListData(['Location']).subscribe( mData => {
+        this.locationName = mData.Location.find(x=> x.id == this.locationId).name;
+      });
       this.getSellerRatings();
   }
 
-  ngOnInit() {
-    this.locationName = "ROTTERDAM";
-    this.counterpartyName = "A&B BUNKER";
-
-    /* TODO: Need to make this dynamic */
-    /*this.store.subscribe(({ spotNegotiation })=>{
-      this.locationName = spotNegotiation.locations.find(x=> x.locationId == this.locationId).locationName;
-      this.counterpartyName = spotNegotiation.locationsRows.find(x=> x.sellerCounterpartyId == this.counterpartyId).sellerCounterpartyName;
-    });*/  
-  }
+  ngOnInit() {}
 
   getSellerRatings(){
     let payload = {

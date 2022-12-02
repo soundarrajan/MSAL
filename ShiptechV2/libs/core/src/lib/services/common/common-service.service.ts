@@ -6,6 +6,7 @@ import { ObservableException } from '../../utils/decorators/observable-exception
 
 import { CommonApiService } from './common-api.service';
 import { LoggerFactory } from '@shiptech/core/logging/logger-factory.service';
+import _ from 'lodash';
 
 @Injectable()
 export class CommonService extends BaseStoreService implements OnDestroy {
@@ -22,6 +23,35 @@ export class CommonService extends BaseStoreService implements OnDestroy {
   getSellerRatingforNegotiation(payload: any): Observable<unknown>{
       return this.commonApiService.getSellerRatingforNegotiation(payload)  ;
   }
+
+  @ObservableException()
+    getMasterListData(items: any): Observable<any> {
+    let db;
+    let dbReq = indexedDB.open('Shiptech', 10);
+    return new Observable((observer) => {
+            dbReq.onsuccess = function() {
+                db = dbReq.result;
+                let response: any;
+                let returnArr: any;
+                var objectStore;
+                var objectStoreRequest;
+                var transaction = db.transaction(['listsCache'], 'readonly');
+                objectStore = transaction.objectStore("listsCache");
+                objectStoreRequest = objectStore.getAll();
+                objectStoreRequest.onsuccess = function(event){
+                    response = event.target.result[0].data;
+                    if (response) {
+                        returnArr = _.pick(response, items);
+                        observer.next(returnArr);
+                        observer.complete();
+                    }
+                }             
+            }
+            dbReq.onerror = function(event) {
+              alert('error opening database ' + event.target);
+            }
+        })
+    }
 
   ngOnDestroy(): void {
       super.onDestroy();
