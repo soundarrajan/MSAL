@@ -610,9 +610,51 @@ export class CreateContractRequestPopupComponent implements OnInit {
       }
     });
   }
+
+  afterPlanSelection(selectedPlanPeriod){
+    let selectedItems = [];
+    let selectedItemLabels = [];
+    let firstId; let lastId;
+    let startDate; let endDate;
+    let periodData = [];
+    if (selectedPlanPeriod == 'Quarter') { periodData = this.plan.quarterlyPeriod; }
+    if (selectedPlanPeriod == 'Month') { periodData = this.plan.monthlyPeriod; }
+    if (selectedPlanPeriod == 'Year') { periodData = this.plan.yearlyPeriod; }
+    if (selectedPlanPeriod == 'Semester') { periodData = this.plan.semesterPeriod; }
+    selectedItems = periodData.filter(i => i.selected == true).map(x => x.id);
+    if(selectedItems.length > 1){
+      firstId = selectedItems[0];
+      lastId = selectedItems[selectedItems.length - 1];
+      let selectedValue = false;
+      periodData.forEach(x => {
+        if(firstId == x.id) selectedValue = true;
+        if(selectedValue == true) {
+          if(firstId == x.id) startDate = new Date(x.startDate);
+          if(lastId == x.id) endDate = new Date(x.endDate);
+          selectedItemLabels.push(x.label);
+        }
+        x.selected = selectedValue;
+        if(lastId == x.id) selectedValue = false;
+      });
+    } else {
+      periodData.filter(x => x.selected == true).map( i => {
+        selectedItemLabels.push(i.label);
+        startDate = new Date(i.startDate);
+        endDate = new Date(i.endDate);
+        return i;
+      })
+    }
+    return { startDate: startDate, endDate: endDate, label: selectedItemLabels.join() };
+  }
+
   onSelectPlanPeriod(element) {
     this.selectedPlanPeriod = element.type;
+    let planValues = this.afterPlanSelection(element.type);
+    this.planStartDate = planValues.startDate;
+    this.planEndDate = planValues.endDate;
+    this.planLabel = planValues.label;
   }
+
   emptyPlanPeriod() {
     this.plan.quarterlyPeriod.filter((item, i) => { if(i != 0) item.selected = false });
     this.plan.monthlyPeriod.filter((item, i) => { if(i != 0) item.selected = false });
@@ -643,35 +685,14 @@ export class CreateContractRequestPopupComponent implements OnInit {
     } else {
       periodData.filter(i => i.id == item.id).map(i => i.selected = !i.selected);
     }
-    selectedItems = periodData.filter(i => i.selected == true).map(x => x.id);
-    selectedItemLabels = [];
-    if(selectedItems.length > 1){
-      firstId = selectedItems[0];
-      lastId = selectedItems[selectedItems.length - 1];
-      let selectedValue = false;
-      periodData.forEach(x => {
-        if(firstId == x.id) selectedValue = true;
-        if(selectedValue == true) {
-          if(firstId == x.id) this.planStartDate = new Date(x.startDate);
-          if(lastId == x.id) this.planEndDate = new Date(x.endDate);
-          selectedItemLabels.push(x.label);
-        }
-        x.selected = selectedValue;
-        if(lastId == x.id) selectedValue = false;
-      });
-    } else {
-      periodData.filter(x => x.selected == true).map( i => {
-        selectedItemLabels.push(i.label);
-        this.planStartDate = new Date(i.startDate);
-        this.planEndDate = new Date(i.endDate);
-        return i;
-      })
-    }
+    let planValues = this.afterPlanSelection(selectedPlanPeriod);
+    this.planStartDate = planValues.startDate;
+    this.planEndDate = planValues.endDate;
+    this.planLabel = planValues.label;
     if(selectedItemLabels.length == 0){
       this.planStartDate = '';
       this.planEndDate = '';
     }
-    this.planLabel = selectedItemLabels.join();
   }
 
   /* Generating Plan Period related arrays - Start */
