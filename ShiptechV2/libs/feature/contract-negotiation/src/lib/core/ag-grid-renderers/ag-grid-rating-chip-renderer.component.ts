@@ -39,12 +39,14 @@ export class AGGridRatingChipRenderer implements ICellRendererAngularComp {
     }
 
     sellerratingpopup(data : any, popupType:string) {
+      debugger;
         let type = (popupType == 'gen-rating')?'genRating':'portRating';
         const dialogRef = this.dialog.open(SellerratingpopupComponent, {
           width: '1164px',
           height: '562px',
           panelClass: 'additional-cost-popup',
           data: {
+            sellerName: data.CounterpartyName,
             sellerId: data.CounterpartyId,
             locationId : data.LocationId,
             popupType : type
