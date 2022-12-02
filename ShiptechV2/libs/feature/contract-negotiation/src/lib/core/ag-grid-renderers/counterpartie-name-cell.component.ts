@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { EmailPreviewPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/email-preview-popup/email-preview-popup.component';
-
+import _ from 'lodash';
 @Component({
   selector: 'shiptech-counterpartie-name-cell',
   template: `
@@ -11,8 +11,8 @@ import { EmailPreviewPopupComponent } from '../../views/contract-negotiation-com
       <div class="hover-cell-lookup d-flex align-items-center ">
         <span class="info-flag" *ngIf="params.node.data?.isSellerSuspended" matTooltipClass="lightTooltip" matTooltip="Temporary suspended counterparty"></span>
 
-        <div class="m-l-7 ellipsis" style="cursor: pointer;" matTooltip="{{ params.value }}" matTooltipClass="lightTooltip" [matMenuTriggerFor]="clickmenupopup" #menuPopupTrigger="matMenuTrigger" [matMenuTriggerData]="{ data: params.value }" (contextmenu)="$event.preventDefault(); $event.stopPropagation(); menuPopupTrigger.openMenu()">
-          {{ params.value }}
+        <div class="m-l-7 ellipsis" style="cursor: pointer;" matTooltip="{{ decodeSpecificField(params.value) }}" matTooltipClass="lightTooltip" [matMenuTriggerFor]="clickmenupopup" #menuPopupTrigger="matMenuTrigger" [matMenuTriggerData]="{ data: params.value }" (contextmenu)="$event.preventDefault(); $event.stopPropagation(); menuPopupTrigger.openMenu()">
+          {{ decodeSpecificField(params.value) }}
         </div>
         <div (click)="params.value && openEmailPreview(params)" *ngIf="rfqSendFlag" matTooltip="Preview RFQ" matTooltipClass="lightTooltip" [ngClass]="{ 'preview-rfq-icon': params.value }"></div>
       </div>
@@ -109,4 +109,15 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
     newData = rowData.splice(index, 1);
     this.params.api.applyTransaction({ remove: newData });
   }
+
+  decodeSpecificField(modelValue) {
+    const decode = function (str) {
+      return str.replace(/&#(\d+);/g, function (match, dec) {
+        return String.fromCharCode(dec);
+      });
+    };
+    return decode(_.unescape(modelValue));
+  }
+
+  
 }
