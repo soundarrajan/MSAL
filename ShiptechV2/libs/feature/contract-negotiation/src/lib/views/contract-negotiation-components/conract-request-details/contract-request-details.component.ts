@@ -151,7 +151,7 @@ export class ContractRequestDetailsComponent implements OnInit {
       cellRenderer: "cellLinkRenderer", cellRendererParams: { onClick: this.mainPage.bind(this) }
     },
     {
-      headerName: 'Request date', headerTooltip: 'Created Date', field: 'createdOn', width: 160, cellStyle: { 'padding-left': '15px' }, filter: 'agDateColumnFilter', valueFormatter: params => this.format.date(params.value), filterParams: { comparator: dateCompare }
+      headerName: 'Request date', headerTooltip: 'Created Date', field: 'createdOn', width: 160, cellStyle: { 'padding-left': '15px' }, filter: 'agDateColumnFilter', valueFormatter: params => this.format.showUtcToLocalDate(params.value), filterParams: { comparator: dateCompare }
     },
     {
       headerName: 'Status', headerTooltip: 'Status', field: 'status', width: 90,
@@ -163,10 +163,10 @@ export class ContractRequestDetailsComponent implements OnInit {
       headerName: 'Buyer', headerTooltip: 'Buyer', field: 'buyer', width: 120
     },
     {
-      headerName: 'Start Date', headerTooltip: 'Start Date', field: 'startDate', width: 160, filter: 'agDateColumnFilter', valueFormatter: params => this.format.date(params.value), filterParams: { comparator: dateCompare }
+      headerName: 'Start Date', headerTooltip: 'Start Date', field: 'startDate', width: 160, filter: 'agDateColumnFilter', valueFormatter: params => this.format.showUtcToLocalDate(params.value), filterParams: { comparator: dateCompare }
     },
     {
-      headerName: 'End Date', headerTooltip: 'End Date', field: 'endDate', width: 160, cellClass: ['thick-right-border'], filter: 'agDateColumnFilter', valueFormatter: params => this.format.date(params.value), filterParams: { comparator: dateCompare }
+      headerName: 'End Date', headerTooltip: 'End Date', field: 'endDate', width: 160, cellClass: ['thick-right-border'], filter: 'agDateColumnFilter', valueFormatter: params => this.format.showUtcToLocalDate(params.value), filterParams: { comparator: dateCompare }
     },
     {
       headerName: 'Location', headerTooltip: 'Location', field: 'locations', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data border-left'], width: 120,

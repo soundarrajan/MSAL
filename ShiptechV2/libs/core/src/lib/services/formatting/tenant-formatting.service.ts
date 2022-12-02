@@ -159,7 +159,18 @@ export class TenantFormattingService {
       formattedDate = formattedDate.split('00:00')[0];
     }
     return formattedDate;
-  }  
+  }
+
+  public showUtcToLocalDate(value: string): string | undefined {
+    if (value === null || value === undefined) return undefined;
+    let formattedDate = moment.utc(value).local().format(
+      dateTimeAdapter.fromDotNet(this.dateFormat)
+      );
+    if (formattedDate.endsWith('00:00')) {
+      formattedDate = formattedDate.split('00:00')[0];
+    }
+    return formattedDate;
+  } 
 
   public dateUtc(value: string): string | undefined {
     if (value === null || value === undefined) return undefined;
