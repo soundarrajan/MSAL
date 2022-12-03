@@ -1,10 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { MatDialog } from "@angular/material/dialog";
 import { SellerratingpopupComponent } from '@shiptech/core/ui/components/designsystem-v2/dialog-popup/sellerratingpopup/sellerratingpopup.component';
-import { isObject } from 'lodash';
-
-
 @Component({
     selector: 'rating-chip-renderer',
     template: `
@@ -45,17 +42,11 @@ export class AGGridRatingChipRenderer implements ICellRendererAngularComp {
           height: '562px',
           panelClass: 'additional-cost-popup',
           data: {
+            sellerName: data.CounterpartyName,
             sellerId: data.CounterpartyId,
             locationId : data.LocationId,
             popupType : type
           }
-          // data: {
-          //   sellerId: 385,
-          //   locationId: 112,
-          //   popupType: type
-          // }
-        });
-        dialogRef.afterClosed().subscribe(result => {
         });
       }
 
