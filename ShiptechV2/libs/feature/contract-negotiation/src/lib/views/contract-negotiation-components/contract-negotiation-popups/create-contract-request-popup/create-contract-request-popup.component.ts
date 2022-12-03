@@ -311,7 +311,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   getLocationProductIndex(index){
-    return this.reqObj.contractRequestProducts.filter((e, i) => (i <= index && e.locationId == this.selectedLocationId)).length;
+    return this.reqObj.contractRequestProducts.filter((e, i) => (i <= index && e.locationId == this.selectedLocationId)).length-1;
   }
 
   applyPlanPeriod(){
@@ -523,7 +523,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   deleteNewMainProduct(i) {
-    i=i+1;
     this.reqObj.contractRequestProducts.splice(i, 1);
     this.productAllowedLocations.splice(i, 1);
     this.searchFilterString.splice(i, 1);

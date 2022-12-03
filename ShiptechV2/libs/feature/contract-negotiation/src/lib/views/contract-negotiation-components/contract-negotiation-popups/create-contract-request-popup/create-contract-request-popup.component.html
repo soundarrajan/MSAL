@@ -280,6 +280,10 @@
           <div *ngIf="prod.locationId == selectedLocationId">
           <!--div-->
             <div style="max-height: 50vh; margin-bottom: 45px;">
+              <div class="form-fields-with-flex" *ngIf="getLocationProductIndex(i) != 0">
+                <a id="ADMN64" class="remove-product-icon" (click)="deleteNewMainProduct(i)"></a>
+                <div class="title" (click)="deleteNewMainProduct(i)">Remove Product</div>
+              </div>
               <div class="main-product">
                 <div class="title">Main Product</div>
                 <div class="form-fields-with-flex">
@@ -668,13 +672,9 @@
               </div>
             </div>
             <div class="section-divider-line"></div>
-            <div class="form-fields-with-flex" *ngIf="getLocationProductIndex(i) != getLocationProducts().length - 1">
+            <div class="form-fields-with-flex" *ngIf="getLocationProductIndex(i) == getLocationProducts().length - 1">
               <a id="ADMN63" class="add-icon" (click)="addNewMainProduct(selectedLocationId)"></a>
               <div class="title" (click)="addNewMainProduct(selectedLocationId)">Main Product</div>
-            </div>
-            <div class="form-fields-with-flex" *ngIf="getLocationProductIndex(i) == getLocationProducts().length - 1">
-              <a id="ADMN64" class="remove-product-icon" (click)="deleteNewMainProduct(i)"></a>
-              <div class="title" (click)="deleteNewMainProduct(i)">Remove Product</div>
             </div>
           </div>
         </ng-container>
