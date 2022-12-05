@@ -6,6 +6,8 @@ import { VesselDataModel, FuelDetails, VesselLocation, RequestDetail } from '../
 import { Router } from '@angular/router';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import _ from 'lodash';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+
 
 @Injectable({
     providedIn: 'root'
@@ -25,8 +27,14 @@ export class LocalService {
     public userData;
     public userRoleList;
     public contractRequestDetails;
+    counterpartyList: any[];
+    masterData: any;
 
-    constructor(private http: HttpClient, private router: Router) {
+    constructor(
+        private http: HttpClient,
+        private router: Router,
+        public format: TenantFormattingService,
+        ) {
         this.getVesselsList().subscribe(data => {
             // console.log(data);
         });
@@ -37,7 +45,6 @@ export class LocalService {
 
         this.getUserDetails().subscribe(data => { this.userData = data; });
         this.getUserRoleList().subscribe(data => { this.userRoleList = data; });
-
     }
 
     public showHeader = new Subject<boolean>();
@@ -615,6 +622,25 @@ export class LocalService {
             }
         })
     }
+
+    filterCounterParty(filterValuelue : string){
+        let fList = this.masterData['Counterparty'].filter(el => {
+            if(el.name.toLowerCase().includes(filterValuelue.toLowerCase())){
+            return el;
+            }
+        });
+        return this.limitCounterPartyList(fList);
+    }
+    
+      limitCounterPartyList(obj){
+        obj =  obj.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        let limitList = Object.keys(obj).slice(0, 12).reduce((result, key) => {
+            obj[key].name = this.format.htmlDecode(obj[key].name);
+          result[key] = obj[key];
+          return result;
+        }, []);     
+        return limitList;
+      }
 
     @ObservableException()
     getMasterListData(items: any): Observable<any> {

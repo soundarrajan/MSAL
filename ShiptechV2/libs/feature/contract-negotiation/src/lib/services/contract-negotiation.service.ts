@@ -11,6 +11,8 @@ import { cloneDeep } from 'lodash';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
+import { ContractRequest } from '../store/actions/ag-grid-row.action';
+import { ContractNegotiationStoreModel } from '../store/contract-negotiation.store';
 //import { EditLocationRow } from '../store/actions/ag-grid-row.action';
 import { ContractNegotiationApi } from './api/contract-negotiation-api';
 
@@ -29,6 +31,7 @@ export class ContractNegotiationService extends BaseStoreService
   requestCount: any;
   hArray: any = [];
   netEnergyList: any;
+  selectedCounterparty = {};
   // indexedDBList: any = [];
   constructor(
     protected store: Store,
@@ -1018,5 +1021,66 @@ export class ContractNegotiationService extends BaseStoreService
     }
     return this.contractNegotiationApi.updateColumnPreference(payload);
   }
+  
+  onCounterpartySelction(checkbox: any, element: any): void {
+    console.log(element);
+    if (checkbox.checked) {
+      element.select = true;
+      this.selectedCounterparty[element.id] = element;
+    } else if (!checkbox.checked) {
+      delete this.selectedCounterparty[element.id];
+    }
+  }
+
+  @ObservableException()
+    constructUpdateCounterparties(source = null) : Observable<any> {
+        let payload = [];
+        let pArray;
+        let idInc =1000;
+        let storePayload;
+        let addFlag = true;
+        let tempArr = {}
+        let filterLocation;
+        this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+          storePayload = JSON.parse(JSON.stringify(state['contractNegotiation'].ContractRequest[0]));
+          if(source != null){
+            filterLocation = state['contractNegotiation'].ContractRequest[0].locations.filter(el => el['location-id'] == source );
+          }else{
+            filterLocation = state['contractNegotiation'].ContractRequest[0].locations;
+          }
+         
+         filterLocation.forEach((el,kIndex) => {
+              Object.entries(this.selectedCounterparty).forEach(([cId,value]) => {
+                addFlag = true;
+                if(el['data'].length > 0){
+                  addFlag = !el['data'].some(location => location.CounterpartyId == cId );
+                }
+                if(addFlag){
+                  tempArr['CounterpartyId'] = value['id'];
+                  tempArr['CounterpartyName'] = value['name'];
+                  tempArr['id'] = idInc++;
+                  tempArr['check'] = Math.random() < 0.5;
+                  tempArr['Status'] = 'OfferCreated';
+                  storePayload.locations[kIndex].data.push(tempArr);
+                  tempArr = {};
+                  pArray = {
+                    'contractRequestProductId' : el['contractRequestProductId'],
+                    'counterpartyId' : cId,
+                    'productId' : el.productId,
+                    'locationId' : el['location-id'],
+                    "isNoQuote": 0,
+                    "statusId": 0,
+                    'IsDeleted' :false,
+                    'IsSelected' :true
+                  }
+                  payload.push(pArray);
+              }
+              });
+            
+            });
+          });
+          this.store.dispatch(new ContractRequest([storePayload]));
+       return  this.contractNegotiationApi.addCounterpartyToAllLocations(payload);
+    }
 
 }

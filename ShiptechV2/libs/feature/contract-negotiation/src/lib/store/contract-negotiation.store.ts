@@ -1,12 +1,10 @@
 
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { ContractRequest } from './actions/ag-grid-row.action';
+import { ContractRequest,updateCounterpartyList } from './actions/ag-grid-row.action';
 
 @State<ContractNegotiationStoreModel>({
   name: 'contractNegotiation',
-  defaults: {
-    ContractRequest : null
-  }
+  
 })
 
 export class ContractNegotiationStoreModel {
@@ -23,6 +21,17 @@ export class ContractNegotiationStoreModel {
     patchState({
       ContractRequest: payload
     });
+  }
+
+  @Action(updateCounterpartyList)
+  updateCounterpartyList(
+    { getState, patchState }: StateContext<ContractRequest>,
+  ): any{
+    const state = getState();
+    console.log(updateCounterpartyList);
+    // patchState({
+    //   ContractRequest: 'payload'
+    // });
   }
 
 }

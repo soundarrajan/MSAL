@@ -8,7 +8,9 @@
                     (selectedIndexChange)="onSubTabChange(subTab,subTab.selectedIndex)">
                     <mat-tab label="Main Page">
                         <div class="" style="z-index: 9999;position: fixed; width: 100%;background-color: #F5F7FB;">
-                            <app-contract-negotiation-header [rfqSent]="rfqSent" [noQuote]="noQuote" (onHide)="changeActionButtonStatus($event)">
+                            <app-contract-negotiation-header
+                            [rfqSent]="rfqSent" [noQuote]="noQuote"
+                            (disbaleHeaderButtons)="changeActionButtonStatus($event)">
                             </app-contract-negotiation-header>
                         </div>
                         <div style="margin-top: -39px;">

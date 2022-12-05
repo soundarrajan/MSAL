@@ -10,6 +10,7 @@ import { isNumeric } from 'rxjs/internal-compatibility';
 import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
 import { ActivatedRoute } from '@angular/router';
 import { ContractRequest } from '../../../store/actions/ag-grid-row.action';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 @Component({
   selector: 'app-contract-negotiation-header',
   templateUrl: './contract-negotiation-header.component.html',
@@ -23,11 +24,8 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   @ViewChild(ContractNegotiationDetailsComponent) child: ContractNegotiationDetailsComponent;
   @ViewChild(OfferChatComponent) childChat: OfferChatComponent;
   @ViewChild('ports') ports: ElementRef;
-
-  @Output() onHide = new EventEmitter<boolean>();
-    setDisbale(){
-       this.onHide.emit(false);
-    }
+  @Output() disbaleHeaderButtons = new EventEmitter<boolean>();
+    
     
   allRequestDetails = {};
   allRequestComments = [];
@@ -39,7 +37,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   ];
   gridDataSets = [];
   counterpartyColumns: string[] = ['counterparty', 'blank'];
-  counterpartyList = [];
+  counterpartyList;
   selReqIndex = 0;
   expandedSearch: boolean = false;
   chatAvailable:boolean = true
@@ -56,6 +54,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     public store : Store,
     private contractService: ContractNegotiationService,
     private route: ActivatedRoute,
+    public format: TenantFormattingService,
     ) { }
 
   ngOnInit(): void {
@@ -67,21 +66,14 @@ export class ContractNegotiationHeaderComponent implements OnInit {
             this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
             this.localService.getMasterListData(['Counterparty','Product','Location','Uom']).subscribe(data => {
             this.masterData = data;
+            this.localService.masterData = data;
             this.contractRequestData(response);
             if(response['quantityDetails'].length > 0){
               this.totalRequestQty(response);
-            }
-            
-            var obj = this.masterData['Counterparty'];
-            obj =  obj.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-            this.counterpartyList = Object.keys(obj).slice(0, 12).reduce((result, key) => {
-              result[key] = obj[key];
-              return result;
-            }, []); 
-     });      
+            }           
+      });
       });
     }
-    
     this.getJSONData();
   }
 
@@ -90,6 +82,11 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     let ContractualQuantityOption = this.masterData['Uom'].find(el => el.id == minMaxDet.uomId);
     this.totalReqQty = minMaxDet;
     this.totalReqQty['uomId'] = ContractualQuantityOption.name;
+  }
+
+ 
+  filterCounterParty(filterValuelue : string){
+    this.counterpartyList = this.localService.filterCounterParty(filterValuelue);
   }
 
   contractRequestData(response){
@@ -104,7 +101,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
           let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
           uniqueCounterParty.push(location.name);
           Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
-          this.setDisbale();
+          this.disbaleHeaderButtons.emit(false);
           let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
           let product = this.masterData['Product'].find(el => el.id == res2['productId']);           
             arrDet = {
@@ -117,7 +114,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
               "requestLocationId": '',
               "requestProductId": '',
               "RequestLocationSellerId": '',
-              "CounterpartyName": counterparty.name,
+              "CounterpartyName": this.format.htmlDecode(counterparty.name),
               "CounterpartyId": res2['counterpartyId'],
               "IsTemporarlySuspended": '',
               "GenRating": res2['genRating'],
@@ -165,7 +162,8 @@ export class ContractNegotiationHeaderComponent implements OnInit {
             "productName" : mainProduct.name,
             "minQuantity" : res1['minQuantity'],
             "maxQuantity" : res1['maxQuantity'],
-            "contractualQuantityOption" : contractualQuantityOption.name
+            "contractualQuantityOption" : contractualQuantityOption.name,
+            "contractRequestProductId" : res1['id']
           }
           contractArray['locations'].push(arrMainDet);
           arrMainDet = {}; data = [];
@@ -178,7 +176,14 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     }
 
   setFocus() {
+    this.localService.getMasterListData(['Counterparty']).subscribe(data => {
+      this.counterpartyList = this.localService.limitCounterPartyList(data['Counterparty']);
+    }); 
     this._el2.nativeElement.focus();
+  }
+
+  constructUpdateCounterparties(){
+    this.contractService.constructUpdateCounterparties().subscribe();
   }
 
   showSearch() {
