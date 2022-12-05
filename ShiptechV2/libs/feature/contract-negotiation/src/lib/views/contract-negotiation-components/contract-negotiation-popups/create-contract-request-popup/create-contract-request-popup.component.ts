@@ -440,7 +440,25 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.showMainLocationDropdown = true;
     this.selectedMainLocation = '';
   }
-
+  
+  deleteMainLocation(index) {
+    let mainLocToDelete = this.mainLocations[index];
+    this.reqObj.contractRequestProducts = this.reqObj.contractRequestProducts.filter((e,i) => {
+      if(e.locationId != mainLocToDelete.locationId){
+        return e;
+      } else {
+        this.listData.splice(i, 1);
+        this.hideAllowedLocationDropdown.splice(i, 1);
+        this.searchFilterString.splice(i, 1);
+        this.productAllowedLocations.splice(i, 1);
+      }
+    });
+    this.mainLocations.splice(index, 1);
+    if(this.mainLocations.length > 0 ){
+      this.onClick(this.mainLocations[this.mainLocations.length - 1]);
+    }
+  }
+  
   addNewAllowedLocation(prodIndex) {
     this.hideAllowedLocationDropdown[prodIndex] = false;
     this.selectedAllowedLocation = '';
@@ -485,9 +503,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
   }
 
-  deleteMainLocation(index) {
-    this.mainLocations.splice(index, 1);
-  }
 
   deleteAllowedLocation(prodIndex, index) {
     this.reqObj.contractRequestProducts[prodIndex].allowedLocations.splice(index, 1);
