@@ -1,5 +1,6 @@
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
 import { LocalService } from '../../../services/local-service.service';
 
 @Component({
@@ -25,20 +26,7 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   rowData = [];
   rowDataBackup = [];
   counterpartyColumns: string[] = ['counterparty', 'blank'];
-  counterpartyList = [
-    { 'counterparty': 'American President lines llc', 'selected': true },
-    { 'counterparty': 'ANL container line', 'selected': true },
-    { 'counterparty': 'Anil Singapore ltd', 'selected': true },
-    { 'counterparty': 'APL Co. Pte Ltd', 'selected': false },
-    { 'counterparty': 'CCISC', 'selected': false },
-    { 'counterparty': 'CMA CGM	', 'selected': false },
-    { 'counterparty': 'CMA CGM Algeria', 'selected': false },
-    { 'counterparty': 'CNC', 'selected': false },
-    { 'counterparty': 'CNC A Brand of APL Co Pte Ltd', 'selected': false },
-    { 'counterparty': 'Coastal Navigation Co Ltd', 'selected': false },
-    { 'counterparty': 'Cointainership Ltd', 'selected': false },
-    { 'counterparty': 'Demo Company', 'selected': false }
-  ];
+  counterpartyList;
   chipSelected = "1";
   pinnedColumnWidth: any;
 
@@ -56,7 +44,7 @@ export class ContractNegotiationDetailsComponent implements OnInit {
 
   }
 
-  constructor(private localService: LocalService) {
+  constructor(private localService: LocalService, private contractService: ContractNegotiationService,) {
   }
   private _filter(data, value: string): [] {
     const filterValue = value.toLowerCase();
@@ -64,6 +52,19 @@ export class ContractNegotiationDetailsComponent implements OnInit {
       item.data = item.data.filter(option => option.name.toLowerCase().includes(filterValue));
     })
     return data;
+  }
+  
+  filterCounterParty(filterValuelue : string){
+    this.counterpartyList = this.localService.filterCounterParty(filterValuelue);
+  }
+  constructUpdateCounterparties(source){
+    this.contractService.constructUpdateCounterparties(source).subscribe();
+  }
+  setFocus() {
+  this.localService.getMasterListData(['Counterparty']).subscribe(data => {
+    this.counterpartyList = this.localService.limitCounterPartyList(data['Counterparty']);
+  }); 
+  //this._el2.nativeElement.focus();
   }
 
   onSearchCounterparty(input) {

@@ -15,6 +15,7 @@ import { ContractNegotiationStoreModel } from '../../../store/contract-negotiati
 import { Store } from '@ngxs/store';
 import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
 import { CounterpartieNameCellComponent } from '../../../core/ag-grid-renderers/counterpartie-name-cell.component';
+import { GetRowNodeIdFunc, IGetRowsParams } from 'ag-grid-community';
 @Component({
   selector: 'app-contract-nego-grid',
   templateUrl: './contract-nego-grid.component.html',
@@ -58,6 +59,15 @@ export class ContractNegoGridComponent implements OnInit {
     this.context = { componentParent: this };
   }
   ngOnInit(): void {
+    this.store.subscribe(() => {
+      this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+        state['contractNegotiation'].ContractRequest[0].locations.find(el => {
+          if(el['location-id'] == this.locationId && el.productId == this.productId){
+            this.gridOptions_forecast?.api?.setRowData(el.data);
+          }
+        })
+      });
+    });
 
     this.localService.sendChipSelected.subscribe((chip: any) => {
       this.selectedChip = chip;
@@ -75,7 +85,7 @@ export class ContractNegoGridComponent implements OnInit {
       headerHeight: 30,
       groupHeaderHeight: 0,
       rowHeight: 35,
-      animateRows: false,
+      animateRows: true,
       tooltipShowDelay: 0,
       // groupUseEntireRow:true,
       onFirstDataRendered(params) {
@@ -311,6 +321,11 @@ export class ContractNegoGridComponent implements OnInit {
   toolTipValueGetter(params) {
     if (params.value != '-') return params.value;
   }
+  public getRowNodeId: GetRowNodeIdFunc = (params: IGetRowsParams) => {
+    return params['id'];
+  }
+
+  
   getStatusName(id) {
     let name;
     let className;

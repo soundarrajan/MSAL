@@ -97,7 +97,8 @@ export const ContractNegotiationApiPaths = {
   userFilterPresets: 'api/user-settings/contract-requestlist-filter-presets',
   savecolumnPreference: 'api/user-settings/save/contract-request-list-grid_ColumnPreference',
   columnPreference: 'api/user-settings/contract-request-list-grid_ColumnPreference',
-  counterPartSelectionToggle : 'api/ContractNegotiation/toggleConReqSellerSelection'
+  counterPartSelectionToggle : 'api/ContractNegotiation/toggleConReqSellerSelection',
+  addSellerContract : 'api/ContractNegotiation/addSellerContract'
 }
 
 
@@ -1249,6 +1250,18 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     return this.http
       .post<any>(
         `${this._infrastructureApiUrl}/${ContractNegotiationApiPaths.savecolumnPreference}`, payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+  
+  @ObservableException()
+  addCounterpartyToAllLocations(payload): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.addSellerContract}`, payload
       )
       .pipe(
         map((body: any) => body),
