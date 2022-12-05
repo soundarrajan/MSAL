@@ -52,7 +52,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     private localService: LocalService,
     public dialog: MatDialog,
     public store : Store,
-    private contractService: ContractNegotiationService,
+    public contractService: ContractNegotiationService,
     private route: ActivatedRoute,
     public format: TenantFormattingService,
     ) { }
