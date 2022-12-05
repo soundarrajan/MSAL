@@ -44,7 +44,7 @@ export class ContractNegotiationDetailsComponent implements OnInit {
 
   }
 
-  constructor(private localService: LocalService, private contractService: ContractNegotiationService,) {
+  constructor(private localService: LocalService, public contractService: ContractNegotiationService,) {
   }
   private _filter(data, value: string): [] {
     const filterValue = value.toLowerCase();
