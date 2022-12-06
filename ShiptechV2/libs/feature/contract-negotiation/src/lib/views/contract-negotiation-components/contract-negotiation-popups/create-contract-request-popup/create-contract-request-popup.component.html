@@ -277,7 +277,7 @@
       <div>
       <div class="main-product-section" [ngStyle]="{'display': (mainLocations.length == 0) ? 'none' : 'block'}">
         <ng-container *ngFor="let prod of reqObj.contractRequestProducts; let i = index;">
-          <div *ngIf="prod.locationId == selectedLocationId">
+          <div *ngIf="prod.locationId == selectedLocationId && !prod.isDeleted">
             <div style="max-height: 50vh; margin-bottom: 45px;">
               <div class="form-fields-with-flex" *ngIf="getLocationProductIndex(i) != 0">
                 <a id="ADMN64" class="remove-product-icon" (click)="deleteNewMainProduct(i)"></a>
