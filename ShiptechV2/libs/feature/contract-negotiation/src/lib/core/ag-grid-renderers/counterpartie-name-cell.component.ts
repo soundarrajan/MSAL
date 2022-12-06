@@ -31,6 +31,12 @@ import _ from 'lodash';
             </div>
             <div class="fs-13" (click)="openEmailPreview(params)">Preview RFQ email</div>
           </div>
+          <div class="p-tb-5" style="display:flex;align-items:center;">
+                <div class="popup-icon-align">
+                    <div class="contract-enable-quote-icon"></div>
+                </div>
+                <div class="fs-13">Enable quote</div>
+          </div>
           <hr class="menu-divider-line" />
 
           <ng-container *ngIf="aliasMenuItems.Status == 'Contracted'">

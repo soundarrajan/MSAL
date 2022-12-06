@@ -3,7 +3,9 @@
       <div class="spot-nego-title">Formula pricing details</div>
       <div class="spot-dialog-title-right">
         <!-- <button class="cancel-btn w-104" mat-button [mat-dialog-close]="true">Cancel</button> -->
-        <button class="proceed-btn w-104" mat-button [mat-dialog-close]="true" [disabled]='enterFormula'>Save</button>
+<!--         <button class="proceed-btn w-104" mat-button [mat-dialog-close]="true" [disabled]='enterFormula'>Save</button>
+ -->        
+        <button class="blue-button h-25" [mat-dialog-close]="true" style="width: 115px !important;" >Save</button>
         <div class="title-divider">|</div>
         <span class="close-icon" style="cursor:pointer;" [mat-dialog-close]="true"></span>
         <!-- <div class="close-circle">
@@ -200,7 +202,7 @@
                         </mat-form-field>
                       </div>
     
-                      <div class="custom-form-field create-new-formula-form-field"
+                      <!-- <div class="custom-form-field create-new-formula-form-field"
                         [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                         <div class="convertorEditable-component-v2">
                           <div class="block">
@@ -229,7 +231,7 @@
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                   <div class="col-md-12" style="padding:0" *ngIf="expressType1 === 'Complex'">
