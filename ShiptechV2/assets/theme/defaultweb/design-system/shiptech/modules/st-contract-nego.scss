@@ -5160,7 +5160,7 @@
 
       .mat-form-field.custom-select {
         width: 142px;
-        height: 28px;
+        height: 32px;
         border: none;
         padding: 0;
         background: none;
@@ -5170,7 +5170,7 @@
         }
 
         .mat-select-placeholder {
-          padding: 0px 15px;
+          padding: 0px 10px;
           font-size: 14px;
           color: #364150;
         }
@@ -5199,10 +5199,10 @@
         }
 
         .mat-form-field-wrapper .mat-form-field-flex {
-          height: 28px;
+          height: 32px;
           border: 1px solid #364150;
           background-color: unset;
-          padding: 0;
+          padding: 2px 4px;
           border-radius: 4px;
           line-height: 12px;
         }
@@ -5210,7 +5210,15 @@
         .mat-form-field-underline {
           display: none;
         }
+
+        &.main-location-select{
+          .mat-form-field-wrapper .mat-form-field-flex {
+              height: 28px !important;
+              padding: 0px;
+          }
+        }
       }
+      
     }
 
     .product-tabs {
@@ -5248,7 +5256,8 @@
 
       .text-ellipsis {
         text-overflow: ellipsis;
-        min-width: 77px;
+        //min-width: 77px;
+        width: unset;
         max-width: 138px;
         overflow: hidden;
         display: inline-block;
@@ -5279,6 +5288,19 @@
           box-sizing: border-box;
           border-radius: 3px;
         }
+      }
+
+      .location-tab {
+        height: 32px;
+        padding: 7px 10px;
+        border-radius: 5px;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        text-align: right;
+        background-color: white !important;
+        color: #364150;
+        border: 1px solid #364150;
       }
     }
 

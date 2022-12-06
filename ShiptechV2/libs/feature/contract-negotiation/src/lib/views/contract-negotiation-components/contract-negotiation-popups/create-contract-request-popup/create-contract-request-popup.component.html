@@ -237,7 +237,7 @@
     <div class="section3">
       <div style="display: flex; flex-direction: row;">
         <a id="addLoc" class="add-product-dropdown-icon" (click)="addNewMainLocation()"></a>
-        <div *ngIf="mainLocations.length > 0">
+        <div *ngIf="mainLocations.length > 0" style="display: flex; flex-direction: row;">
           <ng-container *ngFor="let loc of mainLocations; let i = index">
             <div class="select-location">
               <div>
@@ -261,7 +261,7 @@
         </div>
 
         <div id="locDrp" class="select-product" [hidden]="!showMainLocationDropdown">
-          <mat-form-field class="custom-select" appearance="fill">
+          <mat-form-field class="custom-select main-location-select" appearance="fill">
             <mat-select [disableOptionCentering]="true" #mainLocationSelect [(ngModel)]="selectedMainLocation"
             [ngModelOptions]="{standalone: true}" placeholder="Add Location"
               panelClass="shiptech-select-product-container">
@@ -573,7 +573,7 @@
                                     <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].specGroupId" #singleSelect
                                       disableOptionCentering [panelClass]="'shiptech-select-product-container'"
                                       (selectionChange)="setSpecGroupChange($event.value,i,j)">
-                                      <div style="margin-top: -20px;" [ngClass]="{'expand-select-location-container': expandLocation}">
+                                      <div style="margin-top: 0px;" [ngClass]="{'expand-select-location-container': expandLocation}">
                                         <div class="col-md-12 header-container-product pd-0">
                                           <div class="search-product-container col-md-10 pd-0">
                                             <span class="search-product-lookup">
@@ -630,7 +630,7 @@
                     </div>
                   </div>
                 </div>
-                <div style="margin:50px 28px 25px; border-right:solid 1px #C3C6CC"></div>
+                <div style="margin:35px 28px 20px 25px; border-right:solid 1px #C3C6CC"></div>
                 <!-- style="flex:1 1 39%" -->
                 <div class="m-t-10" >
                   <div class="sub-title">Allowed Locations</div>
