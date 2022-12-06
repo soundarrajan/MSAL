@@ -102,6 +102,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       status: 'Open',
       createdById: 0,
       lastModifiedById: 0,
+      isDeleted: false,
       allowedProducts: [],
       allowedLocations: [],
       contractRequestProductOffers: []
@@ -307,11 +308,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   getLocationProducts() {
-    return this.reqObj.contractRequestProducts.filter((x) => x.locationId === this.selectedLocationId);
+    return this.reqObj.contractRequestProducts.filter((x) => x.locationId === this.selectedLocationId && !x.isDeleted);
   }
 
   getLocationProductIndex(index){
-    return this.reqObj.contractRequestProducts.filter((e, i) => (i <= index && e.locationId == this.selectedLocationId)).length-1;
+    return this.reqObj.contractRequestProducts.filter((e, i) => (i <= index && e.locationId == this.selectedLocationId && !e.isDeleted)).length-1;
   }
 
   applyPlanPeriod(){
@@ -441,18 +442,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.selectedMainLocation = '';
   }
   
-  deleteMainLocation(index) {
+  deleteMainLocation(index: number){
     let mainLocToDelete = this.mainLocations[index];
-    this.reqObj.contractRequestProducts = this.reqObj.contractRequestProducts.filter((e,i) => {
-      if(e.locationId != mainLocToDelete.locationId){
-        return e;
-      } else {
-        this.listData.splice(i, 1);
-        this.hideAllowedLocationDropdown.splice(i, 1);
-        this.searchFilterString.splice(i, 1);
-        this.productAllowedLocations.splice(i, 1);
-      }
-    });
+    this.reqObj.contractRequestProducts
+      .filter(e => e.locationId == mainLocToDelete.locationId)
+      .map(e => e.isDeleted = true);
     this.mainLocations.splice(index, 1);
     if(this.mainLocations.length > 0 ){
       this.onClick(this.mainLocations[this.mainLocations.length - 1]);
@@ -538,11 +532,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   deleteNewMainProduct(i) {
-    this.reqObj.contractRequestProducts.splice(i, 1);
-    this.productAllowedLocations.splice(i, 1);
+    this.reqObj.contractRequestProducts[i].isDeleted = true;
+    /*this.productAllowedLocations.splice(i, 1);
     this.searchFilterString.splice(i, 1);
     this.listData.splice(i, 1);
-    this.hideAllowedLocationDropdown.splice(i, 1);
+    this.hideAllowedLocationDropdown.splice(i, 1);*/
   }
 
   specGroupDataSource(prodId) {
