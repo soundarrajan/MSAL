@@ -89,6 +89,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
         suppressCellSelection: true,
         headerHeight: 35,
         rowHeight: 35,
+        rowSelection: 'multiple',
         animateRows: false,
         onGridReady: params => {
           this.gridOptions_data.api = params.api;

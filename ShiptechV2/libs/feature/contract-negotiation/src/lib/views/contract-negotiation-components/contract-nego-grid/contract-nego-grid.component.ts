@@ -725,22 +725,26 @@ export class ContractNegoGridComponent implements OnInit {
         {
           headerName: 'Schedule',
           headerTooltip: 'Schedule',
-          field: 'fdSchedule'
+          field: 'fdSchedule',
+          width: 80
         },
         {
           headerName: 'Premium',
           headerTooltip: 'Premium',
-          field: 'fdPremium'
+          field: 'fdPremium',
+          width: 80
         },
         {
           headerName: 'Add.Costs',
           headerTooltip: 'Add.Costs',
-          field: 'fdAddCosts'
+          field: 'fdAddCosts',
+          width: 80
         },
         {
           headerName: 'Remarks',
           headerTooltip: 'Remarks',
           field: 'fdRemarks',
+          width: 350,
           cellClass: params => {
             return params.node.level != 0 && this.rfqSent && this.rowSelected ? 'editable-cell' : '';
           }
