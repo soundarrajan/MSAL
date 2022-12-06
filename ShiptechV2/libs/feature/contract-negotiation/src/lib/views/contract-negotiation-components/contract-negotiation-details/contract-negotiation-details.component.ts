@@ -58,13 +58,20 @@ export class ContractNegotiationDetailsComponent implements OnInit {
     this.counterpartyList = this.localService.filterCounterParty(filterValuelue);
   }
   constructUpdateCounterparties(source){
-    this.contractService.constructUpdateCounterparties(source).subscribe();
+    this.contractService.constructUpdateCounterparties(source).subscribe(res => {
+      const contractRequestIdFromUrl =49;
+      this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
+      .subscribe(response => {
+        this.localService.contractRequestData(response);
+      });
+    });
   }
   setFocus() {
   this.localService.getMasterListData(['Counterparty']).subscribe(data => {
     this.counterpartyList = this.localService.limitCounterPartyList(data['Counterparty']);
   }); 
   //this._el2.nativeElement.focus();
+  this.contractService.selectedCounterparty = {};
   }
 
   onSearchCounterparty(input) {

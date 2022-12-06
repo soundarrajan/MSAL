@@ -18,6 +18,7 @@ export class ContractNegotiationStoreModel {
     { getState, patchState }: StateContext<any>,
     { payload }: ContractRequest
   ): any {
+    payload[0].locations.sort((a,b) => (a['location-name'] > b['location-name']) ? 1 : ((b['location-name'] > a['location-name']) ? -1 : 0))
     patchState({
       ContractRequest: payload
     });
