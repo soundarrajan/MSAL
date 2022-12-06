@@ -55,6 +55,7 @@ export class ContractNegoGridComponent implements OnInit {
   blockHttpCall : boolean = false;
   checkBoxSelectionstatus : boolean;
   sellerIds = [];
+  dispalyNoData : boolean = false;
   constructor(private localService: LocalService, private store : Store,private contractService: ContractNegotiationService) {
     this.context = { componentParent: this };
   }
@@ -63,6 +64,7 @@ export class ContractNegoGridComponent implements OnInit {
       this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
         state['contractNegotiation'].ContractRequest[0].locations.find(el => {
           if(el['location-id'] == this.locationId && el.productId == this.productId){
+            this.dispalyNoData = (el.data.length > 0)? false : true;
             this.gridOptions_forecast?.api?.setRowData(el.data);
           }
         })
@@ -93,6 +95,7 @@ export class ContractNegoGridComponent implements OnInit {
       },
       rowSelection: 'multiple',
       onGridReady: params => {
+        console.log(params);
         setTimeout(() => this.blockHttpCall = true,3000);
         this.gridOptions_forecast.api = params.api;
         this.gridOptions_forecast.columnApi = params.columnApi;
