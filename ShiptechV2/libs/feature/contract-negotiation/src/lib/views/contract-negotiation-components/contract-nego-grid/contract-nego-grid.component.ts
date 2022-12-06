@@ -773,7 +773,6 @@ export class ContractNegoGridComponent implements OnInit {
     }
   }
   onRowSelected(e) {    
-    console.log("e.data",e);
     if(e.data && this.blockHttpCall){
       this.sellerIds.push(e.data.id);
       this.checkBoxSelectionstatus = e.node.selected;

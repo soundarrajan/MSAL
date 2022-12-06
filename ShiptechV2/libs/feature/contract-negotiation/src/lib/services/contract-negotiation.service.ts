@@ -8,10 +8,10 @@ import { IDocumentsUpdateIsVerifiedRequest } from '@shiptech/core/services/maste
 import { IDocumentsUpdateNotesRequest, IDocumentsUpdateNotesResponse } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { cloneDeep } from 'lodash';
+import { ToastrService } from 'ngx-toastr';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
-import { ContractRequest } from '../store/actions/ag-grid-row.action';
 import { ContractNegotiationStoreModel } from '../store/contract-negotiation.store';
 //import { EditLocationRow } from '../store/actions/ag-grid-row.action';
 import { ContractNegotiationApi } from './api/contract-negotiation-api';
@@ -36,7 +36,8 @@ export class ContractNegotiationService extends BaseStoreService
   constructor(
     protected store: Store,
     loggerFactory: ModuleLoggerFactory,
-    private contractNegotiationApi: ContractNegotiationApi
+    private contractNegotiationApi: ContractNegotiationApi,
+    private toastr: ToastrService,
   ) {
     super(store, loggerFactory.createLogger(ContractNegotiationService.name));
   }
@@ -1036,50 +1037,94 @@ export class ContractNegotiationService extends BaseStoreService
     constructUpdateCounterparties(source = null) : Observable<any> {
         let payload = [];
         let pArray;
-        let idInc =1000;
         let storePayload;
         let addFlag = true;
-        let tempArr = {}
         let filterLocation;
+        let successArray = {}
+        let locationWarning = []
+        let msgStr;
         this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
           storePayload = JSON.parse(JSON.stringify(state['contractNegotiation'].ContractRequest[0]));
           if(source != null){
-            filterLocation = state['contractNegotiation'].ContractRequest[0].locations.filter(el => el['location-id'] == source );
+            filterLocation = state['contractNegotiation'].ContractRequest[0].locations.filter(el => el['contractRequestProductId'] == source );
           }else{
             filterLocation = state['contractNegotiation'].ContractRequest[0].locations;
-          }
-         
+          }   
          filterLocation.forEach((el,kIndex) => {
               Object.entries(this.selectedCounterparty).forEach(([cId,value]) => {
                 addFlag = true;
                 if(el['data'].length > 0){
                   addFlag = !el['data'].some(location => location.CounterpartyId == cId );
                 }
+                msgStr = el['location-name']+' (<i>'+el['productName']+'</i>)';
                 if(addFlag){
-                  tempArr['CounterpartyId'] = value['id'];
-                  tempArr['CounterpartyName'] = value['name'];
-                  tempArr['id'] = idInc++;
-                  tempArr['check'] = Math.random() < 0.5;
-                  tempArr['Status'] = 'OfferCreated';
-                  storePayload.locations[kIndex].data.push(tempArr);
-                  tempArr = {};
                   pArray = {
                     'contractRequestProductId' : el['contractRequestProductId'],
                     'counterpartyId' : cId,
                     'productId' : el.productId,
                     'locationId' : el['location-id'],
                     "isNoQuote": 0,
-                    "statusId": 0,
+                    "statusId": 1,
                     'IsDeleted' :false,
-                    'IsSelected' :true
+                    'IsSelected' :true,
+                    'Id' : 0,
+                    'SpecGroupId' :71,
+                    "offerPrice": 0,
+                    'MinQuantity' :0,
+                    'MinQuantityUomId' :5,
+                    'MaxQuantity' :0,
+                    'MaxQuantityUomId' :5,
+                    'CurrencyId' :1,
+                    'PricingTypeId' :1,
+                    "contractRequestProductOfferIds": "",
+                    "createdOn": "2022-12-05T05:21:28.504Z",
+                    "createdById": 1
+                  };
+
+                  if(!successArray[value['name']]){
+                    successArray[value['name']] = {}
                   }
+                  
+                  Object.assign(successArray[value['name']],
+                    {[el['location-id']+'-'+el.productId] : msgStr}
+                  );
                   payload.push(pArray);
+              }else{
+                locationWarning.push(value['name']);
               }
               });
-            
             });
           });
-          this.store.dispatch(new ContractRequest([storePayload]));
+          let comArray = {...successArray};
+          let tempGroup = {};
+          Object.entries(successArray).forEach(([key1,v1]) => {
+            Object.entries(comArray).forEach(([key2,v2]) => {
+              if(JSON.stringify(v1) == JSON.stringify(v2)){
+                if(tempGroup[key2]) tempGroup[key2] = {}
+                tempGroup[key2] = v2;
+                delete comArray[key2];
+              }
+            });
+            if(Object.keys(tempGroup).length > 0){
+              let successTitle = Object.keys(tempGroup).toString() ;
+              let sellerStr = ' Added successfully to the - ';
+              Object.entries(tempGroup[Object.keys(tempGroup)[0]]).forEach((value,key) => {
+                sellerStr += '<br><small>'+value[1]+'</small>';
+              });
+              this.toastr.success(sellerStr,successTitle,{enableHtml :  true});
+              tempGroup = {};
+            }
+           });
+           if(locationWarning.length > 0){
+            if(source != null){
+              this.toastr.warning("already exists for <br> "+ msgStr,locationWarning.toString(),{enableHtml :  true});
+            }else{
+              let unique = [...new Set(locationWarning)]
+              this.toastr.warning(" - already exists"+ '',unique.toString(),{enableHtml :  true});
+            }
+           }
+       //this.store.dispatch(new ContractRequest([storePayload]));
+       this.selectedCounterparty = {};
        return  this.contractNegotiationApi.addCounterpartyToAllLocations(payload);
     }
 
