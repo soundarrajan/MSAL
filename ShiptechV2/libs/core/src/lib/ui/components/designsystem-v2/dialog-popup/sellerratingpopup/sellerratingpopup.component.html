@@ -27,7 +27,7 @@
                 </mat-panel-title>
                 </mat-expansion-panel-header>
                 <ng-template matExpansionPanelContent>
-                  <div style="max-height:427px; overflow-y:scroll; overflow-x:hidden">
+                  <div style="overflow-y:scroll; overflow-x:hidden">
                     <div *ngFor="let items of specificPortRatingData">
                       <div class="row second-header"  style="padding: 0px 4px; justify-content: space-between;">
                           <div class="col-7 bold-text" style="padding-left: 32px;">{{items.categoriesName | htmlDecodeReadonly}}</div>
@@ -76,6 +76,7 @@
                 </mat-expansion-panel-header>
                 <ng-template matExpansionPanelContent >
                   <div *ngFor="let items of allLocationRatingData">
+                    <div style="overflow-y:scroll; overflow-x:hidden">
                       <div class="row second-header" style="padding: 0px 4px; justify-content: space-between;">
                           <div class="col-7 bold-text"  style="padding-left: 32px;">{{items.categoriesName | htmlDecodeReadonly}}</div>
                           <div class="col-5 text-right"  style="padding-right: 1.4vw;">
@@ -99,6 +100,7 @@
                             </div>
                           </span>
                       </div>
+                    </div>
                   </div>                    
                 </ng-template>
             </mat-expansion-panel>
