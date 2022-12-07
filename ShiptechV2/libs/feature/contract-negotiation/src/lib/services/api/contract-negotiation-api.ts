@@ -98,7 +98,8 @@ export const ContractNegotiationApiPaths = {
   savecolumnPreference: 'api/user-settings/save/contract-request-list-grid_ColumnPreference',
   columnPreference: 'api/user-settings/contract-request-list-grid_ColumnPreference',
   counterPartSelectionToggle : 'api/ContractNegotiation/toggleConReqSellerSelection',
-  addSellerContract : 'api/ContractNegotiation/addSellerContract'
+  addSellerContract : 'api/ContractNegotiation/addSellerContract',
+  removeCounterparty : 'api/ContractNegotiation/removeSellerContract'
 }
 
 
@@ -502,10 +503,10 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   }
 
   @ObservableException()
-  RemoveCounterparty(request: any): Observable<any> {
+  RemoveCounterparty(id: any): Observable<any> {
     return this.http
-      .delete<any>(
-        `${this._negotiationApiUrl}/${apiPaths.removeCounterparty}/${request}`
+      .put<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.removeCounterparty}`, {id}
       )
       .pipe(
         map((body: any) => body),

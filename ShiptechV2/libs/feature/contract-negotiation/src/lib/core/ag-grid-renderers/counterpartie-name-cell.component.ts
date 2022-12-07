@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { EmailPreviewPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/email-preview-popup/email-preview-popup.component';
 import _ from 'lodash';
+import { RemoveCounterpartyPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/remove-counterparty-popup/remove-counterparty-popup.component';
+import { ContractNegotiationService } from '../../services/contract-negotiation.service';
 @Component({
   selector: 'shiptech-counterpartie-name-cell',
   template: `
@@ -53,7 +55,7 @@ import _ from 'lodash';
             <div class="popup-icon-align">
               <div class="delete-icon"></div>
             </div>
-            <div class="fs-13" (click)="deleteRow()">Remove counterparty</div>
+            <div class="fs-13" (click)="removeCounterpartyPopup(params)">Remove counterparty</div>
           </div>
         </ng-template>
       </mat-menu>
@@ -65,7 +67,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
   public params: any;
   public rfqSendFlag: boolean = false;
   dummyId = 121;
-  constructor(public dialog: MatDialog, private toaster: ToastrService) {}
+  constructor(public dialog: MatDialog, private toaster: ToastrService, private contractService : ContractNegotiationService) {}
 
   ngOnInit(): void {}
   agInit(params: any): void {
@@ -85,6 +87,26 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
 
     dialogRef.afterClosed().subscribe(result => {});
   }
+
+  removeCounterpartyPopup(params) {
+        
+    this.toaster.success(params.node.data.CounterpartyName+' have been removed');
+    this.deleteRow(params.node.data.id)
+    // const dialogRef = this.dialog.open(RemoveCounterpartyPopupComponent, {
+    //   width: '340px',
+    //   height: 'auto',
+    //   panelClass: 'delete-chat-popup'
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+      
+    //   if(result){
+    //     //this.deleteRow(params.node.data.id);
+        
+    //   }
+    // });
+  }
+
 
   addToAnotherNego() {
     this.toaster.show('<div class="image-placeholder"><span class="image"></span></div><div class="message">Negotiation duplicated successfully and available in request list</div>', '', {
@@ -107,7 +129,8 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
     this.params.api.applyTransaction({ add: rowData, addIndex: index });
   }
 
-  deleteRow() {
+  deleteRow(counterpartyId) {
+    this.contractService.RemoveCounterparty(counterpartyId).subscribe();
     let rowData = [];
     this.params.api.forEachNode(node => rowData.push(node.data));
     let index = this.params.node.rowIndex;

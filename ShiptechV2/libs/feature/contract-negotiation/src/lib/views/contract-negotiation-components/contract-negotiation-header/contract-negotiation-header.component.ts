@@ -228,6 +228,24 @@ export class ContractNegotiationHeaderComponent implements OnInit {
       });
     });
   }
+  searchCounterpartyLookUp(){
+    // const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
+    // const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
+    //   width: '100vw',
+    //   height: '95vh',
+    //   maxWidth: '95vw',
+    //   panelClass: 'search-request-popup',
+    //   data: {
+    //     AddCounterpartiesAcrossLocations: true,
+    //     RequestGroupId: parseInt(RequestGroupId)
+    //   }
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   //this._spotNegotiationService.callGridRefreshService();
+    // });
+
+  }
 
   scrollPort1(index, el, count) {
     this.child.scrollPortToggle(index);
@@ -268,8 +286,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
       });
     })
     this.store.dispatch(new ContractRequest([{'locations' : filterData}]));
-    
-
+  
   }
 
   // ************************** Need to remove code after testing ***************** start

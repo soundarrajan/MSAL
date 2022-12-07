@@ -57,7 +57,7 @@
         <div *ngIf="expandedSearch" style="display:flex;position: relative;height:26px" class="search-input">
             <input type="search" [(ngModel)]="searchText" (input)="clearCounterparty($event)"
                 (keyup)="searchCounterparty($event.target.value)" (focusout)="searchInput()" #inputSearch autofocus
-                placeholder="Search counterparty" [title]="inputSearch.value?inputSearch.value:'Search counterparty'"
+                placeholder="zx Search counterparty" [title]="inputSearch.value?inputSearch.value:'Search counterparty'"
                 class="search-box light ellipsis">
             <span class="search-line">|</span>
             <button class="searchButton" type="submit">
