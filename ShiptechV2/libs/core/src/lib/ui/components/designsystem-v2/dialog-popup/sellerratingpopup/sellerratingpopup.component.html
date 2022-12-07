@@ -45,7 +45,7 @@
                                 <star-rating value="{{item.rating}}" [totalstars]='5' checkedcolor="#364150" uncheckedcolor="#EAEAEA" size="3em" readonly="true"></star-rating>
                               </div>
                               <div class="rate l-h-46" *ngIf="item.rating == null">
-                              <span  >{{item.comments}}</span>
+                              <span  >{{this.format.htmlDecode(item.comments)}}</span>
                             </div>
                             <div class="rate l-h-46" *ngIf="item.rating == null && item.comments == null">
                               <span>NIL</span>
@@ -93,14 +93,14 @@
                                 <star-rating value="{{item.rating}}" [totalstars]='5' checkedcolor="#364150" uncheckedcolor="#EAEAEA" size="3em" readonly="true"></star-rating>
                               </div>
                               <div class="rate l-h-46" *ngIf="item.rating == null">
-                              <span  >{{item.comments}}</span> 
+                              <span  >{{this.format.htmlDecode(item.comments)}}</span> 
                             </div>
                             <div class="rate l-h-46" *ngIf="item.rating == null && item.comments == null">
                               <span  >NIL</span>
                             </div>
                           </span>
                       </div>
-                    </div>
+                      </div>
                   </div>                    
                 </ng-template>
             </mat-expansion-panel>
