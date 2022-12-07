@@ -11,6 +11,7 @@ import { ContractNegotiationService } from '../../../services/contract-negotiati
 import { ActivatedRoute } from '@angular/router';
 import { ContractRequest } from '../../../store/actions/ag-grid-row.action';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { ContractNegotiationStoreModel } from '../../../store/contract-negotiation.store';
 @Component({
   selector: 'app-contract-negotiation-header',
   templateUrl: './contract-negotiation-header.component.html',
@@ -46,6 +47,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   contractRequestId : String;
   uniqueCounterPartyName : String; 
   totalReqQty;
+  counterpartyBackup;
   
 
   constructor(
@@ -199,6 +201,9 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     setTimeout(() => {
       this.inputSearch.nativeElement.focus();
     }, 0);
+    this.counterpartyBackup = this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+      return state['contractNegotiation'].ContractRequest[0].locations;
+   });
   }
   searchInput() {
     // this.expandedSearch = false;
@@ -251,42 +256,19 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     }
   }
   searchCounterparty(userInput: string) {
-    //console.log(e);
-    //this.child.onSearchCounterparty(e);
-
-    // this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
-    //   state['contractNegotiation'].ContractRequest[0].locations.find(el => {
-    //     if(el['location-id'] == this.locationId && el.productId == this.productId){
-    //       this.gridOptions_forecast.api.setRowData(el.data);
-    //     }
-    //   })
-    // });
+    let filterData = JSON.parse(JSON.stringify(this.counterpartyBackup));
+    for(let inc = 0; inc < filterData.length; inc++ ){
+     filterData[inc].data = [];
+    }
+    this.counterpartyBackup.filter((el,index) => {
+      filterData[index].data =  el['data'].filter((inner) => {
+        if(inner.CounterpartyName?.toLowerCase().includes(userInput.toLocaleLowerCase())){
+          return inner;
+        }
+      });
+    })
+    this.store.dispatch(new ContractRequest([{'locations' : filterData}]));
     
-
-    // if (userInput.length === 0) {
-    //   const locationsRowsOriData = this.store.selectSnapshot(
-    //     (state: contractNegotiation) => {
-    //       return state['spotNegotiation'].LocationsOriData;
-    //     }
-    //   );
-    //   this.store.dispatch(new SetLocationsRows(locationsRowsOriData));
-    // } else {
-    //   let result = this.store
-    //     .selectSnapshot((state: contractNegotiation) => {
-    //       return state['spotNegotiation'].LocationsOriData;
-    //     })
-    //     .filter(e => {
-    //       if (
-    //         e.sellerCounterpartyName
-    //           .toLowerCase()
-    //           .includes(userInput.toLowerCase())
-    //       ) {
-    //         return true;
-    //       }
-    //       return false;
-    //     });
-    //   this.store.dispatch(new SetLocationsRows(result));
-    // }
 
   }
 
