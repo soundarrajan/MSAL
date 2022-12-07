@@ -1061,22 +1061,11 @@ export class ContractNegotiationService extends BaseStoreService
                   pArray = {
                     'contractRequestProductId' : el['contractRequestProductId'],
                     'counterpartyId' : cId,
-                    'productId' : el.productId,
                     'locationId' : el['location-id'],
-                    "isNoQuote": 0,
                     "statusId": 1,
                     'IsDeleted' :false,
                     'IsSelected' :true,
                     'Id' : 0,
-                    'SpecGroupId' :71,
-                    "offerPrice": 0,
-                    'MinQuantity' :0,
-                    'MinQuantityUomId' :5,
-                    'MaxQuantity' :0,
-                    'MaxQuantityUomId' :5,
-                    'CurrencyId' :1,
-                    'PricingTypeId' :1,
-                    "contractRequestProductOfferIds": "",
                     "createdOn": "2022-12-05T05:21:28.504Z",
                     "createdById": 1
                   };
