@@ -203,7 +203,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
           let reqpayload = {
             Order: null,
             Filters: [
-              { ColumnName: 'TransactionTypeId', Value: '1,10,11,12,13,21' },
+              { ColumnName: 'TransactionTypeId', Value: '37' },
               {
                 ColumnName: 'TransactionIds',
                 Value: this.listOfRequests.map(req => req.id).join(',')
