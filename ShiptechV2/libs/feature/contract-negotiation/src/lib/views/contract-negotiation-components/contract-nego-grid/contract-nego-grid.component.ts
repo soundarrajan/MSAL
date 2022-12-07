@@ -407,7 +407,7 @@ export class ContractNegoGridComponent implements OnInit {
           headerName: 'Name',
           headerTooltip: 'Name',
           field: 'CounterpartyName',
-          width: 120,
+          width: 200,
           suppressSizeToFit: true,
           cellClass: 'suppress-movable-col remove-option hoverCell',
           pinned: 'left',
@@ -427,14 +427,13 @@ export class ContractNegoGridComponent implements OnInit {
         {
           headerName: 'Gen. Rating',
           headerTooltip: 'General Rating',
-          headerClass: ['aggrid-text-align-c'],
+          headerClass: ['m-l-7'],
           suppressSizeToFit: true,
           suppressNavigable: true,
           lockPosition: true,
           pinned: 'left',
           field: 'GenRating',
-          minWidth: 60,
-          maxWidth: 110,
+          width: 80,
           cellClass: 'aggridtextalign-center no-padding rating-chip-renderer',
           // cellRendererParams: { label: 'gen-rating', cellClass: 'rating-chip-renderer' }
           cellRendererSelector: params => {
@@ -455,14 +454,13 @@ export class ContractNegoGridComponent implements OnInit {
         {
           headerName: 'Port Rating',
           headerTooltip: 'Port Rating',
-          headerClass: ['aggrid-text-align-c border-right'],
+          headerClass: ['m-l-7 border-right'],
           suppressNavigable: true,
           lockPosition: true,
           pinned: 'left',
           suppressSizeToFit: true,
           field: 'PortRating',
-          minWidth: 60,
-          maxWidth: 110,
+          width: 80,
           cellClass: 'aggridtextalign-center no-padding rating-chip rating-chip-renderer',
           // cellRenderer: 'ratingChipRenderer'
           cellRendererSelector: params => {
