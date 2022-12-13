@@ -1,5 +1,6 @@
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
 import { LocalService } from '../../../services/local-service.service';
 
@@ -44,7 +45,7 @@ export class ContractNegotiationDetailsComponent implements OnInit {
 
   }
 
-  constructor(private localService: LocalService, public contractService: ContractNegotiationService,) {
+  constructor(private localService: LocalService, public contractService: ContractNegotiationService,private route: ActivatedRoute,) {
   }
   private _filter(data, value: string): [] {
     const filterValue = value.toLowerCase();
@@ -59,8 +60,7 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   }
   constructUpdateCounterparties(source){
     this.contractService.constructUpdateCounterparties(source).subscribe(res => {
-      const contractRequestIdFromUrl =49;
-      this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
+      this.contractService.getContractRequestDetails(this.route.snapshot.params.requestId)
       .subscribe(response => {
         this.localService.contractRequestData(response);
       });

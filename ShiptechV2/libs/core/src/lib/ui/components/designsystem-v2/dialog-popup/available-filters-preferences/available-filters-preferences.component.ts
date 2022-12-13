@@ -58,8 +58,8 @@ export class AvailableFiltersPreferencesComponent implements OnInit {
   }
   saveFilterChips() {
     this.validate();
-    this.data = this.filterList;
     if (!this.isDuplicate) {
+      this.data = this.filterList;
       this.closeDialog();
       this.enableEdit = false;
     }
@@ -151,7 +151,7 @@ export class AvailableFiltersPreferencesComponent implements OnInit {
   validate() {
     var valueArr = this.filterList.map(function (item) { return item.name.toLowerCase() });
     this.nameDuplicate_indices = valueArr.map(function (item, idx) {
-      return (valueArr.indexOf(item) != idx || valueArr.lastIndexOf(item) != idx) ? true : false
+      return (valueArr.indexOf(item) != idx || valueArr.lastIndexOf(item) != idx) || item.trim() == "" ? true : false
     });
     this.isDuplicate = this.nameDuplicate_indices.indexOf(true) > -1;
     this.enableEdit = this.isDuplicate ? true : !this.enableEdit;

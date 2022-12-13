@@ -6,6 +6,9 @@ import { EmailPreviewPopupComponent } from '../../views/contract-negotiation-com
 import _ from 'lodash';
 import { RemoveCounterpartyPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/remove-counterparty-popup/remove-counterparty-popup.component';
 import { ContractNegotiationService } from '../../services/contract-negotiation.service';
+import { ContractNegotiationStoreModel } from '../../store/contract-negotiation.store';
+import { Store } from '@ngxs/store';
+import { ContractRequest } from '../../store/actions/ag-grid-row.action';
 @Component({
   selector: 'shiptech-counterpartie-name-cell',
   template: `
@@ -67,7 +70,12 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
   public params: any;
   public rfqSendFlag: boolean = false;
   dummyId = 121;
-  constructor(public dialog: MatDialog, private toaster: ToastrService, private contractService : ContractNegotiationService) {}
+  constructor(
+    public dialog: MatDialog,
+    private toaster: ToastrService,
+    private contractService : ContractNegotiationService,
+    private store : Store
+    ) {}
 
   ngOnInit(): void {}
   agInit(params: any): void {
@@ -130,13 +138,26 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
   }
 
   deleteRow(counterpartyId) {
-    this.contractService.RemoveCounterparty(counterpartyId).subscribe();
-    let rowData = [];
-    this.params.api.forEachNode(node => rowData.push(node.data));
-    let index = this.params.node.rowIndex;
-    let newData = [];
-    newData = rowData.splice(index, 1);
-    this.params.api.applyTransaction({ remove: newData });
+    this.contractService.RemoveCounterparty(counterpartyId).subscribe(res => {
+      if(res['isDeleted']){
+      let storeData = this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+        return state['contractNegotiation'].ContractRequest[0].locations;
+      });
+      let storePayload = JSON.parse(JSON.stringify(storeData));
+      storeData.filter((el1,index1) => {
+        el1['data'].filter((el2,index2) => {
+            if(el2.id == counterpartyId){
+              storePayload[index1]['data'].splice(index2,1);
+              return;
+            }
+        });
+      });
+      this.store.dispatch(new ContractRequest([{'locations' : storePayload}]));
+      }else{
+        this.toaster.error('Data not deleted, Please Refresh the page and try again.')
+      }
+  });
+    
   }
 
   decodeSpecificField(modelValue) {
