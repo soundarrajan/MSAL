@@ -187,7 +187,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   }
 
   constructUpdateCounterparties(){
-    this.contractService.constructUpdateCounterparties().subscribe(res => {
+    this.contractService.constructUpdateCounterparties()?.subscribe(res => {
       const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
       this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
       .subscribe(response => {
