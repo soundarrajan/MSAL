@@ -1087,6 +1087,11 @@ APP_MASTERS.controller('ScreenLayout_Controller', [
                             }                       
                         });  
                     }
+                    if (vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') { 
+                        setTimeout(() => {                       
+                            $scope.formValues.oldPeriods = angular.copy($scope.formValues.periods);
+                        },1000);
+                    }
                     if (vm.app_id == 'masters' && vm.screen_id == 'additionalcost') {
 	                    if($scope.formValues.costType.name == 'Flat' || $scope.formValues.costType.name == 'Unit' || $scope.formValues.costType.name == 'Range' || $scope.formValues.costType.name == 'Total') {
 	                        $scope.formValues.componentType = null;

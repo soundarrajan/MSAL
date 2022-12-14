@@ -1097,8 +1097,25 @@
 
             }
 
-            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {  
-   
+            if(vm.app_id == 'masters' && vm.screen_id == 'systeminstrument') {
+                if ($scope.formValues && $scope.formValues.periods) { 
+                    $.each($scope.formValues.periods, (k, v) => {
+                        if($scope.formValues.periods[k].period == null && $scope.formValues.periods[k].isDeleted){
+                             $scope.formValues.periods[k].period =  $scope.formValues.oldPeriods[k].period; 
+                             $sope.formValues.periods[k].validFrom = $scope.formValues.oldPeriods[k].validFrom; 
+                             $scope.formValues.periods[k].validTo = $scope.formValues.oldPeriods[k].period; 
+                             delete $scope.formValues.oldPeriods;
+                        }
+                        if($scope.copiedId > 0){
+                            $scope.formValues.periods[k].id = 0;
+                            delete $scope.formValues.periods[k].clientIpAddress;
+                            delete $scope.formValues.periods[k].modulePathUrl;
+                            delete $scope.formValues.periods[k].userAction;
+                            delete $scope.formValues.periods[k].systemInstrument;
+                        }
+                    });
+                }
+           
                 if ($scope.formValues && $scope.formValues.productsLocations) {
                     let errors = '';
                     let products = [];
