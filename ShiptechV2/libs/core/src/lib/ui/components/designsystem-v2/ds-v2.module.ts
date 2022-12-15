@@ -16,9 +16,12 @@ import { RowstatusOnchangePopupComponent } from './rowstatus-onchange-popup/rows
 import { RowstatusOnchangeQualitylabPopupComponent } from './rowstatus-onchange-qualitylab-popup/rowstatus-onchange-qualitylab-popup.component';
 import { RowstatusOnchangeResiduePopupComponent } from './rowstatus-onchange-residue-popup/rowstatus-onchange-residue-popup.component';
 import { DarkSelectionMenuComponent } from './dark-selection-menu/dark-selection-menu.component'
+import { SearchProductsPopupComponent } from './search-products-popup/search-products-popup.component'
+import { SearchLocationPopupComponent } from './search-location-popup/search-location-popup.component'
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AGGridCellRendererStatusComponent } from './ag-grid/ag-grid-cell-status/ag-grid-cell-status.component';
 import { ControlTowerPopupComponent } from './control-tower-popup/control-tower-popup.component';
+import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module'
 import { SharedModule } from '@shiptech/core/shared/shared.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { RatingModule } from 'ng-starrating';
@@ -33,6 +36,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     UIModule,
     NgxPaginationModule,
     MatRadioModule,
+    AgFooterNewModule,
     SharedModule,
     DragDropModule,
     RatingModule,
@@ -53,7 +57,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     RowstatusOnchangePopupComponent,
     AGGridCellRendererAsyncStatusComponent,
     AGGridCellRendererStatusComponent,
-    DarkSelectionMenuComponent
+    DarkSelectionMenuComponent,
+    SearchProductsPopupComponent,
+    SearchLocationPopupComponent
   ],
   declarations: [
     AvailableFiltersPreferencesComponent,
@@ -68,7 +74,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     RowstatusOnchangePopupComponent,
     AGGridCellRendererAsyncStatusComponent,
     AGGridCellRendererStatusComponent,
-    DarkSelectionMenuComponent
+    DarkSelectionMenuComponent,
+    SearchProductsPopupComponent,
+    SearchLocationPopupComponent
   ],
   entryComponents: [
     RowstatusOnchangeResiduePopupComponent,

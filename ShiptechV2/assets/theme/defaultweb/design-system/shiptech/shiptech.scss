@@ -1122,6 +1122,12 @@
 
     }
 
+    .menu-expand-icon{
+        cursor: pointer;
+        margin: 12px 6px;
+        content: url("data:image/svg+xml, %3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.59554 10.1467L2.04 12.7067L0 10.6667V16H5.33333L3.29333 13.96L5.85333 11.4045L4.59554 10.1467Z' fill='white'/%3E%3Cpath d='M5.33333 0H0V5.33333L2.04 3.29333L4.59554 5.85333L5.85333 4.59554L3.29333 2.04L5.33333 0Z' fill='white'/%3E%3Cpath d='M10.6666 0L12.7066 2.04L10.1466 4.59554L11.4044 5.85333L13.9599 3.29333L16 5.33333V0H10.6666Z' fill='white'/%3E%3Cpath d='M11.4044 10.1467L10.1466 11.4045L12.7066 13.96L10.6666 16H16V10.6667L13.9599 12.7067L11.4044 10.1467Z' fill='white'/%3E%3C/svg%3E%0A");
+    }
+
     .mat-option-text,
     .mat-radio-label-content {
         font-size: 14px !important;

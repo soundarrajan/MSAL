@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 import { LocalService } from '../../../../services/local-service.service';
 import { SendRfqPopupComponent } from '../send-rfq-popup/send-rfq-popup.component';
 import { UpdateRfqPopupComponent } from '../update-rfq-popup/update-rfq-popup.component';
+import { SearchProductsPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/search-products-popup/search-products-popup.component';
+import { SearchLocationPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/search-location-popup/search-location-popup.component';
 import { ContractNegotiationService } from '../../../../services/contract-negotiation.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
@@ -158,6 +160,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
   public allowedLocationName: any[] = [];
   selectedMainLocationName: string;
   @ViewChild('mainLocationSelect') mainLocationSelect: MatSelect;
+  @ViewChildren('mainProductSelect') mainProductSelects: QueryList<MatSelect>;
+  @ViewChildren('allowedProductSelects') allowedProductSelects: QueryList<MatSelect>;
   @ViewChild('allowedLocationSelect') allowedLocationSelect: MatSelect;
   displayedLocColumns: string[] = ['name'];
   displayedColumns2: string[] = ['name',];
@@ -444,9 +448,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
   
   deleteMainLocation(index: number){
     let mainLocToDelete = this.mainLocations[index];
-    this.reqObj.contractRequestProducts
-      .filter(e => e.locationId == mainLocToDelete.locationId)
-      .map(e => e.isDeleted = true);
+    this.reqObj.contractRequestProducts.forEach( (prod, index) => {
+      if(prod.locationId == mainLocToDelete.locationId) this.deleteNewMainProduct(index);
+    })
     this.mainLocations.splice(index, 1);
     if(this.mainLocations.length > 0 ){
       this.onClick(this.mainLocations[this.mainLocations.length - 1]);
@@ -497,7 +501,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
   }
 
-
   deleteAllowedLocation(prodIndex, index) {
     this.reqObj.contractRequestProducts[prodIndex].allowedLocations.splice(index, 1);
     this.productAllowedLocations[prodIndex].splice(index, 1);
@@ -532,11 +535,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   deleteNewMainProduct(i) {
-    this.reqObj.contractRequestProducts[i].isDeleted = true;
-    /*this.productAllowedLocations.splice(i, 1);
-    this.searchFilterString.splice(i, 1);
-    this.listData.splice(i, 1);
-    this.hideAllowedLocationDropdown.splice(i, 1);*/
+    if(this.reqObj.contractRequestProducts[i].contractRequestId === 0){
+      this.reqObj.contractRequestProducts.splice(i, 1);
+      this.listData.splice(i, 1);
+      this.searchFilterString.splice(i, 1);
+      this.productAllowedLocations.splice(i, 1)
+      this.hideAllowedLocationDropdown.splice(i, 1);
+    } else {
+      this.reqObj.contractRequestProducts[i].isDeleted = true;
+    }
   }
 
   specGroupDataSource(prodId) {
@@ -784,7 +791,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.toaster.warning(location.name + ' already added as main location.');
       return false;
     }
-    let firstLocation = (this.mainLocations.length > 0) ? false : true;
     this.showMainLocationDropdown = false;
     this.mainLocations.push({
       locationId: location.id,
@@ -797,7 +803,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
       } else {
         loc.selected = false;
       } 
-    })
+    });
+    let firstLocation = (this.mainLocations.length == 1 
+      && this.reqObj.contractRequestProducts.length == 1
+      && this.reqObj.contractRequestProducts[0].locationId == '') ? true : false;
     this.selectedMainLocationName = location.name;
     if(firstLocation) {
       this.reqObj.contractRequestProducts.forEach( prod => {
@@ -815,6 +824,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.toaster.warning(
         'Product ' + prod.name + ' already added as main product for ' + this.selectedMainLocationName + ' location'
       );
+      this.mainProductSelects.forEach((e, index) => { 
+        if(index == i) e.value = '';
+      });
       return false;
     }
     this.reqObj.contractRequestProducts[i].productId = prodId;
@@ -857,8 +869,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.listData[i].allowedProducts[j].products =  _.cloneDeep(this.staticData.Product).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 10);
       this.listData[i].allowedProducts[j].specGroup = [];
     }
-    if(this.reqObj.contractRequestProducts[i].productId != ''){
-      let selectedProd = this.staticData.Product.find(p => p.id == this.reqObj.contractRequestProducts[i].productId);
+    if(this.reqObj.contractRequestProducts[i].allowedProducts[j].productId != ''){
+      let selectedProd = this.staticData.Product.find(p => p.id == this.reqObj.contractRequestProducts[i].allowedProducts[j].productId);
       if(this.listData[i].allowedProducts[j].products.findIndex(p => p.id == selectedProd.id) == -1) {
         this.listData[i].allowedProducts[j].products.push(selectedProd);
       }
@@ -1028,19 +1040,19 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
         if (typeof v.contractualQuantityOptionId != 'undefined') {
           if(hasTotalContractualQuantity && v.contractualQuantityOptionId == 1){
-            duplicateQuantityType.push('Total Contractual Quantity');
+            if (!duplicateQuantityType.includes('Total Contractual Quantity')) duplicateQuantityType.push('Total Contractual Quantity');
           }
           if(hasPerMonthQuantity && v.contractualQuantityOptionId == 2){
-            duplicateQuantityType.push('Per Month');
+            if (!duplicateQuantityType.includes('Per Month')) duplicateQuantityType.push('Per Month');
           }
           if(hasPerWeekQuantity && v.contractualQuantityOptionId == 3){
-            duplicateQuantityType.push('Per Week');
+            if (!duplicateQuantityType.includes('Per Week')) duplicateQuantityType.push('Per Week');
           }
           if(hasPerDayQuantity && v.contractualQuantityOptionId == 4){
-            duplicateQuantityType.push('Per Day');
+            if (!duplicateQuantityType.includes('Per Day')) duplicateQuantityType.push('Per Day');
           }
           if(hasPerLiftQuantity && v.contractualQuantityOptionId == 5){
-            duplicateQuantityType.push('Per Lift');
+            if (!duplicateQuantityType.includes('Per Lift')) duplicateQuantityType.push('Per Lift');
           }
           
           if (v.contractualQuantityOptionId == 1) {
@@ -1074,6 +1086,12 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
       }
     });
+    if(duplicateQuantityType.length > 0){
+      this.toaster.error(
+        'You cannot define ' + duplicateQuantityType.join(', ') + ' multiple times'
+      );
+      return false;
+    }
     let qtyToMatch = 0;
     if (!hasTotalContractualQuantity) {
       this.toaster.error(
@@ -1116,12 +1134,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
         return false;  
       }
     }
-    if(duplicateQuantityType.length > 0){
-      this.toaster.error(
-        'You cannot define ' + duplicateQuantityType.join(', ') + ' multiple times'
-      );
-      return false;
-    }
     if (message != 'Please fill in required fields:') {
       if (message[message.length - 1] == ',') {
         message = message.substring(0, message.length - 1);
@@ -1150,6 +1162,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     message = 'Please fill in required fields:';
     this.reqObj.contractRequestProducts.forEach((v, k) => {
       if (typeof v != 'undefined') {
+        if(v.isDeleted) return;
         if (!v.productId) {
           message += ' Product,';
         }
@@ -1233,5 +1246,71 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
       });
     }
+  }
+
+  openMainProductPopup(i) {
+    const dialogRef = this.dialog.open(SearchProductsPopupComponent, {
+      width: '100vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      panelClass: 'search-request-popup'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result.data);
+      if(result.data){
+        this.onMainProductChange(result.data.productId, i);
+        this.mainProductSelects.forEach((e, index) => {
+          if(index == i){ e.close() }
+        });
+      }
+    });
+  }
+
+  openProductLookup(i, type, j=0) {
+    let dataId;
+    if(type=="main") dataId = this.reqObj.contractRequestProducts[i].productId;
+    if(type=="allowed") dataId = this.reqObj.contractRequestProducts[i].allowedProducts[j].productId;
+    const dialogRef = this.dialog.open(SearchProductsPopupComponent, {
+      width: '100vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      panelClass: 'search-request-popup',
+      data: {
+        selectedId: dataId
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.data){
+        if(type == 'main'){
+          this.reqObj.contractRequestProducts[i].productId = result.data.productId;
+          this.onMainProductChange(result.data.productId, i);
+          this.mainProductSelects.forEach((e, index) => {
+            if(index == i){ e.close() }
+          });
+        } else if(type == 'allowed'){
+          this.setProductChange(result.data.productId, i, j, true);
+          this.allowedProductSelects.forEach((e, index) => {
+            if(index == j){ e.close() }
+          });
+        }
+      }
+    });
+  }
+
+  openAllowedLocationLookup(i) {
+    const dialogRef = this.dialog.open(SearchLocationPopupComponent, {
+      width: '100vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      panelClass: 'search-request-popup'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.data){
+        this.addSelectedAllowedLocation(i, result.data);
+      }
+    });
   }
 }
