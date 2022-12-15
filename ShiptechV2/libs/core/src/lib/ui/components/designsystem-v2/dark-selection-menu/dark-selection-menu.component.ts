@@ -136,7 +136,7 @@ export class DarkSelectionMenuComponent implements OnInit {
     this.dataSource = _.cloneDeep(this._filter(value)).splice(0, 10);
   }
 
-  openLocationLookup(i, type, j=0) {
+  openLocationLookup() {
     const dialogRef = this.dialog.open(SearchLocationPopupComponent, {
       width: '100vw',
       height: '95vh',
