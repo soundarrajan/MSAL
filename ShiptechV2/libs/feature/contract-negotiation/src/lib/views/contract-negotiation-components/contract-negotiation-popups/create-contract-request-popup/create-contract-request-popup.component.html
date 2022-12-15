@@ -24,45 +24,47 @@
           </mat-select>
         </mat-form-field>
         <mat-menu #clickmenu="matMenu" class="plan-period-menu">
-          <div class="header-section">
-            <span class="title">Select Your Plan Period</span>
-            <button class="blue-button proceed-btn" (click)="applyPlanPeriod();menuTrigger.closeMenu();">Proceed</button>
-          </div>
-          <div class="plan-period-section">
-            <div class="period-types">
-              <mat-option *ngFor="let element of planPeriod" [value]="element.type">
-                <mat-radio-button [value]="element.type" [checked]="element.selected"
-                  (change)="onSelectPlanPeriod(element)" (click)="$event.stopPropagation();">
-                  {{element.type}}
-                </mat-radio-button>
-              </mat-option>
+          <div (click)="$event.stopPropagation(); $event.preventDefault()">
+            <div class="header-section">
+              <span class="title">Select Your Plan Period</span>
+              <button class="blue-button proceed-btn" (click)="applyPlanPeriod();menuTrigger.closeMenu();">Proceed</button>
             </div>
-            <div class="period-seperator">
-
-            </div>
-            <div class="period-values">
-              <div *ngIf="selectedPlanPeriod == 'Quarter'">
-                <div *ngFor="let item of plan.quarterlyPeriod; let i = index;" class="plan-period-flex">
-                  <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
-                    (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
-                </div>
+            <div class="plan-period-section">
+              <div class="period-types">
+                <mat-option *ngFor="let element of planPeriod" [value]="element.type">
+                  <mat-radio-button [value]="element.type" [checked]="element.selected"
+                    (change)="onSelectPlanPeriod(element)" (click)="$event.stopPropagation();">
+                    {{element.type}}
+                  </mat-radio-button>
+                </mat-option>
               </div>
-              <div *ngIf="selectedPlanPeriod == 'Month'">
-                <div *ngFor="let item of plan.monthlyPeriod" class="plan-period-flex">
-                  <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
-                    (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
-                </div>
+              <div class="period-seperator">
+  
               </div>
-              <div *ngIf="selectedPlanPeriod == 'Year'">
-                <div *ngFor="let item of plan.yearlyPeriod" class="plan-period-flex">
-                  <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
-                    (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
+              <div class="period-values">
+                <div *ngIf="selectedPlanPeriod == 'Quarter'">
+                  <div *ngFor="let item of plan.quarterlyPeriod; let i = index;" class="plan-period-flex">
+                    <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
+                      (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
+                  </div>
                 </div>
-              </div>
-              <div *ngIf="selectedPlanPeriod == 'Semester'">
-                <div *ngFor="let item of plan.semesterPeriod" class="plan-period-flex">
-                  <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
-                    (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
+                <div *ngIf="selectedPlanPeriod == 'Month'">
+                  <div *ngFor="let item of plan.monthlyPeriod" class="plan-period-flex">
+                    <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
+                      (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
+                  </div>
+                </div>
+                <div *ngIf="selectedPlanPeriod == 'Year'">
+                  <div *ngFor="let item of plan.yearlyPeriod" class="plan-period-flex">
+                    <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
+                      (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
+                  </div>
+                </div>
+                <div *ngIf="selectedPlanPeriod == 'Semester'">
+                  <div *ngFor="let item of plan.semesterPeriod" class="plan-period-flex">
+                    <div class="values" [ngClass]="item.selected ? 'selected-values' : ''"
+                      (click)="selectPlanPeriod($event,item,selectedPlanPeriod)">{{item.label}}</div>
+                  </div>
                 </div>
               </div>
             </div>

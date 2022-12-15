@@ -294,7 +294,6 @@ export class ContractRequestDetailsComponent implements OnInit {
   }
 
   createNewFilter() {
-    this.toastr.success("Preference was succesfully updated");
     if (this.preferenceNameFormControl.value.trim() != "") {
       const matches = this.filterList.filters.find(i => i.name.toLowerCase() == this.preferenceNameFormControl.value.toLowerCase());
       if (!matches) {
@@ -309,11 +308,11 @@ export class ContractRequestDetailsComponent implements OnInit {
         this.filterList.filters.push(newFilter);
         this.filterList.filters.map(i => i['count'] = null);
         this.presetComponent.refreshData(this.filterList.filters);
-        this.chRef.detectChanges();
         this.contractService.updateUserFilterPresets(this.filterList.filters)
           .subscribe(res => {
             this.toastr.success(`Grid Preference - '${newFilter.name}' has been saved successfully`);
             this.newPresetsDialog.close();
+            this.chRef.detectChanges();
             this.preferenceNameFormControl.setValue("");
             this.preferenceNameFormControl.markAsUntouched();
           });

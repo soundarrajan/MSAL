@@ -1037,14 +1037,14 @@ export class ContractNegotiationService extends BaseStoreService
     constructUpdateCounterparties(source = null) : Observable<any> {
         let payload = [];
         let pArray;
-        let storePayload;
         let addFlag = true;
         let filterLocation;
         let successArray = {}
         let locationWarning = []
         let msgStr;
+        let allReadyexitsInLocation = JSON.parse(JSON.stringify(this.selectedCounterparty));
+        let addedNewToLocation = {};
         this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
-          storePayload = JSON.parse(JSON.stringify(state['contractNegotiation'].ContractRequest[0]));
           if(source != null){
             filterLocation = state['contractNegotiation'].ContractRequest[0].locations.filter(el => el['contractRequestProductId'] == source );
           }else{
@@ -1061,26 +1061,20 @@ export class ContractNegotiationService extends BaseStoreService
                   pArray = {
                     'contractRequestProductId' : el['contractRequestProductId'],
                     'counterpartyId' : cId,
-                    'productId' : el.productId,
                     'locationId' : el['location-id'],
-                    "isNoQuote": 0,
                     "statusId": 1,
                     'IsDeleted' :false,
                     'IsSelected' :true,
                     'Id' : 0,
-                    'SpecGroupId' :71,
-                    "offerPrice": 0,
-                    'MinQuantity' :0,
-                    'MinQuantityUomId' :5,
-                    'MaxQuantity' :0,
-                    'MaxQuantityUomId' :5,
-                    'CurrencyId' :1,
-                    'PricingTypeId' :1,
-                    "contractRequestProductOfferIds": "",
                     "createdOn": "2022-12-05T05:21:28.504Z",
                     "createdById": 1
                   };
 
+                  if(allReadyexitsInLocation[cId]){
+                    delete allReadyexitsInLocation[cId];
+                  }
+                  addedNewToLocation[value['name']] = cId;
+                  
                   if(!successArray[value['name']]){
                     successArray[value['name']] = {}
                   }
@@ -1095,35 +1089,58 @@ export class ContractNegotiationService extends BaseStoreService
               });
             });
           });
-          let comArray = {...successArray};
-          let tempGroup = {};
-          Object.entries(successArray).forEach(([key1,v1]) => {
-            Object.entries(comArray).forEach(([key2,v2]) => {
-              if(JSON.stringify(v1) == JSON.stringify(v2)){
-                if(tempGroup[key2]) tempGroup[key2] = {}
-                tempGroup[key2] = v2;
-                delete comArray[key2];
+          // let comArray = {...successArray};
+          // let tempGroup = {};
+          // Object.entries(successArray).forEach(([key1,v1]) => {
+          //   Object.entries(comArray).forEach(([key2,v2]) => {
+          //     if(JSON.stringify(v1) == JSON.stringify(v2)){
+          //       if(tempGroup[key2]) tempGroup[key2] = {}
+          //       tempGroup[key2] = v2;
+          //       delete comArray[key2];
+          //     }
+          //   });
+            
+          //   if(Object.keys(tempGroup).length > 0){
+          //     let successTitle = Object.keys(tempGroup).toString();
+          //     let sellerStr = ' Added successfully to the - ';
+          //     Object.entries(tempGroup[Object.keys(tempGroup)[0]]).forEach((value,key) => {
+          //       sellerStr += '<br><small>'+value[1]+'</small>';
+          //     });
+          //     this.toastr.success(sellerStr,successTitle,{enableHtml :  true});
+          //     tempGroup = {};
+          //   }
+          //  });
+
+          //  if(locationWarning.length > 0){
+          //   if(source != null){
+          //     this.toastr.warning("already exists for <br> "+ msgStr,locationWarning.toString(),{enableHtml :  true});
+          //   }else{
+          //     let unique = [...new Set(locationWarning)]
+          //     this.toastr.warning(" - already exists"+ '',unique.toString(),{enableHtml :  true});
+          //   }
+          //  }
+          let eMessage = [];
+          if(source != null){
+              if(Object.keys(addedNewToLocation).length > 0){
+                this.toastr.success("added successfully to the <br>"+ msgStr,Object.keys(addedNewToLocation).toString(),{enableHtml :  true,timeOut : 6000});
               }
-            });
-            if(Object.keys(tempGroup).length > 0){
-              let successTitle = Object.keys(tempGroup).toString() ;
-              let sellerStr = ' Added successfully to the - ';
-              Object.entries(tempGroup[Object.keys(tempGroup)[0]]).forEach((value,key) => {
-                sellerStr += '<br><small>'+value[1]+'</small>';
-              });
-              this.toastr.success(sellerStr,successTitle,{enableHtml :  true});
-              tempGroup = {};
-            }
-           });
-           if(locationWarning.length > 0){
-            if(source != null){
-              this.toastr.warning("already exists for <br> "+ msgStr,locationWarning.toString(),{enableHtml :  true});
+              if(Object.keys(allReadyexitsInLocation).length > 0){
+                Object.entries(allReadyexitsInLocation).forEach(([key,value]) => {
+                  eMessage.push(value['name']);
+                });
+                this.toastr.warning(" - already exists to the <br>"+ msgStr,eMessage.toString(),{enableHtml :  true,timeOut : 6000});
+              }
             }else{
-              let unique = [...new Set(locationWarning)]
-              this.toastr.warning(" - already exists"+ '',unique.toString(),{enableHtml :  true});
-            }
-           }
-       //this.store.dispatch(new ContractRequest([storePayload]));
+              if(Object.keys(allReadyexitsInLocation).length > 0){
+                Object.entries(allReadyexitsInLocation).forEach(([key,value]) => {
+                  eMessage.push(value['name']);
+                });
+                this.toastr.warning(" - already exists to all the locations"+ '',eMessage.toString(),{timeOut : 6000});
+              }
+              if(Object.keys(addedNewToLocation).length > 0){
+                this.toastr.success(" - added successfully to all the locations"+ '',Object.keys(addedNewToLocation).toString(),{timeOut : 6000});
+              }
+          }
        this.selectedCounterparty = {};
        return  this.contractNegotiationApi.addCounterpartyToAllLocations(payload);
     }

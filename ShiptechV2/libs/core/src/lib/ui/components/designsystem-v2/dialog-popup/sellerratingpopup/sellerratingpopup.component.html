@@ -27,7 +27,7 @@
                 </mat-panel-title>
                 </mat-expansion-panel-header>
                 <ng-template matExpansionPanelContent>
-                  <div style="max-height:427px; overflow-y:scroll; overflow-x:hidden">
+                  <div style="overflow-y:scroll; overflow-x:hidden">
                     <div *ngFor="let items of specificPortRatingData">
                       <div class="row second-header"  style="padding: 0px 4px; justify-content: space-between;">
                           <div class="col-7 bold-text" style="padding-left: 32px;">{{items.categoriesName | htmlDecodeReadonly}}</div>
@@ -45,7 +45,7 @@
                                 <star-rating value="{{item.rating}}" [totalstars]='5' checkedcolor="#364150" uncheckedcolor="#EAEAEA" size="3em" readonly="true"></star-rating>
                               </div>
                               <div class="rate l-h-46" *ngIf="item.rating == null">
-                              <span  >{{item.comments}}</span>
+                              <span  >{{this.format.htmlDecode(item.comments)}}</span>
                             </div>
                             <div class="rate l-h-46" *ngIf="item.rating == null && item.comments == null">
                               <span>NIL</span>
@@ -75,8 +75,8 @@
                 </mat-panel-title>
                 </mat-expansion-panel-header>
                 <ng-template matExpansionPanelContent >
-                  <div style="max-height: 426px; overflow-y:scroll; overflow-x:hidden">
-                    <div *ngFor="let items of allLocationRatingData">
+                  <div *ngFor="let items of allLocationRatingData">
+                    <div style="overflow-y:scroll; overflow-x:hidden">
                       <div class="row second-header" style="padding: 0px 4px; justify-content: space-between;">
                           <div class="col-7 bold-text"  style="padding-left: 32px;">{{items.categoriesName | htmlDecodeReadonly}}</div>
                           <div class="col-5 text-right"  style="padding-right: 1.4vw;">
@@ -93,16 +93,15 @@
                                 <star-rating value="{{item.rating}}" [totalstars]='5' checkedcolor="#364150" uncheckedcolor="#EAEAEA" size="3em" readonly="true"></star-rating>
                               </div>
                               <div class="rate l-h-46" *ngIf="item.rating == null">
-                              <span  >{{item.comments}}</span> 
+                              <span  >{{this.format.htmlDecode(item.comments)}}</span> 
                             </div>
                             <div class="rate l-h-46" *ngIf="item.rating == null && item.comments == null">
                               <span  >NIL</span>
                             </div>
                           </span>
                       </div>
-                  </div>
-                </div>
-                    
+                      </div>
+                  </div>                    
                 </ng-template>
             </mat-expansion-panel>
           </div>

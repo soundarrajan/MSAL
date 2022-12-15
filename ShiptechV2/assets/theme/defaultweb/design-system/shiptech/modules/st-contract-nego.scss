@@ -1788,8 +1788,8 @@
 
                 .hover-cell-lookup {
                   justify-content: space-between;
-                  width: 100px !important;
-                  max-width: 100px !important;
+                  //width: 100px !important;
+                  //max-width: 100px !important;
                 }
               }
 
@@ -5608,6 +5608,7 @@
         }
 
         .proceed-btn {
+          cursor: pointer;
           width: 90px;
           height: 26px;
           background: #1F96FF !important;

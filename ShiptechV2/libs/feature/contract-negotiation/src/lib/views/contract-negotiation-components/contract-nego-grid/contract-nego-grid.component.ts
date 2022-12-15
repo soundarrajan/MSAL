@@ -55,6 +55,7 @@ export class ContractNegoGridComponent implements OnInit {
   blockHttpCall : boolean = false;
   checkBoxSelectionstatus : boolean;
   sellerIds = [];
+  dispalyNoData : boolean = false;
   constructor(private localService: LocalService, private store : Store,private contractService: ContractNegotiationService) {
     this.context = { componentParent: this };
   }
@@ -63,6 +64,7 @@ export class ContractNegoGridComponent implements OnInit {
       this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
         state['contractNegotiation'].ContractRequest[0].locations.find(el => {
           if(el['location-id'] == this.locationId && el.productId == this.productId){
+            this.dispalyNoData = (el.data.length > 0)? false : true;
             this.gridOptions_forecast?.api?.setRowData(el.data);
           }
         })
@@ -93,6 +95,7 @@ export class ContractNegoGridComponent implements OnInit {
       },
       rowSelection: 'multiple',
       onGridReady: params => {
+        console.log(params);
         setTimeout(() => this.blockHttpCall = true,3000);
         this.gridOptions_forecast.api = params.api;
         this.gridOptions_forecast.columnApi = params.columnApi;
@@ -407,7 +410,7 @@ export class ContractNegoGridComponent implements OnInit {
           headerName: 'Name',
           headerTooltip: 'Name',
           field: 'CounterpartyName',
-          width: 120,
+          width: 200,
           suppressSizeToFit: true,
           cellClass: 'suppress-movable-col remove-option hoverCell',
           pinned: 'left',
@@ -427,14 +430,13 @@ export class ContractNegoGridComponent implements OnInit {
         {
           headerName: 'Gen. Rating',
           headerTooltip: 'General Rating',
-          headerClass: ['aggrid-text-align-c'],
+          headerClass: ['m-l-7'],
           suppressSizeToFit: true,
           suppressNavigable: true,
           lockPosition: true,
           pinned: 'left',
           field: 'GenRating',
-          minWidth: 60,
-          maxWidth: 110,
+          width: 80,
           cellClass: 'aggridtextalign-center no-padding rating-chip-renderer',
           // cellRendererParams: { label: 'gen-rating', cellClass: 'rating-chip-renderer' }
           cellRendererSelector: params => {
@@ -455,14 +457,13 @@ export class ContractNegoGridComponent implements OnInit {
         {
           headerName: 'Port Rating',
           headerTooltip: 'Port Rating',
-          headerClass: ['aggrid-text-align-c border-right'],
+          headerClass: ['m-l-7 border-right'],
           suppressNavigable: true,
           lockPosition: true,
           pinned: 'left',
           suppressSizeToFit: true,
           field: 'PortRating',
-          minWidth: 60,
-          maxWidth: 110,
+          width: 80,
           cellClass: 'aggridtextalign-center no-padding rating-chip rating-chip-renderer',
           // cellRenderer: 'ratingChipRenderer'
           cellRendererSelector: params => {
