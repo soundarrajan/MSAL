@@ -59,7 +59,7 @@ export class ContractNegotiationDetailsComponent implements OnInit {
     this.counterpartyList = this.localService.filterCounterParty(filterValuelue);
   }
   constructUpdateCounterparties(source){
-    this.contractService.constructUpdateCounterparties(source).subscribe(res => {
+    this.contractService.constructUpdateCounterparties(source)?.subscribe(res => {
       this.contractService.getContractRequestDetails(this.route.snapshot.params.requestId)
       .subscribe(response => {
         this.localService.contractRequestData(response);
