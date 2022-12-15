@@ -501,7 +501,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
   }
 
-
   deleteAllowedLocation(prodIndex, index) {
     this.reqObj.contractRequestProducts[prodIndex].allowedLocations.splice(index, 1);
     this.productAllowedLocations[prodIndex].splice(index, 1);
@@ -1041,19 +1040,19 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
         if (typeof v.contractualQuantityOptionId != 'undefined') {
           if(hasTotalContractualQuantity && v.contractualQuantityOptionId == 1){
-            duplicateQuantityType.push('Total Contractual Quantity');
+            if (!duplicateQuantityType.includes('Total Contractual Quantity')) duplicateQuantityType.push('Total Contractual Quantity');
           }
           if(hasPerMonthQuantity && v.contractualQuantityOptionId == 2){
-            duplicateQuantityType.push('Per Month');
+            if (!duplicateQuantityType.includes('Per Month')) duplicateQuantityType.push('Per Month');
           }
           if(hasPerWeekQuantity && v.contractualQuantityOptionId == 3){
-            duplicateQuantityType.push('Per Week');
+            if (!duplicateQuantityType.includes('Per Week')) duplicateQuantityType.push('Per Week');
           }
           if(hasPerDayQuantity && v.contractualQuantityOptionId == 4){
-            duplicateQuantityType.push('Per Day');
+            if (!duplicateQuantityType.includes('Per Day')) duplicateQuantityType.push('Per Day');
           }
           if(hasPerLiftQuantity && v.contractualQuantityOptionId == 5){
-            duplicateQuantityType.push('Per Lift');
+            if (!duplicateQuantityType.includes('Per Lift')) duplicateQuantityType.push('Per Lift');
           }
           
           if (v.contractualQuantityOptionId == 1) {
@@ -1087,6 +1086,12 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
       }
     });
+    if(duplicateQuantityType.length > 0){
+      this.toaster.error(
+        'You cannot define ' + duplicateQuantityType.join(', ') + ' multiple times'
+      );
+      return false;
+    }
     let qtyToMatch = 0;
     if (!hasTotalContractualQuantity) {
       this.toaster.error(
@@ -1128,12 +1133,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
         );
         return false;  
       }
-    }
-    if(duplicateQuantityType.length > 0){
-      this.toaster.error(
-        'You cannot define ' + duplicateQuantityType.join(', ') + ' multiple times'
-      );
-      return false;
     }
     if (message != 'Please fill in required fields:') {
       if (message[message.length - 1] == ',') {
