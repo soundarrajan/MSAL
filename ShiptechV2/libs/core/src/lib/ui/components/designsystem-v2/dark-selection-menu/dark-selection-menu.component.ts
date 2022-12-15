@@ -17,6 +17,8 @@ import { MatSelect } from '@angular/material/select';
 import { Observable } from 'rxjs';
 import { CommonService } from '@shiptech/core/services/common/common-service.service'
 import _ from 'lodash';
+import { SearchLocationPopupComponent } from '../search-location-popup/search-location-popup.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dark-selection-menu',
@@ -42,7 +44,8 @@ export class DarkSelectionMenuComponent implements OnInit {
   constructor(
     @Host() private select: MatSelect,
     private commonService: CommonService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -131,6 +134,21 @@ export class DarkSelectionMenuComponent implements OnInit {
 
   search(value: string): void {
     this.dataSource = _.cloneDeep(this._filter(value)).splice(0, 10);
+  }
+
+  openLocationLookup(i, type, j=0) {
+    const dialogRef = this.dialog.open(SearchLocationPopupComponent, {
+      width: '100vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      panelClass: 'search-request-popup'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.data){
+        this.onSelectionChange.emit(result.data);
+      }
+    });
   }
 
   isChecked(elId) { return (elId === this.selectedItem)?true:false }

@@ -300,7 +300,7 @@
                                     class="without-search custom-dropdown"
                                     appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select [value]="reqObj.contractRequestProducts[i].productId" 
+                                    <mat-select #mainProductSelect [value]="reqObj.contractRequestProducts[i].productId" 
                                       [(ngModel)]="reqObj.contractRequestProducts[i].productId"
                                       (selectionChange)="onMainProductChange($event.value, i);"
                                       disableOptionCentering [panelClass]="'shiptech-select-product-container'" required>
@@ -315,10 +315,7 @@
                                           </div>
 
                                           <div id="expandPrdSrch" class="col-md-2">
-                                            <!-- <img alt="Shiptech"
-                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                                           -->
-                                            <span class="menu-expand-icon"></span>
+                                            <span class="menu-expand-icon" (click)="openProductLookup(i, 'main');"></span>
                                           </div>
                                         </div>
                                         <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
@@ -369,10 +366,7 @@
                                           </div>
 
                                           <div id="expandSpecSearch" class="col-md-2">
-                                            <!-- <img alt="Shiptech"
-                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                                           -->
-                                           <span class="menu-expand-icon"></span>
+                                            <span class="menu-expand-icon"></span>
                                           </div>
                                         </div>
                                         <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
@@ -386,7 +380,7 @@
                                               style="padding-left:0px; text-align: unset !important;">
                                               <mat-option [value]="element.id" class="no-padding" id="specSrdRadio"
                                                 style="padding-left:0px; text-align: unset !important;">
-                                                <mat-radio-button  class="location-container-radio-button"
+                                                <mat-radio-button class="location-container-radio-button"
                                                   [value]="element.id">
                                                   {{ element.name }}
                                                 </mat-radio-button>
@@ -515,7 +509,7 @@
                                   <mat-form-field class="without-search contract-location-product-dropdown"
                                     appearance="legacy" style="width: 100% !important; border-right: none !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].productId"
+                                    <mat-select #allowedProductSelects [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].productId"
                                       #locSelect disableOptionCentering
                                       [panelClass]="'shiptech-select-product-container'"
                                       (selectionChange)="setProductChange($event.value,i,j)">
@@ -531,10 +525,7 @@
                                           </div>
 
                                           <div id="allowedPrdSrcImg" class="col-md-2">
-                                            <!-- <img alt="Shiptech"
-                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                                          -->
-                                          <span class="menu-expand-icon"></span>
+                                            <span class="menu-expand-icon" (click)="openProductLookup(i, 'allowed', j)"></span>
                                           </div>
                                         </div>
                                         <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
@@ -583,10 +574,7 @@
                                           </div>
 
                                           <div class="col-md-2">
-                                            <!-- <img alt="Shiptech"
-                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                                          -->
-                                          <span class="menu-expand-icon"></span>
+                                            <span class="menu-expand-icon"></span>
                                           </div>
                                         </div>
                                         <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
@@ -670,10 +658,7 @@
                             </div>
 
                             <div id="allowedLocAdd" class="col-md-2">
-                              <!-- <img alt="Shiptech"
-                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                            -->
-                            <span class="menu-expand-icon"></span>
+                              <span class="menu-expand-icon" (click)="openAllowedLocationLookup(i)"></span>
                             </div>
                           </div>
                           <table class="delivery-products-pop-up shiptech-delivery-popup col-md-12 no-padding" mat-table
