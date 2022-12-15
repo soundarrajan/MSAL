@@ -448,9 +448,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
   
   deleteMainLocation(index: number){
     let mainLocToDelete = this.mainLocations[index];
-    this.reqObj.contractRequestProducts
-      .filter(e => e.locationId == mainLocToDelete.locationId)
-      .map(e => e.isDeleted = true);
+    this.reqObj.contractRequestProducts.forEach( (prod, index) => {
+      if(prod.locationId == mainLocToDelete.locationId) this.deleteNewMainProduct(index);
+    })
     this.mainLocations.splice(index, 1);
     if(this.mainLocations.length > 0 ){
       this.onClick(this.mainLocations[this.mainLocations.length - 1]);
@@ -792,7 +792,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.toaster.warning(location.name + ' already added as main location.');
       return false;
     }
-    let firstLocation = (this.mainLocations.length > 0) ? false : true;
     this.showMainLocationDropdown = false;
     this.mainLocations.push({
       locationId: location.id,
@@ -805,14 +804,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
       } else {
         loc.selected = false;
       } 
-    })
+    });
+    let firstLocation = (this.mainLocations.length == 1 
+      && this.reqObj.contractRequestProducts.length == 1
+      && this.reqObj.contractRequestProducts[0].locationId == '') ? true : false;
     this.selectedMainLocationName = location.name;
     if(firstLocation) {
-      if(this.getLocationProducts() && this.getLocationProducts().length > 0) {
-        this.reqObj.contractRequestProducts.forEach( prod => {
-          prod.locationId = location.id
-        });
-      } else this.addNewMainProduct(location.id);
+      this.reqObj.contractRequestProducts.forEach( prod => {
+        prod.locationId = location.id
+      });
     } else {
       this.addNewMainProduct(location.id);
     }
