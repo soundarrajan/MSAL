@@ -1153,6 +1153,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     message = 'Please fill in required fields:';
     this.reqObj.contractRequestProducts.forEach((v, k) => {
       if (typeof v != 'undefined') {
+        if(v.isDeleted) return;
         if (!v.productId) {
           message += ' Product,';
         }
