@@ -536,7 +536,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   deleteNewMainProduct(i) {
-    this.reqObj.contractRequestProducts[i].isDeleted = true;
+    if(this.reqObj.contractRequestProducts[i].contractRequestId === 0){
+      this.reqObj.contractRequestProducts.splice(i, 1);
+      this.listData.splice(i, 1);
+      this.searchFilterString.splice(i, 1);
+      this.productAllowedLocations.splice(i, 1)
+      this.hideAllowedLocationDropdown.splice(i, 1);
+    } else {
+      this.reqObj.contractRequestProducts[i].isDeleted = true;
+    }
   }
 
   specGroupDataSource(prodId) {
@@ -800,9 +808,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
     })
     this.selectedMainLocationName = location.name;
     if(firstLocation) {
-      this.reqObj.contractRequestProducts.forEach( prod => {
-        prod.locationId = location.id
-      });
+      if(this.getLocationProducts() && this.getLocationProducts().length > 0) {
+        this.reqObj.contractRequestProducts.forEach( prod => {
+          prod.locationId = location.id
+        });
+      } else this.addNewMainProduct(location.id);
     } else {
       this.addNewMainProduct(location.id);
     }
