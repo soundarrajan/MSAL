@@ -1102,8 +1102,8 @@
                     $.each($scope.formValues.periods, (k, v) => {
                         if($scope.formValues.periods[k].period == null && $scope.formValues.periods[k].isDeleted){
                              $scope.formValues.periods[k].period =  $scope.formValues.oldPeriods[k].period; 
-                             $sope.formValues.periods[k].validFrom = $scope.formValues.oldPeriods[k].validFrom; 
-                             $scope.formValues.periods[k].validTo = $scope.formValues.oldPeriods[k].period; 
+                             $scope.formValues.periods[k].validFrom = $scope.formValues.oldPeriods[k].validFrom; 
+                             $scope.formValues.periods[k].validTo = $scope.formValues.oldPeriods[k].validTo; 
                              delete $scope.formValues.oldPeriods;
                         }
                         if($scope.copiedId > 0){
