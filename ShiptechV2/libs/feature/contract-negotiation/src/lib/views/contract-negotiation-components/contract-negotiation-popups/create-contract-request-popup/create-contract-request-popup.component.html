@@ -304,7 +304,7 @@
                                     <mat-label>Add Product</mat-label>
                                     <mat-select #mainProductSelect [value]="reqObj.contractRequestProducts[i].productId" 
                                       [(ngModel)]="reqObj.contractRequestProducts[i].productId"
-                                      (selectionChange)="onMainProductChange($event.value, i);"
+                                      (selectionChange)="onMainProductChange($event.value, i);mainProductSelect.close()"
                                       disableOptionCentering [panelClass]="'shiptech-select-product-container'" required>
                                       <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                         <div class="col-md-12 header-container-product pd-0">
@@ -514,7 +514,7 @@
                                     <mat-select #allowedProductSelects [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].productId"
                                       #locSelect disableOptionCentering
                                       [panelClass]="'shiptech-select-product-container'"
-                                      (selectionChange)="setProductChange($event.value,i,j)">
+                                      (selectionChange)="setProductChange($event.value,i,j); allowedProductSelects.close()">
                                       <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                         <div class="col-md-12 header-container-product pd-0">
                                           <div class="search-product-container col-md-10 pd-0">
@@ -643,7 +643,7 @@
                       </div>
                     </ng-container>
                     <div class="select-product" *ngIf="!hideAllowedLocationDropdown[i]">
-                      <mat-form-field id="allowedLocs" class="custom-select" appearance="fill" (click)="openAddAllowedLocationSelect()">
+                      <mat-form-field id="allowedLocs" class="custom-select" appearance="fill">
                         <mat-select [disableOptionCentering]="true" #allowedLocationSelect [(ngModel)]="selectedAllowedLocation"
                           placeholder="Add Location"
                           (selectionChange)="addSelectedAllowedLocation(i,selectedAllowedLocation)"

@@ -60,7 +60,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   locationBasedProducts = [];
   selectedLocationId = 0;
   isNewRequest = true;
-  //listData: any = {};
   listData: any[] = [];
   productsListData: any = {};
 
@@ -221,8 +220,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
       "SpecGroup",
       "Uom"
     ]).subscribe((data) => {
+      this.planStartDate = new Date(this.plan.quarterlyPeriod[0].startDate);
+      this.planEndDate = new Date(this.plan.quarterlyPeriod[0].endDate);
+      this.planLabel = this.plan.quarterlyPeriod[0].label;
       this.staticData = _.cloneDeep(data);
-      this.hideAllowedLocationDropdown[0] = false
       this.locationsList.next(data.Location);
       if(this.data.requestDetails){
         this.isNewRequest = false;
@@ -277,8 +278,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
       if(this.isNewRequest) {
         this.reqObj.quantityDetails.push(this.newQuantityDetails);
         this.addNewMainProduct(0);
-      } else {
-  
       }
     });
     this.generalTenantSettings = this.tenantSettingsService.getGeneralTenantSettings();
@@ -457,14 +456,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   addNewAllowedLocation(prodIndex) {
     this.hideAllowedLocationDropdown[prodIndex] = false;
     this.selectedAllowedLocation = '';
-  }
-
-  openAddMainLocationSelect() {
-    this.mainLocationSelect.open();
-  }
-
-  openAddAllowedLocationSelect() {
-    this.allowedLocationSelect.open();
   }
 
   addSelectedAllowedLocation(prodIndex, selectedAllowedLocation) {
@@ -1245,25 +1236,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
   }
 
-  openMainProductPopup(i) {
-    const dialogRef = this.dialog.open(SearchProductsPopupComponent, {
-      width: '100vw',
-      height: '95vh',
-      maxWidth: '95vw',
-      panelClass: 'search-request-popup'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result.data);
-      if(result.data){
-        this.onMainProductChange(result.data.productId, i);
-        this.mainProductSelects.forEach((e, index) => {
-          if(index == i){ e.close() }
-        });
-      }
-    });
-  }
-
   openProductLookup(i, type, j=0) {
     let dataId;
     if(type=="main") dataId = this.reqObj.contractRequestProducts[i].productId;
@@ -1283,14 +1255,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
         if(type == 'main'){
           this.reqObj.contractRequestProducts[i].productId = result.data.productId;
           this.onMainProductChange(result.data.productId, i);
-          this.mainProductSelects.forEach((e, index) => {
-            if(index == i){ e.close() }
-          });
+          this.mainProductSelects.forEach(e => e.close());
         } else if(type == 'allowed'){
           this.setProductChange(result.data.productId, i, j, true);
-          this.allowedProductSelects.forEach((e, index) => {
-            if(index == j){ e.close() }
-          });
+          this.allowedProductSelects.forEach(e => e.close());
         }
       }
     });
