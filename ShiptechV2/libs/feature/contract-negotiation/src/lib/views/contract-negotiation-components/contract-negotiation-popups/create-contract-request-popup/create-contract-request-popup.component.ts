@@ -222,7 +222,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       "Uom"
     ]).subscribe((data) => {
       this.staticData = _.cloneDeep(data);
-      this.hideAllowedLocationDropdown[0] = true
+      this.hideAllowedLocationDropdown[0] = false
       this.locationsList.next(data.Location);
       if(this.data.requestDetails){
         this.isNewRequest = false;
@@ -242,7 +242,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
           if(newLocation.selected == true) this.selectedMainLocationName = newLocation.locationName;
           if (this.mainLocations.findIndex((l) => l.locationId == item.locationId) === -1) this.mainLocations.push(newLocation);
           this.searchFilterString.push({ mainProduct: '', allowedProducts: [], allowedLocations: '', });
-          this.hideAllowedLocationDropdown[i] = true;
+          this.hideAllowedLocationDropdown[i] = false;
           this.listData[i] = {mainProduct: [], specGroup: [], allowedProducts: [], allowedLocations: []};
           this.listData[i].mainProduct = (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
           this.onMainProductChange(this.reqObj.contractRequestProducts[i].productId, i, false);
@@ -917,7 +917,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   convertDecimalSeparatorStringToNumber(number) {
-    let numberToReturn = number;
+    let numberToReturn = (number !== '' && number !== null && number !== undefined)?number:0;
     let decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
       if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
