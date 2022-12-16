@@ -113,8 +113,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   reqObj: any = {
     id: 0,
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: "",
+    endDate: "",
     quoteByDate: "",
     minValidity: "",
     supplierComments: "",
@@ -275,10 +275,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
         this.showMainLocationDropdown = true;
       }
       if(this.isNewRequest) {
-        this.planStartDate = new Date(this.plan.quarterlyPeriod[0].startDate);
-        this.planEndDate = new Date(this.plan.quarterlyPeriod[0].endDate);
-        this.planLabel = this.plan.quarterlyPeriod[0].label;
-        this.applyPlanPeriod();
         this.reqObj.quantityDetails.push(this.newQuantityDetails);
         this.addNewMainProduct(0);
       } else {
