@@ -60,7 +60,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   locationBasedProducts = [];
   selectedLocationId = 0;
   isNewRequest = true;
-  //listData: any = {};
   listData: any[] = [];
   productsListData: any = {};
 
@@ -221,6 +220,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       "SpecGroup",
       "Uom"
     ]).subscribe((data) => {
+      this.planStartDate = new Date(this.plan.quarterlyPeriod[0].startDate);
+      this.planEndDate = new Date(this.plan.quarterlyPeriod[0].endDate);
+      this.planLabel = this.plan.quarterlyPeriod[0].label;
       this.staticData = _.cloneDeep(data);
       this.locationsList.next(data.Location);
       if(this.data.requestDetails){
