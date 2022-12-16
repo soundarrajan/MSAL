@@ -381,6 +381,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
   focusOut(e, type, objName, i) {
     let value = (e.target.value)?e.target.value:0;
+    let qtyValue = (this.quantityFormatValue(value))?this.quantityFormatValue(value):this.quantityFormatValue(0);
     if (type == 'min') {
       e.target.parentElement
         .closest('.minInputFocus')
@@ -388,9 +389,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
       if(objName == 'quantity')
-        this.reqObj.quantityDetails[i].minQuantity = this.quantityFormatValue(value);
+        this.reqObj.quantityDetails[i].minQuantity = qtyValue;
       if(objName == 'product')
-        this.reqObj.contractRequestProducts[i].minQuantity = this.quantityFormatValue(value);
+        this.reqObj.contractRequestProducts[i].minQuantity = qtyValue;
     }
 
     if (type == 'max') {
@@ -400,9 +401,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
       if(objName == 'quantity')
-        this.reqObj.quantityDetails[i].maxQuantity = this.quantityFormatValue(value);
+        this.reqObj.quantityDetails[i].maxQuantity = qtyValue;
       if(objName == 'product')
-        this.reqObj.contractRequestProducts[i].maxQuantity = this.quantityFormatValue(value);
+        this.reqObj.contractRequestProducts[i].maxQuantity = qtyValue;
     }
 
     if (type == 'tol') {
@@ -412,7 +413,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
       if(objName == 'quantity')
-        this.reqObj.quantityDetails[i].tolerancePercentage = this.quantityFormatValue(value);
+        this.reqObj.quantityDetails[i].tolerancePercentage = qtyValue;
     }
   }
   // Only Number
