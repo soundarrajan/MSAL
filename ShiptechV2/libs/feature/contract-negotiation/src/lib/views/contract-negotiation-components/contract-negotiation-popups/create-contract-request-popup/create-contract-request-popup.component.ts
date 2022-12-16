@@ -113,8 +113,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   reqObj: any = {
     id: 0,
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: "",
+    endDate: "",
     quoteByDate: "",
     minValidity: "",
     supplierComments: "",
@@ -222,7 +222,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       "Uom"
     ]).subscribe((data) => {
       this.staticData = _.cloneDeep(data);
-      this.hideAllowedLocationDropdown[0] = true
+      this.hideAllowedLocationDropdown[0] = false
       this.locationsList.next(data.Location);
       if(this.data.requestDetails){
         this.isNewRequest = false;
@@ -242,7 +242,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
           if(newLocation.selected == true) this.selectedMainLocationName = newLocation.locationName;
           if (this.mainLocations.findIndex((l) => l.locationId == item.locationId) === -1) this.mainLocations.push(newLocation);
           this.searchFilterString.push({ mainProduct: '', allowedProducts: [], allowedLocations: '', });
-          this.hideAllowedLocationDropdown[i] = true;
+          this.hideAllowedLocationDropdown[i] = false;
           this.listData[i] = {mainProduct: [], specGroup: [], allowedProducts: [], allowedLocations: []};
           this.listData[i].mainProduct = (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
           this.onMainProductChange(this.reqObj.contractRequestProducts[i].productId, i, false);
@@ -275,10 +275,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
         this.showMainLocationDropdown = true;
       }
       if(this.isNewRequest) {
-        this.planStartDate = new Date(this.plan.quarterlyPeriod[0].startDate);
-        this.planEndDate = new Date(this.plan.quarterlyPeriod[0].endDate);
-        this.planLabel = this.plan.quarterlyPeriod[0].label;
-        this.applyPlanPeriod();
         this.reqObj.quantityDetails.push(this.newQuantityDetails);
         this.addNewMainProduct(0);
       } else {
@@ -381,6 +377,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
   focusOut(e, type, objName, i) {
     let value = (e.target.value)?e.target.value:0;
+    let qtyValue = (this.quantityFormatValue(value))?this.quantityFormatValue(value):this.quantityFormatValue(0);
     if (type == 'min') {
       e.target.parentElement
         .closest('.minInputFocus')
@@ -388,9 +385,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
       if(objName == 'quantity')
-        this.reqObj.quantityDetails[i].minQuantity = this.quantityFormatValue(value);
+        this.reqObj.quantityDetails[i].minQuantity = qtyValue;
       if(objName == 'product')
-        this.reqObj.contractRequestProducts[i].minQuantity = this.quantityFormatValue(value);
+        this.reqObj.contractRequestProducts[i].minQuantity = qtyValue;
     }
 
     if (type == 'max') {
@@ -400,9 +397,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
       if(objName == 'quantity')
-        this.reqObj.quantityDetails[i].maxQuantity = this.quantityFormatValue(value);
+        this.reqObj.quantityDetails[i].maxQuantity = qtyValue;
       if(objName == 'product')
-        this.reqObj.contractRequestProducts[i].maxQuantity = this.quantityFormatValue(value);
+        this.reqObj.contractRequestProducts[i].maxQuantity = qtyValue;
     }
 
     if (type == 'tol') {
@@ -412,7 +409,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
       if(objName == 'quantity')
-        this.reqObj.quantityDetails[i].tolerancePercentage = this.quantityFormatValue(value);
+        this.reqObj.quantityDetails[i].tolerancePercentage = qtyValue;
     }
   }
   // Only Number
@@ -917,7 +914,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   convertDecimalSeparatorStringToNumber(number) {
-    let numberToReturn = number;
+    let numberToReturn = (number !== '' && number !== null && number !== undefined)?number:0;
     let decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
       if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
