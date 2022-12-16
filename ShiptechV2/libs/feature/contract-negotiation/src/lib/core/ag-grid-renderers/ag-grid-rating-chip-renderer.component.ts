@@ -8,10 +8,14 @@ import { SellerratingpopupComponent } from '@shiptech/core/ui/components/designs
     <div [ngClass]="params.cellClass" *ngIf = "params.value.grating != null "
     (click)="sellerratingpopup(params.data, params.label)">
     <div  class="truncate-125 chip">
-        <div class="m-lr-5">
-            {{params.value.grating}}
+        <div class="m-lr-5"  *ngIf = "params.label == 'port-rating'" >
+            {{params.value.prating}}
             <span class="star"></span>
         </div>
+        <div class="m-lr-5"  *ngIf = "params.label == 'gen-rating'" >
+        {{params.value.grating}}
+        <span class="star"></span>
+       </div>
         <div>{{params.value.gprice}}</div>
     </div>
   </div>
@@ -29,6 +33,7 @@ export class AGGridRatingChipRenderer implements ICellRendererAngularComp {
     }
     agInit(params: any): void {
         this.params = params;
+        console.log(this.params);
     }
 
     refresh(): boolean {
