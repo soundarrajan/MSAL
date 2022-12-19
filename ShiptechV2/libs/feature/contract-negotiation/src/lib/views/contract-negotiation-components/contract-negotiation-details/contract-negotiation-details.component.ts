@@ -15,6 +15,7 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   @Input() rfqSent;
   @Input() noQuote;
   @Input() selectedRequestIndex;
+  public searchValue : string = '';
 
   public portIndex: number = 0;
   public fullHeaderWidth: any;
@@ -70,8 +71,9 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   this.localService.getMasterListData(['Counterparty']).subscribe(data => {
     this.counterpartyList = this.localService.limitCounterPartyList(data['Counterparty']);
   }); 
-  //this._el2.nativeElement.focus();
+  this.searchValue = '';
   this.contractService.selectedCounterparty = {};
+  document.getElementById("inputBox3").focus()
   }
 
   onSearchCounterparty(input) {
