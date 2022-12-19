@@ -272,7 +272,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
 
   clearCounterparty(event) {
     if (event.target.value == '') {
-      this.child.onClearSearchCounterparty();
+      this.store.dispatch(new ContractRequest([{'locations' : this.counterpartyBackup}]));
     }
   }
   searchCounterparty(userInput: string) {
