@@ -264,8 +264,8 @@
 
         <div id="locDrp" class="select-product" [hidden]="!showMainLocationDropdown">
           <mat-form-field class="custom-select main-location-select" appearance="fill">
-            <mat-select [disableOptionCentering]="true" #mainLocationSelect [(ngModel)]="selectedMainLocation"
-            [ngModelOptions]="{standalone: true}" placeholder="Add Location"
+            <mat-select [disableOptionCentering]="true" #mainLocationSelect
+              placeholder="Add Location"
               panelClass="shiptech-select-product-container">
               <app-dark-selection-menu
                 [dataSource]="locationsList"
@@ -303,15 +303,17 @@
                                     appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Add Product</mat-label>
                                     <mat-select #mainProductSelect [value]="reqObj.contractRequestProducts[i].productId" 
-                                      [(ngModel)]="reqObj.contractRequestProducts[i].productId"
+                                      [value]="reqObj.contractRequestProducts[i].productId"
+                                      (closed)="onMainProductSelectClosed(i)"
                                       (selectionChange)="onMainProductChange($event.value, i);mainProductSelect.close()"
                                       disableOptionCentering [panelClass]="'shiptech-select-product-container'" required>
                                       <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                         <div class="col-md-12 header-container-product pd-0">
                                           <div class="search-product-container col-md-10 pd-0">
                                             <span id="searchPrdLookup" class="search-product-lookup"></span>
-                                            <input id="searchPrdInp" [(ngModel)]="searchFilterString[i].mainProduct" matInput
-                                            (input)="onMainProdSearchChange($event.target.value, i)"
+                                            <input id="searchPrdInp" 
+                                              [(ngModel)]="searchFilterString[i].mainProduct" matInput
+                                              (input)="onMainProdSearchChange($event.target.value, i)"
                                               placeholder="Search and select a product"
                                               class="search-product-input" (keydown)="$event.stopPropagation();">
                                           </div>
@@ -513,6 +515,7 @@
                                     <mat-label>Add Product</mat-label>
                                     <mat-select #allowedProductSelects [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].productId"
                                       #locSelect disableOptionCentering
+                                      (closed)="onAllowedProductSelectClosed(i, j)"
                                       [panelClass]="'shiptech-select-product-container'"
                                       (selectionChange)="setProductChange($event.value,i,j); allowedProductSelects.close()">
                                       <div [ngClass]="{'expand-select-location-container': expandLocation}">
@@ -522,6 +525,7 @@
                                             </span>
                                             <input id="allowedPrdAdd" matInput 
                                               placeholder="Search and select a product"
+                                              [(ngModel)]="this.searchFilterString[i].allowedProducts[j].product"
                                               (input)="onAllowedProdSearchChange($event.target.value, i, j)"
                                               class="search-product-input" (keydown)="$event.stopPropagation();">
                                           </div>
@@ -644,9 +648,9 @@
                     </ng-container>
                     <div class="select-product" *ngIf="!hideAllowedLocationDropdown[i]">
                       <mat-form-field id="allowedLocs" class="custom-select" appearance="fill">
-                        <mat-select [disableOptionCentering]="true" #allowedLocationSelect [(ngModel)]="selectedAllowedLocation"
+                        <mat-select [disableOptionCentering]="true" #allowedLocationSelect
                           placeholder="Add Location"
-                          (selectionChange)="addSelectedAllowedLocation(i,selectedAllowedLocation)"
+                          (selectionChange)="addSelectedAllowedLocation(i,$event.value)"
                           panelClass="shiptech-select-product-container">
                           <div class="col-md-12 header-container-product pd-0">
                             <div class="search-product-container col-md-10 pd-0">
