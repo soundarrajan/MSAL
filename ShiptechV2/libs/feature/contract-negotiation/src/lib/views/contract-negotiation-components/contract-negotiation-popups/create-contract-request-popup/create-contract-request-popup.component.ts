@@ -149,9 +149,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     yearlyPeriod: [],
     semesterPeriod: []
   };
-  selectedMainLocation = '';
   selectedProduct = '';
-  selectedAllowedLocation: any;
   displayedColumns: string[] = ['location'];
   showMainLocationDropdown: boolean = true;
   hideAllowedLocationDropdown: any[] = [];
@@ -271,9 +269,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
               })
             })
           }
+          if(this.productAllowedLocations.length > 0) this.hideAllowedLocationDropdown[i] = true;
         });
         this.selectedLocationId = this.mainLocations[0].locationId;
-        this.showMainLocationDropdown = true;
+        this.showMainLocationDropdown = false;
       }
       if(this.isNewRequest) {
         this.reqObj.quantityDetails.push(this.newQuantityDetails);
@@ -439,7 +438,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   addNewMainLocation() {
     this.showMainLocationDropdown = true;
-    this.selectedMainLocation = '';
   }
   
   deleteMainLocation(index: number){
@@ -455,7 +453,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   
   addNewAllowedLocation(prodIndex) {
     this.hideAllowedLocationDropdown[prodIndex] = false;
-    this.selectedAllowedLocation = '';
   }
 
   addSelectedAllowedLocation(prodIndex, selectedAllowedLocation) {
@@ -465,6 +462,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.toaster.warning(
         selectedAllowedLocation.name + ' already added' + prodNameMsg + ' as allowed location'
       );
+      this.allowedLocationSelect.value = "";
       return false;
     } else {
       this.hideAllowedLocationDropdown[prodIndex] = true;
@@ -484,7 +482,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
       let addNewAllowedLoc = this.newAllowedLocations;
       addNewAllowedLoc.locationId = selectedAllowedLocation.id;
       this.reqObj.contractRequestProducts[prodIndex].allowedLocations.push(addNewAllowedLoc);
-      this.selectedAllowedLocation = '';
       this.searchFilterString[prodIndex].allowedLocations = "";
     }
   }
@@ -550,6 +547,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = '';
     let prod = this.staticData.Product.find(p => p.id == value);
     let mainProd = this.staticData.Product.find(mp => mp.id == this.reqObj.contractRequestProducts[prodIndex].productId);
+    this.listData[prodIndex].allowedProducts[index].products = _.cloneDeep(this.staticData.Product).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 10);
     if(this.reqObj.contractRequestProducts[prodIndex].allowedProducts.findIndex(ap => ap.productId == value) > -1) {
       let prodNameMsg = (mainProd && mainProd.name)?' to '+ mainProd.name:'';
       this.toaster.warning(
@@ -561,7 +559,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value;
     this.locationSelected = true;
     this.selectedLocindex = index;
-    if(updateSpecGroupId && this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
+    if(updateSpecGroupId){
       this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = prod.databaseValue;
     }
     if(this.listData[prodIndex].allowedProducts[index].products.findIndex(p => p.id == prod.id) == -1) {
@@ -777,6 +775,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.selectedLocationId = location.id;
     if(this.mainLocations.findIndex((loc) => loc.locationId === location.id) !== -1){
       this.toaster.warning(location.name + ' already added as main location.');
+      this.mainLocationSelect.value = "";
       return false;
     }
     this.showMainLocationDropdown = false;
@@ -808,6 +807,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   onMainProductChange(prodId, i, updateSpecGroupId:boolean = true){
     this.reqObj.contractRequestProducts[i].productId = '';
     let prod = this.staticData.Product.find(p => p.id == prodId);
+    this.listData[i].mainProduct = _.cloneDeep(this.staticData.Product).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 10);
     if(this.getLocationProducts().findIndex(p => p.productId == prodId) > -1){
       this.toaster.warning(
         'Product ' + prod.name + ' already added as main product for ' + this.selectedMainLocationName + ' location'
@@ -831,6 +831,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.listData[i].mainProduct.push(prod);
     }
     this.listData[i].specGroup = this.specGroupDataSource(prodId);
+    this.searchFilterString[i].mainProduct = "";
+  }
+
+  onMainProductSelectClosed(i){
+    this.searchFilterString[i].mainProduct = "";
   }
 
   onMainProdSearchChange(value, i){
@@ -865,13 +870,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
   }
 
-  productDataSource(value) {
-    if(value && value != ''){
-      let filterValue = value.toString().toLowerCase();
-      return this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue)).slice(0, 10);
-    } else {
-      return this.staticData.Product.slice(0, 10);
-    }
+  onAllowedProductSelectClosed(i, j){
+    this.searchFilterString[i].allowedProducts[j].product = "";
   }
 
   syncMinMaxUom(type, i) {
@@ -1253,12 +1253,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result.data){
         if(type == 'main'){
-          this.reqObj.contractRequestProducts[i].productId = result.data.productId;
-          this.onMainProductChange(result.data.productId, i);
           this.mainProductSelects.forEach(e => e.close());
+          this.onMainProductChange(result.data.productId, i);
         } else if(type == 'allowed'){
-          this.setProductChange(result.data.productId, i, j, true);
           this.allowedProductSelects.forEach(e => e.close());
+          this.setProductChange(result.data.productId, i, j, true);
         }
       }
     });
