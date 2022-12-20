@@ -29,7 +29,9 @@
                                             <div class="search-product-container col-md-10">
                                                 <span class="search-product-lookup">
                                                 </span>
-                                                <input matInput #inputBox
+                                                <input matInput
+                                                [(ngModel)] = "searchValue"
+                                                id="inputBox3"
                                                 (keyup) = "filterCounterParty($event.target.value)"
                                                     placeholder="Search and select counterparty"
                                                     class="search-product-input">

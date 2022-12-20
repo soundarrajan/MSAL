@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { LocalService } from '../../../services/local-service.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -57,6 +57,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     public contractService: ContractNegotiationService,
     private route: ActivatedRoute,
     public format: TenantFormattingService,
+    private ref: ChangeDetectorRef
     ) { }
 
   ngOnInit(): void {
@@ -175,6 +176,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
         this.uniqueCounterPartyName = unique.toString();
         this.allRequestDetails[0] = contractArray;
         this.store.dispatch(new ContractRequest([contractArray]));
+        this.ref.markForCheck();
     }
 
   setFocus() {
@@ -270,7 +272,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
 
   clearCounterparty(event) {
     if (event.target.value == '') {
-      this.child.onClearSearchCounterparty();
+      this.store.dispatch(new ContractRequest([{'locations' : this.counterpartyBackup}]));
     }
   }
   searchCounterparty(userInput: string) {
