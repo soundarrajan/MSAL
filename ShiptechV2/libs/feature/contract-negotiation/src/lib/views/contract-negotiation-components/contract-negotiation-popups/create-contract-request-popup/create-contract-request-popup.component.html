@@ -265,6 +265,7 @@
         <div id="locDrp" class="select-product" [hidden]="!showMainLocationDropdown">
           <mat-form-field class="custom-select main-location-select" appearance="fill">
             <mat-select [disableOptionCentering]="true" #mainLocationSelect
+              (closed)="onMainLocationSelectClosed()"
               placeholder="Add Location"
               panelClass="shiptech-select-product-container">
               <app-dark-selection-menu
@@ -302,8 +303,8 @@
                                     class="without-search custom-dropdown"
                                     appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select #mainProductSelect [value]="reqObj.contractRequestProducts[i].productId" 
-                                      [value]="reqObj.contractRequestProducts[i].productId"
+                                    <mat-select #mainProductSelect 
+                                      [value]="reqObj.contractRequestProducts[i].productId" 
                                       (closed)="onMainProductSelectClosed(i)"
                                       (selectionChange)="onMainProductChange($event.value, i);mainProductSelect.close()"
                                       disableOptionCentering [panelClass]="'shiptech-select-product-container'" required>

@@ -775,7 +775,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.selectedLocationId = location.id;
     if(this.mainLocations.findIndex((loc) => loc.locationId === location.id) !== -1){
       this.toaster.warning(location.name + ' already added as main location.');
-      this.mainLocationSelect.value = "";
       return false;
     }
     this.showMainLocationDropdown = false;
@@ -836,6 +835,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   onMainProductSelectClosed(i){
     this.searchFilterString[i].mainProduct = "";
+  }
+
+  onMainLocationSelectClosed(){
+    this.mainLocationSelect.value = '';
   }
 
   onMainProdSearchChange(value, i){
