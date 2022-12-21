@@ -271,7 +271,8 @@
               <app-dark-selection-menu
                 [dataSource]="locationsList"
                 [columnSource]="locColsToDispay"
-                (onSelectionChange)="onLocationChange($event)">
+                (onSelectionChange)="onLocationChange($event)"
+                (closed)="mainLocationSelect.close();">
               </app-dark-selection-menu>
             </mat-select>
           </mat-form-field>

@@ -159,7 +159,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   @ViewChild('mainLocationSelect') mainLocationSelect: MatSelect;
   @ViewChildren('mainProductSelect') mainProductSelects: QueryList<MatSelect>;
   @ViewChildren('allowedProductSelects') allowedProductSelects: QueryList<MatSelect>;
-  @ViewChild('allowedLocationSelect') allowedLocationSelect: MatSelect;
+  @ViewChildren('allowedLocationSelect') allowedLocationSelect: QueryList<MatSelect>;
   displayedLocColumns: string[] = ['name'];
   displayedColumns2: string[] = ['name',];
   
@@ -462,7 +462,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.toaster.warning(
         selectedAllowedLocation.name + ' already added' + prodNameMsg + ' as allowed location'
       );
-      this.allowedLocationSelect.value = "";
+      this.allowedLocationSelect.forEach(e => {e.close();e.value="";});
       return false;
     } else {
       this.hideAllowedLocationDropdown[prodIndex] = true;
@@ -1254,14 +1254,16 @@ export class CreateContractRequestPopupComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.data){
-        if(type == 'main'){
-          this.mainProductSelects.forEach(e => e.close());
+      if(type == 'main'){
+        if(result && result?.data){
           this.onMainProductChange(result.data.productId, i);
-        } else if(type == 'allowed'){
-          this.allowedProductSelects.forEach(e => e.close());
+        }
+        this.mainProductSelects.forEach(e => e.close());
+      } else if(type == 'allowed'){
+        if(result && result?.data){
           this.setProductChange(result.data.productId, i, j, true);
         }
+        this.allowedProductSelects.forEach(e => e.close());
       }
     });
   }
@@ -1275,9 +1277,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.data){
+      if(result && result?.data){
         this.addSelectedAllowedLocation(i, result.data);
       }
+      this.allowedLocationSelect.forEach(e => e.close());
     });
   }
 }
