@@ -159,7 +159,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   @ViewChild('mainLocationSelect') mainLocationSelect: MatSelect;
   @ViewChildren('mainProductSelect') mainProductSelects: QueryList<MatSelect>;
   @ViewChildren('allowedProductSelects') allowedProductSelects: QueryList<MatSelect>;
-  @ViewChild('allowedLocationSelect') allowedLocationSelect: MatSelect;
+  @ViewChildren('allowedLocationSelect') allowedLocationSelect: QueryList<MatSelect>;
   displayedLocColumns: string[] = ['name'];
   displayedColumns2: string[] = ['name',];
   
@@ -462,7 +462,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.toaster.warning(
         selectedAllowedLocation.name + ' already added' + prodNameMsg + ' as allowed location'
       );
-      this.allowedLocationSelect.value = "";
+      this.allowedLocationSelect.forEach(e => {e.close();e.value="";});
       return false;
     } else {
       this.hideAllowedLocationDropdown[prodIndex] = true;
