@@ -34,6 +34,7 @@ export class DarkSelectionMenuComponent implements OnInit {
   @Input('columnSource') columnSource: any[];
  
   @Output() onSelectionChange = new EventEmitter();
+  @Output() closed = new EventEmitter();
 
   dataSource: any[] = [];
   dataSourceCopy: any[] = [];
@@ -145,9 +146,10 @@ export class DarkSelectionMenuComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.data){
+      if(result && result?.data){
         this.onSelectionChange.emit(result.data);
       }
+      this.closed.emit(true);
     });
   }
 

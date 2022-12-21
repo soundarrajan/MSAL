@@ -1254,14 +1254,16 @@ export class CreateContractRequestPopupComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.data){
-        if(type == 'main'){
-          this.mainProductSelects.forEach(e => e.close());
+      if(type == 'main'){
+        if(result && result?.data){
           this.onMainProductChange(result.data.productId, i);
-        } else if(type == 'allowed'){
-          this.allowedProductSelects.forEach(e => e.close());
+        }
+        this.mainProductSelects.forEach(e => e.close());
+      } else if(type == 'allowed'){
+        if(result && result?.data){
           this.setProductChange(result.data.productId, i, j, true);
         }
+        this.allowedProductSelects.forEach(e => e.close());
       }
     });
   }
@@ -1275,9 +1277,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.data){
+      if(result && result?.data){
         this.addSelectedAllowedLocation(i, result.data);
       }
+      this.allowedProductSelects.forEach(e => e.close());
     });
   }
 }
