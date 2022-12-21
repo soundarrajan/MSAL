@@ -1280,7 +1280,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       if(result && result?.data){
         this.addSelectedAllowedLocation(i, result.data);
       }
-      this.allowedProductSelects.forEach(e => e.close());
+      this.allowedLocationSelect.forEach(e => e.close());
     });
   }
 }
