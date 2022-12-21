@@ -27,7 +27,7 @@
                                     <!-- [(ngModel)]="element.selected" -->
                                     <mat-checkbox 
                                     [value]="element"
-                                    [checked]="element.selected"
+                                    [checked]="element.isSelected"
                                     (change)="contractService.onCounterpartySelction($event, element)"
                                     matTooltip="{{ element.name }}"
                                     matTooltipClass="lightTooltip"

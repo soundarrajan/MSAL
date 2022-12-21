@@ -1026,7 +1026,7 @@ export class ContractNegotiationService extends BaseStoreService
   onCounterpartySelction(checkbox: any, element: any): void {
     console.log(element);
     if (checkbox.checked) {
-      element.select = true;
+      element.isSelected = true;
       this.selectedCounterparty[element.id] = element;
     } else if (!checkbox.checked) {
       delete this.selectedCounterparty[element.id];
@@ -1135,7 +1135,7 @@ export class ContractNegotiationService extends BaseStoreService
                 Object.entries(allReadyexitsInLocation).forEach(([key,value]) => {
                   eMessage.push(value['name']);
                 });
-                this.toastr.warning(" - already exists to all the locations"+ '',eMessage.toString(),{timeOut : 6000});
+                this.toastr.warning(" - already exists in all locations"+ '',eMessage.toString(),{timeOut : 6000});
               }
               if(Object.keys(addedNewToLocation).length > 0){
                 this.toastr.success(" - added successfully to all the locations"+ '',Object.keys(addedNewToLocation).toString(),{timeOut : 6000});
