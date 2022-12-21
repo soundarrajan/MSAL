@@ -9,6 +9,7 @@ import _ from 'lodash';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { ContractRequest } from '../store/actions/ag-grid-row.action';
 import { Store } from '@ngxs/store';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 
 
 @Injectable({
@@ -31,12 +32,14 @@ export class LocalService {
     public contractRequestDetails;
     counterpartyList: any[];
     masterData: any;
+    clrRequest: any = 0;
 
     constructor(
         private http: HttpClient,
         private router: Router,
         public format: TenantFormattingService,
-        private store : Store
+        private store : Store,
+        private spotNegotiationService: SpotNegotiationService,
         ) {
         this.getVesselsList().subscribe(data => {
             // console.log(data);
@@ -626,24 +629,39 @@ export class LocalService {
         })
     }
 
+    @ObservableException()
     filterCounterParty(filterValuelue : string){
-        let fList = this.masterData['Counterparty'].filter(el => {
-            if(el.name.toLowerCase().includes(filterValuelue.toLowerCase())){
-            return el;
-            }
+        return new Observable((observer) => {
+        clearInterval(this.clrRequest);
+        this.clrRequest = setTimeout(() => {
+            this.spotNegotiationService.getResponse(
+                null,
+                { Filters: [] },
+                { SortList: [] },
+                [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }],
+                filterValuelue.toLowerCase(),
+                { Skip: 0, Take: 25 },
+                true
+              ).subscribe((res: any) => {
+                if (res?.message == 'Unauthorized') return;
+                if (res) {
+                    observer.next(this.limitCounterPartyList(res.counterpartyListItems));
+                    observer.complete();
+                }
+              });
+        },900);
         });
-        return this.limitCounterPartyList(fList);
     }
-    
-      limitCounterPartyList(obj){
-        obj =  obj.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+
+    limitCounterPartyList(obj){
+        // obj =  obj.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         let limitList = Object.keys(obj).slice(0, 12).reduce((result, key) => {
-            obj[key].name = this.format.htmlDecode(obj[key].name);
-            result[key] = obj[key];
-            return result;
+        obj[key].name = this.format.htmlDecode(obj[key].name);
+        result[key] = obj[key];
+        return result;
         }, []);     
         return limitList;
-      }
+    }
 
     @ObservableException()
     getMasterListData(items: any): Observable<any> {

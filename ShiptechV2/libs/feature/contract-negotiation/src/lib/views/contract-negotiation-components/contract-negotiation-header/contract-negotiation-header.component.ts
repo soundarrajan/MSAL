@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { LocalService } from '../../../services/local-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateContractRequestPopupComponent } from '../contract-negotiation-popups/create-contract-request-popup/create-contract-request-popup.component';
@@ -12,6 +12,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ContractRequest } from '../../../store/actions/ag-grid-row.action';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { ContractNegotiationStoreModel } from '../../../store/contract-negotiation.store';
+import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { SetCounterpartyList } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
 @Component({
   selector: 'app-contract-negotiation-header',
   templateUrl: './contract-negotiation-header.component.html',
@@ -57,23 +60,36 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     public contractService: ContractNegotiationService,
     private route: ActivatedRoute,
     public format: TenantFormattingService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private spotNegotiationService: SpotNegotiationService,
     ) { }
 
   ngOnInit(): void {
     const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
     if(contractRequestIdFromUrl && isNumeric(contractRequestIdFromUrl)){
+      this.getCounterpartyList();
       this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
       .subscribe(response => {
             this.contractRequestId = response['id'];
             this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
-            this.localService.getMasterListData(['Counterparty','Product','Location','Uom']).subscribe(data => {
+            this.localService.getMasterListData(['Product','Location','Uom']).subscribe(data => {
             this.masterData = data;
             this.localService.masterData = data;
-            this.contractRequestData(response);
             if(response['quantityDetails'].length > 0){
               this.totalRequestQty(response);
             }           
+      });
+      this.localService.getMasterListData(['BrokerWithInactive','SellerWithInactive','SupplierWithInactive','ServiceProviderWithInactive']).subscribe(data => {
+        let mergeArray = [
+          ...data['BrokerWithInactive'],
+          ...data['SellerWithInactive'],
+          ...data['SupplierWithInactive'],
+          ...data['ServiceProviderWithInactive']
+        ];
+        setTimeout(() => {
+          this.localService.masterData['Counterparty'] = this.masterData['Counterparty'] = mergeArray;
+          this.contractRequestData(response);
+        }, 100);
       });
       });
     }
@@ -89,7 +105,31 @@ export class ContractNegotiationHeaderComponent implements OnInit {
 
  
   filterCounterParty(filterValuelue : string){
-    this.counterpartyList = this.localService.filterCounterParty(filterValuelue);
+      this.counterpartyList = this.localService.filterCounterParty(filterValuelue);
+  }
+
+  getCounterpartyList(): void {
+    const response = this.spotNegotiationService.getResponse(null, { Filters: [] }, { SortList: [] }, [{ ColumnName: 'CounterpartyTypes', Value: '1,2,3,11' }], null, { Skip:0, Take: 25 })
+    response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
+      if (res?.error) {
+        alert('Handle Error');
+        return;
+      } else {
+        if (res?.payload?.length > 0) {
+          this.spotNegotiationService.counterpartyTotalCount = res.matchedCount;
+          res.payload.forEach(element => {
+            element.isSelected = false;
+            element.name = this.format.htmlDecode(element.name);
+          });
+        }
+        // Populate Store
+        this.store.dispatch(new SetCounterpartyList(res.payload));
+        debugger;
+      }
+    });
   }
 
   contractRequestData(response){
@@ -180,9 +220,11 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     }
 
   setFocus() {
-    this.localService.getMasterListData(['Counterparty']).subscribe(data => {
-      this.counterpartyList = this.localService.limitCounterPartyList(data['Counterparty']);
-    }); 
+    this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {      
+      this.counterpartyList = this.localService.limitCounterPartyList(
+        JSON.parse(JSON.stringify(state['spotNegotiation'].counterpartyList))
+        );
+    });
     this._el2.nativeElement.focus();
     this._el2.nativeElement.value = '';
     this.contractService.selectedCounterparty = {};
