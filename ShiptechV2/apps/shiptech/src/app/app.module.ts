@@ -72,6 +72,7 @@ import {
   BootstrapForAdalService
 } from '@shiptech/core/bootstrap-for-adal.service';
 import { HtmlDecode } from '@shiptech/core/pipes/htmlDecode/html-decode.pipe';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 
 export function getLegacySettings(): string {
   var hostName = window.location.hostname;
@@ -181,7 +182,8 @@ export function MSALInterceptConfigFactory() {
           multi: true,
           deps: [BootstrapForAdalService]
         },
-    BootstrapResolver
+    BootstrapResolver,
+    SpotNegotiationService
   ],
   bootstrap: [AppComponent, !environment.useAdal ? MsalRedirectComponent : []]
 })
