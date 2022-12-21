@@ -835,6 +835,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   onMainProductSelectClosed(i){
     this.searchFilterString[i].mainProduct = "";
+    this.onMainProdSearchChange('', i);
   }
 
   onMainLocationSelectClosed(){
@@ -875,6 +876,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   onAllowedProductSelectClosed(i, j){
     this.searchFilterString[i].allowedProducts[j].product = "";
+    this.onAllowedProdSearchChange('', i, j);
   }
 
   syncMinMaxUom(type, i) {
