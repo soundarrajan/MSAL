@@ -29,7 +29,7 @@ export namespace InvoiceApiPaths {
   export const getPhysicalInvoice = () => `api/invoice/getPhysicalDocument`;
   export const getNewInvoiceItem = () => `api/invoice/newFromDelivery`;
   export const getFinalInvoiceDueDates = () =>
-    `/api/invoice/finalInvoiceDueDates`;
+    `api/invoice/finalInvoiceDueDates`;
   export const getDefaultValues = () => `api/invoice/getDefaultValues`;
   export const createInvoiceItem = () => `api/invoice/create`;
   export const updateInvoiceItem = () => `api/invoice/update`;
@@ -51,9 +51,9 @@ export namespace InvoiceApiPaths {
   export const getAdditionalCostsComponentTypes = () =>
     `api/masters/additionalcosts/listApps`;
   export const getApplyForList = () => `api/invoice/getApplicableProducts`;
-  export const calculateCostRecon = () => `/api/invoice/invoicecost`;
+  export const calculateCostRecon = () => `api/invoice/invoicecost`;
   export const getBankAccountNumber = () =>
-    `/api/invoice/getAccountNumberCounterpartylist`;
+    `api/invoice/getAccountNumberCounterpartylist`;
   export const getTenantConfiguration = () =>
     `api/admin/tenantConfiguration/get`;
   // export const notesAutoSave = () => `api/invoice/autosave`;

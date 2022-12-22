@@ -178,7 +178,7 @@ export class DeliveryDetailsComponent implements OnInit, OnDestroy {
       bargeAlongside: '',
       deliveryStatus: '',
       info: {},
-      DeliveryNotes: {},
+      deliveryNotes: [],
       temp: {
         orderedProducts: {},
         deliverysummary: {},

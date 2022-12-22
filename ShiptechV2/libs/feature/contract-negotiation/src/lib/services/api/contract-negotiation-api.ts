@@ -67,7 +67,7 @@ export const apiPaths = {
   getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`,
   getUomConversionFactor: `api/masters/uoms/convertQuantity`,
   getRangeTotalAdditionalCosts: `api/procurement/order/getRangeTotalAdditionalCosts`,
-  getDocumentTypeList: `/api/masters/documenttype/list`,
+  getDocumentTypeList: `api/masters/documenttype/list`,
   uploadDocument: `api/masters/documentupload/create`,
   getDocuments: `api/masters/documentupload/list`,
   deleteDocument: `api/masters/documentupload/delete`,

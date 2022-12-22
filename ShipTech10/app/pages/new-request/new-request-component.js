@@ -1051,7 +1051,7 @@ angular.module('shiptech.pages').controller('NewRequestController', [
             window.requestDetailsIsChangedFromLookup = false;
             $scope.forms.detailsFromRequest.$setPristine(); 
             console.log($scope.forms.detailsFromRequest);
-            if (ctrl.request.requestGroup !== null) {
+            if (ctrl.request.requestGroup) {
                 screenLoader.showLoader();
                 window.open($location.$$absUrl.replace('#'+$location.$$path, 
                     'v2/group-of-requests/'+ ctrl.request.requestGroup.id +'/'+ ctrl.request.id), '_self');

@@ -210,7 +210,7 @@
                                     <b>
                                         Status
                                     </b>
-                                    : {{ $ctrl.data.status.displayName }}
+                                    : {{ $ctrl.data.status.name | decodeReadOnly}}
                                 </p>
                                 <p>
                                     <b>
@@ -249,7 +249,7 @@
                                         <b>
                                             Status
                                         </b>
-                                        : {{ orderVal.status.displayName | decodeReadOnly}}
+                                        : {{ orderVal.status.name | decodeReadOnly}}
                                     </p>
                                     <p>
                                         <b>

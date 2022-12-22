@@ -61,9 +61,9 @@ export namespace ContractApiPaths {
     `api/contract/contract/getContractFormulas`;
   export const getAdditionalCostsPerPort = () =>
     `api/masters/additionalcosts/listforlocation`;
-  export const getProductById = () => `/api/masters/products/get`;
+  export const getProductById = () => `api/masters/products/get`;
   export const listProductTypeGroupsDefaults = () =>
-    `/api/masters/products/listProductTypeGroupsDefaults`;
+    `api/masters/products/listProductTypeGroupsDefaults`;
 }
 
 @Injectable({

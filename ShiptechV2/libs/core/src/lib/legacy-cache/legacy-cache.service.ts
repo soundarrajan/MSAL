@@ -74,7 +74,7 @@ export class LookupsCacheService {
       const lookupsToUpdate = _.cloneDeep(lookupTableNames);
       const lookupsResponse = await this.http
         .post<IStaticListLegacy[]>(
-          `${this.appConfig.v1.API.BASE_URL}/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`,
+          `${this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE}/api/infrastructure/static/lists`,
           { Payload: lookupsToUpdate }
         )
         .toPromise();
@@ -131,7 +131,7 @@ export class LookupsCacheService {
       const serverLookupVersions = (
         await this.http
           .post<IHashListsLegacyResponse>(
-            `${this.appConfig.v1.API.BASE_URL}/Shiptech10.Api.Infrastructure/api/infrastructure/static/listsHash`,
+            `${this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE}/api/infrastructure/static/listsHash`,
             {}
           )
           .toPromise()
@@ -184,7 +184,7 @@ export class LookupsCacheService {
 
       const lookupsResponse = await this.http
         .post<IStaticListLegacy[]>(
-          `${this.appConfig.v1.API.BASE_URL}/Shiptech10.Api.Infrastructure/api/infrastructure/static/lists`,
+          `${this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE}/api/infrastructure/static/lists`,
           { Payload: lookupsToUpdate.map(this.mapFromTableName) }
         )
         .toPromise();

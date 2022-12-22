@@ -35,17 +35,17 @@ export namespace ControlTowerApiPaths {
   export const getControlTowerQuantityClaimsListExportUrl = () =>
     `api/controlTower/exportQuantityControlList`;
   export const getControlTowerQualityClaimsListUrl = () =>
-    `/api/controlTower/getQualityControlList`;
+    `api/controlTower/getQualityControlList`;
   export const getControlTowerQualityClaimsListExportUrl = () =>
-    `/api/controlTower/exportQualityControlList`;
+    `api/controlTower/exportQualityControlList`;
   export const getControlTowerQualityLabsListUrl = () =>
-    `/api/controlTower/getQualityLabControlList`;
+    `api/controlTower/getQualityLabControlList`;
   export const getControlTowerQualityLabsListExportUrl = () =>
-    `/api/controlTower/exportQualityLabControlList`;
+    `api/controlTower/exportQualityLabControlList`;
   export const getQuantityResiduePopUpUrl = () =>
-    `/api/controlTower/QuantityResiduePopUp`;
+    `api/controlTower/QuantityResiduePopUp`;
   export const saveQuantityResiduePopUpUrl = () =>
-    `/api/controlTower/QuantityResiduePopUp`;
+    `api/controlTower/QuantityResiduePopUp`;
   export const getControlTowerResidueSludgeDifferenceList = () =>
     `api/controlTower/sludgeDifferenceList`;
   export const getControlTowerResidueSludgeDifferenceListExportUrl = () =>
