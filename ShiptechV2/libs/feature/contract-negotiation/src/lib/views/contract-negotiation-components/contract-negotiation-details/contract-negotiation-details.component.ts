@@ -1,8 +1,10 @@
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
 import { LocalService } from '../../../services/local-service.service';
+import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-contract-negotiation-details',
@@ -15,6 +17,7 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   @Input() rfqSent;
   @Input() noQuote;
   @Input() selectedRequestIndex;
+  public searchValue : string = '';
 
   public portIndex: number = 0;
   public fullHeaderWidth: any;
@@ -45,7 +48,13 @@ export class ContractNegotiationDetailsComponent implements OnInit {
 
   }
 
-  constructor(private localService: LocalService, public contractService: ContractNegotiationService,private route: ActivatedRoute,) {
+  constructor(
+    private localService: LocalService,
+    public contractService: ContractNegotiationService,
+    private route: ActivatedRoute,
+    public store : Store,
+    private changeDetector: ChangeDetectorRef,
+    ) {
   }
   private _filter(data, value: string): [] {
     const filterValue = value.toLowerCase();
@@ -56,10 +65,13 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   }
   
   filterCounterParty(filterValuelue : string){
-    this.counterpartyList = this.localService.filterCounterParty(filterValuelue);
+    this.localService.filterCounterParty(filterValuelue).subscribe(res =>{
+      this.counterpartyList = res;
+      this.changeDetector.detectChanges();
+    });
   }
   constructUpdateCounterparties(source){
-    this.contractService.constructUpdateCounterparties(source).subscribe(res => {
+    this.contractService.constructUpdateCounterparties(source)?.subscribe(res => {
       this.contractService.getContractRequestDetails(this.route.snapshot.params.requestId)
       .subscribe(response => {
         this.localService.contractRequestData(response);
@@ -67,11 +79,15 @@ export class ContractNegotiationDetailsComponent implements OnInit {
     });
   }
   setFocus() {
-  this.localService.getMasterListData(['Counterparty']).subscribe(data => {
-    this.counterpartyList = this.localService.limitCounterPartyList(data['Counterparty']);
-  }); 
-  //this._el2.nativeElement.focus();
+  this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {      
+    this.counterpartyList = this.localService.limitCounterPartyList(
+      JSON.parse(JSON.stringify(state['spotNegotiation'].counterpartyList))
+      );
+  });
+
+  this.searchValue = '';
   this.contractService.selectedCounterparty = {};
+  document.getElementById("inputBox3").focus()
   }
 
   onSearchCounterparty(input) {

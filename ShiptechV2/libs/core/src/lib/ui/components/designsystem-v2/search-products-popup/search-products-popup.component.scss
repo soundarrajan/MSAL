@@ -1,0 +1,29 @@
+.search-request-popup .header .close
+{
+    opacity: .5;
+    top:7px;
+}
+.search-request-popup .header .close:hover
+{
+    opacity: 100;
+}
+
+.blue-button {
+    background-color: #1d9fff!important;
+    border: none;
+    border-radius: 5px;
+    color: #fff!important;
+    height: 25px!important;
+    line-height: 25px!important;
+    cursor:pointer;
+}
+
+.search-request-popup .searchButton .fa.fa-search {
+    font-size: 11px;
+    margin-top:4px;
+    color: #333333;
+}
+
+/* .search-request-popup .searchButton .fa.fa-search:before{
+    content: "\f002" !important; 
+} */

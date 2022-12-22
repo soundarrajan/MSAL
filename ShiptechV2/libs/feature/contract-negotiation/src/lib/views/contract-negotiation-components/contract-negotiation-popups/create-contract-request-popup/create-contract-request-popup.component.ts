@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 import { LocalService } from '../../../../services/local-service.service';
 import { SendRfqPopupComponent } from '../send-rfq-popup/send-rfq-popup.component';
 import { UpdateRfqPopupComponent } from '../update-rfq-popup/update-rfq-popup.component';
+import { SearchProductsPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/search-products-popup/search-products-popup.component';
+import { SearchLocationPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/search-location-popup/search-location-popup.component';
 import { ContractNegotiationService } from '../../../../services/contract-negotiation.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
@@ -58,7 +60,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   locationBasedProducts = [];
   selectedLocationId = 0;
   isNewRequest = true;
-  //listData: any = {};
   listData: any[] = [];
   productsListData: any = {};
 
@@ -111,8 +112,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   reqObj: any = {
     id: 0,
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: "",
+    endDate: "",
     quoteByDate: "",
     minValidity: "",
     supplierComments: "",
@@ -148,9 +149,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     yearlyPeriod: [],
     semesterPeriod: []
   };
-  selectedMainLocation = '';
   selectedProduct = '';
-  selectedAllowedLocation: any;
   displayedColumns: string[] = ['location'];
   showMainLocationDropdown: boolean = true;
   hideAllowedLocationDropdown: any[] = [];
@@ -158,7 +157,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
   public allowedLocationName: any[] = [];
   selectedMainLocationName: string;
   @ViewChild('mainLocationSelect') mainLocationSelect: MatSelect;
-  @ViewChild('allowedLocationSelect') allowedLocationSelect: MatSelect;
+  @ViewChildren('mainProductSelect') mainProductSelects: QueryList<MatSelect>;
+  @ViewChildren('allowedProductSelects') allowedProductSelects: QueryList<MatSelect>;
+  @ViewChildren('allowedLocationSelect') allowedLocationSelect: QueryList<MatSelect>;
   displayedLocColumns: string[] = ['name'];
   displayedColumns2: string[] = ['name',];
   
@@ -217,8 +218,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
       "SpecGroup",
       "Uom"
     ]).subscribe((data) => {
+      this.planStartDate = new Date(this.plan.quarterlyPeriod[0].startDate);
+      this.planEndDate = new Date(this.plan.quarterlyPeriod[0].endDate);
+      this.planLabel = this.plan.quarterlyPeriod[0].label;
       this.staticData = _.cloneDeep(data);
-      this.hideAllowedLocationDropdown[0] = true
       this.locationsList.next(data.Location);
       if(this.data.requestDetails){
         this.isNewRequest = false;
@@ -238,7 +241,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
           if(newLocation.selected == true) this.selectedMainLocationName = newLocation.locationName;
           if (this.mainLocations.findIndex((l) => l.locationId == item.locationId) === -1) this.mainLocations.push(newLocation);
           this.searchFilterString.push({ mainProduct: '', allowedProducts: [], allowedLocations: '', });
-          this.hideAllowedLocationDropdown[i] = true;
+          this.hideAllowedLocationDropdown[i] = false;
           this.listData[i] = {mainProduct: [], specGroup: [], allowedProducts: [], allowedLocations: []};
           this.listData[i].mainProduct = (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
           this.onMainProductChange(this.reqObj.contractRequestProducts[i].productId, i, false);
@@ -266,19 +269,14 @@ export class CreateContractRequestPopupComponent implements OnInit {
               })
             })
           }
+          if(this.productAllowedLocations.length > 0) this.hideAllowedLocationDropdown[i] = true;
         });
         this.selectedLocationId = this.mainLocations[0].locationId;
-        this.showMainLocationDropdown = true;
+        this.showMainLocationDropdown = false;
       }
       if(this.isNewRequest) {
-        this.planStartDate = new Date(this.plan.quarterlyPeriod[0].startDate);
-        this.planEndDate = new Date(this.plan.quarterlyPeriod[0].endDate);
-        this.planLabel = this.plan.quarterlyPeriod[0].label;
-        this.applyPlanPeriod();
         this.reqObj.quantityDetails.push(this.newQuantityDetails);
         this.addNewMainProduct(0);
-      } else {
-  
       }
     });
     this.generalTenantSettings = this.tenantSettingsService.getGeneralTenantSettings();
@@ -377,6 +375,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
   focusOut(e, type, objName, i) {
     let value = (e.target.value)?e.target.value:0;
+    let qtyValue = (this.quantityFormatValue(value))?this.quantityFormatValue(value):this.quantityFormatValue(0);
     if (type == 'min') {
       e.target.parentElement
         .closest('.minInputFocus')
@@ -384,9 +383,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
       if(objName == 'quantity')
-        this.reqObj.quantityDetails[i].minQuantity = this.quantityFormatValue(value);
+        this.reqObj.quantityDetails[i].minQuantity = qtyValue;
       if(objName == 'product')
-        this.reqObj.contractRequestProducts[i].minQuantity = this.quantityFormatValue(value);
+        this.reqObj.contractRequestProducts[i].minQuantity = qtyValue;
     }
 
     if (type == 'max') {
@@ -396,9 +395,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
       if(objName == 'quantity')
-        this.reqObj.quantityDetails[i].maxQuantity = this.quantityFormatValue(value);
+        this.reqObj.quantityDetails[i].maxQuantity = qtyValue;
       if(objName == 'product')
-        this.reqObj.contractRequestProducts[i].maxQuantity = this.quantityFormatValue(value);
+        this.reqObj.contractRequestProducts[i].maxQuantity = qtyValue;
     }
 
     if (type == 'tol') {
@@ -408,7 +407,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
       if(objName == 'quantity')
-        this.reqObj.quantityDetails[i].tolerancePercentage = this.quantityFormatValue(value);
+        this.reqObj.quantityDetails[i].tolerancePercentage = qtyValue;
     }
   }
   // Only Number
@@ -439,14 +438,13 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   addNewMainLocation() {
     this.showMainLocationDropdown = true;
-    this.selectedMainLocation = '';
   }
   
   deleteMainLocation(index: number){
     let mainLocToDelete = this.mainLocations[index];
-    this.reqObj.contractRequestProducts
-      .filter(e => e.locationId == mainLocToDelete.locationId)
-      .map(e => e.isDeleted = true);
+    this.reqObj.contractRequestProducts.forEach( (prod, index) => {
+      if(prod.locationId == mainLocToDelete.locationId) this.deleteNewMainProduct(index);
+    })
     this.mainLocations.splice(index, 1);
     if(this.mainLocations.length > 0 ){
       this.onClick(this.mainLocations[this.mainLocations.length - 1]);
@@ -455,15 +453,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   
   addNewAllowedLocation(prodIndex) {
     this.hideAllowedLocationDropdown[prodIndex] = false;
-    this.selectedAllowedLocation = '';
-  }
-
-  openAddMainLocationSelect() {
-    this.mainLocationSelect.open();
-  }
-
-  openAddAllowedLocationSelect() {
-    this.allowedLocationSelect.open();
   }
 
   addSelectedAllowedLocation(prodIndex, selectedAllowedLocation) {
@@ -473,6 +462,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.toaster.warning(
         selectedAllowedLocation.name + ' already added' + prodNameMsg + ' as allowed location'
       );
+      this.allowedLocationSelect.forEach(e => {e.close();e.value="";});
       return false;
     } else {
       this.hideAllowedLocationDropdown[prodIndex] = true;
@@ -492,11 +482,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       let addNewAllowedLoc = this.newAllowedLocations;
       addNewAllowedLoc.locationId = selectedAllowedLocation.id;
       this.reqObj.contractRequestProducts[prodIndex].allowedLocations.push(addNewAllowedLoc);
-      this.selectedAllowedLocation = '';
       this.searchFilterString[prodIndex].allowedLocations = "";
     }
   }
-
 
   deleteAllowedLocation(prodIndex, index) {
     this.reqObj.contractRequestProducts[prodIndex].allowedLocations.splice(index, 1);
@@ -532,11 +520,15 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   deleteNewMainProduct(i) {
-    this.reqObj.contractRequestProducts[i].isDeleted = true;
-    /*this.productAllowedLocations.splice(i, 1);
-    this.searchFilterString.splice(i, 1);
-    this.listData.splice(i, 1);
-    this.hideAllowedLocationDropdown.splice(i, 1);*/
+    if(this.reqObj.contractRequestProducts[i].contractRequestId === 0){
+      this.reqObj.contractRequestProducts.splice(i, 1);
+      this.listData.splice(i, 1);
+      this.searchFilterString.splice(i, 1);
+      this.productAllowedLocations.splice(i, 1)
+      this.hideAllowedLocationDropdown.splice(i, 1);
+    } else {
+      this.reqObj.contractRequestProducts[i].isDeleted = true;
+    }
   }
 
   specGroupDataSource(prodId) {
@@ -555,6 +547,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = '';
     let prod = this.staticData.Product.find(p => p.id == value);
     let mainProd = this.staticData.Product.find(mp => mp.id == this.reqObj.contractRequestProducts[prodIndex].productId);
+    this.listData[prodIndex].allowedProducts[index].products = _.cloneDeep(this.staticData.Product).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 10);
     if(this.reqObj.contractRequestProducts[prodIndex].allowedProducts.findIndex(ap => ap.productId == value) > -1) {
       let prodNameMsg = (mainProd && mainProd.name)?' to '+ mainProd.name:'';
       this.toaster.warning(
@@ -566,7 +559,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].productId = value;
     this.locationSelected = true;
     this.selectedLocindex = index;
-    if(updateSpecGroupId && this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
+    if(updateSpecGroupId){
       this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = prod.databaseValue;
     }
     if(this.listData[prodIndex].allowedProducts[index].products.findIndex(p => p.id == prod.id) == -1) {
@@ -784,7 +777,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.toaster.warning(location.name + ' already added as main location.');
       return false;
     }
-    let firstLocation = (this.mainLocations.length > 0) ? false : true;
     this.showMainLocationDropdown = false;
     this.mainLocations.push({
       locationId: location.id,
@@ -797,7 +789,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
       } else {
         loc.selected = false;
       } 
-    })
+    });
+    let firstLocation = (this.mainLocations.length == 1 
+      && this.reqObj.contractRequestProducts.length == 1
+      && this.reqObj.contractRequestProducts[0].locationId == '') ? true : false;
     this.selectedMainLocationName = location.name;
     if(firstLocation) {
       this.reqObj.contractRequestProducts.forEach( prod => {
@@ -811,10 +806,14 @@ export class CreateContractRequestPopupComponent implements OnInit {
   onMainProductChange(prodId, i, updateSpecGroupId:boolean = true){
     this.reqObj.contractRequestProducts[i].productId = '';
     let prod = this.staticData.Product.find(p => p.id == prodId);
+    this.listData[i].mainProduct = _.cloneDeep(this.staticData.Product).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 10);
     if(this.getLocationProducts().findIndex(p => p.productId == prodId) > -1){
       this.toaster.warning(
         'Product ' + prod.name + ' already added as main product for ' + this.selectedMainLocationName + ' location'
       );
+      this.mainProductSelects.forEach((e, index) => { 
+        if(index == i) e.value = '';
+      });
       return false;
     }
     this.reqObj.contractRequestProducts[i].productId = prodId;
@@ -831,6 +830,16 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.listData[i].mainProduct.push(prod);
     }
     this.listData[i].specGroup = this.specGroupDataSource(prodId);
+    this.searchFilterString[i].mainProduct = "";
+  }
+
+  onMainProductSelectClosed(i){
+    this.searchFilterString[i].mainProduct = "";
+    this.onMainProdSearchChange('', i);
+  }
+
+  onMainLocationSelectClosed(){
+    this.mainLocationSelect.value = '';
   }
 
   onMainProdSearchChange(value, i){
@@ -857,21 +866,17 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.listData[i].allowedProducts[j].products =  _.cloneDeep(this.staticData.Product).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 10);
       this.listData[i].allowedProducts[j].specGroup = [];
     }
-    if(this.reqObj.contractRequestProducts[i].productId != ''){
-      let selectedProd = this.staticData.Product.find(p => p.id == this.reqObj.contractRequestProducts[i].productId);
+    if(this.reqObj.contractRequestProducts[i].allowedProducts[j].productId != ''){
+      let selectedProd = this.staticData.Product.find(p => p.id == this.reqObj.contractRequestProducts[i].allowedProducts[j].productId);
       if(this.listData[i].allowedProducts[j].products.findIndex(p => p.id == selectedProd.id) == -1) {
         this.listData[i].allowedProducts[j].products.push(selectedProd);
       }
     }
   }
 
-  productDataSource(value) {
-    if(value && value != ''){
-      let filterValue = value.toString().toLowerCase();
-      return this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue)).slice(0, 10);
-    } else {
-      return this.staticData.Product.slice(0, 10);
-    }
+  onAllowedProductSelectClosed(i, j){
+    this.searchFilterString[i].allowedProducts[j].product = "";
+    this.onAllowedProdSearchChange('', i, j);
   }
 
   syncMinMaxUom(type, i) {
@@ -905,7 +910,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   convertDecimalSeparatorStringToNumber(number) {
-    let numberToReturn = number;
+    let numberToReturn = (number !== '' && number !== null && number !== undefined)?number:0;
     let decimalSeparator, thousandsSeparator;
     if (typeof number == 'string') {
       if (number.indexOf(',') != -1 && number.indexOf('.') != -1) {
@@ -1028,19 +1033,19 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
         if (typeof v.contractualQuantityOptionId != 'undefined') {
           if(hasTotalContractualQuantity && v.contractualQuantityOptionId == 1){
-            duplicateQuantityType.push('Total Contractual Quantity');
+            if (!duplicateQuantityType.includes('Total Contractual Quantity')) duplicateQuantityType.push('Total Contractual Quantity');
           }
           if(hasPerMonthQuantity && v.contractualQuantityOptionId == 2){
-            duplicateQuantityType.push('Per Month');
+            if (!duplicateQuantityType.includes('Per Month')) duplicateQuantityType.push('Per Month');
           }
           if(hasPerWeekQuantity && v.contractualQuantityOptionId == 3){
-            duplicateQuantityType.push('Per Week');
+            if (!duplicateQuantityType.includes('Per Week')) duplicateQuantityType.push('Per Week');
           }
           if(hasPerDayQuantity && v.contractualQuantityOptionId == 4){
-            duplicateQuantityType.push('Per Day');
+            if (!duplicateQuantityType.includes('Per Day')) duplicateQuantityType.push('Per Day');
           }
           if(hasPerLiftQuantity && v.contractualQuantityOptionId == 5){
-            duplicateQuantityType.push('Per Lift');
+            if (!duplicateQuantityType.includes('Per Lift')) duplicateQuantityType.push('Per Lift');
           }
           
           if (v.contractualQuantityOptionId == 1) {
@@ -1074,6 +1079,12 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
       }
     });
+    if(duplicateQuantityType.length > 0){
+      this.toaster.error(
+        'You cannot define ' + duplicateQuantityType.join(', ') + ' multiple times'
+      );
+      return false;
+    }
     let qtyToMatch = 0;
     if (!hasTotalContractualQuantity) {
       this.toaster.error(
@@ -1116,12 +1127,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
         return false;  
       }
     }
-    if(duplicateQuantityType.length > 0){
-      this.toaster.error(
-        'You cannot define ' + duplicateQuantityType.join(', ') + ' multiple times'
-      );
-      return false;
-    }
     if (message != 'Please fill in required fields:') {
       if (message[message.length - 1] == ',') {
         message = message.substring(0, message.length - 1);
@@ -1150,6 +1155,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     message = 'Please fill in required fields:';
     this.reqObj.contractRequestProducts.forEach((v, k) => {
       if (typeof v != 'undefined') {
+        if(v.isDeleted) return;
         if (!v.productId) {
           message += ' Product,';
         }
@@ -1233,5 +1239,50 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
       });
     }
+  }
+
+  openProductLookup(i, type, j=0) {
+    let dataId;
+    if(type=="main") dataId = this.reqObj.contractRequestProducts[i].productId;
+    if(type=="allowed") dataId = this.reqObj.contractRequestProducts[i].allowedProducts[j].productId;
+    const dialogRef = this.dialog.open(SearchProductsPopupComponent, {
+      width: '100vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      panelClass: 'search-request-popup',
+      data: {
+        selectedId: dataId
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(type == 'main'){
+        if(result && result?.data){
+          this.onMainProductChange(result.data.productId, i);
+        }
+        this.mainProductSelects.forEach(e => e.close());
+      } else if(type == 'allowed'){
+        if(result && result?.data){
+          this.setProductChange(result.data.productId, i, j, true);
+        }
+        this.allowedProductSelects.forEach(e => e.close());
+      }
+    });
+  }
+
+  openAllowedLocationLookup(i) {
+    const dialogRef = this.dialog.open(SearchLocationPopupComponent, {
+      width: '100vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      panelClass: 'search-request-popup'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result && result?.data){
+        this.addSelectedAllowedLocation(i, result.data);
+      }
+      this.allowedLocationSelect.forEach(e => e.close());
+    });
   }
 }

@@ -1,0 +1,45 @@
+<div class="search-request-popup">
+    <div class="header">
+        <div class="title">Search Location</div>
+        <div style="display:flex">
+          <input #counteparty type="text" [(ngModel)]="searchingLocation" placeholder="Search location here" class="search-box" (keydown.enter)="SearchLocation($event.target.value)" (ngModelChange)="onLocationChange($event)">
+          <button class="searchButton" type="submit" (click)="SearchLocation(counteparty.value)">
+            <i class="fa fa-search"></i>
+        </button>
+      </div>
+
+        <div class="header-btn">
+            <button class="blue-button h-25" (click)="AddLocation()">Proceed</button>
+            <span class="seperator-line"></span>
+            <span class="close" style="cursor:pointer;" [mat-dialog-close]="true"></span>
+        </div>
+    </div>
+    <mat-dialog-content style="overflow: hidden;">
+        <ag-grid-angular id="tradelistgrid" style="height: calc(100vh - 156px);"
+            [gridOptions]="dialog_gridOptions"
+            class="ag-theme-material angular-v9"
+            [overlayLoadingTemplate]="overlayLoadingTemplate"
+            [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+            >
+        </ag-grid-angular>
+
+        <div class="footer-popup">
+          <app-ag-footer-new
+          [gridViewModel]="dialog_gridOptions"
+          [page]="page"
+          [size]="pageSize"
+          [count]="totalItems"
+          [singleGrid]="true"
+          [doublePagination]="true"
+          [maxSize]="765"
+          id="{{ gridId }}"
+          (pageChange)="onPageChangeForLocation($event.page)"
+          (newPageSize) = "onPageSizeChangeForLocation($event.pageSize)"
+          [enabler] = "true"
+          [display] = "false"
+        >
+        </app-ag-footer-new>
+        </div>
+
+    </mat-dialog-content>
+</div>

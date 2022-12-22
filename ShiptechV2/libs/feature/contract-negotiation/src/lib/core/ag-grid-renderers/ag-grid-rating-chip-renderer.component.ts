@@ -7,16 +7,21 @@ import { SellerratingpopupComponent } from '@shiptech/core/ui/components/designs
     template: `
     <div [ngClass]="params.cellClass" *ngIf = "params.value.grating != null "
     (click)="sellerratingpopup(params.data, params.label)">
-    <div  class="truncate-125 chip">
-        <div class="m-lr-5">
-            {{params.value.grating}}
-            <span class="star"></span>
-        </div>
-        <div>{{params.value.gprice}}</div>
-    </div>
+      <div  class="truncate-125 chip" *ngIf = "params.label == 'gen-rating' && params.value.grating != null" >
+          <div class="m-lr-5"  >
+              {{params.value.grating}}
+              <span class="star"></span>
+          </div>       
+      </div>
+      <div  class="truncate-125 chip" *ngIf = "(params.label == 'port-rating' && params.value.prating != null)" >
+      <div class="m-lr-5"  >
+          {{params.value.prating}}
+          <span class="star"></span>
+      </div>       
   </div>
-  <div  class="truncate-125 chip" *ngIf = "params.value.grating == null " style="background-color: rgb(196, 196, 196) !important">
-  <div class="m-lr-5">NA</div>
+  </div>
+  <div  class="truncate-125 chip" *ngIf = "(params.value.grating == null && params.label == 'gen-rating' || params.value.prating == null && params.label == 'port-rating')" style="background-color: rgb(196, 196, 196) !important">
+    <div class="m-lr-5">NA</div>
   </div>
     `,
     styles: [
@@ -29,6 +34,7 @@ export class AGGridRatingChipRenderer implements ICellRendererAngularComp {
     }
     agInit(params: any): void {
         this.params = params;
+        console.log(this.params);
     }
 
     refresh(): boolean {

@@ -264,13 +264,15 @@
 
         <div id="locDrp" class="select-product" [hidden]="!showMainLocationDropdown">
           <mat-form-field class="custom-select main-location-select" appearance="fill">
-            <mat-select [disableOptionCentering]="true" #mainLocationSelect [(ngModel)]="selectedMainLocation"
-            [ngModelOptions]="{standalone: true}" placeholder="Add Location"
+            <mat-select [disableOptionCentering]="true" #mainLocationSelect
+              (closed)="onMainLocationSelectClosed()"
+              placeholder="Add Location"
               panelClass="shiptech-select-product-container">
               <app-dark-selection-menu
                 [dataSource]="locationsList"
                 [columnSource]="locColsToDispay"
-                (onSelectionChange)="onLocationChange($event)">
+                (onSelectionChange)="onLocationChange($event)"
+                (closed)="mainLocationSelect.close();">
               </app-dark-selection-menu>
             </mat-select>
           </mat-form-field>
@@ -302,25 +304,24 @@
                                     class="without-search custom-dropdown"
                                     appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select [value]="reqObj.contractRequestProducts[i].productId" 
-                                      [(ngModel)]="reqObj.contractRequestProducts[i].productId"
-                                      (selectionChange)="onMainProductChange($event.value, i);"
+                                    <mat-select #mainProductSelect 
+                                      [value]="reqObj.contractRequestProducts[i].productId" 
+                                      (closed)="onMainProductSelectClosed(i)"
+                                      (selectionChange)="onMainProductChange($event.value, i);mainProductSelect.close()"
                                       disableOptionCentering [panelClass]="'shiptech-select-product-container'" required>
                                       <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                         <div class="col-md-12 header-container-product pd-0">
                                           <div class="search-product-container col-md-10 pd-0">
                                             <span id="searchPrdLookup" class="search-product-lookup"></span>
-                                            <input id="searchPrdInp" [(ngModel)]="searchFilterString[i].mainProduct" matInput
-                                            (input)="onMainProdSearchChange($event.target.value, i)"
+                                            <input id="searchPrdInp" 
+                                              [(ngModel)]="searchFilterString[i].mainProduct" matInput
+                                              (input)="onMainProdSearchChange($event.target.value, i)"
                                               placeholder="Search and select a product"
                                               class="search-product-input" (keydown)="$event.stopPropagation();">
                                           </div>
 
                                           <div id="expandPrdSrch" class="col-md-2">
-                                            <!-- <img alt="Shiptech"
-                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                                           -->
-                                            <span class="menu-expand-icon"></span>
+                                            <span class="menu-expand-icon" (click)="openProductLookup(i, 'main');"></span>
                                           </div>
                                         </div>
                                         <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
@@ -334,6 +335,7 @@
                                               <mat-option [value]="element.id" class="no-padding" id="productPrdRadio"
                                                 style="padding-left:0px; text-align: unset !important;">
                                                 <mat-radio-button class="location-container-radio-button"
+                                                  [class.mat-radio-checked]="element.id==reqObj.contractRequestProducts[i].productId"
                                                   [value]="element.id">
                                                   {{ element.name }}
                                                 </mat-radio-button>
@@ -363,19 +365,16 @@
                                       [panelClass]="'shiptech-select-product-container'" required>
                                       <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                         <div class="col-md-12 header-container-product pd-0">
-                                          <div class="search-product-container col-md-10 pd-0">
+                                          <div class="search-product-container col-md-12 pd-0">
                                             <span id="searchSpecLkp" class="search-product-lookup">
                                             </span>
                                             <input id="searchSpecInp" [(ngModel)]="searchFilterString[i].mainSpecGroup" matInput placeholder="Search and select spec group"
                                               class="search-product-input" (keydown)="$event.stopPropagation();">
                                           </div>
 
-                                          <div id="expandSpecSearch" class="col-md-2">
-                                            <!-- <img alt="Shiptech"
-                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                                           -->
-                                           <span class="menu-expand-icon"></span>
-                                          </div>
+                                          <!--div id="expandSpecSearch" class="col-md-2">
+                                            <span class="menu-expand-icon"></span>
+                                          </div-->
                                         </div>
                                         <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
                                           mat-table [dataSource]="listData[i].specGroup">
@@ -388,7 +387,8 @@
                                               style="padding-left:0px; text-align: unset !important;">
                                               <mat-option [value]="element.id" class="no-padding" id="specSrdRadio"
                                                 style="padding-left:0px; text-align: unset !important;">
-                                                <mat-radio-button  class="location-container-radio-button"
+                                                <mat-radio-button class="location-container-radio-button"
+                                                  [class.mat-radio-checked]="element.id==reqObj.contractRequestProducts[i].specGroupId"
                                                   [value]="element.id">
                                                   {{ element.name }}
                                                 </mat-radio-button>
@@ -517,10 +517,11 @@
                                   <mat-form-field class="without-search contract-location-product-dropdown"
                                     appearance="legacy" style="width: 100% !important; border-right: none !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].productId"
+                                    <mat-select #allowedProductSelects [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].productId"
                                       #locSelect disableOptionCentering
+                                      (closed)="onAllowedProductSelectClosed(i, j)"
                                       [panelClass]="'shiptech-select-product-container'"
-                                      (selectionChange)="setProductChange($event.value,i,j)">
+                                      (selectionChange)="setProductChange($event.value,i,j); allowedProductSelects.close()">
                                       <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                         <div class="col-md-12 header-container-product pd-0">
                                           <div class="search-product-container col-md-10 pd-0">
@@ -528,15 +529,13 @@
                                             </span>
                                             <input id="allowedPrdAdd" matInput 
                                               placeholder="Search and select a product"
+                                              [(ngModel)]="this.searchFilterString[i].allowedProducts[j].product"
                                               (input)="onAllowedProdSearchChange($event.target.value, i, j)"
                                               class="search-product-input" (keydown)="$event.stopPropagation();">
                                           </div>
 
                                           <div id="allowedPrdSrcImg" class="col-md-2">
-                                            <!-- <img alt="Shiptech"
-                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                                          -->
-                                          <span class="menu-expand-icon"></span>
+                                            <span class="menu-expand-icon" (click)="openProductLookup(i, 'allowed', j)"></span>
                                           </div>
                                         </div>
                                         <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
@@ -550,6 +549,7 @@
                                               <mat-option [value]="element.id" id="allowedPrdRadio" class="no-padding"
                                                 style="padding-left:0px; text-align: unset !important;">
                                                 <mat-radio-button class="location-container-radio-button"
+                                                  [class.mat-radio-checked]="element.id==reqObj.contractRequestProducts[i].allowedProducts[j].productId"
                                                   [value]="element.id">
                                                   {{ element.name }}
                                                 </mat-radio-button>
@@ -577,19 +577,16 @@
                                       (selectionChange)="setSpecGroupChange($event.value,i,j)">
                                       <div style="margin-top: 0px;" [ngClass]="{'expand-select-location-container': expandLocation}">
                                         <div class="col-md-12 header-container-product pd-0">
-                                          <div class="search-product-container col-md-10 pd-0">
+                                          <div class="search-product-container col-md-12 pd-0">
                                             <span class="search-product-lookup">
                                             </span>
                                             <input matInput placeholder="Search and select spec group"
                                               class="search-product-input" (keydown)="$event.stopPropagation();">
                                           </div>
 
-                                          <div class="col-md-2">
-                                            <!-- <img alt="Shiptech"
-                                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                                          -->
-                                          <span class="menu-expand-icon"></span>
-                                          </div>
+                                          <!--div class="col-md-2">
+                                            <span class="menu-expand-icon"></span>
+                                          </div-->
                                         </div>
                                         <table class="location-pop-up shiptech-delivery-popup col-md-12 no-padding"
                                           mat-table [dataSource]="listData[i].allowedProducts[j].specGroup">
@@ -603,6 +600,7 @@
                                               <mat-option [value]="element.id" class="no-padding"
                                                 style="padding-left:0px; text-align: unset !important;">
                                                 <mat-radio-button class="location-container-radio-button"
+                                                  [class.mat-radio-checked]="element.id==reqObj.contractRequestProducts[i].allowedProducts[j].specGroupId"
                                                   [value]="element.id">
                                                   {{ element.name }}
                                                 </mat-radio-button>
@@ -655,10 +653,11 @@
                       </div>
                     </ng-container>
                     <div class="select-product" *ngIf="!hideAllowedLocationDropdown[i]">
-                      <mat-form-field id="allowedLocs" class="custom-select" appearance="fill" (click)="openAddAllowedLocationSelect()">
-                        <mat-select [disableOptionCentering]="true" #allowedLocationSelect [(ngModel)]="selectedAllowedLocation"
+                      <mat-form-field id="allowedLocs" class="custom-select" appearance="fill">
+                        <mat-select [disableOptionCentering]="true" #allowedLocationSelect
                           placeholder="Add Location"
-                          (selectionChange)="addSelectedAllowedLocation(i,selectedAllowedLocation)"
+                          (closed)="searchFilterString[i].allowedLocations=''"
+                          (selectionChange)="addSelectedAllowedLocation(i,$event.value)"
                           panelClass="shiptech-select-product-container">
                           <div class="col-md-12 header-container-product pd-0">
                             <div class="search-product-container col-md-10 pd-0">
@@ -672,10 +671,7 @@
                             </div>
 
                             <div id="allowedLocAdd" class="col-md-2">
-                              <!-- <img alt="Shiptech"
-                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAEmSURBVFhH7ZahCgJBEIZ9KruYxatiF6vBdsWk2WiyXTGJweIjiMEkglHxKVb+MDCOw84ernhhBr7gzr/Dd3vcYqvdKUKTcCELF7JwIYuoUH8wCuNJqaLlCS0PME/Lc6JCq3UVtJotlmqeQF8rzNPynNpClgyhSWUXuj+eodsbqlkJcsjz+skJXa43Uwp95GRlE8Lx81cQk5IyfG8WIQyj31xqtz+8ZQmsU8m9Xwtpp4DBKSfEZXhPrkmiQv/AhSxcyKK2EL6UaTlXewT6KV+URlRIDqZPWt4xHKyj5NWQ8iAgKoSLjAZzGZQlhJJ7s9zUNDhFhpBStDebEC9LhuBSVNmF/O+HBMd+PJ0/qDZbNU+gr+1Led1RoX/gQhYuZOFCFg0TKsILCN4aRzqXaa8AAAAASUVORK5CYII=">
-                            -->
-                            <span class="menu-expand-icon"></span>
+                              <span class="menu-expand-icon" (click)="openAllowedLocationLookup(i)"></span>
                             </div>
                           </div>
                           <table class="delivery-products-pop-up shiptech-delivery-popup col-md-12 no-padding" mat-table

@@ -1260,6 +1260,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   
   @ObservableException()
   addCounterpartyToAllLocations(payload): Observable<any> {
+    if(payload.length == 0) return;
     return this.http
       .post<any>(
         `${this._shitechApiUrl}/${ContractNegotiationApiPaths.addSellerContract}`, payload
