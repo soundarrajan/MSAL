@@ -248,13 +248,13 @@ export class CreateContractRequestPopupComponent implements OnInit {
           item.minQuantity = this.quantityFormatValue(item.minQuantity);
           item.maxQuantity = this.quantityFormatValue(item.maxQuantity);
           if(item.allowedProducts.length > 0) {
-            this.searchFilterString[i].allowedProducts.push({product: '', specGroup:'' });
-          }
-          if(item.allowedProducts.length > 0) {
             item.allowedProducts.forEach( (proItem, j) => {
-              this.listData[i].allowedProducts[j] = {products:[], specGroup: []};
-              this.listData[i].allowedProducts[j].products = (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
-              this.listData[i].allowedProducts[j].specGroup = [];
+              this.searchFilterString[i].allowedProducts.push({product: '', specGroup:'' });
+              //this.listData[i].allowedProducts.push({products:[], specGroup: []});
+              this.listData[i].allowedProducts.push({
+                products: (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10),
+                specGroup: []
+              });
               this.setProductChange(proItem.productId,i,j, false);
             });
           }
