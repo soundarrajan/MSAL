@@ -861,10 +861,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
     if(value && value != ''){
       let filterValue = value.toString().toLowerCase();
       this.listData[i].allowedProducts[j].products = this.staticData.Product.filter(p => p.name.toString().toLowerCase().includes(filterValue)).slice(0, 10);
-      this.listData[i].allowedProducts[j].specGroup = [];
     } else {
       this.listData[i].allowedProducts[j].products =  _.cloneDeep(this.staticData.Product).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 10);
-      this.listData[i].allowedProducts[j].specGroup = [];
     }
     if(this.reqObj.contractRequestProducts[i].allowedProducts[j].productId != ''){
       let selectedProd = this.staticData.Product.find(p => p.id == this.reqObj.contractRequestProducts[i].allowedProducts[j].productId);
