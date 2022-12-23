@@ -250,7 +250,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
           if(item.allowedProducts.length > 0) {
             item.allowedProducts.forEach( (proItem, j) => {
               this.searchFilterString[i].allowedProducts.push({product: '', specGroup:'' });
-              //this.listData[i].allowedProducts.push({products:[], specGroup: []});
               this.listData[i].allowedProducts.push({
                 products: (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10),
                 specGroup: []
