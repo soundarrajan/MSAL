@@ -15,6 +15,8 @@ import { ContractNegotiationStoreModel } from '../../../store/contract-negotiati
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { SetCounterpartyList } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import { SpotnegoSearchCtpyComponent } from 'libs/feature/spot-negotiation/src/lib/views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-contract-negotiation-header',
   templateUrl: './contract-negotiation-header.component.html',
@@ -29,6 +31,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   @ViewChild(OfferChatComponent) childChat: OfferChatComponent;
   @ViewChild('ports') ports: ElementRef;
   @Output() disbaleHeaderButtons = new EventEmitter<boolean>();
+  @ViewChild('menuTrigger') trigger;
     
     
   allRequestDetails = {};
@@ -62,6 +65,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     public format: TenantFormattingService,
     private ref: ChangeDetectorRef,
     private spotNegotiationService: SpotNegotiationService,
+    private toastr: ToastrService
     ) { }
 
   ngOnInit(): void {
@@ -231,13 +235,17 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   }
 
   constructUpdateCounterparties(){
-    this.contractService.constructUpdateCounterparties()?.subscribe(res => {
-      const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
-      this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
-      .subscribe(response => {
-        this.localService.contractRequestData(response);
-      });
+  if(Object.keys(this.contractService.selectedCounterparty).length > 0){ 
+  this.contractService.constructUpdateCounterparties()?.subscribe(res => {
+    const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
+    this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
+    .subscribe(response => {
+      this.localService.contractRequestData(response);
     });
+  });
+  }else{
+    this.toastr.error("Please Select atleast One Counterparty");
+  }
   }
   
 
@@ -273,22 +281,27 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     });
   }
   searchCounterpartyLookUp(){
-    // const RequestGroupId = this.route.snapshot.params.spotNegotiationId;
-    // const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
-    //   width: '100vw',
-    //   height: '95vh',
-    //   maxWidth: '95vw',
-    //   panelClass: 'search-request-popup',
-    //   data: {
-    //     AddCounterpartiesAcrossLocations: true,
-    //     RequestGroupId: parseInt(RequestGroupId)
-    //   }
-    // });
+    this.trigger.closeMenu();
+    this.contractService.selectedCounterparty = {};
+    const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
+      width: '100vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      panelClass: 'search-request-popup',
+      data: {
+        AddCounterpartiesAcrossLocations: true,
+        source : 'contract-negotation'
+      }
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   //this._spotNegotiationService.callGridRefreshService();
-    // });
-
+    dialogRef.afterClosed().subscribe(res => {
+      if(res.data){
+        res.data.forEach(el => {
+          this.contractService.selectedCounterparty[el.id] = el;
+        });
+        this.constructUpdateCounterparties();
+      }
+    });
   }
 
   scrollPort1(index, el, count) {

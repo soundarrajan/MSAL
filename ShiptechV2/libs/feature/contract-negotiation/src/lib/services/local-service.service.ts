@@ -720,7 +720,7 @@ export class LocalService {
                   "requestLocationId": '',
                   "requestProductId": '',
                   "RequestLocationSellerId": '',
-                  "CounterpartyName": this.format.htmlDecode(counterparty.name),
+                  "CounterpartyName": this.format.htmlDecode(counterparty?.name),
                   "CounterpartyId": res2['counterpartyId'],
                   "IsTemporarlySuspended": '',
                   "GenRating": res2['genRating'],

@@ -420,7 +420,7 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
 
   ngOnInit() {
     this.store.selectSnapshot<any>((state: any) => {
-      this.currentRequest = state.spotNegotiation.currentRequestSmallInfo;
+      this.currentRequest = state?.spotNegotiation?.currentRequestSmallInfo;
     });
   }
 
@@ -535,6 +535,10 @@ export class SpotnegoSearchCtpyComponent implements OnInit {
   }
 
   AddCounterparties() {
+    if(this.data?.source && this.data.source == 'contract-negotation'){
+      this.dialogRef.close({data : this.dialog_gridOptions.api.getSelectedRows()});
+      return;
+    }
     this.selectedCounterparties = this.toBeAddedCounterparties();
     if (this.selectedCounterparties.length === 0) return;
     if (this.data.isPhysicalSupplier) {
