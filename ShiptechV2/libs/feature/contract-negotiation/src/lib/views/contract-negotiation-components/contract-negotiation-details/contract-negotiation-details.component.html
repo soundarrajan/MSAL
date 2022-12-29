@@ -16,7 +16,8 @@
                                 </div>
                                 <div class="counter-title">
                                     <div class="plus-icon" [matMenuTriggerFor]="clickmenu"
-                                        (click)="$event.stopPropagation();setFocus()"></div>
+                                        #menuTrigger="matMenuTrigger"
+                                        (click)="$event.stopPropagation();setFocus(loc['contractRequestProductId'])"></div>
                                     <div class="title">Counterparties</div>
                                 </div>
                                 
@@ -37,7 +38,7 @@
                                                     class="search-product-input">
                                             </div>
                                             <div class="col-md-2">
-                                                <span class="expand-img"></span>
+                                                <span class="expand-img" (click)="searchCounterpartyLookUp()"></span>
                                             </div>
                                         </div>
                                         <table
