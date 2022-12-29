@@ -821,6 +821,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   onMainProductChange(prodId, i, setDefaults:boolean = true){
     this.reqObj.contractRequestProducts[i].productId = '';
+    
     let prod = this.staticData.Product.find(p => p.id == prodId);
     this.listData[i].mainProduct = _.cloneDeep(this.staticData.Product).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 10);
     if(this.getLocationProducts().findIndex(p => p.productId == prodId) > -1){
@@ -840,7 +841,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       });
       if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.defaultSpecGroupId) > -1){
         this.reqObj.contractRequestProducts[i].specGroupId = prod.defaultSpecGroupId;
-      }
+      } else this.reqObj.contractRequestProducts[i].specGroupId = '';
     }
     if(this.listData[i].mainProduct.findIndex(p => p.id == prod.id) == -1) {
       this.listData[i].mainProduct.push(prod);
