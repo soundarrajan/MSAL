@@ -131,7 +131,6 @@ export class ContractNegotiationHeaderComponent implements OnInit {
         }
         // Populate Store
         this.store.dispatch(new SetCounterpartyList(res.payload));
-        debugger;
       }
     });
   }

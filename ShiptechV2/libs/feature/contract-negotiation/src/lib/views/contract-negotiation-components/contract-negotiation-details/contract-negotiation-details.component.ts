@@ -78,7 +78,6 @@ export class ContractNegotiationDetailsComponent implements OnInit {
     });
   }
   constructUpdateCounterparties(source){
-    debugger;
     if(Object.keys(this.contractService.selectedCounterparty).length > 0){    
     this.contractService.constructUpdateCounterparties(source)?.subscribe(res => {
       this.contractService.getContractRequestDetails(this.route.snapshot.params.requestId)

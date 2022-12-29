@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -23,6 +23,7 @@ import { IGeneralTenantSettings } from '@shiptech/core/services/tenant-settings/
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { DecimalPipe } from '@angular/common';
 import _ from 'lodash';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 
 export const MY_FORMATS = {
   parse: {
@@ -202,81 +203,35 @@ export class CreateContractRequestPopupComponent implements OnInit {
     private store: Store,
     private router: Router,
     private tenantSettingsService: TenantSettingsService,
+    private db: LegacyLookupsDatabase,
+    private _cdr: ChangeDetectorRef
   ) {
+    if(this.data.requestDetails){
+      this.isNewRequest = false;
+    }
     iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../../../../../../../../v2/assets/design-system-icons/shiptech/common-icons/calendar-dark.svg'));
     this.plan.quarterlyPeriod = this.generateQuarterlyPeriod();
     this.plan.monthlyPeriod = this.generateMonthlyPeriod();
     this.plan.yearlyPeriod = this.generateYearlyPeriod();
     this.plan.semesterPeriod = this.generateSemesterPeriod();
-    this.localService.getMasterListData([
-      "Location",
-      "Product",
-      "ProductType",
-      "ProductTypeGroup",
-      "PricingType",
-      "ContractualQuantityOption",
-      "SpecGroup",
-      "Uom"
-    ]).subscribe((data) => {
+    this.getStaticData().then(data => {
+      this.staticData = _.cloneDeep(data);
+      
+      /* set plan period data */
       this.planStartDate = new Date(this.plan.quarterlyPeriod[0].startDate);
       this.planEndDate = new Date(this.plan.quarterlyPeriod[0].endDate);
       this.planLabel = this.plan.quarterlyPeriod[0].label;
-      this.staticData = _.cloneDeep(data);
+      /* set plan period data */
+      
       this.locationsList.next(data.Location);
-      if(this.data.requestDetails){
-        this.isNewRequest = false;
-        this.reqObj = this.data.requestDetails;
-        this.reqObj.quantityDetails.forEach((q, i) => {
-          q.minQuantity = this.quantityFormatValue(q.minQuantity);
-          q.maxQuantity = this.quantityFormatValue(q.maxQuantity);
-          q.tolerancePercentage = this.quantityFormatValue(q.tolerancePercentage);
-        })
-        this.reqObj.contractRequestProducts.forEach( (item, i) => {
-          let location = this.staticData.Location.find( x => x.id == item.locationId);
-          let newLocation = {
-            locationId: location.id,
-            locationName: location.name,
-            selected: (i == 0)?true:false
-          };
-          if(newLocation.selected == true) this.selectedMainLocationName = newLocation.locationName;
-          if (this.mainLocations.findIndex((l) => l.locationId == item.locationId) === -1) this.mainLocations.push(newLocation);
-          this.searchFilterString.push({ mainProduct: '', allowedProducts: [], allowedLocations: '', });
-          this.hideAllowedLocationDropdown[i] = false;
-          this.listData[i] = {mainProduct: [], specGroup: [], allowedProducts: [], allowedLocations: []};
-          this.listData[i].mainProduct = (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10);
-          this.onMainProductChange(this.reqObj.contractRequestProducts[i].productId, i, false);
-          item.minQuantity = this.quantityFormatValue(item.minQuantity);
-          item.maxQuantity = this.quantityFormatValue(item.maxQuantity);
-          if(item.allowedProducts.length > 0) {
-            item.allowedProducts.forEach( (proItem, j) => {
-              this.searchFilterString[i].allowedProducts.push({product: '', specGroup:'' });
-              this.listData[i].allowedProducts.push({
-                products: (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10),
-                specGroup: []
-              });
-              this.setProductChange(proItem.productId,i,j, false);
-            });
-          }
-          if(item.allowedLocations.length > 0) {
-            this.productAllowedLocations[i] = [];
-            item.allowedLocations.forEach( (locItem, j) => {
-              let location = this.staticData.Location.find( x => x.id == locItem.locationId);
-              this.productAllowedLocations[i].push({
-                id: location.id,
-                name: location.name,
-                selected: true
-              })
-            })
-          }
-          if(this.productAllowedLocations.length > 0) this.hideAllowedLocationDropdown[i] = true;
-        });
-        this.selectedLocationId = this.mainLocations[0].locationId;
-        this.showMainLocationDropdown = false;
-      }
+
       if(this.isNewRequest) {
         this.reqObj.quantityDetails.push(this.newQuantityDetails);
         this.addNewMainProduct(0);
+      } else {
+        this.openRequest();
       }
+      this._cdr.detectChanges();
     });
     this.generalTenantSettings = this.tenantSettingsService.getGeneralTenantSettings();
     this.defaultUOM = this.generalTenantSettings.tenantFormats.uom;
@@ -287,6 +242,18 @@ export class CreateContractRequestPopupComponent implements OnInit {
       '-' +
       this.quantityPrecision;
     this.currentUserId = this.store.selectSnapshot(UserProfileState.user).id;
+  }
+
+  async getStaticData() {
+    this._cdr.markForCheck();
+    return {
+      Uom: await this.db.getUomTable(),
+      Product: await this.db.getProductList({ orderBy: 'name' }),
+      ContractualQuantityOption: await this.db.getContractualQuantityOptionsList({ orderBy: 'name' }),
+      Location: await this.db.getLocationList({ orderBy: 'name' }),
+      SpecGroup: await this.db.getSpecGroupList({ orderBy: 'name' }),
+      PricingType: await this.db.getPricingTypeList({ orderBy: 'name' })
+    }
   }
 
   ngOnInit(): void {
@@ -302,6 +269,56 @@ export class CreateContractRequestPopupComponent implements OnInit {
         }
       }
     });
+  }
+
+  openRequest(){
+    this.reqObj = this.data.requestDetails;
+    this.reqObj.quantityDetails.forEach((q, i) => {
+      q.minQuantity = this.quantityFormatValue(q.minQuantity);
+      q.maxQuantity = this.quantityFormatValue(q.maxQuantity);
+      q.tolerancePercentage = this.quantityFormatValue(q.tolerancePercentage);
+    })
+    this.reqObj.contractRequestProducts.forEach( (item, i) => {
+      let location = this.staticData.Location.find( x => x.id == item.locationId);
+      let newLocation = {
+        locationId: location.id,
+        locationName: location.name,
+        selected: (i == 0)?true:false
+      };
+      if(newLocation.selected == true) this.selectedMainLocationName = newLocation.locationName;
+      if (this.mainLocations.findIndex((l) => l.locationId == item.locationId) === -1) this.mainLocations.push(newLocation);
+      this.searchFilterString.push({ mainProduct: '', allowedProducts: [], allowedLocations: '', });
+      this.hideAllowedLocationDropdown[i] = false;
+      this.listData[i] = {mainProduct: [], specGroup: [], allowedProducts: [], allowedLocations: []};
+      this.listData[i].mainProduct = (_.cloneDeep(this.staticData.Product)).splice(0, 10);
+      this.onMainProductChange(this.reqObj.contractRequestProducts[i].productId, i, false);
+      item.minQuantity = this.quantityFormatValue(item.minQuantity);
+      item.maxQuantity = this.quantityFormatValue(item.maxQuantity);
+      if(item.allowedProducts.length > 0) {
+        item.allowedProducts.forEach( (proItem, j) => {
+          this.searchFilterString[i].allowedProducts.push({product: '', specGroup:'' });
+          this.listData[i].allowedProducts.push({
+            products: (_.cloneDeep(this.staticData.Product)).sort((a, b) => a.name.localeCompare(b.name)).splice(0, 10),
+            specGroup: []
+          });
+          this.setProductChange(proItem.productId,i,j, false);
+        });
+      }
+      if(item.allowedLocations.length > 0) {
+        this.productAllowedLocations[i] = [];
+        item.allowedLocations.forEach( (locItem, j) => {
+          let location = this.staticData.Location.find( x => x.id == locItem.locationId);
+          this.productAllowedLocations[i].push({
+            id: location.id,
+            name: location.name,
+            selected: true
+          })
+        })
+      }
+      if(this.productAllowedLocations.length > 0) this.hideAllowedLocationDropdown[i] = true;
+    });
+    this.selectedLocationId = this.mainLocations[0].locationId;
+    this.showMainLocationDropdown = false;
   }
 
   getLocationProducts() {
@@ -534,10 +551,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
     let specGroupArr = [];
     if(prodId == '') return specGroupArr;
     let prod = this.staticData.Product.find(p => p.id == prodId);
-    if(prod.databaseValue != 0){
-      specGroupArr = this.staticData.SpecGroup.filter(sg => sg.databaseValue === prodId || sg.id == prod.databaseValue);
+    if(prod.defaultSpecGroupId != 0){
+      specGroupArr = this.staticData.SpecGroup.filter(sg => sg.productId === prodId || sg.id == prod.defaultSpecGroupId);
     } else {
-      specGroupArr = this.staticData.SpecGroup.filter(sg => sg.databaseValue === prodId);
+      specGroupArr = this.staticData.SpecGroup.filter(sg => sg.productId === prodId);
     }
     return specGroupArr;
   }
@@ -559,7 +576,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.locationSelected = true;
     this.selectedLocindex = index;
     if(updateSpecGroupId){
-      this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = prod.databaseValue;
+      this.reqObj.contractRequestProducts[prodIndex].allowedProducts[index].specGroupId = prod.defaultSpecGroupId;
     }
     if(this.listData[prodIndex].allowedProducts[index].products.findIndex(p => p.id == prod.id) == -1) {
       this.listData[prodIndex].allowedProducts[index].products.push(prod);
@@ -802,8 +819,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
   }
 
-  onMainProductChange(prodId, i, updateSpecGroupId:boolean = true){
+  onMainProductChange(prodId, i, setDefaults:boolean = true){
     this.reqObj.contractRequestProducts[i].productId = '';
+    
     let prod = this.staticData.Product.find(p => p.id == prodId);
     this.listData[i].mainProduct = _.cloneDeep(this.staticData.Product).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 10);
     if(this.getLocationProducts().findIndex(p => p.productId == prodId) > -1){
@@ -816,14 +834,14 @@ export class CreateContractRequestPopupComponent implements OnInit {
       return false;
     }
     this.reqObj.contractRequestProducts[i].productId = prodId;
-    let prodType = this.staticData.ProductType.find(pt => pt.id == prod.productTypeId);
-    let prodTypeGroup = this.staticData.ProductTypeGroup.find(ptg => ptg.id == prodType.databaseValue);
-    if(updateSpecGroupId){
-      this.reqObj.contractRequestProducts[i].minQuantityUomId = prodTypeGroup.databaseValue;
-      this.reqObj.contractRequestProducts[i].maxQuantityUomId = prodTypeGroup.databaseValue;
-    }
-    if(updateSpecGroupId && this.staticData.SpecGroup.findIndex(sga => sga.id == prod.databaseValue) > -1){
-      this.reqObj.contractRequestProducts[i].specGroupId = prod.databaseValue;
+    if(setDefaults){
+      this.db.getDefaultProductUOM(prodId).then( defaultUom => {
+        this.reqObj.contractRequestProducts[i].minQuantityUomId = defaultUom.id;
+        this.reqObj.contractRequestProducts[i].maxQuantityUomId = defaultUom.id;
+      });
+      if(this.staticData.SpecGroup.findIndex(sga => sga.id == prod.defaultSpecGroupId) > -1){
+        this.reqObj.contractRequestProducts[i].specGroupId = prod.defaultSpecGroupId;
+      } else this.reqObj.contractRequestProducts[i].specGroupId = '';
     }
     if(this.listData[i].mainProduct.findIndex(p => p.id == prod.id) == -1) {
       this.listData[i].mainProduct.push(prod);

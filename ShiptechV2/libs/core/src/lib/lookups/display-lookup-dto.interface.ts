@@ -26,3 +26,20 @@ export interface IOrderLookupDto extends IDisplayLookupDto {
     name: string;
   };
 }
+
+export interface IProductLookupDto extends IDisplayLookupDto {
+  productTypeId: number;
+  defaultSpecGroupId: number
+}
+
+export interface IProductTypeLookupDto extends IDisplayLookupDto {
+  productTypeGroupId: number;
+}
+
+export interface IProductTypeGroupLookupDto extends IDisplayLookupDto {
+  defaultUomId: number;
+}
+
+export interface ISpecGroupLookupDto extends IDisplayLookupDto {
+  productId: number;
+}
