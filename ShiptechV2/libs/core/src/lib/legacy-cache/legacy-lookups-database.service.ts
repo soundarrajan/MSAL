@@ -6,7 +6,11 @@ import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import {
   IDisplayLookupCurrencyDto,
-  IDisplayLookupDto
+  IDisplayLookupDto,
+  IProductLookupDto,
+  IProductTypeLookupDto,
+  IProductTypeGroupLookupDto,
+  ISpecGroupLookupDto
 } from '@shiptech/core/lookups/display-lookup-dto.interface';
 import { IReconStatusLookupDto } from '@shiptech/core/lookups/known-lookups/recon-status/recon-status-lookup.interface';
 import { fromLegacyLookup } from '@shiptech/core/lookups/utils';
@@ -18,6 +22,17 @@ type ColorDisplayMappingLookup = ColorDisplayLookup & {
   transactionTypeId: number;
   index: number;
 };
+type ProductMappingLookup = IDisplayLookupDto & { 
+  productTypeId: number,
+  databaseValue: number
+};
+type DatabaseValueMappingLookup = IDisplayLookupDto & { 
+  databaseValue: number 
+};
+
+type Filter = {
+  orderBy?: string
+}
 /**
  * Front-end will only work with this class, and it doesn't care how these tables are actually populated.
  * Note: See {@link LookupsCacheService} to see how data is actually loaded from the api.
@@ -68,6 +83,13 @@ export class LegacyLookupsDatabase extends Dexie {
   readonly costType: Dexie.Table<IDisplayLookupDto, number>;
   readonly counterparty: Dexie.Table<IDisplayLookupDto, number>;
   readonly country: Dexie.Table<IDisplayLookupDto, number>;
+  readonly location: Dexie.Table<IDisplayLookupDto, number>;
+  readonly inactiveProducts: Dexie.Table<IDisplayLookupDto, number>;
+  readonly specGroup: Dexie.Table<IDisplayLookupDto, number>;
+  readonly contractualQuantityOption: Dexie.Table<IDisplayLookupDto, number>;
+  readonly productType: Dexie.Table<IProductTypeLookupDto, number>;
+  readonly productTypeGroup: Dexie.Table<IProductTypeGroupLookupDto, number>;
+  readonly pricingType: Dexie.Table<IDisplayLookupDto, number>;
 
   /**
    * For some entities we want to map from the BE dto more than the default IDisplayLookup props, for these cases we use a transformer.
@@ -112,7 +134,17 @@ export class LegacyLookupsDatabase extends Dexie {
       dto: ColorDisplayLookup
     ) => <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
     [nameof<LegacyLookupsDatabase>('portType')]: (dto: ColorDisplayLookup) =>
-      <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code }
+      <IReconStatusLookupDto>{ ...fromLegacyLookup(dto), code: dto.code },
+    [nameof<LegacyLookupsDatabase>('product')]: (dto: ProductMappingLookup) =>
+      <IProductLookupDto>{
+        ...fromLegacyLookup(dto),
+        productTypeId: dto.productTypeId,
+        defaultSpecGroupId: dto.databaseValue
+      },
+    [nameof<LegacyLookupsDatabase>('productType')]: (dto: DatabaseValueMappingLookup) =>
+      <IProductTypeLookupDto>{ ...fromLegacyLookup(dto), productTypeGroupId: dto.databaseValue },
+    [nameof<LegacyLookupsDatabase>('productTypeGroup')]: (dto: DatabaseValueMappingLookup) =>
+      <IProductTypeGroupLookupDto>{ ...fromLegacyLookup(dto), defaultUomId: dto.databaseValue }
   };
 
   lookupVersions: Dexie.Table<ILegacyLookupVersion, string>;
@@ -181,7 +213,14 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('controlTowerLogStatus')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('costType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('counterparty')]: lookupSchema,
-      [nameof<LegacyLookupsDatabase>('country')]: lookupSchema
+      [nameof<LegacyLookupsDatabase>('country')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('location')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('inactiveProducts')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('specGroup')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('contractualQuantityOption')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('productType')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('productTypeGroup')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('pricingType')]: lookupSchema
     };
   }
 
@@ -243,8 +282,8 @@ export class LegacyLookupsDatabase extends Dexie {
     return quantityCategoryList;
   }
 
-  async getProductList() {
-    const db = this.table('product');
+  async getProductList(params: Filter = { orderBy: 'id'}){
+    const db = this.table('product').orderBy(params.orderBy);
     let productList = await db.toArray();
     return productList;
   }
@@ -347,6 +386,39 @@ export class LegacyLookupsDatabase extends Dexie {
     let currencyList = await db.toArray();
     return currencyList;
   }
+
+  async getLocationList(params: Filter = { orderBy: 'id'}){
+    const db = this.table('location').orderBy(params.orderBy);
+    let locationList = await db.toArray();
+    return locationList;
+  }
+
+  async getContractualQuantityOptionsList(params: Filter = { orderBy: 'id'}){
+    const db = this.table('contractualQuantityOption').orderBy(params.orderBy);
+    let contractualQuantityOptionList = await db.toArray();
+    return contractualQuantityOptionList;
+  }
+
+  async getSpecGroupList(params: Filter = { orderBy: 'id'}){
+    const db = this.table('specGroup').orderBy(params.orderBy);
+    let specGroupList = await db.toArray();
+    return specGroupList;
+  }
+
+  async getPricingTypeList(params: Filter = { orderBy: 'id'}){
+    const db = this.table('pricingType').orderBy(params.orderBy);
+    let pricingTypeList = await db.toArray();
+    return pricingTypeList;
+  }
+
+  async getDefaultProductUOM(productId: number){
+    const product = await this.table('product').where('id').equals(productId).first();
+    const productType = await this.table('productType').where('id').equals(product.productTypeId).first();
+    const productTypeGroup = await this.table('productTypeGroup').where('id').equals(productType.productTypeGroupId).first();
+    const uom = await this.table('uom').where('id').equals(productTypeGroup.defaultUomId).first();
+    return uom;
+  }
+
   private async ensureVersion(): Promise<any> {
     // TODO: add proper logging
     // Note: We're doing a different db versioning strategy. Whenever a table is added or deleted the version will Change automatically
