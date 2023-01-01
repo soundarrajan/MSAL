@@ -8,7 +8,7 @@ import { Store } from '@ngxs/store';
 import { MatDialog } from '@angular/material/dialog';
 import { SpotnegoSearchCtpyComponent } from 'libs/feature/spot-negotiation/src/lib/views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { ToastrService } from 'ngx-toastr';
-
+import { SetTenantConfigurations } from '../../../store/actions/request-group-actions';
 @Component({
   selector: 'app-contract-negotiation-details',
   templateUrl: './contract-negotiation-details.component.html',
@@ -40,7 +40,11 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   pinnedColumnWidth: any;
 
   ngOnInit(): void {
-
+    console.log("*****************************");
+    console.log("***********getTenantConfugurations******************");
+    this.getTenantConfugurations();
+    console.log("*****************************");
+    
   }
 
   ngOnChanges() {
@@ -63,6 +67,25 @@ export class ContractNegotiationDetailsComponent implements OnInit {
     private toastr: ToastrService
     ) {
   }
+
+  getTenantConfugurations(): void {
+    const response = this.contractService.getTenantConfiguration();
+    response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
+      if (res?.error) {
+        alert('Handle Error');
+        return;
+      } else {
+        // Populate Store
+        this.store.dispatch(
+          new SetTenantConfigurations(res.tenantConfiguration)
+        );
+      }
+    });
+  }
+  
   private _filter(data, value: string): [] {
     const filterValue = value.toLowerCase();
     data.forEach((item) => {
