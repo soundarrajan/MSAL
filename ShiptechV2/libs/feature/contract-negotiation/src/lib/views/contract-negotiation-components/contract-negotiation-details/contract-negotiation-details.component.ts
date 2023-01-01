@@ -39,12 +39,8 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   chipSelected = "1";
   pinnedColumnWidth: any;
 
-  ngOnInit(): void {
-    console.log("*****************************");
-    console.log("***********getTenantConfugurations******************");
-    this.getTenantConfugurations();
-    console.log("*****************************");
-    
+  ngOnInit(): void {    
+    this.getTenantConfugurations();   
   }
 
   ngOnChanges() {
