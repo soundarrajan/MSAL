@@ -1145,4 +1145,12 @@ export class ContractNegotiationService extends BaseStoreService
        return  this.contractNegotiationApi.addCounterpartyToAllLocations(payload);
     }
 
+  /**
+   * @param payload = False
+   */
+  @ObservableException()
+  getTenantConfiguration(): Observable<unknown> {
+    return this.contractNegotiationApi.getTenantConfiguration();
+  }
+
 }

@@ -60,15 +60,24 @@ export class ContractNegoGridComponent implements OnInit {
     this.context = { componentParent: this };
   }
   ngOnInit(): void {
-    this.store.subscribe(() => {
+    this.store.subscribe(({ contractNegotiation, ...props }) => {
       this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
         state['contractNegotiation'].ContractRequest[0].locations.find(el => {
           if(el['location-id'] == this.locationId && el.productId == this.productId){
             this.dispalyNoData = (el.data.length > 0)? false : true;
             this.gridOptions_forecast?.api?.setRowData(el.data);
           }
+          
         })
       });
+      if (
+        contractNegotiation.tenantConfigurations &&
+        contractNegotiation.tenantConfigurations['isDisplaySellerRating'] === false
+      ) {       
+        this.columnDef_aggrid_forecast[0].children = this.columnDef_aggrid_forecast[0].children.filter(
+          col => col.field != 'GenRating' && col.field != 'PortRating'
+        );       
+      }
     });
 
     this.localService.sendChipSelected.subscribe((chip: any) => {
@@ -160,7 +169,7 @@ export class ContractNegoGridComponent implements OnInit {
       },
 
       onColumnResized: params => {
-        this.counterpartyHeaderWidth = params.columnApi.getColumn('check').getActualWidth() + params.columnApi.getColumn('CounterpartyName').getActualWidth() + params.columnApi.getColumn('GenRating').getActualWidth() + params.columnApi.getColumn('PortRating').getActualWidth();
+        this.counterpartyHeaderWidth = params.columnApi.getColumn('check').getActualWidth() + params.columnApi.getColumn('CounterpartyName').getActualWidth();
         this.pinnedColumnsWidth.emit(this.counterpartyHeaderWidth);
       },
 
@@ -377,7 +386,7 @@ export class ContractNegoGridComponent implements OnInit {
     // },
   };
 
-  private columnDef_aggrid_forecast = [
+  public columnDef_aggrid_forecast : any = [
     {
       headerName: '',
       headerTooltip: '',
