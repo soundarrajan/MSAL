@@ -1,11 +1,14 @@
-import { ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
 import { LocalService } from '../../../services/local-service.service';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 import { Store } from '@ngxs/store';
-
+import { MatDialog } from '@angular/material/dialog';
+import { SpotnegoSearchCtpyComponent } from 'libs/feature/spot-negotiation/src/lib/views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
+import { ToastrService } from 'ngx-toastr';
+import { SetTenantConfigurations } from '../../../store/actions/request-group-actions';
 @Component({
   selector: 'app-contract-negotiation-details',
   templateUrl: './contract-negotiation-details.component.html',
@@ -17,10 +20,12 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   @Input() rfqSent;
   @Input() noQuote;
   @Input() selectedRequestIndex;
+  @ViewChild('menuTrigger') trigger;
   public searchValue : string = '';
 
   public portIndex: number = 0;
   public fullHeaderWidth: any;
+  public locationId :number;
   statusList = [
     { key: 'AwaitingApproval', name: 'Awaiting Approval', className: 'await', count: 0 },
     { key: 'Approved', name: 'Approved', className: 'approved', count: 0 },
@@ -34,8 +39,8 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   chipSelected = "1";
   pinnedColumnWidth: any;
 
-  ngOnInit(): void {
-
+  ngOnInit(): void {    
+    this.getTenantConfugurations();   
   }
 
   ngOnChanges() {
@@ -54,8 +59,29 @@ export class ContractNegotiationDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     public store : Store,
     private changeDetector: ChangeDetectorRef,
+    public dialog: MatDialog,
+    private toastr: ToastrService
     ) {
   }
+
+  getTenantConfugurations(): void {
+    const response = this.contractService.getTenantConfiguration();
+    response.subscribe((res: any) => {
+      if(res?.message == 'Unauthorized'){
+        return;
+      }
+      if (res?.error) {
+        alert('Handle Error');
+        return;
+      } else {
+        // Populate Store
+        this.store.dispatch(
+          new SetTenantConfigurations(res.tenantConfiguration)
+        );
+      }
+    });
+  }
+  
   private _filter(data, value: string): [] {
     const filterValue = value.toLowerCase();
     data.forEach((item) => {
@@ -71,15 +97,45 @@ export class ContractNegotiationDetailsComponent implements OnInit {
     });
   }
   constructUpdateCounterparties(source){
+    if(Object.keys(this.contractService.selectedCounterparty).length > 0){    
     this.contractService.constructUpdateCounterparties(source)?.subscribe(res => {
       this.contractService.getContractRequestDetails(this.route.snapshot.params.requestId)
       .subscribe(response => {
         this.localService.contractRequestData(response);
       });
     });
+    }else{
+      this.toastr.error("Please Select atleast One Counterparty");
+    }
   }
-  setFocus() {
-  this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {      
+
+  searchCounterpartyLookUp(){
+    this.trigger.closeMenu();
+    this.contractService.selectedCounterparty = {};
+    const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
+      width: '100vw',
+      height: '95vh',
+      maxWidth: '95vw',
+      panelClass: 'search-request-popup',
+      data: {
+        AddCounterpartiesAcrossLocations: true,
+        source : 'contract-negotation'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(res => {
+      if(res.data){
+        res.data.forEach(el => {
+          this.contractService.selectedCounterparty[el.id] = el;
+        });
+        this.constructUpdateCounterparties(this.locationId);
+      }
+    });
+  }
+
+  setFocus(locationId) {
+    this.locationId = locationId;
+    this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {      
     this.counterpartyList = this.localService.limitCounterPartyList(
       JSON.parse(JSON.stringify(state['spotNegotiation'].counterpartyList))
       );

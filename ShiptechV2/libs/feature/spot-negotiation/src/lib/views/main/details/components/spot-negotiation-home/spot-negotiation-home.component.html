@@ -124,6 +124,7 @@
                   matTooltipShowDelay="500"
                   mat-button
                   class="mid-blue-button cust-header-btn"
+                  [disabled] = "RequestStatusIsStemmed"
                   (click)="sendRFQpopup()"
                 >
                   Send RFQ
@@ -134,6 +135,7 @@
                   matTooltipShowDelay="500"
                   mat-button
                   class="mid-blue-button cust-header-btn"
+                  [disabled] = "RequestStatusIsStemmed"
                   (click)="confirmorderpopup()"
                 >
                   Confirm Offer

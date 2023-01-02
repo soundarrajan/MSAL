@@ -46,6 +46,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
   navigationItems: any[];
   navBar: any;
   requestOptions: any;
+  RequestStatusIsStemmed:any;
   switchTheme; //false-Light Theme, true- Dark Theme
   quoteByTimeZoneId:number|null;
   quoteByTimeZone:any;
@@ -128,7 +129,7 @@ export class SpotNegotiationHomeComponent implements OnInit {
           this.requestOptionsToDuplicatePrice = this.requestOptions
             .filter(
               r =>
-                r.id != this.currentRequestInfo.id &&
+                r.id != this.currentRequestInfo.id && 
                 r.requestLocations.some(l =>
                   l.requestProducts.some(
                     pr =>
@@ -139,6 +140,13 @@ export class SpotNegotiationHomeComponent implements OnInit {
             )
             .map(req => ({ ...req, selected: true }));
           this.selectedRequestList = this.requestOptionsToDuplicatePrice;
+        }
+         this.RequestStatusIsStemmed = false;
+        if (this.requestOptions.length>0){
+          if(this.requestOptions[0].status=="Stemmed")
+          {
+          this.RequestStatusIsStemmed=true;
+          }
         }
         this.tenantConfiguration = spotNegotiation.tenantConfigurations;
         this.setTabItems();

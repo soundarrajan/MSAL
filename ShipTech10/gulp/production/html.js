@@ -89,7 +89,7 @@ module.exports = function(gulp, config) {
                 function() {
                     return gulpif(isBabelFile,
                         babel({
-                            presets: ['@babel/preset-env', 'es2015']
+                            presets: ['@babel/preset-env']
                         }));
                 }
             );
@@ -99,7 +99,7 @@ module.exports = function(gulp, config) {
             return gulp.src(['app/*.js'])
                 .pipe(useref({}, rebasePipe))
                 .pipe(babel({
-                    presets: ['@babel/preset-env', 'es2015']
+                    presets: ['@babel/preset-env']
                 }))
                 .pipe(gulpif('*.js', uglify({mangle:false})))
                 .pipe(gulp.dest(config.dist_dir));

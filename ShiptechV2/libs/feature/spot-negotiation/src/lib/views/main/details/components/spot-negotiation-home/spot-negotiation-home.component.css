@@ -17,3 +17,9 @@
   color: rgba(0, 0, 0, 0.38);
   cursor: default;
 }
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999 !important;
+  background-color: #cccccc  !important;
+  color: #666666  !important;
+}
