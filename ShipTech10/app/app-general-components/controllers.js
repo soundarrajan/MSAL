@@ -4011,6 +4011,10 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
         });
 
         setTimeout(function() {
+            $('#grid_periods .dateInputHasDayOfWeek').attr('disabled', 'disabled');
+        }, 1500);
+
+        setTimeout(function() {
          
             console.log("$rootScope", $rootScope.formValues);
             console.log("$scope", $scope.formValues);           
