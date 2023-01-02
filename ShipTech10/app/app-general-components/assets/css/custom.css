@@ -4837,7 +4837,7 @@ select option {
     width: 15px;
 }
 
-.group_periods .datePickerDayOfWeek{
+.group_periods .datePickerDayOfWeek,.form_input_PeriodTo .datePickerDayOfWeek,.form_input_PeriodFrom .datePickerDayOfWeek{
     border-top: 1px solid #c2cad8;
     border-bottom: 1px solid #c2cad8;
     border-left: 1px solid #c2cad8;
