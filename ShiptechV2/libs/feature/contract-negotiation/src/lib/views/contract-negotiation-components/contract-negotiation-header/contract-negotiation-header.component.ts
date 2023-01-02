@@ -15,8 +15,8 @@ import { ContractNegotiationStoreModel } from '../../../store/contract-negotiati
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { SetCounterpartyList } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
-import { SpotnegoSearchCtpyComponent } from 'libs/feature/spot-negotiation/src/lib/views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
 import { ToastrService } from 'ngx-toastr';
+import { SearchAllCounterpartiesComponent } from 'libs/feature/spot-negotiation/src/lib/views/main/details/components/spot-negotiation-popups/search-all-counterparties/search-all-counterparties.component';
 @Component({
   selector: 'app-contract-negotiation-header',
   templateUrl: './contract-negotiation-header.component.html',
@@ -282,7 +282,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   searchCounterpartyLookUp(){
     this.trigger.closeMenu();
     this.contractService.selectedCounterparty = {};
-    const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
+    const dialogRef = this.dialog.open(SearchAllCounterpartiesComponent, {
       width: '100vw',
       height: '95vh',
       maxWidth: '95vw',

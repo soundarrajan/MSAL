@@ -6,7 +6,7 @@ import { LocalService } from '../../../services/local-service.service';
 import { SpotNegotiationStoreModel } from 'libs/feature/spot-negotiation/src/lib/store/spot-negotiation.store';
 import { Store } from '@ngxs/store';
 import { MatDialog } from '@angular/material/dialog';
-import { SpotnegoSearchCtpyComponent } from 'libs/feature/spot-negotiation/src/lib/views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
+import { SearchAllCounterpartiesComponent } from 'libs/feature/spot-negotiation/src/lib/views/main/details/components/spot-negotiation-popups/search-all-counterparties/search-all-counterparties.component';
 import { ToastrService } from 'ngx-toastr';
 import { SetTenantConfigurations } from '../../../store/actions/request-group-actions';
 @Component({
@@ -112,7 +112,7 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   searchCounterpartyLookUp(){
     this.trigger.closeMenu();
     this.contractService.selectedCounterparty = {};
-    const dialogRef = this.dialog.open(SpotnegoSearchCtpyComponent, {
+    const dialogRef = this.dialog.open(SearchAllCounterpartiesComponent, {
       width: '100vw',
       height: '95vh',
       maxWidth: '95vw',

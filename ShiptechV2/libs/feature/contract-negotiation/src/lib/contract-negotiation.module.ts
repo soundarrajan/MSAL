@@ -65,7 +65,7 @@ import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag
 import { SpotNegotiationService } from './../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 import { CounterpartieNameCellComponent } from './core/ag-grid-renderers/counterpartie-name-cell.component';
-import { SpotnegoSearchCtpyComponent } from 'libs/feature/spot-negotiation/src/lib/views/main/details/components/spot-negotiation-popups/spotnego-counterparties/spotnego-searchctpy.component';
+import { SearchAllCounterpartiesComponent } from 'libs/feature/spot-negotiation/src/lib/views/main/details/components/spot-negotiation-popups/search-all-counterparties/search-all-counterparties.component';
 //import { RemoveCounterpartyPopupComponent } from './views/contract-negotiation-components/contract-negotiation-popups/remove-counterparty-popup/remove-counterparty-popup.component';
 @NgModule({
   declarations: [
@@ -109,7 +109,7 @@ import { SpotnegoSearchCtpyComponent } from 'libs/feature/spot-negotiation/src/l
     HeaderBreadcrumbComponent,
     CounterpartieNameCellComponent,
    // RemoveCounterpartyPopupComponent,
-   SpotnegoSearchCtpyComponent
+   SearchAllCounterpartiesComponent
   ],
   imports: [
     CommonModule,
@@ -142,7 +142,8 @@ import { SpotnegoSearchCtpyComponent } from 'libs/feature/spot-negotiation/src/l
     AGGridInputSelectRenderer,
     AGGridMultiDataRendererComponent,
     AGGridRatingChipRenderer,
-    fullWidthCellRenderer
+    fullWidthCellRenderer,
+    SearchAllCounterpartiesComponent
   ],
   providers: [
     ModuleLoggerFactory,
