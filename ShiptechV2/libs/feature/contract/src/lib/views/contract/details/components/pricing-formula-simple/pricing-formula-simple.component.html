@@ -131,10 +131,10 @@
     </mat-form-field>
   </div>
   <div
-    class="custom-form-field create-new-formula-form-field"
+    class="custom-form-field create-new-formula-form-field "
     [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
   >
-    <mat-form-field class="without-search" appearance="legacy">
+    <mat-form-field class="without-search" appearance="legacy" style ="margin-top: -10px;">
       <mat-label>Flat/percentage</mat-label>
       <mat-select
         [(ngModel)]="formValues.simpleFormula.flatPercentage"
