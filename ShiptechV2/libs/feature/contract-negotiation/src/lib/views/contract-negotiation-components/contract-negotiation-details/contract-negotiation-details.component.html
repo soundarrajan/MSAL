@@ -26,13 +26,14 @@
                                 <div class="expansion-popup" style="margin: 20px 0px;">
                                     <div class="select-product-container">
                                         <div class="col-md-12 header-container-product"
-                                            (click)="$event.stopPropagation(); $event.preventDefault()">
+                                            (click)="$event.preventDefault()">
                                             <div class="search-product-container col-md-10">
                                                 <span class="search-product-lookup">
                                                 </span>
                                                 <input matInput
                                                 [(ngModel)] = "searchValue"
                                                 id="inputBox3"
+                                                (click)="$event.stopPropagation();"
                                                 (keyup) = "filterCounterParty($event.target.value)"
                                                     placeholder="Search and select counterparty"
                                                     class="search-product-input">
