@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { GridOptions } from '@ag-grid-enterprise/all-modules';
 import { LocalService } from '../../../services/local-service.service';
 import { MatCheckboxHeaderComponent } from '../../../core/ag-grid-renderers/mat-checkbox-header.component';
@@ -111,22 +111,6 @@ export class ContractNegoGridComponent implements OnInit {
         this.gridOptions_forecast.api.sizeColumnsToFit();
         this.rowCount = this.gridOptions_forecast.api.getDisplayedRowCount();
         params.api.sizeColumnsToFit();
-        
-        // ******************* need to remove code after testing ************** start
-        // this.localService.getContractNegoJSON('10001', '002').subscribe((res: any) => {
-        //   this.rowData_aggrid_forecast = res;
-        //   let result = this.rowData_aggrid_forecast.map(data => ({
-        //     id: data.id,
-        //     Status: data.Status,
-        //     check: data.check,
-        //     CounterpartyName: data.CounterpartyName,
-        //     GenRating: data.GenRating,
-        //     PortRating: data.PortRating
-        //   }));        
-        //   //this.gridOptions_forecast.api.setRowData(this.rowData_aggrid_forecast);
-        // });
-        // ******************* need to remove code after testing ************** end
-
         this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
           state['contractNegotiation'].ContractRequest[0].locations.find(el => {
             if(el['location-id'] == this.locationId && el.productId == this.productId){
@@ -235,16 +219,9 @@ export class ContractNegoGridComponent implements OnInit {
         noQuoteRenderer: fullWidthCellRenderer
       }
 
-      // getRowClass: params => {
-      //   if (this.rfqSent && params.rowIndex == 3) {
-      //     return 'display-no-quote';
-      //   }
-      // }
     };
 
     this.localService.sendRFQUpdate.subscribe(data => {
-      // alert(this.rfqSent);
-      //console.log(data);
       this.rfqSent = data;
       //this.rfqComplete= true;
       this.localService.isRowSelected.subscribe(data => {
@@ -374,17 +351,6 @@ export class ContractNegoGridComponent implements OnInit {
       className: className
     };
   }
-
-  private rowClassRules = {
-    // 'customRowClass': function (params) {
-    //   var OfferPrice = params.data.OfferPrice1;
-    //   return OfferPrice == 100;
-    // },
-    // 'display-no-quote': function (params) {
-    //   var OfferPrice = params.data.isQuote;
-    //   return OfferPrice == 'No quote';
-    // },
-  };
 
   public columnDef_aggrid_forecast : any = [
     {
@@ -609,19 +575,6 @@ export class ContractNegoGridComponent implements OnInit {
             }
           }
         },
-        // {
-        //   headerName: '', field: 'm1check', cellClass: 'ag-checkbox-v2', suppressMenu: true,width: 10,
-        //   cellRenderer: params => {
-        //     if(this.rfqSent && this.rowSelected && params.node.level != 0){
-        //       return `<label class="container">
-        //       <input type="checkbox" class="checkbox dark" ${params.value ? 'checked' : ''} />
-        //       <span class="checkmark"></span>
-        //     </label>`
-        //     }else{
-        //       return undefined;
-        //     }
-        //   }
-        // },
         {
           headerName: 'M1',
           headerTooltip: 'M1',

@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { LocalService } from '../../../services/local-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateContractRequestPopupComponent } from '../contract-negotiation-popups/create-contract-request-popup/create-contract-request-popup.component';
 import { ContractNegotiationDetailsComponent } from '../contract-negotiation-details/contract-negotiation-details.component';
 import { OfferChatComponent } from '../offer-chat/offer-chat.component';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { isNumeric } from 'rxjs/internal-compatibility';
 import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
 import { ActivatedRoute } from '@angular/router';
