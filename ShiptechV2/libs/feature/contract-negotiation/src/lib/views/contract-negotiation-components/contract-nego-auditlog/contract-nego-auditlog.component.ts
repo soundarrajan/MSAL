@@ -1,12 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { GridOptions } from 'ag-grid-community';
-import { Router } from "@angular/router";
-import { EmailPreviewPopupComponent } from '../contract-negotiation-popups/email-preview-popup/email-preview-popup.component';
-import { AGGridCellRendererV2Component } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-rendererv2.component';
-import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-actions.component';
-
 @Component({
   selector: 'app-contract-nego-auditlog',
   templateUrl: './contract-nego-auditlog.component.html',
@@ -185,8 +179,5 @@ product:'RMG 380',field:'Premium',oldValue:'3 USD',newValue:'2.5 USD'}
         old_chat:'This Offer is for Rotterdam for the month of July to Sep',new_chat:'This Offer is for Amsterdam for the month of July to Sep'},
       { date:'12/12/2021 12:34',user:'Alexander James',transactionType:'Modify',section:'Offer',
         old_chat:'This Offer is for Rotterdam for the month of July to Sep',new_chat:'Conversation Deleted'}
-       ];   
-
-  
-
+       ];
 }

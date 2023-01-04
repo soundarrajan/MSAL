@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { MatDialog } from '@angular/material/dialog';
 import { GridOptions } from '@ag-grid-enterprise/all-modules';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { EmailPreviewPopupComponent } from '../contract-negotiation-popups/email-preview-popup/email-preview-popup.component';
-import { AGGridCellRendererV2Component } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-rendererv2.component';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-actions.component';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { Store } from '@ngxs/store';

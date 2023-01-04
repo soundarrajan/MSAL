@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
-import { FormControl, FormGroup } from '@angular/forms';
 import { FormulaPricingPopupComponent } from '../contract-negotiation-popups/formula-pricing-popup/formula-pricing-popup.component';
 import { LocalService } from '../../../services/local-service.service';
 import { AdditionalCostPopupComponent } from '../contract-negotiation-popups/additional-cost-popup/additional-cost-popup.component';

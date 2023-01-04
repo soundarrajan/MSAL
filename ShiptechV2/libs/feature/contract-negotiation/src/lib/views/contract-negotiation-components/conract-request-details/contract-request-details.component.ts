@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from "@angular/router";
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-import { EmptyFilterName, FilterExists, ToastPosition } from '@shiptech/core/ui/components/filter-preferences/filter-preferences-messages';
+import { EmptyFilterName, ToastPosition } from '@shiptech/core/ui/components/filter-preferences/filter-preferences-messages';
 import { GridOptions } from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
 import { AGGridCellLinkRenderer } from '../../../core/ag-grid-renderers/ag-grid-cell-link-renderer.component';
