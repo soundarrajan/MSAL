@@ -41,14 +41,7 @@ export class MainPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router : Router,
     private contractService: ContractNegotiationService
-  ) {
-    const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
-    if(contractRequestIdFromUrl && isNumeric(contractRequestIdFromUrl)){
-      this.contractService.getContractRequestDetails(contractRequestIdFromUrl).subscribe(response => {
-        this.localService.contractRequestData(response);
-      });
-    }
-  }
+  ) {}
 
   ngOnInit(): void {
     this.navigationItems = [
@@ -134,6 +127,7 @@ export class MainPageComponent implements OnInit {
   
   changeActionButtonStatus(val: boolean) {
     this.disableActionButtons = val;
+    this.disableSendRFQButton = val;
   }
   
   goBack() {

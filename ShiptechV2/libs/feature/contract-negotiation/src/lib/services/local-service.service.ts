@@ -714,6 +714,7 @@ export class LocalService {
             Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
             // this.disbaleHeaderButtons.emit(false);
             let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
+            let product = this.masterData['Product'].find(el => el.id == res2['productId']);
             arrDet = {
                 "check": res2['isSelected'],
                 "id": res2['id'],
