@@ -44,10 +44,8 @@
                                     </div>
                                     <div *ngIf="isBuyer" class="ht-100 d-flex align-items-center">
                                         <button matTooltip="Send RFQ" matTooltipClass="lightTooltip"
-
                                             matTooltipShowDelay="500"
-                                            mat-button [disabled] = "disableActionButtons"
-                                             
+                                            mat-button [disabled] = "disableSendRFQButton"
                                                 (click)="sendRFQ()" class="mid-blue-button cust-header-btn">
                                             Send RFQ
                                         </button>

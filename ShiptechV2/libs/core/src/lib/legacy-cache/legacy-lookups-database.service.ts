@@ -31,7 +31,8 @@ type DatabaseValueMappingLookup = IDisplayLookupDto & {
 };
 
 type Filter = {
-  orderBy?: string
+  orderBy?: string,
+  limit?: number
 }
 /**
  * Front-end will only work with this class, and it doesn't care how these tables are actually populated.
@@ -270,8 +271,8 @@ export class LegacyLookupsDatabase extends Dexie {
     return claimTypeList;
   }
 
-  async getUomTable() {
-    const db = this.table('uom');
+  async getUomTable(params: Filter = { orderBy: 'id'}) {
+    const db = this.table('uom').orderBy(params.orderBy);
     let uomList = await db.toArray();
     return uomList;
   }
@@ -417,6 +418,12 @@ export class LegacyLookupsDatabase extends Dexie {
     const productTypeGroup = await this.table('productTypeGroup').where('id').equals(productType.productTypeGroupId).first();
     const uom = await this.table('uom').where('id').equals(productTypeGroup.defaultUomId).first();
     return uom;
+  }
+
+  async getCounterPartyList(params: Filter = { orderBy: 'id'}){
+    const db = this.table('counterparty').orderBy(params.orderBy);
+    let counterPartyList = await db.toArray();
+    return counterPartyList;
   }
 
   private async ensureVersion(): Promise<any> {

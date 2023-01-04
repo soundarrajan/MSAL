@@ -247,7 +247,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   async getStaticData() {
     this._cdr.markForCheck();
     return {
-      Uom: await this.db.getUomTable(),
+      Uom: await this.db.getUomTable({ orderBy: 'name' }),
       Product: await this.db.getProductList({ orderBy: 'name' }),
       ContractualQuantityOption: await this.db.getContractualQuantityOptionsList({ orderBy: 'name' }),
       Location: await this.db.getLocationList({ orderBy: 'name' }),

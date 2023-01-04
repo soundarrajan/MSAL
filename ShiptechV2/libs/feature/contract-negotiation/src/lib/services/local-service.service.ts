@@ -10,6 +10,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { ContractRequest } from '../store/actions/ag-grid-row.action';
 import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service'; 
 
 
 @Injectable({
@@ -40,6 +41,7 @@ export class LocalService {
         public format: TenantFormattingService,
         private store : Store,
         private spotNegotiationService: SpotNegotiationService,
+        private db: LegacyLookupsDatabase
         ) {
         this.getVesselsList().subscribe(data => {
             // console.log(data);
@@ -692,93 +694,95 @@ export class LocalService {
         })
     }
 
-    contractRequestData(response){
+    async contractRequestData(response){
         let  contractArray = { locations : []};
         let arrDet = {};
         let data = [];
         let arrMainDet = {};
         let uniqueCounterParty = [];
-        this.getMasterListData(['Counterparty','Product','Location','Uom']).subscribe(data => {
-            this.masterData = data;
-        });
-            Object.entries(response['contractRequestProducts']).forEach(([key, res1]) => {
-             //this.contractArray['request-id'] = '001';
-              let location = this.masterData['Location'].find(el => el.id == res1['locationId']);
-              let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
-              uniqueCounterParty.push(location.name);
-              Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
-             // this.disbaleHeaderButtons.emit(false);
-              let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
-              let product = this.masterData['Product'].find(el => el.id == res2['productId']);           
-                arrDet = {
-                  "check": res2['isSelected'],
-                  "id": res2['id'],
-                  "LocationId": res1['locationId'],
-                  "ProductId": res2['productId'],
-                  "isSellerSuspended": res2['isSellerSuspended'],
-                  //"ProductName": product?.displayName,
-                  "requestLocationId": '',
-                  "requestProductId": '',
-                  "RequestLocationSellerId": '',
-                  "CounterpartyName": this.format.htmlDecode(counterparty?.name),
-                  "CounterpartyId": res2['counterpartyId'],
-                  "IsTemporarlySuspended": '',
-                  "GenRating": res2['genRating'],
-                  "PortRating": res2['portRating'],
-                  "QuotedProductId": '',
-                  "SpecGroupId": '',
-                  "SpecGroupName": "",
-                  //"MinQuantity": res2['minQuantity'],
-                  //"MaxQuantity": res2['maxQuantity'],
-                  "UomId": '',
-                  //"OfferPrice": res2['offerPrice'],
-                  "PriceCurrencyId": '',
-                  "PriceCurrencyName": "",
-                  "ValidityDate": "",
-                  "Status": "OfferCreated",
-                  "M1": '',
-                  "M2": '',
-                  "M3": '',
-                  "M4": '',
-                  "M5": '',
-                  "M6": '',
-                  "Q1": '',
-                  "Q2": '',
-                  "Q3": '',
-                  "Q4": '',
-                  "fdProduct": "",
-                  "fdTotalContractAmt": "",
-                  "fdFomulaDesc": "",
-                  "fdSchedule": "",
-                  "fdPremium": "",
-                  "fdAddCosts": "",
-                  "fdRemarks": ""
-                }
-                data.push(arrDet);
-                arrDet = {};
-              });
-              let contractualQuantityOption = this.masterData['Uom'].find(el => el.id == res1['maxQuantityUomId']);
-              arrMainDet = {
-                'data' : data,
-                "location-name": location.name,
-                "location-id": res1['locationId'],
-                "port-id": "1",
-                "period": "M",
-                "productId" : res1['productId'],
-                "productName" : mainProduct.name,
-                "minQuantity" : res1['minQuantity'],
-                "maxQuantity" : res1['maxQuantity'],
-                "contractualQuantityOption" : contractualQuantityOption.name,
-                "contractRequestProductId" : res1['id']
-              }
-              contractArray['locations'].push(arrMainDet);
-              arrMainDet = {}; data = [];
-            });    
-
-            //let unique = [...new Set(uniqueCounterParty)];       
-           // this.uniqueCounterPartyName = unique.toString();
-           // this.allRequestDetails[0] = contractArray;
-            this.store.dispatch(new ContractRequest([contractArray]));
+        this.masterData = await {
+            Uom: await this.db.getUomTable({ orderBy: 'name' }),
+            Location: await this.db.getLocationList({ orderBy: 'name' }),
+            Counterparty: await this.db.getCounterPartyList({ orderBy: 'name' }),
+            Product: await this.db.getProductList({ orderBy: 'name' })
         }
+        Object.entries(response['contractRequestProducts']).forEach(([key, res1]) => {
+            //this.contractArray['request-id'] = '001';
+            let location = this.masterData['Location'].find(el => el.id == res1['locationId']);
+            let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
+            uniqueCounterParty.push(location.name);
+            Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
+            // this.disbaleHeaderButtons.emit(false);
+            let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
+            arrDet = {
+                "check": res2['isSelected'],
+                "id": res2['id'],
+                "LocationId": res1['locationId'],
+                "ProductId": res2['productId'],
+                "isSellerSuspended": res2['isSellerSuspended'],
+                //"ProductName": product?.displayName,
+                "requestLocationId": '',
+                "requestProductId": '',
+                "RequestLocationSellerId": '',
+                "CounterpartyName": this.format.htmlDecode(counterparty?.name),
+                "CounterpartyId": res2['counterpartyId'],
+                "IsTemporarlySuspended": '',
+                "GenRating": res2['genRating'],
+                "PortRating": res2['portRating'],
+                "QuotedProductId": '',
+                "SpecGroupId": '',
+                "SpecGroupName": "",
+                //"MinQuantity": res2['minQuantity'],
+                //"MaxQuantity": res2['maxQuantity'],
+                "UomId": '',
+                //"OfferPrice": res2['offerPrice'],
+                "PriceCurrencyId": '',
+                "PriceCurrencyName": "",
+                "ValidityDate": "",
+                "Status": "OfferCreated",
+                "M1": '',
+                "M2": '',
+                "M3": '',
+                "M4": '',
+                "M5": '',
+                "M6": '',
+                "Q1": '',
+                "Q2": '',
+                "Q3": '',
+                "Q4": '',
+                "fdProduct": "",
+                "fdTotalContractAmt": "",
+                "fdFomulaDesc": "",
+                "fdSchedule": "",
+                "fdPremium": "",
+                "fdAddCosts": "",
+                "fdRemarks": ""
+            }
+            data.push(arrDet);
+            arrDet = {};
+        });
+        let contractualQuantityOption = this.masterData['Uom'].find(el => el.id == res1['maxQuantityUomId']);
+            arrMainDet = {
+            'data' : data,
+            "location-name": location.name,
+            "location-id": res1['locationId'],
+            "port-id": "1",
+            "period": "M",
+            "productId" : res1['productId'],
+            "productName" : mainProduct.name,
+            "minQuantity" : res1['minQuantity'],
+            "maxQuantity" : res1['maxQuantity'],
+            "contractualQuantityOption" : contractualQuantityOption.name,
+            "contractRequestProductId" : res1['id']
+            }
+            contractArray['locations'].push(arrMainDet);
+            arrMainDet = {}; data = [];
+        });
+
+        //let unique = [...new Set(uniqueCounterParty)];
+        // this.uniqueCounterPartyName = unique.toString();
+        // this.allRequestDetails[0] = contractArray;
+        this.store.dispatch(new ContractRequest([contractArray]));
+    }
 
 }
