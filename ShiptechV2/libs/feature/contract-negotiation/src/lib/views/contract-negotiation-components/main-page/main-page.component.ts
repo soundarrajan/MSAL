@@ -33,17 +33,17 @@ export class MainPageComponent implements OnInit {
   public rowSelected:boolean = false;
   contractStatus;
   disableActionButtons : Boolean = true;
-  constructor(private _location: Location, private toaster: ToastrService, public dialog: MatDialog, private localService: LocalService,
-    private route: ActivatedRoute, private router : Router, private contractService: ContractNegotiationService) { }
+  disableSendRFQButton: Boolean = true;
+  constructor(
+    private toaster: ToastrService,
+    public dialog: MatDialog,
+    private localService: LocalService,
+    private route: ActivatedRoute,
+    private router : Router,
+    private contractService: ContractNegotiationService
+  ) {}
 
   ngOnInit(): void {
-    //const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
-    // if(contractRequestIdFromUrl && isNumeric(contractRequestIdFromUrl)){
-    //   this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
-    //   .subscribe(response => {
-    //     this.localService.contractRequestDetails = response;
-    //   });
-    // }
     this.navigationItems = [
       {
         id: 'request',
@@ -126,8 +126,8 @@ export class MainPageComponent implements OnInit {
   }
   
   changeActionButtonStatus(val: boolean) {
-    
     this.disableActionButtons = val;
+    this.disableSendRFQButton = val;
   }
   
   goBack() {
@@ -240,12 +240,13 @@ export class MainPageComponent implements OnInit {
   createContract(){
     this.localService.updateContractStatus({ "oldStatus": 2, "newStatus": 4 });
     this.displaySuccessMsg('Contract created successfully');
-
   }
+
   toApprove(){
     this.localService.updateContractStatus({ "oldStatus": 1, "newStatus": 2 });
     this.displaySuccessMsg('Offers approved successfully');
   }
+  
   toReject(){
     this.localService.updateContractStatus({ "oldStatus": 1, "newStatus": 3 });
     this.displaySuccessMsg('Offers Rejected');

@@ -1884,6 +1884,10 @@ button:focus {
     }
 }
 
+.mid-blue-button[disabled] {
+    opacity: 0.5;
+}
+
 /* Buttons -END */
 
 
