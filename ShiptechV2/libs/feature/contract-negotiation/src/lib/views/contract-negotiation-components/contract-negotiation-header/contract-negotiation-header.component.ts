@@ -31,6 +31,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   @ViewChild(OfferChatComponent) childChat: OfferChatComponent;
   @ViewChild('ports') ports: ElementRef;
   @Output() disbaleHeaderButtons = new EventEmitter<boolean>();
+  @Output() contractRequestStatus = new EventEmitter<string>();
   @ViewChild('menuTrigger') trigger;
     
     
@@ -75,6 +76,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
       this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
       .subscribe(response => {
             this.contractRequestId = response['id'];
+            this.contractRequestStatus.emit(response['status']);
             this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
             this.localService.getMasterListData(['Product','Location','Uom']).subscribe(data => {
             this.masterData = data;
@@ -192,7 +194,9 @@ export class ContractNegotiationHeaderComponent implements OnInit {
               "fdSchedule": "",
               "fdPremium": "",
               "fdAddCosts": "",
-              "fdRemarks": ""
+              "fdRemarks": "",
+              "createdById": res2['createdById'],
+              "createdOn": res2['createdOn']
             }
             data.push(arrDet);
             arrDet = {};
@@ -206,8 +210,13 @@ export class ContractNegotiationHeaderComponent implements OnInit {
             "period": "M",
             "productId" : res1['productId'],
             "productName" : mainProduct.name,
+            "specGroupId": res1['specGroupId'],
             "minQuantity" : res1['minQuantity'],
             "maxQuantity" : res1['maxQuantity'],
+            "minQuantityUomId" : res1['minQuantityUomId'],
+            "maxQuantityUomId" : res1['maxQuantityUomId'],
+            "validityDate" : res1['minValidity'],
+            "pricingTypeId": res1['pricingTypeId'],
             "contractualQuantityOption" : contractualQuantityOption.name,
             "contractRequestProductId" : res1['id']
           }

@@ -10,7 +10,8 @@
                         <div class="" style="z-index: 9999;position: fixed; width: 100%;background-color: #F5F7FB;">
                             <app-contract-negotiation-header
                             [rfqSent]="rfqSent" [noQuote]="noQuote"
-                            (disbaleHeaderButtons)="changeActionButtonStatus($event)">
+                            (disbaleHeaderButtons)="changeActionButtonStatus($event)"
+                            (contractRequestStatus)="updateContractRequestStatus($event)">
                             </app-contract-negotiation-header>
                         </div>
                         <div style="margin-top: -39px;">
@@ -46,7 +47,7 @@
                                         <button matTooltip="Send RFQ" matTooltipClass="lightTooltip"
                                             matTooltipShowDelay="500"
                                             mat-button [disabled] = "disableSendRFQButton"
-                                                (click)="sendRFQ()" class="mid-blue-button cust-header-btn">
+                                            (click)="sendRFQ()" class="mid-blue-button cust-header-btn">
                                             Send RFQ
                                         </button>
                                         <button matTooltip="Send to Approve" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button [disabled] = "disableActionButtons"
