@@ -301,7 +301,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     }
     data.counterpartyDetails.paymentTerm =
       data.counterpartyDetails.orderPaymentTerm;
-    data.deliveryDate = data.orderDeliveryDate;
+      data.deliveryDate = data.deliveryDeliveryDate ?? data.orderDeliveryDate;
     data.orderDetails.carrierCompany = data.orderDetails.orderCarrierCompany;
     data.orderDetails.paymentCompany = data.orderDetails.orderPaymentCompany;
     data.invoiceChecks = null;
