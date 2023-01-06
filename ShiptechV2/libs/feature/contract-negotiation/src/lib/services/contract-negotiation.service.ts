@@ -45,8 +45,7 @@ export class ContractNegotiationService extends BaseStoreService
     return this.contractNegotiationApi.getStaticLists(payload);
   }
   
-  /**
-   * Amend RFQ
+  /*Create contract request details
    * @param payload =
    */
   @ObservableException()
@@ -54,8 +53,7 @@ export class ContractNegotiationService extends BaseStoreService
     return this.contractNegotiationApi.createContractRequest(payload);
   }
 
-  /**
-   * Amend RFQ
+  /*Update Contract request details
    * @param payload =
    */
   @ObservableException()
@@ -276,6 +274,14 @@ export class ContractNegotiationService extends BaseStoreService
   @ObservableException()
   getTenantConfiguration(): Observable<unknown> {
     return this.contractNegotiationApi.getTenantConfiguration();
+  }
+
+  /* Send RFQ
+   * @param payload = 
+   */
+  @ObservableException()
+  sendRFQ(payload: any): Observable<any> {
+    return this.contractNegotiationApi.sendRFQ(payload);
   }
 
 }

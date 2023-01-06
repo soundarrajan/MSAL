@@ -757,7 +757,9 @@ export class LocalService {
                 "fdSchedule": "",
                 "fdPremium": "",
                 "fdAddCosts": "",
-                "fdRemarks": ""
+                "fdRemarks": "",
+                "createdById": res2['createdById'],
+                "createdOn": res2['createdOn']
             }
             data.push(arrDet);
             arrDet = {};
@@ -771,8 +773,13 @@ export class LocalService {
             "period": "M",
             "productId" : res1['productId'],
             "productName" : mainProduct.name,
+            "specGroupId" : res1['specGroupId'],
             "minQuantity" : res1['minQuantity'],
             "maxQuantity" : res1['maxQuantity'],
+            "minQuantityUomId" : res1['minQuantityUomId'],
+            "maxQuantityUomId" : res1['maxQuantityUomId'],
+            "validityDate" : res1['minValidity'],
+            "pricingTypeId": res1['pricingTypeId'],
             "contractualQuantityOption" : contractualQuantityOption.name,
             "contractRequestProductId" : res1['id']
             }
