@@ -16,6 +16,7 @@ import { Store } from '@ngxs/store';
 import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
 import { CounterpartieNameCellComponent } from '../../../core/ag-grid-renderers/counterpartie-name-cell.component';
 import { GetRowNodeIdFunc, IGetRowsParams } from 'ag-grid-community';
+import { ContractRequest } from '../../../store/actions/ag-grid-row.action';
 @Component({
   selector: 'app-contract-nego-grid',
   templateUrl: './contract-nego-grid.component.html',
@@ -173,7 +174,7 @@ export class ContractNegoGridComponent implements OnInit {
         field: 'ProductName',
         minWidth: 200,
         comparator: function(a, b) {
-          const statusName = ['OfferCreated', 'AwaitingApproval', 'Approved', 'Rejected', 'Contracted']; //Sort Ag-grid data based on this status order
+          const statusName = ['Open', 'Inquired', 'AwaitingApproval', 'Approved', 'Rejected', 'Contracted']; //Sort Ag-grid data based on this status order
           return statusName.indexOf(a) - statusName.indexOf(b);
         },
         sort: 'asc',
@@ -722,7 +723,7 @@ export class ContractNegoGridComponent implements OnInit {
       let newClass = '';
       let clickEvent = false;
       let status = params.data ? params.data.Status : '';
-      if (status == 'OfferCreated') {
+      if (status == 'Open') {
         newClass = 'normal-checkbox';
         clickEvent = true;
       } else if (status == 'AwaitingApproval') {
@@ -755,6 +756,18 @@ export class ContractNegoGridComponent implements OnInit {
         //this.localService.updateSendRFQStatus(false);
       }
     });
+    let contractReq = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+      return state['contractNegotiation'].ContractRequest[0];
+    })));
+    console.log('row checked:: e.data.id:'+e.data.id);
+    contractReq.locations.map( prod => {
+      if(prod.data.length > 0){
+        prod.data.map( data => {
+          if(e.data.id == data.id) data.check = e.node.selected;
+        })
+      }
+    })
+    this.store.dispatch(new ContractRequest([contractReq]));
     //this.rowSelected = true;
     //this.isCalculated = true;
 
@@ -777,7 +790,7 @@ export class ContractNegoGridComponent implements OnInit {
   
   toggleProgressBar(row) {
     this.showProgressBar = !this.showProgressBar;
-    row.Status = 'OfferCreated';
+    row.Status = 'Open';
     row.M1 = '';
     row.M2 = '';
     row.M3 = '';

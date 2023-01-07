@@ -11,6 +11,7 @@ import { ContractNegotiationStoreModel } from '../../../store/contract-negotiati
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import moment from 'moment';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { ContractRequest } from '../../../store/actions/ag-grid-row.action';
 
 @Component({
   selector: 'app-main-page',
@@ -176,37 +177,45 @@ export class MainPageComponent implements OnInit {
     this.localService.isRowSelected.subscribe(data => {
       this.rowSelected = data;
     });*/
-    let counterpartyDetails = [];
+    let counterpartyDetails = []; let alreadySent = []; let selectedCount = 0;
     this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
       state['contractNegotiation'].ContractRequest[0].locations.forEach( prodData => {
         if(prodData.data && prodData.data.length > 0){
           prodData.data.forEach( data => {
             if(data.check) {
-              let productDetails = {
-                "contractRequestProductId": prodData.contractRequestProductId,
-                "counterpartyId": data.CounterpartyId,
-                "createdById": data.createdById,
-                "lastModifiedById": this.currentUserId,
-                "createdOn": data.createdOn,
-                "lastModifiedOn": moment.utc(),
-                "id": data.id,
-                "productId": prodData.productId,
-                "specGroupId": prodData.specGroupId,
-                "minQuantity": prodData.minQuantity,
-                "minQuantityUomId": prodData.minQuantityUomId,
-                "maxQuantity": prodData.maxQuantity,
-                "maxQuantityUomId": prodData.maxQuantityUomId,
-                "validityDate": prodData.validityDate,
-                "currencyId": this.generalTenantSettings.tenantFormats.currency.id,
-                "pricingTypeId": prodData.pricingTypeId
+              selectedCount++;
+              if(data.Status == 'Open') {
+                let productDetails = {
+                  "contractRequestProductId": prodData.contractRequestProductId,
+                  "counterpartyId": data.CounterpartyId,
+                  "createdById": data.createdById,
+                  "lastModifiedById": this.currentUserId,
+                  "createdOn": data.createdOn,
+                  "lastModifiedOn": moment.utc(),
+                  "id": data.id,
+                  "productId": prodData.productId,
+                  "specGroupId": prodData.specGroupId,
+                  "minQuantity": prodData.minQuantity,
+                  "minQuantityUomId": prodData.minQuantityUomId,
+                  "maxQuantity": prodData.maxQuantity,
+                  "maxQuantityUomId": prodData.maxQuantityUomId,
+                  "validityDate": prodData.validityDate,
+                  "currencyId": this.generalTenantSettings.tenantFormats.currency.id,
+                  "pricingTypeId": prodData.pricingTypeId
+                }
+                counterpartyDetails.push(productDetails);
+              } else {
+                alreadySent.push(data.CounterpartyName);
               }
-              counterpartyDetails.push(productDetails);
             }
           })
         }
       });
     });
-    if(counterpartyDetails.length > 0){
+    if(alreadySent.length > 0){
+      this.toaster.error('RFQ is already sent for '+ alreadySent.join(', ') +' and the mail can be retriggered from Email Log');
+    }
+    if(selectedCount > 0 && counterpartyDetails.length > 0){
       let payload = {
         loginUserId: this.currentUserId,
         conReqProdSellerWithProdDetatilDtos: counterpartyDetails
@@ -216,6 +225,23 @@ export class MainPageComponent implements OnInit {
           this.displaySuccessMsg('RFQ Sent successfully!');
           this.rfqSent = true;
           this.contractStatus = 'Inquired';
+          let contractReq: any = false;
+          if(res.contractRequestProductOfferIds.length > 0){
+            contractReq = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+              return state['contractNegotiation'].ContractRequest[0];
+            })));
+            contractReq.locations.map( prod => {
+              if(prod.data.length > 0){
+                prod.data.map( data => {
+                  if(res.contractRequestProductOfferIds.includes(data.id)) {
+                    data.Status = 'Inquired';
+                    data.check = false;
+                  }
+                })
+              }
+            })
+            if(contractReq) this.store.dispatch(new ContractRequest([contractReq]));
+          }
         }
         if(res.message !== ""){
           this.toaster.error(res.message);
@@ -228,8 +254,8 @@ export class MainPageComponent implements OnInit {
     //this.displaySuccessMsg('RFQ Sent successfully!');
     //this.contractStatus=this.showCalculatedValue?"Quoted":"Inquired";
   }
-  displaySuccessMsg(msg) {
 
+  displaySuccessMsg(msg) {
     this.toaster.show('<div class="image-placeholder"><span class="image"></span></div><div class="message">'+msg+'</div>',
       '', {
       enableHtml: true,

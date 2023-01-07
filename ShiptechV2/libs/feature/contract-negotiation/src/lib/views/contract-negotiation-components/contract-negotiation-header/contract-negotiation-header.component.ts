@@ -177,7 +177,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
               "PriceCurrencyId": '',
               "PriceCurrencyName": "",
               "ValidityDate": "",
-              "Status": "OfferCreated",
+              "Status": res2['status'],
               "M1": '',
               "M2": '',
               "M3": '',
@@ -250,6 +250,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     .subscribe(response => {
       this.localService.contractRequestData(response);
     });
+    this.disbaleHeaderButtons.emit(this.localService.disbaleHeaderButtons);
   });
   }else{
     this.toastr.error("Please Select atleast One Counterparty");
