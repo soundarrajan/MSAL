@@ -5170,3 +5170,8 @@ table.energyCalculationBlade tr.border-green-jungle {
 .mtrColor-R {
     color: red;
 }
+
+#grid_periods .dateInputHasDayOfWeek{
+    pointer-events: none;
+    background: #EEEEEE;
+}
