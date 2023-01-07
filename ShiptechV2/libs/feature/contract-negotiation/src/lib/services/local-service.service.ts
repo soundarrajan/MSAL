@@ -34,6 +34,7 @@ export class LocalService {
     counterpartyList: any[];
     masterData: any;
     clrRequest: any = 0;
+    disbaleHeaderButtons: boolean;
 
     constructor(
         private http: HttpClient,
@@ -695,7 +696,8 @@ export class LocalService {
     }
 
     async contractRequestData(response){
-        let  contractArray = { locations : []};
+        let disbaleHeaderButtonsTmp = true;
+        let contractArray = { locations : []};
         let arrDet = {};
         let data = [];
         let arrMainDet = {};
@@ -712,7 +714,7 @@ export class LocalService {
             let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
             uniqueCounterParty.push(location.name);
             Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
-            // this.disbaleHeaderButtons.emit(false);
+            disbaleHeaderButtonsTmp = false;
             let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
             let product = this.masterData['Product'].find(el => el.id == res2['productId']);
             arrDet = {
@@ -740,7 +742,7 @@ export class LocalService {
                 "PriceCurrencyId": '',
                 "PriceCurrencyName": "",
                 "ValidityDate": "",
-                "Status": "OfferCreated",
+                "Status": res2['status'],
                 "M1": '',
                 "M2": '',
                 "M3": '',
@@ -786,7 +788,7 @@ export class LocalService {
             contractArray['locations'].push(arrMainDet);
             arrMainDet = {}; data = [];
         });
-
+        this.disbaleHeaderButtons = disbaleHeaderButtonsTmp;
         //let unique = [...new Set(uniqueCounterParty)];
         // this.uniqueCounterPartyName = unique.toString();
         // this.allRequestDetails[0] = contractArray;
