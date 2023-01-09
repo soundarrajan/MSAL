@@ -1,5 +1,5 @@
 import { Injectable, InjectionToken } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {  Observable, of } from 'rxjs';
 import {
   HttpClient,
   HttpErrorResponse
@@ -42,19 +42,20 @@ export const apiPaths = {
   //getSellerContacts: `counterparty/viewContacts`,
   //addNewSellerContact: `counterparty/addContact`,
   getEmailLogs: `api/masters/emaillogs/list`,
-  //getAdditionalCosts: `price/getOfferAdditionalCosts`,
-  //getEmailLogsPreview: `api/masters/emaillogs/get`,
-  //getRequestList: `api/procurement/rfq/selectRequest`,
-  //getBestContract: `api/procurement/request/bestContract`,
-  //delinkRequest: `Groups/deleteRequest`,
-  //getExchangeRate: `price/getExchangeRate`,
-  //applyExchangeRate: `price/applyExchangeRate`,
-  //getLocationCosts: `price/locationCosts`,
-  //saveOfferAdditionalCosts: `price/saveOfferAdditionalCosts`,
-  //getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`,
-  //getUomConversionFactor: `api/masters/uoms/convertQuantity`,
-  //getRangeTotalAdditionalCosts: `api/procurement/order/getRangeTotalAdditionalCosts`,
-  //getDocumentTypeList: `api/masters/documenttype/list`,
+  getAuditLogs: `api/admin/audit/get`,
+  getAdditionalCosts: `price/getOfferAdditionalCosts`,
+  getEmailLogsPreview: `api/masters/emaillogs/get`,
+  getRequestList: `api/procurement/rfq/selectRequest`,
+  getBestContract: `api/procurement/request/bestContract`,
+  delinkRequest: `Groups/deleteRequest`,
+  getExchangeRate: `price/getExchangeRate`,
+  applyExchangeRate: `price/applyExchangeRate`,
+  getLocationCosts: `price/locationCosts`,
+  saveOfferAdditionalCosts: `price/saveOfferAdditionalCosts`,
+  getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`,
+  getUomConversionFactor: `api/masters/uoms/convertQuantity`,
+  getRangeTotalAdditionalCosts: `api/procurement/order/getRangeTotalAdditionalCosts`,
+  getDocumentTypeList: `/api/masters/documenttype/list`,
   uploadDocument: `api/masters/documentupload/create`,
   getDocuments: `api/masters/documentupload/list`,
   //deleteDocument: `api/masters/documentupload/delete`,
@@ -87,7 +88,8 @@ export const ContractNegotiationApiPaths = {
   counterPartSelectionToggle : 'api/ContractNegotiation/toggleConReqSellerSelection',
   addSellerContract : 'api/ContractNegotiation/addSellerContract',
   removeCounterparty : 'api/ContractNegotiation/removeSellerContract',
-  sendRFQ: 'api/ContractNegotiation/SendRFQ'
+  sendRFQ: 'api/ContractNegotiation/SendRFQ',
+  auditLog: 'api/admin/audit/get'
 }
 
 
@@ -95,6 +97,8 @@ export const ContractNegotiationApiPaths = {
   providedIn: 'root'
 })
 export class ContractNegotiationApi implements IContractNegotiationApiService {
+  @ApiCallUrl()
+  private _auditLog = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
 
   @ApiCallUrl()
   private _infrastructureApiUrl = this.appConfig.v1.API
@@ -114,6 +118,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
 
   @ApiCallUrl()
   private _procurementApiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
+  getEmailLogsPreview: any;
 
   constructor(private http: HttpClient, private appConfig: AppConfig) { }
 
@@ -130,7 +135,18 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
       );
   }
 
-
+  @ObservableException()
+  getAuditLogsList(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${apiPaths.getAuditLogs}`,
+        { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
 
   @ObservableException()
   RemoveCounterparty(id: any): Observable<any> {
