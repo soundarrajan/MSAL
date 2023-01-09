@@ -150,8 +150,8 @@ export class ContractNegotiationHeaderComponent implements OnInit {
           uniqueCounterParty.push(location.name);
           Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
           this.disbaleHeaderButtons.emit(false);
-          let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
-          let product = this.masterData['Product'].find(el => el.id == res2['productId']);           
+          // let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
+          // let product = this.masterData['Product'].find(el => el.id == res2['productId']);           
             arrDet = {
               "check": res2['isSelected'],
               "id": res2['id'],
@@ -162,7 +162,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
               "requestLocationId": '',
               "requestProductId": '',
               "RequestLocationSellerId": '',
-              "CounterpartyName": this.format.htmlDecode(counterparty.name),
+              "CounterpartyName": this.format.htmlDecode(res2['counterpartyName']),
               "CounterpartyId": res2['counterpartyId'],
               "IsTemporarlySuspended": '',
               "GenRating": res2['genRating'],
