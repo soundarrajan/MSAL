@@ -38,15 +38,6 @@ export class ContractNegotiationService extends BaseStoreService
   getEmailLogsList(payload: any): Observable<unknown> {
     return this.contractNegotiationApi.getEmailLogsList(payload);
   }
-  public highlihtArrayIni(data, _i) {
-    data.forEach((element, index) => {
-      if (element.rowId) {
-        this.hArray[index] = element;
-      } else {
-        this.hArray[_i + 100000] = element;
-      }
-    });
-  }
 
   /* Gets the Email Logs based on Id
    * @param payload =

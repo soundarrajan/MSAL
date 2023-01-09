@@ -10,7 +10,8 @@ import { ContractNegotiationService } from '../../../services/contract-negotiati
   styleUrls: ['./contract-nego-auditlog.component.scss']
 })
 export class ContractNegoAuditlogComponent implements OnInit {
-  [x: string]: any;
+  rowData_chat_grid: any[];
+  onrowClicked: any;
   dateFormat: string;
   date: string;
   businessId: any;

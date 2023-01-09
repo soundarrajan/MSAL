@@ -43,19 +43,19 @@ export const apiPaths = {
   //addNewSellerContact: `counterparty/addContact`,
   getEmailLogs: `api/masters/emaillogs/list`,
   getAuditLogs: `api/admin/audit/get`,
-  getAdditionalCosts: `price/getOfferAdditionalCosts`,
-  getEmailLogsPreview: `api/masters/emaillogs/get`,
-  getRequestList: `api/procurement/rfq/selectRequest`,
-  getBestContract: `api/procurement/request/bestContract`,
-  delinkRequest: `Groups/deleteRequest`,
-  getExchangeRate: `price/getExchangeRate`,
-  applyExchangeRate: `price/applyExchangeRate`,
-  getLocationCosts: `price/locationCosts`,
-  saveOfferAdditionalCosts: `price/saveOfferAdditionalCosts`,
-  getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`,
-  getUomConversionFactor: `api/masters/uoms/convertQuantity`,
-  getRangeTotalAdditionalCosts: `api/procurement/order/getRangeTotalAdditionalCosts`,
-  getDocumentTypeList: `/api/masters/documenttype/list`,
+   //getAdditionalCosts: `price/getOfferAdditionalCosts`,
+  //getEmailLogsPreview: `api/masters/emaillogs/get`,
+  //getRequestList: `api/procurement/rfq/selectRequest`,
+  //getBestContract: `api/procurement/request/bestContract`,
+  //delinkRequest: `Groups/deleteRequest`,
+  //getExchangeRate: `price/getExchangeRate`,
+  //applyExchangeRate: `price/applyExchangeRate`,
+  //getLocationCosts: `price/locationCosts`,
+  //saveOfferAdditionalCosts: `price/saveOfferAdditionalCosts`,
+  //getMasterAdditionalCostsList: `api/masters/additionalcosts/listApps`,
+  //getUomConversionFactor: `api/masters/uoms/convertQuantity`,
+  //getRangeTotalAdditionalCosts: `api/procurement/order/getRangeTotalAdditionalCosts`,
+  //getDocumentTypeList: `api/masters/documenttype/list`,
   uploadDocument: `api/masters/documentupload/create`,
   getDocuments: `api/masters/documentupload/list`,
   //deleteDocument: `api/masters/documentupload/delete`,
@@ -119,7 +119,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   @ApiCallUrl()
   private _procurementApiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
   getEmailLogsPreview: any;
-
+  
   constructor(private http: HttpClient, private appConfig: AppConfig) { }
 
   @ObservableException()
