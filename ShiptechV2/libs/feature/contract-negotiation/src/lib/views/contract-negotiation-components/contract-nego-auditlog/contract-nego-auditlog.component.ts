@@ -1,27 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { GridOptions } from 'ag-grid-community';
+import { ActivatedRoute } from "@angular/router";
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
 @Component({
   selector: 'app-contract-nego-auditlog',
   templateUrl: './contract-nego-auditlog.component.html',
   styleUrls: ['./contract-nego-auditlog.component.scss']
 })
 export class ContractNegoAuditlogComponent implements OnInit {
-
+  [x: string]: any;
+  dateFormat: string;
+  date: string;
+  businessId: any;
+  generalTenantSettings: any;
+  public pageSize: number;
+  public totalItems: number;
+  listOfRequests: any;
   public gridOptions_nego_history: GridOptions;
   public gridOptions_chat_history: GridOptions;
   public theme:boolean=false;
-  private statusBGRules = {
-    'bg-success': function (params) {
-      return params.value === 'Success';
-    },
-    'bg-pending': function (params) {
-      return params.value === 'Pending';
-    },
-    'bg-failed': function (params) {
-      return params.value === 'Failed';
-    }
-  };
+  public overlayLoadingTemplate =
+  '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
+public overlayNoRowsTemplate = '<span>No rows to show</span>';
   filterList = {
     filters: [
       {
@@ -44,8 +46,17 @@ export class ContractNegoAuditlogComponent implements OnInit {
     enableMoreFilters: true,
     multiSelect: false
   }
-  constructor(public dialog: MatDialog) { 
-    this.gridOptions_nego_history = <GridOptions>{
+  constructor(public dialog: MatDialog,
+    private route: ActivatedRoute,
+    tenantSettingsService: TenantSettingsService,
+    private ContractNegotiationService: ContractNegotiationService,
+    )
+    { 
+    this.getAuditLogs();
+    this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
+    this.dateFormat = this.generalTenantSettings.tenantFormats.dateFormat.name;
+    { 
+      this.gridOptions_nego_history = <GridOptions>{
       defaultColDef: {
         resizable: true,
         filter: true,
@@ -60,23 +71,28 @@ export class ContractNegoAuditlogComponent implements OnInit {
       onGridReady: (params) => {
         this.gridOptions_nego_history.api = params.api;
         this.gridOptions_nego_history.columnApi = params.columnApi;
-        this.gridOptions_nego_history.api.sizeColumnsToFit();
-        params.api.sizeColumnsToFit();
-        this.gridOptions_nego_history.api.setRowData(this.rowData_nego_grid);
+        params.api?.sizeColumnsToFit();
+        this.gridOptions_nego_history?.api.showLoadingOverlay();
+        },
 
-      },
       onColumnResized: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 8 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
-          params.api.sizeColumnsToFit();
+        if (
+          params.columnApi.getAllDisplayedColumns().length <= 8 &&
+          params.type === 'columnResized' &&
+          params.finished === true &&
+          params.source === 'uiColumnDragged'
+        ) {
+          params.api?.sizeColumnsToFit();
         }
       },
       onColumnVisible: function (params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 8) {
-          params.api.sizeColumnsToFit();
+          params.api?.sizeColumnsToFit();
 
         }
       }
     }
+
     this.gridOptions_chat_history = <GridOptions>{
       defaultColDef: {
         resizable: true,
@@ -97,22 +113,15 @@ export class ContractNegoAuditlogComponent implements OnInit {
         this.gridOptions_nego_history.api.setRowData(this.rowData_chat_grid);
 
       },
-      onColumnResized: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 8 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
-          params.api.sizeColumnsToFit();
-        }
-      },
-      onColumnVisible: function (params) {
-        if (params.columnApi.getAllDisplayedColumns().length <= 8) {
-          params.api.sizeColumnsToFit();
-
-        }
-      }
     }
    }
 
-  ngOnInit(): void {
+ 
   }
+    ngOnInit(): void {
+       this.businessId = this.route.snapshot.paramMap.get('requestId');
+      console.log(this.businessId);
+    }
   
   private columnDef_nego_grid = [
     { headerName: 'Date', headerTooltip: 'Date', tooltipField: 'date', field: 'date',width:200,suppressSizeToFit: false,cellClass:'aggrid-text-resizable', },
@@ -127,28 +136,6 @@ export class ContractNegoAuditlogComponent implements OnInit {
     { headerName: 'New value', headerTooltip: 'New value', field: 'newValue', tooltipField: 'newValue', suppressSizeToFit: false,cellClass:'aggrid-text-resizable', },
   ];
 
-  private rowData_nego_grid = [
-      
-{date:'12/12/2021 12:34',user:'Alexander James',transactionType:'Modify',section:'Offer',location:'Amsterdam',counterparty:'Shell Bunkering',
-product:'RMG 380',field:'Premium',oldValue:'3 USD',newValue:'2.5 USD'},
-{date:'12/12/2021 12:34',user:'Yusuf Hasaan',transactionType:'Modify',section:'Request',location:'Rotterdam',counterparty:'ABC Fuels solutions',
-product:'RMG 380',field:'Minimum Qty',oldValue:'1000 MT',newValue:'1000 MT'},
-{date:'12/12/2021 12:34',user:'Prem Vijay',transactionType:'Modify',section:'Offer',location:'Amsterdam',counterparty:'Shell Bunkering',
-product:'RMG 380',field:'Premium',oldValue:'3 USD',newValue:'2.5 USD'},
-{date:'12/12/2021 12:34',user:'Alexander James',transactionType:'Modify',section:'Offer',location:'Amsterdam',counterparty:'Shell Bunkering',
-product:'RMG 380',field:'Premium',oldValue:'3 USD',newValue:'2.5 USD'},
-{date:'12/12/2021 12:34',user:'Yusuf Hasaan',transactionType:'Modify',section:'Request',location:'Rotterdam',counterparty:'ABC Fuels solutions',
-product:'RMG 380',field:'Minimum Qty',oldValue:'1000 MT',newValue:'1000 MT'},
-{date:'12/12/2021 12:34',user:'Prem Vijay',transactionType:'Modify',section:'Offer',location:'Amsterdam',counterparty:'Shell Bunkering',
-product:'RMG 380',field:'Premium',oldValue:'3 USD',newValue:'2.5 USD'},
-{date:'12/12/2021 12:34',user:'Alexander James',transactionType:'Modify',section:'Offer',location:'Amsterdam',counterparty:'Shell Bunkering',
-product:'RMG 380',field:'Premium',oldValue:'3 USD',newValue:'2.5 USD'},
-{date:'12/12/2021 12:34',user:'Yusuf Hasaan',transactionType:'Modify',section:'Request',location:'Rotterdam',counterparty:'ABC Fuels solutions',
-product:'RMG 380',field:'Minimum Qty',oldValue:'1000 MT',newValue:'1000 MT'},
-{date:'12/12/2021 12:34',user:'Prem Vijay',transactionType:'Modify',section:'Offer',location:'Amsterdam',counterparty:'Shell Bunkering',
-product:'RMG 380',field:'Premium',oldValue:'3 USD',newValue:'2.5 USD'}
-  ];
-
   private columnDef_chat_grid = [
       { headerName: 'Date', headerTooltip: 'Date', tooltipField: 'date', field: 'date',width:100,suppressSizeToFit: false,cellClass:'aggrid-text-resizable', },
       { headerName: 'User', headerTooltip: 'User', tooltipField: 'user', field: 'user',width:100, suppressSizeToFit: false,cellClass:'aggrid-text-resizable',  },
@@ -159,25 +146,26 @@ product:'RMG 380',field:'Premium',oldValue:'3 USD',newValue:'2.5 USD'}
       
   ];
   
-    private rowData_chat_grid = [
-        
-      { date:'12/12/2021 12:34',user:'Alexander James',transactionType:'Modify',section:'Offer',
-        old_chat:'This Offer is for Rotterdam for the month of July to Sep',new_chat:'This Offer is for Amsterdam for the month of July to Sep'},
-      { date:'12/12/2021 12:34',user:'Alexander James',transactionType:'Modify',section:'Offer',
-        old_chat:'This Offer is for Rotterdam for the month of July to Sep',new_chat:'This Offer is for Amsterdam for the month of July to Sep'},
-      { date:'12/12/2021 12:34',user:'Alexander James',transactionType:'Modify',section:'Offer',
-        old_chat:'This Offer is for Rotterdam for the month of July to Sep',new_chat:'This Offer is for Amsterdam for the month of July to Sep'},
-      { date:'12/12/2021 12:34',user:'Yusuf Hassan',transactionType:'Modify',section:'Offer',
-        old_chat:'This Offer is for Rotterdam for the month of July to Sep',new_chat:'This Offer is for Amsterdam for the month of July to Sep'},
-      { date:'12/12/2021 12:34',user:'Prem Vijay',transactionType:'Modify',section:'Offer',
-        old_chat:'This Offer is for Rotterdam for the month of July to Sep',new_chat:'Conversation Deleted'},
-      { date:'12/12/2021 12:34',user:'Alexander James',transactionType:'Modify',section:'Offer',
-        old_chat:'This Offer is for Rotterdam for the month of July to Sep',new_chat:'This Offer is for Amsterdam for the month of July to Sep'},
-      { date:'12/12/2021 12:34',user:'Prem Vijay',transactionType:'Modify',section:'Offer',
-        old_chat:'This Offer is for Rotterdam for the month of July to Sep',new_chat:'This Offer is for Amsterdam for the month of July to Sep'},
-      { date:'12/12/2021 12:34',user:'Yusuf Hassan',transactionType:'Modify',section:'Offer',
-        old_chat:'This Offer is for Rotterdam for the month of July to Sep',new_chat:'This Offer is for Amsterdam for the month of July to Sep'},
-      { date:'12/12/2021 12:34',user:'Alexander James',transactionType:'Modify',section:'Offer',
-        old_chat:'This Offer is for Rotterdam for the month of July to Sep',new_chat:'Conversation Deleted'}
-       ];
+     getAuditLogs(){
+        let reqpayload = {
+          
+          Filters: [
+            { ColumnName: "BusinessId", Value: this.businessId },
+            {
+              ColumnName: "Transaction",
+              Value: 'QuantityControlReport'
+            }
+          ],
+          PageFilters: { Filters: [] },
+          Pagination: { Skip: 0, Take: this.pageSize },
+          SortList: { SortList: [] }
+        };
+        this.ContractNegotiationService.getAuditLogsList(
+         reqpayload
+       ).subscribe((data: any) =>{
+        this.gridOptions_nego_history.api.setRowData(data.payload);
+        console.log(data.payload);
+       });
+       
+  }
 }

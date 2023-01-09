@@ -5,7 +5,8 @@ import { IDocumentsDownloadRequest } from '@shiptech/core/services/masters-api/r
 import { IDocumentsUpdateNotesRequest, IDocumentsUpdateNotesResponse } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
 import { ContractNegotiationStoreModel } from '../store/contract-negotiation.store';
 import { ContractNegotiationApi } from './api/contract-negotiation-api';
@@ -37,7 +38,29 @@ export class ContractNegotiationService extends BaseStoreService
   getEmailLogsList(payload: any): Observable<unknown> {
     return this.contractNegotiationApi.getEmailLogsList(payload);
   }
-   /**
+  public highlihtArrayIni(data, _i) {
+    data.forEach((element, index) => {
+      if (element.rowId) {
+        this.hArray[index] = element;
+      } else {
+        this.hArray[_i + 100000] = element;
+      }
+    });
+  }
+
+  /* Gets the Email Logs based on Id
+   * @param payload =
+   */
+  @ObservableException()
+  getEmailLogsPreview(payload: any): Observable<unknown> {
+    return this.contractNegotiationApi.getEmailLogsPreview(payload);
+  }
+  @ObservableException()
+  getAuditLogsList(payload: any): Observable<unknown> {
+    return this.contractNegotiationApi.getAuditLogsList(payload);
+  }
+
+  /**
    * @param payload = False
    */
   @ObservableException()

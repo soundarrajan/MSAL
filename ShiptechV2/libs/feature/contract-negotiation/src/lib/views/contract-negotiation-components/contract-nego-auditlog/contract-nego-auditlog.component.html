@@ -20,7 +20,9 @@
                             <ag-grid-angular
                                 [ngStyle]="{'height': 'calc( 50vh - 25px'}"
                                 style="width: 100%;" [gridOptions]="gridOptions_nego_history" domLayout='normal'
-                                class="ag-theme-material ag-grid-v2 angular-v9"></ag-grid-angular>
+                                class="ag-theme-material ag-grid-v2 angular-v9 contract-nego-audit-log"
+                                (gridReady)="getAuditLogs()"
+                                (rowClicked)="onrowClicked($event)"></ag-grid-angular>
                         </div>
                     </div>
                 </div>
