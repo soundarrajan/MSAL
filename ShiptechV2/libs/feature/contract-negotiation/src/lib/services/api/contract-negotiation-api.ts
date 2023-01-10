@@ -98,6 +98,9 @@ export const ContractNegotiationApiPaths = {
 export class ContractNegotiationApi implements IContractNegotiationApiService {
   getEmailLogsPreview: any;
   @ApiCallUrl()
+  private _adminApiUrl = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
+
+  @ApiCallUrl()
   private _auditLog = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
 
   @ApiCallUrl()
@@ -138,7 +141,7 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   getAuditLogsList(payload: any): Observable<any> {
     return this.http
       .post<any>(
-        `${this._masterApiUrl}/${apiPaths.getAuditLogs}`,
+        `${this._adminApiUrl}/${apiPaths.getAuditLogs}`,
         { Payload: payload }
       )
       .pipe(
