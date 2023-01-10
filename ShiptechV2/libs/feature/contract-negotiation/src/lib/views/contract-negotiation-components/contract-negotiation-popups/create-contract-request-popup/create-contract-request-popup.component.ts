@@ -129,9 +129,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   
   @Input() rfqSent;
   enableSaveBtn = true;
-  enableRFQBtn = false;
-  enableSendRfqBtn = false;
-  enableUpdateRfqBtn = false;
   contractQuarterColumns: string[] = ['quarter', 'blank'];
   selectedPlanPeriod = 'Quarter';
   planStartDate: any;
@@ -257,18 +254,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.localService.sendRFQUpdate.subscribe((r) => {
-      if (r == true) {
-        if (this.data.createReqPopup) {
-          this.enableUpdateRfqBtn = false;
-          this.enableSendRfqBtn = true;
-        }
-        else {
-          this.enableUpdateRfqBtn = true;
-          this.enableSendRfqBtn = false
-        }
-      }
-    });
+    this.rfqSent = true;
   }
 
   openRequest(){
@@ -321,8 +307,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.showMainLocationDropdown = false;
   }
 
-  getLocationProducts() {
-    return this.reqObj.contractRequestProducts.filter((x) => x.locationId === this.selectedLocationId && !x.isDeleted);
+  getLocationProducts(locationId?: number) {
+    let locId = (locationId)?locationId:this.selectedLocationId;
+    return this.reqObj.contractRequestProducts.filter((x) => x.locationId === locId && !x.isDeleted);
   }
 
   getLocationProductIndex(index){
@@ -348,6 +335,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
         return this._decimalPipe.transform(plainNumber, this.quantityFormat);
       }
     }
+  }
+
+  isProductDisabled(prodIndex){
+    return (this.rfqSent && this.reqObj.contractRequestProducts[prodIndex].status !== 'Open')?true:false;
   }
 
   originalOrder = (
@@ -1166,6 +1157,18 @@ export class CreateContractRequestPopupComponent implements OnInit {
       return false;
     }
 
+    /* Each location must have one main product validation */
+    let minProdErrMsg = '';
+    this.mainLocations.forEach( loc => {
+      if(this.getLocationProducts(loc.locationId).length == 0 && minProdErrMsg == '')
+      minProdErrMsg = 'You must add atleast one main product for '+ loc.locationName +' location';
+      return false;
+    })
+    if(minProdErrMsg !== ''){
+      this.toaster.error(minProdErrMsg);
+      return false;
+    }
+    
     /* Contract Request Product Validation - Start */
     message = 'Please fill in required fields:';
     this.reqObj.contractRequestProducts.forEach((v, k) => {

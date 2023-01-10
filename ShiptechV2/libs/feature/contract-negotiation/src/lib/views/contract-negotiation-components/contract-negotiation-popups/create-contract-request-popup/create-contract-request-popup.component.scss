@@ -7,9 +7,17 @@
 }
 
 .remove-label mat-label {
-    display: none;
-  }
-  
-  .add-label mat-label {
-    display: block;
-  }
+  display: none;
+}
+
+.add-label mat-label {
+  display: block;
+}
+
+.field-disabled {
+  background-color: #c4c4c4 !important;
+}
+
+mat-select:disabled {
+  background-color: #c4c4c4;
+}
