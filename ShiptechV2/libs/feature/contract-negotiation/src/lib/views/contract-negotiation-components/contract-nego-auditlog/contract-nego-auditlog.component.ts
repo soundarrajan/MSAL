@@ -53,7 +53,6 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
     private ContractNegotiationService: ContractNegotiationService,
     )
     { 
-    this.getAuditLogs();
     this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
     this.dateFormat = this.generalTenantSettings.tenantFormats.dateFormat.name;
     { 
@@ -120,7 +119,7 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
  
   }
     ngOnInit(): void {
-       this.businessId = this.route.snapshot.paramMap.get('requestId');
+        this.businessId = this.route.snapshot.paramMap.get('requestId');
       console.log(this.businessId);
     }
   
