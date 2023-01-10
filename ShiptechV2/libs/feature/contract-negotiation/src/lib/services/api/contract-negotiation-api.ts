@@ -1,5 +1,5 @@
 import { Injectable, InjectionToken } from '@angular/core';
-import {  Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   HttpClient,
   HttpErrorResponse
@@ -88,8 +88,7 @@ export const ContractNegotiationApiPaths = {
   counterPartSelectionToggle : 'api/ContractNegotiation/toggleConReqSellerSelection',
   addSellerContract : 'api/ContractNegotiation/addSellerContract',
   removeCounterparty : 'api/ContractNegotiation/removeSellerContract',
-  sendRFQ: 'api/ContractNegotiation/SendRFQ',
-  auditLog: 'api/admin/audit/get'
+  sendRFQ: 'api/ContractNegotiation/SendRFQ'
 }
 
 
@@ -97,6 +96,7 @@ export const ContractNegotiationApiPaths = {
   providedIn: 'root'
 })
 export class ContractNegotiationApi implements IContractNegotiationApiService {
+  getEmailLogsPreview: any;
   @ApiCallUrl()
   private _auditLog = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
 
@@ -118,7 +118,6 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
 
   @ApiCallUrl()
   private _procurementApiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
-  getEmailLogsPreview: any;
   
   constructor(private http: HttpClient, private appConfig: AppConfig) { }
 
