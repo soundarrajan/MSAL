@@ -151,7 +151,7 @@
                 </div>
               </div>
               <div class="border_line"></div>
-              <div class="col-md-2 p-lr-5" (click)="enableSaveBtn=true;enableRFQBtn=false;">
+              <div class="col-md-2 p-lr-5">
                 <div class="minInputFocus" style="width:100%;padding: 10px 10px 0;">
                   <span class="label">Min
                     <span style="position: absolute;font-size: 10px;margin-left: 2px;">*</span>
@@ -280,10 +280,14 @@
       </div>
       <div>
       <div class="main-product-section" [ngStyle]="{'display': (mainLocations.length == 0) ? 'none' : 'block'}">
+        <div class="form-fields-with-flex" *ngIf="getLocationProducts().length == 0">
+          <a id="addProduct" class="add-icon" (click)="addNewMainProduct(selectedLocationId)"></a>
+          <div class="title" (click)="addNewMainProduct(selectedLocationId)">Main Product</div>
+        </div>
         <ng-container *ngFor="let prod of reqObj.contractRequestProducts; let i = index;">
           <div *ngIf="prod.locationId == selectedLocationId && !prod.isDeleted">
             <div style="max-height: 50vh; margin-bottom: 45px;">
-              <div class="form-fields-with-flex" *ngIf="getLocationProductIndex(i) != 0">
+              <div class="form-fields-with-flex" *ngIf="(prod.status != 'Open') || (getLocationProductIndex(i) != 0)">
                 <a id="ADMN64" class="remove-product-icon" (click)="deleteNewMainProduct(i)"></a>
                 <div class="title" (click)="deleteNewMainProduct(i)">Remove Product</div>
               </div>
@@ -297,14 +301,15 @@
                           <div>
                             <div class="hoveraddedProduct">
                               <div class="custom-product-container contract-location-with-product-container d-flex"
-                                [ngClass]="{'container-with-value': productSelected && selectedProindex==i}"
+                                [ngClass]="{'container-with-value': (productSelected && selectedProindex==i), 'field-disabled':isProductDisabled(i)}"
                                 style="margin-right:15px;">
                                 <div id="searchProduct" class="custom-form-field custom-form-field-location lightTheme">
-                                  <mat-form-field
+                                  <mat-form-field 
+                                    [ngClass]="{'field-disabled':isProductDisabled(i)}"
                                     class="without-search custom-dropdown"
                                     appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select #mainProductSelect 
+                                    <mat-select #mainProductSelect [disabled]="isProductDisabled(i)"
                                       [value]="reqObj.contractRequestProducts[i].productId" 
                                       (closed)="onMainProductSelectClosed(i)"
                                       (selectionChange)="onMainProductChange($event.value, i);mainProductSelect.close()"
@@ -355,14 +360,19 @@
                                 </div>
                                 <div id="specDrp" class="custom-form-field custom-form-field-location lightTheme">
                                   <mat-form-field
+                                    [ngClass]="{'field-disabled':isProductDisabled(i)}"
                                     class="without-search custom-dropdown"
                                     appearance="legacy" style="width: 100% !important;">
                                     <mat-label>Spec Group</mat-label>
                                     <span>
 
                                     </span>
-                                    <mat-select [value]="reqObj.contractRequestProducts[i].specGroupId" [(ngModel)]="reqObj.contractRequestProducts[i].specGroupId" #singleSelect disableOptionCentering
-                                      [panelClass]="'shiptech-select-product-container'" required>
+                                    <mat-select [value]="reqObj.contractRequestProducts[i].specGroupId" 
+                                      [(ngModel)]="reqObj.contractRequestProducts[i].specGroupId" 
+                                      #singleSelect disableOptionCentering
+                                      [panelClass]="'shiptech-select-product-container'" 
+                                      [disabled]="isProductDisabled(i)"
+                                      required>
                                       <div [ngClass]="{'expand-select-location-container': expandLocation}">
                                         <div class="col-md-12 header-container-product pd-0">
                                           <div class="search-product-container col-md-12 pd-0">
@@ -474,10 +484,16 @@
                     </div>
                   </div>
                   <div id="custom-form-field" class="lightTheme darkBorder" style="margin: 0px 10px;">
-                    <mat-form-field id="prdPriceType" class="without-search" style="width:198px" appearance="legacy">
+                    <mat-form-field 
+                      [ngClass]="{'field-disabled':isProductDisabled(i)}" 
+                      id="prdPriceType" class="without-search" style="width:198px" 
+                      appearance="legacy"
+                    >
                       <mat-label>Pricing Type</mat-label>
-                      <mat-select required panelClass="pricing-type-select"
-                        [(ngModel)]="reqObj.contractRequestProducts[i].pricingTypeId">
+                      <mat-select required 
+                        panelClass="pricing-type-select"
+                        [(ngModel)]="reqObj.contractRequestProducts[i].pricingTypeId"
+                        [disabled]="isProductDisabled(i)">
                         <mat-option *ngFor="let option of staticData.PricingType" [value]="option.id">
                           {{option.name}}
                         </mat-option>
@@ -488,10 +504,16 @@
                 <div
                   class="custom-form-field custom-field-general lightTheme darkBorder custom-form-field-margin-contract"
                   style="width:100%;margin-top: 8px;">
-                  <mat-form-field id="prdPriceComments" class="without-search" appearance="legacy" style="width: 100% !important;">
-                    <mat-label>Pricing Comments</mat-label>
-                    <input matInput placeholder="Pricing Comments"
-                      [(ngModel)]="reqObj.contractRequestProducts[i].pricingComment" >
+                  <mat-form-field 
+                    [ngClass]="{'field-disabled':isProductDisabled(i)}" 
+                    id="prdPriceComments" class="without-search" 
+                    appearance="legacy" style="width: 100% !important;"
+                  >
+                    <mat-label [ngClass]="{'field-disabled':isProductDisabled(i)}">Pricing Comments</mat-label>
+                    <input
+                      matInput placeholder="Pricing Comments"
+                      [(ngModel)]="reqObj.contractRequestProducts[i].pricingComment"
+                      [disabled]="isProductDisabled(i)" >
                   </mat-form-field>
                 </div>
               </div>
@@ -501,14 +523,20 @@
                   <div class="sub-title">Allowed Products</div>
                   <div class="row multi-select-formfield">
                     <div class="col-12 no-padding d-flex flex-wrap" >
-                      <a class="add-product-dropdown-icon" (click)="addNewAllowedProduct(i)"></a>
+                      <a
+                        class="add-product-dropdown-icon"
+                        (click)="!isProductDisabled(i) && addNewAllowedProduct(i)">
+                      </a>
                       <ng-container *ngFor="let contractProduct of reqObj.contractRequestProducts[i].allowedProducts | keyvalue: originalOrder; let j = index">
                         <ng-container>
                           <div>
                             <div class="contract-addProduct-separator" *ngIf="j > 0"></div>
                             <div class="hoveraddedProduct">
-                              <div class="hover-remove-icon"
-                                (click)="removeProductToContract(i, j)"></div>
+                              <div
+                                class="hover-remove-icon"
+                                *ngIf="!isProductDisabled(i)"
+                                (click)="removeProductToContract(i, j)">
+                              </div>
                               <div class="contract-location-with-product-container d-flex" 
                                 [ngClass]="{'container-with-value': productSelected && selectedProindex==i}"
                                 style="margin-right:0">
@@ -517,7 +545,9 @@
                                   <mat-form-field class="without-search contract-location-product-dropdown"
                                     appearance="legacy" style="width: 100% !important; border-right: none !important;">
                                     <mat-label>Add Product</mat-label>
-                                    <mat-select #allowedProductSelects [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].productId"
+                                    <mat-select #allowedProductSelects 
+                                      [disabled]="isProductDisabled(i)"
+                                      [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].productId"
                                       #locSelect disableOptionCentering
                                       (closed)="onAllowedProductSelectClosed(i, j)"
                                       [panelClass]="'shiptech-select-product-container'"
@@ -572,7 +602,10 @@
                                     appearance="legacy" style="width: 100% !important; border-left: none !important;">
                                     <mat-label>Spec Group</mat-label>
                                     <span></span>
-                                    <mat-select [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].specGroupId" #singleSelect
+                                    <mat-select 
+                                      [disabled]="isProductDisabled(i)"
+                                      [(ngModel)]="reqObj.contractRequestProducts[i].allowedProducts[j].specGroupId"
+                                      #singleSelect
                                       disableOptionCentering [panelClass]="'shiptech-select-product-container'"
                                       (selectionChange)="setSpecGroupChange($event.value,i,j)">
                                       <div style="margin-top: 0px;" [ngClass]="{'expand-select-location-container': expandLocation}">
@@ -635,13 +668,19 @@
                 <div class="m-t-10" >
                   <div class="sub-title">Allowed Locations</div>
                   <div  class="col-12 no-padding d-flex">
-                    <a class="add-product-dropdown-icon" (click)="addNewAllowedLocation(i)"></a>
+                    <a
+                      class="add-product-dropdown-icon"
+                      (click)="!isProductDisabled(i) && addNewAllowedLocation(i)">
+                    </a>
                     <div class="product-tabs flex-wrap p-l-8">
                       <ng-container *ngIf="productAllowedLocations[i]">
                       <div class="addded-product" *ngFor="let allowedLoc of productAllowedLocations[i]; let loc = index"
                         style="display: inline-flex; margin-right: 5px;margin-bottom: 5px;">
-                        <div class="remove-icon"
-                        (click)="deleteAllowedLocation(i, loc)"></div>
+                        <div
+                          class="remove-icon"
+                          *ngIf="!isProductDisabled(i)"
+                          (click)="deleteAllowedLocation(i, loc)">
+                        </div>
                         <div class="location-tab" [ngClass]="{'selected-product-container':allowedLoc.selected}">
                           <div class="bootstrap-tagsinput">
                             <span class="tag label border-default text-ellipsis">
@@ -653,8 +692,12 @@
                       </div>
                     </ng-container>
                     <div class="select-product" *ngIf="!hideAllowedLocationDropdown[i]">
-                      <mat-form-field id="allowedLocs" class="custom-select" appearance="fill">
-                        <mat-select [disableOptionCentering]="true" #allowedLocationSelect
+                      <mat-form-field 
+                        [ngClass]="{'field-disabled':isProductDisabled(i)}"
+                        id="allowedLocs" class="custom-select" appearance="fill">
+                        <mat-select 
+                          [disabled]="isProductDisabled(i)"
+                          [disableOptionCentering]="true" #allowedLocationSelect
                           placeholder="Add Location"
                           (closed)="searchFilterString[i].allowedLocations=''"
                           (selectionChange)="addSelectedAllowedLocation(i,$event.value)"

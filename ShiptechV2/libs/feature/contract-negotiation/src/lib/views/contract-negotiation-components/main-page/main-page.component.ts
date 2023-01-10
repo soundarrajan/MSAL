@@ -212,6 +212,9 @@ export class MainPageComponent implements OnInit {
         }
       });
     });
+    if(selectedCount == 0){
+      this.toaster.error('Atleast one counterparty should be selected to Send RFQ');
+    }
     if(alreadySent.length > 0){
       this.toaster.error('RFQ is already sent for '+ alreadySent.join(', ') +' and the mail can be retriggered from Email Log');
     }
@@ -247,8 +250,6 @@ export class MainPageComponent implements OnInit {
           this.toaster.error(res.message);
         }
       });
-    } else {
-      this.toaster.error('Atleast one counterparty should be selected to Send RFQ');
     }
     //this.localService.updateSendRFQStatus(true);
     //this.displaySuccessMsg('RFQ Sent successfully!');
