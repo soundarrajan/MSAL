@@ -35,6 +35,8 @@ export class LocalService {
     masterData: any;
     clrRequest: any = 0;
     disbaleHeaderButtons: boolean;
+    public uniqueLocations: string;
+    public allRequestDetails: { locations: any[]; };
 
     constructor(
         private http: HttpClient,
@@ -694,36 +696,40 @@ export class LocalService {
             }
         })
     }
-
     async contractRequestData(response){
         let disbaleHeaderButtonsTmp = true;
         let contractArray = { locations : []};
         let arrDet = {};
         let data = [];
         let arrMainDet = {};
-        let uniqueCounterParty = [];
+        let uniqueLocations = [];
         this.masterData = await {
             Uom: await this.db.getUomTable({ orderBy: 'name' }),
             Location: await this.db.getLocationList({ orderBy: 'name' }),
             Counterparty: await this.db.getCounterPartyList({ orderBy: 'name' }),
-            Product: await this.db.getProductList({ orderBy: 'name' })
+            Product: await this.db.getProductList({ orderBy: 'name' }),
+            SpecGroup : await this.db.getSpecGroupList({ orderBy: 'name' })
         }
         Object.entries(response['contractRequestProducts']).forEach(([key, res1]) => {
-            //this.contractArray['request-id'] = '001';
             let location = this.masterData['Location'].find(el => el.id == res1['locationId']);
             let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
-            uniqueCounterParty.push(location.name);
+            uniqueLocations.push(location.name);
             Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
             disbaleHeaderButtonsTmp = false;
             // let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
-            // let product = this.masterData['Product'].find(el => el.id == res2['productId']);
+            let product = this.masterData['Product'].find(el => el.id == res2['productId']);
+            let uom = this.masterData['Uom'].find(el => el.id == res2['maxQuantityUomId']);
+            let SpecGroupName  = '';
+            if(res2['status'] != 'Open'){
+                SpecGroupName = this.masterData['SpecGroup'].find(el => el.id == res1['specGroupId']).name;
+            }
             arrDet = {
                 "check": res2['isSelected'],
                 "id": res2['id'],
                 "LocationId": res1['locationId'],
                 "ProductId": res2['productId'],
                 "isSellerSuspended": res2['isSellerSuspended'],
-                //"ProductName": product?.displayName,
+                "ProductName": product?.displayName,
                 "requestLocationId": '',
                 "requestProductId": '',
                 "RequestLocationSellerId": '',
@@ -733,16 +739,20 @@ export class LocalService {
                 "GenRating": res2['genRating'],
                 "PortRating": res2['portRating'],
                 "QuotedProductId": '',
-                "SpecGroupId": '',
-                "SpecGroupName": "",
-                //"MinQuantity": res2['minQuantity'],
-                //"MaxQuantity": res2['maxQuantity'],
-                "UomId": '',
-                //"OfferPrice": res2['offerPrice'],
+                "SpecGroupId": res1['specGroupId'],
+                "SpecGroupName": SpecGroupName,
+                "MinQuantity": res2['minQuantity'],
+                "MaxQuantity": res2['maxQuantity'],
+                "UomId": res2['maxQuantityUomId'],
+                "MinQuantityUnit" : uom?.name,
+                "MaxQuantityUnit" : uom?.name,
+                "OfferPrice": res2['offerPrice'],
                 "PriceCurrencyId": '',
                 "PriceCurrencyName": "",
                 "ValidityDate": "",
                 "Status": res2['status'],
+                "typeStatus" : 'Inquired',
+                'rfqStatus' : res2['status'] != 'Open' ? true : false,
                 "M1": '',
                 "M2": '',
                 "M3": '',
@@ -789,9 +799,9 @@ export class LocalService {
             arrMainDet = {}; data = [];
         });
         this.disbaleHeaderButtons = disbaleHeaderButtonsTmp;
-        //let unique = [...new Set(uniqueCounterParty)];
-        // this.uniqueCounterPartyName = unique.toString();
-        // this.allRequestDetails[0] = contractArray;
+        let unique = [...new Set(uniqueLocations)];
+        this.uniqueLocations = unique.toString();
+        this.allRequestDetails = contractArray;
         this.store.dispatch(new ContractRequest([contractArray]));
     }
 

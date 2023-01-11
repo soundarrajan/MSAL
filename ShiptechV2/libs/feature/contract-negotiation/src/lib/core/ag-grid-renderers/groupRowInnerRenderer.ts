@@ -51,7 +51,6 @@ export class GroupRowInnerRenderer implements ICellRendererComp {
         let className;
 
         switch (id) {
-            case 'Open':
             case 'Inquired': { name = 'Offers'; className = "offers"; break; }
             case 'AwaitingApproval': { name = 'Awaiting Approval'; className = "await"; break; }
             case 'Approved': { name = 'Approved'; className = "approved"; break; }

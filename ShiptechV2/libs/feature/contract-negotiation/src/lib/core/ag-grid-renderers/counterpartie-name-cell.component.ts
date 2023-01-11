@@ -97,22 +97,24 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
   }
 
   removeCounterpartyPopup(params) {
-        
-    this.toaster.success(params.node.data.CounterpartyName+' have been removed');
-    this.deleteRow(params.node.data.id)
-    // const dialogRef = this.dialog.open(RemoveCounterpartyPopupComponent, {
-    //   width: '340px',
-    //   height: 'auto',
-    //   panelClass: 'delete-chat-popup'
-    // });
-
-    // dialogRef.afterClosed().subscribe(result => {
-      
-    //   if(result){
-    //     //this.deleteRow(params.node.data.id);
-        
-    //   }
-    // });
+    
+    if(params.node.data.Status == 'Open'){
+      this.toaster.success(params.node.data.CounterpartyName+' have been removed');
+      this.deleteRow(params.node.data.id);
+      return;
+    }
+    const dialogRef = this.dialog.open(RemoveCounterpartyPopupComponent, {
+      width: '340px',
+      height: 'auto',
+      panelClass: 'delete-chat-popup',
+      data : {counterpartyName : params.node.data.CounterpartyName}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.deleteRow(params.node.data.id);
+        this.toaster.success(params.node.data.CounterpartyName+' have been removed');
+      }
+    });
   }
 
 

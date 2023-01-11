@@ -17,6 +17,7 @@ import { ContractNegotiationService } from '../../../services/contract-negotiati
 import { CounterpartieNameCellComponent } from '../../../core/ag-grid-renderers/counterpartie-name-cell.component';
 import { GetRowNodeIdFunc, IGetRowsParams } from 'ag-grid-community';
 import { ContractRequest } from '../../../store/actions/ag-grid-row.action';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-contract-nego-grid',
   templateUrl: './contract-nego-grid.component.html',
@@ -57,7 +58,7 @@ export class ContractNegoGridComponent implements OnInit {
   checkBoxSelectionstatus : boolean;
   sellerIds = [];
   dispalyNoData : boolean = false;
-  constructor(private localService: LocalService, private store : Store,private contractService: ContractNegotiationService) {
+  constructor(private localService: LocalService, public router: Router, private store : Store,private contractService: ContractNegotiationService) {
     this.context = { componentParent: this };
   }
   ngOnInit(): void {
@@ -67,8 +68,7 @@ export class ContractNegoGridComponent implements OnInit {
           if(el['location-id'] == this.locationId && el.productId == this.productId){
             this.dispalyNoData = (el.data.length > 0)? false : true;
             this.gridOptions_forecast?.api?.setRowData(el.data);
-          }
-          
+          } 
         })
       });
       if (
@@ -115,6 +115,7 @@ export class ContractNegoGridComponent implements OnInit {
         this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
           state['contractNegotiation'].ContractRequest[0].locations.find(el => {
             if(el['location-id'] == this.locationId && el.productId == this.productId){
+              this.rowSelected=true;
               this.gridOptions_forecast.api.setRowData(el.data);
             }
           })
@@ -179,7 +180,7 @@ export class ContractNegoGridComponent implements OnInit {
         },
         sort: 'asc',
         cellClass: params => {
-          return params.node.level != 0 && this.rfqSent && this.rowSelected && params.node.rowIndex != 3 ? 'editable-cell grey-opacity-cell' : 'ag-grouped-cell';
+          return params.node.level != 0 && params.data.rfqStatus && this.rowSelected && params.node.rowIndex != 3 ? 'editable-cell grey-opacity-cell' : '';
         },
         cellRendererSelector: params => {
           this.sendNodeData.emit(params.node);
@@ -188,16 +189,17 @@ export class ContractNegoGridComponent implements OnInit {
               component: 'agGroupCellRenderer',
               params: { label: 'port-rating', cellClass: 'rating-chip-renderer' }
             };
-          } else if (params.node.rowIndex != 3) {
+          } else  {
             return {
               component: 'productSelectRenderer'
             };
-          } else {
-            return {
-              component: 'noQuoteRenderer',
-              params: { show: this.rfqSent }
-            };
-          }
+          } 
+          // else {
+          //   return {
+          //     component: 'noQuoteRenderer',
+          //     params: { show: this.rfqSent }
+          //   };
+          // }
         },
         cellRendererParams: {
           suppressCount: true
@@ -208,7 +210,6 @@ export class ContractNegoGridComponent implements OnInit {
           else return 1;
         }
       },
-
       frameworkComponents: {
         checkboxHeaderRenderer: MatCheckboxHeaderComponent,
         checkboxRenderer: AGGridCheckboxRenderer,
@@ -219,7 +220,6 @@ export class ContractNegoGridComponent implements OnInit {
         productSelectRenderer: AGGridCellMenuRenderer,
         noQuoteRenderer: fullWidthCellRenderer
       }
-
     };
 
     this.localService.sendRFQUpdate.subscribe(data => {
@@ -466,7 +466,7 @@ export class ContractNegoGridComponent implements OnInit {
       resizable: false,
       children: [
         {
-          field: 'Status',
+          field: 'typeStatus',
           resizable: false,
           rowGroup: true,
           cellRenderer: 'agGroupCellRenderer',
@@ -491,7 +491,7 @@ export class ContractNegoGridComponent implements OnInit {
           field: 'SpecGroupName',
           editable: true,
           cellClass: params => {
-            return params.node.level != 0 && this.rfqSent && this.rowSelected ? 'editable-cell grey-opacity-cell' : '';
+            return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell grey-opacity-cell' : '';
           }
         },
         {
@@ -500,13 +500,13 @@ export class ContractNegoGridComponent implements OnInit {
           field: 'MinQuantity',
           minWidth: 120,
           cellClass: params => {
-            return params.node.level != 0 && this.rfqSent && this.rowSelected ? 'editable-cell input-select-renderer grey-opacity-cell' : '';
+            return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell input-select-renderer grey-opacity-cell' : '';
           },
           // cellRenderer: 'inputSelectRenderer',
           // cellRendererParams: (params) => { return { value: params.data?.MinQuantity, unit: params.data?.MinQuantityUnit } }
 
           cellRendererSelector: params => {
-            if (params.node.level != 0 && this.rfqSent && this.rowSelected) {
+            if (params.node.level != 0 && params.data.rfqStatus && this.rowSelected) {
               return {
                 component: 'inputSelectRenderer',
                 params: { value: params.data.MinQuantity, unit: params.data.MinQuantityUnit ? params.data.MinQuantityUnit : 'BBL' }
@@ -523,14 +523,14 @@ export class ContractNegoGridComponent implements OnInit {
           field: 'MaxQuantity',
           minWidth: 120,
           cellClass: params => {
-            return params.node.level != 0 && this.rfqSent && this.rowSelected ? 'editable-cell input-select-renderer grey-opacity-cell' : '';
+            return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell input-select-renderer grey-opacity-cell' : '';
           },
           //cellClass: ['editable-cell input-select-renderer'],
           // cellRenderer: 'inputSelectRenderer',
           // cellRendererParams: (params) => { return { value: params.data?.MaxQuantity, unit: params.data?.MaxQuantityUnit } }
 
           cellRendererSelector: params => {
-            if (params.node.level != 0 && this.rfqSent && this.rowSelected) {
+            if (params.node.level != 0 && params.data.rfqStatus && this.rowSelected) {
               return {
                 component: 'inputSelectRenderer',
                 params: { value: params.data.MaxQuantity, unit: params.data.MaxQuantityUnit ? params.data.MaxQuantityUnit : 'BBL' }
@@ -547,7 +547,7 @@ export class ContractNegoGridComponent implements OnInit {
           editable: true,
           type: 'numericColumn',
           cellClass: params => {
-            return params.node.level != 0 && this.rfqSent && this.rowSelected ? 'editable-cell grey-opacity-cell' : '';
+            return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell grey-opacity-cell' : '';
           },
           cellRendererFramework: AGGridCellClickRendererComponent,
           cellRendererParams: params => {
@@ -564,7 +564,7 @@ export class ContractNegoGridComponent implements OnInit {
           headerTooltip: 'Validity',
           field: 'ValidityDate',
           cellClass: params => {
-            return params.node.level != 0 && this.rfqSent && this.rowSelected ? 'editable-cell grey-opacity-cell' : '';
+            return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell grey-opacity-cell' : '';
           },
           cellRendererSelector: params => {
             if (params.node.level != 0) {
@@ -759,18 +759,16 @@ export class ContractNegoGridComponent implements OnInit {
     let contractReq = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
       return state['contractNegotiation'].ContractRequest[0];
     })));
-    console.log('row checked:: e.data.id:'+e.data.id);
     contractReq.locations.map( prod => {
       if(prod.data.length > 0){
         prod.data.map( data => {
-          if(e.data.id == data.id) data.check = e.node.selected;
+          if(e.data?.id == data?.id) data.check = e.node.selected;
         })
       }
     })
     this.store.dispatch(new ContractRequest([contractReq]));
     //this.rowSelected = true;
     //this.isCalculated = true;
-
     this.localService.updateRowSelected(true);
     if (this.rfqSent) {
       this.localService.setContractNoQuote(this.gridOptions_forecast.api.getSelectedRows().length > 0);
