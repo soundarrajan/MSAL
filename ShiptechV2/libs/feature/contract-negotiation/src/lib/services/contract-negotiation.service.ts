@@ -297,5 +297,9 @@ export class ContractNegotiationService extends BaseStoreService
   sendRFQ(payload: any): Observable<any> {
     return this.contractNegotiationApi.sendRFQ(payload);
   }
+  @ObservableException()
+  updatePrices(payload):Observable<any> {
+    return this.contractNegotiationApi.updatePrices(payload);
+  }
 
 }
