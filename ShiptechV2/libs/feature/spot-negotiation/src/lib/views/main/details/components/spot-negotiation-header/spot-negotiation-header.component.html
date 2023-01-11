@@ -264,7 +264,7 @@
         </button>
       </span>
       <button class="comments-icon-btn">
-        <span class="comments-icon" (click)="scrollComments(comments)"></span>
+        <span class="comments-icon" (click)="scrollComments()"></span>
       </button>
     </div>
   </div>
@@ -278,17 +278,17 @@
     style="background-color: #ffffff; padding: 0px 5px;"
   >
 
-     <div *ngFor="let location of locations; let locationIndex = index" id="scroll{{locationIndex}}">
-        <app-spot-negotiation-details [location]="location" [locationIndex] = "locationIndex" > </app-spot-negotiation-details>
+     <div *ngFor="let location of locations; let locationIndex = index" id="scroll{{locationIndex}}" #scroll{{locationIndex}}>
+        <app-spot-negotiation-details  [location]="location" [expandPanelstate] = "expandPanelstate" [portIndex]="portIndex" [locationIndex] = "locationIndex" > </app-spot-negotiation-details>
       </div>
     
   </div>
   <div
-    #comments
+  id="comments"  #comments 
     class="col-md-12"
     style="background-color: #ffffff;padding: 0px 5px;"
   >
-    <app-spot-negotiation-new-comments
+    <app-spot-negotiation-new-comments (notifyParent)="getNotification($event)"
       [expandCommentsSection]="expandCommentsSection"
       [currentRequestInfo]="currentRequestInfo"
     ></app-spot-negotiation-new-comments>
