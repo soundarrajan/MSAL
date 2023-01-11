@@ -787,7 +787,6 @@ export class LocalService {
                 "fdRemarks": "",
                 "createdById": res2['createdById'],
                 "createdOn": res2['createdOn'],
-<<<<<<< HEAD
                 "pricingTypeId": res2['pricingTypeId'],
                 "lastEvaluationDate": res2['lastEvaluationDate'],
                 "forwardPrices": res2['forwardPrices'],
@@ -795,9 +794,7 @@ export class LocalService {
                 "statusId": res2['statusId'],
                 "lastModifiedById": res2['lastModifiedById'],
                 "lastModifiedOn": res2['lastModifiedOn'],
-=======
                 "contractRequestProductId" : res1['id']
->>>>>>> e381bb7ca231187513bd2c037107d1ab40ef8b6b
             }
             data.push(arrDet);
             arrDet = {};
