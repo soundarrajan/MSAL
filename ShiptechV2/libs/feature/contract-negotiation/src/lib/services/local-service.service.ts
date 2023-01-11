@@ -698,7 +698,22 @@ export class LocalService {
     }
     async contractRequestData(response){
         let disbaleHeaderButtonsTmp = true;
-        let contractArray = { locations : []};
+        let contractArray = { 
+            id: response['id'],
+            startDate: response['startDate'],
+            endDate: response['endDate'],
+            quoteByDate: response['quoteByDate'],
+            minValidity: response['minValidity'],
+            supplierComments: response['supplierComments'],
+            statusId: response['statusId'],
+            status: response['status'],
+            createdById: response['createdById'],
+            createdOn: response['createdOn'],
+            lastModifiedById: response['lastModifiedById'],
+            lastModifiedOn: response['lastModifiedOn'],
+            quantityDetails: response['quantityDetails'],
+            locations : []
+        };
         let arrDet = {};
         let data = [];
         let arrMainDet = {};
@@ -731,7 +746,7 @@ export class LocalService {
                 "isSellerSuspended": res2['isSellerSuspended'],
                 "ProductName": product?.displayName,
                 "requestLocationId": '',
-                "requestProductId": '',
+                "requestProductId": res2['contractRequestProductId'],
                 "RequestLocationSellerId": '',
                 "CounterpartyName": this.format.htmlDecode(res2['counterpartyName']),
                 "CounterpartyId": res2['counterpartyId'],
@@ -747,9 +762,9 @@ export class LocalService {
                 "MinQuantityUnit" : uom?.name,
                 "MaxQuantityUnit" : uom?.name,
                 "OfferPrice": this.format.price(res2['offerPrice']),
-                "PriceCurrencyId": '',
+                "PriceCurrencyId": res2['currencyId'],
                 "PriceCurrencyName": "",
-                "ValidityDate": "",
+                "ValidityDate": res2['validityDate'],
                 "Status": res2['status'],
                 "typeStatus" : 'Inquired',
                 'rfqStatus' : res2['status'] != 'Open' ? true : false,
@@ -772,6 +787,13 @@ export class LocalService {
                 "fdRemarks": "",
                 "createdById": res2['createdById'],
                 "createdOn": res2['createdOn'],
+                "pricingTypeId": res2['pricingTypeId'],
+                "lastEvaluationDate": res2['lastEvaluationDate'],
+                "forwardPrices": res2['forwardPrices'],
+                "isNoQuote": res2['isNoQuote'],
+                "statusId": res2['statusId'],
+                "lastModifiedById": res2['lastModifiedById'],
+                "lastModifiedOn": res2['lastModifiedOn'],
                 "contractRequestProductId" : res1['id']
             }
             data.push(arrDet);
@@ -791,10 +813,19 @@ export class LocalService {
             "maxQuantity" : res1['maxQuantity'],
             "minQuantityUomId" : res1['minQuantityUomId'],
             "maxQuantityUomId" : res1['maxQuantityUomId'],
-            "validityDate" : res1['minValidity'],
             "pricingTypeId": res1['pricingTypeId'],
             "contractualQuantityOption" : contractualQuantityOption.name,
-            "contractRequestProductId" : res1['id']
+            "contractRequestProductId" : res1['id'],
+            "pricingComment": res1['pricingComment'],
+            "statusId": res1['statusId'],
+            "status": res1['status'],
+            "createdById": res1['createdById'],
+            "createdOn": res1['createdOn'],
+            "lastModifiedById": res1['lastModifiedById'],
+            "lastModifiedOn": res1['lastModifiedOn'],
+            "allowedLocations": res1['allowedLocations'],
+            "allowedProducts": res1['allowedProducts'],
+            "isDeleted": res1['isDeleted']
             }
             contractArray['locations'].push(arrMainDet);
             arrMainDet = {}; data = [];
@@ -802,7 +833,7 @@ export class LocalService {
         this.disbaleHeaderButtons = disbaleHeaderButtonsTmp;
         let unique = [...new Set(uniqueLocations)];
         this.uniqueLocations = unique.toString();
-        this.allRequestDetails = contractArray;
+        this.allRequestDetails = _.cloneDeep(contractArray);
         this.store.dispatch(new ContractRequest([contractArray]));
     }
 

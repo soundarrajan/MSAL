@@ -537,12 +537,12 @@
                                 *ngIf="!isProductDisabled(i)"
                                 (click)="removeProductToContract(i, j)">
                               </div>
-                              <div class="contract-location-with-product-container d-flex" 
-                                [ngClass]="{'container-with-value': productSelected && selectedProindex==i}"
+                              <div class="contract-location-with-product-container d-flex"
+                                [ngClass]="{'container-with-value': productSelected && selectedProindex==i, 'field-disabled':isProductDisabled(i)}"
                                 style="margin-right:0">
                                 <div id="allowedPrds" class="custom-form-field custom-form-field-location lightTheme"
                                   [ngClass]="{'container-location-with-value': locationSelected && selectedLocindex==i}">
-                                  <mat-form-field class="without-search contract-location-product-dropdown"
+                                  <mat-form-field [ngClass]="{'field-disabled':isProductDisabled(i)}" class="without-search contract-location-product-dropdown"
                                     appearance="legacy" style="width: 100% !important; border-right: none !important;">
                                     <mat-label>Add Product</mat-label>
                                     <mat-select #allowedProductSelects 
@@ -598,7 +598,7 @@
                                 </div>
                                 <div class="custom-form-field custom-form-field-location lightTheme" 
                                   [ngClass]="{'container-product-with-value': productSelected && selectedProindex==i}">
-                                  <mat-form-field class="without-search contract-location-product-dropdown"
+                                  <mat-form-field [ngClass]="{'field-disabled':isProductDisabled(i)}" class="without-search contract-location-product-dropdown"
                                     appearance="legacy" style="width: 100% !important; border-left: none !important;">
                                     <mat-label>Spec Group</mat-label>
                                     <span></span>
