@@ -1,7 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ToastrService } from 'ngx-toastr';
+import { ContractNegotiationService } from '../../services/contract-negotiation.service';
 import { AdditionalCostPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/additional-cost-popup/additional-cost-popup.component';
 import { FormulaPricingPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/formula-pricing-popup/formula-pricing-popup.component';
 import { ModifyOfferPeriodPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/modify-offer-period-popup/modify-offer-period-popup.component';
@@ -41,7 +43,12 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
 
     public params: any;
     dummyId = 121;
-    constructor(public dialog: MatDialog, private toaster: ToastrService) {
+    constructor(
+        public dialog: MatDialog,
+        private toaster: ToastrService,
+        public contractService: ContractNegotiationService,
+        private tenantService: TenantFormattingService,
+        ) {
 
     }
 
@@ -115,9 +122,57 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
             //row.offerPeriod = result;
         });
     }
-
     onInputChange(){
-console.log(this.params.data.Status)
+        console.log(this.params.data.Status);
+        this.tenantService.pricePrecision;
+        debugger;
+        let payload = {
+            "contractRequestProductOffers": [
+                // {
+                //     "offerPrice": 1234,
+                //     "pricingTypeId": 1,
+                //     "status": this.params.data.Status,
+                //     "statusId": 1,
+                //     "isSelected": true,
+                //     "id": this.params.data.id,
+                //     "specGroupId" : this.params.data.SpecGroupId,
+                //     "productId": this.params.data.ProductId,
+                //     "minQuantity": this.params.data.MinQuantity+1,
+                //     "minQuantityUomId": this.params.data.MinQuantityUnit,
+                //     "maxQuantity": this.params.data.MaxQuantity+1,
+                //     "maxQuantityUomId": this.params.data.MaxQuantityUnit,
+                //     "validityDate" : "2023-02-24",
+                //     "currencyId": 1,
+                //     "contractRequestProductId": this.params.data.contractRequestProductId,
+                //     "counterpartyId": this.params.data.CounterpartyId,
+                //     "lastModifiedById": null,
+                //     "lastModifiedOn": null
+                // }
+
+                {
+                    "productId": this.params.data.ProductId,
+                    "specGroupId": this.params.data.SpecGroupId,
+                    "minQuantity": this.params.data.MinQuantity+1,
+                    "minQuantityUomId": 5,
+                    "maxQuantity": this.params.data.MaxQuantity+1,
+                    "maxQuantityUomId": 5,
+                    "validityDate": "2023-02-24",
+                    "offerPrice": this.params.value,
+                    "pricingTypeId": 1,
+                    "status": "Inquired",
+                    "statusId": 2,
+                    "isSelected": true,
+                    "id": this.params.data.id,
+                    "currencyId": 1,
+                    "contractRequestProductId": this.params.data.contractRequestProductId,
+                    "counterpartyId": 41,
+                    "lastModifiedById": null,
+                    "lastModifiedOn": null
+                }
+            ]
+        }
+        this.contractService.updatePrices(payload).subscribe()
+        this.params.value = this.tenantService.price(this.params.value);
         if(this.params.data.Status=='Rejected'){
             this.params.context.componentParent.toggleProgressBar(this.params.data);
 
