@@ -24,6 +24,7 @@ import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/t
 import { DecimalPipe } from '@angular/common';
 import _ from 'lodash';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { ContractNegotiationStoreModel } from '../../../../store/contract-negotiation.store';
 
 export const MY_FORMATS = {
   parse: {
@@ -203,7 +204,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     private db: LegacyLookupsDatabase,
     private _cdr: ChangeDetectorRef
   ) {
-    if(this.data.requestDetails){
+    if(this.data.requestId){
       this.isNewRequest = false;
     }
     iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../../../../../../../../v2/assets/design-system-icons/shiptech/common-icons/calendar-dark.svg'));
@@ -257,8 +258,94 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.rfqSent = true;
   }
 
+  getAndConstructDataFromStore(){
+    let requestId = this.data.requestId;
+    let storeDataObj = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+      return state['contractNegotiation'].ContractRequest[0];
+    })));
+    let storeReqObj = {
+      id: storeDataObj.id,
+      startDate: storeDataObj.startDate,
+      endDate: storeDataObj.endDate,
+      quoteByDate: storeDataObj.quoteByDate,
+      minValidity: storeDataObj.minValidity,
+      supplierComments: storeDataObj.supplierComments,
+      statusId: storeDataObj.statusId,
+      status: storeDataObj.status,
+      createdById: storeDataObj.createdById,
+      createdOn: storeDataObj.createdOn,
+      lastModifiedById: storeDataObj.lastModifiedById,
+      lastModifiedOn: storeDataObj.lastModifiedOn,
+      quantityDetails: storeDataObj.quantityDetails,
+      contractRequestProducts: []
+    }
+
+    storeDataObj.locations.forEach( reqProduct => {
+      let contractReqProdObj = {
+        id: reqProduct['contractRequestProductId'],
+        contractRequestId: requestId,
+        locationId: reqProduct['location-id'],
+        productId: reqProduct['productId'],
+        specGroupId: reqProduct['specGroupId'],
+        minQuantity: this.quantityFormatValue(reqProduct['minQuantity']),
+        minQuantityUomId: reqProduct['minQuantityUomId'],
+        maxQuantity: this.quantityFormatValue(reqProduct['maxQuantity']),
+        maxQuantityUomId: reqProduct['maxQuantityUomId'],
+        pricingTypeId: reqProduct['pricingTypeId'],
+        pricingComment: reqProduct['pricingComment'],
+        statusId: reqProduct['statusId'],
+        status: reqProduct['status'],
+        createdById: reqProduct['createdById'],
+        lastModifiedById: reqProduct['lastModifiedById'],
+        createdOn: reqProduct['createdOn'],
+        lastModifiedOn: reqProduct['lastModifiedOn'],
+        isDeleted: reqProduct['isDeleted'],
+        allowedProducts: reqProduct['allowedProducts'],
+        allowedLocations: reqProduct['allowedLocations'],
+        contractRequestProductOffers: []
+      };
+
+      if(reqProduct.data && reqProduct.data.length > 0){
+        reqProduct.data.forEach( offerData => {
+          let prodOffers = {
+            offerPrice: offerData['OfferPrice'],
+            pricingTypeId: offerData['pricingTypeId'],
+            lastEvaluationDate: offerData['lastEvaluationDate'],
+            forwardPrices: offerData['forwardPrices'],
+            isNoQuote: offerData['isNoQuote'],
+            status: offerData['Status'],
+            genRating: offerData['GenRating'],
+            portRating: offerData['PortRating'],
+            isSellerSuspended: offerData['isSellerSuspended'],
+            statusId: offerData['statusId'],
+            isSelected: offerData['check'],
+            id: offerData['id'],
+            productId: offerData['ProductId'],
+            specGroupId: offerData['SpecGroupId'],
+            minQuantity: this.quantityFormatValue(offerData['MinQuantity']),
+            minQuantityUomId: offerData['UomId'],
+            maxQuantity: this.quantityFormatValue(offerData['MaxQuantity']),
+            maxQuantityUomId: offerData['UomId'],
+            validityDate: offerData['ValidityDate'],
+            currencyId: offerData['PriceCurrencyId'],
+            contractRequestProductId: offerData['requestProductId'],
+            counterpartyId: offerData['CounterpartyId'],
+            counterpartyName: offerData['CounterpartyName'],
+            createdById: offerData['createdById'],
+            lastModifiedById: offerData['lastModifiedById'],
+            createdOn: offerData['createdOn'],
+            lastModifiedOn: offerData['lastModifiedOn']
+          };
+          contractReqProdObj.contractRequestProductOffers.push(prodOffers);
+        });
+      }
+      storeReqObj.contractRequestProducts.push(contractReqProdObj);
+    });
+    return storeReqObj;
+  }
+
   openRequest(){
-    this.reqObj = this.data.requestDetails;
+    this.reqObj = this.getAndConstructDataFromStore();
     this.reqObj.quantityDetails.forEach((q, i) => {
       q.minQuantity = this.quantityFormatValue(q.minQuantity);
       q.maxQuantity = this.quantityFormatValue(q.maxQuantity);
@@ -323,6 +410,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   quantityFormatValue(value) {
+    value = (value)?value:0;
     let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
     let number = parseFloat(plainNumber);
     if (isNaN(number)) {

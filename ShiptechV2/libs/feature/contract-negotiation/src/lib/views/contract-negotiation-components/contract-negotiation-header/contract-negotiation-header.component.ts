@@ -75,13 +75,13 @@ export class ContractNegotiationHeaderComponent implements OnInit {
       this.getCounterpartyList();
       this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
       .subscribe(response => {
-            this.contractRequestId = response['id'];
-            this.contractRequestStatus.emit(response['status']);
-            this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
-            this.localService.getMasterListData(['Product','Location','Uom','SpecGroup']).subscribe(data => {
-            this.masterData = data;
-            this.localService.masterData = data;
-            if(response['quantityDetails'].length > 0){
+        this.contractRequestId = response['id'];
+        this.contractRequestStatus.emit(response['status']);
+        this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
+        this.localService.getMasterListData(['Product','Location','Uom','SpecGroup']).subscribe(data => {
+          this.masterData = data;
+          this.localService.masterData = data;
+          if(response['quantityDetails'].length > 0){
               this.totalRequestQty(response);
             }           
       });
@@ -111,7 +111,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     let minMaxDet =  response['quantityDetails'].find(el => el.contractualQuantityOptionId == 1);
     let ContractualQuantityOption = this.masterData['Uom'].find(el => el.id == minMaxDet.uomId);
     this.totalReqQty = minMaxDet;
-    this.totalReqQty['uomId'] = ContractualQuantityOption.name;
+    //this.totalReqQty['uomIdff'] = ContractualQuantityOption.name;
   }
 
  
@@ -186,7 +186,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
       minHeight: '90vh',
       maxHeight: '100vh',
       panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
-      data: { createReqPopup:false,rfqStatus: this.rfqSent, requestDetails: this.localService.contractRequestDetails }
+      data: { createReqPopup:false,rfqStatus: this.rfqSent, requestId: this.route.snapshot.params.requestId, requestDetails: this.localService.contractRequestDetails }
     });
 
     dialogRef.afterClosed().subscribe(result => {
