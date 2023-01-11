@@ -19,6 +19,7 @@ import { SpnegoAddCounterpartyModel } from 'libs/feature/spot-negotiation/src/li
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import {SpotNegotiationNewCommentsComponent} from "../spot-negotiation-new-comments/spot-negotiation-new-comments.component";
 import {
   AddCounterpartyToLocations,
   AppendLocationsRowsOriData,
@@ -49,12 +50,15 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
-  expandCommentsSection: boolean = false;
+  public expandCommentsSection: boolean = true;
   @ViewChild('headerContainer') container: ElementRef;
   @ViewChild('requestContainer') requestcontainer: ElementRef;
   @ViewChild('inputSearch') inputSearch: ElementRef;
   @ViewChild('searchCounterparty') searchCounterparty;
+  @ViewChild(SpotNegotiationNewCommentsComponent) child: SpotNegotiationNewCommentsComponent;
 
+  public portIndex: number = 0;
+  public expandPanelstate : boolean = true;
   // Current request;
   locations = [];
   selReqIndex = 0;
@@ -1077,22 +1081,22 @@ export class SpotNegotiationHeaderComponent implements OnInit, AfterViewInit {
   }
 
   scrollPort(scrollPlaceId) {
-    let scrollId = "scroll" + scrollPlaceId;
-    document.getElementById(scrollId).scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "nearest"
-    });
+    this.portIndex = scrollPlaceId;
+    this.expandPanelstate = false;    
   }
 
-  scrollComments(el: HTMLElement) {
-    this.expandCommentsSection = true;
-    el.scrollIntoView();
+  scrollComments() { 
+  this.child.matExpansionPanelElement.toggle();
+  this.expandCommentsSection = true; 
+  this.expandPanelstate = false;  
+  document.getElementById("comments").scrollIntoView();
+  this.portIndex = -1;  
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit() {    
     setTimeout(() => {
       //this.inputSearch.nativeElement.focus();
+      
     }, 0);
   }
 
