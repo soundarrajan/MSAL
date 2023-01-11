@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { EmailPreviewPopupComponent } from '../contract-negotiation-popups/email-preview-popup/email-preview-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { LocalService } from '../../../services/local-service.service';
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { CreateContractRequestPopupComponent } from '../contract-negotiation-popups/create-contract-request-popup/create-contract-request-popup.component';
 import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
 import { Store } from '@ngxs/store';
@@ -48,6 +48,9 @@ export class MainPageComponent implements OnInit {
     private contractNegoService: ContractNegotiationService,
     private store: Store,
     private tenantSettingsService: TenantSettingsService,
+    private ref: ChangeDetectorRef,
+    public contractService: ContractNegotiationService,
+    private route: ActivatedRoute,
   ) {
     this.currentUserId = this.store.selectSnapshot(UserProfileState.user).id;
     this.generalTenantSettings = this.tenantSettingsService.getGeneralTenantSettings();
@@ -239,11 +242,19 @@ export class MainPageComponent implements OnInit {
                   if(res.contractRequestProductOfferIds.includes(data.id)) {
                     data.Status = 'Inquired';
                     data.check = false;
+                    data.rfqStatus = true;
                   }
                 })
               }
             })
-            if(contractReq) this.store.dispatch(new ContractRequest([contractReq]));
+           // this.store.dispatch(new ContractRequest([contractReq]));
+          const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
+          this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
+          .subscribe(response => {
+          this.localService.contractRequestData(response).then(() => {
+            this.ref.markForCheck();
+          });
+          });
           }
         }
         if(res.message !== ""){

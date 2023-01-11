@@ -1241,7 +1241,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.contractNegotiationService.createContractRequest(this.reqObj).subscribe( requestId => {
         if(typeof requestId == 'number' && requestId > 0){
           this.toaster.success('Contract Request has been created successfully');
-          this.router.navigate(['/contract-negotiation/requests/'+requestId]);
+          //this.router.navigate(['/contract-negotiation/requests/'+requestId]);
           this.dialog.closeAll();
         } else {
           this.toaster.error(requestId.toString());
@@ -1251,6 +1251,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.contractNegotiationService.updateContractRequest(this.reqObj).subscribe( response => {
         if(response){
           this.toaster.success('Contract Request has been updated successfully');
+          //this.router.navigate(['/contract-negotiation/requests/131']);
           this.dialog.closeAll();
         } else {
           this.toaster.error(response.toString());

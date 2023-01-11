@@ -52,7 +52,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   searchText: string = "";
   masterData: any;
   contractRequestId : String;
-  uniqueCounterPartyName : String; 
+  uniqueLocationNames : String = ''; 
   totalReqQty;
   counterpartyBackup;
   
@@ -78,7 +78,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
             this.contractRequestId = response['id'];
             this.contractRequestStatus.emit(response['status']);
             this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
-            this.localService.getMasterListData(['Product','Location','Uom']).subscribe(data => {
+            this.localService.getMasterListData(['Product','Location','Uom','SpecGroup']).subscribe(data => {
             this.masterData = data;
             this.localService.masterData = data;
             if(response['quantityDetails'].length > 0){
@@ -94,7 +94,12 @@ export class ContractNegotiationHeaderComponent implements OnInit {
         ];
         setTimeout(() => {
           this.localService.masterData['Counterparty'] = this.masterData['Counterparty'] = mergeArray;
-          this.contractRequestData(response);
+          this.localService.contractRequestData(response).then(() => {
+            this.uniqueLocationNames = this.localService.uniqueLocations;
+            this.allRequestDetails[0] = this.localService.allRequestDetails;
+            this.disbaleHeaderButtons.emit(false);
+            this.ref.markForCheck();
+          });
         }, 100);
       });
       });
@@ -136,101 +141,6 @@ export class ContractNegotiationHeaderComponent implements OnInit {
       }
     });
   }
-
-  contractRequestData(response){
-    let  contractArray = { locations : []};
-    let arrDet = {};
-    let data = [];
-    let arrMainDet = {};
-    let uniqueCounterParty = [];
-        Object.entries(response['contractRequestProducts']).forEach(([key, res1]) => {
-         //this.contractArray['request-id'] = '001';
-          let location = this.masterData['Location'].find(el => el.id == res1['locationId']);
-          let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
-          uniqueCounterParty.push(location.name);
-          Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
-          this.disbaleHeaderButtons.emit(false);
-          // let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
-          // let product = this.masterData['Product'].find(el => el.id == res2['productId']);           
-            arrDet = {
-              "check": res2['isSelected'],
-              "id": res2['id'],
-              "LocationId": res1['locationId'],
-              "ProductId": res2['productId'],
-              "isSellerSuspended": res2['isSellerSuspended'],
-              //"ProductName": product?.displayName,
-              "requestLocationId": '',
-              "requestProductId": '',
-              "RequestLocationSellerId": '',
-              "CounterpartyName": this.format.htmlDecode(res2['counterpartyName']),
-              "CounterpartyId": res2['counterpartyId'],
-              "IsTemporarlySuspended": '',
-              "GenRating": res2['genRating'],
-              "PortRating": res2['portRating'],
-              "QuotedProductId": '',
-              "SpecGroupId": '',
-              "SpecGroupName": "",
-              //"MinQuantity": res2['minQuantity'],
-              //"MaxQuantity": res2['maxQuantity'],
-              "UomId": '',
-              //"OfferPrice": res2['offerPrice'],
-              "PriceCurrencyId": '',
-              "PriceCurrencyName": "",
-              "ValidityDate": "",
-              "Status": res2['status'],
-              "M1": '',
-              "M2": '',
-              "M3": '',
-              "M4": '',
-              "M5": '',
-              "M6": '',
-              "Q1": '',
-              "Q2": '',
-              "Q3": '',
-              "Q4": '',
-              "fdProduct": "",
-              "fdTotalContractAmt": "",
-              "fdFomulaDesc": "",
-              "fdSchedule": "",
-              "fdPremium": "",
-              "fdAddCosts": "",
-              "fdRemarks": "",
-              "createdById": res2['createdById'],
-              "createdOn": res2['createdOn']
-            }
-            data.push(arrDet);
-            arrDet = {};
-          });
-          let contractualQuantityOption = this.masterData['Uom'].find(el => el.id == res1['maxQuantityUomId']);
-          arrMainDet = {
-            'data' : data,
-            "location-name": location.name,
-            "location-id": res1['locationId'],
-            "port-id": "1",
-            "period": "M",
-            "productId" : res1['productId'],
-            "productName" : mainProduct.name,
-            "specGroupId": res1['specGroupId'],
-            "minQuantity" : res1['minQuantity'],
-            "maxQuantity" : res1['maxQuantity'],
-            "minQuantityUomId" : res1['minQuantityUomId'],
-            "maxQuantityUomId" : res1['maxQuantityUomId'],
-            "validityDate" : res1['minValidity'],
-            "pricingTypeId": res1['pricingTypeId'],
-            "contractualQuantityOption" : contractualQuantityOption.name,
-            "contractRequestProductId" : res1['id']
-          }
-          contractArray['locations'].push(arrMainDet);
-          arrMainDet = {}; data = [];
-        });    
-        
-        let unique = [...new Set(uniqueCounterParty)];       
-        this.uniqueCounterPartyName = unique.toString();
-        this.allRequestDetails[0] = contractArray;
-        this.store.dispatch(new ContractRequest([contractArray]));
-        this.ref.markForCheck();
-    }
-
   setFocus() {
     this.store.selectSnapshot((state: SpotNegotiationStoreModel) => {      
       this.counterpartyList = this.localService.limitCounterPartyList(
@@ -280,11 +190,16 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if(result == true) return;
       const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
       this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
       .subscribe(response => {
         this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
-        this.contractRequestData(response);
+        this.localService.contractRequestData(response).then(() => {
+          this.uniqueLocationNames = this.localService.uniqueLocations;
+          this.allRequestDetails[0] = this.localService.allRequestDetails;
+          this.disbaleHeaderButtons.emit(false);
+        })
         this.totalRequestQty(response);
       });
     });

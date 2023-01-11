@@ -1,5 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
+import { LocalService } from '../../services/local-service.service';
 
 
 @Component({
@@ -17,9 +18,9 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
         <div class="fs-12 p-5-8">Change Unit</div>
         <div style="max-height: 113px;overflow:auto;">
             <mat-option class="currency-mat-select" *ngFor="let frequency of unitArr"
-                [value]="frequency.abbriviation">
+                [value]="frequency.name">
                 <span>
-                    <mat-radio-button>{{ frequency.abbriviation}}
+                    <mat-radio-button>{{ frequency.displayName}}
                     </mat-radio-button>
                 </span>
             </mat-option>
@@ -28,27 +29,23 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 </mat-form-field>
 </div> 
      `,
-    styles: [
-
-    ]
+    styles: []
 })
 export class AGGridInputSelectRenderer implements ICellRendererAngularComp {
     public params: any;
+    public unitArr;
+    constructor(private localService: LocalService) {
+    }
+    
+    ngOnInit(): void {
+        this.unitArr = this.localService.masterData['Uom']
+    }
 
-    unitArr = [
-        { key: 'MT', abbriviation: 'MT' },
-        { key: 'BBL', abbriviation: 'BBL' },
-        { key: 'GAL', abbriviation: 'GAL' }
-    ];
     agInit(params: any): void {
         this.params = params;
-
     }
 
     refresh(): boolean {
         return false;
     }
-
-
-
 }
