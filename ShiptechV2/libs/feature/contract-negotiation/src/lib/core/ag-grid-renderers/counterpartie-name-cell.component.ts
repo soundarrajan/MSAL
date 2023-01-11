@@ -80,6 +80,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
   ngOnInit(): void {}
   agInit(params: any): void {
     this.params = params;
+    this.rfqSendFlag = params?.node?.data?.Status != 'Open' ? true : false;
   }
 
   refresh(): boolean {
