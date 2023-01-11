@@ -746,7 +746,7 @@ export class LocalService {
                 "UomId": res2['maxQuantityUomId'],
                 "MinQuantityUnit" : uom?.name,
                 "MaxQuantityUnit" : uom?.name,
-                "OfferPrice": res2['offerPrice'],
+                "OfferPrice": this.format.price(res2['offerPrice']),
                 "PriceCurrencyId": '',
                 "PriceCurrencyName": "",
                 "ValidityDate": "",
@@ -771,7 +771,8 @@ export class LocalService {
                 "fdAddCosts": "",
                 "fdRemarks": "",
                 "createdById": res2['createdById'],
-                "createdOn": res2['createdOn']
+                "createdOn": res2['createdOn'],
+                "contractRequestProductId" : res1['id']
             }
             data.push(arrDet);
             arrDet = {};
