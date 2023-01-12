@@ -5,6 +5,7 @@ import {
   ChangeDetectorRef,
   ChangeDetectionStrategy
 } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';

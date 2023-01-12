@@ -16,4 +16,21 @@
     <!-- <div class="footer">
         <app-footer-v2 [id]="'contract-negotiation'" [singleGrid]="true" [doublePagination]="true"
             [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>
-    </div> -->
+    </div> 
+    <div class="footer">
+        <app-ag-footer-new
+        [gridViewModel]="gridOptions_data"
+        [page]="page"
+        [size]="pageSize"
+        [count]="totalItems"
+        [singleGrid]="true"
+        [doublePagination]="true"
+        [maxSize]="765"
+        id="{{ gridId }}"
+        (pageChange)="onPageChange($event.page)"
+        (newPageSize) = "onPageSizeChange($event.pageSize)"
+        [enabler] = "true"
+        [display]="false"
+      >
+      </app-ag-footer-new>-->
+    

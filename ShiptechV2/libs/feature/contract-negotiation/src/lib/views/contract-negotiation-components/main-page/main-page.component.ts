@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit,ViewChild} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { EmailPreviewPopupComponent } from '../contract-negotiation-popups/email-preview-popup/email-preview-popup.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,6 +12,7 @@ import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-
 import moment from 'moment';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { ContractRequest } from '../../../store/actions/ag-grid-row.action';
+import { ContractNegoEmaillogComponent } from '../contract-nego-emaillog/contract-nego-emaillog.component';
 
 @Component({
   selector: 'app-main-page',
@@ -40,8 +41,10 @@ export class MainPageComponent implements OnInit {
   currentUserId: number;
   generalTenantSettings: any;
   clicked: boolean;
-  resendButton: boolean = false;
-  
+  resendButton: boolean = false;  
+  requestId:any;
+  @ViewChild(ContractNegoEmaillogComponent) contractNegoEmaillog: ContractNegoEmaillogComponent;
+
   constructor(
     private toaster: ToastrService,
     public dialog: MatDialog,
@@ -51,11 +54,11 @@ export class MainPageComponent implements OnInit {
     private store: Store,
     private tenantSettingsService: TenantSettingsService,
     private ref: ChangeDetectorRef,
-    public contractService: ContractNegotiationService,
     private route: ActivatedRoute,
   ) {
     this.currentUserId = this.store.selectSnapshot(UserProfileState.user).id;
     this.generalTenantSettings = this.tenantSettingsService.getGeneralTenantSettings();
+    this.requestId = this.route.snapshot.params.requestId
   }
 
   ngOnInit(): void {
@@ -251,7 +254,7 @@ export class MainPageComponent implements OnInit {
             })
            // this.store.dispatch(new ContractRequest([contractReq]));
           const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
-          this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
+          this.contractNegoService.getContractRequestDetails(contractRequestIdFromUrl)
           .subscribe(response => {
           this.localService.contractRequestData(response).then(() => {
             this.ref.markForCheck();
@@ -320,7 +323,8 @@ export class MainPageComponent implements OnInit {
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
       width: '80vw',
       height: '90vh',
-      panelClass: 'remove-padding-popup'
+      panelClass: 'remove-padding-popup',
+      data: { requestId:this.route.snapshot.params.requestId }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -328,13 +332,15 @@ export class MainPageComponent implements OnInit {
   }
 
   emailLogsResendMail() {
-    let reqpayload = 
-     {"loginUserId":167,"emailLogsIds":["185794","185793"],"requestId":91};
+    var loginUserId = this.currentUserId;
+    var contractRequestIdFromUrl = this.route.snapshot.params.requestId;
+    var emailLogsIds = this.contractNegoEmaillog.getEmailLogSelectedItem();
+    let reqpayload =  {"loginUserId":loginUserId,"emailLogsIds":emailLogsIds,"requestId":contractRequestIdFromUrl};
           
     this.contractNegoService.emailLogsResendMail(
       reqpayload
     ).subscribe( data => {
-      this.displaySuccessMsg('Mail Sent successfully!');
+      this.displaySuccessMsg('Mail has been Resend successfully');
     }
     );
   }

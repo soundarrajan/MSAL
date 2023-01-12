@@ -15,6 +15,7 @@ import { ContractNegotiationApi } from './api/contract-negotiation-api';
 export class ContractNegotiationService extends BaseStoreService
   implements OnDestroy {
   QuoteByDate: any;
+  private gridRedrawService = new Subject<any>();
   QuoteByTimeZoneId: any;
   counterpartyTotalCount: any;
   physicalSupplierTotalCount: any;
@@ -30,6 +31,13 @@ export class ContractNegotiationService extends BaseStoreService
   ) {
     super(store, loggerFactory.createLogger(ContractNegotiationService.name));
   }
+
+          // Observable string streams
+          gridRedrawService$ = this.gridRedrawService.asObservable();
+          // Grid Redraw Service invoke commands
+          callGridRedrawService() {
+            this.gridRedrawService.next();
+          }
 
   /* Gets the list of Email Logs
    * @param payload =

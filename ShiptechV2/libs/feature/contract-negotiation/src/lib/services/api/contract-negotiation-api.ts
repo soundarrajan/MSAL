@@ -44,7 +44,7 @@ export const apiPaths = {
   getEmailLogs: `api/masters/emaillogs/list`,
   getAuditLogs: `api/admin/audit/get`,
    //getAdditionalCosts: `price/getOfferAdditionalCosts`,
-  //getEmailLogsPreview: `api/masters/emaillogs/get`,
+  getEmailLogsPreview: `api/masters/emaillogs/get`,
   //getRequestList: `api/procurement/rfq/selectRequest`,
   //getBestContract: `api/procurement/request/bestContract`,
   //delinkRequest: `Groups/deleteRequest`,
@@ -98,7 +98,7 @@ export const ContractNegotiationApiPaths = {
   providedIn: 'root'
 })
 export class ContractNegotiationApi implements IContractNegotiationApiService {
-  getEmailLogsPreview: any;
+
   @ApiCallUrl()
   private _adminApiUrl = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
 
@@ -123,9 +123,22 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
 
   @ApiCallUrl()
   private _procurementApiUrl = this.appConfig.v1.API.BASE_URL_DATA_PROCUREMENT;
-  
+
+
   constructor(private http: HttpClient, private appConfig: AppConfig) { }
 
+  @ObservableException()
+  getEmailLogsPreview(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${apiPaths.getEmailLogsPreview}`,
+        { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
   @ObservableException()
   getEmailLogsList(payload: any): Observable<any> {
     return this.http
@@ -138,10 +151,10 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
         catchError((body: any) => this.handleErrorMessage(body))
       );
   }
+  
 
   @ObservableException()
-  emailLogsResendMail(payload: any): Observable<any> {
-    debugger;
+  emailLogsResendMail(payload: any): Observable<any> { 
     return this.http
       .post<any>(
         `${this._shitechApiUrl}/${ContractNegotiationApiPaths.resend}`, payload

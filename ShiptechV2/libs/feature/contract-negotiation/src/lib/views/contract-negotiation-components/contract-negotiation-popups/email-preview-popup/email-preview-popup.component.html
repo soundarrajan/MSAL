@@ -2,7 +2,7 @@
     <div class="header">
         <div class="title">Email Preview</div>
         <div style="display: flex;align-items: center;">
-            <span style="color: #364150;font-size: 12px;">Template:</span>
+            <!--<span style="color: #364150;font-size: 12px;">Template:</span>
             <div id="custom-form-field" style="width: 110px !important; margin: 5px 7px 0px 7px;">
                 <mat-form-field class="without-search" appearance="none">
                     <mat-select [(value)]="selected" disableOptionCentering>
@@ -10,13 +10,13 @@
                         <mat-option value="Offer Pending">Offer Pending</mat-option>
                     </mat-select>
                 </mat-form-field>
-            </div>
+            </div>-->
             <div class="header-btn">
 
                 <span class="seperator-line"></span>
                 <!-- <button class="blue-button h-25" [mat-dialog-close]="true">Revert Changes</button> -->
-                <button class="blue-button h-25" [mat-dialog-close]="true">Save</button>
-                <button class="blue-button h-25" [mat-dialog-close]="true">Save & Send</button>
+                <!--<button class="blue-button h-25" [mat-dialog-close]="true">Save</button>-->
+                <button class="blue-button h-25" (click)="emailLogResendMail()" [mat-dialog-close]="true">Resend</button>
                 <span class="seperator-line"></span>
                 <span class="close-icon" style="cursor:pointer;" [mat-dialog-close]="true"></span>
             </div>
@@ -36,9 +36,9 @@
                             <div class="close-icon" (click)="removeRecipient(item)"></div>
                         </div>
                         <div class="add-new" [style.width.px]="widthTo">
-                            <input matInput #addNewAdd placeholder="+Add New" [formControl]="toEmail"
+                            <!--<input matInput #addNewAdd placeholder="+Add New" [formControl]="toEmail"
                                 [matAutocomplete]="auto" (keyup.enter)="addTo(addNewAdd.value,false)"
-                                (input)="changeFieldWidthTo(addNewAdd.value)">
+                                (input)="changeFieldWidthTo(addNewAdd.value)">-->
                             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" class=""
                                 (optionSelected)="addTo($event.option.value,true)" class="emailAddressPanelClass">
                                 <mat-option *ngFor="let option of filteredOptionsTo | async" [value]="option.id">
@@ -54,9 +54,11 @@
                         <span class="text">Cc:</span>
                     </div>
                     <div style="display: flex; flex: 0 0 95%;align-items: center;flex-wrap: wrap;">
-                        <div style="margin: 5px;" *ngFor="let item of cc" class="ccClass">
-                            <div class="cust-input-field" [matTooltip]="item.name">{{item.name}}</div>
+                       
+                        <div style="margin: 5px;"  *ngFor="let item of cc" class="ccClass">
+                            <div class="cust-input-field" [matTooltip]="item">{{item}}</div>
                             <div class="close-icon" (click)="removeCC(item)"></div>
+                        
                         </div>
                         <div class="add-new" [style.width.px]="widthCC">
                             <input #addNewCcAdd matInput placeholder="+Add New" [formControl]="ccEmail"
@@ -95,7 +97,7 @@
                         <!-- <span class="attachment-icon"></span>
                         <span>{{item}}</span> -->
                         <div class="attachment-icon"></div>
-                        <div class="attachment-name">{{item.name}}</div>
+                        <div class="attachment-name">{{item}}</div>
                         <div class="close-icon" (click)="removeFile(item)"></div>
                     </div>
                 </div>

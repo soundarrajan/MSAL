@@ -5,9 +5,10 @@ import { GridOptions } from '@ag-grid-enterprise/all-modules';
 import { ActivatedRoute } from "@angular/router";
 import { EmailPreviewPopupComponent } from '../contract-negotiation-popups/email-preview-popup/email-preview-popup.component';
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-actions.component';
-import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { ContractNegotiationService } from 'libs/feature/contract-negotiation/src/lib/services/contract-negotiation.service';
 import { Store } from '@ngxs/store';
-import { SetRequestGroupId } from 'libs/feature/spot-negotiation/src/lib/store/actions/request-group-actions';
+
+
 import { ToastrService } from 'ngx-toastr';
 import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -64,7 +65,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
   }
   constructor(
     public dialog: MatDialog,
-    private spotNegotiationService: SpotNegotiationService,
+    private contractNegotiationService: ContractNegotiationService,
     private route: ActivatedRoute,
     private store: Store,
     private changeDetector: ChangeDetectorRef,
@@ -74,8 +75,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
     { 
 
      this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
-    this.dateFormat = this.generalTenantSettings.tenantFormats.dateFormat.name;
-   
+     this.dateFormat = this.generalTenantSettings.tenantFormats.dateFormat.name;   
       this.gridOptions_data = <GridOptions>{
         defaultColDef: {
           resizable: true,
@@ -186,25 +186,17 @@ export class ContractNegoEmaillogComponent implements OnInit {
       this.date = this.dateFormat.replace('DDD', 'ddd').replace('dd', 'DD');
     }
   }
+ 
    getEmailLogs() {
-    const groupRequestIdFromUrl = this.route.snapshot.params.requestId;
-    this.store.dispatch(new SetRequestGroupId(groupRequestIdFromUrl));
-    this.pageSize = 25;
-    this.spotNegotiationService
-      .getRequestGroup(groupRequestIdFromUrl)
-      .subscribe((res: any) => {
-        if (res?.message == 'Unauthorized') {
-          return;
-        }
-        this.listOfRequests = res.requests;
-        if (this.listOfRequests != null) {
+          const contractRequestId = this.route.snapshot.params.requestId;   
+          this.pageSize = 25;       
           let reqpayload = {
             Order: null,
             Filters: [
               { ColumnName: 'TransactionTypeId', Value: '37' },
               {
                 ColumnName: 'TransactionIds',
-                Value: this.listOfRequests.map(req => req.id).join(',')
+                Value: contractRequestId
               }
             ],
             PageFilters: { Filters: [] },
@@ -212,7 +204,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
             SortList: { SortList: [] }
           };
           //this.gridOptions_data.api.showLoadingOverlay();
-          const emailLogs = this.spotNegotiationService.getEmailLogsList(
+          const emailLogs = this.contractNegotiationService.getEmailLogsList(
             reqpayload
           );
           emailLogs.subscribe((res: any) => {
@@ -222,8 +214,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
               return;
             }
             if (res.payload) {
-              this.totalItems = res.matchedCount;
-              console.log(res.payload);
+              this.totalItems = res.matchedCount;          
               //this.rowData_grid = res.payload;
               this.gridOptions_data.api?.setRowData(res.payload);
               if (!this.changeDetector['destroyed']) {
@@ -232,9 +223,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
             } else {
               this.toaster.error(res);
             }
-          });
-        }
-      });
+          });     
   }
   public onrowClicked (ev){
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
@@ -248,6 +237,19 @@ export class ContractNegoEmaillogComponent implements OnInit {
     });
   
     dialogRef.afterClosed().subscribe(result => {});
-  }   
+  } 
+  
+  getEmailLogSelectedItem(){
+    let emailLogsIds = [];
+    let selectedRows;
+    selectedRows = this.gridOptions_data.api.getSelectedRows();
+    selectedRows.map((row,index) => {
+        var emailLogId = row.id;
+        emailLogsIds[index] = emailLogId;
+    });
+    return emailLogsIds;
+  }
+
+  
 
 }
