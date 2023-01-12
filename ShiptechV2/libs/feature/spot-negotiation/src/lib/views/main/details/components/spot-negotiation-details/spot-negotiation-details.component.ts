@@ -33,7 +33,7 @@ import { CustomHeader } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid
 import { CustomHeaderSelectAll } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/custom-header-select-all.component';
 import { SpotNegotiationPriceCalcService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation-price-calc.service';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
-
+import { ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 export const COMPONENT_TYPE_IDS = {
   TAX_COMPONENT: 1,
   PRODUCT_COMPONENT: 2
@@ -55,7 +55,7 @@ export const COST_TYPE_IDS = {
 })
 export class SpotNegotiationDetailsComponent implements OnInit {
   locations = [];
-
+  public  expandCommentsSection: boolean = true;
   public gridOptions_counterparty: GridOptions;
   public rowCount: Number;
   public counterpartyHeaderWidth;
@@ -74,8 +74,9 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   Index: number;
   reqLocId: number;
   netEnergySpecific: any;
-
-
+  portIndex:number;
+  expandPanelstate : boolean = true;
+  
 
   @Input('location') set _setlocation(location) {
     this.reqLocId = location.id;
@@ -83,6 +84,14 @@ export class SpotNegotiationDetailsComponent implements OnInit {
   @Input('locationIndex') set _setlocationIndex(locationIndex) {
     this.Index = locationIndex;
   }
+
+  @Input('portIndex') set _setportIndex(portIndex) {
+    this.portIndex = portIndex;
+  }
+  @Input('expandPanelstate') set _setexpandPanelstate(expandPanelstate) {
+    this.expandPanelstate = expandPanelstate;
+  }
+
 
   public overlayLoadingTemplate =
     '<div class="bootstrap-loading"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>';
@@ -1750,4 +1759,22 @@ export class SpotNegotiationDetailsComponent implements OnInit {
       }
     }
   }
+
+  expandPanel(Index,loc){
+    var expandItem;
+    if(this.expandPanelstate){
+        expandItem = true;
+     }else{
+      if(this.portIndex == -1){
+        document.getElementById("comments").scrollIntoView();
+      }else{
+        expandItem = (Index == this.portIndex)?true:false;
+        let scrollId = "scroll" + this.portIndex;
+        document.getElementById(scrollId).scrollIntoView();
+      }
+     }
+     this.expandCommentsSection = true;
+     return expandItem;
+    }
+   
 }

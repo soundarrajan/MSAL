@@ -205,10 +205,10 @@ export class ContractNegoGridComponent implements OnInit {
           suppressCount: true
         },
 
-        colSpan: params => {
-          if (params.node.rowIndex == 3 || params.node.level == 0) return 12;
-          else return 1;
-        }
+        // colSpan: params => {
+        //   if (params.node.rowIndex == 3 || params.node.level == 0) return 12;
+        //   else return 1;
+        // }
       },
       frameworkComponents: {
         checkboxHeaderRenderer: MatCheckboxHeaderComponent,
@@ -269,7 +269,6 @@ export class ContractNegoGridComponent implements OnInit {
         this.gridOptions_forecast.api.setRowData(this.rowData_aggrid_forecast);
         this.isCalculated = true;
       }
-
       //this.localService.updateSendRFQStatus(false);
     });
   }
@@ -544,7 +543,7 @@ export class ContractNegoGridComponent implements OnInit {
           headerName: 'Offer Price',
           headerTooltip: 'Offer Price',
           field: 'OfferPrice',
-          editable: true,
+          editable: false,
           type: 'numericColumn',
           cellClass: params => {
             return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell grey-opacity-cell' : '';
