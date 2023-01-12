@@ -764,7 +764,7 @@ export class LocalService {
                 "OfferPrice": this.format.price(res2['offerPrice']),
                 "PriceCurrencyId": res2['currencyId'],
                 "PriceCurrencyName": "",
-                "ValidityDate": res2['validityDate'],
+                "ValidityDate": res2['status'] != 'Open' ? res2['validityDate'] : '' ,
                 "Status": res2['status'],
                 "typeStatus" : 'Inquired',
                 'rfqStatus' : res2['status'] != 'Open' ? true : false,
