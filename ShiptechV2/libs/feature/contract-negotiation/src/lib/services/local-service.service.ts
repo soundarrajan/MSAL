@@ -34,7 +34,6 @@ export class LocalService {
     counterpartyList: any[];
     masterData: any;
     clrRequest: any = 0;
-    disbaleHeaderButtons: boolean;
     public uniqueLocations: string;
     public allRequestDetails: { locations: any[]; };
 
@@ -697,7 +696,7 @@ export class LocalService {
         })
     }
     async contractRequestData(response){
-        let disbaleHeaderButtonsTmp = true;
+        let noCounterParty = true;
         let contractArray = { 
             id: response['id'],
             startDate: response['startDate'],
@@ -730,7 +729,7 @@ export class LocalService {
             let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
             uniqueLocations.push(location.name);
             Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
-            disbaleHeaderButtonsTmp = false;
+            noCounterParty = false;
             // let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
             let product = this.masterData['Product'].find(el => el.id == res2['productId']);
             let uom = this.masterData['Uom'].find(el => el.id == res2['maxQuantityUomId']);
@@ -830,11 +829,13 @@ export class LocalService {
             contractArray['locations'].push(arrMainDet);
             arrMainDet = {}; data = [];
         });
-        this.disbaleHeaderButtons = disbaleHeaderButtonsTmp;
         let unique = [...new Set(uniqueLocations)];
         this.uniqueLocations = unique.toString();
         this.allRequestDetails = contractArray;
         this.store.dispatch(new ContractRequest([contractArray]));
+        return { 
+            isNoCounterParty: noCounterParty 
+        };
     }
 
 }

@@ -25,6 +25,7 @@ import { DecimalPipe } from '@angular/common';
 import _ from 'lodash';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 import { ContractNegotiationStoreModel } from '../../../../store/contract-negotiation.store';
+//import { ConfirmdialogComponent } from '../confirmdialog/confirmdialog.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -624,6 +625,23 @@ export class CreateContractRequestPopupComponent implements OnInit {
     } else {
       this.reqObj.contractRequestProducts[i].isDeleted = true;
     }
+    /*else if (this.reqObj.contractRequestProducts[i].status === 'Open') {
+      this.reqObj.contractRequestProducts[i].isDeleted = true;
+    } else {
+      let prod = this.staticData.Product.find(p => p.id == this.reqObj.contractRequestProducts[i].productId);
+      const dialogRef = this.dialog.open(ConfirmdialogComponent, {
+        width: '340px',
+        height: 'auto',
+        panelClass: 'delete-chat-popup',
+        data: { message: 'Are you sure if you want to delete this '+ prod.name +'?'}
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if(result){
+          this.reqObj.contractRequestProducts[i].isDeleted = true;
+        }
+      });
+    }*/
+
   }
 
   specGroupDataSource(prodId) {

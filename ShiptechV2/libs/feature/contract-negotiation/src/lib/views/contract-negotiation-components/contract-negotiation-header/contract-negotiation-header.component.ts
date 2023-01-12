@@ -94,10 +94,10 @@ export class ContractNegotiationHeaderComponent implements OnInit {
         ];
         setTimeout(() => {
           this.localService.masterData['Counterparty'] = this.masterData['Counterparty'] = mergeArray;
-          this.localService.contractRequestData(response).then(() => {
+          this.localService.contractRequestData(response).then( rtnData => {
             this.uniqueLocationNames = this.localService.uniqueLocations;
             this.allRequestDetails[0] = this.localService.allRequestDetails;
-            this.disbaleHeaderButtons.emit(false);
+            this.disbaleHeaderButtons.emit(rtnData.isNoCounterParty);
             this.ref.markForCheck();
           });
         }, 100);
@@ -114,6 +114,9 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     this.totalReqQty['uomId'] = ContractualQuantityOption.name;
   }
 
+  checkRfqButtonStatus(value: boolean){
+    this.disbaleHeaderButtons.emit(value);
+  }
  
   filterCounterParty(filterValuelue : string){
       this.counterpartyList = this.localService.filterCounterParty(filterValuelue);
@@ -158,9 +161,10 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
     this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
     .subscribe(response => {
-      this.localService.contractRequestData(response);
+      this.localService.contractRequestData(response).then( rtnData => {
+        this.disbaleHeaderButtons.emit(rtnData.isNoCounterParty);
+      });
     });
-    this.disbaleHeaderButtons.emit(this.localService.disbaleHeaderButtons);
   });
   }else{
     this.toastr.error("Please Select atleast One Counterparty");
