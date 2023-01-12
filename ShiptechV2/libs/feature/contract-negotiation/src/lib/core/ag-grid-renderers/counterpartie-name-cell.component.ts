@@ -157,11 +157,13 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
             }
         });
       });
+      let noCounterParty = true;
       storePayload.forEach( loc => {
         if(loc.data.length > 0){
-          this.localService.setSendRFQButtonStauts(false);
+          noCounterParty = false;
         }
       });
+      this.localService.setSendRFQButtonStauts(noCounterParty);
       this.store.dispatch(new ContractRequest([{'locations' : storePayload}]));
       }else{
         this.toaster.error('Data not deleted, Please Refresh the page and try again.')
