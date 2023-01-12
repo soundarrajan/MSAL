@@ -82,7 +82,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
           this.masterData = data;
           this.localService.masterData = data;
           if(response['quantityDetails'].length > 0){
-              this.totalRequestQty(response);
+              this.totalRequestQty(JSON.parse(JSON.stringify(response)));
             }           
       });
       this.localService.getMasterListData(['BrokerWithInactive','SellerWithInactive','SupplierWithInactive','ServiceProviderWithInactive']).subscribe(data => {
@@ -111,7 +111,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     let minMaxDet =  response['quantityDetails'].find(el => el.contractualQuantityOptionId == 1);
     let ContractualQuantityOption = this.masterData['Uom'].find(el => el.id == minMaxDet.uomId);
     this.totalReqQty = minMaxDet;
-    //this.totalReqQty['uomIdff'] = ContractualQuantityOption.name;
+    this.totalReqQty['uomId'] = ContractualQuantityOption.name;
   }
 
  
@@ -186,7 +186,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
       minHeight: '90vh',
       maxHeight: '100vh',
       panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
-      data: { createReqPopup:false,rfqStatus: this.rfqSent, requestId: this.route.snapshot.params.requestId, requestDetails: this.localService.contractRequestDetails }
+      data: { createReqPopup:false,rfqStatus: this.rfqSent, requestId: this.route.snapshot.params.requestId }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -200,7 +200,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
           this.allRequestDetails[0] = this.localService.allRequestDetails;
           this.disbaleHeaderButtons.emit(false);
         })
-        this.totalRequestQty(response);
+        this.totalRequestQty(JSON.parse(JSON.stringify(response)));
       });
     });
   }

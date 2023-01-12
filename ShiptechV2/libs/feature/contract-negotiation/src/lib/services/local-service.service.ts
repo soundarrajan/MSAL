@@ -833,7 +833,7 @@ export class LocalService {
         this.disbaleHeaderButtons = disbaleHeaderButtonsTmp;
         let unique = [...new Set(uniqueLocations)];
         this.uniqueLocations = unique.toString();
-        this.allRequestDetails = _.cloneDeep(contractArray);
+        this.allRequestDetails = contractArray;
         this.store.dispatch(new ContractRequest([contractArray]));
     }
 
