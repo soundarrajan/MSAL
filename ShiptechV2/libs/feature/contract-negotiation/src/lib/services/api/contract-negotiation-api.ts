@@ -89,7 +89,8 @@ export const ContractNegotiationApiPaths = {
   addSellerContract : 'api/ContractNegotiation/addSellerContract',
   removeCounterparty : 'api/ContractNegotiation/removeSellerContract',
   sendRFQ: 'api/ContractNegotiation/SendRFQ',
-  updatePrices : 'api/ContractNegotiation/Price/updateOffer'
+  updatePrices : 'api/ContractNegotiation/Price/updateOffer',
+  resend : 'api/ContractNegotiation/resend'
 }
 
 
@@ -131,6 +132,19 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
       .post<any>(
         `${this._masterApiUrl}/${apiPaths.getEmailLogs}`,
         { Payload: payload }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  emailLogsResendMail(payload: any): Observable<any> {
+    debugger;
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.resend}`, payload
       )
       .pipe(
         map((body: any) => body),

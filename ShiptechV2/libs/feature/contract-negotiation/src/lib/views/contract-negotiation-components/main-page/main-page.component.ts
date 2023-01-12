@@ -39,6 +39,7 @@ export class MainPageComponent implements OnInit {
   disableSendRFQButton: Boolean = true;
   currentUserId: number;
   generalTenantSettings: any;
+  clicked: boolean;
   
   constructor(
     private toaster: ToastrService,
@@ -326,6 +327,18 @@ export class MainPageComponent implements OnInit {
     });
   }
 
+  emailLogsResendMail() {
+    let reqpayload = 
+     {"loginUserId":167,"emailLogsIds":["185794","185793"],"requestId":91};
+          
+    this.contractNegoService.emailLogsResendMail(
+      reqpayload
+    ).subscribe( data => {
+      this.displaySuccessMsg('Mail Sent successfully!');
+    }
+    );
+  }
+
   sendToApproval() {
     this.localService.updateContractStatus({ "oldStatus": 0, "newStatus": 1 });
     this.displaySuccessMsg('Offers sent for approval');
@@ -349,5 +362,5 @@ export class MainPageComponent implements OnInit {
     this.localService.updateContractStatus({ "oldStatus": 1, "newStatus": 3 });
     this.displaySuccessMsg('Offers Rejected');
   }
-  
+
 }

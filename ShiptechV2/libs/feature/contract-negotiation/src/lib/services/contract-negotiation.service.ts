@@ -43,14 +43,17 @@ export class ContractNegotiationService extends BaseStoreService
    * @param payload =
    */
   @ObservableException()
-  getEmailLogsPreview(payload: any): Observable<unknown> {
+  getEmailLogsPreview(payload: any): Observable<any> {
     return this.contractNegotiationApi.getEmailLogsPreview(payload);
   }
   @ObservableException()
   getAuditLogsList(payload: any): Observable<unknown> {
     return this.contractNegotiationApi.getAuditLogsList(payload);
   }
-
+  @ObservableException()
+  emailLogsResendMail(payload: any): Observable<unknown> {
+    return this.contractNegotiationApi.emailLogsResendMail(payload);
+  }
   /**
    * @param payload = False
    */
