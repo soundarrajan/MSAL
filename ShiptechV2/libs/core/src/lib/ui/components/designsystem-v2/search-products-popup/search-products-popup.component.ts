@@ -45,7 +45,7 @@ export class SearchProductsPopupComponent implements OnInit {
   public page: number;
   public pageSize: number = 20;
   public totalItems: number;
-  public gridId: any;
+  public gridId: any = "searchProduct";
   public apiRequest = {
     "Order": null,
     "PageFilters": {
