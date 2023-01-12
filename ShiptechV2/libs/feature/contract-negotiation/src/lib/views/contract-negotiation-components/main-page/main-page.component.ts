@@ -182,7 +182,8 @@ export class MainPageComponent implements OnInit {
     });*/
     let counterpartyDetails = []; let alreadySent = []; let selectedCount = 0;
     this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
-      state['contractNegotiation'].ContractRequest[0].locations.forEach( prodData => {
+      let contractRequestData = state['contractNegotiation'].ContractRequest[0];
+      contractRequestData.locations.forEach( prodData => {
         if(prodData.data && prodData.data.length > 0){
           prodData.data.forEach( data => {
             if(data.check) {
@@ -202,7 +203,7 @@ export class MainPageComponent implements OnInit {
                   "minQuantityUomId": prodData.minQuantityUomId,
                   "maxQuantity": prodData.maxQuantity,
                   "maxQuantityUomId": prodData.maxQuantityUomId,
-                  "validityDate": prodData.validityDate,
+                  "validityDate": contractRequestData.minValidity,
                   "currencyId": this.generalTenantSettings.tenantFormats.currency.id,
                   "pricingTypeId": prodData.pricingTypeId
                 }
