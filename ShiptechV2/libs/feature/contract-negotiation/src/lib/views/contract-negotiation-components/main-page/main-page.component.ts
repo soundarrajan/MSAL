@@ -40,6 +40,7 @@ export class MainPageComponent implements OnInit {
   currentUserId: number;
   generalTenantSettings: any;
   clicked: boolean;
+  resendButton: boolean = false;
   
   constructor(
     private toaster: ToastrService,
