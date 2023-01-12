@@ -53,6 +53,7 @@ export class ContractNegoGridComponent implements OnInit {
   public totalPinnedColWidth; 
   public rowSelected: boolean = false;
   public isCalculated: boolean = false;
+  private currentLocationId : number;
   showProgressBar: boolean = false;
   blockHttpCall : boolean = false;
   checkBoxSelectionstatus : boolean;
@@ -741,6 +742,7 @@ export class ContractNegoGridComponent implements OnInit {
   }
   onRowSelected(e) {    
     if(e.data && this.blockHttpCall){
+      //this.currentLocationId = e.data['locationId'];
       this.sellerIds.push(e.data.id);
       this.checkBoxSelectionstatus = e.node.selected;
     }
@@ -775,6 +777,10 @@ export class ContractNegoGridComponent implements OnInit {
   }
 
   onSelectionChanged(event) {
+    // let checkRfqSend = this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+    //   return state['contractNegotiation'].ContractRequest[0].locations
+    //   .find(el => el['location-id'] == this.currentLocationId).data.find(inner => inner.Status != 'Open');
+    // });
     if(this.blockHttpCall){
         let requestPayload = {
         "contractRequestProductOfferIds" : this.sellerIds,
