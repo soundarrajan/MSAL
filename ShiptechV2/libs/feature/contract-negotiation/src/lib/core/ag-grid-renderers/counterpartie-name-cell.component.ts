@@ -9,6 +9,7 @@ import { ContractNegotiationService } from '../../services/contract-negotiation.
 import { ContractNegotiationStoreModel } from '../../store/contract-negotiation.store';
 import { Store } from '@ngxs/store';
 import { ContractRequest } from '../../store/actions/ag-grid-row.action';
+import { LocalService } from '../../services/local-service.service';
 @Component({
   selector: 'shiptech-counterpartie-name-cell',
   template: `
@@ -74,7 +75,8 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
     public dialog: MatDialog,
     private toaster: ToastrService,
     private contractService : ContractNegotiationService,
-    private store : Store
+    private store : Store,
+    private localService: LocalService
     ) {}
 
   ngOnInit(): void {}
@@ -154,6 +156,11 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
               return;
             }
         });
+      });
+      storePayload.forEach( loc => {
+        if(loc.data.length > 0){
+          this.localService.setSendRFQButtonStauts(false);
+        }
       });
       this.store.dispatch(new ContractRequest([{'locations' : storePayload}]));
       }else{

@@ -30,7 +30,6 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   @ViewChild(ContractNegotiationDetailsComponent) child: ContractNegotiationDetailsComponent;
   @ViewChild(OfferChatComponent) childChat: OfferChatComponent;
   @ViewChild('ports') ports: ElementRef;
-  @Output() disbaleHeaderButtons = new EventEmitter<boolean>();
   @Output() contractRequestStatus = new EventEmitter<string>();
   @ViewChild('menuTrigger') trigger;
     
@@ -94,10 +93,9 @@ export class ContractNegotiationHeaderComponent implements OnInit {
         ];
         setTimeout(() => {
           this.localService.masterData['Counterparty'] = this.masterData['Counterparty'] = mergeArray;
-          this.localService.contractRequestData(response).then( rtnData => {
+          this.localService.contractRequestData(response).then( () => {
             this.uniqueLocationNames = this.localService.uniqueLocations;
             this.allRequestDetails[0] = this.localService.allRequestDetails;
-            this.disbaleHeaderButtons.emit(rtnData.isNoCounterParty);
             this.ref.markForCheck();
           });
         }, 100);
@@ -112,10 +110,6 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     let ContractualQuantityOption = this.masterData['Uom'].find(el => el.id == minMaxDet.uomId);
     this.totalReqQty = minMaxDet;
     this.totalReqQty['uomId'] = ContractualQuantityOption.name;
-  }
-
-  checkRfqButtonStatus(value: boolean){
-    this.disbaleHeaderButtons.emit(value);
   }
  
   filterCounterParty(filterValuelue : string){
@@ -161,9 +155,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
     this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
     .subscribe(response => {
-      this.localService.contractRequestData(response).then( rtnData => {
-        this.disbaleHeaderButtons.emit(rtnData.isNoCounterParty);
-      });
+      this.localService.contractRequestData(response);
     });
   });
   }else{
@@ -202,7 +194,6 @@ export class ContractNegotiationHeaderComponent implements OnInit {
         this.localService.contractRequestData(response).then(() => {
           this.uniqueLocationNames = this.localService.uniqueLocations;
           this.allRequestDetails[0] = this.localService.allRequestDetails;
-          this.disbaleHeaderButtons.emit(false);
         })
         this.totalRequestQty(JSON.parse(JSON.stringify(response)));
       });

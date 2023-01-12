@@ -20,7 +20,6 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   @Input() rfqSent;
   @Input() noQuote;
   @Input() selectedRequestIndex;
-  @Output() disableSendRFQButton = new EventEmitter<boolean>();
   @ViewChild('menuTrigger') trigger;
   public searchValue : string = '';
 
@@ -102,9 +101,7 @@ export class ContractNegotiationDetailsComponent implements OnInit {
     this.contractService.constructUpdateCounterparties(source)?.subscribe(res => {
       this.contractService.getContractRequestDetails(this.route.snapshot.params.requestId)
       .subscribe(response => {
-        this.localService.contractRequestData(response).then( rtnData => {
-          this.disableSendRFQButton.emit(rtnData.isNoCounterParty);
-        });
+        this.localService.contractRequestData(response);
       });
     });
     }else{

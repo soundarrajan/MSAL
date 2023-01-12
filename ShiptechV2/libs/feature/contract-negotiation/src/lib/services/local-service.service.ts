@@ -34,6 +34,7 @@ export class LocalService {
     counterpartyList: any[];
     masterData: any;
     clrRequest: any = 0;
+    private sendRFQButtonStatus = new BehaviorSubject<boolean>(true);
     public uniqueLocations: string;
     public allRequestDetails: { locations: any[]; };
 
@@ -541,6 +542,14 @@ export class LocalService {
         return this.displayNoQuote.value;
     }
 
+    setSendRFQButtonStauts(flag: boolean){
+        this.sendRFQButtonStatus.next(flag);
+    }
+
+    getSendRFQButtonStauts(): Observable<boolean> {
+        return this.sendRFQButtonStatus.asObservable();
+    }
+
     //For DS login based on user roles
     public loggedinUserRole = '';
     private userRoleSubject = new Subject<String>();
@@ -696,7 +705,6 @@ export class LocalService {
         })
     }
     async contractRequestData(response){
-        let noCounterParty = true;
         let contractArray = { 
             id: response['id'],
             startDate: response['startDate'],
@@ -729,7 +737,7 @@ export class LocalService {
             let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
             uniqueLocations.push(location.name);
             Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
-            noCounterParty = false;
+            this.setSendRFQButtonStauts(false);
             // let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
             let product = this.masterData['Product'].find(el => el.id == res2['productId']);
             let uom = this.masterData['Uom'].find(el => el.id == res2['maxQuantityUomId']);
@@ -833,9 +841,6 @@ export class LocalService {
         this.uniqueLocations = unique.toString();
         this.allRequestDetails = contractArray;
         this.store.dispatch(new ContractRequest([contractArray]));
-        return { 
-            isNoCounterParty: noCounterParty 
-        };
     }
 
 }

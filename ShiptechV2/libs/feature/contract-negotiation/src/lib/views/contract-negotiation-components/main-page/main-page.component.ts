@@ -131,17 +131,14 @@ export class MainPageComponent implements OnInit {
     this.localService.contractNoQuote.subscribe(data => {
       this.showNoQuote = data;
     })
+    this.localService.getSendRFQButtonStauts().subscribe(data => {
+      this.disableSendRFQButton = data;
+    })
     /*if (this.router.url.includes("buyer")){
       this.isBuyer = true;
     }else{
       this.isBuyer = false;
     }*/
-    //this.contractStatus= 'New';
-  }
-  
-  changeActionButtonStatus(val: boolean) {
-    this.disableActionButtons = val;
-    this.disableSendRFQButton = val;
   }
 
   updateContractRequestStatus(status: string){
