@@ -181,8 +181,9 @@ export class MainPageComponent implements OnInit {
       this.rowSelected = data;
     });*/
     let counterpartyDetails = []; let alreadySent = []; let selectedCount = 0;
+    let contractRequestData;
     this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
-      let contractRequestData = state['contractNegotiation'].ContractRequest[0];
+      contractRequestData = state['contractNegotiation'].ContractRequest[0];
       contractRequestData.locations.forEach( prodData => {
         if(prodData.data && prodData.data.length > 0){
           prodData.data.forEach( data => {
@@ -225,6 +226,7 @@ export class MainPageComponent implements OnInit {
     if(selectedCount > 0 && counterpartyDetails.length > 0){
       let payload = {
         loginUserId: this.currentUserId,
+        contractRequestId: contractRequestData.id,
         conReqProdSellerWithProdDetatilDtos: counterpartyDetails
       };
       this.contractNegoService.sendRFQ(payload).subscribe( res => {
