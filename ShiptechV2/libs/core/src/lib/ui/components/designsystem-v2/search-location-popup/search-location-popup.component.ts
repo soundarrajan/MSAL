@@ -43,7 +43,7 @@ export class SearchLocationPopupComponent implements OnInit {
   public page: number;
   public pageSize: number = 20;
   public totalItems: number;
-  public gridId: any;
+  public gridId: any = "searchLocation";
   public apiRequest = {
     "Order": null,
     "PageFilters": {

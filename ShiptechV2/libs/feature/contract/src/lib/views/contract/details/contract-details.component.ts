@@ -648,6 +648,12 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (!this.formValues.name) {
       message += ' Name,';
     }
+    this.formValues.products.forEach((v, k) => {
+      if (typeof v != 'undefined') {
+        if (v.price == null || v.price == '') {
+          message += ' Price,'        }
+      }
+    });
     if (
       !this.formValues.seller ||
       (this.formValues.seller && !this.formValues.seller.name)
@@ -903,13 +909,6 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     if (!isValid) {
       return;
     }
-    this.formValues.products.forEach((v, k) => {
-      if (typeof v != 'undefined') {
-        if (v.price == null || v.price == '') {
-          v.price = 0;
-        }
-      }
-    });
     this.formValues.details.forEach((v, k) => {
       if (typeof v != 'undefined') {
         if (v.minContractQuantity == null || v.minContractQuantity == '') {

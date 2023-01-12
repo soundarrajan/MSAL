@@ -158,10 +158,11 @@
                             <div class="tab-header-buttons">
                                 <div class="tabheader-btn-icons ht-100">
                                     <div class="d-flex align-items-centerht-100">
-                                        <button matTooltip="Send RFQ" matTooltipClass="lightTooltip" matTooltipShowDelay="500" mat-button
-                                            class="mid-blue-button cust-header-btn" style="width:100px">Resend
+                                        <button matTooltip="Send RFQ" matTooltipClass="lightTooltip" matTooltipShowDelay="500"
+                                        mat-button [disabled] ="resendButton"
+                                        (click)="emailLogsResendMail()"class="mid-blue-button cust-header-btn" style="width:100px">Resend
                                         </button>
-
+                                        
                                     </div>
                                     <div class="menu-icon" matTooltip="View more options" matTooltipClass="lightTooltip"
                                         [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger">
