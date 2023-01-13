@@ -45,7 +45,7 @@
                                     {{option.name}}
                                 </mat-option>
                             </mat-autocomplete>
-                            <span #hiddenTextTo style="visibility: hidden; white-space: pre;">{{addNewAdd.value}}</span>
+                          
                         </div>
                     </div>
                 </div>
@@ -56,22 +56,21 @@
                     <div style="display: flex; flex: 0 0 95%;align-items: center;flex-wrap: wrap;">
                        
                         <div style="margin: 5px;"  *ngFor="let item of cc" class="ccClass">
-                            <div class="cust-input-field" [matTooltip]="item">{{item}}</div>
+                            <div class="cust-input-field" [matTooltip]="item">{{item.name}}</div>
                             <div class="close-icon" (click)="removeCC(item)"></div>
                         
                         </div>
                         <div class="add-new" [style.width.px]="widthCC">
-                            <input #addNewCcAdd matInput placeholder="+Add New" [formControl]="ccEmail"
+                            <!--<input #addNewCcAdd matInput placeholder="+Add New" [formControl]="ccEmail"
                                 [matAutocomplete]="auto1" (keyup.enter)="addCc(addNewCcAdd.value)"
-                                (input)="changeFieldWidthCC(addNewAdd.value)">
+                                (input)="changeFieldWidthCC()">-->
                             <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete" class=""
                                 (optionSelected)="addCc($event.option.value)" class="emailAddressPanelClass">
                                 <mat-option *ngFor="let option of filteredOptionsCc | async" [value]="option.id">
                                     {{option.name}}
                                 </mat-option>
                             </mat-autocomplete>
-                            <span #hiddenTextCC
-                                style="visibility: hidden; white-space: pre;">{{addNewCcAdd.value}}</span>
+                            
                         </div>
                     </div>
                 </div>
@@ -97,7 +96,7 @@
                         <!-- <span class="attachment-icon"></span>
                         <span>{{item}}</span> -->
                         <div class="attachment-icon"></div>
-                        <div class="attachment-name">{{item}}</div>
+                        <div class="attachment-name">{{item.name}}</div>
                         <div class="close-icon" (click)="removeFile(item)"></div>
                     </div>
                 </div>
