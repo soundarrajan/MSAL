@@ -190,10 +190,10 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.filesList = array;
   }
 
-  changeFieldWidthTo(value){
+  changeFieldWidthTo(){
     setTimeout(() => this.widthTo = Math.max(this.minWidth, this.addNewAdd.nativeElement.offsetWidth+16));
   }
-  changeFieldWidthCC(value){
+  changeFieldWidthCC(){
     setTimeout(() => this.widthCC = Math.max(this.minWidth, this.addNewAddCC.nativeElement.offsetWidth+16));
 
   }
