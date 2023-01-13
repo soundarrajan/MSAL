@@ -3468,8 +3468,11 @@
     }
 
     .l-h-46 {
-        line-height: 46px;
+        line-height: 16px;
         vertical-align: middle;
+        max-width: 472px;
+        padding-top: 10px !important;
+        padding-right: 10px !important;
     }
 
     .align-center {
