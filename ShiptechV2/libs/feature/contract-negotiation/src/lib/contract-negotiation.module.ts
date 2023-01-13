@@ -61,6 +61,7 @@ import { DocDragDropUploadComponent } from './views/contract-negotiation-compone
 import { HeaderBreadcrumbComponent } from './views/contract-negotiation-components/header-breadcrumb/header-breadcrumb.component';
 import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
+import { CKEditorModule } from 'ckeditor4-angular';
 
 import { SpotNegotiationService } from './../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
@@ -134,7 +135,8 @@ import { SearchAllCounterpartiesComponent } from 'libs/feature/spot-negotiation/
     ContractNegotiationRoutingModule,
     DSV2ComponentsModule,
     BreadcrumbsModule,
-    AgFooterNewModule
+    AgFooterNewModule,
+    CKEditorModule
   ],
   entryComponents: [
     AGGridCellClickRendererComponent,

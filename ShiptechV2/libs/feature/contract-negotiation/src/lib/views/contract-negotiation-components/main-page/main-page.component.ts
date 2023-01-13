@@ -332,6 +332,7 @@ export class MainPageComponent implements OnInit {
   }
 
   emailLogsResendMail() {
+
     var loginUserId = this.currentUserId;
     var contractRequestIdFromUrl = this.route.snapshot.params.requestId;
     var emailLogsIds = this.contractNegoEmaillog.getEmailLogSelectedItem();
@@ -341,8 +342,11 @@ export class MainPageComponent implements OnInit {
       reqpayload
     ).subscribe( data => {
       this.displaySuccessMsg('Mail has been Resend successfully');
-    }
-    );
+    });
+    /*this.contractNegoEmaillog.getEmailLogs();
+    let params = { force: true };
+    this.contractNegoEmaillog.gridOptions_data.api?.refreshCells(params);*/
+  
   }
 
   sendToApproval() {

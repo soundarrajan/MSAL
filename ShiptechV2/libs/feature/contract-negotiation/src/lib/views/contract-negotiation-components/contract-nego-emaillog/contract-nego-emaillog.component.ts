@@ -27,6 +27,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
   listOfRequests: any;
   public theme: boolean = false;
   public gridOptions_data: GridOptions;
+  public gridId = "contractNegoEmailLog";
   public overlayLoadingTemplate =
     '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
   public overlayNoRowsTemplate = '<span>No rows to show</span>';
@@ -41,6 +42,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
       return params.value === 'Failed';
     }
   };
+  public contractRequestId : number;
   filterList = {
     filters: [
       {
@@ -73,7 +75,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private tenantSettingsService: TenantSettingsService) 
     { 
-
+     this. contractRequestId = this.route.snapshot.params.requestId;   
      this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
      this.dateFormat = this.generalTenantSettings.tenantFormats.dateFormat.name;   
       this.gridOptions_data = <GridOptions>{
@@ -186,9 +188,9 @@ export class ContractNegoEmaillogComponent implements OnInit {
       this.date = this.dateFormat.replace('DDD', 'ddd').replace('dd', 'DD');
     }
   }
- 
+  
    getEmailLogs() {
-          const contractRequestId = this.route.snapshot.params.requestId;   
+          
           this.pageSize = 25;       
           let reqpayload = {
             Order: null,
@@ -196,7 +198,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
               { ColumnName: 'TransactionTypeId', Value: '37' },
               {
                 ColumnName: 'TransactionIds',
-                Value: contractRequestId
+                Value: this.contractRequestId
               }
             ],
             PageFilters: { Filters: [] },
@@ -229,7 +231,8 @@ export class ContractNegoEmaillogComponent implements OnInit {
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
       data: {
         id: ev.data.id,
-        ReadOnly: true
+        ReadOnly: true,
+        contractRequestId:this.contractRequestId
       },
       width: '80vw',
       height: '90vh',
