@@ -33,8 +33,8 @@
                                             (click)="emailPreviewApproval()">
                                             <span class="email-icon"></span>
                                         </div>
-                                        <div class="no-quote-btn" matTooltip="No Quote" *ngIf="showNoQuote && rfqSent"
-                                            matTooltipClass="lightTooltip" (click)="onClickNoQuote()">
+                                        <div class="no-quote-btn" matTooltip="No Quote"*ngIf="showNoQuote"
+                                            matTooltipClass="lightTooltip" (click)="noQuoteAction('no-quote')">
                                             <span class="no-quote-icon"></span>
                                         </div>
                                         <div class="calculate-icon-btn" *ngIf="isBuyer" matTooltip="Calculate"

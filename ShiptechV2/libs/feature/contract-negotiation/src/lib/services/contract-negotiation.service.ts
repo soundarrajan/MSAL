@@ -199,6 +199,13 @@ export class ContractNegotiationService extends BaseStoreService
     }
     return this.contractNegotiationApi.updateColumnPreference(payload);
   }
+
+  /**
+   * @param payload // NoQuote/Enable Quote update 
+   */
+   switchContractReqBasedOnQuote(payload: any): Observable<unknown> {
+    return this.contractNegotiationApi.switchContractReqBasedOnQuote(payload);
+  }
   
   onCounterpartySelction(checkbox: any, element: any): void {
     console.log(element);
@@ -292,7 +299,99 @@ export class ContractNegotiationService extends BaseStoreService
        this.selectedCounterparty = {};
        return  this.contractNegotiationApi.addCounterpartyToAllLocations(payload);
     }
+    
+    //No Quote contruct the payload and validation
+    @ObservableException()
+    constructUpdateNoQuote(source) : Observable<any> {
+        let payload = [];
+        let pArray;
+        let reqProductOfferIds = [];
+        let reqProductOffers;
+        let addFlag = false;
+        let filterLocation;
+        let successArray = {};
+        let counterpartyWarning = [];
+        let alreadyNoQuoteWarning = [];
+        let msgStr;
+        let addedNewToLocation = {};
+        this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+            filterLocation = state['contractNegotiation'].ContractRequest[0].locations;  
+            filterLocation.forEach((el,kIndex) => {
+              reqProductOfferIds.push([...el['data'].filter(location => location.check).map(e => e)]);
+            });
+         filterLocation.forEach((el,kIndex) => {
+              if(el['data'].length > 0){
+                addFlag = el['data'].some(location => location.check);
+                 reqProductOffers=el['data'].filter(location => location.check);
+              }
+             reqProductOfferIds=reqProductOfferIds.reduce((acc, val) => acc.concat(val), [])
+             reqProductOfferIds=reqProductOfferIds.filter(e=>e.Status=='Inquired');
+              msgStr = el['location-name']+' (<i>'+el['productName']+'</i>)';
+              reqProductOffers.forEach((rpo,value)=>{
+                if(addFlag){
+                  pArray = {
+                    'ContractRequestProductOfferIds' :reqProductOfferIds.map(e => e.id),
+                    'IsNoQuote' : true
+                  };
+                  addedNewToLocation[value['CounterpartyName']] = rpo['CounterpartyName'];
+                  if(rpo['Status']=='Inquired' && !rpo['isNoQuote']){
+                    successArray[value['name']] = rpo['CounterpartyName']
+                  }else if(rpo['Status']=='Inquired' && rpo['isNoQuote']){
+                    alreadyNoQuoteWarning.push( rpo['CounterpartyName']);
+                  }
+                  else{
+                    counterpartyWarning.push( rpo['CounterpartyName']);
+                  }
 
+              }else{
+                this.toastr.error("Please Select atleast One Counterparty");
+                return;
+              }
+              });   
+              payload=pArray;        
+            });
+          });
+          let eMessage = [];
+          if(source != null){
+              if(Object.keys(addedNewToLocation).length > 0){
+                this.toastr.success("Selected Offer have been marked as 'No Quote' successfully. <br>",Object.keys(addedNewToLocation).toString(),{enableHtml :  true,timeOut : 6000});
+              }
+              if(Object.keys(counterpartyWarning).length > 0){
+                Object.entries(counterpartyWarning).forEach(([key,value]) => {
+                  eMessage.push(value['name']);
+                });
+                this.toastr.warning("Offer Price cannot be marked as 'No Quote' as RFQ has not sent."+ msgStr,eMessage.toString(),{enableHtml :  true,timeOut : 6000});
+              }
+              if(Object.keys(alreadyNoQuoteWarning).length > 0){
+                Object.entries(alreadyNoQuoteWarning).forEach(([key,value]) => {
+                  eMessage.push(value['name']);
+                });
+                this.toastr.warning("Already No Quote applied."+ msgStr,eMessage.toString(),{enableHtml :  true,timeOut : 6000});
+              }
+            }
+       return  this.contractNegotiationApi.switchContractReqBasedOnQuote(payload);
+    }
+  
+    //Enable or No Quote contruct payload and validation
+    @ObservableException()
+    contructEnableOrNoQuote(data,type):Observable<any>{
+      let payload = [];
+      let pArray;
+      if(type=='enable-Quote'){
+        pArray = {
+          'ContractRequestProductOfferIds' :[data.id],
+          'IsNoQuote' : false
+        };
+        payload=pArray;  
+      }else {
+        pArray = {
+          'ContractRequestProductOfferIds' :[data.id],
+          'IsNoQuote' : true
+        };
+        payload=pArray;    
+      }
+      return  this.contractNegotiationApi.switchContractReqBasedOnQuote(payload);   
+    }
   /**
    * @param payload = False
    */
