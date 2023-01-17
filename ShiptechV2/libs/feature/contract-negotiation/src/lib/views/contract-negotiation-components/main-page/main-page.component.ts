@@ -12,6 +12,7 @@ import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-
 import moment from 'moment';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { ContractRequest } from '../../../store/actions/ag-grid-row.action';
+import { delay } from "rxjs/operators";
 import { ContractNegoEmaillogComponent } from '../contract-nego-emaillog/contract-nego-emaillog.component';
 
 @Component({
@@ -342,10 +343,11 @@ export class MainPageComponent implements OnInit {
       reqpayload
     ).subscribe( data => {
       this.displaySuccessMsg('Mail has been Resend successfully');
+      delay(1500); 
+      this.contractNegoEmaillog.getEmailLogs()
     });
-    /*this.contractNegoEmaillog.getEmailLogs();
-    let params = { force: true };
-    this.contractNegoEmaillog.gridOptions_data.api?.refreshCells(params);*/
+
+    
   
   }
 
