@@ -1,4 +1,3 @@
-import { removeSummaryDuplicates } from '@angular/compiler';
 import { Component, ElementRef, Inject, OnInit,  ChangeDetectorRef,ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
@@ -13,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ContractNegoEmaillogComponent } from '../../contract-nego-emaillog/contract-nego-emaillog.component';
+import { delay } from "rxjs/operators";
 export interface User {
   id: string;
   name: string;
@@ -22,14 +22,15 @@ import { ActivatedRoute, Router } from "@angular/router";
   selector: 'app-email-preview-popup',
   templateUrl: './email-preview-popup.component.html',
   styleUrls: ['./email-preview-popup.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ContractNegoEmaillogComponent],
 })
 export class EmailPreviewPopupComponent implements OnInit {
 
   @ViewChild(MatAutocompleteTrigger) auto: MatAutocompleteTrigger;
   @ViewChild('hiddenTextTo') addNewAdd: ElementRef;
   @ViewChild('hiddenTextCC') addNewAddCC: ElementRef;
-  @ViewChild(ContractNegoEmaillogComponent) contractNegoEmaillog: ContractNegoEmaillogComponent;
+
 
   selected = 'Offer Approval';
   toEmail = new FormControl();
@@ -79,7 +80,8 @@ export class EmailPreviewPopupComponent implements OnInit {
     public dialogRef: MatDialogRef<EmailPreviewPopupComponent>,
     private appErrorHandler: AppErrorHandler,
     private changeDetector: ChangeDetectorRef,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private contractNegoEmail: ContractNegoEmaillogComponent
     ) {
       this.selectedEmailPreview = data;
       this.currentUserId = this.store.selectSnapshot(UserProfileState.user).id;
@@ -107,9 +109,12 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.contractNegoService.emailLogsResendMail(
       reqpayload
     ).subscribe(data => {        
-          //this.contractNegoService.callGridRedrawService();
+      
     });
-    this.toaster.success('Mail sent successfully.');       
+    this.changeDetector.detectChanges();
+    this.toaster.success('Mail sent successfully.');    
+     this.contractNegoEmail.getLatestEmailLogs(contractRequestId);
+
   }
   getPreviewTemplate() {
       const contractRequestEmailId = this.selectedEmailPreview.id;    

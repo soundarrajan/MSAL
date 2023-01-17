@@ -7,7 +7,7 @@ import { EmailPreviewPopupComponent } from '../contract-negotiation-popups/email
 import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-actions.component';
 import { ContractNegotiationService } from 'libs/feature/contract-negotiation/src/lib/services/contract-negotiation.service';
 import { Store } from '@ngxs/store';
-
+import { delay } from "rxjs/operators";
 
 import { ToastrService } from 'ngx-toastr';
 import moment from 'moment';
@@ -22,10 +22,13 @@ export class ContractNegoEmaillogComponent implements OnInit {
   dateFormat: string;
   date: string;
   generalTenantSettings: any;
-  public pageSize: number;
+  public latestEmailLogs:any;
+  public pageSize: number = 20;
+  public page: number;
   public totalItems: number;
   listOfRequests: any;
   public theme: boolean = false;
+  public rowData: [];
   public gridOptions_data: GridOptions;
   public gridId = "contractNegoEmailLog";
   public overlayLoadingTemplate =
@@ -63,7 +66,8 @@ export class ContractNegoEmaillogComponent implements OnInit {
       }
     ],
     enableMoreFilters: true,
-    multiSelect: false
+    multiSelect: false,
+    
   }
   constructor(
     public dialog: MatDialog,
@@ -71,14 +75,13 @@ export class ContractNegoEmaillogComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store,
     private changeDetector: ChangeDetectorRef,
-    private toaster: ToastrService, 
-    private spinner: NgxSpinnerService,
+    private toaster: ToastrService,
     private tenantSettingsService: TenantSettingsService) 
     { 
-     this. contractRequestId = this.route.snapshot.params.requestId;   
+     this.contractRequestId = this.route.snapshot.params.requestId;   
      this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
      this.dateFormat = this.generalTenantSettings.tenantFormats.dateFormat.name;   
-      this.gridOptions_data = <GridOptions>{
+     this.gridOptions_data = <GridOptions>{
         defaultColDef: {
           resizable: true,
           filter: true,
@@ -188,10 +191,43 @@ export class ContractNegoEmaillogComponent implements OnInit {
       this.date = this.dateFormat.replace('DDD', 'ddd').replace('dd', 'DD');
     }
   }
+  getLatestEmailLogs(contractRequestId) { 
+    delay(4000);
+    this.pageSize = 20;       
+    let reqpayload = {
+      Order: null,
+      Filters: [
+        { ColumnName: 'TransactionTypeId', Value: '37' },
+        {
+          ColumnName: 'TransactionIds',
+          Value: contractRequestId
+        }
+      ],
+      PageFilters: { Filters: [] },
+      Pagination: { Skip: 0, Take: this.pageSize },
+      SortList: { SortList: [] }
+    };
+    //this.gridOptions_data.api.showLoadingOverlay();
+    const emailLogs = this.contractNegotiationService.getEmailLogsList(
+      reqpayload
+    );
+    emailLogs.subscribe((res: any) => {
+      if (res.payload) {
+      this.latestEmailLogs = res.payload;    
+      this.gridOptions_data.api?.setRowData(res.payload);
+      if (!this.changeDetector['destroyed']) {
+        this.changeDetector.detectChanges();
+      } 
+    
+      }
+
+    });   
+    
+  }
   
    getEmailLogs() {
-          
-          this.pageSize = 25;       
+          delay(1000);
+          this.pageSize = 20;       
           let reqpayload = {
             Order: null,
             Filters: [
@@ -215,7 +251,9 @@ export class ContractNegoEmaillogComponent implements OnInit {
             if (res?.message == 'Unauthorized') {
               return;
             }
+      
             if (res.payload) {
+              console.log(res.payload);
               this.totalItems = res.matchedCount;          
               //this.rowData_grid = res.payload;
               this.gridOptions_data.api?.setRowData(res.payload);
@@ -226,6 +264,67 @@ export class ContractNegoEmaillogComponent implements OnInit {
               this.toaster.error(res);
             }
           });     
+  }
+
+  onPageChangeForLatestEmails(page: number) {
+    let reqpayload = {
+      Order: null,
+      Filters: [
+        { ColumnName: 'TransactionTypeId', Value: '37' },
+        {
+          ColumnName: 'TransactionIds',
+          Value: this.contractRequestId
+        }
+      ],
+      PageFilters: { Filters: [] },
+      Pagination: { Skip: 0, Take: this.pageSize },
+      SortList: { SortList: [] }
+    };
+    var endRowData = page * this.pageSize;
+    
+    this.gridOptions_data.api.showLoadingOverlay();
+    this.page = page;
+    reqpayload.Pagination = { Skip: endRowData - this.pageSize, Take: this.pageSize };
+    this.contractNegotiationService.getEmailLogsList(reqpayload).subscribe((res: any) => {
+    this.gridOptions_data.api?.hideOverlay();   
+    if (res) {
+      this.totalItems = res.matchedCount; 
+      this.gridOptions_data.api?.setRowData(res.payload);
+              if (!this.changeDetector['destroyed']) {
+                this.changeDetector.detectChanges();
+              }      
+    } 
+      
+    });
+  }
+
+  onPageSizeChangeForLatestEmails(pageSize: number) {
+    let reqpayload = {
+      Order: null,
+      Filters: [
+        { ColumnName: 'TransactionTypeId', Value: '37' },
+        {
+          ColumnName: 'TransactionIds',
+          Value: this.contractRequestId
+        }
+      ],
+      PageFilters: { Filters: [] },
+      Pagination: { Skip: 0, Take: this.pageSize },
+      SortList: { SortList: [] }
+    };
+    this.pageSize = pageSize;
+    this.gridOptions_data.api.showLoadingOverlay();
+    var currentPage = this.gridOptions_data.api.paginationGetCurrentPage();
+    this.page = currentPage + 1;
+    reqpayload.Pagination = { Skip: 0, Take: this.pageSize };
+    this.contractNegotiationService.getEmailLogsList(reqpayload).subscribe((res: any) => {
+    this.gridOptions_data.api?.hideOverlay(); 
+    this.totalItems = res.matchedCount;
+    this.gridOptions_data.api?.setRowData(res.payload);
+              if (!this.changeDetector['destroyed']) {
+                this.changeDetector.detectChanges();
+              }       
+    });
   }
   public onrowClicked (ev){
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
