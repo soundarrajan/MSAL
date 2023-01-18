@@ -4520,8 +4520,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
             }
             // restructuring the period fromDate and toDate in formValue array Based on new-date-control.html
             // because  API array is not matched the common data binding logic
-            $scope.formValues['fromDate'] = data.period.fromDate;
-            $scope.formValues['toDate'] = data.period.toDate;
+            $scope.formValues['fromDate'] = data.period?.fromDate;
+            $scope.formValues['toDate'] = data.period?.toDate;
             
         });
         vm.taxi_start = function() {
