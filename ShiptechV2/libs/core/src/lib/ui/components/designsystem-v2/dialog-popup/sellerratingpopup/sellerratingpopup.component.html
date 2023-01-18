@@ -41,13 +41,13 @@
                       <div class="row" *ngFor="let item of items.details; let i = index">
                           <span class="rating-star align-center" style="display: inline-flex; width: 100%;">
                               <span class="w-50"  style="padding-left: 15px;" >{{i+1}}. {{item.name | htmlDecodeReadonly}}</span>
-                              <div class="rate l-h-46" *ngIf="item.rating != null && item.ratingRequired">
+                              <div class="rate w-50" style="height: auto; padding-top: 10px; padding-bottom: 10px;" *ngIf="item.rating != null && item.ratingRequired">
                                 <star-rating value="{{item.rating}}" [totalstars]='5' checkedcolor="#364150" uncheckedcolor="#EAEAEA" size="3em" readonly="true"></star-rating>
-                              </div>
-                              <div class="rate l-h-46" *ngIf="!item.ratingRequired">
+                                </div>
+                              <div class="rate w-50" style="height: auto; padding-top: 10px; padding-bottom: 10px;" *ngIf="!item.ratingRequired">
                               <span  >{{this.format.htmlDecode(item.comments)}}</span>
                             </div>
-                            <div class="rate l-h-46" *ngIf="((item.rating == null && item.ratingRequired) || (item.comments == null && !item.ratingRequired))">
+                            <div class="rate w-50" style="height: auto; padding-top: 10px; padding-bottom: 10px;" *ngIf="((item.rating == null && item.ratingRequired) || (item.comments == null && !item.ratingRequired))">
                               <span>NIL</span>
                             </div>
                           </span>
