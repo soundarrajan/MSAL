@@ -467,7 +467,6 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   }
   @ObservableException()
   updatePrices(payload: any[]): Observable<any> {
-    debugger;
     return this.http
     .put<any>(
       `${this._shitechApiUrl}/${ContractNegotiationApiPaths.updatePrices}`, payload

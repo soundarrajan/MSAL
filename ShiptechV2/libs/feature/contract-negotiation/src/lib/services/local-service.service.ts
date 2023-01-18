@@ -750,7 +750,7 @@ export class LocalService {
             this.setSendRFQButtonStauts(false);
             // let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
             let product = this.masterData['Product'].find(el => el.id == res2['productId']);
-            let uom = this.masterData['Uom'].find(el => el.id == res2['maxQuantityUomId']);
+            let uom = this.masterData['Uom'].find(el => el.id == res2['quantityUomId']);
             let SpecGroupName  = '';
             if(res2['status'] != 'Open'){
                 SpecGroupName = this.masterData['SpecGroup'].find(el => el.id == res1['specGroupId']).name;
@@ -775,7 +775,7 @@ export class LocalService {
                 "SpecGroupName": SpecGroupName,
                 "MinQuantity": res2['minQuantity'],
                 "MaxQuantity": res2['maxQuantity'],
-                "UomId": res2['maxQuantityUomId'],
+                "quantityUomId": res2['quantityUomId'],
                 "MinQuantityUnit" : uom?.name,
                 "MaxQuantityUnit" : uom?.name,
                 "OfferPrice": this.format.price(res2['offerPrice']),
@@ -812,7 +812,8 @@ export class LocalService {
                 "statusId": res2['statusId'],
                 "lastModifiedById": res2['lastModifiedById'],
                 "lastModifiedOn": res2['lastModifiedOn'],
-                "contractRequestProductId" : res1['id']
+                "contractRequestProductId" : res1['id'],
+                "contractRequestId": response['id']
             }
             data.push(arrDet);
             arrDet = {};
@@ -829,8 +830,6 @@ export class LocalService {
             "specGroupId" : res1['specGroupId'],
             "minQuantity" : res1['minQuantity'],
             "maxQuantity" : res1['maxQuantity'],
-            "minQuantityUomId" : res1['minQuantityUomId'],
-            "maxQuantityUomId" : res1['maxQuantityUomId'],
             "pricingTypeId": res1['pricingTypeId'],
             "contractualQuantityOption" : contractualQuantityOption.name,
             "contractRequestProductId" : res1['id'],
@@ -843,7 +842,8 @@ export class LocalService {
             "lastModifiedOn": res1['lastModifiedOn'],
             "allowedLocations": res1['allowedLocations'],
             "allowedProducts": res1['allowedProducts'],
-            "isDeleted": res1['isDeleted']
+            "isDeleted": res1['isDeleted'],
+            "maxQuantityUomId" : response['contractRequestProducts'][0]['maxQuantityUomId']
             }
             contractArray['locations'].push(arrMainDet);
             arrMainDet = {}; data = [];
