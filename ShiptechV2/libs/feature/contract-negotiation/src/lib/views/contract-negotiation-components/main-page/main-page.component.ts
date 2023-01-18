@@ -133,9 +133,6 @@ export class MainPageComponent implements OnInit {
     this.localService.contractPreviewEmail.subscribe(data => {
       this.showPreviewEmail = data;
     })
-    this.localService.contractNoQuote.subscribe(data => {
-      this.showNoQuote = data;
-    })
     this.localService.getSendRFQButtonStauts().subscribe(data => {
       this.disableSendRFQButton = data;
     })
@@ -149,7 +146,9 @@ export class MainPageComponent implements OnInit {
   updateContractRequestStatus(status: string){
     this.contractStatus = status;
   }
-  
+  ngDoCheck(){
+    this.showNoQuote= this.localService.getNoQuote();
+  }
   goBack() {
     this.router.navigate(['/contract-negotiation/requests']);
   }
@@ -356,8 +355,13 @@ export class MainPageComponent implements OnInit {
     this.displaySuccessMsg('Offers sent for approval');
   }
 
-  onClickNoQuote(){
-    this.noQuote = true;
+  noQuoteAction(type){
+    this.contractNegoService.constructUpdateNoQuote(type)?.subscribe(res => {
+      this.contractNegoService.getContractRequestDetails(this.route.snapshot.params.requestId)
+      .subscribe(response => {
+        this.localService.contractRequestData(response);
+      });
+    });
   }
 
   createContract(){

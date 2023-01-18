@@ -90,7 +90,8 @@ export const ContractNegotiationApiPaths = {
   removeCounterparty : 'api/ContractNegotiation/removeSellerContract',
   sendRFQ: 'api/ContractNegotiation/SendRFQ',
   updatePrices : 'api/ContractNegotiation/Price/updateOffer',
-  resend : 'api/ContractNegotiation/resend'
+  resend : 'api/ContractNegotiation/resend',
+  switchContractReqBasedOnQuote:'api/ContractNegotiation/switchContractReqBasedOnQuote'
 }
 
 
@@ -432,6 +433,19 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     return this.http
       .post<any>(
         `${this._shitechApiUrl}/${ContractNegotiationApiPaths.addSellerContract}`, payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+  @ObservableException()
+  switchContractReqBasedOnQuote(payload): Observable<any> {
+    if(payload.length == 0) return;
+    return this.http
+      .put<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.switchContractReqBasedOnQuote}`,
+        payload
       )
       .pipe(
         map((body: any) => body),

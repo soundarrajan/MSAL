@@ -26,6 +26,8 @@ export class LocalService {
     contractNoQuote = this.showNoQuote.asObservable();
     private displayNoQuote = new BehaviorSubject<boolean>(false);
     noQuoteChange = this.displayNoQuote.asObservable();
+    private displayEnableQuote = new BehaviorSubject<boolean>(false);
+    enableQuoteChange = this.displayEnableQuote.asObservable();
     public URLFrom = '/login';
     public errorurl = '/404';
     public userData;
@@ -540,6 +542,14 @@ export class LocalService {
 
     getNoQuote() {
         return this.displayNoQuote.value;
+    }
+
+    setEnableQuote(flag: boolean) {
+        this.displayEnableQuote.next(flag);
+    }
+
+    getEnableQuote() {
+        return this.displayEnableQuote.value;
     }
 
     setSendRFQButtonStauts(flag: boolean){

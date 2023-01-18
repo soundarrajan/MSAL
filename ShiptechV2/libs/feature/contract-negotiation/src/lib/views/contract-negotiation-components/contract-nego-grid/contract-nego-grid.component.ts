@@ -70,6 +70,14 @@ export class ContractNegoGridComponent implements OnInit {
             this.dispalyNoData = (el.data.length > 0)? false : true;
             this.gridOptions_forecast?.api?.setRowData(el.data);
           } 
+          if(el.data && el.data.length > 0){
+            el.data.forEach( data => {
+              if(data.Status=='Inquired' && !data.isNoQuote){
+                this.localService.setNoQuote(true);
+                return;
+              }
+            });
+          } 
         })
       });
       if (
@@ -81,7 +89,6 @@ export class ContractNegoGridComponent implements OnInit {
         );       
       }
     });
-
     this.localService.sendChipSelected.subscribe((chip: any) => {
       this.selectedChip = chip;
     });
@@ -190,26 +197,25 @@ export class ContractNegoGridComponent implements OnInit {
               component: 'agGroupCellRenderer',
               params: { label: 'port-rating', cellClass: 'rating-chip-renderer' }
             };
-          } else  {
+          }else if(!params.node.data.isNoQuote)  {
             return {
               component: 'productSelectRenderer'
             };
-          } 
-          // else {
-          //   return {
-          //     component: 'noQuoteRenderer',
-          //     params: { show: this.rfqSent }
-          //   };
-          // }
+          }else {
+            return {
+              component: 'noQuoteRenderer',
+              params: { show: true }
+            };
+          }
         },
         cellRendererParams: {
           suppressCount: true
         },
 
-        // colSpan: params => {
-        //   if (params.node.rowIndex == 3 || params.node.level == 0) return 12;
-        //   else return 1;
-        // }
+        colSpan: params => {
+          if (params.node.level == 0 ||params.node.data.isNoQuote ) return 12;
+          else return 1;
+        }
       },
       frameworkComponents: {
         checkboxHeaderRenderer: MatCheckboxHeaderComponent,
