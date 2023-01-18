@@ -207,6 +207,7 @@ export class MainPageComponent implements OnInit {
                   "minQuantityUomId": prodData.minQuantityUomId,
                   "maxQuantity": prodData.maxQuantity,
                   "maxQuantityUomId": prodData.maxQuantityUomId,
+                  "quantityUomId": prodData.maxQuantityUomId,
                   "validityDate": contractRequestData.minValidity,
                   "currencyId": this.generalTenantSettings.tenantFormats.currency.id,
                   "pricingTypeId": prodData.pricingTypeId
