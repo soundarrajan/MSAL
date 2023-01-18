@@ -10,6 +10,7 @@ import { ContractNegotiationStoreModel } from '../../store/contract-negotiation.
 import { Store } from '@ngxs/store';
 import { ContractRequest } from '../../store/actions/ag-grid-row.action';
 import { LocalService } from '../../services/local-service.service';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'shiptech-counterpartie-name-cell',
   template: `
@@ -37,11 +38,17 @@ import { LocalService } from '../../services/local-service.service';
             </div>
             <div class="fs-13" (click)="openEmailPreview(params)">Preview RFQ email</div>
           </div>
-          <div class="p-tb-5" style="display:flex;align-items:center;">
+          <div class="p-tb-5" style="display:flex;align-items:center;" *ngIf="params.node.data?.Status == 'Inquired' && params.node.data?.isNoQuote">
                 <div class="popup-icon-align">
                     <div class="contract-enable-quote-icon"></div>
                 </div>
-                <div class="fs-13">Enable quote</div>
+                <div class="fs-13" (click)="switchEnableOrNoQuoteAction(params,'enable-Quote')">Enable quote</div>
+          </div>
+          <div class="p-tb-5" style="display:flex;align-items:center;" *ngIf="params.node.data?.Status == 'Inquired' && !params.node.data?.isNoQuote">
+                <div class="popup-icon-align">
+                    <div class="contract-no-quote-icon"></div>
+                </div>
+                <div class="fs-13" (click)="switchEnableOrNoQuoteAction(params,'no-Quote')">No quote</div>
           </div>
           <hr class="menu-divider-line" />
 
@@ -76,7 +83,8 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
     private toaster: ToastrService,
     private contractService : ContractNegotiationService,
     private store : Store,
-    private localService: LocalService
+    private localService: LocalService,
+    private route: ActivatedRoute,
     ) {}
 
   ngOnInit(): void {}
@@ -99,6 +107,24 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
     dialogRef.afterClosed().subscribe(result => {});
   }
 
+  switchEnableOrNoQuoteAction(params, type){
+    if(params.node.data.Status == 'Inquired' && (params.node.data.isNoQuote || !params.node.data.isNoQuote) ){
+      this.contractService.contructEnableOrNoQuote(params.node.data,type)?.subscribe(res => {
+        this.contractService.getContractRequestDetails(this.route.snapshot.params.requestId)
+        .subscribe(response => {
+          this.localService.contractRequestData(response);
+          type=='no-Quote'?this.toaster.success("Selected Offer have been marked as No Quote successfully -"+params?.value):this.toaster.success("Selected Offer Price has been enabled  "+params.value);         
+        });
+      });
+    }else if(params.node.data.Status == 'Open' && !params.node.data.isNoQuote  && type=='no-quote'){
+      this.toaster.warning(" Offer Price cannot be marked as 'No Quote' as RFQ has not sent."+" Counterparty:"+params?.value);
+      return;
+    }else{
+      this.localService.setEnableQuote(false);
+      this.toaster.warning("Enable Quote can be applied only on Offer Price marked as 'No Quote"+" Counterparty:"+params?.value);
+      return;
+    }
+  }
   removeCounterpartyPopup(params) {
     
     if(params.node.data.Status == 'Open'){

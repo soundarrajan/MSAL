@@ -26,6 +26,8 @@ export class LocalService {
     contractNoQuote = this.showNoQuote.asObservable();
     private displayNoQuote = new BehaviorSubject<boolean>(false);
     noQuoteChange = this.displayNoQuote.asObservable();
+    private displayEnableQuote = new BehaviorSubject<boolean>(false);
+    enableQuoteChange = this.displayEnableQuote.asObservable();
     public URLFrom = '/login';
     public errorurl = '/404';
     public userData;
@@ -542,6 +544,14 @@ export class LocalService {
         return this.displayNoQuote.value;
     }
 
+    setEnableQuote(flag: boolean) {
+        this.displayEnableQuote.next(flag);
+    }
+
+    getEnableQuote() {
+        return this.displayEnableQuote.value;
+    }
+
     setSendRFQButtonStauts(flag: boolean){
         this.sendRFQButtonStatus.next(flag);
     }
@@ -771,7 +781,8 @@ export class LocalService {
                 "OfferPrice": this.format.price(res2['offerPrice']),
                 "PriceCurrencyId": res2['currencyId'],
                 "PriceCurrencyName": "",
-                "ValidityDate": res2['status'] != 'Open' ? res2['validityDate'] : '' ,
+                "ValidityDate": res2['status'] != 'Open' ? res2['validityDate'] : '',
+                "offerValidityDate": res2['validityDate'],
                 "Status": res2['status'],
                 "typeStatus" : 'Inquired',
                 'rfqStatus' : res2['status'] != 'Open' ? true : false,

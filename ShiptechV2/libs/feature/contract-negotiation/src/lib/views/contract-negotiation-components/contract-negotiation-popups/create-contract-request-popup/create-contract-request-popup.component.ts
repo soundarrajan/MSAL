@@ -327,7 +327,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
             minQuantityUomId: offerData['UomId'],
             maxQuantity: this.quantityFormatValue(offerData['MaxQuantity']),
             maxQuantityUomId: offerData['UomId'],
-            validityDate: offerData['ValidityDate'],
+            validityDate: offerData['offerValidityDate'],
             currencyId: offerData['PriceCurrencyId'],
             contractRequestProductId: offerData['contractRequestProductId'],
             counterpartyId: offerData['CounterpartyId'],
@@ -1355,12 +1355,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
       });
     } else {
       this.contractNegotiationService.updateContractRequest(this.reqObj).subscribe( response => {
-        if(response){
+        if(response && typeof response == 'boolean'){
           this.toaster.success('Contract Request has been updated successfully');
-          //this.router.navigate(['/contract-negotiation/requests/131']);
           this.dialog.closeAll();
         } else {
-          this.toaster.error(response.toString());
+          this.toaster.error('Failed to update contract request details');
         }
       });
     }

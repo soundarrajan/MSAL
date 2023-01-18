@@ -12,6 +12,7 @@ import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-
 import moment from 'moment';
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { ContractRequest } from '../../../store/actions/ag-grid-row.action';
+import { delay } from "rxjs/operators";
 import { ContractNegoEmaillogComponent } from '../contract-nego-emaillog/contract-nego-emaillog.component';
 
 @Component({
@@ -132,9 +133,6 @@ export class MainPageComponent implements OnInit {
     this.localService.contractPreviewEmail.subscribe(data => {
       this.showPreviewEmail = data;
     })
-    this.localService.contractNoQuote.subscribe(data => {
-      this.showNoQuote = data;
-    })
     this.localService.getSendRFQButtonStauts().subscribe(data => {
       this.disableSendRFQButton = data;
     })
@@ -148,7 +146,9 @@ export class MainPageComponent implements OnInit {
   updateContractRequestStatus(status: string){
     this.contractStatus = status;
   }
-  
+  ngDoCheck(){
+    this.showNoQuote= this.localService.getNoQuote();
+  }
   goBack() {
     this.router.navigate(['/contract-negotiation/requests']);
   }
@@ -206,6 +206,7 @@ export class MainPageComponent implements OnInit {
                   "minQuantityUomId": prodData.minQuantityUomId,
                   "maxQuantity": prodData.maxQuantity,
                   "maxQuantityUomId": prodData.maxQuantityUomId,
+                  "quantityUomId": prodData.maxQuantityUomId,
                   "validityDate": contractRequestData.minValidity,
                   "currencyId": this.generalTenantSettings.tenantFormats.currency.id,
                   "pricingTypeId": prodData.pricingTypeId
@@ -332,6 +333,7 @@ export class MainPageComponent implements OnInit {
   }
 
   emailLogsResendMail() {
+
     var loginUserId = this.currentUserId;
     var contractRequestIdFromUrl = this.route.snapshot.params.requestId;
     var emailLogsIds = this.contractNegoEmaillog.getEmailLogSelectedItem();
@@ -341,8 +343,12 @@ export class MainPageComponent implements OnInit {
       reqpayload
     ).subscribe( data => {
       this.displaySuccessMsg('Mail has been Resend successfully');
-    }
-    );
+      delay(1500); 
+      this.contractNegoEmaillog.getEmailLogs()
+    });
+
+    
+  
   }
 
   sendToApproval() {
@@ -350,8 +356,13 @@ export class MainPageComponent implements OnInit {
     this.displaySuccessMsg('Offers sent for approval');
   }
 
-  onClickNoQuote(){
-    this.noQuote = true;
+  noQuoteAction(type){
+    this.contractNegoService.constructUpdateNoQuote(type)?.subscribe(res => {
+      this.contractNegoService.getContractRequestDetails(this.route.snapshot.params.requestId)
+      .subscribe(response => {
+        this.localService.contractRequestData(response);
+      });
+    });
   }
 
   createContract(){

@@ -16,8 +16,8 @@
     <!-- <div class="footer">
         <app-footer-v2 [id]="'contract-negotiation'" [singleGrid]="true" [doublePagination]="true"
             [rowCount]="rowCount" [maxSize]="7"></app-footer-v2>
-    </div> 
-    <div class="footer">
+    </div> -->
+    <div id="contractNegoEmailLog">
         <app-ag-footer-new
         [gridViewModel]="gridOptions_data"
         [page]="page"
@@ -26,11 +26,12 @@
         [singleGrid]="true"
         [doublePagination]="true"
         [maxSize]="765"
-        id="{{ gridId }}"
-        (pageChange)="onPageChange($event.page)"
-        (newPageSize) = "onPageSizeChange($event.pageSize)"
+        id="{{ gridId }}"  
+        (pageChange)="onPageChangeForLatestEmails($event.page)"
+        (newPageSize) = "onPageSizeChangeForLatestEmails($event.pageSize)"
         [enabler] = "true"
         [display]="false"
       >
-      </app-ag-footer-new>-->
+      </app-ag-footer-new>
+    </div>
     

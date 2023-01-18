@@ -25,28 +25,14 @@
     <mat-dialog-content>
         <div class="email-container">
             <div class="section1">
-                <span class="text">Contact Details</span>
+                <span class="text">Contact Details </span>
                 <div style="display: flex; margin: 10px 0px;">
                     <div style="flex: 0 0 5%;margin:5px 0px">
                         <span class="text">To:</span>
                     </div>
-                    <div style="display: flex; flex: 0 0 95%;align-items: center;flex-wrap: wrap;">
-                        <div style="margin: 5px;" *ngFor="let item of to" class="recipientClass">
-                            <div class="cust-input-field" [matTooltip]="item.name">{{item.name}}</div>
-                            <div class="close-icon" (click)="removeRecipient(item)"></div>
-                        </div>
-                        <div class="add-new" [style.width.px]="widthTo">
-                            <!--<input matInput #addNewAdd placeholder="+Add New" [formControl]="toEmail"
-                                [matAutocomplete]="auto" (keyup.enter)="addTo(addNewAdd.value,false)"
-                                (input)="changeFieldWidthTo(addNewAdd.value)">-->
-                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" class=""
-                                (optionSelected)="addTo($event.option.value,true)" class="emailAddressPanelClass">
-                                <mat-option *ngFor="let option of filteredOptionsTo | async" [value]="option.id">
-                                    {{option.name}}
-                                </mat-option>
-                            </mat-autocomplete>
-                          
-                        </div>
+                    <div style="margin: 5px;" *ngFor="let item of toList" class="recipientClass">
+                        <div class="cust-input-field" [matTooltip]="item.name">{{item.name}}</div>
+                      
                     </div>
                 </div>
                 <div style="display: flex; margin: 10px 0px;">
@@ -54,38 +40,23 @@
                         <span class="text">Cc:</span>
                     </div>
                     <div style="display: flex; flex: 0 0 95%;align-items: center;flex-wrap: wrap;">
-                       
-                        <div style="margin: 5px;"  *ngFor="let item of cc" class="ccClass">
-                            <div class="cust-input-field" [matTooltip]="item">{{item.name}}</div>
-                            <div class="close-icon" (click)="removeCC(item)"></div>
-                        
-                        </div>
-                        <div class="add-new" [style.width.px]="widthCC">
-                            <!--<input #addNewCcAdd matInput placeholder="+Add New" [formControl]="ccEmail"
-                                [matAutocomplete]="auto1" (keyup.enter)="addCc(addNewCcAdd.value)"
-                                (input)="changeFieldWidthCC()">-->
-                            <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete" class=""
-                                (optionSelected)="addCc($event.option.value)" class="emailAddressPanelClass">
-                                <mat-option *ngFor="let option of filteredOptionsCc | async" [value]="option.id">
-                                    {{option.name}}
-                                </mat-option>
-                            </mat-autocomplete>
-                            
-                        </div>
-                    </div>
+                        <div style="margin: 5px;" *ngFor="let item of ccList" class="ccClass">
+                           <div class="cust-input-field" [matTooltip]="item.name">{{item.name}}</div>
+                       </div>
+                   </div>
+
                 </div>
                 <div style="display: flex; margin: 10px 0px;">
                     <div style="flex: 0 0 5%">
                         <span class="text">Subject:</span>
                     </div>
                     <div style="display: flex; flex: 0 0 95%">
-                        <span class="subject">AMENDMENT CHANGES: REQ226533 - ACHIEVER in AARHUS on Wed 30/06/2021
-                            00:00:00</span>
+                        <span contenteditable="true" class="subject">{{subject}}</span>
                     </div>
                 </div>
             </div>
             <div class="section2">
-                <div style="display: flex; margin: 15px; align-items: center;">
+               <!-- <div style="display: flex; margin: 15px; align-items: center;">
                     <span class="text">Attachments:</span>
                     <label class="add-doc" for="getFile">
                         <span class="add-doc-plus"></span>
@@ -93,212 +64,25 @@
                     <input type="file" id="getFile" class="get-file" multiple
                         (change)="fileBrowseHandler($event.target.files)" />
                     <div class="file-list" *ngFor="let item of filesList">
-                        <!-- <span class="attachment-icon"></span>
-                        <span>{{item}}</span> -->
+                         <span class="attachment-icon"></span>
+                        <span>{{item}}</span> 
                         <div class="attachment-icon"></div>
                         <div class="attachment-name">{{item.name}}</div>
-                        <div class="close-icon" (click)="removeFile(item)"></div>
-                    </div>
-                </div>
-                <div class="email-draft">
-                    <div>
-                        <span class="email-editor"></span>
-                    </div>
-                    <div class="content" style="padding: 10px 18px;">
-                        <p class="title">REQUEST SUMMARY:</p>
-                        <p>Product: <b>RMK 500</b>Location :<b>Rotterdam/Antwerp</b>Total Contractual Qty: <b>5000 MT
-                                Min- 6000 MT Max </b></p>
-                        <p class="title">FORMULA DESCRIPTION</p>
-                        <div style="overflow-x:auto; border: 1px solid #333333; margin-bottom: 20px;">
-                            <table class="table formula-table" style="width: max-content;">
-                                <thead>
-                                    <tr>
-                                        <th style="width:200px">Supplier Name</th>
-                                        <th style="width:200px">Port</th>
-                                        <th style="width:100px">Grade</th>
-                                        <th style="width:100px">Qty Min</th>
-                                        <th style="width:100px">Offer Price</th>
-                                        <th style="width:100px">Type</th>
-                                        <th style="width:100px">Validity</th>
-                                        <th style="width:75px">M+1</th>
-                                        <th style="width:75px">M+2</th>
-                                        <th style="width:75px">M+3</th>
-                                        <th style="width:75px">M+4</th>
-                                        <th style="width:75px">M+5</th>
-                                        <th style="width:75px">M+6</th>
-                                        <th style="width:300px">Formula</th>
-                                        <th style="width:100px">Schedule</th>
-                                        <th style="width:100px">Addn Cost</th>
-                                        <th style="width:250px">Remarks</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>                             
-                                        <td style="width:100px">2X SOLUZIONI E SE</td>
-                                        <td style="width:100px">ROTTERDAM / ANTWERP</td>
-                                        <td style="width:100px">RMK 500</td>
-                                        <td style="width:100px">1000 MT</td>
-                                        <td style="width:100px">USD634.3</td>
-                                        <td style="width:100px">Formula</td>
-                                        <td style="width:100px">12/06/2020</td>
-                                        <td style="width:75px">631.5</td>
-                                        <td style="width:75px">631.5</td>
-                                        <td style="width:75px">630.8</td>
-                                        <td style="width:75px">622.5</td>
-                                        <td style="width:75px">622.5</td>
-                                        <td style="width:75px">618</td>
-                                        <td style="width:300px">MOPS 380cST (PPXDK00) - 6.5$/MT</td>
-                                        <td style="width:100px">DON</td>
-                                        <td style="width:100px">5 USD</td>
-                                        <td style="width:250px">Mini 200 MT per lift</td>
-                                    </tr>
-                                    <tr>                             
-                                        <td style="width:100px">2X SOLUZIONI E SE</td>
-                                        <td style="width:100px">ROTTERDAM / ANTWERP</td>
-                                        <td style="width:100px">RMK 500</td>
-                                        <td style="width:100px">1000 MT</td>
-                                        <td style="width:100px">USD634.3</td>
-                                        <td style="width:100px">Formula</td>
-                                        <td style="width:100px">12/06/2020</td>
-                                        <td style="width:75px">631.5</td>
-                                        <td style="width:75px">631.5</td>
-                                        <td style="width:75px">630.8</td>
-                                        <td style="width:75px">622.5</td>
-                                        <td class="tick-cell best-price">392.3</td>
-                                        <td class="tick-cell best-price">390</td>
-                                        <td style="width:300px">MOPS 380cST (PPXDK00) - 6.5$/MT</td>
-                                        <td style="width:100px">DON</td>
-                                        <td style="width:100px">5 USD</td>
-                                        <td style="width:250px">Mini 200 MT per lift</td>
-                                    </tr>
-                                    <tr>                             
-                                        <td style="width:100px">2X SOLUZIONI E SE</td>
-                                        <td style="width:100px">ROTTERDAM / ANTWERP</td>
-                                        <td style="width:100px">RMK 500</td>
-                                        <td style="width:100px">1000 MT</td>
-                                        <td style="width:100px">USD634.3</td>
-                                        <td style="width:100px">Fixed</td>
-                                        <td style="width:100px">12/06/2020</td>
-                                        <td style="width:75px">631.5</td>
-                                        <td style="width:75px">631.5</td>
-                                        <td style="width:75px">630.8</td>
-                                        <td style="width:75px">622.5</td>
-                                        <td style="width:75px">622.5</td>
-                                        <td style="width:75px">618</td>
-                                        <td style="width:300px">-</td>
-                                        <td style="width:100px">DON</td>
-                                        <td style="width:100px">5 USD</td>
-                                        <td style="width:250px">Mini 200 MT per lift</td>
-                                    </tr>
-                                    <tr>                             
-                                        <td style="width:100px">2X SOLUZIONI E SE</td>
-                                        <td style="width:100px">ROTTERDAM / ANTWERP</td>
-                                        <td style="width:100px">RMK 500</td>
-                                        <td style="width:100px">1000 MT</td>
-                                        <td style="width:100px">USD634.3</td>
-                                        <td style="width:100px">Formula</td>
-                                        <td style="width:100px">12/06/2020</td>
-                                        <td class="tick-cell best-price"><span class="tick-icon"></span>407.7</td>
-                                        <td style="width:75px">631.5</td>
-                                        <td style="width:75px">630.8</td>
-                                        <td style="width:75px">622.5</td>
-                                        <td style="width:75px">622.5</td>
-                                        <td style="width:75px">618</td>
-                                        <td style="width:300px">MOPS 380cST (PPXDK00) - 6.5$/MT</td>
-                                        <td style="width:100px">DON</td>
-                                        <td style="width:100px">5 USD</td>
-                                        <td style="width:250px">Mini 200 MT per lift</td>
-                                    </tr>
-                                    <tr>                             
-                                        <td style="width:100px">2X SOLUZIONI E SE</td>
-                                        <td style="width:100px">ROTTERDAM / ANTWERP</td>
-                                        <td style="width:100px">RMK 500</td>
-                                        <td style="width:100px">1000 MT</td>
-                                        <td style="width:100px">USD634.3</td>
-                                        <td style="width:100px">Formula</td>
-                                        <td style="width:100px">12/06/2020</td>
-                                        <td style="width:75px">631.5</td>
-                                        <td class="tick-cell best-price"><span class="tick-icon"></span>400.7</td>
-                                        <td style="width:75px">630.8</td>
-                                        <td style="width:75px">622.5</td>
-                                        <td style="width:75px">622.5</td>
-                                        <td style="width:75px">618</td>
-                                        <td style="width:300px">MOPS 380cST (PPXDK00) - 6.5$/MT</td>
-                                        <td style="width:100px">DON</td>
-                                        <td style="width:100px">5 USD</td>
-                                        <td style="width:250px">Mini 200 MT per lift</td>
-                                    </tr>
-                                    <tr>                             
-                                        <td style="width:100px">2X SOLUZIONI E SE</td>
-                                        <td style="width:100px">ROTTERDAM / ANTWERP</td>
-                                        <td style="width:100px">RMK 500</td>
-                                        <td style="width:100px">1000 MT</td>
-                                        <td style="width:100px">USD634.3</td>
-                                        <td style="width:100px">Formula</td>
-                                        <td style="width:100px">12/06/2020</td>
-                                        <td style="width:75px">631.5</td>
-                                        <td style="width:75px">631.5</td>
-                                        <td class="tick-cell best-price"><span class="tick-icon"></span>407.1</td>
-                                        <td style="width:75px">622.5</td>
-                                        <td style="width:75px">622.5</td>
-                                        <td style="width:75px">618</td>
-                                        <td style="width:300px">MOPS 380cST (PPXDK00) - 6.5$/MT</td>
-                                        <td style="width:100px">DON</td>
-                                        <td style="width:100px">5 USD</td>
-                                        <td style="width:250px">Mini 200 MT per lift</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
                         
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Index</th>
-                                    <th>Port</th>
-                                    <th>Product</th>
-                                    <th>M+1</th>
-                                    <th>M+2</th>
-                                    <th>M+3</th>
-                                    <th>M+4</th>
-                                    <th>M+5</th>
-                                    <th>M+6</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Marine Fuel 0.5% Bunker Divd Rotterdam</td>
-                                    <td>ROTTERDAM/ANTWERP</td>
-                                    <td>RMK 500</td>
-                                    <td>401</td>
-                                    <td>410</td>
-                                    <td>410</td>
-                                    <td>410</td>
-                                    <td>410</td>
-                                    <td>410</td>
-                                </tr>
-                                <tr>
-                                    <td>Marine Fuel 0.5% Bunker Divd Rotterdam</td>
-                                    <td>ROTTERDAM/ANTWERP</td>
-                                    <td>RMK 500</td>
-                                    <td>401</td>
-                                    <td>410</td>
-                                    <td>410</td>
-                                    <td>410</td>
-                                    <td>410</td>
-                                    <td>410</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p class="title">RELATED CHATS</p>
-                        <p><b>Regis Manager :</b> The offer for Rotterdam location looks like a very high price. Any
-                            reasons? </p>
-                        <p><b>Simon Katich :</b> True. But we need this product at Rotterdam location because of high
-                            demand. Kindly approve. </p>
                     </div>
+                </div>-->
+                <div class="email-draft">
+                    <ckeditor
+                    #editor
+                    [(ngModel)]="content"
+                    [config]="configuration"
+                    [disabled]="readonly"
+                    ></ckeditor>
                 </div>
-
-            </div>
+         </div>
         </div>
     </mat-dialog-content>
 </div>
+
+
+

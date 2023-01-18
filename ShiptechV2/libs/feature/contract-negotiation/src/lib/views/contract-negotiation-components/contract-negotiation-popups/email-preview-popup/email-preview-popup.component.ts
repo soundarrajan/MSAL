@@ -1,5 +1,4 @@
-import { removeSummaryDuplicates } from '@angular/compiler';
-import { Component, ElementRef, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit,  ChangeDetectorRef,ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
@@ -10,7 +9,10 @@ import { ContractNegotiationService } from '../../../../services/contract-negoti
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
-
+import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ContractNegoEmaillogComponent } from '../../contract-nego-emaillog/contract-nego-emaillog.component';
+import { delay } from "rxjs/operators";
 export interface User {
   id: string;
   name: string;
@@ -19,7 +21,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 @Component({
   selector: 'app-email-preview-popup',
   templateUrl: './email-preview-popup.component.html',
-  styleUrls: ['./email-preview-popup.component.scss']
+  styleUrls: ['./email-preview-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ContractNegoEmaillogComponent],
 })
 export class EmailPreviewPopupComponent implements OnInit {
 
@@ -31,10 +35,21 @@ export class EmailPreviewPopupComponent implements OnInit {
   selected = 'Offer Approval';
   toEmail = new FormControl();
   ccEmail = new FormControl();
-  filesList = [{ id: '1', name: 'Purchase Documents1' }, { id: '2', name: 'Purchase Documents' }];
-  userList: any = [{ id: '1', name: 'Alexander.J' }, { id: '2', name: 'Reshma.Thomas' }, { id: '3', name: 'Gokul.S' }];
-  to: any =   [{ id: '1', name: 'Alexander.J' }, { id: '2', name: 'Reshma.Thomas' }, { id: '3', name: 'Gokul.S' }];
-  cc: any =  [{ id: '1', name: 'Alexander.J' }, { id: '2', name: 'Reshma.Thomas' }, { id: '3', name: 'Gokul.S' }];
+  public configuration = {
+    height: '250px',
+    disableNativeSpellChecker: false,
+    // fullPage: true,
+    allowContent: true,
+    extraAllowedContent:
+      'div;h1;h2;h3;h4;h5;h6;p;textarea;text;script;template;span;ol;ul;li;table;td;style;*[id];*(*);*{*};<!--(*); -->(*)',
+    defaultLanguage: 'en',
+    language: 'en',
+    toolbar: 'MyToolbar',
+    removePlugins: 'elementspath',
+    ignoreEmptyParagraph: true,
+    removeButtons: 'Anchor',
+    readOnly: false
+  };
   filteredOptionsTo: Observable<any>;
   filteredOptionsCc: Observable<any>;
   myControl = new FormControl();
@@ -45,22 +60,35 @@ export class EmailPreviewPopupComponent implements OnInit {
   widthCC: number = this.minWidth;
   subject = "";
   content = "";
-  isLoaded = false;
-  public SelectedSellerWithProds: any;
+  readonly: boolean = false;
+  previewTemplate: any = [];
+  public selectedEmailPreview: any;
   currentUserId: number;
-  constructor(
+  from: any;
+  toList: any =  [];
+  ccList: any =[];
+  filesList = [{ id: '1', name: 'Purchase Documents1' }, { id: '2', name: 'Purchase Documents' }];
+  userList: any = [];
+  to: any =  [];
+  cc: any =  [];
+  constructor(   
+    private spinner: NgxSpinnerService,
     private toaster: ToastrService,
     private route: ActivatedRoute,
     private store: Store,
     private contractNegoService: ContractNegotiationService,
     public dialogRef: MatDialogRef<EmailPreviewPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.SelectedSellerWithProds = data;
+    private appErrorHandler: AppErrorHandler,
+    private changeDetector: ChangeDetectorRef,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private contractNegoEmail: ContractNegoEmaillogComponent
+    ) {
+      this.selectedEmailPreview = data;
       this.currentUserId = this.store.selectSnapshot(UserProfileState.user).id;
-     }
+      console.log(data);
+    }
 
   ngOnInit(): void {
-    console.log(this.dialogRef);
     this.getPreviewTemplate();
     this.filteredOptionsTo = this.toEmail.valueChanges.pipe(
       startWith(''),
@@ -74,47 +102,46 @@ export class EmailPreviewPopupComponent implements OnInit {
     );
   }
   emailLogResendMail(){
-    console.log(this.route);
-   
-    const contractRequestId = this.route.snapshot.params.requestId; 
+    const contractRequestId = this.selectedEmailPreview.contractRequestId; 
     var loginUserId = this.currentUserId;
-    var emailLogsId =[this.SelectedSellerWithProds.id];
-    let reqpayload =  {"loginUserId":loginUserId,"emailLogsIds":emailLogsId,"requestId":contractRequestId};
-          
+    var emailLogsId =[this.selectedEmailPreview.id];
+    let reqpayload =  {"loginUserId":loginUserId,"emailLogsIds":emailLogsId,"requestId":contractRequestId};          
     this.contractNegoService.emailLogsResendMail(
       reqpayload
-    ).subscribe(data => {
-          this.toaster.success('Mail sent successfully.');       
-          this.contractNegoService.callGridRedrawService();
+    ).subscribe(data => {        
+      
     });
+    this.changeDetector.detectChanges();
+    this.toaster.success('Mail sent successfully.');    
+     this.contractNegoEmail.getLatestEmailLogs(contractRequestId);
+
   }
   getPreviewTemplate() {
-      const contractRequestId = this.SelectedSellerWithProds.id;  
-      console.log(contractRequestId);  
-      const payload = contractRequestId;    
+      const contractRequestEmailId = this.selectedEmailPreview.id;    
+      const payload = contractRequestEmailId;
+      this.spinner.show();    
       const emailLogsPreview = this.contractNegoService.getEmailLogsPreview(
         payload
       );
         emailLogsPreview.subscribe((res: any) => {    
-        if (res?.message == 'Unauthorized') {
+        this.spinner.hide();
+        if (res?.message == 'Unauthorized') {         
           return;
         }
         if (res.payload) {
           this.to = res.payload.to ? res.payload.to.split(',') : res.payload.to;
           this.cc = res.payload.cc ? res.payload.cc.split(',') : res.payload.cc;
-          var cc_data = res.payload.cc.split(',');
-      
-          console.log(this.to);
-          console.log(this.cc);
-         
-          this.to.forEach((item: any) => {
-            this.to.push({ name: item.to });
+          this.previewTemplate.to = [];
+          this.previewTemplate.cc = [];        
+          this.to.forEach((item: any,index) => {
+            this.toList.push({ id: index+1, name: item });
           });
-          this.cc.forEach((item: any) => {
-            this.cc.push({ name:item.to });
-          });
+          this.cc.forEach((item: any,index) => {
+            this.ccList.push({ id: index+1, name: item });
+          });       
           this.subject = res.payload.subject;
           this.content = res.payload.body;
+          this.changeDetector.markForCheck();
         }
       });
   
@@ -122,7 +149,6 @@ export class EmailPreviewPopupComponent implements OnInit {
 
   private _filter(value: string): User[] {
     const filterValue = value.toLowerCase();
-
     return this.userList.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
