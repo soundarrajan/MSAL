@@ -90,12 +90,21 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
   }
 
   openEmailPreview(params) {
+    let contractRequestId = this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+      return state['contractNegotiation'].ContractRequest[0].id;
+    });
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
       width: '80vw',
       height: '90vh',
-      panelClass: 'remove-padding-popup'
+      panelClass: 'remove-padding-popup',
+      data: {
+        counterPartyId: params.node.data.CounterpartyId,
+        contractRequestProductOfferIds: [params.node.data.id],
+        readOnly: false,
+        contractRequestId: contractRequestId,
+        popupSource: 'preview_RFQ'
+      }
     });
-
     dialogRef.afterClosed().subscribe(result => {});
   }
 

@@ -85,11 +85,15 @@ export class EmailPreviewPopupComponent implements OnInit {
     ) {
       this.selectedEmailPreview = data;
       this.currentUserId = this.store.selectSnapshot(UserProfileState.user).id;
-      console.log(data);
+      this.configuration.readOnly = data.readOnly;
     }
 
   ngOnInit(): void {
-    this.getPreviewTemplate();
+    if(this.selectedEmailPreview.popupSource == 'email_log'){
+      this.getPreviewTemplate();
+    } else if(this.selectedEmailPreview.popupSource == 'preview_RFQ'){
+      this.previewRFQTemplate();
+    }
     this.filteredOptionsTo = this.toEmail.valueChanges.pipe(
       startWith(''),
       map(value => (typeof value === 'string' ? value : value.id)),
@@ -101,6 +105,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       map(name => (name ? this._filter(name) : this.userList.slice()))
     );
   }
+
   emailLogResendMail(){
     const contractRequestId = this.selectedEmailPreview.contractRequestId; 
     var loginUserId = this.currentUserId;
@@ -116,35 +121,67 @@ export class EmailPreviewPopupComponent implements OnInit {
      this.contractNegoEmail.getLatestEmailLogs(contractRequestId);
 
   }
+
   getPreviewTemplate() {
-      const contractRequestEmailId = this.selectedEmailPreview.id;    
-      const payload = contractRequestEmailId;
-      this.spinner.show();    
-      const emailLogsPreview = this.contractNegoService.getEmailLogsPreview(
-        payload
-      );
-        emailLogsPreview.subscribe((res: any) => {    
-        this.spinner.hide();
-        if (res?.message == 'Unauthorized') {         
-          return;
+    const contractRequestEmailId = this.selectedEmailPreview.id;
+    const payload = contractRequestEmailId;
+    this.spinner.show();
+    const emailLogsPreview = this.contractNegoService.getEmailLogsPreview(
+      payload
+    );
+    emailLogsPreview.subscribe((res: any) => {
+      this.spinner.hide();
+      if (res?.message == 'Unauthorized') { 
+        return;
+      }
+      if (res.payload) {
+        this.to = res.payload.to ? res.payload.to.split(',') : res.payload.to;
+        this.cc = res.payload.cc ? res.payload.cc.split(',') : res.payload.cc;
+        this.previewTemplate.to = [];
+        this.previewTemplate.cc = [];
+        this.to.forEach((item: any,index) => {
+          this.toList.push({ id: index+1, name: item });
+        });
+        this.cc.forEach((item: any,index) => {
+          this.ccList.push({ id: index+1, name: item });
+        });       
+        this.subject = res.payload.subject;
+        this.content = res.payload.body;
+        this.changeDetector.markForCheck();
+      }
+    });
+  }
+
+  previewRFQTemplate() {
+    const payload = {
+      "contractRequestProductOfferIds": this.selectedEmailPreview.contractRequestProductOfferIds,
+      "counterpartyId": this.selectedEmailPreview.counterPartyId,
+      "contractRequestId": this.selectedEmailPreview.contractRequestId,
+      "templateName": "ContractNegotiationSendRFQ",
+      "userId": this.currentUserId
+    };
+    this.spinner.show();
+    this.contractNegoService.getPreviewRFQEmail(payload).subscribe((res: any) => { 
+      this.spinner.hide();
+      if (res?.message == 'Unauthorized' || res?.errors) {         
+        return;
+      }
+      if (res.previewResponse) {
+        if(res.previewResponse.to && res.previewResponse.to.length > 0){
+          res.previewResponse.to.forEach( (item, index) => {
+            this.toList.push({ id: index+1, name: item.idEmailAddress });
+          })
         }
-        if (res.payload) {
-          this.to = res.payload.to ? res.payload.to.split(',') : res.payload.to;
-          this.cc = res.payload.cc ? res.payload.cc.split(',') : res.payload.cc;
-          this.previewTemplate.to = [];
-          this.previewTemplate.cc = [];        
-          this.to.forEach((item: any,index) => {
-            this.toList.push({ id: index+1, name: item });
-          });
-          this.cc.forEach((item: any,index) => {
-            this.ccList.push({ id: index+1, name: item });
-          });       
-          this.subject = res.payload.subject;
-          this.content = res.payload.body;
-          this.changeDetector.markForCheck();
+        if(res.previewResponse.cc && res.previewResponse.cc.length > 0){
+          res.previewResponse.cc.forEach( (item, index) => {
+            this.ccList.push({ id: index+1, name: item.idEmailAddress });
+          })
         }
-      });
-  
+        this.subject = res.previewResponse.subject;
+        this.content = res.previewResponse.content;
+        this.changeDetector.markForCheck();
+      }
+    });
   }
 
   private _filter(value: string): User[] {
@@ -197,6 +234,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.to = array;
 
   }
+
   removeCC(selected) {
     let array = [];
     this.cc.forEach((item) => {
@@ -204,7 +242,6 @@ export class EmailPreviewPopupComponent implements OnInit {
         array.push(item);
     })
     this.cc = array;
-
   }
 
   removeFile(file) {
@@ -221,6 +258,5 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
   changeFieldWidthCC(){
     setTimeout(() => this.widthCC = Math.max(this.minWidth, this.addNewAddCC.nativeElement.offsetWidth+16));
-
   }
 }
