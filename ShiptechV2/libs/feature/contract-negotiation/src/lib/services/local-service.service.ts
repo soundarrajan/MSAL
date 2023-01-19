@@ -26,6 +26,8 @@ export class LocalService {
     contractNoQuote = this.showNoQuote.asObservable();
     private displayNoQuote = new BehaviorSubject<boolean>(false);
     noQuoteChange = this.displayNoQuote.asObservable();
+    private displayEnableQuote = new BehaviorSubject<boolean>(false);
+    enableQuoteChange = this.displayEnableQuote.asObservable();
     public URLFrom = '/login';
     public errorurl = '/404';
     public userData;
@@ -37,7 +39,7 @@ export class LocalService {
     private sendRFQButtonStatus = new BehaviorSubject<boolean>(true);
     public uniqueLocations: string;
     public allRequestDetails: { locations: any[]; };
-
+    private gridRefreshService = new Subject<any>();
     constructor(
         private http: HttpClient,
         private router: Router,
@@ -57,6 +59,10 @@ export class LocalService {
         this.getUserDetails().subscribe(data => { this.userData = data; });
         this.getUserRoleList().subscribe(data => { this.userRoleList = data; });
     }
+     gridRefreshService$ = this.gridRefreshService.asObservable();
+     callGridRefreshService(index) {
+       this.gridRefreshService.next(index);
+     }
 
     public showHeader = new Subject<boolean>();
 
@@ -542,6 +548,14 @@ export class LocalService {
         return this.displayNoQuote.value;
     }
 
+    setEnableQuote(flag: boolean) {
+        this.displayEnableQuote.next(flag);
+    }
+
+    getEnableQuote() {
+        return this.displayEnableQuote.value;
+    }
+
     setSendRFQButtonStauts(flag: boolean){
         this.sendRFQButtonStatus.next(flag);
     }
@@ -740,7 +754,7 @@ export class LocalService {
             this.setSendRFQButtonStauts(false);
             // let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
             let product = this.masterData['Product'].find(el => el.id == res2['productId']);
-            let uom = this.masterData['Uom'].find(el => el.id == res2['maxQuantityUomId']);
+            let uom = this.masterData['Uom'].find(el => el.id == res2['quantityUomId']);
             let SpecGroupName  = '';
             if(res2['status'] != 'Open'){
                 SpecGroupName = this.masterData['SpecGroup'].find(el => el.id == res1['specGroupId']).name;
@@ -765,7 +779,7 @@ export class LocalService {
                 "SpecGroupName": SpecGroupName,
                 "MinQuantity": res2['minQuantity'],
                 "MaxQuantity": res2['maxQuantity'],
-                "UomId": res2['maxQuantityUomId'],
+                "quantityUomId": res2['quantityUomId'],
                 "MinQuantityUnit" : uom?.name,
                 "MaxQuantityUnit" : uom?.name,
                 "OfferPrice": this.format.price(res2['offerPrice']),
@@ -802,7 +816,8 @@ export class LocalService {
                 "statusId": res2['statusId'],
                 "lastModifiedById": res2['lastModifiedById'],
                 "lastModifiedOn": res2['lastModifiedOn'],
-                "contractRequestProductId" : res1['id']
+                "contractRequestProductId" : res1['id'],
+                "contractRequestId": response['id']
             }
             data.push(arrDet);
             arrDet = {};
@@ -819,8 +834,6 @@ export class LocalService {
             "specGroupId" : res1['specGroupId'],
             "minQuantity" : res1['minQuantity'],
             "maxQuantity" : res1['maxQuantity'],
-            "minQuantityUomId" : res1['minQuantityUomId'],
-            "maxQuantityUomId" : res1['maxQuantityUomId'],
             "pricingTypeId": res1['pricingTypeId'],
             "contractualQuantityOption" : contractualQuantityOption.name,
             "contractRequestProductId" : res1['id'],
@@ -833,7 +846,8 @@ export class LocalService {
             "lastModifiedOn": res1['lastModifiedOn'],
             "allowedLocations": res1['allowedLocations'],
             "allowedProducts": res1['allowedProducts'],
-            "isDeleted": res1['isDeleted']
+            "isDeleted": res1['isDeleted'],
+            "maxQuantityUomId" : response['contractRequestProducts'][0]['maxQuantityUomId']
             }
             contractArray['locations'].push(arrMainDet);
             arrMainDet = {}; data = [];
