@@ -9,15 +9,12 @@ import { ContractNegotiationService } from '../../../../services/contract-negoti
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
-import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ContractNegoEmaillogComponent } from '../../contract-nego-emaillog/contract-nego-emaillog.component';
-import { delay } from "rxjs/operators";
 export interface User {
   id: string;
   name: string;
 }
-import { ActivatedRoute, Router } from "@angular/router";
 @Component({
   selector: 'app-email-preview-popup',
   templateUrl: './email-preview-popup.component.html',
@@ -32,7 +29,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   @ViewChild('hiddenTextCC') addNewAddCC: ElementRef;
 
 
-  selected = 'Offer Approval';
+  selected = 'send_rfq';
   toEmail = new FormControl();
   ccEmail = new FormControl();
   public configuration = {
@@ -60,25 +57,21 @@ export class EmailPreviewPopupComponent implements OnInit {
   widthCC: number = this.minWidth;
   subject = "";
   content = "";
-  readonly: boolean = false;
-  previewTemplate: any = [];
+  editable: boolean = false;
   public selectedEmailPreview: any;
   currentUserId: number;
   from: any;
   toList: any =  [];
   ccList: any =[];
-  filesList = [{ id: '1', name: 'Purchase Documents1' }, { id: '2', name: 'Purchase Documents' }];
-  userList: any = [];
+  filesList = [];
   to: any =  [];
   cc: any =  [];
   constructor(   
     private spinner: NgxSpinnerService,
     private toaster: ToastrService,
-    private route: ActivatedRoute,
     private store: Store,
     private contractNegoService: ContractNegotiationService,
     public dialogRef: MatDialogRef<EmailPreviewPopupComponent>,
-    private appErrorHandler: AppErrorHandler,
     private changeDetector: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private contractNegoEmail: ContractNegoEmaillogComponent
@@ -89,20 +82,20 @@ export class EmailPreviewPopupComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    if(this.selectedEmailPreview.popupSource == 'email_log'){
+    if(this.selectedEmailPreview.popupSource == 'emailLog'){
       this.getPreviewTemplate();
-    } else if(this.selectedEmailPreview.popupSource == 'preview_RFQ'){
-      this.previewRFQTemplate();
+      this.editable = false;
+    } else if(this.selectedEmailPreview.popupSource == 'previewRFQ'){
+      this.previewSendRFQTemplate();
+      this.editable = true;
     }
     this.filteredOptionsTo = this.toEmail.valueChanges.pipe(
       startWith(''),
-      map(value => (typeof value === 'string' ? value : value.id)),
-      map(name => (name ? this._filter(name) : this.userList.slice()))
+      map(name => (name ? this._filterTo(name) : this.toList.slice()))
     );
     this.filteredOptionsCc = this.ccEmail.valueChanges.pipe(
       startWith(''),
-      map(value => (typeof value === 'string' ? value : value.id)),
-      map(name => (name ? this._filter(name) : this.userList.slice()))
+      map(name => (name ? this._filterCc(name) : this.ccList.slice()))
     );
   }
 
@@ -135,16 +128,14 @@ export class EmailPreviewPopupComponent implements OnInit {
         return;
       }
       if (res.payload) {
-        this.to = res.payload.to ? res.payload.to.split(',') : res.payload.to;
-        this.cc = res.payload.cc ? res.payload.cc.split(',') : res.payload.cc;
-        this.previewTemplate.to = [];
-        this.previewTemplate.cc = [];
-        this.to.forEach((item: any,index) => {
-          this.toList.push({ id: index+1, name: item });
+        let toIds = res.payload.to ? res.payload.to.split(',') : res.payload.to;
+        let ccIds = res.payload.cc ? res.payload.cc.split(',') : res.payload.cc;
+        toIds.forEach((item: any) => {
+          this.to.push({ IdEmailAddress: item, name: item });
         });
-        this.cc.forEach((item: any,index) => {
-          this.ccList.push({ id: index+1, name: item });
-        });       
+        ccIds.forEach((item: any) => {
+          this.cc.push({ IdEmailAddress: item, name: item });
+        });    
         this.subject = res.payload.subject;
         this.content = res.payload.body;
         this.changeDetector.markForCheck();
@@ -152,7 +143,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     });
   }
 
-  previewRFQTemplate() {
+  previewSendRFQTemplate() {
     const payload = {
       "contractRequestProductOfferIds": this.selectedEmailPreview.contractRequestProductOfferIds,
       "counterpartyId": this.selectedEmailPreview.counterPartyId,
@@ -166,17 +157,15 @@ export class EmailPreviewPopupComponent implements OnInit {
       if (res?.message == 'Unauthorized' || res?.errors) {         
         return;
       }
+      if(res.errorMessage){
+        this.toaster.error(res.errorMessage);
+        return;
+      }
       if (res.previewResponse) {
-        if(res.previewResponse.to && res.previewResponse.to.length > 0){
-          res.previewResponse.to.forEach( (item, index) => {
-            this.toList.push({ id: index+1, name: item.idEmailAddress });
-          })
-        }
-        if(res.previewResponse.cc && res.previewResponse.cc.length > 0){
-          res.previewResponse.cc.forEach( (item, index) => {
-            this.ccList.push({ id: index+1, name: item.idEmailAddress });
-          })
-        }
+        this.toList = JSON.parse(JSON.stringify(res.previewResponse.toList));
+        this.ccList = JSON.parse(JSON.stringify(res.previewResponse.ccList));
+        this.to = (res.previewResponse?.to) ? res.previewResponse.to : [];
+        this.cc = (res.previewResponse?.cc) ? res.previewResponse.cc : [];
         this.subject = res.previewResponse.subject;
         this.content = res.previewResponse.content;
         this.changeDetector.markForCheck();
@@ -184,20 +173,19 @@ export class EmailPreviewPopupComponent implements OnInit {
     });
   }
 
-  private _filter(value: string): User[] {
+  private _filterTo(value: string): User[] {
     const filterValue = value.toLowerCase();
-    return this.userList.filter(option => option.name.toLowerCase().includes(filterValue));
+    return this.toList.filter(option => option.name.toLowerCase().includes(filterValue));
+  }
+
+  private _filterCc(value: string): User[] {
+    const filterValue = value.toLowerCase();
+    return this.ccList.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
   addTo(selected,e) {
-    let array1 = this.userList.filter(item => item.id == selected);
-    if(array1.length>0){
-      this.to.push(array1[0]);
-    }
-    else{
-      if(selected!='')
-        this.to.push({ id: '999', name: selected })
-    }
+    let array1 = this.toList.filter(item => item.name == selected);
+    this.to.push(array1[0]);
     this.toEmail.setValue("");
     this.widthTo = 80;
     this.widthTo = 80;
@@ -205,14 +193,8 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   addCc(selected) {
-    let array1 = this.userList.filter(item => item.id == selected);
-    if(array1.length>0){
-      this.cc.push(array1[0]);
-    }
-    else{
-      if(selected!='')
-        this.cc.push({ id: '999', name: selected })
-    }
+    let array1 = this.ccList.filter(item => item.name == selected);
+    this.cc.push(array1[0]);
     this.ccEmail.setValue("");
     this.widthTo = 80;
     this.widthTo = 80;
@@ -228,17 +210,16 @@ export class EmailPreviewPopupComponent implements OnInit {
   removeRecipient(selected) {
     let array = [];
     this.to.forEach((item) => {
-      if (item.id != selected.id && item.name != selected.name)
+      if (item.idEmailAddress != selected.idEmailAddress && item.name != selected.name)
         array.push(item);
     })
     this.to = array;
-
   }
 
   removeCC(selected) {
     let array = [];
     this.cc.forEach((item) => {
-      if (item.id != selected.id && item.name != selected.name)
+      if (item.idEmailAddress != selected.idEmailAddress && item.name != selected.name)
         array.push(item);
     })
     this.cc = array;
@@ -251,6 +232,15 @@ export class EmailPreviewPopupComponent implements OnInit {
         array.push(item);
     })
     this.filesList = array;
+  }
+
+  clearData() {
+    this.to = [];
+    this.cc = [];
+    this.subject = '';
+    this.content = '';
+    this.from = [];
+    this.filesList = [];
   }
 
   changeFieldWidthTo(){

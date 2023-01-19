@@ -110,7 +110,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
         contractRequestProductOfferIds: [params.node.data.id],
         readOnly: false,
         contractRequestId: contractRequestId,
-        popupSource: 'preview_RFQ'
+        popupSource: 'previewRFQ'
       }
     });
     dialogRef.afterClosed().subscribe(result => {});

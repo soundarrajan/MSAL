@@ -332,7 +332,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
         id: ev.data.id,
         readOnly: true,
         contractRequestId:this.contractRequestId,
-        popupSource: 'email_log'
+        popupSource: 'emailLog'
       },
       width: '80vw',
       height: '90vh',

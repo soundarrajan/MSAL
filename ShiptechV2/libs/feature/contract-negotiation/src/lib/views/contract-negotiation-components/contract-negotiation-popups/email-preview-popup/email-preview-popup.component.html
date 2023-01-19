@@ -2,21 +2,22 @@
     <div class="header">
         <div class="title">Email Preview</div>
         <div style="display: flex;align-items: center;">
-            <!--<span style="color: #364150;font-size: 12px;">Template:</span>
-            <div id="custom-form-field" style="width: 110px !important; margin: 5px 7px 0px 7px;">
+            <span *ngIf="editable" style="color: #364150;font-size: 12px;">Template:</span>
+            <div *ngIf="editable" id="custom-form-field">
                 <mat-form-field class="without-search" appearance="none">
                     <mat-select [(value)]="selected" disableOptionCentering>
-                        <mat-option value="Offer Approval" selected="selected">Offer Approval</mat-option>
-                        <mat-option value="Offer Pending">Offer Pending</mat-option>
+                        <mat-option value="send_rfq" selected="selected">Send RFQ</mat-option>
+                        <mat-option value="amend_rfq">Amend RFQ</mat-option>
+                        <mat-option value="requote">Requote</mat-option>
                     </mat-select>
                 </mat-form-field>
-            </div>-->
+            </div>
             <div class="header-btn">
-
-                <span class="seperator-line"></span>
-                <!-- <button class="blue-button h-25" [mat-dialog-close]="true">Revert Changes</button> -->
-                <!--<button class="blue-button h-25" [mat-dialog-close]="true">Save</button>-->
-                <button class="blue-button h-25" (click)="emailLogResendMail()" [mat-dialog-close]="true">Resend</button>
+                <span *ngIf="editable" class="seperator-line"></span>
+                <button *ngIf="editable" class="blue-button h-25" [mat-dialog-close]="true" style="width: auto !important; ">Discard Saved Preview</button>
+                <button *ngIf="editable" class="blue-button h-25" [mat-dialog-close]="true">Save</button>
+                <button *ngIf="editable" class="blue-button h-25" [mat-dialog-close]="true">Save & Send</button>
+                <button *ngIf="!editable" class="blue-button h-25" (click)="emailLogResendMail()" [mat-dialog-close]="true">Resend</button>
                 <span class="seperator-line"></span>
                 <span class="close-icon" style="cursor:pointer;" [mat-dialog-close]="true"></span>
             </div>
@@ -30,33 +31,60 @@
                     <div style="flex: 0 0 5%;margin:5px 0px">
                         <span class="text">To:</span>
                     </div>
-                    <div style="margin: 5px;" *ngFor="let item of toList" class="recipientClass">
-                        <div class="cust-input-field" [matTooltip]="item.name">{{item.name}}</div>
-                      
+                    <div style="display: flex; flex: 0 0 95%;align-items: center;flex-wrap: wrap;">
+                        <div style="margin: 5px;" *ngFor="let item of to" class="recipientClass">
+                            <div class="cust-input-field" [matTooltip]="item.idEmailAddress">{{item.name}}</div>
+                            <div *ngIf="editable" class="close-icon" (click)="removeRecipient(item)"></div>
+                        </div>
+                        <div *ngIf="editable" class="add-new" [style.width.px]="widthTo">
+                            <input matInput #addNewAdd placeholder="+Add New" [formControl]="toEmail"
+                                [matAutocomplete]="auto" (keyup.enter)="addTo(addNewAdd.value,false)"
+                                (input)="changeFieldWidthTo(addNewAdd.value)" />
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" class=""
+                                (optionSelected)="addTo($event.option.value,true)" class="emailAddressPanelClass">
+                                <mat-option *ngFor="let option of filteredOptionsTo | async" [value]="option.name">
+                                    {{option.name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <span #hiddenTextTo style="visibility: hidden; white-space: pre;">{{addNewAdd.value}}</span>
+                        </div>
                     </div>
                 </div>
+            
                 <div style="display: flex; margin: 10px 0px;">
                     <div style="flex: 0 0 5%;margin:5px 0px">
                         <span class="text">Cc:</span>
                     </div>
                     <div style="display: flex; flex: 0 0 95%;align-items: center;flex-wrap: wrap;">
-                        <div style="margin: 5px;" *ngFor="let item of ccList" class="ccClass">
-                           <div class="cust-input-field" [matTooltip]="item.name">{{item.name}}</div>
-                       </div>
-                   </div>
-
+                        <div style="margin: 5px;" *ngFor="let item of cc" class="ccClass">
+                           <div class="cust-input-field" [matTooltip]="item.idEmailAddress">{{item.name}}</div>
+                           <div *ngIf="editable" class="close-icon" (click)="removeCC(item)"></div>
+                        </div>
+                        <div *ngIf="editable" class="add-new" [style.width.px]="widthCC">
+                            <input #addNewCcAdd matInput placeholder="+Add New" [formControl]="ccEmail"
+                                [matAutocomplete]="auto1" (keyup.enter)="addCc(addNewCcAdd.value)"
+                                (input)="changeFieldWidthCC(addNewAdd.value)">
+                            <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete" class=""
+                                (optionSelected)="addCc($event.option.value)" class="emailAddressPanelClass">
+                                <mat-option *ngFor="let option of filteredOptionsCc | async" [value]="option.name">
+                                    {{option.name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <span #hiddenTextCC style="visibility: hidden; white-space: pre;">{{addNewCcAdd.value}}</span>
+                        </div>
+                    </div>
                 </div>
                 <div style="display: flex; margin: 10px 0px;">
                     <div style="flex: 0 0 5%">
                         <span class="text">Subject:</span>
                     </div>
                     <div style="display: flex; flex: 0 0 95%">
-                        <span contenteditable="true" class="subject">{{subject}}</span>
+                        <span [attr.contenteditable]="editable" class="subject">{{subject}}</span>
                     </div>
                 </div>
             </div>
             <div class="section2">
-               <!-- <div style="display: flex; margin: 15px; align-items: center;">
+                <div *ngIf="editable" style="display: flex; margin: 15px; align-items: center;">
                     <span class="text">Attachments:</span>
                     <label class="add-doc" for="getFile">
                         <span class="add-doc-plus"></span>
@@ -64,25 +92,21 @@
                     <input type="file" id="getFile" class="get-file" multiple
                         (change)="fileBrowseHandler($event.target.files)" />
                     <div class="file-list" *ngFor="let item of filesList">
-                         <span class="attachment-icon"></span>
+                        <span class="attachment-icon"></span>
                         <span>{{item}}</span> 
                         <div class="attachment-icon"></div>
-                        <div class="attachment-name">{{item.name}}</div>
-                        
+                        <div class="attachment-name">{{item.name}}</div> 
+                        <div class="close-icon" (click)="removeFile(item)"></div>
                     </div>
-                </div>-->
+                </div>
                 <div class="email-draft">
                     <ckeditor
                     #editor
                     [(ngModel)]="content"
                     [config]="configuration"
-                    [disabled]="readonly"
                     ></ckeditor>
                 </div>
-         </div>
+            </div>
         </div>
     </mat-dialog-content>
 </div>
-
-
-
