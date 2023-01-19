@@ -61,6 +61,9 @@ export class ContractNegoGridComponent implements OnInit {
   dispalyNoData : boolean = false;
   constructor(private localService: LocalService, public router: Router, private store : Store,private contractService: ContractNegotiationService) {
     this.context = { componentParent: this };
+    this.localService.gridRefreshService$.subscribe((rowIndex) => {
+      this.redrawRows(rowIndex);
+    });
   }
   ngOnInit(): void {
     this.store.subscribe(({ contractNegotiation, ...props }) => {
@@ -797,6 +800,16 @@ export class ContractNegoGridComponent implements OnInit {
     }   
   }
   
+  redrawRows(rowIndex) {
+    if(rowIndex != 'all'){
+      var rows = [this.gridOptions_forecast.api.getDisplayedRowAtIndex(rowIndex)!]
+      this.gridOptions_forecast.api.redrawRows({ rowNodes: rows });
+    }else{
+      this.gridOptions_forecast.api.redrawRows();
+    }
+    //this.gridOptions_forecast.api.refreshCells({ force: true });
+  }
+
   toggleProgressBar(row) {
     this.showProgressBar = !this.showProgressBar;
     row.Status = 'Open';

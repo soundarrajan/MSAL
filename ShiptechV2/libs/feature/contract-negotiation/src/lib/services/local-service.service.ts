@@ -39,7 +39,7 @@ export class LocalService {
     private sendRFQButtonStatus = new BehaviorSubject<boolean>(true);
     public uniqueLocations: string;
     public allRequestDetails: { locations: any[]; };
-
+    private gridRefreshService = new Subject<any>();
     constructor(
         private http: HttpClient,
         private router: Router,
@@ -59,6 +59,10 @@ export class LocalService {
         this.getUserDetails().subscribe(data => { this.userData = data; });
         this.getUserRoleList().subscribe(data => { this.userRoleList = data; });
     }
+     gridRefreshService$ = this.gridRefreshService.asObservable();
+     callGridRefreshService(index) {
+       this.gridRefreshService.next(index);
+     }
 
     public showHeader = new Subject<boolean>();
 

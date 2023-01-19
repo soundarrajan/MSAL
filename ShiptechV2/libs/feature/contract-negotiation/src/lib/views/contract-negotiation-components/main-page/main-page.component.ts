@@ -360,7 +360,9 @@ export class MainPageComponent implements OnInit {
     this.contractNegoService.constructUpdateNoQuote(type)?.subscribe(res => {
       this.contractNegoService.getContractRequestDetails(this.route.snapshot.params.requestId)
       .subscribe(response => {
-        this.localService.contractRequestData(response);
+        this.localService.contractRequestData(response).then(() => {
+          this.localService.callGridRefreshService('all');
+        });
       });
     });
   }
