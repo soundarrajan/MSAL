@@ -89,6 +89,7 @@ export const ContractNegotiationApiPaths = {
   addSellerContract : 'api/ContractNegotiation/addSellerContract',
   removeCounterparty : 'api/ContractNegotiation/removeSellerContract',
   sendRFQ: 'api/ContractNegotiation/SendRFQ',
+  previewRFQ: 'api/contractnegotiation/previewRfqmail',
   updatePrices : 'api/ContractNegotiation/Price/updateOffer',
   resend : 'api/ContractNegotiation/resend',
   switchContractReqBasedOnQuote:'api/ContractNegotiation/switchContractReqBasedOnQuote'
@@ -465,6 +466,18 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
         catchError((body: any) => this.handleErrorMessage(body))
       );
   }
+
+  @ObservableException()
+  getPreviewRFQEmail(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.previewRFQ}`, payload)
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
   @ObservableException()
   updatePrices(payload: any[]): Observable<any> {
     return this.http

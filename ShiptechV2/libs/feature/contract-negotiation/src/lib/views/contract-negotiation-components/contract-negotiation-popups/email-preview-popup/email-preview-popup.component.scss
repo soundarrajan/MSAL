@@ -3,3 +3,27 @@
     margin-bottom: 1rem;
     color: #212529;
 }
+
+.email-preview-popup {
+    .header {
+        #custom-form-field{
+            width: 95px !important;
+            margin: 8px 7px 0px 7px;
+        }
+        .header-btn {
+            margin-top: 0px !important;
+        }
+    }
+    .email-container .section1 {
+        .cust-input-field {
+            min-width: 70px !important;
+        }
+        .add-new {
+            padding: 0px 5px !important;
+        
+            input {
+                padding: 4px 1px !important;
+            }
+        }
+    }
+}

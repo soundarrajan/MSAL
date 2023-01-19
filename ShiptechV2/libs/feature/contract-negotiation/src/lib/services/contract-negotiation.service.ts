@@ -407,6 +407,15 @@ export class ContractNegotiationService extends BaseStoreService
   sendRFQ(payload: any): Observable<any> {
     return this.contractNegotiationApi.sendRFQ(payload);
   }
+
+  /* Gets the Email Preview data based on contractRequestProductOfferId and counterPartyId
+   * @param payload = 
+   */
+  @ObservableException()
+  getPreviewRFQEmail(payload: any): Observable<any> {
+    return this.contractNegotiationApi.getPreviewRFQEmail(payload);
+  }
+
   @ObservableException()
   updatePrices(payload):Observable<any> {
     return this.contractNegotiationApi.updatePrices(payload);

@@ -330,8 +330,9 @@ export class ContractNegoEmaillogComponent implements OnInit {
     const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
       data: {
         id: ev.data.id,
-        ReadOnly: true,
-        contractRequestId:this.contractRequestId
+        readOnly: true,
+        contractRequestId:this.contractRequestId,
+        popupSource: 'emailLog'
       },
       width: '80vw',
       height: '90vh',
@@ -351,7 +352,4 @@ export class ContractNegoEmaillogComponent implements OnInit {
     });
     return emailLogsIds;
   }
-
-  
-
 }
