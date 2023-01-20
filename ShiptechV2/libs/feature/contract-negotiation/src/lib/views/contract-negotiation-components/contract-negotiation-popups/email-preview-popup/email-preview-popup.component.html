@@ -39,7 +39,7 @@
                         <div *ngIf="editable" class="add-new" [style.width.px]="widthTo">
                             <input matInput #addNewAdd placeholder="+Add New" [formControl]="toEmail"
                                 [matAutocomplete]="auto" (keyup.enter)="addTo(addNewAdd.value,false)"
-                                (input)="changeFieldWidthTo(addNewAdd.value)" />
+                                (input)="changeFieldWidthTo()" />
                             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" class=""
                                 (optionSelected)="addTo($event.option.value,true)" class="emailAddressPanelClass">
                                 <mat-option *ngFor="let option of filteredOptionsTo | async" [value]="option.name">
@@ -63,7 +63,7 @@
                         <div *ngIf="editable" class="add-new" [style.width.px]="widthCC">
                             <input #addNewCcAdd matInput placeholder="+Add New" [formControl]="ccEmail"
                                 [matAutocomplete]="auto1" (keyup.enter)="addCc(addNewCcAdd.value)"
-                                (input)="changeFieldWidthCC(addNewAdd.value)">
+                                (input)="changeFieldWidthCC()">
                             <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete" class=""
                                 (optionSelected)="addCc($event.option.value)" class="emailAddressPanelClass">
                                 <mat-option *ngFor="let option of filteredOptionsCc | async" [value]="option.name">
