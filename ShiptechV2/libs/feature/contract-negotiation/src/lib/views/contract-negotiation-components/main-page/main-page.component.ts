@@ -135,6 +135,7 @@ export class MainPageComponent implements OnInit {
     })
     this.localService.getSendRFQButtonStauts().subscribe(data => {
       this.disableSendRFQButton = data;
+      this.ref.markForCheck();
     })
     /*if (this.router.url.includes("buyer")){
       this.isBuyer = true;
