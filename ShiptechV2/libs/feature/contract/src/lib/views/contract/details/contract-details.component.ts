@@ -649,9 +649,8 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       message += ' Name,';
     }
     this.formValues.products.forEach((v, k) => {
-      if (typeof v != 'undefined') {
-        if (v.price == null || v.price == '') {
-          message += ' Price,'        }
+      if (typeof v != 'undefined' && v.fixedPrice && (v.price == null || v.price == '')) {
+          message += ' Price,'
       }
     });
     if (
