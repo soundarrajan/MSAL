@@ -245,9 +245,9 @@ export class MainPageComponent implements OnInit {
             contractReq.locations.map( prod => {
               if(prod.data.length > 0){
                 prod.data.map( data => {
+                  data.check = false;
                   if(res.contractRequestProductOfferIds.includes(data.id)) {
                     data.Status = 'Inquired';
-                    data.check = false;
                     data.rfqStatus = true;
                   }
                 })
