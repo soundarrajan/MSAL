@@ -1144,6 +1144,11 @@
   border: 0px solid #e0e1e4 !important;
 }
 
+.contract-nego-email-log .ag-theme-material .ag-virtual-list-container{
+  overflow-x: scroll;
+  min-height:200px;
+}
+
 .ag-grid-v2.documents-list .ag-body-horizontal-scroll-viewport {
   top: -10px !important;
 }

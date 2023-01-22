@@ -180,6 +180,12 @@ export class ContractNegoEmaillogComponent implements OnInit {
       cellRenderer: params => {
         return moment(params.value).format(this.date);
       },
+      filter: 'agSetColumnFilter',
+      filterParams: {
+        valueFormatter: params => {
+          return moment(params.value).format(this.date);
+        },
+      },
       suppressSizeToFit: false
     }
   ];
