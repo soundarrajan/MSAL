@@ -37,6 +37,7 @@ export class LocalService {
     masterData: any;
     clrRequest: any = 0;
     private sendRFQButtonStatus = new BehaviorSubject<boolean>(true);
+    private contractStatus = new BehaviorSubject<string>('Open');
     public uniqueLocations: string;
     public allRequestDetails: { locations: any[]; };
     private gridRefreshService = new Subject<any>();
@@ -577,12 +578,14 @@ export class LocalService {
         return this.userRoleSubject.asObservable();
     }
 
-    private newContractStatus = new BehaviorSubject<any>({ "oldStatus": 0, "newStatus": 1 });
-    contractStatusUpdate = this.newContractStatus.asObservable();
-
-    updateContractStatus(statusObject) {
-        this.newContractStatus.next(statusObject);
+    setContractStatus(flag: string){
+        this.contractStatus.next(flag);
     }
+
+    getContractStatus(): Observable<string> {
+        return this.contractStatus.asObservable();
+    }
+
     private calculatePrice = new BehaviorSubject<boolean>(false);
     calculatePriceUpdate = this.calculatePrice.asObservable();
 
@@ -746,6 +749,7 @@ export class LocalService {
             Product: await this.db.getProductList({ orderBy: 'name' }),
             SpecGroup : await this.db.getSpecGroupList({ orderBy: 'name' })
         }
+        this.setContractStatus(response.status);
         Object.entries(response['contractRequestProducts']).forEach(([key, res1]) => {
             let location = this.masterData['Location'].find(el => el.id == res1['locationId']);
             let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
@@ -818,7 +822,7 @@ export class LocalService {
                 "lastModifiedOn": res2['lastModifiedOn'],
                 "contractRequestProductId" : res1['id'],
                 "contractRequestId": response['id'],
-                "contractRequestProductOfferIds" : res2['contractRequestProductOfferIds']
+                "contractRequestProductOfferIds" : res2['contractRequestProductOfferIds']??''
             }
             data.push(arrDet);
             arrDet = {};

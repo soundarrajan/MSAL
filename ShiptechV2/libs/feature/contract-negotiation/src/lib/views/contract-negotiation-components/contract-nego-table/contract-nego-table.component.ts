@@ -95,9 +95,9 @@ export class ContractNegoTableComponent implements OnInit {
     //     this.colnPeriod = this.colnQuarterly;
     //   }
     // });
-    this.localService.contractStatusUpdate.subscribe((status) => {
+    /*this.localService.contractStatusUpdate.subscribe((status) => {
       this.updateData(status);
-    });
+    });*/
     this.localService.calculatePriceUpdate.subscribe((status) => {
       if (status) {
         this.contractData.forEach(data => data.priceCalculated = true);
