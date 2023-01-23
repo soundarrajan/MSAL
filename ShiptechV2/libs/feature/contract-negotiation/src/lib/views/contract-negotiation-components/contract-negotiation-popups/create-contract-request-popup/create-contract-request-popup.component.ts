@@ -331,6 +331,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
             validityDate: offerData['offerValidityDate'],
             currencyId: offerData['PriceCurrencyId'],
             contractRequestProductId: offerData['contractRequestProductId'],
+            contractRequestProductOfferIds : offerData['contractRequestProductOfferIds'],
             counterpartyId: offerData['CounterpartyId'],
             counterpartyName: offerData['CounterpartyName'],
             createdById: offerData['createdById'],

@@ -132,11 +132,17 @@ export class MainPageComponent implements OnInit {
     ];
     this.localService.contractPreviewEmail.subscribe(data => {
       this.showPreviewEmail = data;
-    })
+    });
+    
     this.localService.getSendRFQButtonStauts().subscribe(data => {
       this.disableSendRFQButton = data;
       this.ref.markForCheck();
-    })
+    });
+
+    this.localService.getContractStatus().subscribe( data => {
+      this.contractStatus = data;
+      this.ref.markForCheck();
+    });
     /*if (this.router.url.includes("buyer")){
       this.isBuyer = true;
     }else{
@@ -195,6 +201,7 @@ export class MainPageComponent implements OnInit {
               if(data.Status == 'Open') {
                 let productDetails = {
                   "contractRequestProductId": prodData.contractRequestProductId,
+                  "contractRequestProductOfferIds": data.contractRequestProductOfferIds,
                   "counterpartyId": data.CounterpartyId,
                   "createdById": data.createdById,
                   "lastModifiedById": this.currentUserId,
@@ -237,31 +244,14 @@ export class MainPageComponent implements OnInit {
         if(res.rfqSent){
           this.displaySuccessMsg('RFQ Sent successfully!');
           this.rfqSent = true;
-          this.contractStatus = 'Inquired';
-          let contractReq: any = false;
-          if(res.contractRequestProductOfferIds.length > 0){
-            contractReq = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
-              return state['contractNegotiation'].ContractRequest[0];
-            })));
-            contractReq.locations.map( prod => {
-              if(prod.data.length > 0){
-                prod.data.map( data => {
-                  data.check = false;
-                  if(res.contractRequestProductOfferIds.includes(data.id)) {
-                    data.Status = 'Inquired';
-                    data.rfqStatus = true;
-                  }
-                })
-              }
-            })
-           // this.store.dispatch(new ContractRequest([contractReq]));
-          const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
-          this.contractNegoService.getContractRequestDetails(contractRequestIdFromUrl)
-          .subscribe(response => {
-          this.localService.contractRequestData(response).then(() => {
-            this.ref.markForCheck();
-          });
-          });
+          if(res.sellerRFQSendIds && res.sellerRFQSendIds.length > 0){
+            const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
+            this.contractNegoService.getContractRequestDetails(contractRequestIdFromUrl)
+            .subscribe(response => {
+              this.localService.contractRequestData(response).then(() => {
+                this.ref.markForCheck();
+              });
+            });
           }
         }
         if(res.message !== ""){
@@ -353,7 +343,7 @@ export class MainPageComponent implements OnInit {
   }
 
   sendToApproval() {
-    this.localService.updateContractStatus({ "oldStatus": 0, "newStatus": 1 });
+    //this.localService.updateContractStatus("Awaiting Approval");
     this.displaySuccessMsg('Offers sent for approval');
   }
 
@@ -369,17 +359,17 @@ export class MainPageComponent implements OnInit {
   }
 
   createContract(){
-    this.localService.updateContractStatus({ "oldStatus": 2, "newStatus": 4 });
+    //this.localService.updateContractStatus({ "oldStatus": 2, "newStatus": 4 });
     this.displaySuccessMsg('Contract created successfully');
   }
 
   toApprove(){
-    this.localService.updateContractStatus({ "oldStatus": 1, "newStatus": 2 });
+    //this.localService.updateContractStatus("Approved");
     this.displaySuccessMsg('Offers approved successfully');
   }
   
   toReject(){
-    this.localService.updateContractStatus({ "oldStatus": 1, "newStatus": 3 });
+    //this.localService.updateContractStatus("Rejected");
     this.displaySuccessMsg('Offers Rejected');
   }
 
