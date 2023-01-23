@@ -154,7 +154,8 @@ export class ContractNegoEmaillogComponent implements OnInit {
       suppressSizeToFit: false,
       headerClass: ['aggrid-text-align-c'],
       cellClassRules: this.cellClassRules,
-      cellClass: ['aggridtextalign-center']
+      cellClass: ['aggridtextalign-center'],
+      tooltipValueGetter: params => params.value
     },
     {
       headerName: 'Sender',
