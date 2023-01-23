@@ -10,7 +10,7 @@ import { catchError, map } from 'rxjs/operators';
 import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
 import { ContractNegotiationStoreModel } from '../store/contract-negotiation.store';
 import { ContractNegotiationApi } from './api/contract-negotiation-api';
-
+import _ from 'lodash';
 @Injectable()
 export class ContractNegotiationService extends BaseStoreService
   implements OnDestroy {
@@ -23,6 +23,7 @@ export class ContractNegotiationService extends BaseStoreService
   hArray: any = [];
   netEnergyList: any;
   selectedCounterparty = {};
+  counterPartyRfqStatus:any = {};
   constructor(
     protected store: Store,
     loggerFactory: ModuleLoggerFactory,
@@ -220,6 +221,10 @@ export class ContractNegotiationService extends BaseStoreService
   @ObservableException()
     constructUpdateCounterparties(source = null) : Observable<any> {
         let payload = [];
+       
+        let eMessage1 = [];
+        let eMessage = [];
+        var counterPartyRfqStatusObj = {};
         let pArray;
         let addFlag = true;
         let filterLocation;
@@ -240,6 +245,15 @@ export class ContractNegotiationService extends BaseStoreService
                 if(el['data'].length > 0){
                   addFlag = !el['data'].some(location => location.CounterpartyId == cId );
                 }
+                if(el['data'].length > 0){
+                  this.counterPartyRfqStatus = el['data'].map(function(location) { 
+                    return {"rfqStatus":location.rfqStatus,"counterpartyId":location.CounterpartyId} }
+                    );
+                  Object.assign(counterPartyRfqStatusObj,
+                    {'RfqInfo' : this.counterPartyRfqStatus}
+                  );
+                }
+             
                 msgStr = el['location-name']+' (<i>'+el['productName']+'</i>)';
                 if(addFlag){
                   pArray = {
@@ -272,18 +286,39 @@ export class ContractNegotiationService extends BaseStoreService
               }
               });
             });
-          });
-
-          let eMessage = [];
+          });        
+    
           if(source != null){
               if(Object.keys(addedNewToLocation).length > 0){
                 this.toastr.success("added successfully to the <br>"+ msgStr,Object.keys(addedNewToLocation).toString(),{enableHtml :  true,timeOut : 6000});
               }
               if(Object.keys(allReadyexitsInLocation).length > 0){
-                Object.entries(allReadyexitsInLocation).forEach(([key,value]) => {
-                  eMessage.push(value['name']);
+                var counterPartyIds = [];
+                Object.entries(allReadyexitsInLocation).forEach(([key,value]) => {   
+                  counterPartyIds[key] = value['id'];           
                 });
+               var filteredCounterPartyIds = counterPartyIds.filter(function (el) {
+                return el != null;
+              });
+              counterPartyRfqStatusObj['RfqInfo'].map(function(counterPartyrfqinfoValue){
+                 if((filteredCounterPartyIds.indexOf( counterPartyrfqinfoValue['counterpartyId']) !== -1 ) && (counterPartyrfqinfoValue['rfqStatus'] == true)){  
+                      eMessage1.push(allReadyexitsInLocation[counterPartyrfqinfoValue['counterpartyId']]['name']);               
+                   }
+                  if((filteredCounterPartyIds.indexOf( counterPartyrfqinfoValue['counterpartyId']) !== -1 ) && (counterPartyrfqinfoValue['rfqStatus'] == false)){  
+                     eMessage.push(allReadyexitsInLocation[counterPartyrfqinfoValue['counterpartyId']]['name']);               
+                  }
+
+               });               
+             
+              eMessage = _.uniq(eMessage);
+              eMessage1 = _.uniq(eMessage1);
+        
+              if(eMessage.length > 0){
                 this.toastr.warning(" - already exists to the <br>"+ msgStr,eMessage.toString(),{enableHtml :  true,timeOut : 6000});
+                }
+              if(eMessage1.length > 0){
+                  this.toastr.warning(" - Same Seller can be added  only using Add another offer <br>"+ msgStr,eMessage1.toString(),{enableHtml :  true,timeOut : 6000});
+                }
               }
             }else{
               if(Object.keys(allReadyexitsInLocation).length > 0){
@@ -352,6 +387,7 @@ export class ContractNegotiationService extends BaseStoreService
             });
           });
           let eMessage = [];
+          let eMessage1 = [];
           if(source != null){
               if(Object.keys(addedNewToLocation).length > 0){
                 this.toastr.success("Selected Offer have been marked as 'No Quote' successfully. <br>",Object.keys(addedNewToLocation).toString(),{enableHtml :  true,timeOut : 6000});
@@ -407,6 +443,15 @@ export class ContractNegotiationService extends BaseStoreService
   sendRFQ(payload: any): Observable<any> {
     return this.contractNegotiationApi.sendRFQ(payload);
   }
+
+  /* Gets the Email Preview data based on contractRequestProductOfferId and counterPartyId
+   * @param payload = 
+   */
+  @ObservableException()
+  getPreviewRFQEmail(payload: any): Observable<any> {
+    return this.contractNegotiationApi.getPreviewRFQEmail(payload);
+  }
+
   @ObservableException()
   updatePrices(payload):Observable<any> {
     return this.contractNegotiationApi.updatePrices(payload);

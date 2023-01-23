@@ -135,6 +135,7 @@ export class MainPageComponent implements OnInit {
     })
     this.localService.getSendRFQButtonStauts().subscribe(data => {
       this.disableSendRFQButton = data;
+      this.ref.markForCheck();
     })
     /*if (this.router.url.includes("buyer")){
       this.isBuyer = true;
@@ -245,9 +246,9 @@ export class MainPageComponent implements OnInit {
             contractReq.locations.map( prod => {
               if(prod.data.length > 0){
                 prod.data.map( data => {
+                  data.check = false;
                   if(res.contractRequestProductOfferIds.includes(data.id)) {
                     data.Status = 'Inquired';
-                    data.check = false;
                     data.rfqStatus = true;
                   }
                 })
@@ -360,7 +361,9 @@ export class MainPageComponent implements OnInit {
     this.contractNegoService.constructUpdateNoQuote(type)?.subscribe(res => {
       this.contractNegoService.getContractRequestDetails(this.route.snapshot.params.requestId)
       .subscribe(response => {
-        this.localService.contractRequestData(response);
+        this.localService.contractRequestData(response).then(() => {
+          this.localService.callGridRefreshService('all');
+        });
       });
     });
   }

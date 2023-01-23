@@ -125,38 +125,18 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
     onInputChange(){
         console.log(this.params.data.Status);
         this.tenantService.pricePrecision;
-        debugger;
         let payload = {
-            "contractRequestProductOffers": [
-                // {
-                //     "offerPrice": 1234,
-                //     "pricingTypeId": 1,
-                //     "status": this.params.data.Status,
-                //     "statusId": 1,
-                //     "isSelected": true,
-                //     "id": this.params.data.id,
-                //     "specGroupId" : this.params.data.SpecGroupId,
-                //     "productId": this.params.data.ProductId,
-                //     "minQuantity": this.params.data.MinQuantity+1,
-                //     "minQuantityUomId": this.params.data.MinQuantityUnit,
-                //     "maxQuantity": this.params.data.MaxQuantity+1,
-                //     "maxQuantityUomId": this.params.data.MaxQuantityUnit,
-                //     "validityDate" : "2023-02-24",
-                //     "currencyId": 1,
-                //     "contractRequestProductId": this.params.data.contractRequestProductId,
-                //     "counterpartyId": this.params.data.CounterpartyId,
-                //     "lastModifiedById": null,
-                //     "lastModifiedOn": null
-                // }
+            "contractRequestId": this.params.node.data.contractRequestId,
+            "contractRequestProductId": this.params.node.data.contractRequestProductId,
+            "contractRequestProductOffers": [               
 
                 {
-                    "productId": this.params.data.ProductId,
+                    "productId": this.params.node.data.ProductId,
                     "specGroupId": this.params.data.SpecGroupId,
-                    "minQuantity": this.params.data.MinQuantity+1,
-                    "minQuantityUomId": 5,
-                    "maxQuantity": this.params.data.MaxQuantity+1,
-                    "maxQuantityUomId": 5,
-                    "validityDate": "2023-02-24",
+                    "minQuantity": this.params.node.data.MinQuantity,
+                    "maxQuantity": this.params.node.data.MaxQuantity,
+                    "quantityUomId": this.params.node.data.quantityUomId,
+                    "validityDate": this.params.node.data.ValidityDate,
                     "offerPrice": this.params.value,
                     "pricingTypeId": 1,
                     "status": "Inquired",
@@ -165,7 +145,7 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
                     "id": this.params.data.id,
                     "currencyId": 1,
                     "contractRequestProductId": this.params.data.contractRequestProductId,
-                    "counterpartyId": 41,
+                    "counterpartyId": this.params.node.data.CounterpartyId,
                     "lastModifiedById": null,
                     "lastModifiedOn": null
                 }

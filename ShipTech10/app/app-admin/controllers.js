@@ -1074,26 +1074,28 @@ APP_ADMIN.controller('Controller_Admin', [ '$rootScope', '$scope', '$Api_Service
             childrenAttr = 'children';
         }
         let treeList = [];
-        let lookup = {};
-        list?.forEach((obj) => {
-            let findElement = _.find(values, function(object) {
-                return object.id == obj.id && object.name == obj.name;
-            });
-            if (findElement) {
-                obj.isSelected = true;
-            }
-            lookup[obj[idAttr]] = obj;
-            obj[childrenAttr] = [];
-        });
-        list?.forEach((obj) => {
-            if (obj[parentAttr] != null) {
-                if (obj[parentAttr].id) {
-                    lookup[obj[parentAttr].id][childrenAttr].push(obj);
+        if (Array.isArray(list)) {
+            let lookup = {};
+            list?.forEach((obj) => {
+                let findElement = _.find(values, function(object) {
+                    return object.id == obj.id && object.name == obj.name;
+                });
+                if (findElement) {
+                    obj.isSelected = true;
                 }
-            } else {
-                treeList.push(obj);
-            }
-        });
+                lookup[obj[idAttr]] = obj;
+                obj[childrenAttr] = [];
+            });
+            list?.forEach((obj) => {
+                if (obj[parentAttr] != null) {
+                    if (obj[parentAttr].id) {
+                        lookup[obj[parentAttr].id][childrenAttr].push(obj);
+                    }
+                } else {
+                    treeList.push(obj);
+                }
+            });
+        }
         return treeList;
     };
     $scope.changeScheduleStatusDisplayOrder = function(newVal, oldVal) {

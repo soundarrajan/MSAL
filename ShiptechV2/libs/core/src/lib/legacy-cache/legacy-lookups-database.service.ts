@@ -145,7 +145,9 @@ export class LegacyLookupsDatabase extends Dexie {
     [nameof<LegacyLookupsDatabase>('productType')]: (dto: DatabaseValueMappingLookup) =>
       <IProductTypeLookupDto>{ ...fromLegacyLookup(dto), productTypeGroupId: dto.databaseValue },
     [nameof<LegacyLookupsDatabase>('productTypeGroup')]: (dto: DatabaseValueMappingLookup) =>
-      <IProductTypeGroupLookupDto>{ ...fromLegacyLookup(dto), defaultUomId: dto.databaseValue }
+      <IProductTypeGroupLookupDto>{ ...fromLegacyLookup(dto), defaultUomId: dto.databaseValue },
+    [nameof<LegacyLookupsDatabase>('specGroup')]: (dto: DatabaseValueMappingLookup) =>
+      <ISpecGroupLookupDto>{ ...fromLegacyLookup(dto), productId: dto.databaseValue }
   };
 
   lookupVersions: Dexie.Table<ILegacyLookupVersion, string>;
