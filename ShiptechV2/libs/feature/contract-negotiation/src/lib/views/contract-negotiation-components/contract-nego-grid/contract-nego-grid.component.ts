@@ -18,6 +18,8 @@ import { CounterpartieNameCellComponent } from '../../../core/ag-grid-renderers/
 import { GetRowNodeIdFunc, IGetRowsParams } from 'ag-grid-community';
 import { ContractRequest } from '../../../store/actions/ag-grid-row.action';
 import { Router } from '@angular/router';
+import { AGGridSpecSelectRenderer } from '../../../core/ag-grid-renderers/ag-grid-spec-select-renderer.component';
+import { AGGridMinMaxCellRenderer } from '../../../core/ag-grid-renderers/ag-grid-min-max-cell-renderer.component';
 @Component({
   selector: 'app-contract-nego-grid',
   templateUrl: './contract-nego-grid.component.html',
@@ -116,7 +118,6 @@ export class ContractNegoGridComponent implements OnInit {
       },
       rowSelection: 'multiple',
       onGridReady: params => {
-        console.log(params);
         setTimeout(() => this.blockHttpCall = true,3000);
         this.gridOptions_forecast.api = params.api;
         this.gridOptions_forecast.columnApi = params.columnApi;
@@ -226,9 +227,11 @@ export class ContractNegoGridComponent implements OnInit {
         ratingChipRenderer: AGGridRatingChipRenderer,
         groupRowRenderer: GroupRowInnerRenderer,
         inputSelectRenderer: AGGridInputSelectRenderer,
+        inputSpecSelectRenderer : AGGridSpecSelectRenderer,
         datepickerRenderer: AGGridDatepickerRenderer,
         productSelectRenderer: AGGridCellMenuRenderer,
-        noQuoteRenderer: fullWidthCellRenderer
+        noQuoteRenderer: fullWidthCellRenderer,
+        AGGridMinMaxCellRenderer : AGGridMinMaxCellRenderer,
       }
     };
 
@@ -301,13 +304,14 @@ export class ContractNegoGridComponent implements OnInit {
     // alert(this.selectedPeriodicity);
     // alert(this.selectedChip);
     if (this.selectedChip == '1' && this.selectedPeriodicity == 'M') {
-      this.gridOptions_forecast.columnApi.setColumnsVisible(['ProductName', 'SpecGroupName', 'MinQuantity', 'MaxQuantity', 'OfferPrice', 'ValidityDate', 'M1', 'M2', 'M3', 'M4', 'M5', 'M6'], true);
+      this.gridOptions_forecast.columnApi.setColumnsVisible(['ProductName', 'SpecGroupName', 'MinQuantity', 'MaxQuantity', 'QtyUnit', 'OfferPrice', 'ValidityDate', 'M1', 'M2', 'M3', 'M4', 'M5', 'M6'], true);
       this.gridOptions_forecast.columnApi.setColumnsVisible(['Q1', 'Q2', 'Q3', 'Q4', 'fdTotalContractAmt', 'fdFomulaDesc', 'fdSchedule', 'fdPremium', 'fdAddCosts', 'fdRemarks'], false);
-    } else if (this.selectedChip == '1' && this.selectedPeriodicity == 'Q') {
-      this.gridOptions_forecast.columnApi.setColumnsVisible(['ProductName', 'SpecGroupName', 'MinQuantity', 'MaxQuantity', 'OfferPrice', 'ValidityDate', 'Q1', 'Q2', 'Q3', 'Q4'], true);
+    }
+    else if (this.selectedChip == '1' && this.selectedPeriodicity == 'Q') {
+      this.gridOptions_forecast.columnApi.setColumnsVisible(['ProductName', 'SpecGroupName', 'MinQuantity', 'MaxQuantity', 'QtyUnit', 'OfferPrice', 'ValidityDate', 'Q1', 'Q2', 'Q3', 'Q4'], true);
       this.gridOptions_forecast.columnApi.setColumnsVisible(['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'm5check', 'm6check', 'fdTotalContractAmt', 'fdFomulaDesc', 'fdSchedule', 'fdPremium', 'fdAddCosts', 'fdRemarks'], false);
     } else {
-      this.gridOptions_forecast.columnApi.setColumnsVisible(['ProductName', 'SpecGroupName', 'MinQuantity', 'MaxQuantity', 'OfferPrice', 'ValidityDate', 'M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'Q1', 'Q2', 'Q3', 'Q4'], false);
+      this.gridOptions_forecast.columnApi.setColumnsVisible(['ProductName', 'SpecGroupName', 'MinQuantity', 'MaxQuantity', 'QtyUnit',  'OfferPrice', 'ValidityDate', 'M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'Q1', 'Q2', 'Q3', 'Q4'], false);
       this.gridOptions_forecast.columnApi.setColumnsVisible(['fdTotalContractAmt', 'fdFomulaDesc', 'fdSchedule', 'fdPremium', 'fdAddCosts', 'fdRemarks'], true);
     }
   }
@@ -498,46 +502,61 @@ export class ContractNegoGridComponent implements OnInit {
           headerName: 'Spec',
           headerTooltip: 'Spec',
           field: 'SpecGroupName',
-          editable: true,
           cellClass: params => {
             return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell grey-opacity-cell' : '';
-          }
-        },
-        {
-          headerName: 'Qty Min',
-          headerTooltip: 'Qty Min',
-          field: 'MinQuantity',
-          minWidth: 120,
-          cellClass: params => {
-            return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell input-select-renderer grey-opacity-cell' : '';
           },
-          // cellRenderer: 'inputSelectRenderer',
-          // cellRendererParams: (params) => { return { value: params.data?.MinQuantity, unit: params.data?.MinQuantityUnit } }
-
           cellRendererSelector: params => {
             if (params.node.level != 0 && params.data.rfqStatus && this.rowSelected) {
               return {
-                component: 'inputSelectRenderer',
-                params: { value: params.data.MinQuantity, unit: params.data.MinQuantityUnit ? params.data.MinQuantityUnit : 'BBL' }
+                component: 'inputSpecSelectRenderer',
+                params: { value: params.data.SpecGroupName }
               };
             } else {
               return undefined;
             }
           }
         },
-
+        {
+          headerName: 'Qty Min',
+          headerTooltip: 'Qty Min',
+          field: 'MinQuantity',
+          minWidth: 40,
+          cellRendererFramework: AGGridMinMaxCellRenderer,
+          cellClass: params => {
+            return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell input-select-renderer grey-opacity-cell' : '';
+          },
+          cellRendererParams: (params) => { return { value: params.data?.MinQuantity, type : 'MinQuantity' } }
+        },
         {
           headerName: 'Qty Max',
           headerTooltip: 'Qty Max',
           field: 'MaxQuantity',
-          minWidth: 120,
+          minWidth: 40,
+          cellRendererFramework: AGGridMinMaxCellRenderer,
           cellClass: params => {
             return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell input-select-renderer grey-opacity-cell' : '';
           },
+          cellRendererParams: (params) => { return { value: params.data?.MaxQuantity, type : 'MaxQuantity' } }
           //cellClass: ['editable-cell input-select-renderer'],
           // cellRenderer: 'inputSelectRenderer',
           // cellRendererParams: (params) => { return { value: params.data?.MaxQuantity, unit: params.data?.MaxQuantityUnit } }
 
+          // cellRendererSelector: params => {
+          //   if (params.node.level != 0 && params.data.rfqStatus && this.rowSelected) {
+          //     return {
+          //       component: 'inputSelectRenderer',
+          //       params: { value: params.data.MaxQuantity, unit: params.data.MaxQuantityUnit ? params.data.MaxQuantityUnit : 'BBL' }
+          //     };
+          //   } else {
+          //     return undefined;
+          //   }
+          // }
+        },
+        {
+          headerName: '', width: 130, field: 'QtyUnit',
+          cellClass: params => {
+            return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell input-select-renderer grey-opacity-cell' : '';
+          },
           cellRendererSelector: params => {
             if (params.node.level != 0 && params.data.rfqStatus && this.rowSelected) {
               return {

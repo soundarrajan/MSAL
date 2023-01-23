@@ -67,6 +67,8 @@ import { SpotNegotiationService } from './../../../spot-negotiation/src/lib/serv
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 import { CounterpartieNameCellComponent } from './core/ag-grid-renderers/counterpartie-name-cell.component';
 import { SearchAllCounterpartiesComponent } from 'libs/feature/spot-negotiation/src/lib/views/main/details/components/spot-negotiation-popups/search-all-counterparties/search-all-counterparties.component';
+import { AGGridSpecSelectRenderer } from './core/ag-grid-renderers/ag-grid-spec-select-renderer.component';
+import { AGGridMinMaxCellRenderer } from './core/ag-grid-renderers/ag-grid-min-max-cell-renderer.component';
 //import { RemoveCounterpartyPopupComponent } from './views/contract-negotiation-components/contract-negotiation-popups/remove-counterparty-popup/remove-counterparty-popup.component';
 //import { ConfirmdialogComponent } from './views/contract-negotiation-components/contract-negotiation-popups/confirmdialog/confirmdialog.component';
 
@@ -105,12 +107,14 @@ import { SearchAllCounterpartiesComponent } from 'libs/feature/spot-negotiation/
     AGGridCheckboxRenderer,
     AGGridDatepickerRenderer,
     AGGridInputSelectRenderer,
+    AGGridSpecSelectRenderer,
     AGGridMultiDataRendererComponent,
     AGGridRatingChipRenderer,
     fullWidthCellRenderer,
     MatCheckboxHeaderComponent,
     HeaderBreadcrumbComponent,
     CounterpartieNameCellComponent,
+    AGGridMinMaxCellRenderer,
    // RemoveCounterpartyPopupComponent,
    //ConfirmdialogComponent,
    SearchAllCounterpartiesComponent
@@ -144,11 +148,13 @@ import { SearchAllCounterpartiesComponent } from 'libs/feature/spot-negotiation/
     AGGridCellMenuRenderer,
     AGGridCheckboxRenderer,
     AGGridDatepickerRenderer,
-    AGGridInputSelectRenderer,
+    AGGridInputSelectRenderer, 
+    AGGridSpecSelectRenderer,
     AGGridMultiDataRendererComponent,
     AGGridRatingChipRenderer,
     fullWidthCellRenderer,
-    SearchAllCounterpartiesComponent
+    SearchAllCounterpartiesComponent,
+    AGGridMinMaxCellRenderer
   ],
   providers: [
     ModuleLoggerFactory,
