@@ -817,7 +817,8 @@ export class LocalService {
                 "lastModifiedById": res2['lastModifiedById'],
                 "lastModifiedOn": res2['lastModifiedOn'],
                 "contractRequestProductId" : res1['id'],
-                "contractRequestId": response['id']
+                "contractRequestId": response['id'],
+                "contractRequestProductOfferIds" : res2['contractRequestProductOfferIds']
             }
             data.push(arrDet);
             arrDet = {};
