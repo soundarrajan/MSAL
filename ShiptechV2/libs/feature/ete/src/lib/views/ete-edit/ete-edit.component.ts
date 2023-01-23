@@ -18,13 +18,15 @@ import { KnownEteRoutes } from '../../known-ete.routes';
 export class EteEditComponent implements OnInit, OnDestroy {
   public templateId = '';
   public serverUrl = '';
+  public infraApiUrl = '';
 
   private _destroy$ = new Subject();
 
   constructor(public appConfig: AppConfig, public route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.serverUrl = this.appConfig.v1.API.BASE_URL;
+    this.serverUrl = this.appConfig.v1.API.BASE_URL_DATA_ADMIN;
+    this.infraApiUrl = this.appConfig.v1.API.BASE_URL_DATA_INFRASTRUCTURE;
     this.templateId = this.route.snapshot.paramMap.get(
       KnownEteRoutes.templateIdParam
     );
