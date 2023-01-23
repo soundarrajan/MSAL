@@ -77,29 +77,32 @@ export class ContractNegotiationHeaderComponent implements OnInit {
         this.contractRequestId = response['id'];
         this.contractRequestStatus.emit(response['status']);
         this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
-        this.localService.getMasterListData(['Product','Location','Uom','SpecGroup']).subscribe(data => {
+        this.localService.getMasterDataList().then(data => {
           this.masterData = data;
           this.localService.masterData = data;
-          if(response['quantityDetails'].length > 0){
-              this.totalRequestQty(JSON.parse(JSON.stringify(response)));
-            }           
-      });
-      this.localService.getMasterListData(['BrokerWithInactive','SellerWithInactive','SupplierWithInactive','ServiceProviderWithInactive']).subscribe(data => {
-        let mergeArray = [
-          ...data['BrokerWithInactive'],
-          ...data['SellerWithInactive'],
-          ...data['SupplierWithInactive'],
-          ...data['ServiceProviderWithInactive']
-        ];
-        setTimeout(() => {
-          this.localService.masterData['Counterparty'] = this.masterData['Counterparty'] = mergeArray;
           this.localService.contractRequestData(response).then( () => {
             this.uniqueLocationNames = this.localService.uniqueLocations;
             this.allRequestDetails[0] = this.localService.allRequestDetails;
             this.ref.markForCheck();
           });
-        }, 100);
-      });
+
+          if(response['quantityDetails'].length > 0){
+              this.totalRequestQty(JSON.parse(JSON.stringify(response)));
+          } 
+        });
+      
+      // this.localService.getMasterListData(['BrokerWithInactive','SellerWithInactive','SupplierWithInactive','ServiceProviderWithInactive']).subscribe(data => {
+      //   let mergeArray = [
+      //     ...data['BrokerWithInactive'],
+      //     ...data['SellerWithInactive'],
+      //     ...data['SupplierWithInactive'],
+      //     ...data['ServiceProviderWithInactive']
+      //   ];
+      //   setTimeout(() => {
+      //    // this.localService.masterData['Counterparty'] = this.masterData['Counterparty'] = mergeArray;
+            
+      //   }, 100);
+      // });
       });
     }
     this.getJSONData();

@@ -721,6 +721,16 @@ export class LocalService {
             }
         })
     }
+   async getMasterDataList() {
+    return {
+        Uom: await this.db.getUomTable({ orderBy: 'name' }),
+        Product: await this.db.getProductList({ orderBy: 'name' }),
+        Location: await this.db.getLocationList({ orderBy: 'name' }),
+        SpecGroup: await this.db.getSpecGroupList({ orderBy: 'name' }),
+        PricingType: await this.db.getPricingTypeList({ orderBy: 'name' }),
+        ProductType: await this.db.getProductType({ orderBy: 'name' }),
+      }
+   }
     async contractRequestData(response){
         let contractArray = { 
             id: response['id'],
@@ -747,7 +757,8 @@ export class LocalService {
             Location: await this.db.getLocationList({ orderBy: 'name' }),
             Counterparty: await this.db.getCounterPartyList({ orderBy: 'name' }),
             Product: await this.db.getProductList({ orderBy: 'name' }),
-            SpecGroup : await this.db.getSpecGroupList({ orderBy: 'name' })
+            SpecGroup : await this.db.getSpecGroupList({ orderBy: 'name' }),
+            ProductType: await this.db.getProductType({ orderBy: 'name' })
         }
         this.setContractStatus(response.status);
         Object.entries(response['contractRequestProducts']).forEach(([key, res1]) => {
@@ -761,7 +772,7 @@ export class LocalService {
             let uom = this.masterData['Uom'].find(el => el.id == res2['quantityUomId']);
             let SpecGroupName  = '';
             if(res2['status'] != 'Open'){
-                SpecGroupName = this.masterData['SpecGroup'].find(el => el.id == res1['specGroupId']).name;
+                SpecGroupName = this.masterData['SpecGroup'].find(el => el.id == res2['specGroupId']).name;
             }
             arrDet = {
                 "check": res2['isSelected'],
@@ -779,13 +790,14 @@ export class LocalService {
                 "GenRating": res2['genRating'],
                 "PortRating": res2['portRating'],
                 "QuotedProductId": '',
-                "SpecGroupId": res1['specGroupId'],
+                "SpecGroupId": res2['specGroupId'],
                 "SpecGroupName": SpecGroupName,
                 "MinQuantity": res2['minQuantity'],
                 "MaxQuantity": res2['maxQuantity'],
                 "quantityUomId": res2['quantityUomId'],
                 "MinQuantityUnit" : uom?.name,
                 "MaxQuantityUnit" : uom?.name,
+                "QtyUnit" : uom?.name,
                 "OfferPrice": this.format.price(res2['offerPrice']),
                 "PriceCurrencyId": res2['currencyId'],
                 "PriceCurrencyName": "",

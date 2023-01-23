@@ -11,6 +11,7 @@ import { ModuleLoggerFactory } from '../core/logging/module-logger-factory';
 import { ContractNegotiationStoreModel } from '../store/contract-negotiation.store';
 import { ContractNegotiationApi } from './api/contract-negotiation-api';
 import _ from 'lodash';
+import { ContractRequest } from '../store/actions/ag-grid-row.action';
 @Injectable()
 export class ContractNegotiationService extends BaseStoreService
   implements OnDestroy {
@@ -209,7 +210,6 @@ export class ContractNegotiationService extends BaseStoreService
   }
   
   onCounterpartySelction(checkbox: any, element: any): void {
-    console.log(element);
     if (checkbox.checked) {
       element.isSelected = true;
       this.selectedCounterparty[element.id] = element;
@@ -453,8 +453,57 @@ export class ContractNegotiationService extends BaseStoreService
   }
 
   @ObservableException()
-  updatePrices(payload):Observable<any> {
-    return this.contractNegotiationApi.updatePrices(payload);
+  updatePrices(data):Observable<any> {
+    let payload;
+    let offerArray = {
+      "contractRequestId": data.contractRequestId,
+      "contractRequestProductId": data.contractRequestProductId,
+      "contractRequestProductOffers": [               
+          {
+              "productId": data.ProductId,
+              "specGroupId": data.SpecGroupId,
+              "minQuantity": data.MinQuantity,
+              "maxQuantity": data.MaxQuantity,
+              "quantityUomId": data.quantityUomId,
+              "validityDate": data.ValidityDate,
+              "offerPrice": data.OfferPrice,
+              "pricingTypeId": 1,
+              "status": "Inquired",
+              "statusId": 2,
+              "isSelected": true,
+              "id": data.id,
+              "currencyId": 1,
+              "contractRequestProductId": data.contractRequestProductId,
+              "counterpartyId": data.CounterpartyId,
+              "lastModifiedById": null,
+              "lastModifiedOn": null,
+              "contractRequestProductOfferIds":data.contractRequestProductOfferIds
+          }
+      ]
+  }
+  let contractReq = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+    return state['contractNegotiation'].ContractRequest[0];
+  })));
+  contractReq.locations.map( prod => {
+    if(prod.data.length > 0){
+      prod.data.map( indata => {       
+          if(indata.id == data.id){
+          indata.minQuantity = data.minQuantity;
+          indata.maxQuantity = data.maxQuantity;
+          indata.OfferPrice = data.OfferPrice;
+          indata.ValidityDate = data.ValidityDate;
+          indata.quantityUomId = data.quantityUomId;
+          indata.SpecGroupId = data.SpecGroupId;
+          indata.SpecGroupName = data.SpecGroupName;
+          indata.ProductId = data.ProductId;
+          indata.CounterpartyId = data.CounterpartyId;
+          }
+      })
+    }
+  });
+  this.store.dispatch(new ContractRequest([contractReq]));
+  payload= offerArray;
+  return this.contractNegotiationApi.updatePrices(payload);
   }
 
 }

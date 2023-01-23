@@ -290,6 +290,11 @@ export class LegacyLookupsDatabase extends Dexie {
     let productList = await db.toArray();
     return productList;
   }
+  async getProductType(params: Filter = { orderBy: 'id'}){
+    const db = this.table('productType').orderBy(params.orderBy);
+    let productList = await db.toArray();
+    return productList;
+  }
 
   async getTimeZoneList() {
     const db = this.table('timeZone');

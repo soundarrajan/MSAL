@@ -90,7 +90,7 @@ export const ContractNegotiationApiPaths = {
   removeCounterparty : 'api/ContractNegotiation/removeSellerContract',
   sendRFQ: 'api/ContractNegotiation/SendRFQ',
   previewRFQ: 'api/contractnegotiation/previewRfqmail',
-  updatePrices : 'api/ContractNegotiation/Price/updateOffer',
+  updatePrices : 'api/ContractNegotiation/offer/update',
   resend : 'api/ContractNegotiation/resend',
   switchContractReqBasedOnQuote:'api/ContractNegotiation/switchContractReqBasedOnQuote'
 }
