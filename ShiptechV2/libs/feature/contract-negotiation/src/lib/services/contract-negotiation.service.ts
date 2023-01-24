@@ -482,7 +482,7 @@ export class ContractNegotiationService extends BaseStoreService
               "maxQuantity": data.MaxQuantity,
               "quantityUomId": data.quantityUomId,
               "validityDate": data.ValidityDate,
-              "offerPrice": data.OfferPrice,
+              "offerPrice": data?.OfferPrice? data.OfferPrice  : null,
               "pricingTypeId": 1,
               "status": "Inquired",
               "statusId": 2,
@@ -504,8 +504,8 @@ export class ContractNegotiationService extends BaseStoreService
     if(prod.data.length > 0){
       prod.data.map( indata => {       
           if(indata.id == data.id){
-          indata.minQuantity = data.minQuantity;
-          indata.maxQuantity = data.maxQuantity;
+          indata.MinQuantity = data.MinQuantity;
+          indata.MaxQuantity = data.MaxQuantity;
           indata.OfferPrice = data.OfferPrice;
           indata.ValidityDate = data.ValidityDate;
           indata.quantityUomId = data.quantityUomId;

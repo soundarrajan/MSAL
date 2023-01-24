@@ -26,11 +26,13 @@ export class AGGridMinMaxCellRenderer implements ICellRendererAngularComp {
         return false;
     }
     onQtyValueChange() {
-        if(this.params.value >= 0 && this.params.value != ''){
+        this.params.value = Number(this.params.value);
+        if(this.params.value > 0 && this.params.value != ''){
             let newParams = JSON.parse(JSON.stringify(this.params.node.data));
             newParams[this.params.type] = this.params.value;
             this.contractService.updatePrices(newParams).subscribe();
         }else{
+            this.params.value = this.params.data.MinQuantity; 
             this.toaster.error('Please enter valid value');
         }
         
