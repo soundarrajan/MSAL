@@ -90,6 +90,8 @@ export const ContractNegotiationApiPaths = {
   removeCounterparty : 'api/ContractNegotiation/removeSellerContract',
   sendRFQ: 'api/ContractNegotiation/SendRFQ',
   previewRFQ: 'api/contractnegotiation/previewRfqmail',
+  discardSavedPreviewRFQ: 'api/contractnegotiation/discardSavedComments',
+  saveAndSendRFQ: 'api/contractnegotiation/saveAndSendRFQ',
   updatePrices : 'api/ContractNegotiation/offer/update',
   resend : 'api/ContractNegotiation/resend',
   switchContractReqBasedOnQuote:'api/ContractNegotiation/switchContractReqBasedOnQuote'
@@ -468,10 +470,34 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   }
 
   @ObservableException()
+  saveAndSendRFQ(payload): Observable<any> {
+    if(payload.length == 0) return;
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.saveAndSendRFQ}`, payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
   getPreviewRFQEmail(payload: any): Observable<any> {
     return this.http
       .post<any>(
         `${this._shitechApiUrl}/${ContractNegotiationApiPaths.previewRFQ}`, payload)
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  discardSavedPreviewRFQ(payload: any): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.discardSavedPreviewRFQ}`, payload)
       .pipe(
         map((body: any) => body),
         catchError((body: any) => this.handleErrorMessage(body))

@@ -1326,6 +1326,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   saveContract() {
+    if(!this.isNewRequest){
+      this.reqObj.sendAmendRFQ = false;
+    }
     this.assignUserIdToReqObj(this.isNewRequest);
     const isValid = this.showFormErrors();
     if (!isValid) {
