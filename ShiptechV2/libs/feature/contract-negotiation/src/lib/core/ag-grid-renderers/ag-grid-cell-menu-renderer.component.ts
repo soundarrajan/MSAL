@@ -9,10 +9,10 @@ import { LocalService } from '../../services/local-service.service';
 @Component({
     selector: 'cell-menu-renderer',
     template: `
-    <div   [matMenuTriggerFor]="clickmenu1"
+    <div   [matMenuTriggerFor]="clickmenu1" (click)="fillInitialProductData()"
     #menuTrigger="matMenuTrigger" [matMenuTriggerData]="{data: params.data}" class="cell-input">
     {{params.value}}
-</div>
+    </div>
 <mat-menu #clickmenu1="matMenu" class="add-new-request-menu">
     <ng-template matMenuContent let-aliasMenuItems="data">
         <div class="expansion-popup">
@@ -75,9 +75,10 @@ export class AGGridCellMenuRenderer implements ICellRendererAngularComp {
         public contractService: ContractNegotiationService,
         private toastr: ToastrService) {
     }
-    dataSource: any;
+    dataSource: any; 
     ngOnInit(): void {
         this.dataSource = this.localService.masterData['Product'].slice(0, 14);
+        this.dataSource = JSON.parse(JSON.stringify(this.dataSource));
         this.appendProductType();
     }
     agInit(params: any): void {
@@ -87,14 +88,28 @@ export class AGGridCellMenuRenderer implements ICellRendererAngularComp {
     refresh(): boolean {
         return false;
     }
-
+    fillInitialProductData(){
+        this.dataSource = this.localService.masterData['Product'].slice(0, 14);
+        this.dataSource = JSON.parse(JSON.stringify(this.dataSource));
+        this.appendProductType();
+    }
     updateProduct(prodId, value) {
+        let specGroupArr;
         let newParams = JSON.parse(JSON.stringify(this.params.node.data));
         newParams.ProductId = prodId;
-        let specGroup = this.localService.masterData['SpecGroup'].filter(sg => sg.productId === prodId);
-        if(specGroup.length > 0){
-            newParams.SpecGroupId = specGroup[0].id;
-            newParams.SpecGroupName = specGroup[0].name;
+        let prod = this.localService.masterData['Product'].find(p => p.id == prodId);
+
+        if(prod?.defaultSpecGroupId && prod.defaultSpecGroupId != 0){
+            specGroupArr = this.localService.masterData['SpecGroup'].filter(sg => sg.id == prod.defaultSpecGroupId);
+            newParams.SpecGroupId = specGroupArr[0].id;
+            newParams.SpecGroupName = specGroupArr[0].name;
+        } else {
+            specGroupArr = this.localService.masterData['SpecGroup'].filter(sg => sg.productId === prodId);
+            newParams.SpecGroupId = null;
+            newParams.SpecGroupName = null;
+        }
+
+        if(specGroupArr.length > 0){
             this.params.value = value;
             this.contractService.updatePrices(newParams).subscribe();
         }else{
@@ -118,8 +133,7 @@ export class AGGridCellMenuRenderer implements ICellRendererAngularComp {
                 .slice(0, 14);
             this.appendProductType();
         } else {
-            this.dataSource = this.localService.masterData['Product'].slice(0, 14);
-            this.appendProductType();
+            this.fillInitialProductData();
         }
     }
 }

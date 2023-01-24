@@ -123,18 +123,33 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
         });
     }
     onInputChange(){
-        if(this.params.value >= 0 && this.params.value != ''){
-            this.tenantService.pricePrecision;
-            let newParams = JSON.parse(JSON.stringify(this.params.node.data));
-            newParams.OfferPrice = this.params.value;
-            this.contractService.updatePrices(newParams).subscribe();
-            this.params.value = this.tenantService.price(this.params.value);
+        if(this.params.node.data.MinQuantity > 0 && this.params.node.data.MaxQuantity > 0 && this.params.node.data.SpecGroupName != '' && this.params.node.data.SpecGroupName != null) {
+            if(Number(this.params.value) > 0 && this.params.value != ''){
+                let newParams = JSON.parse(JSON.stringify(this.params.node.data));
+                newParams.OfferPrice = this.tenantService.price(this.params.value);
+                this.contractService.updatePrices(newParams).subscribe();
+            }else{
+                this.params.value = this.params.node.data.OfferPrice;
+                this.toaster.error('Please enter valid price');
+            }       
         }else{
-            this.toaster.error('Please enter valid price');
-        }       
-
-        if(this.params.data.Status=='Rejected'){
-            this.params.context.componentParent.toggleProgressBar(this.params.data);
+            this.params.value = this.params.node.data.OfferPrice;
+            if(this.params.node.data.MinQuantity == 0 || this.params.node.data.MinQuantity == null){
+                this.toaster.error('Please fill the "Min Qty" fields with valid values');
+                return;
+            }
+            if(this.params.node.data.MaxQuantity == 0 || this.params.node.data.MaxQuantity == null){
+                this.toaster.error('Please fill the "Max Qty" fields with valid values');
+                return;
+            }
+            if(this.params.node.data.SpecGroupName == '' || this.params.node.data.SpecGroupName == null){
+                this.toaster.error('Please fill the "Spec Group Name" fields with valid values');
+                return;
+            }
         }
+
+        // if(this.params.data.Status=='Rejected'){
+        //     this.params.context.componentParent.toggleProgressBar(this.params.data);
+        // }
     }
 }
