@@ -37,6 +37,7 @@ export class LocalService {
     masterData: any;
     clrRequest: any = 0;
     private sendRFQButtonStatus = new BehaviorSubject<boolean>(true);
+    private contractStatus = new BehaviorSubject<string>('Open');
     public uniqueLocations: string;
     public allRequestDetails: { locations: any[]; };
     private gridRefreshService = new Subject<any>();
@@ -577,12 +578,14 @@ export class LocalService {
         return this.userRoleSubject.asObservable();
     }
 
-    private newContractStatus = new BehaviorSubject<any>({ "oldStatus": 0, "newStatus": 1 });
-    contractStatusUpdate = this.newContractStatus.asObservable();
-
-    updateContractStatus(statusObject) {
-        this.newContractStatus.next(statusObject);
+    setContractStatus(flag: string){
+        this.contractStatus.next(flag);
     }
+
+    getContractStatus(): Observable<string> {
+        return this.contractStatus.asObservable();
+    }
+
     private calculatePrice = new BehaviorSubject<boolean>(false);
     calculatePriceUpdate = this.calculatePrice.asObservable();
 
@@ -718,6 +721,16 @@ export class LocalService {
             }
         })
     }
+   async getMasterDataList() {
+    return {
+        Uom: await this.db.getUomTable({ orderBy: 'name' }),
+        Product: await this.db.getProductList({ orderBy: 'name' }),
+        Location: await this.db.getLocationList({ orderBy: 'name' }),
+        SpecGroup: await this.db.getSpecGroupList({ orderBy: 'name' }),
+        PricingType: await this.db.getPricingTypeList({ orderBy: 'name' }),
+        ProductType: await this.db.getProductType({ orderBy: 'name' }),
+      }
+   }
     async contractRequestData(response){
         let contractArray = { 
             id: response['id'],
@@ -744,8 +757,10 @@ export class LocalService {
             Location: await this.db.getLocationList({ orderBy: 'name' }),
             Counterparty: await this.db.getCounterPartyList({ orderBy: 'name' }),
             Product: await this.db.getProductList({ orderBy: 'name' }),
-            SpecGroup : await this.db.getSpecGroupList({ orderBy: 'name' })
+            SpecGroup : await this.db.getSpecGroupList({ orderBy: 'name' }),
+            ProductType: await this.db.getProductType({ orderBy: 'name' })
         }
+        this.setContractStatus(response.status);
         Object.entries(response['contractRequestProducts']).forEach(([key, res1]) => {
             let location = this.masterData['Location'].find(el => el.id == res1['locationId']);
             let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
@@ -757,7 +772,7 @@ export class LocalService {
             let uom = this.masterData['Uom'].find(el => el.id == res2['quantityUomId']);
             let SpecGroupName  = '';
             if(res2['status'] != 'Open'){
-                SpecGroupName = this.masterData['SpecGroup'].find(el => el.id == res1['specGroupId']).name;
+                SpecGroupName = this.masterData['SpecGroup'].find(el => el.id == res2['specGroupId']).name;
             }
             arrDet = {
                 "check": res2['isSelected'],
@@ -775,13 +790,14 @@ export class LocalService {
                 "GenRating": res2['genRating'],
                 "PortRating": res2['portRating'],
                 "QuotedProductId": '',
-                "SpecGroupId": res1['specGroupId'],
+                "SpecGroupId": res2['specGroupId'],
                 "SpecGroupName": SpecGroupName,
                 "MinQuantity": res2['minQuantity'],
                 "MaxQuantity": res2['maxQuantity'],
                 "quantityUomId": res2['quantityUomId'],
                 "MinQuantityUnit" : uom?.name,
                 "MaxQuantityUnit" : uom?.name,
+                "QtyUnit" : uom?.name,
                 "OfferPrice": this.format.price(res2['offerPrice']),
                 "PriceCurrencyId": res2['currencyId'],
                 "PriceCurrencyName": "",
@@ -818,7 +834,7 @@ export class LocalService {
                 "lastModifiedOn": res2['lastModifiedOn'],
                 "contractRequestProductId" : res1['id'],
                 "contractRequestId": response['id'],
-                "contractRequestProductOfferIds" : res2['contractRequestProductOfferIds']
+                "contractRequestProductOfferIds" : res2['contractRequestProductOfferIds']??''
             }
             data.push(arrDet);
             arrDet = {};

@@ -17,8 +17,8 @@ import { ModifyOfferPeriodPopupComponent } from '../../views/contract-negotiatio
         (click)="pricePopupTrigger.closeMenu()" class="cell-input"
         (contextmenu)="$event.preventDefault();$event.stopPropagation();pricePopupTrigger.openMenu();">
         <input [(ngModel)]="params.value" (change)="onInputChange()" *ngIf="params.node.level != 0">
-
-
+        <span *ngIf="params.value == '432.5'" class="formula-indication-icon" 
+        matTooltip="Formula Based Pricing - DOD" matTooltipClass="lightTooltip"></span>
     </div>
     <mat-menu #priceMenupopup="matMenu" class="darkPanel-add big">
         <div class="add-block" (click)="formulaPricingPopup()">
@@ -123,39 +123,18 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
         });
     }
     onInputChange(){
-        console.log(this.params.data.Status);
-        this.tenantService.pricePrecision;
-        let payload = {
-            "contractRequestId": this.params.node.data.contractRequestId,
-            "contractRequestProductId": this.params.node.data.contractRequestProductId,
-            "contractRequestProductOffers": [               
+        if(this.params.value >= 0 && this.params.value != ''){
+            this.tenantService.pricePrecision;
+            let newParams = JSON.parse(JSON.stringify(this.params.node.data));
+            newParams.OfferPrice = this.params.value;
+            this.contractService.updatePrices(newParams).subscribe();
+            this.params.value = this.tenantService.price(this.params.value);
+        }else{
+            this.toaster.error('Please enter valid price');
+        }       
 
-                {
-                    "productId": this.params.node.data.ProductId,
-                    "specGroupId": this.params.data.SpecGroupId,
-                    "minQuantity": this.params.node.data.MinQuantity,
-                    "maxQuantity": this.params.node.data.MaxQuantity,
-                    "quantityUomId": this.params.node.data.quantityUomId,
-                    "validityDate": this.params.node.data.ValidityDate,
-                    "offerPrice": this.params.value,
-                    "pricingTypeId": 1,
-                    "status": "Inquired",
-                    "statusId": 2,
-                    "isSelected": true,
-                    "id": this.params.data.id,
-                    "currencyId": 1,
-                    "contractRequestProductId": this.params.data.contractRequestProductId,
-                    "counterpartyId": this.params.node.data.CounterpartyId,
-                    "lastModifiedById": null,
-                    "lastModifiedOn": null
-                }
-            ]
-        }
-        this.contractService.updatePrices(payload).subscribe()
-        this.params.value = this.tenantService.price(this.params.value);
         if(this.params.data.Status=='Rejected'){
             this.params.context.componentParent.toggleProgressBar(this.params.data);
-
         }
     }
 }

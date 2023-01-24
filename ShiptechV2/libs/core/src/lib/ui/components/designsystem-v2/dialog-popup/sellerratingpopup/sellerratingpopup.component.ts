@@ -5,6 +5,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { CommonService } from '@shiptech/core/services/common/common-service.service';
 import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 @Component({
   selector: 'app-sellerratingpopup',
   templateUrl: './sellerratingpopup.component.html',
@@ -26,14 +27,15 @@ export class SellerratingpopupComponent implements OnInit {
     private store: Store,
     private spinner: NgxSpinnerService,
     private commonService: CommonService,
-    public format: TenantFormattingService
+    public format: TenantFormattingService,
+    private db: LegacyLookupsDatabase
     ) {
       this.popupType = data.popupType;
       this.locationId = data.locationId;
       this.counterpartyId = data.sellerId;
       this.counterpartyName = data.sellerName;
-      this.commonService.getMasterListData(['Location']).subscribe( mData => {
-        this.locationName = mData.Location.find(x=> x.id == this.locationId).name;
+      this.db.getLocationList().then( data => {
+        this.locationName = data.find(x=> x.id == this.locationId).name;
       });
       this.getSellerRatings();
   }
