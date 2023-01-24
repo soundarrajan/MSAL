@@ -11,8 +11,8 @@
     Notes
   </div>
 </div>
-<div class="col-md-12 no-padding" *ngIf="expandInvoiceNotes">
-  <table class="notes-details-table table table-stripped table-hover" style="width:100%">
+<div class="col-md-12 no-padding"*ngIf="expandInvoiceNotes">
+  <table class="notes-details-table table table-stripped table-hover"style="width:100%">
     <thead>
       <tr>
         <td class="padding" style="width: 30px;">
@@ -39,7 +39,7 @@
       <tbody>
 
           <ng-container  *ngFor="let noteLine of formValues.invoiceNotes | keyvalue : originalOrder">
-            <tr *ngIf="!noteLine.value.isDeleted">
+            <tr *ngIf="!noteLine.value.isDeleted" >
               <td class="padding" style="width:30px; padding-left: 0px  !important; padding-right: 0px  !important;">
                 <a *ngIf ="!detectCurrentUser(noteLine.value)" class="remove-icon" style="margin-left: 10px;" (click)="deleteNotesLine(noteLine.key)"
                 [ngStyle]="{
@@ -50,7 +50,7 @@
               <td style="width:100%">
                 <div class="custom-form-field-invoice-notes" style="height: 30px;" [ngClass]="{'darkTheme':switchTheme,'lightTheme':!switchTheme}">
                   <mat-form-field class="without-search"
-                    appearance="legacy" style="height: 30px;">
+                    appearance="legacy" style="height: 30px;" matTooltip="{{ noteLine.value.note }}" matTooltipClass="my-custom-tooltip">
                     <input
                       [ngModel]="noteLine.value.note | htmlDecodeReadonly"
                       (ngModelChange)="noteLine.value.note = $event"
