@@ -6,9 +6,9 @@ import { LocalService } from '../../services/local-service.service';
 @Component({
     selector: 'input-spec-select-renderer',
     template: `
-    <div   [matMenuTriggerFor]="clickmenu1"
+    <div   [matMenuTriggerFor]="clickmenu1" style="width:100%;height:100%;"
     #menuTrigger="matMenuTrigger" [matMenuTriggerData]="{data: params.data}" class="cell-input t-align-left">
-    {{params.value}}
+    <span>{{params.value}}</span>
 </div>
 
 <mat-menu #clickmenu1="matMenu" class="add-new-request-menu">
@@ -74,6 +74,7 @@ export class AGGridSpecSelectRenderer implements ICellRendererAngularComp {
         this.params.value = value;
         let newParams = JSON.parse(JSON.stringify(this.params.node.data));
         newParams.SpecGroupId = id;
+        newParams.SpecGroupName = value;
         this.contractService.updatePrices(newParams).subscribe();
     }
 }

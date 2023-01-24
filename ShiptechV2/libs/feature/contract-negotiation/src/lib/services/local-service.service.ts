@@ -771,7 +771,7 @@ export class LocalService {
             let product = this.masterData['Product'].find(el => el.id == res2['productId']);
             let uom = this.masterData['Uom'].find(el => el.id == res2['quantityUomId']);
             let SpecGroupName  = '';
-            if(res2['status'] != 'Open'){
+            if(res2['status'] != 'Open' && res2['specGroupId'] != null){
                 SpecGroupName = this.masterData['SpecGroup'].find(el => el.id == res2['specGroupId']).name;
             }
             arrDet = {
