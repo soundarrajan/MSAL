@@ -127,8 +127,8 @@ export class EmailPreviewPopupComponent implements OnInit {
     ).subscribe(data => {        
       
     });
-    this.changeDetector.detectChanges();
-    this.toaster.success('Mail has been Resend successfully');    
+    this.changeDetector.detectChanges();    
+    this.toaster.success('Mail has been resend successfully');    
     this.contractNegoEmail.getLatestEmailLogs(contractRequestId);
 
   }

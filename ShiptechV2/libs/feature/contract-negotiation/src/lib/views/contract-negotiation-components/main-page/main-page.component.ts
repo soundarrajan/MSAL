@@ -333,7 +333,7 @@ export class MainPageComponent implements OnInit {
     this.contractNegoService.emailLogsResendMail(
       reqpayload
     ).subscribe( data => {
-      this.displaySuccessMsg('Mail has been Resend successfully');
+      this.displaySuccessMsg('Mail has been resend successfully');
       delay(1500); 
       this.contractNegoEmaillog.getEmailLogs()
     });

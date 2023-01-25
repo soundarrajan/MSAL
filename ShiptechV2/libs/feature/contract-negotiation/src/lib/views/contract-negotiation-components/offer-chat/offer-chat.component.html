@@ -33,7 +33,7 @@
                               <div class="chat-details">
                                 <div class="header">
                                     <div class="name">{{data.UserName}}</div>
-                                    <div class="date">{{data.CreatedOn}}<span class="arrow" *ngIf="data.type=='sent'" [matMenuTriggerFor]="clickmenupopup" #menuTrigger="matMenuTrigger" (menuOpened)="clickChat(i);"></span></div>
+                                    <div class="date">{{data.CreatedOn}}<span class="arrow" *ngIf="data.type=='sent'"></span></div>
                                 </div>
                                 <div class="msg-block">
                                 <div class="message" [attr.contenteditable]="contenteditable">{{data.Message}}</div>
@@ -41,7 +41,7 @@
                               </div>
                               </div>
                             </div>
-                            <mat-menu #clickmenupopup="matMenu" class="menu-panel-chat small-menu darkPanel">
+                            <!--<mat-menu #clickmenupopup="matMenu" class="menu-panel-chat small-menu darkPanel">
                               <div class="p-tb-5" style="display:flex;align-items:center;" (click)="editChat()">
                                   <span>
                                       <div class="edit-icon icon"></div>
@@ -57,7 +57,7 @@
                                   <span class="fs-12">Delete</span>
                               </div>
                           
-                          </mat-menu>
+                          </mat-menu>-->
                           </ng-container>
                           </div>
                           <div class="chat-box">

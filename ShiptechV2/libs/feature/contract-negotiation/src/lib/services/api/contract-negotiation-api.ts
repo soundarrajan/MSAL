@@ -94,7 +94,9 @@ export const ContractNegotiationApiPaths = {
   saveAndSendRFQ: 'api/contractnegotiation/saveAndSendRFQ',
   updatePrices : 'api/ContractNegotiation/offer/update',
   resend : 'api/ContractNegotiation/resend',
-  switchContractReqBasedOnQuote:'api/ContractNegotiation/switchContractReqBasedOnQuote'
+  switchContractReqBasedOnQuote:'api/ContractNegotiation/switchContractReqBasedOnQuote', 
+  offerChatList:'api/ContractNegotiation/offerChatList',
+  addOfferChat:'api/ContractNegotiation/offerChatCreate'
 }
 
 
@@ -131,6 +133,32 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
 
   constructor(private http: HttpClient, private appConfig: AppConfig) { }
 
+  @ObservableException()
+  getOfferChat(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.offerChatList}`,
+         payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  addOfferChat(payload: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.addOfferChat}`,
+       payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }  
+ 
   @ObservableException()
   getEmailLogsPreview(payload: any): Observable<any> {
     return this.http

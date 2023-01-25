@@ -47,7 +47,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   counterpartyList;
   selReqIndex = 0;
   expandedSearch: boolean = false;
-  chatAvailable:boolean = true
+  chatAvailable:boolean = false
   searchText: string = "";
   masterData: any;
   contractRequestId : String;
@@ -69,8 +69,21 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    
     const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
     if(contractRequestIdFromUrl && isNumeric(contractRequestIdFromUrl)){
+      const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
+      var payload = {
+         "contractRequestId": contractRequestIdFromUrl
+       };
+      this.contractService.getContractRequestOfferChat(payload)
+      .subscribe(response => {
+        if(response.length > 0){
+          this.chatAvailable = true;
+        }else{
+          this.chatAvailable = false;
+        }
+      });
       this.getCounterpartyList();
       this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
       .subscribe(response => {
@@ -84,6 +97,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
             this.uniqueLocationNames = this.localService.uniqueLocations;
             this.allRequestDetails[0] = this.localService.allRequestDetails;
             this.ref.markForCheck();
+           
           });
 
           if(response['quantityDetails'].length > 0){
@@ -105,8 +119,9 @@ export class ContractNegotiationHeaderComponent implements OnInit {
       // });
       });
     }
-    this.getJSONData();
+  
   }
+  
 
   totalRequestQty(response){
     let minMaxDet =  response['quantityDetails'].find(el => el.contractualQuantityOptionId == 1);
@@ -126,7 +141,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
         return;
       }
       if (res?.error) {
-        alert('Handle Error');
+        console.log('Handle Error');
         return;
       } else {
         if (res?.payload?.length > 0) {
@@ -268,42 +283,8 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   
   }
 
-  // ************************** Need to remove code after testing ***************** start
-   private getJSONData() {
-  //   debugger;
-  //   let allRequestDetails = [];
-  //   var allRequestDetailsObservable = [];
-     var allRequestCommentsObservable = [];
-  //   var allRequestLocationObservable = [];
-    this.requestOptions.forEach(r => {
-      //allRequestDetailsObservable.push(this.localService.getContractRequestData(r.requestId));
-      allRequestCommentsObservable.push(this.localService.getContractNegoChatData(r.requestId));
-    });
-
-  //   forkJoin(allRequestDetailsObservable).subscribe(res => {
-  //     debugger;
-  //     console.log(res);
-  //     this.allRequestDetails = res;
-  //     allRequestDetails.forEach(req => req.locations.forEach(loc => {
-  //       allRequestLocationObservable.push(this.localService.getContractNegoJSON(req['request-id'], loc['location-id']));
-  //       this.localService.getContractNegoJSON(req['request-id'], loc['location-id']).subscribe(data => {
-  //         loc['data'] = data;
-  //       });
-  //     }
-  //     ));
-  //   })
-    
-    forkJoin(allRequestCommentsObservable).subscribe(res => {
-      this.allRequestComments = res;
-      if(this.allRequestComments[0].length > 0){
-        this.chatAvailable = true;
-      }else{
-        this.chatAvailable = false;
-      }
-      
-    });
-    
-    }
-  // ************************** Need to remove code after testing ***************** end
-
+ 
 }
+
+
+

@@ -436,6 +436,15 @@ export class ContractNegotiationService extends BaseStoreService
     return this.contractNegotiationApi.getTenantConfiguration();
   }
 
+  getContractRequestOfferChat(payload: any): Observable<any> {
+    return this.contractNegotiationApi.getOfferChat(payload);
+  }
+
+  @ObservableException()
+  addOfferChat(payload: any): Observable<any> {
+    return this.contractNegotiationApi.addOfferChat(payload);
+  }
+
   /* Send RFQ
    * @param payload = 
    */
