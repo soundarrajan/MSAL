@@ -217,7 +217,7 @@ export class ContractNegoGridComponent implements OnInit {
         },
 
         colSpan: params => {
-          if (params.node.level == 0 ||params.node.data.isNoQuote ) return 12;
+          if (params.node.level == 0 ||params.node.data.isNoQuote ) return 13;
           else return 1;
         }
       },
@@ -768,7 +768,8 @@ export class ContractNegoGridComponent implements OnInit {
       return { cellClass: classArray.length > 0 ? classArray : null, isClickable: clickEvent, cellValueClass: params.value == 113 || params.value == 106 ? 'best-price' : '', status: status };
     }
   }
-  onRowSelected(e) {    
+  onRowSelected(e) {   
+    debugger; 
     if(e.data && this.blockHttpCall){
       //this.currentLocationId = e.data['locationId'];
       this.sellerIds.push(e.data.id);
@@ -792,7 +793,7 @@ export class ContractNegoGridComponent implements OnInit {
       if(prod.data.length > 0){
         prod.data.map( data => {
           if(e.data?.id == data?.id) data.check = e.node.selected;
-        })
+        });
       }
     })
     this.store.dispatch(new ContractRequest([contractReq]));
@@ -821,8 +822,11 @@ export class ContractNegoGridComponent implements OnInit {
   
   redrawRows(rowIndex) {
     if(rowIndex != 'all'){
-      var rows = [this.gridOptions_forecast.api.getDisplayedRowAtIndex(rowIndex)!]
-      this.gridOptions_forecast.api.redrawRows({ rowNodes: rows });
+      let refreshRows = [];
+      rowIndex.forEach(rowId => {
+        refreshRows.push(this.gridOptions_forecast.api.getRowNode(rowId)!);
+      });
+      this.gridOptions_forecast.api.redrawRows({ rowNodes: refreshRows });
     }else{
       this.gridOptions_forecast.api.redrawRows();
     }

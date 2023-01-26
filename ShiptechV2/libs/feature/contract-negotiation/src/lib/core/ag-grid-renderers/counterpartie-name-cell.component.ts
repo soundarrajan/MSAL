@@ -123,7 +123,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
         this.contractService.getContractRequestDetails(this.route.snapshot.params.requestId)
         .subscribe(response => {
           this.localService.contractRequestData(response).then(() => {
-            this.localService.callGridRefreshService(params.rowIndex);
+            this.localService.callGridRefreshService([params.node.data.id]);
           })
           type=='no-Quote'?this.toaster.success("Selected Offer have been marked as No Quote successfully -"+params?.value):this.toaster.success("Selected Offer Price has been enabled  "+params.value);         
         });
