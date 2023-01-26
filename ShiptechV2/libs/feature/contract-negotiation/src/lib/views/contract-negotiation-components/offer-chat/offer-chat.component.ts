@@ -73,14 +73,15 @@ export class OfferChatComponent implements OnInit {
           "UserName":(commentResponse.users.displayName)?commentResponse.users.displayName:commentResponse.users.name,
           "label":(commentResponse.users.displayName)?commentResponse.users.displayName.slice(0, 2):commentResponse.users.name.slice(0, 2),
           "type":(this.currentUser.id == commentResponse.createdBy)?"sent":"received",
-          "CreatedOn":this.formatDate(commentResponse.createdAt),
+          "CreatedOn":this.showUtcToLocalDate(commentResponse.createdAt),
+          "id":this.formatDate(commentResponse.id),
           "Message":commentResponse.chat
         }       
          allRequestComments.push(comment);          
        });  
         allRequestComments =  _.orderBy(
         allRequestComments,
-        ['CreatedOn'],
+        ['id'],
         ['asc']
       );
        this.chatObj =  allRequestComments;
