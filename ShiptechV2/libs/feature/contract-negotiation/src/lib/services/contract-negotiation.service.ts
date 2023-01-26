@@ -217,7 +217,10 @@ export class ContractNegotiationService extends BaseStoreService
       delete this.selectedCounterparty[element.id];
     }
   }
-
+  @ObservableException()
+  addAnotherOfferCounterparty(payload) : Observable<any> {
+    return  this.contractNegotiationApi.addCounterpartyToAllLocations(payload);
+  }
   @ObservableException()
     constructUpdateCounterparties(source = null) : Observable<any> {
         let payload = [];
@@ -332,6 +335,7 @@ export class ContractNegotiationService extends BaseStoreService
               }
           }
        this.selectedCounterparty = {};
+       debugger;
        return  this.contractNegotiationApi.addCounterpartyToAllLocations(payload);
     }
     

@@ -26,7 +26,7 @@ import { ActivatedRoute } from '@angular/router';
 
       <mat-menu #clickmenupopup="matMenu" class="small-menu darkPanel">
         <ng-template matMenuContent let-aliasMenuItems="data">
-          <div class="p-tb-5" style="display:flex;align-items:center;" (click)="addAnotherOffer(aliasMenuItems)">
+          <div class="p-tb-5" style="display:flex;align-items:center;" *ngIf="params.node.data?.Status != 'Open'" (click)="addAnotherOffer(params)">
             <div class="popup-icon-align">
               <div class="add-blue-icon"></div>
             </div>
@@ -167,17 +167,24 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
     });
   }
 
-  addAnotherOffer(val) {
-    let index = -1;
-    let rowData = [];
-    this.params.api.forEachNode((node, i) => {
-      if (node.data && node.data.CounterpartyName == val) {
-        node.data.id = this.dummyId;
-        index = i;
-        rowData.push(node.data);
-      }
+  addAnotherOffer(cParam) {
+   let  pArray = {
+      'contractRequestProductId' : cParam.node.data.contractRequestProductId,
+      'counterpartyId' :cParam.node.data.CounterpartyId,
+      'locationId' : cParam.node.data.LocationId,
+      "statusId": 1,
+      'IsDeleted' :false,
+      'IsSelected' :true,
+      'Id' : 0,
+      "createdOn": "2022-12-05T05:21:28.504Z",
+      "createdById": 1
+    };
+    this.contractService.addAnotherOfferCounterparty([pArray]).subscribe(res => {
+      this.contractService.getContractRequestDetails(this.route.snapshot.params.requestId)
+      .subscribe(response => {
+        this.localService.contractRequestData(response);
+      });
     });
-    this.params.api.applyTransaction({ add: rowData, addIndex: index });
   }
 
   deleteRow(counterpartyId) {
