@@ -32,7 +32,7 @@ import { ActivatedRoute } from '@angular/router';
             </div>
             <div class="fs-13">Add another offer</div>
           </div>
-          <div class="p-tb-5" *ngIf="rfqSendFlag" style="display:flex;align-items:center;">
+          <div class="p-tb-5" style="display:flex;align-items:center;">
             <div class="popup-icon-align">
               <div class="preview-rfq-icon"></div>
             </div>

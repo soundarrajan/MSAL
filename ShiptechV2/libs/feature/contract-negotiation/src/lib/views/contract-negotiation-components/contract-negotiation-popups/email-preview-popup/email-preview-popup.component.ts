@@ -175,8 +175,11 @@ export class EmailPreviewPopupComponent implements OnInit {
         this.spinner.hide();      
         return;
       }
-      if(res.errorMessage){
-        this.toaster.error(res.errorMessage);
+      let errorMsg = '';
+      errorMsg = res.errors ? JSON.stringify(res.errors) : '';
+      errorMsg = res.errorMessage ? res.errorMessage : '';
+      if(errorMsg != ''){
+        this.toaster.error(errorMsg);
         return;
       }
       if (res.previewResponse) {
@@ -185,6 +188,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         this.ccList = JSON.parse(JSON.stringify(this.previewTemplate.ccList));
         this.to = (this.previewTemplate?.to) ? this.previewTemplate.to : [];
         this.cc = (this.previewTemplate?.cc) ? this.previewTemplate.cc : [];
+        this.from = this.previewTemplate.from;
         this.subject = this.previewTemplate.subject;
         this.content = this.previewTemplate.content;
         this.filesList = (this.previewTemplate.attachmentsList)?this.previewTemplate.attachmentsList:[];
@@ -193,10 +197,8 @@ export class EmailPreviewPopupComponent implements OnInit {
             this.filesList[i].isIncludedInMail = true;
           }
         }
-        setTimeout(() => {
-          this.changeDetector.markForCheck();
-          this.spinner.hide();
-        }, 1000);
+        this.changeDetector.markForCheck();
+        this.spinner.hide();
       } else {
         this.spinner.hide();
         this.clearData();
@@ -228,7 +230,12 @@ export class EmailPreviewPopupComponent implements OnInit {
     if (selectedFromLookup) {
       this.previewTemplate.to.push(this.toList?.find(c => c.name == selected));
     } else {
-      this.previewTemplate.to.push({ IdEmailAddress: selected, name: selected });
+      if(this.validateEmail(selected, 'toMail')){
+        this.previewTemplate.to.push({ IdEmailAddress: selected, name: selected })
+      } else {
+        this.toaster.warning('Please add valid to email address!');
+        return;
+      }
     }
     this.to = this.previewTemplate.to;
     this.toEmail.setValue("");
@@ -251,21 +258,19 @@ export class EmailPreviewPopupComponent implements OnInit {
     if (selectedFromLookup) {
       this.previewTemplate.cc.push(this.ccList2?.find(c => c.name == selected));
     } else {
-      this.previewTemplate.cc.push({ IdEmailAddress: selected, name: selected });
+      if(this.validateEmail(selected, 'ccMail')){
+        this.previewTemplate.cc.push({ IdEmailAddress: selected, name: selected })
+      } else {
+        this.toaster.warning('Please add valid cc email address!');
+        return;
+      }
     }
     this.cc = this.previewTemplate.cc;
     this.ccEmail.setValue("");
     this.ccList2 = this.ccList;
     this.widthTo = 80;
     this.widthTo = 80;
-    // this.addNewCcAdd.nativeElement.value = "";
   }
-
-  /*fileBrowseHandler(files) {
-    for (const item of files) {
-      this.filesList.push(item.name);
-    }
-  }*/
 
   removeRecipient(selected) {
     console.log(selected);
@@ -334,25 +339,6 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.filesList = [];
   }
 
-  discardSavedPreview() {
-    let payload = {
-      "emailTemplateId": 0,
-      "id": 0,
-      "attachmentsList": [
-        {
-          "id": 0,
-          "isDeleted": true,
-          "name": "string",
-          "content": "string",
-          "emailLogId": 0,
-          "isIncludedInMail": true,
-          "inclusionInMail": "string"
-        }
-      ]
-    };
-
-  }
-
   getDocumentsList() {
     const payload = {
       Order: null,
@@ -390,164 +376,6 @@ export class EmailPreviewPopupComponent implements OnInit {
           for (let i = 0; i < response.length; i++) {
             response[i].isIncludedInMail = true;
           }
-          
-          /*Start - Adding for development purpose. Need to remove before QC release */
-          response = [
-            {
-                "name": "40932 updated.xlsx",
-                "documentType": {
-                    "id": 14,
-                    "name": "REQUEST - QUANTITY VALIDATION (by the line)",
-                    "internalName": null,
-                    "displayName": null,
-                    "code": null,
-                    "collectionName": null,
-                    "customNonMandatoryAttribute1": null,
-                    "isDeleted": false,
-                    "modulePathUrl": null,
-                    "clientIpAddress": null,
-                    "userAction": null
-                },
-                "size": 27826,
-                "fileType": "Xlsx",
-                "transactionType": {
-                    "id": 1,
-                    "name": "Request",
-                    "internalName": null,
-                    "displayName": null,
-                    "code": null,
-                    "collectionName": null,
-                    "customNonMandatoryAttribute1": null,
-                    "isDeleted": false,
-                    "modulePathUrl": null,
-                    "clientIpAddress": null,
-                    "userAction": null
-                },
-                "fileId": 113,
-                "uploadedBy": {
-                    "id": 172,
-                    "name": "saranya.v@inatech.onmicrosoft.com",
-                    "internalName": null,
-                    "displayName": null,
-                    "code": null,
-                    "collectionName": null,
-                    "customNonMandatoryAttribute1": null,
-                    "isDeleted": false,
-                    "modulePathUrl": null,
-                    "clientIpAddress": null,
-                    "userAction": null
-                },
-                "uploadedOn": "2023-01-12T07:24:14.25",
-                "verifiedBy": null,
-                "verifiedOn": null,
-                "notes": "",
-                "isVerified": false,
-                "inclusionInMail": null,
-                "referenceNo": 132492,
-                "totalCount": 1,
-                "isIncludedInMail": null,
-                "content": null,
-                "createdBy": {
-                    "id": 172,
-                    "name": "saranya.v@inatech.onmicrosoft.com",
-                    "internalName": null,
-                    "displayName": null,
-                    "code": null,
-                    "collectionName": null,
-                    "customNonMandatoryAttribute1": null,
-                    "isDeleted": false,
-                    "modulePathUrl": null,
-                    "clientIpAddress": null,
-                    "userAction": null
-                },
-                "createdOn": "2023-01-12T07:24:14.273",
-                "lastModifiedByUser": null,
-                "lastModifiedOn": null,
-                "id": 356893,
-                "isDeleted": false,
-                "modulePathUrl": null,
-                "clientIpAddress": null,
-                "userAction": null
-            },
-            {
-              "name": "40933 updated.xlsx",
-              "documentType": {
-                  "id": 14,
-                  "name": "REQUEST - QUANTITY VALIDATION (by the line)",
-                  "internalName": null,
-                  "displayName": null,
-                  "code": null,
-                  "collectionName": null,
-                  "customNonMandatoryAttribute1": null,
-                  "isDeleted": false,
-                  "modulePathUrl": null,
-                  "clientIpAddress": null,
-                  "userAction": null
-              },
-              "size": 27826,
-              "fileType": "Xlsx",
-              "transactionType": {
-                  "id": 1,
-                  "name": "Request",
-                  "internalName": null,
-                  "displayName": null,
-                  "code": null,
-                  "collectionName": null,
-                  "customNonMandatoryAttribute1": null,
-                  "isDeleted": false,
-                  "modulePathUrl": null,
-                  "clientIpAddress": null,
-                  "userAction": null
-              },
-              "fileId": 113,
-              "uploadedBy": {
-                  "id": 172,
-                  "name": "saranya.v@inatech.onmicrosoft.com",
-                  "internalName": null,
-                  "displayName": null,
-                  "code": null,
-                  "collectionName": null,
-                  "customNonMandatoryAttribute1": null,
-                  "isDeleted": false,
-                  "modulePathUrl": null,
-                  "clientIpAddress": null,
-                  "userAction": null
-              },
-              "uploadedOn": "2023-01-12T07:24:14.25",
-              "verifiedBy": null,
-              "verifiedOn": null,
-              "notes": "",
-              "isVerified": false,
-              "inclusionInMail": null,
-              "referenceNo": 132492,
-              "totalCount": 1,
-              "isIncludedInMail": null,
-              "content": null,
-              "createdBy": {
-                  "id": 172,
-                  "name": "saranya.v@inatech.onmicrosoft.com",
-                  "internalName": null,
-                  "displayName": null,
-                  "code": null,
-                  "collectionName": null,
-                  "customNonMandatoryAttribute1": null,
-                  "isDeleted": false,
-                  "modulePathUrl": null,
-                  "clientIpAddress": null,
-                  "userAction": null
-              },
-              "createdOn": "2023-01-12T07:24:14.273",
-              "lastModifiedByUser": null,
-              "lastModifiedOn": null,
-              "id": 356894,
-              "isDeleted": false,
-              "modulePathUrl": null,
-              "clientIpAddress": null,
-              "userAction": null
-          }
-        ];
-        /*End - Adding for development purpose. Need to remove before QC release */
-          
           this.documentsList = JSON.parse(JSON.stringify(response));
           this.documentListForSearch = JSON.parse(JSON.stringify(response));
           this.changeDetector.markForCheck();
@@ -593,6 +421,59 @@ export class EmailPreviewPopupComponent implements OnInit {
     setTimeout(() => this.widthCC = Math.max(this.minWidth, this.addNewAddCC.nativeElement.offsetWidth+16));
   }
 
+  validateEmail(inputData: string, type: string) {
+    const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const validateemail = regularExpression.test(
+      String(inputData).toLowerCase()
+    );
+    if (validateemail && type == 'ccMail') {
+      return true;
+      //this.addCc(inputData, false);
+    }
+    if (validateemail && type == 'toMail') {
+      //this.addTo(inputData, false);
+      return true;
+    }
+    if (!validateemail && type == 'ccMail') {
+      this.ccEmail.setValue("");
+      return false;
+    }
+    if (!validateemail && type == 'toMail') {
+      this.toEmail.setValue("");
+      return false;
+    }
+  }
+
+  discardSavedPreview() {
+    if (this.previewTemplate == null) {
+      this.toaster.error('Template does not exists.');
+      return;
+    }
+    if (this.previewTemplate.comment.id === 0) {
+      this.toaster.error('No saved template.');
+      return;
+    } else {
+      let requestPayload = {
+        "emailTemplateId": this.previewTemplate.comment.emailTemplate.id,
+        "id": this.previewTemplate.comment.id,
+        "attachmentsList": this.previewTemplate.attachmentsList
+      };
+      this.spinner.show();
+      this.contractNegoService.discardSavedPreviewRFQ(
+        requestPayload
+      ).subscribe((response: any) => {
+        this.spinner.hide();
+        if (response?.message == 'Unauthorized') {
+          return;
+        }
+        if (response) {
+          this.getPreviewTemplate();
+          this.toaster.success('Changes reverted successfully.');
+        }
+      });
+    }
+  }
+
   saveAndSendRFQ(isSendEmail) {
     if (this.previewTemplate == null) {
       this.toaster.error('The Email Template is empty.');
@@ -609,13 +490,15 @@ export class EmailPreviewPopupComponent implements OnInit {
 
     this.previewTemplate.subject = this.subject;
     this.previewTemplate.content = this.content;
-    this.previewTemplate.From = this.from;
-    this.previewTemplate.AttachmentsList = this.filesList;
+    this.previewTemplate.from = this.from;
+    this.previewTemplate.attachmentsList = this.filesList;
+  
     let selectedSellersData = [];
     if(this.selectedEmailPreview.sellerData && this.selectedEmailPreview.sellerData.length > 0){
       this.selectedEmailPreview.sellerData.forEach( data => {
         selectedSellersData.push({
           contractRequestProductId: data.contractRequestProductId,
+          contractRequestProductOfferIds: data.contractRequestProductOfferIds,
           counterpartyId: data.CounterpartyId,
           counterpartyName: data.CounterpartyName,
           createdById: data.createdById,
@@ -634,18 +517,54 @@ export class EmailPreviewPopupComponent implements OnInit {
         });
       });
     }
-    var saveAndSendRfqAPIPayload = {
+    let saveAndSendRfqAPIPayload = {
       selectedSellers: selectedSellersData,
       contractRequestId: this.entityId,
       isSendMail: isSendEmail,
-      previewResponse: this.previewTemplate
+      previewResponse: this.previewTemplate,
+      userId: this.currentUserId
     }
     this.spinner.show();
     // Get response from server
-    const response = this.contractNegoService.saveAndSendRFQ(
+    this.contractNegoService.saveAndSendRFQ(
       saveAndSendRfqAPIPayload
     ).subscribe( response => {
-      console.log('saveAndSendRFQ response::', response);
+      if (response?.message == 'Unauthorized') {
+        return;
+      }
+      if(response.errors){
+        this.toaster.error(JSON.stringify(response.errors));
+        return;
+      }
+      if (response instanceof Object && response['validationMessage'].length > 0) {
+        this.toaster.warning(response['validationMessage']);
+      } else if (
+        response instanceof Object &&
+        isSendEmail &&
+        response['validationMessage'].length == 0
+      ) {
+        this.toaster.success('Mail sent successfully.');
+        setTimeout(() => {
+          //this.spotNegotiationService.callGridRedrawService();
+        }, 500);
+        this.dialogRef.close();
+      } else if (
+        response instanceof Object &&
+        !isSendEmail &&
+        response['validationMessage'].length == 0
+      ) {
+        this.toaster.success('Template saved successfully.');
+        setTimeout(() => {
+          //this.spotNegotiationService.callGridRedrawService();
+        }, 500);
+        this.previewTemplate = response['previewResponse'];
+      } else if (response instanceof Object) {
+        this.toaster.warning(response.Message);
+      } else {
+        this.toaster.error(response);
+        return;
+      }
+      this.spinner.hide();
     });
   };
 }
