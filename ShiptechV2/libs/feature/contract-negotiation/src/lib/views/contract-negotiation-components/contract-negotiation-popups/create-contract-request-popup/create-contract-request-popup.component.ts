@@ -1360,12 +1360,16 @@ export class CreateContractRequestPopupComponent implements OnInit {
       });
     } else {
       this.contractNegotiationService.updateContractRequest(this.reqObj).subscribe( response => {
-        if(response && typeof response == 'boolean'){
-          this.toaster.success('Contract Request has been updated successfully');
-          this.dialog.closeAll();
-        } else {
-          this.toaster.error('Failed to update contract request details');
-        }
+        if(response){
+          var hasContractRequestUpdated = response['hasContractRequestUpdated'];
+          if(hasContractRequestUpdated){
+            this.toaster.success('Contract Request has been updated successfully');
+            this.dialog.closeAll();
+          }
+          else {
+            this.toaster.error('Failed to update contract request details');
+          }
+        } 
       });
     }
   }
