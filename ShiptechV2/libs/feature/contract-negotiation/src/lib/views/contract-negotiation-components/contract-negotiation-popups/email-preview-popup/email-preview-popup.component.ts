@@ -15,6 +15,9 @@ import { MatRadioChange } from '@angular/material/radio';
 import { FileSaverService } from 'ngx-filesaver';
 import { AppErrorHandler } from '@shiptech/core/error-handling/app-error-handler';
 import moment from 'moment';
+import { ContractNegotiationStoreModel } from '../../../../store/contract-negotiation.store';
+import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
+import { LocalService } from '../../../../services/local-service.service';
 export interface User {
   id: string;
   name: string;
@@ -79,6 +82,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   documentPopUp: any;
   expandDocumentPopUp: boolean;
   displayedColumns: string[] = ['name', 'documentType'];
+  generalTenantSettings: any;
 
   constructor(   
     private spinner: NgxSpinnerService,
@@ -90,12 +94,15 @@ export class EmailPreviewPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private contractNegoEmail: ContractNegoEmaillogComponent,
     private _FileSaverService: FileSaverService,
-    private appErrorHandler: AppErrorHandler
+    private appErrorHandler: AppErrorHandler,
+    private tenantSettingsService: TenantSettingsService,
+    private localService: LocalService
   ) {
     this.selectedEmailPreview = data;
     this.entityId = data.contractRequestId;
     this.currentUserId = this.store.selectSnapshot(UserProfileState.user).id;
     this.configuration.readOnly = data.readOnly;
+    this.generalTenantSettings = this.tenantSettingsService.getGeneralTenantSettings();
   }
 
   ngOnInit(): void {
@@ -256,7 +263,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.previewTemplate.cc = [];
     }
     if (selectedFromLookup) {
-      this.previewTemplate.cc.push(this.ccList2?.find(c => c.name == selected));
+      this.previewTemplate.cc.push(this.ccList?.find(c => c.name == selected));
     } else {
       if(this.validateEmail(selected, 'ccMail')){
         this.previewTemplate.cc.push({ IdEmailAddress: selected, name: selected })
@@ -273,10 +280,8 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   removeRecipient(selected) {
-    console.log(selected);
     if (this.to && this.to.length > 0 && selected != null) {
       let index = this.to.findIndex(x => x === selected);
-        console.log('index::', index);
       this.to.splice(index, 1);
       this.previewTemplate.to = this.to;
     }
@@ -453,10 +458,14 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.toaster.error('No saved template.');
       return;
     } else {
+      /*let contractRequestProductOfferIds: any;
+      this.selectedEmailPreview.sellerData.forEach(data => { 
+        contractRequestProductOfferIds = data.contractRequestProductOfferIds;
+      });*/
       let requestPayload = {
         "emailTemplateId": this.previewTemplate.comment.emailTemplate.id,
         "id": this.previewTemplate.comment.id,
-        "attachmentsList": this.previewTemplate.attachmentsList
+        "attachmentsList": this.previewTemplate.attachmentsList??[]
       };
       this.spinner.show();
       this.contractNegoService.discardSavedPreviewRFQ(
@@ -492,10 +501,23 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.previewTemplate.content = this.content;
     this.previewTemplate.from = this.from;
     this.previewTemplate.attachmentsList = this.filesList;
-  
+
+    let contractRequestData: any = {};
+    let crProdData: any = {};
+    let selectedsellerOfferRowIds: any = [];
+    this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+      contractRequestData = state['contractNegotiation'].ContractRequest[0];
+      contractRequestData.locations.forEach( prodData => {
+        if(prodData.contractRequestProductId === this.selectedEmailPreview.sellerData[0].contractRequestProductId){
+          crProdData = JSON.parse(JSON.stringify(prodData));
+        }
+      });
+    });
+    
     let selectedSellersData = [];
     if(this.selectedEmailPreview.sellerData && this.selectedEmailPreview.sellerData.length > 0){
       this.selectedEmailPreview.sellerData.forEach( data => {
+        selectedsellerOfferRowIds.push(data.id);
         selectedSellersData.push({
           contractRequestProductId: data.contractRequestProductId,
           contractRequestProductOfferIds: data.contractRequestProductOfferIds,
@@ -506,14 +528,14 @@ export class EmailPreviewPopupComponent implements OnInit {
           createdOn: data.createdOn,
           lastModifiedOn: moment.utc(),
           id: data.id,
-          productId: data.ProductId,
-          specGroupId: data.SpecGroupId,
-          minQuantity: data.MinQuantity,
-          maxQuantity: data.MaxQuantity,
-          quantityUomId: data.quantityUomId,
-          validityDate: data.offerValidityDate,
-          currencyId: data.PriceCurrencyId,
-          pricingTypeId: data.pricingTypeId
+          productId: crProdData.productId,
+          specGroupId: crProdData.specGroupId,
+          minQuantity: crProdData.minQuantity,
+          maxQuantity: crProdData.maxQuantity,
+          quantityUomId: crProdData.maxQuantityUomId,
+          validityDate: contractRequestData.minValidity,
+          currencyId: this.generalTenantSettings.tenantFormats.currency.id,
+          pricingTypeId: crProdData.pricingTypeId
         });
       });
     }
@@ -543,20 +565,20 @@ export class EmailPreviewPopupComponent implements OnInit {
         isSendEmail &&
         response['validationMessage'].length == 0
       ) {
-        this.toaster.success('Mail sent successfully.');
-        setTimeout(() => {
-          //this.spotNegotiationService.callGridRedrawService();
-        }, 500);
-        this.dialogRef.close();
+        this.contractNegoService.getContractRequestDetails(contractRequestData.id)
+        .subscribe(response => {
+          this.localService.contractRequestData(response).then(() => {
+            this.localService.callGridRefreshService(selectedsellerOfferRowIds);
+          });
+          this.toaster.success('Mail sent successfully.');
+          this.dialogRef.close();
+        });
       } else if (
         response instanceof Object &&
         !isSendEmail &&
         response['validationMessage'].length == 0
       ) {
         this.toaster.success('Template saved successfully.');
-        setTimeout(() => {
-          //this.spotNegotiationService.callGridRedrawService();
-        }, 500);
         this.previewTemplate = response['previewResponse'];
       } else if (response instanceof Object) {
         this.toaster.warning(response.Message);

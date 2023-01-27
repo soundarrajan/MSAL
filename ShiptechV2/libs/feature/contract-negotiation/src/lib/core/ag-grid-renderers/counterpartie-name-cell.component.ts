@@ -114,7 +114,6 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
         sellerData: [params.node.data]
       }
     });
-    dialogRef.afterClosed().subscribe(result => {});
   }
 
   switchEnableOrNoQuoteAction(params, type){
