@@ -190,6 +190,7 @@ export class MainPageComponent implements OnInit {
       this.rowSelected = data;
     });*/
     let counterpartyDetails = []; let alreadySent = []; let selectedCount = 0;
+    let rowNodeIds = [];
     let contractRequestData;
     this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
       contractRequestData = state['contractNegotiation'].ContractRequest[0];
@@ -198,6 +199,7 @@ export class MainPageComponent implements OnInit {
           prodData.data.forEach( data => {
             if(data.check) {
               selectedCount++;
+              rowNodeIds.push(data.id);
               if(data.Status == 'Open') {
                 let productDetails = {
                   "contractRequestProductId": prodData.contractRequestProductId,
@@ -249,7 +251,7 @@ export class MainPageComponent implements OnInit {
             this.contractNegoService.getContractRequestDetails(contractRequestIdFromUrl)
             .subscribe(response => {
               this.localService.contractRequestData(response).then(() => {
-                this.ref.markForCheck();
+                this.localService.callGridRefreshService(rowNodeIds);
               });
             });
           }

@@ -121,6 +121,7 @@ export class ContractNegoGridComponent implements OnInit {
         setTimeout(() => this.blockHttpCall = true,3000);
         this.gridOptions_forecast.api = params.api;
         this.gridOptions_forecast.columnApi = params.columnApi;
+        
         this.gridOptions_forecast.api.sizeColumnsToFit();
         this.rowCount = this.gridOptions_forecast.api.getDisplayedRowCount();
         params.api.sizeColumnsToFit();
@@ -217,7 +218,7 @@ export class ContractNegoGridComponent implements OnInit {
         },
 
         colSpan: params => {
-          if (params.node.level == 0 ||params.node.data.isNoQuote ) return 12;
+          if (params.node.level == 0 ||params.node.data.isNoQuote ) return 13;
           else return 1;
         }
       },
@@ -525,7 +526,7 @@ export class ContractNegoGridComponent implements OnInit {
           cellClass: params => {
             return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell input-select-renderer grey-opacity-cell' : '';
           },
-          cellRendererParams: (params) => { return { value: params.data?.MinQuantity, type : 'MinQuantity' } }
+          cellRendererParams: (params) => { return { value: params.data?.MinQuantity, type : 'MinQuantity',show:params.data.rfqStatus } }
         },
         {
           headerName: 'Qty Max',
@@ -536,21 +537,7 @@ export class ContractNegoGridComponent implements OnInit {
           cellClass: params => {
             return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell input-select-renderer grey-opacity-cell' : '';
           },
-          cellRendererParams: (params) => { return { value: params.data?.MaxQuantity, type : 'MaxQuantity' } }
-          //cellClass: ['editable-cell input-select-renderer'],
-          // cellRenderer: 'inputSelectRenderer',
-          // cellRendererParams: (params) => { return { value: params.data?.MaxQuantity, unit: params.data?.MaxQuantityUnit } }
-
-          // cellRendererSelector: params => {
-          //   if (params.node.level != 0 && params.data.rfqStatus && this.rowSelected) {
-          //     return {
-          //       component: 'inputSelectRenderer',
-          //       params: { value: params.data.MaxQuantity, unit: params.data.MaxQuantityUnit ? params.data.MaxQuantityUnit : 'BBL' }
-          //     };
-          //   } else {
-          //     return undefined;
-          //   }
-          // }
+          cellRendererParams: (params) => { return { value: params.data?.MaxQuantity, type : 'MaxQuantity',show:params.data.rfqStatus } }
         },
         {
           headerName: '', width: 130, field: 'QtyUnit',
@@ -583,6 +570,7 @@ export class ContractNegoGridComponent implements OnInit {
               label: 'offerprice-hover-cell',
               type: 'offerprice-hover-cell',
               cellClass: '',
+              show : params.data.rfqStatus,
               context: this.context
             };
           }
@@ -595,7 +583,7 @@ export class ContractNegoGridComponent implements OnInit {
             return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell grey-opacity-cell' : '';
           },
           cellRendererSelector: params => {
-            if (params.node.level != 0) {
+            if (params.node.level != 0 && params.data.rfqStatus) {
               return {
                 component: 'datepickerRenderer'
               };
@@ -792,7 +780,7 @@ export class ContractNegoGridComponent implements OnInit {
       if(prod.data.length > 0){
         prod.data.map( data => {
           if(e.data?.id == data?.id) data.check = e.node.selected;
-        })
+        });
       }
     })
     this.store.dispatch(new ContractRequest([contractReq]));
@@ -821,10 +809,13 @@ export class ContractNegoGridComponent implements OnInit {
   
   redrawRows(rowIndex) {
     if(rowIndex != 'all'){
-      var rows = [this.gridOptions_forecast.api.getDisplayedRowAtIndex(rowIndex)!]
-      this.gridOptions_forecast.api.redrawRows({ rowNodes: rows });
+      let refreshRows = [];
+      rowIndex.forEach(rowId => {
+        refreshRows.push(this.gridOptions_forecast.api?.getRowNode(rowId)!);
+      });
+      this.gridOptions_forecast.api?.redrawRows({ rowNodes: refreshRows });
     }else{
-      this.gridOptions_forecast.api.redrawRows();
+      this.gridOptions_forecast.api?.redrawRows();
     }
     //this.gridOptions_forecast.api.refreshCells({ force: true });
   }
