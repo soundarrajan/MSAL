@@ -4,6 +4,7 @@ import { TenantFormattingService } from '@shiptech/core/services/formatting/tena
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ToastrService } from 'ngx-toastr';
 import { ContractNegotiationService } from '../../services/contract-negotiation.service';
+import { LocalService } from '../../services/local-service.service';
 import { AdditionalCostPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/additional-cost-popup/additional-cost-popup.component';
 import { FormulaPricingPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/formula-pricing-popup/formula-pricing-popup.component';
 import { ModifyOfferPeriodPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/modify-offer-period-popup/modify-offer-period-popup.component';
@@ -48,6 +49,7 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
         private toaster: ToastrService,
         public contractService: ContractNegotiationService,
         private tenantService: TenantFormattingService,
+        private localService: LocalService,
         ) {
 
     }
@@ -127,7 +129,13 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
             if(Number(this.params.value) > 0 && this.params.value != ''){
                 let newParams = JSON.parse(JSON.stringify(this.params.node.data));
                 newParams.OfferPrice = this.tenantService.price(this.params.value);
-                this.contractService.updatePrices(newParams).subscribe();
+                this.contractService.updatePrices(newParams).subscribe(()=>{
+                    this.localService.getContractStatus().subscribe((status) => {
+                        if(status == 'Inquired'){
+                            this.localService.setContractStatus('Quoted');
+                        }
+                    });
+                });
             }else{
                 this.params.value = this.params.node.data.OfferPrice;
                 this.toaster.error('Please enter valid price');
