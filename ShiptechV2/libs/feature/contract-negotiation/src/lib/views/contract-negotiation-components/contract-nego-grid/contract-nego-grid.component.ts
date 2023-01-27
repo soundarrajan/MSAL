@@ -525,7 +525,7 @@ export class ContractNegoGridComponent implements OnInit {
           cellClass: params => {
             return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell input-select-renderer grey-opacity-cell' : '';
           },
-          cellRendererParams: (params) => { return { value: params.data?.MinQuantity, type : 'MinQuantity' } }
+          cellRendererParams: (params) => { return { value: params.data?.MinQuantity, type : 'MinQuantity',show:params.data.rfqStatus } }
         },
         {
           headerName: 'Qty Max',
@@ -536,21 +536,7 @@ export class ContractNegoGridComponent implements OnInit {
           cellClass: params => {
             return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell input-select-renderer grey-opacity-cell' : '';
           },
-          cellRendererParams: (params) => { return { value: params.data?.MaxQuantity, type : 'MaxQuantity' } }
-          //cellClass: ['editable-cell input-select-renderer'],
-          // cellRenderer: 'inputSelectRenderer',
-          // cellRendererParams: (params) => { return { value: params.data?.MaxQuantity, unit: params.data?.MaxQuantityUnit } }
-
-          // cellRendererSelector: params => {
-          //   if (params.node.level != 0 && params.data.rfqStatus && this.rowSelected) {
-          //     return {
-          //       component: 'inputSelectRenderer',
-          //       params: { value: params.data.MaxQuantity, unit: params.data.MaxQuantityUnit ? params.data.MaxQuantityUnit : 'BBL' }
-          //     };
-          //   } else {
-          //     return undefined;
-          //   }
-          // }
+          cellRendererParams: (params) => { return { value: params.data?.MaxQuantity, type : 'MaxQuantity',show:params.data.rfqStatus } }
         },
         {
           headerName: '', width: 130, field: 'QtyUnit',
@@ -583,6 +569,7 @@ export class ContractNegoGridComponent implements OnInit {
               label: 'offerprice-hover-cell',
               type: 'offerprice-hover-cell',
               cellClass: '',
+              show : params.data.rfqStatus,
               context: this.context
             };
           }
@@ -595,7 +582,7 @@ export class ContractNegoGridComponent implements OnInit {
             return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell grey-opacity-cell' : '';
           },
           cellRendererSelector: params => {
-            if (params.node.level != 0) {
+            if (params.node.level != 0 && params.data.rfqStatus) {
               return {
                 component: 'datepickerRenderer'
               };
@@ -768,8 +755,7 @@ export class ContractNegoGridComponent implements OnInit {
       return { cellClass: classArray.length > 0 ? classArray : null, isClickable: clickEvent, cellValueClass: params.value == 113 || params.value == 106 ? 'best-price' : '', status: status };
     }
   }
-  onRowSelected(e) {   
-    debugger; 
+  onRowSelected(e) {    
     if(e.data && this.blockHttpCall){
       //this.currentLocationId = e.data['locationId'];
       this.sellerIds.push(e.data.id);

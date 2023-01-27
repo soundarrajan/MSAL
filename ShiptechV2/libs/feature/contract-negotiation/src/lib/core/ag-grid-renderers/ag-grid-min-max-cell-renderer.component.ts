@@ -7,7 +7,7 @@ import { ContractNegotiationService } from '../../services/contract-negotiation.
 @Component({
     selector: 'cell-min-max-cell-renderer',
     template: `
-    <div class="cell-input">
+    <div *ngIf="params.show" class="cell-input">
       <input [(ngModel)]="params.value" (change)="onQtyValueChange()">
     </div>`,
     styles: [

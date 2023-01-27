@@ -12,7 +12,7 @@ import { ModifyOfferPeriodPopupComponent } from '../../views/contract-negotiatio
 @Component({
     selector: 'cell-click-renderer',
     template: `
-<div *ngIf="params.type=='offerprice-hover-cell'" class="fly-away">
+<div *ngIf="params.show" class="fly-away">
     <div [matMenuTriggerFor]="priceMenupopup" #pricePopupTrigger="matMenuTrigger"
         (click)="pricePopupTrigger.closeMenu()" class="cell-input"
         (contextmenu)="$event.preventDefault();$event.stopPropagation();pricePopupTrigger.openMenu();">
