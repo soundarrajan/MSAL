@@ -752,6 +752,7 @@ export class LocalService {
         let data = [];
         let arrMainDet = {};
         let uniqueLocations = [];
+        let disableSendRFQBtn = true;
         this.masterData = await {
             Uom: await this.db.getUomTable({ orderBy: 'name' }),
             Location: await this.db.getLocationList({ orderBy: 'name' }),
@@ -766,113 +767,113 @@ export class LocalService {
             let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
             uniqueLocations.push(location.name);
             Object.entries(res1['contractRequestProductOffers']).forEach(([key, res2]) => {
-            this.setSendRFQButtonStauts(false);
-            // let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
-            let product = this.masterData['Product'].find(el => el.id == res2['productId']);
-            let uom = this.masterData['Uom'].find(el => el.id == res2['quantityUomId']);
-            let SpecGroupName  = '';
-            if(res2['status'] != 'Open' && res2['specGroupId'] != null){
-                SpecGroupName = this.masterData['SpecGroup'].find(el => el.id == res2['specGroupId']).name;
-            }
-            arrDet = {
-                "check": res2['isSelected'],
-                "id": res2['id'],
-                "LocationId": res1['locationId'],
-                "ProductId": res2['productId'],
-                "isSellerSuspended": res2['isSellerSuspended'],
-                "ProductName": product?.displayName,
-                "requestLocationId": '',
-                "requestProductId": res2['contractRequestProductId'],
-                "RequestLocationSellerId": '',
-                "CounterpartyName": this.format.htmlDecode(res2['counterpartyName']),
-                "CounterpartyId": res2['counterpartyId'],
-                "IsTemporarlySuspended": '',
-                "GenRating": res2['genRating'],
-                "PortRating": res2['portRating'],
-                "QuotedProductId": '',
-                "SpecGroupId": res2['specGroupId'],
-                "SpecGroupName": SpecGroupName,
-                "MinQuantity": res2['minQuantity'],
-                "MaxQuantity": res2['maxQuantity'],
-                "quantityUomId": res2['quantityUomId'],
-                "MinQuantityUnit" : uom?.name,
-                "MaxQuantityUnit" : uom?.name,
-                "QtyUnit" : uom?.name,
-                "OfferPrice": this.format.price(res2['offerPrice']),
-                "PriceCurrencyId": res2['currencyId'],
-                "PriceCurrencyName": "",
-                "ValidityDate": res2['status'] != 'Open' ? res2['validityDate'] : '',
-                "offerValidityDate": res2['validityDate'],
-                "Status": res2['status'],
-                "typeStatus" : 'Inquired',
-                'rfqStatus' : res2['status'] != 'Open' ? true : false,
-                "M1": '',
-                "M2": '',
-                "M3": '',
-                "M4": '',
-                "M5": '',
-                "M6": '',
-                "Q1": '',
-                "Q2": '',
-                "Q3": '',
-                "Q4": '',
-                "fdProduct": "",
-                "fdTotalContractAmt": "",
-                "fdFomulaDesc": "",
-                "fdSchedule": "",
-                "fdPremium": "",
-                "fdAddCosts": "",
-                "fdRemarks": "",
-                "createdById": res2['createdById'],
-                "createdOn": res2['createdOn'],
-                "pricingTypeId": res2['pricingTypeId'],
-                "lastEvaluationDate": res2['lastEvaluationDate'],
-                "forwardPrices": res2['forwardPrices'],
-                "isNoQuote": res2['isNoQuote'],
-                "statusId": res2['statusId'],
-                "lastModifiedById": res2['lastModifiedById'],
-                "lastModifiedOn": res2['lastModifiedOn'],
-                "contractRequestProductId" : res1['id'],
-                "contractRequestId": response['id'],
-                "contractRequestProductOfferIds" : res2['contractRequestProductOfferIds']??''
-            }
-            data.push(arrDet);
-            arrDet = {};
-        });
-        let contractualQuantityOption = this.masterData['Uom'].find(el => el.id == res1['maxQuantityUomId']);
+                disableSendRFQBtn = false;
+                // let counterparty = this.masterData['Counterparty'].find(el => el.id == res2['counterpartyId']);
+                let product = this.masterData['Product'].find(el => el.id == res2['productId']);
+                let uom = this.masterData['Uom'].find(el => el.id == res2['quantityUomId']);
+                let SpecGroupName  = '';
+                if(res2['status'] != 'Open' && res2['specGroupId'] != null){
+                    SpecGroupName = this.masterData['SpecGroup'].find(el => el.id == res2['specGroupId']).name;
+                }
+                arrDet = {
+                    "check": res2['isSelected'],
+                    "id": res2['id'],
+                    "LocationId": res1['locationId'],
+                    "ProductId": res2['productId'],
+                    "isSellerSuspended": res2['isSellerSuspended'],
+                    "ProductName": product?.displayName,
+                    "requestLocationId": '',
+                    "requestProductId": res2['contractRequestProductId'],
+                    "RequestLocationSellerId": '',
+                    "CounterpartyName": this.format.htmlDecode(res2['counterpartyName']),
+                    "CounterpartyId": res2['counterpartyId'],
+                    "IsTemporarlySuspended": '',
+                    "GenRating": res2['genRating'],
+                    "PortRating": res2['portRating'],
+                    "QuotedProductId": '',
+                    "SpecGroupId": res2['specGroupId'],
+                    "SpecGroupName": SpecGroupName,
+                    "MinQuantity": res2['minQuantity'],
+                    "MaxQuantity": res2['maxQuantity'],
+                    "quantityUomId": res2['quantityUomId'],
+                    "MinQuantityUnit" : uom?.name,
+                    "MaxQuantityUnit" : uom?.name,
+                    "QtyUnit" : uom?.name,
+                    "OfferPrice": this.format.price(res2['offerPrice']),
+                    "PriceCurrencyId": res2['currencyId'],
+                    "PriceCurrencyName": "",
+                    "ValidityDate": res2['status'] != 'Open' ? res2['validityDate'] : '',
+                    "offerValidityDate": res2['validityDate'],
+                    "Status": res2['status'],
+                    "typeStatus" : 'Inquired',
+                    'rfqStatus' : res2['status'] != 'Open' ? true : false,
+                    "M1": '',
+                    "M2": '',
+                    "M3": '',
+                    "M4": '',
+                    "M5": '',
+                    "M6": '',
+                    "Q1": '',
+                    "Q2": '',
+                    "Q3": '',
+                    "Q4": '',
+                    "fdProduct": "",
+                    "fdTotalContractAmt": "",
+                    "fdFomulaDesc": "",
+                    "fdSchedule": "",
+                    "fdPremium": "",
+                    "fdAddCosts": "",
+                    "fdRemarks": "",
+                    "createdById": res2['createdById'],
+                    "createdOn": res2['createdOn'],
+                    "pricingTypeId": res2['pricingTypeId'],
+                    "lastEvaluationDate": res2['lastEvaluationDate'],
+                    "forwardPrices": res2['forwardPrices'],
+                    "isNoQuote": res2['isNoQuote'],
+                    "statusId": res2['statusId'],
+                    "lastModifiedById": res2['lastModifiedById'],
+                    "lastModifiedOn": res2['lastModifiedOn'],
+                    "contractRequestProductId" : res1['id'],
+                    "contractRequestId": response['id'],
+                    "contractRequestProductOfferIds" : res2['contractRequestProductOfferIds']??''
+                }
+                data.push(arrDet);
+                arrDet = {};
+            });
+            let contractualQuantityOption = this.masterData['Uom'].find(el => el.id == res1['maxQuantityUomId']);
             arrMainDet = {
-            'data' : data,
-            "location-name": location.name,
-            "location-id": res1['locationId'],
-            "port-id": "1",
-            "period": "M",
-            "productId" : res1['productId'],
-            "productName" : mainProduct.name,
-            "specGroupId" : res1['specGroupId'],
-            "minQuantity" : res1['minQuantity'],
-            "maxQuantity" : res1['maxQuantity'],
-            "pricingTypeId": res1['pricingTypeId'],
-            "contractualQuantityOption" : contractualQuantityOption.name,
-            "contractRequestProductId" : res1['id'],
-            "pricingComment": res1['pricingComment'],
-            "statusId": res1['statusId'],
-            "status": res1['status'],
-            "createdById": res1['createdById'],
-            "createdOn": res1['createdOn'],
-            "lastModifiedById": res1['lastModifiedById'],
-            "lastModifiedOn": res1['lastModifiedOn'],
-            "allowedLocations": res1['allowedLocations'],
-            "allowedProducts": res1['allowedProducts'],
-            "isDeleted": res1['isDeleted'],
-            "maxQuantityUomId" : response['contractRequestProducts'][0]['maxQuantityUomId']
+                'data' : data,
+                "location-name": location.name,
+                "location-id": res1['locationId'],
+                "port-id": "1",
+                "period": "M",
+                "productId" : res1['productId'],
+                "productName" : mainProduct.name,
+                "specGroupId" : res1['specGroupId'],
+                "minQuantity" : res1['minQuantity'],
+                "maxQuantity" : res1['maxQuantity'],
+                "pricingTypeId": res1['pricingTypeId'],
+                "contractualQuantityOption" : contractualQuantityOption.name,
+                "contractRequestProductId" : res1['id'],
+                "pricingComment": res1['pricingComment'],
+                "statusId": res1['statusId'],
+                "status": res1['status'],
+                "createdById": res1['createdById'],
+                "createdOn": res1['createdOn'],
+                "lastModifiedById": res1['lastModifiedById'],
+                "lastModifiedOn": res1['lastModifiedOn'],
+                "allowedLocations": res1['allowedLocations'],
+                "allowedProducts": res1['allowedProducts'],
+                "isDeleted": res1['isDeleted'],
+                "maxQuantityUomId" : response['contractRequestProducts'][0]['maxQuantityUomId']
             }
             contractArray['locations'].push(arrMainDet);
             arrMainDet = {}; data = [];
         });
+        this.setSendRFQButtonStauts(disableSendRFQBtn);
         let unique = [...new Set(uniqueLocations)];
         this.uniqueLocations = unique.toString();
         this.allRequestDetails = contractArray;
         this.store.dispatch(new ContractRequest([contractArray]));
     }
-
 }
