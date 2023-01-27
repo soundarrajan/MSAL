@@ -80,7 +80,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
     { 
      this.contractRequestId = this.route.snapshot.params.requestId;   
      this.generalTenantSettings = tenantSettingsService.getGeneralTenantSettings();
-     this.dateFormat = this.generalTenantSettings.tenantFormats.dateFormat.name;   
+     this.dateFormat = this.generalTenantSettings.tenantFormats.emailDateFormat.name;   
      this.gridOptions_data = <GridOptions>{
         defaultColDef: {
           resizable: true,
@@ -177,16 +177,8 @@ export class ContractNegoEmaillogComponent implements OnInit {
       headerName: 'Mail Date',
       headerTooltip: 'Mail Date',
       field: 'sentAt',
-      tooltipValueGetter: params => moment(params.value).format(this.date),
-      cellRenderer: params => {
-        return moment(params.value).format(this.date);
-      },
-      filter: 'agSetColumnFilter',
-      filterParams: {
-        valueFormatter: params => {
-          return moment(params.value).format(this.date);
-        },
-      },
+      tooltipValueGetter: params => moment(params.value).format(this.date),      
+      filter: 'agSetColumnFilter',    
       suppressSizeToFit: false
     }
   ];
@@ -219,8 +211,13 @@ export class ContractNegoEmaillogComponent implements OnInit {
       reqpayload
     );
     emailLogs.subscribe((res: any) => {
-      if (res.payload) {
-      this.latestEmailLogs = res.payload;    
+      if (res.payload) { 
+      res.payload.forEach((emaillog,index) => {               
+        res.payload[index].to = emaillog.to.trim();
+        res.payload[index].subject = emaillog.subject.trim();
+        res.payload[index].sentAt = moment(emaillog.sentAt.trim()).format(this.date);   
+      });
+      
       this.gridOptions_data.api?.setRowData(res.payload);
       if (!this.changeDetector['destroyed']) {
         this.changeDetector.detectChanges();
@@ -257,10 +254,13 @@ export class ContractNegoEmaillogComponent implements OnInit {
             this.gridOptions_data.api?.hideOverlay();
             if (res?.message == 'Unauthorized') {
               return;
-            }
-      
+            }         
             if (res.payload) {
-              console.log(res.payload);
+              res.payload.forEach((emaillog,index) => {               
+                res.payload[index].to = emaillog.to.trim();
+                res.payload[index].subject = emaillog.subject.trim();
+                res.payload[index].sentAt = moment(emaillog.sentAt.trim()).format(this.date);           
+              });
               this.totalItems = res.matchedCount;          
               //this.rowData_grid = res.payload;
               this.gridOptions_data.api?.setRowData(res.payload);
@@ -296,10 +296,15 @@ export class ContractNegoEmaillogComponent implements OnInit {
     this.gridOptions_data.api?.hideOverlay();   
     if (res) {
       this.totalItems = res.matchedCount; 
+      res.payload.forEach((emaillog,index) => {               
+        res.payload[index].to = emaillog.to.trim();
+        res.payload[index].subject = emaillog.subject.trim();
+        res.payload[index].sentAt = moment(emaillog.sentAt.trim()).format(this.date);   
+      });
       this.gridOptions_data.api?.setRowData(res.payload);
-              if (!this.changeDetector['destroyed']) {
+         if (!this.changeDetector['destroyed']) {
                 this.changeDetector.detectChanges();
-              }      
+         }      
     } 
       
     });
@@ -327,10 +332,15 @@ export class ContractNegoEmaillogComponent implements OnInit {
     this.contractNegotiationService.getEmailLogsList(reqpayload).subscribe((res: any) => {
     this.gridOptions_data.api?.hideOverlay(); 
     this.totalItems = res.matchedCount;
+    res.payload.forEach((emaillog,index) => {               
+      res.payload[index].to = emaillog.to.trim();
+      res.payload[index].subject = emaillog.subject.trim();
+      res.payload[index].sentAt = moment(emaillog.sentAt.trim()).format(this.date); 
+    });
     this.gridOptions_data.api?.setRowData(res.payload);
-              if (!this.changeDetector['destroyed']) {
-                this.changeDetector.detectChanges();
-              }       
+        if (!this.changeDetector['destroyed']) {
+          this.changeDetector.detectChanges();
+        }       
     });
   }
   public onrowClicked (ev){
