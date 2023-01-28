@@ -79,7 +79,7 @@
                         <span class="text">Subject:</span>
                     </div>
                     <div style="display: flex; flex: 0 0 95%">
-                        <span [attr.contenteditable]="editable" class="subject">{{subject}}</span>
+                        <span #emailSubject [attr.contenteditable]="editable" (blur)="subject=emailSubject.innerText" class="subject">{{subject}}</span>
                     </div>
                 </div>
             </div>
