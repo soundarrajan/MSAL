@@ -225,15 +225,10 @@ export class ContractNegotiationService extends BaseStoreService
   @ObservableException()
     constructUpdateCounterparties(source = null) : Observable<any> {
         let payload = [];
-       
-        let eMessage1 = [];
-        let eMessage = [];
-        var counterPartyRfqStatusObj = {};
         let pArray;
         let addFlag = true;
         let filterLocation;
         let successArray = {}
-        let locationWarning = []
         let msgStr;
         let allReadyexitsInLocation = JSON.parse(JSON.stringify(this.selectedCounterparty));
         let addedNewToLocation = {};
@@ -255,14 +250,6 @@ export class ContractNegotiationService extends BaseStoreService
                 if(el['data'].length > 0){
                   addFlag = !el['data'].some(location => location.CounterpartyId == cId );
                 }
-                if(el['data'].length > 0){
-                  this.counterPartyRfqStatus = el['data'].map(function(location) { 
-                    return {"rfqStatus":location.rfqStatus,"counterpartyId":location.CounterpartyId} }
-                    );
-                  Object.assign(counterPartyRfqStatusObj,
-                    {'RfqInfo' : this.counterPartyRfqStatus}
-                  );
-                }
                 msgStr = el['location-name']+' (<i>'+el['productName']+'</i>)';
                 if(addFlag){
                   pArray = {
@@ -281,7 +268,7 @@ export class ContractNegotiationService extends BaseStoreService
                     delete allReadyexitsInLocation[cId];
                   }
                   addedNewToLocation[value['name']] = cId;
-                  
+
                   if(!successArray[value['name']]){
                     successArray[value['name']] = {}
                   }
@@ -291,50 +278,46 @@ export class ContractNegotiationService extends BaseStoreService
                   );
                   payload.push(pArray);
               }else{
-                locationWarning.push(value['name']);
+                let status =  el.data.find(dEl => dEl.CounterpartyId == cId).Status;
+                if(status != undefined)
+                allReadyexitsInLocation[cId]['status'] = status;
               }
               });
             });
           });        
-    
+          let eMessage = [];
+          let afterSendRfqMessage = [];
           if(source != null){
               if(Object.keys(addedNewToLocation).length > 0){
                 this.toastr.success("added successfully to the <br>"+ msgStr,Object.keys(addedNewToLocation).toString(),{enableHtml :  true,timeOut : 6000});
               }
               if(Object.keys(allReadyexitsInLocation).length > 0){
-                var counterPartyIds = [];
-                Object.entries(allReadyexitsInLocation).forEach(([key,value]) => {   
-                  counterPartyIds[key] = value['id'];           
+                Object.entries(allReadyexitsInLocation).forEach(([key,value]) => {
+                  if(value['status'] && value['status'] == 'Open')
+                  eMessage.push(value['name'])
+                  else
+                  afterSendRfqMessage.push(value['name']);
                 });
-               var filteredCounterPartyIds = counterPartyIds.filter(function (el) {
-                return el != null;
-              });
-              counterPartyRfqStatusObj['RfqInfo'].map(function(counterPartyrfqinfoValue){
-                 if((filteredCounterPartyIds.indexOf( counterPartyrfqinfoValue['counterpartyId']) !== -1 ) && (counterPartyrfqinfoValue['rfqStatus'] == true)){  
-                      eMessage1.push(allReadyexitsInLocation[counterPartyrfqinfoValue['counterpartyId']]['name']);               
-                   }
-                  if((filteredCounterPartyIds.indexOf( counterPartyrfqinfoValue['counterpartyId']) !== -1 ) && (counterPartyrfqinfoValue['rfqStatus'] == false)){  
-                     eMessage.push(allReadyexitsInLocation[counterPartyrfqinfoValue['counterpartyId']]['name']);               
-                  }
-
-               });               
-             
-              eMessage = _.uniq(eMessage);
-              eMessage1 = _.uniq(eMessage1);
         
               if(eMessage.length > 0){
                 this.toastr.warning(" - already exists to the <br>"+ msgStr,eMessage.toString(),{enableHtml :  true,timeOut : 6000});
-                }
-              if(eMessage1.length > 0){
-                  this.toastr.warning(" - Same Seller can be added  only using Add another offer <br>"+ msgStr,eMessage1.toString(),{enableHtml :  true,timeOut : 6000});
-                }
+              }
+              if(afterSendRfqMessage.length > 0){
+                  this.toastr.warning(" - Same Seller can be added  only using Add another offer <br>"+ msgStr,afterSendRfqMessage.toString(),{enableHtml :  true,timeOut : 6000});
+              }
               }
             }else{
               if(Object.keys(allReadyexitsInLocation).length > 0){
                 Object.entries(allReadyexitsInLocation).forEach(([key,value]) => {
-                  eMessage.push(value['name']);
+                  if(value['status'] && value['status'] == 'Open')
+                  eMessage.push(value['name'])
+                  else
+                  afterSendRfqMessage.push(value['name']);
                 });
+                if(eMessage.length > 0)
                 this.toastr.warning(" - already exists in all locations"+ '',eMessage.toString(),{timeOut : 6000});
+                if(afterSendRfqMessage.length > 0)
+                this.toastr.warning(" - Same Seller can be added  only using Add another offer <br>"+ msgStr,afterSendRfqMessage.toString(),{enableHtml :  true,timeOut : 6000});
               }
               if(Object.keys(addedNewToLocation).length > 0){
                 this.toastr.success(" - added successfully to all the locations"+ '',Object.keys(addedNewToLocation).toString(),{timeOut : 6000});
@@ -359,7 +342,6 @@ export class ContractNegotiationService extends BaseStoreService
             filterLocation.forEach((el,kIndex) => {
               reqProductOfferIds.push([...el['data'].filter(location => location.check).map(e => e)]);
             });
-        var totalLocation = filterLocation.length;
         filterLocation.forEach((el,kIndex) => {
               let counterpartyWarning = [];
               let alreadyNoQuoteWarning = [];
