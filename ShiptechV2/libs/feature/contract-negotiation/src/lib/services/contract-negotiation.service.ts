@@ -353,17 +353,19 @@ export class ContractNegotiationService extends BaseStoreService
         let reqProductOffers;
         let addFlag = false;
         let filterLocation;
-        let successArray = {};
-        let counterpartyWarning = [];
-        let alreadyNoQuoteWarning = [];
-        let msgStr;
-        let addedNewToLocation = {};
+       // let successArray = {}; 
         this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
             filterLocation = state['contractNegotiation'].ContractRequest[0].locations;  
             filterLocation.forEach((el,kIndex) => {
               reqProductOfferIds.push([...el['data'].filter(location => location.check).map(e => e)]);
             });
-         filterLocation.forEach((el,kIndex) => {
+        var totalLocation = filterLocation.length;
+        filterLocation.forEach((el,kIndex) => {
+              let counterpartyWarning = [];
+              let alreadyNoQuoteWarning = [];
+              let msgStr;
+              let addedNewToLocation = {};
+              let eMessage = [];
               if(el['data'].length > 0){
                 addFlag = el['data'].some(location => location.check);
                  reqProductOffers=el['data'].filter(location => location.check);
@@ -376,11 +378,12 @@ export class ContractNegotiationService extends BaseStoreService
                   pArray = {
                     'ContractRequestProductOfferIds' :reqProductOfferIds.map(e => e.id),
                     'IsNoQuote' : true
-                  };
-                  addedNewToLocation[value['CounterpartyName']] = rpo['CounterpartyName'];
+                  };              
+                 
                   if(rpo['Status']=='Inquired' && !rpo['isNoQuote']){
-                    successArray[value['name']] = rpo['CounterpartyName']
-                  }else if(rpo['Status']=='Inquired' && rpo['isNoQuote']){
+                    //successArray[rpo['CounterpartyName']] = rpo['CounterpartyName']
+                    addedNewToLocation[rpo['CounterpartyName']] = rpo['CounterpartyName'];
+                  }else if(rpo['Status'] =='Inquired' && rpo['isNoQuote']){
                     alreadyNoQuoteWarning.push( rpo['CounterpartyName']);
                   }
                   else{
@@ -391,29 +394,31 @@ export class ContractNegotiationService extends BaseStoreService
                 this.toastr.error("Please Select atleast One Counterparty");
                 return;
               }
-              });   
+              
+              }); 
+              if(source != null){
+                if(Object.keys(addedNewToLocation).length > 0){
+                  this.toastr.success("Selected Offer have been marked as 'No Quote' successfully. <br>",Object.keys(addedNewToLocation).toString(),{enableHtml :  true,timeOut : 6000});
+                }
+                eMessage = [];
+                if(Object.keys(counterpartyWarning).length > 0){
+                  Object.entries(counterpartyWarning).forEach(([key,counterPartyName]) => {
+                    eMessage.push(counterPartyName);
+                  });
+                  this.toastr.warning("Offer Price cannot be marked as 'No Quote' as RFQ has not sent."+ msgStr,eMessage.toString(),{enableHtml :  true,timeOut : 6000});
+                }
+                eMessage = [];
+                if(Object.keys(alreadyNoQuoteWarning).length > 0){
+                  Object.entries(alreadyNoQuoteWarning).forEach(([key,counterPartyName]) => {
+                    eMessage.push(counterPartyName);
+                  });
+                  this.toastr.warning("Already No Quote applied."+ msgStr,eMessage.toString(),{enableHtml :  true,timeOut : 6000});
+                }
+              }  
               payload=pArray;        
             });
           });
-          let eMessage = [];
-          let eMessage1 = [];
-          if(source != null){
-              if(Object.keys(addedNewToLocation).length > 0){
-                this.toastr.success("Selected Offer have been marked as 'No Quote' successfully. <br>",Object.keys(addedNewToLocation).toString(),{enableHtml :  true,timeOut : 6000});
-              }
-              if(Object.keys(counterpartyWarning).length > 0){
-                Object.entries(counterpartyWarning).forEach(([key,value]) => {
-                  eMessage.push(value['name']);
-                });
-                this.toastr.warning("Offer Price cannot be marked as 'No Quote' as RFQ has not sent."+ msgStr,eMessage.toString(),{enableHtml :  true,timeOut : 6000});
-              }
-              if(Object.keys(alreadyNoQuoteWarning).length > 0){
-                Object.entries(alreadyNoQuoteWarning).forEach(([key,value]) => {
-                  eMessage.push(value['name']);
-                });
-                this.toastr.warning("Already No Quote applied."+ msgStr,eMessage.toString(),{enableHtml :  true,timeOut : 6000});
-              }
-            }
+         
        return  this.contractNegotiationApi.switchContractReqBasedOnQuote(payload);
     }
   
