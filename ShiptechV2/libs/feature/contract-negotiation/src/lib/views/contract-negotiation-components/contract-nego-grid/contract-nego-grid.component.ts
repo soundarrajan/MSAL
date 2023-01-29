@@ -59,6 +59,7 @@ export class ContractNegoGridComponent implements OnInit {
   showProgressBar: boolean = false;
   blockHttpCall : boolean = false;
   checkBoxSelectionstatus : boolean;
+  onSelectionChangedTimeout;
   sellerIds = [];
   dispalyNoData : boolean = false;
   constructor(private localService: LocalService, public router: Router, private store : Store,private contractService: ContractNegotiationService) {
@@ -756,23 +757,23 @@ export class ContractNegoGridComponent implements OnInit {
       return { cellClass: classArray.length > 0 ? classArray : null, isClickable: clickEvent, cellValueClass: params.value == 113 || params.value == 106 ? 'best-price' : '', status: status };
     }
   }
-  onRowSelected(e) {    
+  onRowSelected(e) {   
     if(e.data && this.blockHttpCall){
-      //this.currentLocationId = e.data['locationId'];
       this.sellerIds.push(e.data.id);
       this.checkBoxSelectionstatus = e.node.selected;
-    }
-    this.localService.sendRFQUpdate.subscribe(r => {
+
+      this.localService.sendRFQUpdate.subscribe(r => {
       if (r == true) {
-        this.gridOptions_forecast.api.forEachNode((rowNode, index) => {
-          if (rowNode.level != 0 && e.rowIndex === rowNode.rowIndex) {
-            rowNode.data.rfqStatus = true;
-            rowNode.data.check = false;
-          }
-        });
-        //this.localService.updateSendRFQStatus(false);
+      this.gridOptions_forecast.api.forEachNode((rowNode, index) => {
+        if (rowNode.level != 0 && e.rowIndex === rowNode.rowIndex) {
+          rowNode.data.rfqStatus = true;
+          rowNode.data.check = false;
+        }
+      });
+      //this.localService.updateSendRFQStatus(false);
       }
-    });
+      });
+
     let contractReq = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
       return state['contractNegotiation'].ContractRequest[0];
     })));
@@ -791,20 +792,21 @@ export class ContractNegoGridComponent implements OnInit {
       this.localService.setContractNoQuote(this.gridOptions_forecast.api.getSelectedRows().length > 0);
     }
   }
+  }
 
-  onSelectionChanged(event) {
-    // let checkRfqSend = this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
-    //   return state['contractNegotiation'].ContractRequest[0].locations
-    //   .find(el => el['location-id'] == this.currentLocationId).data.find(inner => inner.Status != 'Open');
-    // });
-    if(this.blockHttpCall){
+  onSelectionChanged() {
+    clearTimeout(this.onSelectionChangedTimeout);
+    this.onSelectionChangedTimeout = setTimeout(() => {    
+    let checkRfqSend =  this.store.selectSnapshot(state => state.contractNegotiation.ContractRequest[0].status)
+    if(this.blockHttpCall && checkRfqSend == 'Open' && this.sellerIds.length > 0){
         let requestPayload = {
         "contractRequestProductOfferIds" : this.sellerIds,
         "isSelected" : this.checkBoxSelectionstatus
         }
         this.sellerIds = [];
         this.contractService.counterPartSelectionToggle(requestPayload).subscribe();
-    }   
+    } 
+    }, 5);  
   }
   
   redrawRows(rowIndex) {

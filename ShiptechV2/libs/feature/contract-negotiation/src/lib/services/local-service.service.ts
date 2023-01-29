@@ -835,7 +835,8 @@ export class LocalService {
                     "lastModifiedOn": res2['lastModifiedOn'],
                     "contractRequestProductId" : res1['id'],
                     "contractRequestId": response['id'],
-                    "contractRequestProductOfferIds" : res2['contractRequestProductOfferIds']??''
+                    "contractRequestProductOfferIds" : res2['contractRequestProductOfferIds']??'',
+                    "mainProductId" : res1['productId']
                 }
                 data.push(arrDet);
                 arrDet = {};

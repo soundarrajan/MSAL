@@ -12,6 +12,7 @@ import { ContractNegotiationStoreModel } from '../store/contract-negotiation.sto
 import { ContractNegotiationApi } from './api/contract-negotiation-api';
 import _ from 'lodash';
 import { ContractRequest } from '../store/actions/ag-grid-row.action';
+import moment from 'moment';
 @Injectable()
 export class ContractNegotiationService extends BaseStoreService
   implements OnDestroy {
@@ -236,12 +237,18 @@ export class ContractNegotiationService extends BaseStoreService
         let msgStr;
         let allReadyexitsInLocation = JSON.parse(JSON.stringify(this.selectedCounterparty));
         let addedNewToLocation = {};
+        let IsSelected = true;
         this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+            
+          if(state['contractNegotiation'].ContractRequest[0].status != 'Open'){
+            IsSelected = false;
+          }
           if(source != null){
             filterLocation = state['contractNegotiation'].ContractRequest[0].locations.filter(el => el['contractRequestProductId'] == source );
           }else{
             filterLocation = state['contractNegotiation'].ContractRequest[0].locations;
           }   
+
          filterLocation.forEach((el,kIndex) => {
               Object.entries(this.selectedCounterparty).forEach(([cId,value]) => {
                 addFlag = true;
@@ -256,7 +263,6 @@ export class ContractNegotiationService extends BaseStoreService
                     {'RfqInfo' : this.counterPartyRfqStatus}
                   );
                 }
-             
                 msgStr = el['location-name']+' (<i>'+el['productName']+'</i>)';
                 if(addFlag){
                   pArray = {
@@ -265,9 +271,9 @@ export class ContractNegotiationService extends BaseStoreService
                     'locationId' : el['location-id'],
                     "statusId": 1,
                     'IsDeleted' :false,
-                    'IsSelected' :true,
+                    'IsSelected' : IsSelected,
                     'Id' : 0,
-                    "createdOn": "2022-12-05T05:21:28.504Z",
+                    "createdOn": moment.utc(),
                     "createdById": 1
                   };
 
@@ -335,7 +341,6 @@ export class ContractNegotiationService extends BaseStoreService
               }
           }
        this.selectedCounterparty = {};
-       debugger;
        return  this.contractNegotiationApi.addCounterpartyToAllLocations(payload);
     }
     
