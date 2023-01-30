@@ -113,6 +113,6 @@
         </app-contract-negotiation-details>
     </div>
     <div #comments style="box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);">
-        <app-offer-chat [chatObj]="allRequestComments[0]"></app-offer-chat>
+        <app-offer-chat  (chatAvailableStatus)="updatechatAvailableStatus($event)"></app-offer-chat>
     </div>
 </div>

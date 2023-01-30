@@ -26,6 +26,7 @@ export class OfferChatComponent implements OnInit {
   public readonly dateFormat: string = 'DDD dd/MM/yyyy HH:mm';
   currentUser: any;
   @Input() chatObj:any;
+  
   @Output() chatAvailableStatus = new EventEmitter<boolean>();
   constructor(
     private contractNegoService: ContractNegotiationService,
@@ -135,6 +136,7 @@ sendChat(){
           "chat": this.chatValue,        
           "createdBy": this.currentUser.id,         
         } 
+
         this.contractNegoService.addOfferChat(payload).subscribe((res: any) => {       
           if (res?.message == 'Unauthorized' || res?.errors) {         
             return;
@@ -142,7 +144,8 @@ sendChat(){
           if(res.errorMessage){
             this.toaster.error(res.errorMessage);
             return;
-          }
+          }        
+          this.chatAvailableStatus.emit(true);
           this.displaySuccessMsg('Comment has been added successfully');   
          
         });  
@@ -151,8 +154,7 @@ sendChat(){
 
     }
     
-  }
-  
+  }  
   clickChat(i){
     this.clickChatIndex = i;
   }
