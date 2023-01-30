@@ -98,20 +98,60 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
   }
 
   openEmailPreview(params) {
-    let contractRequestId = this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
-      return state['contractNegotiation'].ContractRequest[0].id;
+    let contractRequestData = this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+      return state['contractNegotiation'].ContractRequest[0];
     });
-    const dialogRef = this.dialog.open(EmailPreviewPopupComponent, {
+    let selectedDataIds = []; let selectedCounterPartyId = 0;
+    let contractRequestId = contractRequestData.id;
+    let sellerData = []; let prodData = {};
+    let noCounterPartyChecked = true;
+    let multipleCounterPartySelected = false;
+    contractRequestData.locations.forEach( prod => {
+      if(prod.data.length > 0){
+        prod.data.forEach( data => {
+          if(data.check === true){
+            noCounterPartyChecked = false;
+            if(selectedCounterPartyId == 0) selectedCounterPartyId = data.CounterpartyId;
+            if(selectedCounterPartyId === data.CounterpartyId){
+              prodData[prod.contractRequestProductId] = {
+                productId: prod.productId,
+                specGroupId: prod.specGroupId,
+                minQuantity: prod.minQuantity,
+                maxQuantity: prod.maxQuantity,
+                quantityUomId: prod.maxQuantityUomId,
+                pricingTypeId: prod.pricingTypeId
+              }
+              selectedDataIds.push(data.id);
+              sellerData.push(data);
+            }
+            else{
+              multipleCounterPartySelected = true;
+            }
+          }
+        });
+      }
+    });
+    if(multipleCounterPartySelected){
+      this.toaster.error('Please select same seller to previewRFQ email.');
+      return;
+    }
+    if(noCounterPartyChecked){
+      prodData = contractRequestData.locations.filter( prod => prod.contractRequestProductId == params.node.data.contractRequestProductId);
+      selectedDataIds = [params.node.data.id];
+      sellerData = [params.node.data];
+    }
+    this.dialog.open(EmailPreviewPopupComponent, {
       width: '80vw',
       height: '90vh',
       panelClass: 'remove-padding-popup',
       data: {
         counterPartyId: params.node.data.CounterpartyId,
-        contractRequestProductOfferIds: [params.node.data.id],
+        contractRequestProductOfferIds: selectedDataIds,
         readOnly: false,
         contractRequestId: contractRequestId,
         popupSource: 'previewRFQTemplate',
-        sellerData: [params.node.data]
+        sellerData: sellerData,
+        prodData: prodData
       }
     });
   }
