@@ -476,7 +476,7 @@ export class EmailPreviewPopupComponent implements OnInit {
           return;
         }
         if (response) {
-          this.getPreviewTemplate();
+          this.previewSendRFQTemplate();
           this.toaster.success('Changes reverted successfully.');
         }
       });
