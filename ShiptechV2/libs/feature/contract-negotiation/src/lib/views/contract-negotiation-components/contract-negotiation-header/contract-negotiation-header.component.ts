@@ -121,7 +121,10 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     }
   
   }
-  
+
+  updatechatAvailableStatus(chatStatus:boolean){
+      this.chatAvailable = chatStatus;
+  }  
 
   totalRequestQty(response){
     let minMaxDet =  response['quantityDetails'].find(el => el.contractualQuantityOptionId == 1);
