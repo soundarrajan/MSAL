@@ -154,10 +154,7 @@ sendChat(){
 
     }
     
-  }
-
-  
-  
+  }  
   clickChat(i){
     this.clickChatIndex = i;
   }

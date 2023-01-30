@@ -31,8 +31,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   @ViewChild(OfferChatComponent) childChat: OfferChatComponent;
   @ViewChild('ports') ports: ElementRef;
   @Output() contractRequestStatus = new EventEmitter<string>();
-  @ViewChild('menuTrigger') trigger;
-    
+  @ViewChild('menuTrigger') trigger;    
     
   allRequestDetails = {};
   allRequestComments = [];
