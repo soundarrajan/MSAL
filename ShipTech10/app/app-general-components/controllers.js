@@ -3989,8 +3989,8 @@ APP_GENERAL_COMPONENTS.controller("Controller_General_Header", [
                 }
                 if (vm.app_id == 'masters' && vm.screen_id == 'period') {
                     $scope.formValues.Year = $scope.formValues.year;   
-                    $scope.formValues.FromDate = $scope.formValues.fromDate;
-                    $scope.formValues.ToDate = $scope.formValues.toDate;
+                    $scope.formValues.FromDate = moment.utc( $scope.formValues.fromDate).format('YYYY-MM-DD');
+                    $scope.formValues.ToDate =  moment.utc( $scope.formValues.toDate).format('YYYY-MM-DD');
                     $scope.formValues.pType = {id:$scope.formValues.periodType};
                     if($scope.formValues.periodType == 1){
                         $scope.formValues.PeriodQuarter = null;
