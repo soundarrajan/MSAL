@@ -503,15 +503,10 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.previewTemplate.attachmentsList = this.filesList;
 
     let contractRequestData: any = {};
-    let crProdData: any = {};
+    let crProdData= this.selectedEmailPreview.prodData;
     let selectedsellerOfferRowIds: any = [];
     this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
       contractRequestData = state['contractNegotiation'].ContractRequest[0];
-      contractRequestData.locations.forEach( prodData => {
-        if(prodData.contractRequestProductId === this.selectedEmailPreview.sellerData[0].contractRequestProductId){
-          crProdData = JSON.parse(JSON.stringify(prodData));
-        }
-      });
     });
     
     let selectedSellersData = [];
@@ -528,14 +523,14 @@ export class EmailPreviewPopupComponent implements OnInit {
           createdOn: data.createdOn,
           lastModifiedOn: moment.utc(),
           id: data.id,
-          productId: crProdData.productId,
-          specGroupId: crProdData.specGroupId,
-          minQuantity: crProdData.minQuantity,
-          maxQuantity: crProdData.maxQuantity,
-          quantityUomId: crProdData.maxQuantityUomId,
+          productId: crProdData[data.contractRequestProductId].productId,
+          specGroupId: crProdData[data.contractRequestProductId].specGroupId,
+          minQuantity: crProdData[data.contractRequestProductId].minQuantity,
+          maxQuantity: crProdData[data.contractRequestProductId].maxQuantity,
+          quantityUomId: crProdData[data.contractRequestProductId].maxQuantityUomId,
           validityDate: contractRequestData.minValidity,
           currencyId: this.generalTenantSettings.tenantFormats.currency.id,
-          pricingTypeId: crProdData.pricingTypeId
+          pricingTypeId: crProdData[data.contractRequestProductId].pricingTypeId
         });
       });
     }

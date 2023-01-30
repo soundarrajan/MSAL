@@ -761,6 +761,7 @@ export class ContractNegoGridComponent implements OnInit {
     if(e.data && this.blockHttpCall){
       this.sellerIds.push(e.data.id);
       this.checkBoxSelectionstatus = e.node.selected;
+    }
 
       this.localService.sendRFQUpdate.subscribe(r => {
       if (r == true) {
@@ -791,7 +792,7 @@ export class ContractNegoGridComponent implements OnInit {
     if (this.rfqSent) {
       this.localService.setContractNoQuote(this.gridOptions_forecast.api.getSelectedRows().length > 0);
     }
-  }
+  //}
   }
 
   onSelectionChanged() {
