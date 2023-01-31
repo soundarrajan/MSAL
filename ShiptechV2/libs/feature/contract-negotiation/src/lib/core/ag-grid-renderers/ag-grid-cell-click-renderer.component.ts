@@ -125,7 +125,17 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
         });
     }
     onInputChange(){
-        if(this.params.node.data.MinQuantity > 0 && this.params.node.data.MaxQuantity > 0 && this.params.node.data.SpecGroupName != '' && this.params.node.data.SpecGroupName != null) {
+        if(this.params.node.data.MinQuantity > 0 
+            && this.params.node.data.MaxQuantity > 0 
+            && this.params.node.data.SpecGroupName != '' 
+            && this.params.node.data.SpecGroupName != null
+            && this.params.node.data.quantityUomId != ''
+            && this.params.node.data.quantityUomId != null
+            && this.params.node.data.ProductId != ''
+            && this.params.node.data.ProductId != null
+            && this.params.node.data.ValidityDate != ''
+            && this.params.node.data.ValidityDate != null
+            ) {
             if(Number(this.params.value) > 0 && this.params.value != ''){
                 let newParams = JSON.parse(JSON.stringify(this.params.node.data));
                 newParams.OfferPrice = this.tenantService.price(this.params.value);
@@ -142,6 +152,14 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
             }       
         }else{
             this.params.value = this.params.node.data.OfferPrice;
+            if(this.params.node.data.ProductId == '' || this.params.node.data.ProductId == null){
+                this.toaster.error('Please select the Product');
+                return;
+            }
+            if(this.params.node.data.SpecGroupName == '' || this.params.node.data.SpecGroupName == null){
+                this.toaster.error('Please fill the "Spec Group Name" fields with valid values');
+                return;
+            }
             if(this.params.node.data.MinQuantity == 0 || this.params.node.data.MinQuantity == null){
                 this.toaster.error('Please fill the "Min Qty" fields with valid values');
                 return;
@@ -150,8 +168,13 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
                 this.toaster.error('Please fill the "Max Qty" fields with valid values');
                 return;
             }
-            if(this.params.node.data.SpecGroupName == '' || this.params.node.data.SpecGroupName == null){
-                this.toaster.error('Please fill the "Spec Group Name" fields with valid values');
+            
+            if(this.params.node.data.quantityUomId == '' || this.params.node.data.quantityUomId == null){
+                this.toaster.error('Please fill the "UOM" fields with valid values');
+                return;
+            }
+            if(this.params.node.data.ValidityDate == '' || this.params.node.data.ValidityDate == null){
+                this.toaster.error('Please fill the "Validity Date" fields with valid date');
                 return;
             }
         }

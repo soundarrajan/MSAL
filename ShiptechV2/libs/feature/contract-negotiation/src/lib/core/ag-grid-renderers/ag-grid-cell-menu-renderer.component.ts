@@ -9,7 +9,7 @@ import { LocalService } from '../../services/local-service.service';
 @Component({
     selector: 'cell-menu-renderer',
     template: `
-    <div   [matMenuTriggerFor]="clickmenu1" (click)="fillInitialProductData()"
+    <div style="width:100%; height:100%;" *ngIf="params.node.data.Status != 'Open'"  [matMenuTriggerFor]="clickmenu1" (click)="fillInitialProductData()"
     #menuTrigger="matMenuTrigger" [matMenuTriggerData]="{data: params.data}" class="cell-input">
     {{params.value}}
     </div>
