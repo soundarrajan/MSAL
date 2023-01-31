@@ -1148,7 +1148,10 @@
   overflow-x: scroll;
   min-height:200px;
 }
-
+.contract-nego-email-log .ag-header-cell, 
+.contract-nego-email-log .ag-header-row{
+  overflow: unset !important;
+}
 .ag-grid-v2.documents-list .ag-body-horizontal-scroll-viewport {
   top: -10px !important;
 }

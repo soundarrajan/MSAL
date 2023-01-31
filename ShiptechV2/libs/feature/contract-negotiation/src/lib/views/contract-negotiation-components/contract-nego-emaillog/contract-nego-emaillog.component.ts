@@ -150,7 +150,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
       headerName: 'Status',
       headerTooltip: 'Status',
       field: 'status.name',
-      width: 345,
+      width: 300,    
       suppressSizeToFit: false,
       headerClass: ['aggrid-text-align-c'],
       cellClassRules: this.cellClassRules,
@@ -161,7 +161,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
       headerName: 'Sender',
       headerTooltip: 'Sender',
       field: 'from',
-      width: 345,
+      width: 345,      
       suppressSizeToFit: false,
       tooltipValueGetter: params => params.value,
       headerClass: ['aggrid-text-align-c'],
@@ -172,11 +172,9 @@ export class ContractNegoEmaillogComponent implements OnInit {
       headerName: 'Subject',
       headerTooltip: 'Subject',
       field: 'subject',
-      width: 500,
+      width: 600,      
       suppressSizeToFit: false,
-
       cellClassRules: this.cellClassRules,
-
       tooltipValueGetter: params => params.value,
     },
     {
@@ -184,9 +182,12 @@ export class ContractNegoEmaillogComponent implements OnInit {
       headerTooltip: 'Mail Date',
       field: 'sentAt',
       tooltipValueGetter: params => params.value,
+      width: 345,     
       suppressSizeToFit: false,
       cellClassRules: this.cellClassRules, 
-      filter: 'agSetColumnFilter',    
+      filter: 'agSetColumnFilter',
+      headerClass: ['aggrid-text-align-c'],      
+      cellClass: ['aggridtextalign-center'],    
     }
   ];
 
