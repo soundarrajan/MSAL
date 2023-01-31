@@ -102,12 +102,12 @@ export class ContractNegoEmaillogComponent implements OnInit {
         },
         onColumnResized: function(params) {
           if (
-            params.columnApi.getAllDisplayedColumns().length <= 8 &&
+            params.columnApi.getAllDisplayedColumns().length <= 6 &&
             params.type === 'columnResized' &&
             params.finished === true &&
             params.source === 'uiColumnDragged'
           ) {
-            params.api?.sizeColumnsToFit();
+            //params.api?.sizeColumnsToFit();
           }
         },
         onColumnVisible: function(params) {
@@ -163,23 +163,30 @@ export class ContractNegoEmaillogComponent implements OnInit {
       field: 'from',
       width: 345,
       suppressSizeToFit: false,
-      tooltipValueGetter: params => params.value
+      tooltipValueGetter: params => params.value,
+      headerClass: ['aggrid-text-align-c'],
+      cellClassRules: this.cellClassRules,
+      cellClass: ['aggridtextalign-center'],
     },
     {
       headerName: 'Subject',
       headerTooltip: 'Subject',
       field: 'subject',
-      width: 345,
+      width: 500,
       suppressSizeToFit: false,
-      tooltipValueGetter: params => params.value
+
+      cellClassRules: this.cellClassRules,
+
+      tooltipValueGetter: params => params.value,
     },
     {
       headerName: 'Mail Date',
       headerTooltip: 'Mail Date',
       field: 'sentAt',
-      tooltipValueGetter: params => moment(params.value).format(this.date),      
+      tooltipValueGetter: params => params.value,
+      suppressSizeToFit: false,
+      cellClassRules: this.cellClassRules, 
       filter: 'agSetColumnFilter',    
-      suppressSizeToFit: false
     }
   ];
 
