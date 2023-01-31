@@ -106,10 +106,12 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
     let sellerData = []; let prodData = {};
     let noCounterPartyChecked = true;
     let multipleCounterPartySelected = false;
+    let isCurrentRowNotChecked = true;
     contractRequestData.locations.forEach( prod => {
       if(prod.data.length > 0){
         prod.data.forEach( data => {
           if(data.check === true){
+            if(params.node.data.id == data.id) isCurrentRowNotChecked = false;
             noCounterPartyChecked = false;
             if(selectedCounterPartyId == 0) selectedCounterPartyId = data.CounterpartyId;
             if(selectedCounterPartyId === data.CounterpartyId){
@@ -135,10 +137,10 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
       this.toaster.error('Please select same seller to previewRFQ email.');
       return;
     }
-    if(noCounterPartyChecked){
-      prodData = contractRequestData.locations.filter( prod => prod.contractRequestProductId == params.node.data.contractRequestProductId);
-      selectedDataIds = [params.node.data.id];
-      sellerData = [params.node.data];
+    if(noCounterPartyChecked || isCurrentRowNotChecked){
+      prodData[params.node.data.contractRequestProductId] = contractRequestData.locations.filter( prod => prod.contractRequestProductId == params.node.data.contractRequestProductId)[0];
+      selectedDataIds.push(params.node.data.id);
+      sellerData.push(params.node.data);
     }
     this.dialog.open(EmailPreviewPopupComponent, {
       width: '80vw',
