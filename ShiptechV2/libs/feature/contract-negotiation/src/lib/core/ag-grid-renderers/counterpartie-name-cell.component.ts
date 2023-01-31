@@ -11,6 +11,7 @@ import { Store } from '@ngxs/store';
 import { ContractRequest } from '../../store/actions/ag-grid-row.action';
 import { LocalService } from '../../services/local-service.service';
 import { ActivatedRoute } from '@angular/router';
+import moment from 'moment';
 @Component({
   selector: 'shiptech-counterpartie-name-cell',
   template: `
@@ -213,11 +214,11 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
       'contractRequestProductId' : cParam.node.data.contractRequestProductId,
       'counterpartyId' :cParam.node.data.CounterpartyId,
       'locationId' : cParam.node.data.LocationId,
-      "statusId": 1,
+      "statusId": 2,
       'IsDeleted' :false,
-      'IsSelected' :true,
+      'IsSelected' :false,
       'Id' : 0,
-      "createdOn": "2022-12-05T05:21:28.504Z",
+      "createdOn": moment.utc(),
       "createdById": 1
     };
     this.contractService.addAnotherOfferCounterparty([pArray]).subscribe(res => {

@@ -549,7 +549,7 @@ export class ContractNegoGridComponent implements OnInit {
             if (params.node.level != 0 && params.data.rfqStatus && this.rowSelected) {
               return {
                 component: 'inputSelectRenderer',
-                params: { value: params.data.MaxQuantity, unit: params.data.MaxQuantityUnit ? params.data.MaxQuantityUnit : 'BBL' }
+                params: { value: params.data.MaxQuantity, unit: params.data.MaxQuantityUnit ? params.data.MaxQuantityUnit : '' }
               };
             } else {
               return undefined;
