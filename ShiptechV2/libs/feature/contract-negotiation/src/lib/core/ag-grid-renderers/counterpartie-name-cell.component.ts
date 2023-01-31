@@ -137,9 +137,6 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
       this.toaster.error('Please select same seller to previewRFQ email.');
       return;
     }
-    if(isCurrentRowNotChecked){
-
-    }
     if(noCounterPartyChecked || isCurrentRowNotChecked){
       prodData[params.node.data.contractRequestProductId] = contractRequestData.locations.filter( prod => prod.contractRequestProductId == params.node.data.contractRequestProductId)[0];
       selectedDataIds.push(params.node.data.id);
