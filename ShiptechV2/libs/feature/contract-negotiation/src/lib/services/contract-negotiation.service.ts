@@ -25,6 +25,7 @@ export class ContractNegotiationService extends BaseStoreService
   hArray: any = [];
   netEnergyList: any;
   selectedCounterparty = {};
+  newlyAddedCounterparty = [];
   counterPartyRfqStatus:any = {};
   constructor(
     protected store: Store,
@@ -233,6 +234,7 @@ export class ContractNegotiationService extends BaseStoreService
         let allReadyexitsInLocation = JSON.parse(JSON.stringify(this.selectedCounterparty));
         let addedNewToLocation = {};
         let IsSelected = true;
+        let newlyAdded;
         this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
             
           if(state['contractNegotiation'].ContractRequest[0].status != 'Open'){
@@ -263,6 +265,11 @@ export class ContractNegotiationService extends BaseStoreService
                     "createdOn": moment.utc(),
                     "createdById": 1
                   };
+                  newlyAdded = {
+                    'counterpartyId' : cId,
+                    'locationId' : el['location-id'],
+                    'productId' : el.productId,
+                  }
 
                   if(allReadyexitsInLocation[cId]){
                     delete allReadyexitsInLocation[cId];
@@ -276,6 +283,8 @@ export class ContractNegotiationService extends BaseStoreService
                   Object.assign(successArray[value['name']],
                     {[el['location-id']+'-'+el.productId] : msgStr}
                   );
+                  this.newlyAddedCounterparty.push(newlyAdded);
+                  newlyAdded = [];
                   payload.push(pArray);
               }else{
                 let status =  el.data.find(dEl => dEl.CounterpartyId == cId).Status;
@@ -303,7 +312,7 @@ export class ContractNegotiationService extends BaseStoreService
                 this.toastr.warning(" - already exists to the <br>"+ msgStr,eMessage.toString(),{enableHtml :  true,timeOut : 6000});
               }
               if(afterSendRfqMessage.length > 0){
-                  this.toastr.warning(" - Same Seller can be added  only using Add another offer <br>"+ msgStr,afterSendRfqMessage.toString(),{enableHtml :  true,timeOut : 6000});
+                  this.toastr.warning(" - Same Seller can be added  only using Add another offer <br>"+ '',afterSendRfqMessage.toString(),{enableHtml :  true,timeOut : 6000});
               }
               }
             }else{
@@ -317,7 +326,7 @@ export class ContractNegotiationService extends BaseStoreService
                 if(eMessage.length > 0)
                 this.toastr.warning(" - already exists in all locations"+ '',eMessage.toString(),{timeOut : 6000});
                 if(afterSendRfqMessage.length > 0)
-                this.toastr.warning(" - Same Seller can be added  only using Add another offer <br>"+ msgStr,afterSendRfqMessage.toString(),{enableHtml :  true,timeOut : 6000});
+                this.toastr.warning(" - Same Seller can be added  only using Add another offer <br>"+ '',afterSendRfqMessage.toString(),{enableHtml :  true,timeOut : 6000});
               }
               if(Object.keys(addedNewToLocation).length > 0){
                 this.toastr.success(" - added successfully to all the locations"+ '',Object.keys(addedNewToLocation).toString(),{timeOut : 6000});
