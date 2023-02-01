@@ -131,6 +131,11 @@ export class ContractNegoGridComponent implements OnInit {
             if(el['location-id'] == this.locationId && el.productId == this.productId){
               this.rowSelected=true;
               this.gridOptions_forecast.api.setRowData(el.data);
+              this.gridOptions_forecast.api.getColumnDef("OfferPrice")
+                .headerName = 'Offer Price ($/'+el.contractualQuantityOption+')';
+              this.gridOptions_forecast.api.getColumnDef("OfferPrice")
+                .headerTooltip = 'Offer Price ($/'+el.contractualQuantityOption+')';
+              this.gridOptions_forecast.api.refreshHeader();
             }
           })
         });
@@ -562,6 +567,7 @@ export class ContractNegoGridComponent implements OnInit {
           field: 'OfferPrice',
           editable: false,
           type: 'numericColumn',
+          colId : 'OfferPrice',
           cellClass: params => {
             return params.node.level != 0 && params.data.rfqStatus && this.rowSelected ? 'editable-cell grey-opacity-cell' : '';
           },
