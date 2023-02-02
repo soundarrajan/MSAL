@@ -288,7 +288,7 @@ export class ContractNegotiationService extends BaseStoreService
                   payload.push(pArray);
               }else{
                 let status =  el.data.find(dEl => dEl.CounterpartyId == cId).Status;
-                if(status != undefined)
+                if(status != undefined && source != null)
                 allReadyexitsInLocation[cId]['status'] = status;
               }
               });
@@ -318,18 +318,13 @@ export class ContractNegotiationService extends BaseStoreService
             }else{
               if(Object.keys(allReadyexitsInLocation).length > 0){
                 Object.entries(allReadyexitsInLocation).forEach(([key,value]) => {
-                  if(value['status'] && value['status'] == 'Open')
                   eMessage.push(value['name'])
-                  else
-                  afterSendRfqMessage.push(value['name']);
                 });
                 if(eMessage.length > 0)
                 this.toastr.warning(" - already exists in all locations"+ '',eMessage.toString(),{timeOut : 6000});
-                if(afterSendRfqMessage.length > 0)
-                this.toastr.warning(" - Same Seller can be added  only using Add another offer <br>"+ '',afterSendRfqMessage.toString(),{enableHtml :  true,timeOut : 6000});
               }
               if(Object.keys(addedNewToLocation).length > 0){
-                this.toastr.success(" - added successfully to all the locations"+ '',Object.keys(addedNewToLocation).toString(),{timeOut : 6000});
+                this.toastr.success(" - available in all locations"+ '',Object.keys(addedNewToLocation).toString(),{timeOut : 6000});
               }
           }
        this.selectedCounterparty = {};
