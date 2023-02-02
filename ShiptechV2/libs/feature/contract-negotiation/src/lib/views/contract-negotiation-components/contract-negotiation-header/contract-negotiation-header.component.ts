@@ -171,11 +171,19 @@ export class ContractNegotiationHeaderComponent implements OnInit {
 
   constructUpdateCounterparties(){
   if(Object.keys(this.contractService.selectedCounterparty).length > 0){ 
+  this.contractService.newlyAddedCounterparty = [];
   this.contractService.constructUpdateCounterparties()?.subscribe(res => {
     const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
     this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
     .subscribe(response => {
-      this.localService.contractRequestData(response);
+      if(response.status != 'Open'){
+        this.localService.selectNewlyAddedCounterParty(response,this.contractService.newlyAddedCounterparty)
+        .then((selectedResponse)=>{
+          this.localService.contractRequestData(selectedResponse);
+        });
+      }else{
+        this.localService.contractRequestData(response);
+      }
     });
   });
   }else{

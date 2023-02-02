@@ -731,6 +731,20 @@ export class LocalService {
         ProductType: await this.db.getProductType({ orderBy: 'name' }),
       }
    }
+   async selectNewlyAddedCounterParty(response,newlyAddedCounterparty){
+    newlyAddedCounterparty.forEach(newEl => {
+        response.contractRequestProducts.filter(el => {
+            if(el.locationId == newEl.locationId && el.productId == newEl.productId){
+              el.contractRequestProductOffers.find(productOffers => {
+                if(productOffers.counterpartyId == newEl.counterpartyId){
+                  productOffers.isSelected = true;
+                }
+              });
+            }
+        });
+      });
+      return response;
+   }
     async contractRequestData(response){
         let contractArray = { 
             id: response['id'],
