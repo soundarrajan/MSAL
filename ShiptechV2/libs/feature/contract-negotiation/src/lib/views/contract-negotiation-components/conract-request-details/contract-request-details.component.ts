@@ -1,10 +1,11 @@
+import { I } from '@angular/cdk/keycodes';
 import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from "@angular/router";
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { EmptyFilterName, ToastPosition } from '@shiptech/core/ui/components/filter-preferences/filter-preferences-messages';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions, ITextFilterParams } from 'ag-grid-community';
 import { ToastrService } from 'ngx-toastr';
 import { AGGridCellLinkRenderer } from '../../../core/ag-grid-renderers/ag-grid-cell-link-renderer.component';
 import { AGGridMultiDataRendererComponent } from '../../../core/ag-grid-renderers/ag-grid-multi-data-renderer.component';
@@ -83,8 +84,12 @@ export class ContractRequestDetailsComponent implements OnInit {
       defaultColDef: {
         sortable: true,
         resizable: true,
+        // filter: true,
         filter: 'agTextColumnFilter',
-        filterParams: this.defaultColFilterParams
+        // filterParams: this.defaultColFilterParams
+        filterParams: {
+          buttons: ['reset', 'apply'],
+        } as ITextFilterParams
       },
       columnDefs: this.columnDef_aggrid,
       suppressCellSelection: true,
@@ -130,6 +135,8 @@ export class ContractRequestDetailsComponent implements OnInit {
         }
       },
       onFilterChanged: (params) => {
+        this.chRef.detectChanges();
+        this.gridOptions.api.redrawRows();
         this.gridpageNavModel.page = 1;
         this.gridpageNavModel.totalItems = this.gridOptions.api.getDisplayedRowCount();
         if (this.gridOptions.api.getDisplayedRowCount() === 0) {
@@ -154,13 +161,13 @@ export class ContractRequestDetailsComponent implements OnInit {
       headerName: 'Request date', headerTooltip: 'Created Date', field: 'createdOn', width: 160, cellStyle: { 'padding-left': '15px' }, filter: 'agDateColumnFilter', valueFormatter: params => this.format.showUtcToLocalDate(params.value), filterParams: { comparator: dateCompare }
     },
     {
-      headerName: 'Status', headerTooltip: 'Status', field: 'status', width: 90,
+      headerName: 'Status', headerTooltip: 'Status', field: 'status', width: 90, filter: true,
       cellRenderer: function (params) {
         return `<div class="status-circle"><span class="circle ` + params.value + `"></span>` + params.value + `</div>`;
       }
     },
     {
-      headerName: 'Buyer', headerTooltip: 'Buyer', field: 'buyer', width: 120
+      headerName: 'Buyer', headerTooltip: 'Buyer', field: 'buyer', width: 120, filter: true
     },
     {
       headerName: 'Start Date', headerTooltip: 'Start Date', field: 'startDate', width: 160, filter: 'agDateColumnFilter', valueFormatter: params => this.format.showUtcToLocalDateOnly(params.value), filterParams: { comparator: dateCompare }
@@ -172,10 +179,25 @@ export class ContractRequestDetailsComponent implements OnInit {
       headerName: 'Location', headerTooltip: 'Location', field: 'locations', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data border-left'], width: 120,
       cellRendererFramework: AGGridMultiDataRendererComponent,
       cellRendererParams: { label: 'locationName', type: 'chip-bg', cellClass: 'chip-rectangle' },
+      // valueFormatter: function (params) {
+      //   const locations = params.data.locations.map((el) => el.locationName);
+      //   return locations.toString();
+      // },
       valueGetter: function (params) {
         const locations = params.data.locations.map((el) => el.locationName);
+        let product_sText = params.api.getFilterInstance('productName').getModel()?.filter;
+        let product_fType = params.api.getFilterInstance('productName').getModel()?.type;
+        if (product_sText && product_fType == 'contains') {
+          let pro_filtered_location = [];
+          pro_filtered_location = params.data['locations'].map((element) => {
+            return { ...element, products: element.products.filter((subElement) => subElement.productName.toUpperCase().indexOf(product_sText.toUpperCase()) != -1) }
+          })
+          let pro_filtered = pro_filtered_location.filter(element => element.products.length > 0);
+          return pro_filtered.map((el) => el.locationName).toString();
+        }
         return locations.toString();
       },
+      suppressCellFlash: true
     },
     {
       headerName: 'Product', headerTooltip: 'Product', field: 'productName', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data thick-right-border border-right'], width: 120,
@@ -243,6 +265,11 @@ export class ContractRequestDetailsComponent implements OnInit {
         this.filterList.filters[0].count = this.gridOptions.api.getDisplayedRowCount();
         this.gridpageNavModel.totalItems = this.gridOptions.api.getDisplayedRowCount();
         this.filterList.filters.find(i => i.selected ? this.activeFilterPreset(i) : null);//default selected filter
+        let found = this.filterList.filters.find(element => element.selected);
+        if (found == undefined && this.filterList.filters.length > 0) {
+          this.filterList.filters[0].selected = true;
+          this.activeFilterPreset(this.filterList.filters[0]);
+        }
         const sort = [{ colId: "id", sort: "desc" }];// default sort id
         this.gridOptions.api.setSortModel(sort);
         this.chRef.detectChanges();
@@ -350,16 +377,16 @@ export class ContractRequestDetailsComponent implements OnInit {
   activeFilterPreset(evt) {
     if (evt.filterModels) {
       this.gridOptions.api.setFilterModel(evt.filterModels['contract-requestlist-filter-presets']);
-      evt.count = this.gridOptions.api.getDisplayedRowCount();
+      // evt.count = this.gridOptions.api.getDisplayedRowCount();
       this.gridpageNavModel.totalItems = this.gridOptions.api.getDisplayedRowCount();
     }
     else
       this.gridOptions.api.setFilterModel(null);
 
     this.currentSelectedFilter = evt;
-    if (evt.defaultFilter && evt.name == 'Default')
+    if ((evt.defaultFilter && evt.name == 'Default') || !evt.filterModels || Object.keys(evt.filterModels['contract-requestlist-filter-presets']).length === 0)
       document.querySelector<HTMLElement>("app-ag-filter-display").hidden = true;
-    else if (this.showFilterDescSwitch)
+    else if (this.showFilterDescSwitch && evt.filterModels)
       this.showFilterDesc();
 
   }
