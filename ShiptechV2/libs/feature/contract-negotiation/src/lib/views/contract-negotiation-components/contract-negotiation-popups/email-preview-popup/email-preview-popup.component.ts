@@ -565,7 +565,7 @@ export class EmailPreviewPopupComponent implements OnInit {
           this.localService.contractRequestData(response).then(() => {
             this.localService.callGridRefreshService(selectedsellerOfferRowIds);
           });
-          this.toaster.success('Mail sent successfully.');
+          this.toaster.success('RFQ sent successfully.');
           this.dialogRef.close();
         });
       } else if (
