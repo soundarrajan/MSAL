@@ -275,6 +275,60 @@ export class MainPageComponent implements OnInit {
     });
   }
 
+  amendRFQ() {
+    let checkedCounterPartyInquiredStatus = [];
+    let checkedCounterPartyOpenStatus = [];
+    let noCounterPartyChecked = true;
+
+    let checkedRows = this.localService.getCheckedSellerRows();
+    if(checkedRows.length > 0){
+      noCounterPartyChecked = false;
+      checkedRows.forEach( data => {
+        if(data.Status !== 'Open' || data.Status !== 'Closed'){
+          checkedCounterPartyInquiredStatus.push({
+            id: data.id,
+            counterpartyId: data.CounterpartyId
+          });
+        }
+        if(data.Status === 'Open'){
+          checkedCounterPartyOpenStatus.push(data.CounterpartyName);
+        }
+      });
+    }
+   
+    checkedCounterPartyOpenStatus = [... new Set(checkedCounterPartyOpenStatus)];
+    if(noCounterPartyChecked){
+      this.toaster.error('Atleast one counterparty should be selected to Amend RFQ');
+      return;
+    }
+    if(checkedCounterPartyOpenStatus.length > 0){
+      this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated for '+ checkedCounterPartyOpenStatus.join(', ')+'');
+      if(checkedCounterPartyInquiredStatus.length == 0) return;
+    }
+
+    let amendRFQPayloyd = {
+      loginUserId: this.currentUserId,
+      contractRequestId: this.requestId,
+      conReqProdSellerWithProdDetatilDtos: checkedCounterPartyInquiredStatus
+    };
+
+    this.contractNegoService.amendRFQ(
+      amendRFQPayloyd
+    ).subscribe( response => {
+      let isErrorResponse = this.checkAndShowError(response);
+      if(isErrorResponse !== ''){
+        this.toaster.error(isErrorResponse);
+        return;
+      };
+      if(response.amendRfqSent){
+        this.toaster.success('Amend RFQ sent successfully.');
+      }
+      if(response.message !== ''){
+        this.toaster.warning(response.message);
+      }
+    });
+  }
+
   duplicateRequest() {
     const dialogRef = this.dialog.open(CreateContractRequestPopupComponent, {
       width: '1136px',
@@ -373,6 +427,18 @@ export class MainPageComponent implements OnInit {
   toReject(){
     //this.localService.updateContractStatus("Rejected");
     this.displaySuccessMsg('Offers Rejected');
+  }
+
+  checkAndShowError(res){
+    let err = '';
+    if(res.message && res.message !== ''){
+      err = 'You don\'t have access to perform this action';
+    } else if(res.errors ){
+      err = JSON.stringify(res.errors);
+    } else if(res.errorMessage && res.errorMessage !== ''){
+      err = res.errorMessage;
+    }
+    return err;
   }
 
 }
