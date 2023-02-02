@@ -47,10 +47,6 @@ export class AGGridMultiDataRendererComponent implements ICellRendererAngularCom
         let product_fType = params.api.getFilterInstance('productName').getModel()?.type;
 
         let pro_filtered = [];
-        // console.log(product_sText);
-        // console.log(product_fType);  
-        // console.log(this.params.data.id);
-        // console.log(this.params.data);
         switch (product_fType) {
             case 'contains': {
                 let pro_filtered_location = [];
@@ -79,24 +75,6 @@ export class AGGridMultiDataRendererComponent implements ICellRendererAngularCom
                             return str.locationName.indexOf(location_sText.toUpperCase()) != -1;
                     });
                 }
-                break;
-            case 'notContains':
-                // this.selected = 'quantity';
-                break;
-            case 'equals':
-                // this.selected = 'residue';
-                break;
-            case 'notEqual':
-                // this.selected = 'residue';
-                break;
-            case 'startsWith':
-                // this.selected = 'residue';
-                break;
-            case 'endsWith':
-                // this.selected = 'residue';
-                break;
-            default:
-                // this.selected = 'quantity';
                 break;
         }
 
