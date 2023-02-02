@@ -6,7 +6,7 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
     template: `
     <div class="multi-data">
     <div *ngFor="let item of flocation; let i = index" class="container">
-        <div style="height:7px"></div>
+        <div  [ngStyle]="{'height.px': i!=0?10:7}"></div>
         <ng-container *ngIf="item[params.label]!='' && params.label=='locationName'">            
             <div *ngIf="item[params.label]!='' && params.label=='locationName'"
                 [matTooltip]="item[params.label]" matTooltipClass="lightTooltip" [ngClass]="params.cellClass">{{item[params.label]}}</div>                
@@ -14,7 +14,7 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
                 <div *ngIf="j!=0" style="height:22px;"></div>
                
             </div> 
-            <div *ngIf="i!=(flocation?.length-1)" style="border-top:1px solid #F1F1F2;;position:relative;top:7px;width: 100%"></div>           
+            <div *ngIf="i!=(flocation?.length-1)" style="border-top:1px solid #F1F1F2;;position:relative;top:5px;width: 100%"></div>           
         </ng-container>
         <ng-container *ngIf="params.label!='locationName'">           
             <div *ngFor="let items of item.products; let k = index" class="loop-container" 
@@ -24,7 +24,7 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
                 
                 matTooltipClass="lightTooltip"  [ngClass]="params.cellClass">{{items[params.label]}}</div>               
             </div>
-            <div *ngIf="item.products?.length==1" style="border-top:1px solid #F1F1F2;;position:relative;top:7px;width: 100%"></div>
+            <div *ngIf="item.products?.length==1" style="border-top:1px solid #F1F1F2;;position:relative;top:8px;width: 100%"></div>
             <div *ngIf="item.products?.length>1 && i!=(flocation?.length-1)" style="border-top:1px solid #F1F1F2;;position:relative;top:5px;width: 100%"></div>          
         </ng-container>
         <div style="height:7px"></div>
@@ -57,9 +57,7 @@ export class AGGridMultiDataRendererComponent implements ICellRendererAngularCom
                 pro_filtered_location = this.params.data['locations'].map((element) => {
                     return { ...element, products: element.products.filter((subElement) => subElement.productName.toUpperCase().indexOf(product_sText.toUpperCase()) != -1) }
                 })
-                console.log(pro_filtered_location, "b4");
                 pro_filtered = pro_filtered_location.filter(element => element.products.length > 0);
-                console.log(pro_filtered, "Afr");
             }
                 break;
         }

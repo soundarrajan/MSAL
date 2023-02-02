@@ -28,6 +28,7 @@ export class ContractRequestDetailsComponent implements OnInit {
   public newPresetsDialog: MatDialogRef<any>;
   public presetActiveIndex = 0;
   public showFilterDescSwitch = true;
+  public displayFilterDesc = false;
   public currentSelectedFilter;
 
   @ViewChild('createPreset', { static: false })
@@ -84,12 +85,8 @@ export class ContractRequestDetailsComponent implements OnInit {
       defaultColDef: {
         sortable: true,
         resizable: true,
-        // filter: true,
         filter: 'agTextColumnFilter',
-        // filterParams: this.defaultColFilterParams
-        filterParams: {
-          buttons: ['reset', 'apply'],
-        } as ITextFilterParams
+        filterParams: this.defaultColFilterParams
       },
       columnDefs: this.columnDef_aggrid,
       suppressCellSelection: true,
@@ -98,7 +95,7 @@ export class ContractRequestDetailsComponent implements OnInit {
       paginationPageSize: this.gridpageNavModel.pageSize,
       headerHeight: 30,
       // rowHeight: 35,
-      animateRows: true,
+      animateRows: false,
       onFirstDataRendered(params) {
         params.api.sizeColumnsToFit();
       },
@@ -109,19 +106,6 @@ export class ContractRequestDetailsComponent implements OnInit {
         this.gridOptions.api.sizeColumnsToFit();
         params.api.sizeColumnsToFit();
         this.getGridData();
-      },
-      getRowHeight(params) {
-        let c = 0;
-        c = params.data.locations.reduce((sum, value) => {
-          return (sum + value.products.length);
-        }, 0)
-        let m = params.data.locations.reduce((sum, value) => {
-          return (sum + (value.products.length > 1 ? value.products.length : 0));
-        }, 0)
-        if (c > 0)
-          return ((c * 35) - (m * 7));
-        else
-          return (35);
       },
       onColumnResized: function (params) {
         if (params.columnApi.getAllDisplayedColumns().length <= 8 && params.type === 'columnResized' && params.finished === true && params.source === 'uiColumnDragged') {
@@ -137,6 +121,7 @@ export class ContractRequestDetailsComponent implements OnInit {
       onFilterChanged: (params) => {
         this.chRef.detectChanges();
         this.gridOptions.api.redrawRows();
+        // this.gridOptions.api.resetRowHeights();
         this.gridpageNavModel.page = 1;
         this.gridpageNavModel.totalItems = this.gridOptions.api.getDisplayedRowCount();
         if (this.gridOptions.api.getDisplayedRowCount() === 0) {
@@ -161,13 +146,13 @@ export class ContractRequestDetailsComponent implements OnInit {
       headerName: 'Request date', headerTooltip: 'Created Date', field: 'createdOn', width: 160, cellStyle: { 'padding-left': '15px' }, filter: 'agDateColumnFilter', valueFormatter: params => this.format.showUtcToLocalDate(params.value), filterParams: { comparator: dateCompare }
     },
     {
-      headerName: 'Status', headerTooltip: 'Status', field: 'status', width: 90, filter: true,
+      headerName: 'Status', headerTooltip: 'Status', field: 'status', width: 90,
       cellRenderer: function (params) {
         return `<div class="status-circle"><span class="circle ` + params.value + `"></span>` + params.value + `</div>`;
       }
     },
     {
-      headerName: 'Buyer', headerTooltip: 'Buyer', field: 'buyer', width: 120, filter: true
+      headerName: 'Buyer', headerTooltip: 'Buyer', field: 'buyer', width: 120,
     },
     {
       headerName: 'Start Date', headerTooltip: 'Start Date', field: 'startDate', width: 160, filter: 'agDateColumnFilter', valueFormatter: params => this.format.showUtcToLocalDateOnly(params.value), filterParams: { comparator: dateCompare }
@@ -178,11 +163,8 @@ export class ContractRequestDetailsComponent implements OnInit {
     {
       headerName: 'Location', headerTooltip: 'Location', field: 'locations', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data border-left'], width: 120,
       cellRendererFramework: AGGridMultiDataRendererComponent,
+      autoHeight: true,
       cellRendererParams: { label: 'locationName', type: 'chip-bg', cellClass: 'chip-rectangle' },
-      // valueFormatter: function (params) {
-      //   const locations = params.data.locations.map((el) => el.locationName);
-      //   return locations.toString();
-      // },
       valueGetter: function (params) {
         const locations = params.data.locations.map((el) => el.locationName);
         let product_sText = params.api.getFilterInstance('productName').getModel()?.filter;
@@ -202,6 +184,7 @@ export class ContractRequestDetailsComponent implements OnInit {
     {
       headerName: 'Product', headerTooltip: 'Product', field: 'productName', headerClass: ["aggrid-text-align-c"], cellClass: ['aggridtextalign-center loop-data thick-right-border border-right'], width: 120,
       cellRendererFramework: AGGridMultiDataRendererComponent,
+      autoHeight: true,
       cellRendererParams: { label: 'productName', type: 'chip-bg', cellClass: 'chip-rectangle' },
       valueGetter: function (params) {
         const products = params.data.locations.map((el) => el.products.map((p) => p.productName));
@@ -384,8 +367,10 @@ export class ContractRequestDetailsComponent implements OnInit {
       this.gridOptions.api.setFilterModel(null);
 
     this.currentSelectedFilter = evt;
-    if ((evt.defaultFilter && evt.name == 'Default') || !evt.filterModels || Object.keys(evt.filterModels['contract-requestlist-filter-presets']).length === 0)
+    if ((evt.defaultFilter && evt.name == 'Default') || !evt.filterModels || Object.keys(evt.filterModels['contract-requestlist-filter-presets']).length === 0) {
       document.querySelector<HTMLElement>("app-ag-filter-display").hidden = true;
+      this.displayFilterDesc = false;
+    }
     else if (this.showFilterDescSwitch && evt.filterModels)
       this.showFilterDesc();
 
@@ -408,6 +393,7 @@ export class ContractRequestDetailsComponent implements OnInit {
     this.showFilterDescSwitch = true;
     if (this.currentSelectedFilter['name'] != 'Default') {
       document.querySelector<HTMLElement>("app-ag-filter-display").hidden = false;
+      this.displayFilterDesc = true;
     }
   }
 

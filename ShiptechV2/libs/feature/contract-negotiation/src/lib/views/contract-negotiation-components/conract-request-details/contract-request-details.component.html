@@ -60,7 +60,7 @@
                     </app-ag-filter-display>
                 </div>
                 <ag-grid-angular #agGridAngular
-                    [ngStyle]="{'height': showFilterDesc?'calc( 100vh - 220px)':'calc( 100vh - 194px)'}"
+                    [ngStyle]="{'height': displayFilterDesc?'calc( 100vh - 220px)':'calc( 100vh - 194px)'}"
                     style="width: 100%;" [gridOptions]="gridOptions" domLayout='normal'
                     class="ag-theme-material ag-grid-v2 angular-v9" (window:resize)="onResize($event)"
                     [paginationPageSize]="gridpageNavModel.pageSize">
