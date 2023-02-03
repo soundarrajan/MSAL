@@ -536,3 +536,12 @@
   display: inline-flex;
   padding: 10px 2px;
 }
+
+.prdMinQty .mat-form-field .uom-select .mat-select-trigger,.prdMaxQty .mat-form-field .uom-select .mat-select-trigger{
+  padding-left: 6px;
+  padding-top: 0px;
+}
+
+.prdMinQty .mat-form-field-label-wrapper,.prdMaxQty .mat-form-field-label-wrapper{
+  width:65% !important;
+}

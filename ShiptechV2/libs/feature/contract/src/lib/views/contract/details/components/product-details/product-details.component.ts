@@ -474,7 +474,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   searchCompanyModel: any;
   productMasterSearchList: any[];
   generalTenantSettings: any;
-
+  defaultUOM: any;
   selectedLocation: any;
   selectedProduct: any;
   selectedTabIndex: number = 0;
@@ -641,6 +641,10 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   searchAllowedLocation: any = '';
   allowedLocationSearch = new FormControl();
   allowedProductSearch = new FormControl();
+  quantityPrecision: number = 3;
+  staticData: any = { 
+    Uom: []
+  };
 
   constructor(
     public gridViewModel: OrderListGridViewModel,
@@ -661,7 +665,8 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     @Inject(DecimalPipe) private _decimalPipe,
     private tenantService: TenantFormattingService,
     sanitizer: DomSanitizer,
-    private overlayContainer: OverlayContainer
+    private overlayContainer: OverlayContainer,
+    private db: LegacyLookupsDatabase,
   ) {
     super(changeDetectorRef);
     this.autocompletePhysicalSupplier =
@@ -672,12 +677,26 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
     PICK_FORMATS.display.dateInput = this.format.dateFormat;
     this.baseOrigin = new URL(window.location.href).origin;
+    this.generalTenantSettings = this.tenantSettingsService.getGeneralTenantSettings();
+    this.defaultUOM = this.generalTenantSettings.tenantFormats.uom;
+    this.quantityPrecision = this.format.quantityPrecision;
+
     this.quantityFormat =
       '1.' +
       this.tenantService.quantityPrecision +
       '-' +
       this.tenantService.quantityPrecision;
-  }
+      this.getStaticData().then(data => {
+      this.staticData = _.cloneDeep(data);       
+      this.changeDetectorRef.detectChanges();
+      });
+  } 
+
+  async getStaticData() { 
+    return {
+      Uom: await this.db.getUomTable({ orderBy: 'name' }),
+    }
+  }  
 
   ngOnInit() {
     this.entityName = 'Contract';
@@ -790,8 +809,14 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       dealDate: null,
       physicalSupplier: null,
       allowedProducts: [],
-      allowedLocations: []
+      allowedLocations: [],
+      minQuantity: this.quantityFormatValue(0),
+      minQuantityUomId: this.defaultUOM.id,
+      maxQuantity: this.quantityFormatValue(0),
+      maxQuantityUomId: this.defaultUOM.id,      
+
     };
+    
     if (this.formValues) {
       if (!this.formValues.products) {
         this.formValues.products = [];
@@ -809,6 +834,14 @@ export class ProductDetails extends DeliveryAutocompleteComponent
     this.setAllowedLocations(this.selectedTabIndex);
     this.setAllowedProducts(this.selectedTabIndex);
     this.changeDetectorRef.detectChanges();
+  }
+  
+  syncMinMaxUom(type, i) {
+    if(type == 'min'){
+      this.formValues.products[i].maxQuantityUomId = this.formValues.products[i].minQuantityUomId;
+    } else if(type == 'max') {
+      this.formValues.products[i].minQuantityUomId = this.formValues.products[i].maxQuantityUomId;
+    }
   }
 
   setAllowedLocations(selectedTabIndex) {
@@ -858,6 +891,11 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   setAllowedProducts(selectedTabIndex) {
     this.selectedProductList = _.cloneDeep(this.productMasterList);
     let contractProduct = this.formValues.products[selectedTabIndex];
+    let qtyValue = this.quantityFormatValue(0);
+    this.formValues.products[selectedTabIndex].minQuantity = qtyValue;
+    this.formValues.products[selectedTabIndex].maxQuantity = qtyValue;
+    this.formValues.products[selectedTabIndex].minQuantityUomId = this.defaultUOM.id;
+    this.formValues.products[selectedTabIndex].maxQuantityUomId = this.defaultUOM.id;    
     if (
       contractProduct.allowedProducts &&
       contractProduct.allowedProducts.length
@@ -1437,6 +1475,103 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   ): number => {
     return 0;
   };
+
+  focus(e, type) {
+    if(type !== 'uom') e.target.select();
+    if (type == 'min') {
+      e.target.parentElement
+        .closest('.minInputFocus')
+        .classList.add('mininputFocussed');
+        e.target.parentElement.lastChild.classList.add('add-label');
+        return;
+    }
+
+    if (type == 'max') {
+      e.target.parentElement
+        .closest('.maxInputFocus')
+        .classList.add('maxinputFocussed');
+        e.target.parentElement.lastChild.classList.add('add-label'); return;
+        return;
+    }
+
+    if (type == 'uom') {
+      e.target.parentElement
+        .closest('.uomInputFocus')
+        .classList.add('uomInputFocussed');
+      e.target.parentElement.lastChild.classList.remove('add-label');
+      e.target.parentElement.lastChild.classList.add('remove-label');
+      return;
+    }
+
+    if (type == 'tol') {
+      e.target.parentElement
+        .closest('.tolInputFocus')
+        .classList.add('tolinputFocussed');
+      e.target.parentElement.lastChild.classList.remove('add-label');
+      e.target.parentElement.lastChild.classList.add('remove-label');
+      return;
+    }
+   
+  }
+  focusOut(e, type, objName, i) {
+    let value = (e.target.value)?e.target.value:0;
+    let qtyValue = (this.quantityFormatValue(value))?this.quantityFormatValue(value):this.quantityFormatValue(0);
+    if (type == 'min') {
+      e.target.parentElement
+        .closest('.minInputFocus')
+        .classList.remove('mininputFocussed');
+      e.target.parentElement.lastChild.classList.remove('remove-label');
+      e.target.parentElement.lastChild.classList.add('add-label');
+      if(objName == 'product'){
+      this.formValues.products[i].minQuantity = qtyValue;
+      }
+      return;     
+    }
+
+    if (type == 'max') {
+      e.target.parentElement
+        .closest('.maxInputFocus')
+        .classList.remove('maxinputFocussed');
+      e.target.parentElement.lastChild.classList.remove('remove-label');
+      e.target.parentElement.lastChild.classList.add('add-label');
+      if(objName == 'product'){
+        this.formValues.products[i].maxQuantity = qtyValue;
+      }
+      return;     
+    }
+  }
+  quantityFormatValue(value) {
+    value = (value)?value:0;
+    let plainNumber = value.toString().replace(/[^\d|\-+|\.+]/g, '');
+    let number = parseFloat(plainNumber);
+    if (isNaN(number)) {
+      return null;
+    }
+    if (plainNumber) {
+      if (this.quantityPrecision == 0) {
+        return plainNumber;
+      } else {
+        return this._decimalPipe.transform(plainNumber, this.quantityFormat);
+      }
+    }
+  }
+  // Only Number
+  keyPressNumber(event) {
+    let currStr = event.srcElement.value;
+    var inp = String.fromCharCode(event.keyCode);
+    if(inp == "." && currStr.includes(".")){
+      return false;
+    }
+    if (inp == '.' || inp == ',' || inp == '-') {
+      return true;
+    }
+    if (/^[0-9]+\.?[0-9]*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 
   ngAfterViewInit(): void { }
 }

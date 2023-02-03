@@ -255,6 +255,67 @@
         </div>
       </div>
     </div>
+
+    <div id="custom-form-field" class=" lightTheme prdMinQty" style="margin:0px">
+      <div class="split-field minInputFocus" style="">
+        <mat-form-field id="prdMinQty" class="without-search "
+          style="width: 64%;height: 30px !important;border: none;" placeholder="Minimum Qty" appearance="legacy"
+          appearance="legacy">
+          <mat-label>Minimum Qty</mat-label>
+          <input quantityFormat class="text-ellipsis" value="100"
+            [(ngModel)]="formValues.products[selectedTabIndex].minQuantity"
+            matInput
+            placeholder="Minimum Qty"         
+            panelClass="general-info-select-container"
+            (focus)="focus($event, 'min')"
+            (focusout)="focusOut($event, 'min', 'product', selectedTabIndex)"
+            (keypress)="keyPressNumber($event)"
+            autocomplete="off"
+            >
+        </mat-form-field>
+        <mat-form-field class="long-label-field"
+          style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
+          appearance="legacy">
+          <mat-select disableOptionCentering panelClass="uom-select"  class="uom-select"
+            [(ngModel)]="formValues.products[selectedTabIndex].minQuantityUomId" 
+            (selectionChange)="syncMinMaxUom('min', selectedTabIndex)" 
+            style="background-color: #EBECED !important;">
+            <mat-option *ngFor="let option of staticData.Uom" [value]="option.id">{{option.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div id="custom-form-field" class=" lightTheme prdMaxQty" style="margin:0px 10px;">
+      <div class="split-field maxInputFocus" style="">
+        <mat-form-field id="prdMaxQty" class="without-search"
+          style="width: 64%;height: 30px !important;border: none;" placeholder="Maximum Qty"
+          appearance="legacy">
+          <mat-label>Maximum Qty</mat-label>
+          <input quantityFormat class="text-ellipsis" value="100"
+            [(ngModel)]="formValues.products[selectedTabIndex].maxQuantity"
+            matInput
+            
+            panelClass="general-info-select-container"
+            (focus)="focus($event, 'max')"
+            (focusout)="focusOut($event, 'max', 'product', selectedTabIndex)"
+            (keypress)="keyPressNumber($event)"
+            autocomplete="off"
+            >
+        </mat-form-field>
+        <mat-form-field class="long-label-field"
+          style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
+          appearance="legacy">
+          <mat-select disableOptionCentering panelClass="uom-select"  class="uom-select"
+            [(ngModel)]="formValues.products[selectedTabIndex].maxQuantityUomId" 
+            (selectionChange)="syncMinMaxUom('max', selectedTabIndex)" 
+            style="background-color: #EBECED !important;">
+            <mat-option *ngFor="let option of staticData.Uom" [value]="option.id">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
     <div
       class="custom-form-field product-details"
       [ngClass]="{ darkTheme: switchTheme, lightTheme: !switchTheme }"
