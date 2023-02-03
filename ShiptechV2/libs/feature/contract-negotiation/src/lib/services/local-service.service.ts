@@ -11,6 +11,7 @@ import { ContractRequest } from '../store/actions/ag-grid-row.action';
 import { Store } from '@ngxs/store';
 import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
 import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service'; 
+import { ContractNegotiationStoreModel } from '../store/contract-negotiation.store';
 
 
 @Injectable({
@@ -890,5 +891,19 @@ export class LocalService {
         this.uniqueLocations = unique.toString();
         this.allRequestDetails = contractArray;
         this.store.dispatch(new ContractRequest([contractArray]));
+    }
+
+    getCheckedSellerRows(){
+        let checkedCounterParties = [];
+        this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+            state['contractNegotiation'].ContractRequest[0].locations.forEach( prodData => {
+                if(prodData.data.length > 0){
+                    prodData.data.forEach( data => {
+                        if(data.check === true) checkedCounterParties.push(data);
+                    })
+                }
+            });
+        });
+        return checkedCounterParties;
     }
 }

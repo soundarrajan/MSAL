@@ -453,6 +453,14 @@ export class ContractNegotiationService extends BaseStoreService
     return this.contractNegotiationApi.sendRFQ(payload);
   }
 
+  /* Amend RFQ
+   * @param payload = 
+   */
+  @ObservableException()
+  amendRFQ(payload: any): Observable<any> {
+    return this.contractNegotiationApi.amendRFQ(payload);
+  }
+
   /* Save and Send RFQ
    * @param payload = 
    */
