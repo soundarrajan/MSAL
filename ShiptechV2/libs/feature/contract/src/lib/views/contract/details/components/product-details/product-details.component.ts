@@ -1490,8 +1490,9 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       e.target.parentElement
         .closest('.maxInputFocus')
         .classList.add('maxinputFocussed');
-        e.target.parentElement.lastChild.classList.add('add-label'); return;
+        e.target.parentElement.lastChild.classList.add('add-label'); 
         return;
+       
     }
 
     if (type == 'uom') {
