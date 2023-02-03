@@ -1477,18 +1477,21 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   };
 
   focus(e, type) {
+    if(type !== 'uom') e.target.select();
     if (type == 'min') {
       e.target.parentElement
         .closest('.minInputFocus')
         .classList.add('mininputFocussed');
         e.target.parentElement.lastChild.classList.add('add-label');
+        return;
     }
 
     if (type == 'max') {
       e.target.parentElement
         .closest('.maxInputFocus')
         .classList.add('maxinputFocussed');
-        e.target.parentElement.lastChild.classList.add('add-label');
+        e.target.parentElement.lastChild.classList.add('add-label'); return;
+        return;
     }
 
     if (type == 'uom') {
@@ -1497,6 +1500,7 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         .classList.add('uomInputFocussed');
       e.target.parentElement.lastChild.classList.remove('add-label');
       e.target.parentElement.lastChild.classList.add('remove-label');
+      return;
     }
 
     if (type == 'tol') {
@@ -1505,8 +1509,9 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         .classList.add('tolinputFocussed');
       e.target.parentElement.lastChild.classList.remove('add-label');
       e.target.parentElement.lastChild.classList.add('remove-label');
+      return;
     }
-    if(type !== 'uom') e.target.select();
+   
   }
   focusOut(e, type, objName, i) {
     let value = (e.target.value)?e.target.value:0;
@@ -1517,9 +1522,10 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         .classList.remove('mininputFocussed');
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
-      if(objName == 'product')
+      if(objName == 'product'){
       this.formValues.products[i].minQuantity = qtyValue;
-     
+      }
+      return;     
     }
 
     if (type == 'max') {
@@ -1528,9 +1534,10 @@ export class ProductDetails extends DeliveryAutocompleteComponent
         .classList.remove('maxinputFocussed');
       e.target.parentElement.lastChild.classList.remove('remove-label');
       e.target.parentElement.lastChild.classList.add('add-label');
-      if(objName == 'product')
+      if(objName == 'product'){
         this.formValues.products[i].maxQuantity = qtyValue;
-     
+      }
+      return;     
     }
   }
   quantityFormatValue(value) {
