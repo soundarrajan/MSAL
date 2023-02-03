@@ -166,7 +166,6 @@ import { AGGridMinMaxCellRenderer } from './core/ag-grid-renderers/ag-grid-min-m
     },
     ContractNegotiationService,
     ContractNegotiationModuleResolver,
-    ContractNegotiationService,
     SpotNegotiationService,
   ]
 })

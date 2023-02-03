@@ -4,6 +4,7 @@ import { GridOptions } from 'ag-grid-community';
 import { ActivatedRoute } from "@angular/router";
 import { TenantSettingsService } from '@shiptech/core/services/tenant-settings/tenant-settings.service';
 import { ContractNegotiationService } from '../../../services/contract-negotiation.service';
+import { LocalService } from '../../../services/local-service.service';
 @Component({
   selector: 'app-contract-nego-auditlog',
   templateUrl: './contract-nego-auditlog.component.html',
@@ -50,6 +51,7 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
   constructor(public dialog: MatDialog,
     private route: ActivatedRoute,
     tenantSettingsService: TenantSettingsService,
+    private localService: LocalService,
     private ContractNegotiationService: ContractNegotiationService,
     )
     { 
@@ -120,7 +122,6 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
   }
     ngOnInit(): void {
         this.businessId = this.route.snapshot.paramMap.get('requestId');
-      console.log(this.businessId);
     }
   
   private columnDef_nego_grid = [
@@ -153,7 +154,7 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
             { ColumnName: "BusinessId", Value: this.businessId },
             {
               ColumnName: "Transaction",
-              Value: 'QuantityControlReport'
+              Value: 'ContractNegotiation'
             }
           ],
           PageFilters: { Filters: [] },
@@ -163,9 +164,22 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
         this.ContractNegotiationService.getAuditLogsList(
          reqpayload
        ).subscribe((data: any) =>{
-        this.gridOptions_nego_history.api.setRowData(data.payload);
-        console.log(data.payload);
+        let payload=this.ConstructAuditLogList(data.payload);
+        this.gridOptions_nego_history.api.setRowData(payload);
        });
        
+  }
+  ConstructAuditLogList( AuditLists){
+    let payload = [];
+    AuditLists.forEach((el) => {
+      el['user']=el['modifiedBy'].displayName??el['modifiedBy'].name;
+      let auditlog={...el,...JSON.parse(el['fieldName'])};
+      el['field']=auditlog['feild'];
+      auditlog['product']=this.localService.masterData['Product'].find(p => p.id == auditlog['product'])?.name;
+      auditlog['counterparty']=this.localService.masterData['Counterparty'].find(p => p.id == auditlog['counterparty'])?.name;
+      auditlog['location']=this.localService.masterData['Location'].find(p => p.id == auditlog['location'])?.name;   
+      payload.push(auditlog);
+    });
+    return payload;
   }
 }
