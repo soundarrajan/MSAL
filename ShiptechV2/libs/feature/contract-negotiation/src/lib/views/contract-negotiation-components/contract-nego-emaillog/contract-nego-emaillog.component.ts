@@ -31,20 +31,11 @@ export class ContractNegoEmaillogComponent implements OnInit {
   public rowData: [];
   public gridOptions_data: GridOptions;
   public gridId = "contractNegoEmailLog";
+
   public overlayLoadingTemplate =
     '<span class="ag-overlay-loading-center" style="color:white;border-radius:20px; border: 2px solid #5C5C5B; background: #5C5C5B ;">Loading Rows...</span>';
   public overlayNoRowsTemplate = '<span>No rows to show</span>';
-  private statusBGRules = {
-    'bg-success': function (params) {
-      return params.value === 'Success';
-    },
-    'bg-pending': function (params) {
-      return params.value === 'Pending';
-    },
-    'bg-failed': function (params) {
-      return params.value === 'Failed';
-    }
-  };
+ 
   public contractRequestId : number;
   filterList = {
     filters: [
@@ -117,12 +108,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
         }
       };
    }
-   public cellClassRules = {
-    'bg-failed-grid': params => params.value == 'Failed',
-    'bg-success-grid': params => params.value == 'Sent',
-    'bg-pending-grid': params => params.value == 'Pending'
-  };
-
+   
   private columnDef_grid = [
     {
       headerName: 'Mail sent to',
@@ -152,10 +138,13 @@ export class ContractNegoEmaillogComponent implements OnInit {
       field: 'status.name',
       width: 300,    
       suppressSizeToFit: false,
-      headerClass: ['aggrid-text-align-c'],
-      cellClassRules: this.cellClassRules,
-      cellClass: ['aggridtextalign-center'],
-      tooltipValueGetter: params => params.value
+      headerClass: ['aggrid-text-align-c'],     
+      cellClass: ['aggridtextalign-center'], 
+      tooltipValueGetter: params => params.value,
+      cellRenderer: function (params) {          
+       var emailLogStatusColor = (params.value == "Sent")?"Success":params.value;
+       return `<div class="status-circle"><span class="circle ` + emailLogStatusColor + `"></span>` + params.value + `</div>`;
+      }
     },
     {
       headerName: 'Sender',
@@ -164,8 +153,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
       width: 345,      
       suppressSizeToFit: false,
       tooltipValueGetter: params => params.value,
-      headerClass: ['aggrid-text-align-c'],
-      cellClassRules: this.cellClassRules,
+      headerClass: ['aggrid-text-align-c'],      
       cellClass: ['aggridtextalign-center'],
     },
     {
@@ -173,8 +161,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
       headerTooltip: 'Subject',
       field: 'subject',
       width: 600,      
-      suppressSizeToFit: false,
-      cellClassRules: this.cellClassRules,
+      suppressSizeToFit: false,     
       tooltipValueGetter: params => params.value,
     },
     {
@@ -183,8 +170,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
       field: 'sentAt',
       tooltipValueGetter: params => params.value,
       width: 345,     
-      suppressSizeToFit: false,
-      cellClassRules: this.cellClassRules, 
+      suppressSizeToFit: false,    
       filter: 'agSetColumnFilter',
       headerClass: ['aggrid-text-align-c'],      
       cellClass: ['aggridtextalign-center'],    
