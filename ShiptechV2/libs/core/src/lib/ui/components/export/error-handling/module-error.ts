@@ -21,6 +21,14 @@ export class ModuleError<T = any> extends AppError<T> {
     code: ErrorCodeEnum.ExportGeneralFailed,
     message: 'Could not export document. Please try again later.'
   });
+  static readonly DocumentTypeNotSelected = new AppError({
+    code: ErrorCodeEnum.ExportGeneralFailed,
+    message: 'Please Select document type'
+  });
+  static UpdateNotesDocumentFailed= new AppError({
+    code: ErrorCodeEnum.ExportGeneralFailed,
+    message: 'Notes Update Failed'
+  });
 
   constructor(appError: Partial<IAppError> = {}) {
     super(appError);

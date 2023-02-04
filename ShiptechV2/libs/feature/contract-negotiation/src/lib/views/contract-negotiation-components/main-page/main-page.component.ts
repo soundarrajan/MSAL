@@ -17,6 +17,7 @@ import { GridOptions } from 'ag-grid-community/dist/lib/main';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonApiService } from '@shiptech/core/services/common/common-api.service';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
+import { DocDragDropUploadComponent } from '../doc-drag-drop-upload/doc-drag-drop-upload.component';
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
@@ -48,10 +49,9 @@ export class MainPageComponent implements OnInit {
   Verify: boolean = false;
   @ViewChild(ContractNegoEmaillogComponent) contractNegoEmaillog: ContractNegoEmaillogComponent;
   public gridOptions_data: GridOptions;
-  toastr: any;
   endpointCount: number;
   anErrorHasOccured: boolean;
-
+  @ViewChild(DocDragDropUploadComponent) docUploadComponent: DocDragDropUploadComponent;
   constructor(private commonApiService: CommonApiService, private toaster: ToastrService, public dialog: MatDialog, private localService: LocalService, private router: Router, private contractNegoService: ContractNegotiationService, private store: Store, private tenantSettingsService: TenantSettingsService, private ref: ChangeDetectorRef, private route: ActivatedRoute, private spinner: NgxSpinnerService) {
     this.currentUserId = this.store.selectSnapshot(UserProfileState.user).id;
     this.generalTenantSettings = this.tenantSettingsService.getGeneralTenantSettings();
@@ -200,7 +200,7 @@ export class MainPageComponent implements OnInit {
               rowNodeIds.push(data.id);
               if (data.Status == 'Open') {
                 let productDetails = {
-                  contractRequestProductId: prodData.contractRequestProductId,
+                  // contractRequestProductId: prodData.contractRequestProductId,
                   contractRequestProductOfferIds: data.contractRequestProductOfferIds,
                   counterpartyId: data.CounterpartyId,
                   createdById: data.createdById,
@@ -414,11 +414,9 @@ export class MainPageComponent implements OnInit {
 
   updateIsVerifiedDocument() {
     let selectedNodes = this.commonApiService.shared_rowData_grid.api.getSelectedNodes();
-    console.log('111', this.commonApiService.shared_rowData_grid);
-    console.log(selectedNodes);
     let selectedData = selectedNodes.map(node => node.data);
     if (!selectedData.length) {
-      this.toastr.error('Please select a row !');
+      this.toaster.error('Please select a row !');
       return;
     } else {
       this.endpointCount = 0;
@@ -450,7 +448,7 @@ export class MainPageComponent implements OnInit {
     if (!this.endpointCount && !this.anErrorHasOccured) {
       this.spinner.hide();
       this.toaster.success('Document(s) verified !');
-      //this.getDocumentsList();
+      this.docUploadComponent.getDocumentsList();
     }
   }
 

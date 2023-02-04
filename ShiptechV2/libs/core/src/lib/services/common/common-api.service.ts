@@ -7,7 +7,6 @@ import { ApiCallUrl } from '@shiptech/core/utils/decorators/api-call.decorator';
 import { ICommonApiService, ILocationListResponse, IProductListResponse } from './common.api.service.interface';
 import { ObservableException } from '@shiptech/core/utils/decorators/observable-exception.decorator';
 import { catchError, map } from 'rxjs/operators';
-import { SpotNegotiationApiPaths } from 'libs/feature/spot-negotiation/src/lib/services/api/spot-negotiation-api';
 import { IDocumentsCreateUploadRequest, IDocumentsCreateUploadResponse } from '../masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
 import { IDocumentsUpdateIsVerifiedRequest } from '../masters-api/request-response-dtos/documents-dtos/documents-update-isVerified.dto';
 import { IDocumentsUpdateNotesRequest, IDocumentsUpdateNotesResponse } from '../masters-api/request-response-dtos/documents-dtos/documents-update-notes.dto';
