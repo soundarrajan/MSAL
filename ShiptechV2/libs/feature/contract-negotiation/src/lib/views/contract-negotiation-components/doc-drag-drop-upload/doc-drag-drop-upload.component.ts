@@ -11,12 +11,11 @@ import _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { AGGridCellV2RendererComponent } from 'libs/feature/spot-negotiation/src/lib/core/ag-grid/ag-grid-cell-renderer-v2.component';
-
 import { ModuleError } from '@shiptech/core/ui/components/export/error-handling/module-error';
 import { IDocumentsCreateUploadDetailsDto, IDocumentsCreateUploadDto } from '@shiptech/core/services/masters-api/request-response-dtos/documents-dtos/documents-create-upload.dto';
 import { CommonApiService } from '@shiptech/core/services/common/common-api.service';
 import { AGGridCellActionsDocumentsComponent } from '../../../core/ag-grid-renderers/ag-grid-cell-actions-documents.component';
+import { AGGridCellV2RendererComponent } from '../../../core/ag-grid-renderers/ag-grid-cell-renderer-v2.component';
 @Component({
   selector: 'app-doc-drag-drop-upload',
   templateUrl: './doc-drag-drop-upload.component.html',
@@ -144,6 +143,7 @@ export class DocDragDropUploadComponent implements OnInit {
     if ($event.value) {
       this.selectedDocumentType = $event.value;
       this.documentType = null;
+      this.enableUpload($event);
       this.changeDetector.detectChanges();
     }
   }
@@ -231,7 +231,6 @@ export class DocDragDropUploadComponent implements OnInit {
    * on file drop handler
    */
   onFileDropped(files) {
-    console.log(files);
     this.upload(files[0]);
   }
 
@@ -242,7 +241,6 @@ export class DocDragDropUploadComponent implements OnInit {
     this.upload(files[0]);
   }
   upload(event) {
-    console.log(this.clearUploadedFiles);
     if (!this.selectedDocumentType) {
       //which values is coming emty
 
@@ -307,42 +305,42 @@ export class DocDragDropUploadComponent implements OnInit {
    * Convert Files list to normal array list
    * @param files (Files List)
    */
-  prepareFilesList(files: Array<any>) {
-    for (const item of files) {
-      item.progress = 0;
-      this.files.push(item);
-      this.uploadDocument(this.files, this.doc_type);
-    }
-  }
-  uploadDocument(doc, doctype) {
-    //alert(this.doc_type);
-    var lastfile = doc[doc.length - 1];
-    var file = lastfile.name.split('.');
-    let filename = file[0];
-    let fileformat = file[1].toUpperCase();
-    this.gridOptions_data.api.applyTransaction({
-      add: [
-        {
-          id: '101',
-          doc_name: filename,
-          size: '199KB',
-          doc_type: 'Contract',
-          file_type: doctype,
-          entity: 'Contract',
-          ref_no: '123678',
-          uploaded_by: 'Alexander',
-          uploaded_on: '12/11/20',
-          status: 'Verified',
-          verified_by: 'Yusuf',
-          verified_on: '12/11/20',
-          add_views: 'Document uploaded',
-          download: ''
-        }
-      ]
-    });
-  }
+  // prepareFilesList(files: Array<any>) {
+  //   for (const item of files) {
+  //     item.progress = 0;
+  //     this.files.push(item);
+  //     this.uploadDocument(this.files, this.doc_type);
+  //   }
+  // }
+  // uploadDocument(doc, doctype) {
+  //   //alert(this.doc_type);
+  //   var lastfile = doc[doc.length - 1];
+  //   var file = lastfile.name.split('.');
+  //   let filename = file[0];
+  //   let fileformat = file[1].toUpperCase();
+  //   this.gridOptions_data.api.applyTransaction({
+  //     // add: [
+  //     //   {
+  //     //     id: '101',
+  //     //     doc_name: filename,
+  //     //     size: '199KB',
+  //     //     doc_type: 'Contract',
+  //     //     file_type: doctype,
+  //     //     entity: 'Contract',
+  //     //     ref_no: '123678',
+  //     //     uploaded_by: 'Alexander',
+  //     //     uploaded_on: '12/11/20',
+  //     //     status: 'Verified',
+  //     //     verified_by: 'Yusuf',
+  //     //     verified_on: '12/11/20',
+  //     //     add_views: 'Document uploaded',
+  //     //     download: ''
+  //     //   }
+  //     // ]
+  //   });
+  // }
 
-  newValue;
+  // newValue;
   private columnDef_grid = [
     {
       headerName: '',
