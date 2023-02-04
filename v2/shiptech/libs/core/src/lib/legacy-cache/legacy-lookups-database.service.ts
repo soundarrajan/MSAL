@@ -15,6 +15,8 @@ type ColorDisplayMappingLookup = ColorDisplayLookup & {
   transactionTypeId: number;
   index: number;
 };
+
+type Filter = { orderBy?: string, limit?: number}
 /**
  * Front-end will only work with this class, and it doesn't care how these tables are actually populated.
  * Note: See {@link LookupsCacheService} to see how data is actually loaded from the api.
@@ -164,6 +166,7 @@ export class LegacyLookupsDatabase extends Dexie {
       [nameof<LegacyLookupsDatabase>('portType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('robDifferenceType')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('controlTowerActionStatus')]: lookupSchema,
+      [nameof<LegacyLookupsDatabase>('counterparty')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>('screen')]: lookupSchema,
       [nameof<LegacyLookupsDatabase>(
         'controlTowerNotesViewType'
@@ -184,6 +187,12 @@ export class LegacyLookupsDatabase extends Dexie {
     Object.keys(this.schema).forEach(tableName => {
       this[tableName] = this.table(tableName);
     });
+  }
+
+  async getCounterPartyList(params: Filter = { orderBy: 'id'}){
+    const db = this.table('counterparty').orderBy(params.orderBy); 
+    let counterPartyList = await db.toArray();
+    return counterPartyList;
   }
 
   async getScheduleDashboardLabelConfiguration() {

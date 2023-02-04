@@ -9,15 +9,18 @@ import { ObservableException } from '@shiptech/core/utils/decorators/observable-
 import { UrlService } from '@shiptech/core/services/url/url.service';
 import { Router } from '@angular/router';
 import { ContractApi } from './api/contract-api';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
 
 @Injectable()
 export class ContractService extends BaseStoreService implements OnDestroy {
+  masterData: any;
   constructor(
     protected store: Store,
     private urlService: UrlService,
     private router: Router,
     loggerFactory: ModuleLoggerFactory,
-    private contractApi: ContractApi
+    private contractApi: ContractApi,
+    private db: LegacyLookupsDatabase
   ) {
     super(store, loggerFactory.createLogger(ContractService.name));
   }
@@ -269,6 +272,10 @@ export class ContractService extends BaseStoreService implements OnDestroy {
   listProductTypeGroupsDefaults(payload): Observable<unknown> {
     return this.contractApi.listProductTypeGroupsDefaults(payload);
   }
+
+  async getCounterPartyList(){
+    this.masterData = await this.db.getCounterPartyList({ orderBy: 'name' });
+}
 
   ngOnDestroy(): void {
     super.onDestroy();
