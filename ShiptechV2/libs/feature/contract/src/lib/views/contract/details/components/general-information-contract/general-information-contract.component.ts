@@ -470,6 +470,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
   generalConfiguration: any;
   customerList: any;
   tradeBookList: any;
+  hasrequiredconfirm:boolean = false;
   @Input() set autocompleteType(value: string) {
     this._autocompleteType = value;
   }
@@ -581,6 +582,15 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     this.contractConfiguration = contractConfiguration;
   }
 
+  @Input('hasrequiredconfirm') set _sethasrequiredconfirm(
+    hasrequiredconfirm
+  ) {
+    if (!hasrequiredconfirm) {
+      return;
+    }
+    this.hasrequiredconfirm = hasrequiredconfirm;
+  }
+
   @Input('generalConfiguration') set _setGeneralConfiguration(
     generalConfiguration
   ) {
@@ -623,6 +633,7 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
     @Inject(DecimalPipe) private _decimalPipe
   ) {
     super(changeDetectorRef);
+    this.contractService.getCounterPartyList();
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
@@ -815,8 +826,8 @@ export class GeneralInformationContract extends DeliveryAutocompleteComponent
       filterValue = this.formValues.seller.name
         ? this.formValues.seller.name.toLowerCase()
         : this.formValues.seller.toLowerCase();
-      if (this.sellerList) {
-        const list = this.sellerList
+      if (this.contractService.masterData) {
+        const list = this.contractService.masterData
           .filter((item: any) => {
             return item.name
               .toLowerCase()

@@ -160,6 +160,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
   private quantityPrecision: number;
   hasApprovedInvoice: boolean;
+  hasrequiredconfirm: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -659,7 +660,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     ) {
       message += ' Seller,';
     }
-    if (!this.formValues.company) {
+    if (this.hasrequiredconfirm && !this.formValues.company) {
       message += ' Company,';
     }
     if (
@@ -670,7 +671,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         message += ' Agreement Type,';
       }
     }
-    if (!this.formValues.incoterm) {
+    if (this.hasrequiredconfirm && !this.formValues.incoterm) {
       message += ' Delivery Term,';
     }
     if (!this.formValues.validFrom) {
@@ -1031,6 +1032,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   }
 
   confirmContract() {
+    this.hasrequiredconfirm = true;
     const isValid = this.validateContract();
     if (!isValid) {
       return;
