@@ -810,9 +810,9 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       physicalSupplier: null,
       allowedProducts: [],
       allowedLocations: [],
-      minQuantity: this.quantityFormatValue(0),
+      minQuantity: null,//this.quantityFormatValue(0),
       minQuantityUomId: this.defaultUOM.id,
-      maxQuantity: this.quantityFormatValue(0),
+      maxQuantity: null,// this.quantityFormatValue(0),
       maxQuantityUomId: this.defaultUOM.id,      
 
     };
