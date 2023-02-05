@@ -905,6 +905,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   }
 
   saveContract() {
+    this.hasrequiredconfirm = false;
     const isValid = this.validateContract();
     if (!isValid) {
       return;
