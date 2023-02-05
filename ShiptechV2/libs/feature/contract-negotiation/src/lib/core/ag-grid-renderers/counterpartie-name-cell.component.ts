@@ -252,6 +252,9 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
       });
       this.localService.setSendRFQButtonStauts(noCounterParty);
       this.store.dispatch(new ContractRequest([{'locations' : storePayload}]));
+      if(res['status'] == 'Open'){
+        this.localService.setContractStatus('Open');
+      }
       }else{
         this.toaster.error('Data not deleted, Please Refresh the page and try again.')
       }
