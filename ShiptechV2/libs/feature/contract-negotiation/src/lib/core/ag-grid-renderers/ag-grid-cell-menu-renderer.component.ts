@@ -37,6 +37,7 @@ import { LocalService } from '../../services/local-service.service';
                         <td mat-cell *matCellDef="let element">
                             <mat-option [value]="element.product" style="padding-left:0">
                                 <mat-radio-button [value]="element.id"
+                                    [checked] = "element.id == params.node.data.ProductId"
                                     (click)="updateProduct(element.id,element.name)">
                                     {{element.name}}
                                 </mat-radio-button>
