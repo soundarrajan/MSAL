@@ -516,7 +516,7 @@
           appearance="legacy"
           [ngClass]="{
             'required-field':
-              buttonClicked &&
+              buttonClicked && (formValues.id != undefined) &&
               (!formValues.company ||
                 (formValues.company && !formValues.company.name))
           }"
@@ -817,7 +817,7 @@
     <mat-form-field
       class="without-search"
       appearance="legacy"
-      [ngClass]="{ 'required-field': buttonClicked && !formValues.incoterm }"
+      [ngClass]="{ 'required-field': buttonClicked  && (formValues.id != undefined) && !formValues.incoterm }"
     >
       <mat-label>Delivery Term</mat-label>
       <mat-select
