@@ -891,11 +891,13 @@ export class ProductDetails extends DeliveryAutocompleteComponent
   setAllowedProducts(selectedTabIndex) {
     this.selectedProductList = _.cloneDeep(this.productMasterList);
     let contractProduct = this.formValues.products[selectedTabIndex];
-    let qtyValue = this.quantityFormatValue(0);
-    this.formValues.products[selectedTabIndex].minQuantity = qtyValue;
-    this.formValues.products[selectedTabIndex].maxQuantity = qtyValue;
-    this.formValues.products[selectedTabIndex].minQuantityUomId = this.defaultUOM.id;
-    this.formValues.products[selectedTabIndex].maxQuantityUomId = this.defaultUOM.id;    
+    if(this.formValues.id == undefined){
+      let qtyValue = this.quantityFormatValue(0);
+      this.formValues.products[selectedTabIndex].minQuantity = qtyValue;
+      this.formValues.products[selectedTabIndex].maxQuantity = qtyValue;
+      this.formValues.products[selectedTabIndex].minQuantityUomId = this.defaultUOM.id;
+      this.formValues.products[selectedTabIndex].maxQuantityUomId = this.defaultUOM.id; 
+    }   
     if (
       contractProduct.allowedProducts &&
       contractProduct.allowedProducts.length
@@ -1490,8 +1492,9 @@ export class ProductDetails extends DeliveryAutocompleteComponent
       e.target.parentElement
         .closest('.maxInputFocus')
         .classList.add('maxinputFocussed');
-        e.target.parentElement.lastChild.classList.add('add-label'); return;
+        e.target.parentElement.lastChild.classList.add('add-label'); 
         return;
+       
     }
 
     if (type == 'uom') {
