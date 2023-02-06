@@ -23,12 +23,12 @@ export class ContractNegoInterceptor implements HttpInterceptor {
     let url=window.location.href; 
     let requestId='';
     let isContract=false;
-    if(url.includes('contract-negotiation/requests/')){
+    if(url.toLowerCase().includes('contract-negotiation/requests/')){
         let parts=url.split('/');
         requestId=parts[parts.length-1];
         console.log('request',requestId);
     }
-    if(req.url.includes('api/ContractRequest') || req.url.includes('api/ContractNegotiation')){
+    if(req.url.toLowerCase().includes('api/contractrequest') || req.url.includes('api/contractnegotiation')){
         isContract=true;
     }
     const customReq = req.clone({
