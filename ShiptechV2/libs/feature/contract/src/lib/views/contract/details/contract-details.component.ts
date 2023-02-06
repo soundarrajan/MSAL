@@ -160,6 +160,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
   private quantityPrecision: number;
   hasApprovedInvoice: boolean;
+  hasrequiredconfirm: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -610,7 +611,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         'Please fill in required fields: ' + additionalCostRequiredString
       );
       return;
-    }
+    }  
 
     additionalCost = _.uniq(additionalCost);
     let additionalCostString = '';
@@ -643,7 +644,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
 
   validateContract(): boolean {
     let hasTotalContractualQuantity = false;
-
+    let minQuantityValidationError = false;
     let message = 'Please fill in required fields:';
     if (!this.formValues.name) {
       message += ' Name,';
@@ -659,7 +660,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
     ) {
       message += ' Seller,';
     }
-    if (!this.formValues.company) {
+    if (this.hasrequiredconfirm && !this.formValues.company) {
       message += ' Company,';
     }
     if (
@@ -670,7 +671,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
         message += ' Agreement Type,';
       }
     }
-    if (!this.formValues.incoterm) {
+    if (this.hasrequiredconfirm && !this.formValues.incoterm) {
       message += ' Delivery Term,';
     }
     if (!this.formValues.validFrom) {
@@ -690,6 +691,22 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.toastr.error(message);
       return false;
     }
+    this.formValues.products.forEach((v, k) => {      
+      if (v.minQuantity && v.maxQuantity) {
+        if (
+          this.convertDecimalSeparatorStringToNumber(v.minQuantity) >
+          this.convertDecimalSeparatorStringToNumber(v.maxQuantity)
+        ) {
+          minQuantityValidationError = true;          
+        }
+      }
+    });
+    if (minQuantityValidationError) {  
+      this.toastr.error(
+        'Min Quantity must be smaller than Max Quantity'
+      );
+      return;
+    }    
     let additionalCost = [];
     let additionalCostRequired = [];
     for (let i = 0; i < this.formValues.products.length; i++) {
@@ -904,6 +921,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   }
 
   saveContract() {
+    this.hasrequiredconfirm = false;
     const isValid = this.validateContract();
     if (!isValid) {
       return;
@@ -1031,6 +1049,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
   }
 
   confirmContract() {
+    this.hasrequiredconfirm = true;
     const isValid = this.validateContract();
     if (!isValid) {
       return;

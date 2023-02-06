@@ -22,6 +22,7 @@ import { LocalService } from '../../services/local-service.service';
                 [value]="frequency.name">
                 <span>
                     <mat-radio-button
+                    [checked]='frequency.id == params.node.data.quantityUomId'
                     (click)="updateQtyUnit(frequency.id)"
                     >{{ frequency.displayName}}
                     </mat-radio-button>
@@ -42,10 +43,13 @@ export class AGGridInputSelectRenderer implements ICellRendererAngularComp {
     
     ngOnInit(): void {
         this.unitArr = this.localService.masterData['Uom']
+        debugger;
     }
+
 
     agInit(params: any): void {
         this.params = params;
+        debugger;
     }
     updateQtyUnit(id){
         let newParams = JSON.parse(JSON.stringify(this.params.node.data));
