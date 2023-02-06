@@ -164,7 +164,7 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
         this.ContractNegotiationService.getAuditLogsList(
          reqpayload
        ).subscribe((data: any) =>{
-        let payload=this.ConstructAuditLogList(data.payload);
+        let payload=this.ConstructAuditLogList(data?.payload);
         this.gridOptions_nego_history.api.setRowData(payload);
        });
        
@@ -172,12 +172,12 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
   ConstructAuditLogList( AuditLists){
     let payload = [];
     AuditLists.forEach((el) => {
-      el['user']=el['modifiedBy'].displayName??el['modifiedBy'].name;
+      el['user']=el['modifiedBy']?.displayName??el['modifiedBy']?.name;
       let auditlog={...el,...JSON.parse(el['fieldName'])};
       el['field']=auditlog['feild'];
-      auditlog['product']=this.localService.masterData['Product'].find(p => p.id == auditlog['product'])?.name;
-      auditlog['counterparty']=this.localService.masterData['Counterparty'].find(p => p.id == auditlog['counterparty'])?.name;
-      auditlog['location']=this.localService.masterData['Location'].find(p => p.id == auditlog['location'])?.name;   
+      auditlog['product']=this.localService.masterData['Product']?.find(p => p.id == auditlog['product'])?.name;
+      auditlog['counterparty']=this.localService.masterData['Counterparty']?.find(p => p.id == auditlog['counterparty'])?.name;
+      auditlog['location']=this.localService.masterData['Location']?.find(p => p.id == auditlog['location'])?.name;   
       payload.push(auditlog);
     });
     return payload;
