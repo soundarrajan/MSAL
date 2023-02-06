@@ -73,6 +73,7 @@ import { AGGridMinMaxCellRenderer } from './core/ag-grid-renderers/ag-grid-min-m
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AGGridCellActionsDocumentsComponent } from './core/ag-grid-renderers/ag-grid-cell-actions-documents.component';
 import { AGGridCellV2RendererComponent } from './core/ag-grid-renderers/ag-grid-cell-renderer-v2.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 //import { RemoveCounterpartyPopupComponent } from './views/contract-negotiation-components/contract-negotiation-popups/remove-counterparty-popup/remove-counterparty-popup.component';
 //import { ConfirmdialogComponent } from './views/contract-negotiation-components/contract-negotiation-popups/confirmdialog/confirmdialog.component';
 
@@ -148,7 +149,8 @@ import { AGGridCellV2RendererComponent } from './core/ag-grid-renderers/ag-grid-
     AgFooterNewModule,
     CKEditorModule,
     NgxSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    DragDropModule
   ],
   entryComponents: [
     AGGridCellClickRendererComponent,

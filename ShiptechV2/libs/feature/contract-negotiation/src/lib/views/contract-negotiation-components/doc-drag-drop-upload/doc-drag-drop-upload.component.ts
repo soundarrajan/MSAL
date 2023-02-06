@@ -360,7 +360,9 @@ export class DocDragDropUploadComponent implements OnInit {
       headerName: 'Document Name',
       headerTooltip: 'Document Name',
       field: 'name',
-      width: 150
+      width: 150,
+      cellRendererFramework: AGGridCellActionsDocumentsComponent,
+      cellRendererParams: { type: 'document-name-download' }
     },
     {
       headerName: 'Size',

@@ -60,7 +60,6 @@ export class AGGridSpecSelectRenderer implements ICellRendererAngularComp {
         specGroupArr = this.localService.masterData['SpecGroup'].filter(sg => sg.productId === prodId);
         }
         this.dataSource = specGroupArr;
-        debugger;
         });
     }
 
