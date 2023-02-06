@@ -22,6 +22,7 @@ import { LocalService } from '../../services/local-service.service';
                         <td style="float:left" mat-cell *matCellDef="let element">
                             <mat-option [value]="element.name" style="padding-left:0">
                                 <mat-radio-button [value]="element.id"
+                                    [checked] = "element.id == params.node.data.SpecGroupId"
                                     (click)="updateProduct(element.id,element.name)">
                                     {{element.name}}
                                 </mat-radio-button>
@@ -59,6 +60,7 @@ export class AGGridSpecSelectRenderer implements ICellRendererAngularComp {
         specGroupArr = this.localService.masterData['SpecGroup'].filter(sg => sg.productId === prodId);
         }
         this.dataSource = specGroupArr;
+        debugger;
         });
     }
 
