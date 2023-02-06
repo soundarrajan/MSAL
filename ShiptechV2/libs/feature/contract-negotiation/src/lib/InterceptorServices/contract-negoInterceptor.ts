@@ -22,21 +22,16 @@ export class ContractNegoInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
     let url=window.location.href; 
     let requestId='';
-    let isContract=false;
+    let customReq=req;
     if(url.toLowerCase().includes('contract-negotiation/requests/')){
         let parts=url.split('/');
         requestId=parts[parts.length-1];
-        console.log('request',requestId);
     }
-    if(req.url.toLowerCase().includes('api/contractrequest') || req.url.toLowerCase().includes('api/contractnegotiation')){
-        isContract=true;
-    }
-    const customReq = req.clone({
+    if((req.url.toLowerCase().includes('api/contractrequest') || req.url.toLowerCase().includes('api/contractnegotiation')) && requestId!=''){
+     customReq= req.clone({
         headers:req.headers.set('ContractNegotiation',requestId)
         });
-    if(requestId!='' && isContract){
-        req= customReq;
     }
-    return next.handle(req);
+    return next.handle(customReq);
  }
 }
