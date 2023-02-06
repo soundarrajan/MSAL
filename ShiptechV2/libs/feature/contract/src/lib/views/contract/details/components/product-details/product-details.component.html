@@ -271,12 +271,14 @@
             (focusout)="focusOut($event, 'min', 'product', selectedTabIndex)"
             (keypress)="keyPressNumber($event)"
             autocomplete="off"
+            [disabled]="formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')"
             >
         </mat-form-field>
         <mat-form-field class="long-label-field"
           style="line-height: 22px;width: 36%;height: 34px !important;border-radius: 4px;"
           appearance="legacy">
           <mat-select disableOptionCentering panelClass="uom-select"  class="uom-select"
+           [disabled]="formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')"
             [(ngModel)]="formValues.products[selectedTabIndex].minQuantityUomId" 
             (selectionChange)="syncMinMaxUom('min', selectedTabIndex)" 
             style="background-color: #EBECED !important;">
@@ -293,13 +295,14 @@
           <mat-label>Maximum Qty</mat-label>
           <input quantityFormat class="text-ellipsis" value="100"
             [(ngModel)]="formValues.products[selectedTabIndex].maxQuantity"
-            matInput
+            matInput            
             
             panelClass="general-info-select-container"
             (focus)="focus($event, 'max')"
             (focusout)="focusOut($event, 'max', 'product', selectedTabIndex)"
             (keypress)="keyPressNumber($event)"
             autocomplete="off"
+            [disabled]="formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')"
             >
         </mat-form-field>
         <mat-form-field class="long-label-field"
@@ -308,6 +311,7 @@
           <mat-select disableOptionCentering panelClass="uom-select"  class="uom-select"
             [(ngModel)]="formValues.products[selectedTabIndex].maxQuantityUomId" 
             (selectionChange)="syncMinMaxUom('max', selectedTabIndex)" 
+            [disabled]="formValues.status && (formValues.status.name == 'Confirmed' || formValues.status.name == 'Delivered')"
             style="background-color: #EBECED !important;">
             <mat-option *ngFor="let option of staticData.Uom" [value]="option.id">
               {{option.name}}
