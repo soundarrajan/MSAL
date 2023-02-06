@@ -28,7 +28,7 @@ export class ContractNegoInterceptor implements HttpInterceptor {
         requestId=parts[parts.length-1];
         console.log('request',requestId);
     }
-    if(req.url.toLowerCase().includes('api/contractrequest') || req.url.includes('api/contractnegotiation')){
+    if(req.url.toLowerCase().includes('api/contractrequest') || req.url.toLowerCase().includes('api/contractnegotiation')){
         isContract=true;
     }
     const customReq = req.clone({
