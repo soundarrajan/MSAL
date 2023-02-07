@@ -1152,6 +1152,11 @@
 .contract-nego-email-log .ag-header-row{
   overflow: unset !important;
 }
+.contract-nego-email-log{
+  .ag-center-cols-viewport{
+overflow-x: hidden !important;
+  }
+}
 .ag-grid-v2.documents-list .ag-body-horizontal-scroll-viewport {
   top: -10px !important;
 }
