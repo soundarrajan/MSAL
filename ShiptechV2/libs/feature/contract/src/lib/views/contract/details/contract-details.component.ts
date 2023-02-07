@@ -691,6 +691,7 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       this.toastr.error(message);
       return false;
     }
+    let maxContractQuantityValidationError = false;
     this.formValues.products.forEach((v, k) => {      
       if (v.minQuantity && v.maxQuantity) {
         if (
@@ -698,7 +699,16 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
           this.convertDecimalSeparatorStringToNumber(v.maxQuantity)
         ) {
           minQuantityValidationError = true;          
-        }
+        }       
+        this.formValues.details.forEach((value, key) => {
+          if (
+            this.convertDecimalSeparatorStringToNumber(v.maxQuantity) >
+            this.convertDecimalSeparatorStringToNumber(value.maxContractQuantity)
+          ) {
+            maxContractQuantityValidationError = true;          
+          }
+       });
+
       }
     });
     if (minQuantityValidationError) {  
@@ -707,6 +717,13 @@ export class ContractDetailsComponent implements OnInit, OnDestroy {
       );
       return;
     }    
+    if (maxContractQuantityValidationError) {  
+      this.toastr.error(
+        'Port Product level Quantity cannot be greater than Total Contractual Quantity'
+      );
+      return;
+    }    
+
     let additionalCost = [];
     let additionalCostRequired = [];
     for (let i = 0; i < this.formValues.products.length; i++) {

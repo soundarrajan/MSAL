@@ -547,10 +547,8 @@ export class EmailPreviewPopupComponent implements OnInit {
       saveAndSendRfqAPIPayload
     ).subscribe( response => {
       if (response?.message == 'Unauthorized') {
-        return;
-      }
-      if(response.errors){
-        this.toaster.error(JSON.stringify(response.errors));
+        this.toaster.error(response?.message);
+        this.spinner.hide();
         return;
       }
       if (response instanceof Object && response['validationMessage'].length > 0) {
@@ -579,7 +577,6 @@ export class EmailPreviewPopupComponent implements OnInit {
         this.toaster.warning(response.Message);
       } else {
         this.toaster.error(response);
-        return;
       }
       this.spinner.hide();
     });
