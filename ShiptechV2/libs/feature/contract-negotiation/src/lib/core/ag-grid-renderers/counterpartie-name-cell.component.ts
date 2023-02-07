@@ -106,7 +106,6 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
     let contractRequestId = contractRequestData.id;
     let sellerData = []; let prodData = {};
     let noCounterPartyChecked = true;
-    let multipleCounterPartySelected = false;
     let isCurrentRowNotChecked = true;
     contractRequestData.locations.forEach( prod => {
       if(prod.data.length > 0){
@@ -127,17 +126,10 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
               selectedDataIds.push(data.id);
               sellerData.push(data);
             }
-            else{
-              multipleCounterPartySelected = true;
-            }
           }
         });
       }
     });
-    if(multipleCounterPartySelected){
-      this.toaster.error('Please select same seller to previewRFQ email.');
-      return;
-    }
     if(noCounterPartyChecked || isCurrentRowNotChecked){
       prodData[params.node.data.contractRequestProductId] = contractRequestData.locations.filter( prod => prod.contractRequestProductId == params.node.data.contractRequestProductId)[0];
       selectedDataIds.push(params.node.data.id);
