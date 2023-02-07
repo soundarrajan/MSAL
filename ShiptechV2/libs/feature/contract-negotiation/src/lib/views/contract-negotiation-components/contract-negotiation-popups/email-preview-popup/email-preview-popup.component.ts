@@ -124,18 +124,26 @@ export class EmailPreviewPopupComponent implements OnInit {
     );
   }
 
-  emailLogResendMail(){
+   emailLogResendMail(){
     const contractRequestId = this.selectedEmailPreview.contractRequestId; 
     var loginUserId = this.currentUserId;
-    var emailLogsId =[this.selectedEmailPreview.id];
+    var emailLogsId =[this.selectedEmailPreview.id]; 
+    if(emailLogsId.length == 0){
+      this.toaster.error("Select items from the list");
+      return ;
+    }
     let reqpayload =  {"loginUserId":loginUserId,"emailLogsIds":emailLogsId,"requestId":contractRequestId};          
     this.contractNegoService.emailLogsResendMail(
       reqpayload
-    ).subscribe(data => {        
-      
+    ).subscribe((response:any)  => { 
+      if(response?.message == 'Unauthorized'){
+        return;
+      }
+      if(emailLogsId.length > 0){   
+      this.toaster.success('Mail has been resend successfully');    
+      }
     });
-    this.changeDetector.detectChanges();    
-    this.toaster.success('Mail has been resend successfully');    
+    this.changeDetector.detectChanges();
     this.contractNegoEmail.getLatestEmailLogs(contractRequestId);
 
   }

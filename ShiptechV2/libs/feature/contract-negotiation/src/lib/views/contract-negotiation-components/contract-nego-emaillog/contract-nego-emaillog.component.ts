@@ -115,6 +115,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
       headerTooltip: 'Mail Sent to',
       field: 'to',
       width: 345,
+      minWidth:400,
       suppressSizeToFit: false,
       tooltipValueGetter: params => params.value
     },
@@ -142,8 +143,7 @@ export class ContractNegoEmaillogComponent implements OnInit {
       cellClass: ['aggridtextalign-center'], 
       tooltipValueGetter: params => params.value,
       cellRenderer: function (params) {  
-        // Added console log to debug in dev environment
-        console.log(params);
+      
        var emailLogStatusColor = (params.data.status.name == "Sent")?"Success":params.data.status.name;
        return `<div class="status-circle"><span class="circle ` + emailLogStatusColor + `"></span>` + params.value + `</div>`;
       }
