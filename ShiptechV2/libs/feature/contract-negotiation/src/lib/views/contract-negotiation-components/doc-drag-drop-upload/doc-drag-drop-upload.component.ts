@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ColDef, ColGroupDef, GridOptions } from '@ag-grid-enterprise/all-modules';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { GridOptions } from '@ag-grid-enterprise/all-modules';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -260,7 +260,6 @@ export class DocDragDropUploadComponent implements OnInit {
           referenceNo: parseFloat(this.entityId),
           transactionType: {
             id: 48
-            // name: 'Offer'
           }
         }
       };
@@ -301,46 +300,6 @@ export class DocDragDropUploadComponent implements OnInit {
     this.files.splice(index, 1);
   }
 
-  /**
-   * Convert Files list to normal array list
-   * @param files (Files List)
-   */
-  // prepareFilesList(files: Array<any>) {
-  //   for (const item of files) {
-  //     item.progress = 0;
-  //     this.files.push(item);
-  //     this.uploadDocument(this.files, this.doc_type);
-  //   }
-  // }
-  // uploadDocument(doc, doctype) {
-  //   //alert(this.doc_type);
-  //   var lastfile = doc[doc.length - 1];
-  //   var file = lastfile.name.split('.');
-  //   let filename = file[0];
-  //   let fileformat = file[1].toUpperCase();
-  //   this.gridOptions_data.api.applyTransaction({
-  //     // add: [
-  //     //   {
-  //     //     id: '101',
-  //     //     doc_name: filename,
-  //     //     size: '199KB',
-  //     //     doc_type: 'Contract',
-  //     //     file_type: doctype,
-  //     //     entity: 'Contract',
-  //     //     ref_no: '123678',
-  //     //     uploaded_by: 'Alexander',
-  //     //     uploaded_on: '12/11/20',
-  //     //     status: 'Verified',
-  //     //     verified_by: 'Yusuf',
-  //     //     verified_on: '12/11/20',
-  //     //     add_views: 'Document uploaded',
-  //     //     download: ''
-  //     //   }
-  //     // ]
-  //   });
-  // }
-
-  // newValue;
   private columnDef_grid = [
     {
       headerName: '',
