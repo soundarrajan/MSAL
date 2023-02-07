@@ -244,7 +244,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
       });
       this.localService.setSendRFQButtonStauts(noCounterParty);
       this.store.dispatch(new ContractRequest([{'locations' : storePayload}]));
-      if(res['status'] == 'Open'){
+      if(res['contractRequestStatusId'] == 2){
         this.localService.setContractStatus('Open');
       }
       }else{
