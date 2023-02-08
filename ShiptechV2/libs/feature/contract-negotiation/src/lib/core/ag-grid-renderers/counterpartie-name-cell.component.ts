@@ -102,7 +102,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
     let contractRequestData = this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
       return state['contractNegotiation'].ContractRequest[0];
     });
-    let selectedDataIds = []; let selectedCounterPartyId = 0;
+    let selectedDataIds = [];
     let contractRequestId = contractRequestData.id;
     let sellerData = []; let prodData = {};
     let noCounterPartyChecked = true;
@@ -113,8 +113,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
           if(data.check === true){
             if(params.node.data.id == data.id) isCurrentRowNotChecked = false;
             noCounterPartyChecked = false;
-            if(selectedCounterPartyId == 0) selectedCounterPartyId = data.CounterpartyId;
-            if(selectedCounterPartyId === data.CounterpartyId){
+            if(params.node.data.CounterpartyId === data.CounterpartyId){
               prodData[prod.contractRequestProductId] = {
                 productId: prod.productId,
                 specGroupId: prod.specGroupId,
