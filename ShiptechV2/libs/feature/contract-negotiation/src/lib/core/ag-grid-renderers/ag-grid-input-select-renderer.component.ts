@@ -43,13 +43,11 @@ export class AGGridInputSelectRenderer implements ICellRendererAngularComp {
     
     ngOnInit(): void {
         this.unitArr = this.localService.masterData['Uom']
-        debugger;
     }
 
 
     agInit(params: any): void {
         this.params = params;
-        debugger;
     }
     updateQtyUnit(id){
         let newParams = JSON.parse(JSON.stringify(this.params.node.data));

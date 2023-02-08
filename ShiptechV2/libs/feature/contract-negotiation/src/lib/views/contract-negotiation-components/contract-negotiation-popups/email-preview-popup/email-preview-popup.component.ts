@@ -368,7 +368,7 @@ export class EmailPreviewPopupComponent implements OnInit {
         },
         {
           ColumnName: 'TransactionTypeId',
-          Value: 2
+          Value: 48
         }
       ],
       SearchText: null,
