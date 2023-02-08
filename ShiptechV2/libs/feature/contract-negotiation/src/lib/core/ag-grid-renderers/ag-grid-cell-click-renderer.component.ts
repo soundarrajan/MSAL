@@ -101,11 +101,16 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
     }
 
     additionalCostPopup() {
+        if(this.params.node.data.OfferPrice == null || this.params.node.data.OfferPrice == undefined || this.params.node.data.OfferPrice == ''){
+            this.toaster.error('No Quote is Captured');
+            return;
+        }
         const dialogRef = this.dialog.open(AdditionalCostPopupComponent, {
             width: '1170px',
             height: 'auto',
             maxHeight: '80vh',
             panelClass: 'additional-cost-popup',
+            data : this.params.node.data
         });
 
         dialogRef.afterClosed().subscribe(result => {
