@@ -47,8 +47,7 @@
             </td>
             <td class="cell-dashed-border "><mat-form-field appearance="none">
               <select matNativeControl [(ngModel)]="tableData[j].costTypeId">
-                <option value="1">Unit</option>
-                <option value="2">Flat</option>
+                <option value="{{uList.id}}" *ngFor="let uList of costTypeList[j]">{{uList.name}}</option>
               </select>
             </mat-form-field>
             </td>
