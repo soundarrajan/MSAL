@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
+import { ToastrService } from 'ngx-toastr';
 import { ContractNegotiationService } from '../../../../services/contract-negotiation.service';
 import { LocalService } from '../../../../services/local-service.service';
 @Component({
@@ -13,6 +15,7 @@ export class AdditionalCostPopupComponent implements OnInit {
   public tableData:any;
   public costList;
   newtabledata: any = {}
+  getPayload = {}
   uomList: any;
   ngOnInit() {
     this.myFormGroup = new FormGroup({
@@ -20,19 +23,25 @@ export class AdditionalCostPopupComponent implements OnInit {
     });
       this.tableData = this.additionalcoast;
       this.uomList = this.localService.masterData['Uom'];
-    let getPayload ={
-      "contractRequestProductOfferId": "[1834,1835]"
+      
+    /**************** get api  **************/
+    this.getPayload = {
+      "contractRequestProductOfferId": this.data.id
     }
-   // this.contractService.getAdditionalCost(getPayload).subscribe();
+    this.contractService.getAdditionalCost(this.getPayload).subscribe();
+    /**************** get api  **************/
+
     this.contractService.getMasterAdditionalCostsList({}).subscribe(res => {
-     this.costList =  res['payload'].filter( e =>e.costType.name !== 'Total' &&e.costType.name !== 'Range');
+    this.costList =  res['payload'].filter( e =>e.costType.name !== 'Total' &&e.costType.name !== 'Range');
     });
   }
   constructor(
     public dialogRef: MatDialogRef<AdditionalCostPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public contractService: ContractNegotiationService,
-    private localService: LocalService
+    private localService: LocalService,
+    private toaster: ToastrService,
+    private tenantService: TenantFormattingService,
     ) { }
 
   closeDialog() {
@@ -40,41 +49,36 @@ export class AdditionalCostPopupComponent implements OnInit {
   }
   additionalcoast=[
   {
-    id:1,
-    costname: 'Surveyor Fee',
-    itemname: 'new1',
-    costtype: 'Unit',
-    maxqty: '1500  MT',
-    price: '5000',
-    priceuom: 'Pails of 20 liters',
-    applicationFor:'',
-    extra: '0',
-    amount: '2.00',
-    extraamt: '5000',
-    totalamt: '',
-    rate: '',
-    currency: 'US dollars',
-    comment: '',
-    checked: false,
-    isDeleted: false
+    "id": 0,
+    "ContractRequestProductOfferId": this.data.id,
+    "additionalCostId": 2,
+    "costName": "Tax",
+    "costTypeId": 1,
+    "currencyId": 1,
+    "price": 300.4,
+    "priceUomId": 5,
+    "extras": 2.0,
+    "comment": "Test",
+    "isDeleted": false
   },
 ];
-  onCostNameChange(){
-    console.log(this.tableData);
+  onCostNameChange(index,event){
+    let cost = this.costList.find(e => e.id == event);
+    this.tableData[index].costTypeId  = cost.costType.id;
   }
   addNew() {
     this.newtabledata = {
-        id:0,
-        costname: null,
-        itemname: null,
-        costtype: null,
-        price: null,
-        priceuom: null,
-        extra: null,
-        amount: null,
-        currency: 'US dollars',
-        comment: '',
-        isDeleted: false
+      "id": 0,
+      "ContractRequestProductOfferId": this.data.id,
+      "additionalCostId": null,
+      "costName": null,
+      "costTypeId": null,
+      "currencyId": 1,
+      "price": null,
+      "priceUomId": this.data.quantityUomId,
+      "extras": null,
+      "comment": null,
+      "isDeleted": false
     };
 
     this.additionalcoast.push(this.newtabledata);
@@ -86,31 +90,45 @@ export class AdditionalCostPopupComponent implements OnInit {
     }else{
       this.tableData.splice(i, 1);
     }
-    
     //this.tableData[i].isDeleted = true;
   }
+  onPriceChange(index,price){
+    this.tenantService.price(price)
+    this.tableData[index].price = this.tenantService.price(price)
+  }
   saveAdditionalCost(){
+    let checkPrice = false;
+    let costList = [];
+    this.tableData.forEach(element => {
+          if(element.additionalCostId != null){
+            
+            let cost = this.costList.find(e => e.id == element.additionalCostId);
+            element.costName = cost.name;
+            element.additionalCostId = +element.additionalCostId;
+            element.price = +element.price;
+            element.priceUomId = +element.priceUomId;
+            element.costTypeId = +element.costTypeId;
+            if(element.price == 0 || element.price == null){
+              checkPrice = true;
+              this.toaster.error('Price is required for cost '+ element.costName);
+              return;
+            }
+            costList.push(element);
+          }
+    });    
+    if(checkPrice)return;
+    costList.forEach(element => {
+      element.price = +element.price;
+      element.extras = +element.extras;
+    });
     let payload = {
-      "contractRequestId": 268,
-      "contractRequestProductId": 453,
-      "contractRequestProductUomId": 5,
-      "contractRequestProductOfferId": "[1834,1835]",
-      "additionalCosts": [
-        {
-          "id": 0,
-          "ContractRequestProductOfferId": "[1834,1835]",
-          "additionalCostId": 2,
-          "costName": "TAX",
-          "costTypeId": 1,
-          "currencyId": 1,
-          "price": 401.0,
-          "priceUomId": 5,
-          "extras": 2.0,
-          "comment": "Test",
-          "isDeleted": false
-        }
-      ]
+      "contractRequestId": this.data.contractRequestId,
+      "contractRequestProductId": this.data.contractRequestProductId,
+      "contractRequestProductUomId": this.data.quantityUomId,
+      "contractRequestProductOfferId": this.data.id,
+      "additionalCosts": costList
     }
+    this.dialogRef.close();
     this.contractService.saveAdditionalCost(payload).subscribe();
   }
 

@@ -101,11 +101,16 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
     }
 
     additionalCostPopup() {
+        if(this.params.node.data.OfferPrice == null || this.params.node.data.OfferPrice == undefined || this.params.node.data.OfferPrice == ''){
+            this.toaster.error('No Quote is Captured');
+            return;
+        }
         const dialogRef = this.dialog.open(AdditionalCostPopupComponent, {
             width: '1170px',
             height: 'auto',
             maxHeight: '80vh',
             panelClass: 'additional-cost-popup',
+            data : this.params.node.data
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -136,10 +141,15 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
             && this.params.node.data.ValidityDate != ''
             && this.params.node.data.ValidityDate != null
             ) {
-            if(Number(this.params.value) > 0 && this.params.value != ''){
+
+            if(Number(this.params.value.replace(/,/g, '')) > 0 && this.params.value != ''){
                 let newParams = JSON.parse(JSON.stringify(this.params.node.data));
                 newParams.OfferPrice = this.tenantService.price(this.params.value);
                 this.contractService.updatePrices(newParams).subscribe(()=>{
+                    // ad grid data binding problem. previous value is 123.2 and new value is 123.200 in this scenario grid is not updating.
+                    if(Number(this.params.value) == Number(this.params.node.data.OfferPrice)){
+                        this.localService.callGridRefreshService([this.params.node.data.id]);
+                    }
                     this.localService.getContractStatus().subscribe((status) => {
                         if(status == 'Inquired'){
                             this.localService.setContractStatus('Quoted');

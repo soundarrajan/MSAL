@@ -1,6 +1,6 @@
 <div class="spot-popup-header-container applicable-cost-popup-header"><div class="spot-nego-title">Additional Cost</div>
   <div class="spot-dialog-title-right popup-header-form" >
-    <button class="blue-button h-25" [mat-dialog-close]="true" (click)="saveAdditionalCost()" style="width: 115px !important;" >Save</button>    
+    <button class="blue-button h-25" (click)="saveAdditionalCost()" style="width: 115px !important;" >Save</button>    
     <div class="title-divider">|</div>
     <span class="close-icon" style="cursor:pointer;" [mat-dialog-close]="true"></span>
     </div>
@@ -40,32 +40,32 @@
               </div>
             </td>           
             <td class="cell-dashed-border " contenteditable="true" ><mat-form-field appearance="none">
-              <select matNativeControl [(ngModel)]="tableData[j].itemname" (change)="onCostNameChange()">
-                <option  *ngFor="let costDet of costList;let i = index"  [selected] = "tabledata.id == costDet.id" value="{{ costDet.name }}">{{ costDet.name}}</option>
+              <select matNativeControl [(ngModel)]="tableData[j].additionalCostId" (ngModelChange)="onCostNameChange(j,$event)">
+                <option  *ngFor="let costDet of costList;let i = index"  [selected] = "tabledata.id == costDet.id" value="{{ costDet.id }}">{{ costDet.name}}</option>
               </select>
             </mat-form-field>
             </td>
-            <td class="cell-dashed-border " contenteditable="true" ><mat-form-field appearance="none">
-              <select matNativeControl [(ngModel)]="tableData[j].costtype">
-                <option value="Unit">Unit</option>
-                <option value="flat">Flat</option>
+            <td class="cell-dashed-border "><mat-form-field appearance="none">
+              <select matNativeControl [(ngModel)]="tableData[j].costTypeId">
+                <option value="1">Unit</option>
+                <option value="2">Flat</option>
               </select>
             </mat-form-field>
             </td>
             <td class="cell-dashed-border">
-              <input [(ngModel)]="tabledata.amount" class="form-control" style="width: 100%;border:none" />
+              <input [(ngModel)]="tabledata.price" (change)="onPriceChange(j,tabledata.price)" class="form-control" style="width: 100%;border:none" />
             </td>
             <td class="cell-dashed-border">
-              <select matNativeControl [(ngModel)]="tabledata.priceuom">
-                <option *ngFor="let uom of uomList;" value="{{ uom.name }}">{{ uom.name }}</option>
+              <select matNativeControl [(ngModel)]="tabledata.priceUomId">
+                <option *ngFor="let uom of uomList;" value="{{ uom.id }}">{{ uom.name }}</option>
               </select>
             </td>
             <td class="cell-dashed-border">
-              <input [(ngModel)]="tabledata.extra" class="form-control" style="width: 100%;border:none" />
+              <input [(ngModel)]="tabledata.extras" class="form-control" style="width: 100%;border:none" />
             </td>
-            <td class="cell-dashed-border " contenteditable="true" ><mat-form-field appearance="none">
-              <select disabled matNativeControl >
-                <option value="US dollars">US dollars</option>
+            <td class="cell-dashed-border" ><mat-form-field appearance="none">
+              <select disabled matNativeControl [(ngModel)]="tabledata.currencyId" >
+                <option value="1">US dollars</option>
               </select>
             </mat-form-field>
             </td>
