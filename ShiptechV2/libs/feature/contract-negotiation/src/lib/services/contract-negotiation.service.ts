@@ -489,8 +489,8 @@ export class ContractNegotiationService extends BaseStoreService
     return this.contractNegotiationApi.saveAdditionalCost(paload);
   }
   @ObservableException()
-  getAdditionalCost(paload : any): Observable<any> {
-    return this.contractNegotiationApi.getAdditionalCost(paload);
+  getAdditionalCost(offerId: number): Observable<any> {
+    return this.contractNegotiationApi.getAdditionalCost(offerId);
   }
   @ObservableException()
   getMasterAdditionalCostsList(payload: any): Observable<unknown> {
