@@ -484,6 +484,18 @@ export class ContractNegotiationService extends BaseStoreService
   discardSavedPreviewRFQ(payload: any): Observable<any> {
     return this.contractNegotiationApi.discardSavedPreviewRFQ(payload);
   }
+  @ObservableException()
+  saveAdditionalCost(paload : any): Observable<any> {
+    return this.contractNegotiationApi.saveAdditionalCost(paload);
+  }
+  @ObservableException()
+  getAdditionalCost(paload : any): Observable<any> {
+    return this.contractNegotiationApi.getAdditionalCost(paload);
+  }
+  @ObservableException()
+  getMasterAdditionalCostsList(payload: any): Observable<unknown> {
+    return this.contractNegotiationApi.getMasterAdditionalCostsList(payload);
+  }
 
   @ObservableException()
   updatePrices(data):Observable<any> {
