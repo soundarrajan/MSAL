@@ -205,6 +205,13 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     //this.child.onClearSearchCounterparty();
   }
   openRequest() {
+    let storeDataObj = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+      return state['contractNegotiation'];
+    })));
+    if(this.route.snapshot.params.requestId && storeDataObj.ContractRequest === undefined){
+      this.toastr.error('You do not have authorization to perform this action.');
+      return;
+    }
     const dialogRef = this.dialog.open(CreateContractRequestPopupComponent, {
       width: '1136px',
       minHeight: '90vh',

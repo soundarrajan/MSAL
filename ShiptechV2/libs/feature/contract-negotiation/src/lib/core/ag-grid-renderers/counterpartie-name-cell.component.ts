@@ -39,13 +39,13 @@ import moment from 'moment';
             </div>
             <div class="fs-13" (click)="openEmailPreview(params)">Preview RFQ email</div>
           </div>
-          <div class="p-tb-5" style="display:flex;align-items:center;" *ngIf="params.node.data?.Status == 'Inquired' && params.node.data?.isNoQuote">
+          <div class="p-tb-5" style="display:flex;align-items:center;" *ngIf="(params.node.data?.Status == 'Inquired' || params.node.data?.Status == 'Quoted') && params.node.data?.isNoQuote">
                 <div class="popup-icon-align">
                     <div class="contract-enable-quote-icon"></div>
                 </div>
                 <div class="fs-13" (click)="switchEnableOrNoQuoteAction(params,'enable-Quote')">Enable quote</div>
           </div>
-          <div class="p-tb-5" style="display:flex;align-items:center;" *ngIf="params.node.data?.Status == 'Inquired' && !params.node.data?.isNoQuote">
+          <div class="p-tb-5" style="display:flex;align-items:center;" *ngIf="(params.node.data?.Status == 'Inquired' || params.node.data?.Status == 'Quoted') && !params.node.data?.isNoQuote">
                 <div class="popup-icon-align">
                     <div class="contract-no-quote-icon"></div>
                 </div>
@@ -102,7 +102,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
     let contractRequestData = this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
       return state['contractNegotiation'].ContractRequest[0];
     });
-    let selectedDataIds = []; let selectedCounterPartyId = 0;
+    let selectedDataIds = [];
     let contractRequestId = contractRequestData.id;
     let sellerData = []; let prodData = {};
     let noCounterPartyChecked = true;
@@ -113,8 +113,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
           if(data.check === true){
             if(params.node.data.id == data.id) isCurrentRowNotChecked = false;
             noCounterPartyChecked = false;
-            if(selectedCounterPartyId == 0) selectedCounterPartyId = data.CounterpartyId;
-            if(selectedCounterPartyId === data.CounterpartyId){
+            if(params.node.data.CounterpartyId === data.CounterpartyId){
               prodData[prod.contractRequestProductId] = {
                 productId: prod.productId,
                 specGroupId: prod.specGroupId,
@@ -152,7 +151,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
   }
 
   switchEnableOrNoQuoteAction(params, type){
-    if(params.node.data.Status == 'Inquired' && (params.node.data.isNoQuote || !params.node.data.isNoQuote) ){
+    if((params.node.data.Status == 'Inquired' || params.node.data.Status == 'Quoted') && (params.node.data.isNoQuote || !params.node.data.isNoQuote) ){
       this.contractService.contructEnableOrNoQuote(params.node.data,type)?.subscribe(res => {
         this.contractService.getContractRequestDetails(this.route.snapshot.params.requestId)
         .subscribe(response => {
@@ -162,7 +161,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
           type=='no-Quote'?this.toaster.success("Selected Offer have been marked as No Quote successfully -"+params?.value):this.toaster.success("Selected Offer Price has been enabled  "+params.value);         
         });
       });
-    }else if(params.node.data.Status == 'Open' && !params.node.data.isNoQuote  && type=='no-quote'){
+    }else if((params.node.data.Status == 'Open' || params.node.data.Status == 'Inquired' || params.node.data.Status == 'Quoted')  && !params.node.data.isNoQuote  && type=='no-quote'){
       this.toaster.warning(" Offer Price cannot be marked as 'No Quote' as RFQ has not sent."+" Counterparty:"+params?.value);
       return;
     }else{
@@ -244,7 +243,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
       });
       this.localService.setSendRFQButtonStauts(noCounterParty);
       this.store.dispatch(new ContractRequest([{'locations' : storePayload}]));
-      if(res['status'] == 'Open'){
+      if(res['contractRequestStatusId'] == 1){
         this.localService.setContractStatus('Open');
       }
       }else{

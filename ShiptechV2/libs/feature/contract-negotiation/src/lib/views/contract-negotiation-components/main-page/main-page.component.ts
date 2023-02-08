@@ -374,11 +374,18 @@ export class MainPageComponent implements OnInit {
     var contractRequestIdFromUrl = this.route.snapshot.params.requestId;
     var emailLogsIds = this.contractNegoEmaillog.getEmailLogSelectedItem();
     let reqpayload = { loginUserId: loginUserId, emailLogsIds: emailLogsIds, requestId: contractRequestIdFromUrl };
-
-    this.contractNegoService.emailLogsResendMail(reqpayload).subscribe(data => {
+    if(emailLogsIds.length == 0){
+      this.toaster.error("Select items from the list");
+      return ;
+    }
+    this.contractNegoService.emailLogsResendMail(reqpayload).subscribe((response:any)  => { 
+    if(response?.message == 'Unauthorized'){
+        return;
+    }
       this.displaySuccessMsg('Mail has been resend successfully');
       delay(1500);
       this.contractNegoEmaillog.getEmailLogs();
+      
     });
   }
 
