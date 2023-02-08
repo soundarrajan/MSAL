@@ -97,7 +97,10 @@ export const ContractNegotiationApiPaths = {
   resend : 'api/ContractNegotiation/resend',
   switchContractReqBasedOnQuote:'api/ContractNegotiation/switchContractReqBasedOnQuote', 
   offerChatList:'api/ContractNegotiation/offerChatList',
-  addOfferChat:'api/ContractNegotiation/offerChatCreate'
+  addOfferChat:'api/ContractNegotiation/offerChatCreate',
+  saveAdditionalCost: 'api/ContractNegotiation/offer/saveAdditionalCosts',
+  getAdditionalCost : 'api/ContractNegotiation/offer/getAdditionalCosts',
+  getMasterAdditionalCostsList : `api/masters/additionalcosts/listApps`
 }
 
 
@@ -556,6 +559,41 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
       map((body: any) => body),
       catchError((body: any) => this.handleErrorMessage(body))
     );
+  }
+  @ObservableException()
+  saveAdditionalCost(payload: any[]): Observable<any> {
+    return this.http
+    .post<any>(
+      `${this._shitechApiUrl}/${ContractNegotiationApiPaths.saveAdditionalCost}`, payload
+    )
+    .pipe(
+      map((body: any) => body),
+      catchError((body: any) => this.handleErrorMessage(body))
+    );
+  }
+  @ObservableException()
+  getAdditionalCost(payload: any): Observable<any> {
+    return this.http
+    .get<any>(
+      `${this._shitechApiUrl}/${ContractNegotiationApiPaths.getAdditionalCost}`, payload
+    )
+    .pipe(
+      map((body: any) => body),
+      catchError((body: any) => this.handleErrorMessage(body))
+    );
+  }
+
+  @ObservableException()
+  getMasterAdditionalCostsList(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${ContractNegotiationApiPaths.getMasterAdditionalCostsList}`,
+        { Payload: request }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
   }
 
 }
