@@ -85,19 +85,22 @@ export const ContractNegotiationApiPaths = {
   userFilterPresets: 'api/user-settings/contract-requestlist-filter-presets',
   savecolumnPreference: 'api/user-settings/save/contract-request-list-grid_ColumnPreference',
   columnPreference: 'api/user-settings/contract-request-list-grid_ColumnPreference',
-  counterPartSelectionToggle : 'api/ContractNegotiation/toggleConReqSellerSelection',
-  addSellerContract : 'api/ContractNegotiation/addSellerContract',
-  removeCounterparty : 'api/ContractNegotiation/removeSellerContract',
-  sendRFQ: 'api/ContractNegotiation/SendRFQ',
-  amendRFQ: 'api/ContractNegotiation/amendRFQ',
-  previewRFQ: 'api/contractnegotiation/previewRfqmail',
-  discardSavedPreviewRFQ: 'api/contractnegotiation/discardSavedComments',
-  saveAndSendRFQ: 'api/contractnegotiation/saveAndSendRFQ',
-  updatePrices : 'api/ContractNegotiation/offer/update',
-  resend : 'api/ContractNegotiation/resend',
-  switchContractReqBasedOnQuote:'api/ContractNegotiation/switchContractReqBasedOnQuote', 
-  offerChatList:'api/ContractNegotiation/offerChatList',
-  addOfferChat:'api/ContractNegotiation/offerChatCreate'
+  counterPartSelectionToggle : 'api/ContractNegotiation/Seller/toggleConReqSellerSelection',
+  addSellerContract : 'api/ContractNegotiation/Seller/add',
+  removeCounterparty : 'api/ContractNegotiation/Seller/remove',
+  sendRFQ: 'api/ContractNegotiation/RFQ/sendRFQ',
+  amendRFQ: 'api/ContractNegotiation/RFQ/amendRFQ',
+  previewRFQ: 'api/ContractNegotiation/RFQ/previewRfqmail',
+  discardSavedPreviewRFQ: 'api/ContractNegotiation/RFQ/discardSavedComments',
+  saveAndSendRFQ: 'api/ContractNegotiation/RFQ/saveAndSendRFQ',
+  updatePrices : 'api/ContractNegotiation/Offer/update',
+  resend : 'api/ContractNegotiation/RFQ/resend',
+  switchContractReqBasedOnQuote:'api/ContractNegotiation/Offer/switchContractReqBasedOnQuote', 
+  offerChatList:'api/ContractNegotiation/OfferChat/list',
+  addOfferChat:'api/ContractNegotiation/OfferChat/create',
+  saveAdditionalCost: 'api/ContractNegotiation/AdditionalCost/save',
+  getAdditionalCost : 'api/ContractNegotiation/AdditionalCost/get',
+  getMasterAdditionalCostsList : `api/masters/additionalcosts/listApps`
 }
 
 
@@ -556,6 +559,41 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
       map((body: any) => body),
       catchError((body: any) => this.handleErrorMessage(body))
     );
+  }
+  @ObservableException()
+  saveAdditionalCost(payload: any[]): Observable<any> {
+    return this.http
+    .post<any>(
+      `${this._shitechApiUrl}/${ContractNegotiationApiPaths.saveAdditionalCost}`, payload
+    )
+    .pipe(
+      map((body: any) => body),
+      catchError((body: any) => this.handleErrorMessage(body))
+    );
+  }
+  @ObservableException()
+  getAdditionalCost(payload: any): Observable<any> {
+    return this.http
+    .get<any>(
+      `${this._shitechApiUrl}/${ContractNegotiationApiPaths.getAdditionalCost}`, payload
+    )
+    .pipe(
+      map((body: any) => body),
+      catchError((body: any) => this.handleErrorMessage(body))
+    );
+  }
+
+  @ObservableException()
+  getMasterAdditionalCostsList(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._masterApiUrl}/${ContractNegotiationApiPaths.getMasterAdditionalCostsList}`,
+        { Payload: request }
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
   }
 
 }
