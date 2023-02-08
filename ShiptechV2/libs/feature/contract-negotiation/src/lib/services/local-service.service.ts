@@ -730,6 +730,8 @@ export class LocalService {
         SpecGroup: await this.db.getSpecGroupList({ orderBy: 'name' }),
         PricingType: await this.db.getPricingTypeList({ orderBy: 'name' }),
         ProductType: await this.db.getProductType({ orderBy: 'name' }),
+        Counterparty: await this.db.getCounterPartyList({ orderBy: 'name' }),
+        contractNegotiationStatus : { 1: "Open", 2: "Inquired", 3: "Quoted", 4: "AwaitingApproval", 5: "Approved", 6: "Rejected", 7: "Contracted", 8: "Closed" },
       }
    }
    async selectNewlyAddedCounterParty(response,newlyAddedCounterparty){
