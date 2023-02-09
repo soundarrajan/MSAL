@@ -25,10 +25,7 @@ export class AdditionalCostPopupComponent implements OnInit {
       this.uomList = this.localService.masterData['Uom'];
       
     /**************** get api  **************/
-    this.getPayload = {
-      "contractRequestProductOfferId": this.data.id
-    }
-    this.contractService.getAdditionalCost(this.getPayload).subscribe();
+    this.contractService.getAdditionalCost(this.data.id).subscribe();
     /**************** get api  **************/
 
     this.contractService.getMasterAdditionalCostsList({}).subscribe(res => {
