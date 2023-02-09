@@ -17,19 +17,30 @@ export class AdditionalCostPopupComponent implements OnInit {
   newtabledata: any = {}
   getPayload = {}
   uomList: any;
+
+  flatUnitTypeList = [
+  {id:1,name : 'Unit'},
+  {id:2,name : 'Flat'}
+  ];
+  percentageTypeList = [
+    {id:3,name : 'Percent'}
+  ];
+
+  costTypeList = [];
   ngOnInit() {
     this.myFormGroup = new FormGroup({
       frequency: new FormControl('')
     });
       this.tableData = this.additionalcoast;
       this.uomList = this.localService.masterData['Uom'];
-      
+
     /**************** get api  **************/
     this.contractService.getAdditionalCost(this.data.id).subscribe();
+    this.costTypeList[0] =  this.flatUnitTypeList;
     /**************** get api  **************/
 
     this.contractService.getMasterAdditionalCostsList({}).subscribe(res => {
-    this.costList =  res['payload'].filter( e =>e.costType.name !== 'Total' &&e.costType.name !== 'Range');
+    this.costList =  res['payload'].filter( e =>e.costType.name !== 'Total' &&e.costType.name !== 'Range' && e.isDeleted == false);
     });
   }
   constructor(
@@ -62,6 +73,10 @@ export class AdditionalCostPopupComponent implements OnInit {
   onCostNameChange(index,event){
     let cost = this.costList.find(e => e.id == event);
     this.tableData[index].costTypeId  = cost.costType.id;
+    if(cost.costType.id == 3)
+    this.costTypeList[index] =  this.percentageTypeList;
+    else
+    this.costTypeList[index] =  this.flatUnitTypeList;
   }
   addNew() {
     this.newtabledata = {
