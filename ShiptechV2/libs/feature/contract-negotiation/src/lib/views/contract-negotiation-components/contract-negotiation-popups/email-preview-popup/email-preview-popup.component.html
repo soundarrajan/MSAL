@@ -5,10 +5,10 @@
             <span *ngIf="editable" style="color: #364150;font-size: 12px;">Template:</span>
             <div *ngIf="editable" id="custom-form-field">
                 <mat-form-field class="without-search" appearance="none">
-                    <mat-select [(value)]="selected" disableOptionCentering>
-                        <mat-option value="send_rfq" selected="selected">Send RFQ</mat-option>
-                        <mat-option value="amend_rfq">Amend RFQ</mat-option>
-                        <mat-option value="requote">Requote</mat-option>
+                    <mat-select [(value)]="templateName" (selectionChange)="selectTemplate($event.value)" disableOptionCentering>
+                        <mat-option value="ContractNegotiationSendRFQ" selected="selected">Send RFQ</mat-option>
+                        <mat-option value="ContractNegotiationAmendRFQ">Amend RFQ</mat-option>
+                        <mat-option value="ContractNegotiationRequote">Requote</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>

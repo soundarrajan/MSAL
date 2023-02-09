@@ -140,6 +140,7 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
       panelClass: 'remove-padding-popup',
       data: {
         counterPartyId: params.node.data.CounterpartyId,
+        counterPartyName: params.node.data.CounterpartyName,
         contractRequestProductOfferIds: selectedDataIds,
         readOnly: false,
         contractRequestId: contractRequestId,
