@@ -131,6 +131,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   
   @Input() rfqSent;
   enableSaveBtn = true;
+  tempReqObj: any = {};
   contractQuarterColumns: string[] = ['quarter', 'blank'];
   selectedPlanPeriod = 'Quarter';
   planStartDate: any;
@@ -242,7 +243,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.quantityPrecision;
     this.currentUserId = this.store.selectSnapshot(UserProfileState.user).id;
   }
-
+  
   async getStaticData() {
     this._cdr.markForCheck();
     return {
@@ -348,7 +349,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   openRequest(){
-    this.reqObj = this.getAndConstructDataFromStore();
+    this.reqObj = JSON.parse(JSON.stringify(this.getAndConstructDataFromStore()));
+    this.tempReqObj = JSON.parse(JSON.stringify(this.getAndConstructDataFromStore()));
     this.reqObj.quantityDetails.forEach((q, i) => {
       q.minQuantity = this.quantityFormatValue(q.minQuantity);
       q.maxQuantity = this.quantityFormatValue(q.maxQuantity);
@@ -700,7 +702,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.searchFilterString[prodIndex].allowedProducts.splice(key, 1);
     this.listData[prodIndex].allowedProducts.splice(key, 1);
   }
-  sendRFQ() {
+
+  /* Unused function. Can be removed in future */
+  /*sendRFQ() {
     const dialogRef = this.dialog.open(SendRfqPopupComponent, {
       width: '425px',
       data: { message: 'You are sending this RFQ to all your preferred counterparty. Do you want to continue?', toastMsg: 'RFQ(s) sent successfully',createReqPopup:this.data.createReqPopup },
@@ -712,8 +716,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
         this.dialog.closeAll();
       }
     });
-  }
-  updateRFQ() {
+  }*/
+
+  updateRequestWithAmendRFQ() {
     const dialogRef = this.dialog.open(UpdateRfqPopupComponent, {
       width: '425px',
       data: { message: 'You are sending the updated RFQ to all counterparties you had previously sent the RFQ. Do you want to continue?', toastMsg: 'RFQ(s) updated successfully' },
@@ -721,8 +726,13 @@ export class CreateContractRequestPopupComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === 'close') {
+      if (result) {
+        this.reqObj.sendAmendRFQ = true;
+        this.updateRequest();
         this.dialog.closeAll();
+      } else {
+        this.reqObj.sendAmendRFQ = false;
+        this.updateRequest();
       }
     });
   }
@@ -1012,8 +1022,20 @@ export class CreateContractRequestPopupComponent implements OnInit {
     }
   }
 
-  getValue(fieldName): any {
+  /* Unused function, can be removed in future.*/
+  /*getValue(fieldName): any {
     let valueField = moment(this.reqObj[fieldName]);
+    // adjust 0 before single digit date
+    let date = ('0' + valueField.date()).slice(-2);
+    // current month
+    let month = ('0' + (valueField.month() + 1)).slice(-2);
+    // current year
+    let year = valueField.year();
+    return moment.utc(month + '/' + date + '/' + year, 'MM/DD/YYYY');
+  }*/
+
+  convertToDateObj(dateStr): any {
+    let valueField = moment(dateStr);
     // adjust 0 before single digit date
     let date = ('0' + valueField.date()).slice(-2);
     // current month
@@ -1325,7 +1347,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
     return true;
   }
 
-  saveContract() {
+  saveContractRequest() {
+    let prodMinMaxChange = [];
+    let requestDetailsUpdated = false;
     if(!this.isNewRequest){
       this.reqObj.sendAmendRFQ = false;
       this.reqObj.conReqProdSellerWithProdDetatilDtos = [];
@@ -1336,43 +1360,97 @@ export class CreateContractRequestPopupComponent implements OnInit {
       return;
     }
     //Format values before send
-    this.reqObj.startDate = this.getValue('startDate');
-    this.reqObj.endDate = this.getValue('endDate');
-    this.reqObj.quoteByDate = this.getValue('quoteByDate');
-    this.reqObj.minValidity = this.getValue('minValidity');
-    this.reqObj.quantityDetails.forEach((q) => {
+    this.reqObj.startDate = this.convertToDateObj(this.reqObj.startDate);
+    this.reqObj.endDate = this.convertToDateObj(this.reqObj.endDate);
+    this.reqObj.quoteByDate = this.convertToDateObj(this.reqObj.quoteByDate);
+    this.reqObj.minValidity = this.convertToDateObj(this.reqObj.minValidity);
+
+    //Format dates to compare
+    this.tempReqObj.startDate = this.convertToDateObj(this.tempReqObj.startDate);
+    this.tempReqObj.endDate = this.convertToDateObj(this.tempReqObj.endDate);
+    this.tempReqObj.quoteByDate = this.convertToDateObj(this.tempReqObj.quoteByDate);
+    this.tempReqObj.minValidity = this.convertToDateObj(this.tempReqObj.minValidity);
+    
+    if(!this.tempReqObj.startDate.isSame(this.reqObj.startDate)
+    || !this.tempReqObj.endDate.isSame(this.reqObj.endDate)
+    || !this.tempReqObj.quoteByDate.isSame(this.reqObj.quoteByDate)
+    || !this.tempReqObj.minValidity.isSame(this.reqObj.minValidity)
+    ){
+      requestDetailsUpdated = true;
+    }
+
+    if(this.reqObj.quantityDetails.length !== this.tempReqObj.quantityDetails.length){
+      requestDetailsUpdated = true;
+    }
+
+    this.reqObj.quantityDetails.forEach((q, i) => {
       q.maxQuantity = this.convertDecimalSeparatorStringToNumber(q.maxQuantity);
       q.minQuantity = this.convertDecimalSeparatorStringToNumber(q.minQuantity);
       q.tolerancePercentage = this.convertDecimalSeparatorStringToNumber(q.tolerancePercentage);
+      
+      if(this.tempReqObj.quantityDetails[i]?.maxQuantity !== q.maxQuantity
+        || this.tempReqObj.quantityDetails[i]?.minQuantity !== q.minQuantity
+        || this.tempReqObj.quantityDetails[i]?.tolerancePercentage !== q.tolerancePercentage
+      ){
+          requestDetailsUpdated = true;
+      }
     });
-    this.reqObj.contractRequestProducts.forEach((pro) => {
+    this.reqObj.contractRequestProducts.forEach((pro, i) => {
+      if(this.tempReqObj.contractRequestProducts[i]?.minQuantity !== pro.minQuantity
+      || this.tempReqObj.contractRequestProducts[i]?.maxQuantity !== pro.maxQuantity){
+        if(pro.contractRequestProductOffers.length > 0){
+          pro.contractRequestProductOffers.forEach( sData => {
+            if(sData.status !== 'Open'){
+              requestDetailsUpdated = true;
+              prodMinMaxChange.push({
+                id: sData.id,
+                counterpartyId: sData.CounterpartyId
+              });                
+            }
+          });
+        }
+      }
       pro.maxQuantity = this.convertDecimalSeparatorStringToNumber(pro.maxQuantity);
       pro.minQuantity = this.convertDecimalSeparatorStringToNumber(pro.minQuantity);
     });
+    this.reqObj.conReqProdSellerWithProdDetatilDtos = prodMinMaxChange;
+    
     if(this.isNewRequest){
-      this.contractNegotiationService.createContractRequest(this.reqObj).subscribe( requestId => {
-        if(typeof requestId == 'number' && requestId > 0){
-          this.toaster.success('Contract Request has been created successfully');
-          this.router.navigate(['/contract-negotiation/requests/'+requestId]);
-          this.dialog.closeAll();
-        } else {
-          this.toaster.error(requestId.toString());
-        }
-      });
+      this.saveRequest();
     } else {
-      this.contractNegotiationService.updateContractRequest(this.reqObj).subscribe( response => {
-        if(response){
-          var hasContractRequestUpdated = response['hasContractRequestUpdated'];
-          if(hasContractRequestUpdated){
-            this.toaster.success('Contract Request has been updated successfully');
-            this.dialog.closeAll();
-          }
-          else {
-            this.toaster.error('Failed to update contract request details');
-          }
-        } 
-      });
+      if(requestDetailsUpdated){
+        this.updateRequestWithAmendRFQ();
+      } else {
+        this.updateRequest();
+      }
     }
+  }
+
+  saveRequest(){
+    this.contractNegotiationService.createContractRequest(this.reqObj).subscribe( requestId => {
+      if(typeof requestId == 'number' && requestId > 0){
+        this.toaster.success('Contract Request has been created successfully');
+        this.router.navigate(['/contract-negotiation/requests/'+requestId]);
+        this.dialog.closeAll();
+      } else {
+        this.toaster.error(requestId.toString());
+      }
+    });
+  }
+
+  updateRequest(){
+    this.contractNegotiationService.updateContractRequest(this.reqObj).subscribe( response => {
+      if(response){
+        var hasContractRequestUpdated = response['hasContractRequestUpdated'];
+        if(hasContractRequestUpdated){
+          this.toaster.success('Contract Request has been updated successfully');
+          this.dialog.closeAll();
+        }
+        else {
+          this.toaster.error('Failed to update contract request details');
+        }
+      } 
+    });
   }
 
   openProductLookup(i, type, j=0) {
