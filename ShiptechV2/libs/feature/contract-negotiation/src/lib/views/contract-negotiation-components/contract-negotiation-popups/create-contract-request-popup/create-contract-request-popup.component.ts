@@ -1365,22 +1365,23 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.reqObj.quoteByDate = this.convertToDateObj(this.reqObj.quoteByDate);
     this.reqObj.minValidity = this.convertToDateObj(this.reqObj.minValidity);
 
-    //Format dates to compare
-    this.tempReqObj.startDate = this.convertToDateObj(this.tempReqObj.startDate);
-    this.tempReqObj.endDate = this.convertToDateObj(this.tempReqObj.endDate);
-    this.tempReqObj.quoteByDate = this.convertToDateObj(this.tempReqObj.quoteByDate);
-    this.tempReqObj.minValidity = this.convertToDateObj(this.tempReqObj.minValidity);
-    
-    if(!this.tempReqObj.startDate.isSame(this.reqObj.startDate)
-    || !this.tempReqObj.endDate.isSame(this.reqObj.endDate)
-    || !this.tempReqObj.quoteByDate.isSame(this.reqObj.quoteByDate)
-    || !this.tempReqObj.minValidity.isSame(this.reqObj.minValidity)
-    ){
-      requestDetailsUpdated = true;
-    }
-
-    if(this.reqObj.quantityDetails.length !== this.tempReqObj.quantityDetails.length){
-      requestDetailsUpdated = true;
+    if(!this.isNewRequest){
+      //Format dates to compare
+      this.tempReqObj.startDate = this.convertToDateObj(this.tempReqObj.startDate);
+      this.tempReqObj.endDate = this.convertToDateObj(this.tempReqObj.endDate);
+      this.tempReqObj.quoteByDate = this.convertToDateObj(this.tempReqObj.quoteByDate);
+      this.tempReqObj.minValidity = this.convertToDateObj(this.tempReqObj.minValidity);
+      
+      if(!this.tempReqObj.startDate.isSame(this.reqObj.startDate)
+      || !this.tempReqObj.endDate.isSame(this.reqObj.endDate)
+      || !this.tempReqObj.quoteByDate.isSame(this.reqObj.quoteByDate)
+      || !this.tempReqObj.minValidity.isSame(this.reqObj.minValidity)
+      ){
+        requestDetailsUpdated = true;
+      }
+      if(this.reqObj.quantityDetails.length !== this.tempReqObj.quantityDetails.length){
+        requestDetailsUpdated = true;
+      }
     }
 
     this.reqObj.quantityDetails.forEach((q, i) => {
@@ -1388,26 +1389,30 @@ export class CreateContractRequestPopupComponent implements OnInit {
       q.minQuantity = this.convertDecimalSeparatorStringToNumber(q.minQuantity);
       q.tolerancePercentage = this.convertDecimalSeparatorStringToNumber(q.tolerancePercentage);
       
-      if(this.tempReqObj.quantityDetails[i]?.maxQuantity !== q.maxQuantity
-        || this.tempReqObj.quantityDetails[i]?.minQuantity !== q.minQuantity
-        || this.tempReqObj.quantityDetails[i]?.tolerancePercentage !== q.tolerancePercentage
-      ){
-          requestDetailsUpdated = true;
+      if(!this.isNewRequest){
+        if(this.tempReqObj.quantityDetails[i]?.maxQuantity !== q.maxQuantity
+          || this.tempReqObj.quantityDetails[i]?.minQuantity !== q.minQuantity
+          || this.tempReqObj.quantityDetails[i]?.tolerancePercentage !== q.tolerancePercentage
+        ){
+            requestDetailsUpdated = true;
+        }
       }
     });
     this.reqObj.contractRequestProducts.forEach((pro, i) => {
-      if(this.tempReqObj.contractRequestProducts[i]?.minQuantity !== pro.minQuantity
-      || this.tempReqObj.contractRequestProducts[i]?.maxQuantity !== pro.maxQuantity){
-        if(pro.contractRequestProductOffers.length > 0){
-          pro.contractRequestProductOffers.forEach( sData => {
-            if(sData.status !== 'Open'){
-              requestDetailsUpdated = true;
-              prodMinMaxChange.push({
-                id: sData.id,
-                counterpartyId: sData.CounterpartyId
-              });                
-            }
-          });
+      if(!this.isNewRequest){
+        if(this.tempReqObj.contractRequestProducts[i]?.minQuantity !== pro.minQuantity
+        || this.tempReqObj.contractRequestProducts[i]?.maxQuantity !== pro.maxQuantity){
+          if(pro.contractRequestProductOffers.length > 0){
+            pro.contractRequestProductOffers.forEach( sData => {
+              if(sData.status !== 'Open'){
+                requestDetailsUpdated = true;
+                prodMinMaxChange.push({
+                  id: sData.id,
+                  counterpartyId: sData.CounterpartyId
+                });                
+              }
+            });
+          }
         }
       }
       pro.maxQuantity = this.convertDecimalSeparatorStringToNumber(pro.maxQuantity);

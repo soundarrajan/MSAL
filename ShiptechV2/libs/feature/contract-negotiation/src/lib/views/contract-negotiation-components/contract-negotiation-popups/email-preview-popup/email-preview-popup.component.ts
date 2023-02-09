@@ -83,6 +83,10 @@ export class EmailPreviewPopupComponent implements OnInit {
   expandDocumentPopUp: boolean;
   displayedColumns: string[] = ['name', 'documentType'];
   generalTenantSettings: any;
+  templateName: string = 'ContractNegotiationSendRFQ';
+  sellerRowIdsForSendRFQ = [];
+  sellerRowIdsForAmendRFQ = [];
+  contractRequestProductOfferIds = [];
 
   constructor(   
     private spinner: NgxSpinnerService,
@@ -110,7 +114,14 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.getPreviewTemplate();
       this.editable = false;
     } else if(this.selectedEmailPreview.popupSource == 'previewRFQTemplate'){
-      this.previewSendRFQTemplate();
+      this.sellerRowIdsForSendRFQ = this.selectedEmailPreview.contractRequestProductOfferIds;
+      this.contractRequestProductOfferIds = this.sellerRowIdsForSendRFQ;
+      this.selectedEmailPreview.sellerData.forEach( data => {
+        if(data.Status == 'Inquired'){
+          this.sellerRowIdsForAmendRFQ.push(data.id);
+        }
+      });
+      this.previewRFQTemplate();
       this.editable = true;
     }
     this.getDocumentsList();
@@ -176,12 +187,12 @@ export class EmailPreviewPopupComponent implements OnInit {
     });
   }
 
-  previewSendRFQTemplate() {
+  previewRFQTemplate() {
     const payload = {
-      "contractRequestProductOfferIds": this.selectedEmailPreview.contractRequestProductOfferIds,
+      "contractRequestProductOfferIds": this.contractRequestProductOfferIds,
       "counterpartyId": this.selectedEmailPreview.counterPartyId,
       "contractRequestId": this.selectedEmailPreview.contractRequestId,
-      "templateName": "ContractNegotiationSendRFQ",
+      "templateName": this.templateName,
       "userId": this.currentUserId
     };
     this.spinner.show();
@@ -220,6 +231,16 @@ export class EmailPreviewPopupComponent implements OnInit {
         this.toaster.error(res);
       }
     });
+  }
+
+  public selectTemplate(val) {
+    this.templateName = val;
+    if(this.sellerRowIdsForAmendRFQ.length == 0){
+      this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated for ' + this.selectedEmailPreview.counterPartyName);
+      return;
+    }
+    this.contractRequestProductOfferIds = this.sellerRowIdsForAmendRFQ;
+    this.previewRFQTemplate();
   }
 
   private _filterTo(value: string): User[] {
@@ -484,7 +505,7 @@ export class EmailPreviewPopupComponent implements OnInit {
           return;
         }
         if (response) {
-          this.previewSendRFQTemplate();
+          this.previewRFQTemplate();
           this.toaster.success('Changes reverted successfully.');
         }
       });
