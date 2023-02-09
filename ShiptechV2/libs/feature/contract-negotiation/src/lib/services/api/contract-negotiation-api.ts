@@ -572,10 +572,10 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     );
   }
   @ObservableException()
-  getAdditionalCost(payload: any): Observable<any> {
+  getAdditionalCost(offerId: number): Observable<any> {
     return this.http
     .get<any>(
-      `${this._shitechApiUrl}/${ContractNegotiationApiPaths.getAdditionalCost}`, payload
+      `${this._shitechApiUrl}/${ContractNegotiationApiPaths.getAdditionalCost}/${offerId}`
     )
     .pipe(
       map((body: any) => body),
