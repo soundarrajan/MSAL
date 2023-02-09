@@ -17,10 +17,11 @@ export class AdditionalCostPopupComponent implements OnInit {
   newtabledata: any = {}
   getPayload = {}
   uomList: any;
+  additionalcoast: any;
 
   flatUnitTypeList = [
-  {id:1,name : 'Unit'},
-  {id:2,name : 'Flat'}
+  {id:1,name : 'Flat'},
+  {id:2,name : 'Unit'}
   ];
   percentageTypeList = [
     {id:3,name : 'Percent'}
@@ -31,13 +32,18 @@ export class AdditionalCostPopupComponent implements OnInit {
     this.myFormGroup = new FormGroup({
       frequency: new FormControl('')
     });
-      this.tableData = this.additionalcoast;
-      this.uomList = this.localService.masterData['Uom'];
-
-    /**************** get api  **************/
-    this.contractService.getAdditionalCost(this.data.id).subscribe();
-    this.costTypeList[0] =  this.flatUnitTypeList;
-    /**************** get api  **************/
+    this.uomList = this.localService.masterData['Uom'];
+    this.contractService.getAdditionalCost(this.data.id).subscribe(res => {
+      res.forEach(element => {
+        element.price = this.tenantService.price(element.price);
+        if(element.costTypeId == 1 || element.costTypeId == 2){
+          this.costTypeList.push(this.flatUnitTypeList);    
+        }else if(element.costTypeId == 3){
+          this.costTypeList.push(this.percentageTypeList);
+        }
+      });
+    this.tableData = res;
+    });
 
     this.contractService.getMasterAdditionalCostsList({}).subscribe(res => {
     this.costList =  res['payload'].filter( e =>e.costType.name !== 'Total' &&e.costType.name !== 'Range' && e.isDeleted == false);
@@ -55,21 +61,6 @@ export class AdditionalCostPopupComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
-  additionalcoast=[
-  {
-    "id": 0,
-    "ContractRequestProductOfferId": this.data.id,
-    "additionalCostId": 2,
-    "costName": "Tax",
-    "costTypeId": 1,
-    "currencyId": 1,
-    "price": 300.4,
-    "priceUomId": 5,
-    "extras": 2.0,
-    "comment": "Test",
-    "isDeleted": false
-  },
-];
   onCostNameChange(index,event){
     let cost = this.costList.find(e => e.id == event);
     this.tableData[index].costTypeId  = cost.costType.id;
@@ -77,6 +68,16 @@ export class AdditionalCostPopupComponent implements OnInit {
     this.costTypeList[index] =  this.percentageTypeList;
     else
     this.costTypeList[index] =  this.flatUnitTypeList;
+    if(cost.costType.id == 3 || cost.costType.id == 1 ){
+      this.tableData[index].priceUomId = null;
+    }
+  }
+  onCostTypeChange(index,event){
+    if(event == 3 || event == 1 ){
+      this.tableData[index].priceUomId = null;
+    }else{
+      this.tableData[index].priceUomId = this.data.quantityUomId;
+    }
   }
   addNew() {
     this.newtabledata = {
@@ -93,31 +94,43 @@ export class AdditionalCostPopupComponent implements OnInit {
       "isDeleted": false
     };
 
-    this.additionalcoast.push(this.newtabledata);
+    this.tableData.push(this.newtabledata);
   }
   
-  delete1(i){
+  deleteRow(i){
     if(this.tableData[i].id > 0){
       this.tableData[i].isDeleted = true;
     }else{
       this.tableData.splice(i, 1);
     }
-    //this.tableData[i].isDeleted = true;
   }
   onPriceChange(index,price){
-    this.tenantService.price(price)
-    this.tableData[index].price = this.tenantService.price(price)
+    let isPriceNagarive = false;
+    let cost = this.costList.find(e => e.id == this.tableData[index].additionalCostId);
+    if(Number(price.replace(/,/g, '')) < 0) isPriceNagarive = true;
+    if(!cost.isAllowingNegativeAmmount && isPriceNagarive){
+      this.toaster.error('Nagative price is not allowed for cost '+ cost.name);
+      this.tableData[index].price = 0;
+      return;
+    }
+    this.tableData[index].price = this.tenantService.price(price);
   }
   saveAdditionalCost(){
+    
     let checkPrice = false;
     let costList = [];
     this.tableData.forEach(element => {
           if(element.additionalCostId != null){
-            
             let cost = this.costList.find(e => e.id == element.additionalCostId);
+            console.log(element.price);
+            let rawPrice = element.price;
+            if (typeof element.price != 'number') {
+              rawPrice = Number(element.price.replace(/,/g, ''));
+            }
+            
             element.costName = cost.name;
             element.additionalCostId = +element.additionalCostId;
-            element.price = +element.price;
+            element.price = rawPrice
             element.priceUomId = +element.priceUomId;
             element.costTypeId = +element.costTypeId;
             if(element.price == 0 || element.price == null){
@@ -129,10 +142,6 @@ export class AdditionalCostPopupComponent implements OnInit {
           }
     });    
     if(checkPrice)return;
-    costList.forEach(element => {
-      element.price = +element.price;
-      element.extras = +element.extras;
-    });
     let payload = {
       "contractRequestId": this.data.contractRequestId,
       "contractRequestProductId": this.data.contractRequestProductId,

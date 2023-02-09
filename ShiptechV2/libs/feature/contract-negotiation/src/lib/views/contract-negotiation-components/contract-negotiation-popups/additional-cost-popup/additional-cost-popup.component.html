@@ -35,19 +35,19 @@
           <ng-container *ngFor="let tabledata of  tableData; let j = index">
           <tr class="border-bottom" *ngIf="!tabledata.isDeleted">
             <td class="decrement-circle-button" style="width:35px;">
-              <div class="decrement-circle" (click)="delete1(j)">
+              <div class="decrement-circle" (click)="deleteRow(j)">
                 <div class="minus">-</div>
               </div>
             </td>           
             <td class="cell-dashed-border " contenteditable="true" ><mat-form-field appearance="none">
-              <select matNativeControl [(ngModel)]="tableData[j].additionalCostId" (ngModelChange)="onCostNameChange(j,$event)">
+              <select matNativeControl [(ngModel)]="tabledata.additionalCostId" (ngModelChange)="onCostNameChange(j,$event)">
                 <option  *ngFor="let costDet of costList;let i = index"  [selected] = "tabledata.id == costDet.id" value="{{ costDet.id }}">{{ costDet.name}}</option>
               </select>
             </mat-form-field>
             </td>
             <td class="cell-dashed-border "><mat-form-field appearance="none">
-              <select matNativeControl [(ngModel)]="tableData[j].costTypeId">
-                <option value="{{uList.id}}" *ngFor="let uList of costTypeList[j]">{{uList.name}}</option>
+              <select matNativeControl [(ngModel)]="tabledata.costTypeId" (ngModelChange)="onCostTypeChange(j,$event)">
+                <option value="{{uList.id}}" *ngFor="let uList of costTypeList[j]" [selected] = "tabledata.costTypeId == uList.id">{{uList.name}}</option>
               </select>
             </mat-form-field>
             </td>
@@ -55,7 +55,7 @@
               <input [(ngModel)]="tabledata.price" (change)="onPriceChange(j,tabledata.price)" class="form-control" style="width: 100%;border:none" />
             </td>
             <td class="cell-dashed-border">
-              <select matNativeControl [(ngModel)]="tabledata.priceUomId">
+              <select matNativeControl [(ngModel)]="tabledata.priceUomId" [disabled]="tabledata.priceUomId == null">
                 <option *ngFor="let uom of uomList;" value="{{ uom.id }}">{{ uom.name }}</option>
               </select>
             </td>
