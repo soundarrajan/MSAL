@@ -23,7 +23,7 @@ export class AdditionalCostPopupComponent implements OnInit {
   {id:2,name : 'Flat'}
   ];
   percentageTypeList = [
-    {id:3,name : 'Percentage'}
+    {id:3,name : 'Percent'}
   ];
 
   costTypeList = [];
