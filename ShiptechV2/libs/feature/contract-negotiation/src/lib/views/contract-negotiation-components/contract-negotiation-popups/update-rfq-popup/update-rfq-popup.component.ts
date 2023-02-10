@@ -21,11 +21,15 @@ export class UpdateRfqPopupComponent implements OnInit {
   }
 
   close(){
-    this.dialogRef.close(false);
+    this.dialogRef.close('no');
+  }
+
+  closeIconClick(){
+    this.dialogRef.close();
   }
 
   proceed(){
-    this.dialogRef.close(true);
+    this.dialogRef.close('yes');
     this.localService.updateSendRFQStatus(true);
     this.toastr.show('<div class="image-placeholder"><span class="image"></span></div><div class="message">'+this.data.toastMsg+'</div>',
     '' , {
