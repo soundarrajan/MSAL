@@ -726,11 +726,11 @@ export class CreateContractRequestPopupComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (result == 'yes') {
         this.reqObj.sendAmendRFQ = true;
         this.updateRequest();
         this.dialog.closeAll();
-      } else {
+      } else if (result == 'no'){
         this.reqObj.sendAmendRFQ = false;
         this.updateRequest();
       }
