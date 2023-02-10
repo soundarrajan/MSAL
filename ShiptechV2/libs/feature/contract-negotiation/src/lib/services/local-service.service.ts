@@ -749,8 +749,8 @@ export class LocalService {
       return response;
    }
     async contractRequestData(response){
-        let minMaxDet =  response['quantityDetails'].find(el => el.contractualQuantityOptionId == 1);
-        let ContractualQuantityOption = this.masterData['Uom'].find(el => el.id == minMaxDet.uomId);
+        let minMaxDet =  response['quantityDetails']?.find(el => el.contractualQuantityOptionId == 1);
+        let quantityOption = this.masterData['Uom'].find(el => el.id == minMaxDet.uomId);
         let contractArray = { 
             id: response['id'],
             startDate: response['startDate'],
@@ -856,7 +856,7 @@ export class LocalService {
                     "contractRequestId": response['id'],
                     "contractRequestProductOfferIds" : res2['contractRequestProductOfferIds']??'',
                     "mainProductId" : res1['productId'],
-                    "requestUomId" : ContractualQuantityOption.id
+                    "requestUomId" : quantityOption.id
                 }
                 data.push(arrDet);
                 arrDet = {};
