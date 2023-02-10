@@ -297,8 +297,8 @@ export class MainPageComponent implements OnInit {
       this.toaster.error('Atleast one counterparty should be selected to Amend RFQ');
       return;
     }
-    if (checkedCounterPartyOpenStatus.length > 0 && checkedCounterPartyInquiredStatus.length == 0) {
-      this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated for ' + checkedCounterPartyOpenStatus.join(', ') + '');
+    if (checkedCounterPartyOpenStatus.length > 0) {
+      this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated for selected seller(s).');
       return;
     }
 
