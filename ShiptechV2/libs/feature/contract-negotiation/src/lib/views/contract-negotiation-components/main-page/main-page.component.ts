@@ -323,6 +323,67 @@ export class MainPageComponent implements OnInit {
     });
   }
 
+  requoteRFQ() {
+    let checkedCounterPartyInquiredStatus = [];
+    let checkedCounterPartyOpenStatus = [];
+    let checkedCounterPartyHasNoOfferPrice = [];
+    let noCounterPartyChecked = true;
+
+    let checkedRows = this.localService.getCheckedSellerRows();
+    if (checkedRows.length > 0) {
+      noCounterPartyChecked = false;
+      checkedRows.forEach(data => {
+        if (data.Status !== 'Open' && data.Status !== 'Closed') {
+          if(data.OfferPrice && data.OfferPrice != null ){
+            checkedCounterPartyInquiredStatus.push({
+              id: data.id,
+              counterpartyId: data.CounterpartyId
+            });
+          }
+          else if(!data.OfferPrice || data.OfferPrice == null)
+          checkedCounterPartyHasNoOfferPrice.push(data.CounterpartyName);
+        }
+        else if (data.Status === 'Open') {
+          checkedCounterPartyOpenStatus.push(data.CounterpartyName);
+        }
+      });
+    }
+
+    checkedCounterPartyOpenStatus = [...new Set(checkedCounterPartyOpenStatus)];
+    if (noCounterPartyChecked) {
+      this.toaster.error('Atleast one counterparty should be selected to Requote RFQ');
+      return;
+    }
+    if (checkedCounterPartyOpenStatus.length > 0 && checkedCounterPartyInquiredStatus.length == 0) {
+      this.toaster.error('Requote RFQ cannot be sent as RFQ was not communicated for selected seller(s)');
+      return;
+    }
+    if (checkedCounterPartyHasNoOfferPrice.length > 0) {
+      this.toaster.error('Atleast 1 offer price should be captured in order to requote for selected seller(s)');
+      return;
+    }
+
+    let requoteRFQPayloyd = {
+      loginUserId: this.currentUserId,
+      contractRequestId: this.requestId,
+      conReqProdSellerWithProdDetatilDtos: checkedCounterPartyInquiredStatus
+    };
+
+    this.contractNegoService.requoteRFQ(requoteRFQPayloyd).subscribe(response => {
+      let isErrorResponse = this.checkAndShowError(response);
+      if (isErrorResponse !== '') {
+        this.toaster.error(isErrorResponse);
+        return;
+      }
+      if (response.requoteRfqSent) {
+        this.toaster.success('Requote RFQ sent successfully.');
+      }
+      if (response.message !== '') {
+        this.toaster.warning(response.message);
+      }
+    });
+  }
+
   duplicateRequest() {
     const dialogRef = this.dialog.open(CreateContractRequestPopupComponent, {
       width: '1136px',
