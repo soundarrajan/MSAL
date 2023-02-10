@@ -363,13 +363,13 @@ export class MainPageComponent implements OnInit {
       return;
     }
 
-    let requoteRFQPayloyd = {
+    let requoteRFQPayload = {
       loginUserId: this.currentUserId,
       contractRequestId: this.requestId,
       conReqProdSellerWithProdDetatilDtos: checkedCounterPartyInquiredStatus
     };
 
-    this.contractNegoService.requoteRFQ(requoteRFQPayloyd).subscribe(response => {
+    this.contractNegoService.requoteRFQ(requoteRFQPayload).subscribe(response => {
       let isErrorResponse = this.checkAndShowError(response);
       if (isErrorResponse !== '') {
         this.toaster.error(isErrorResponse);
