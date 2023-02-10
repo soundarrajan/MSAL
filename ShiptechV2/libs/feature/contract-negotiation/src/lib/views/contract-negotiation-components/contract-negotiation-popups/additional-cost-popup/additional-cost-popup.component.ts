@@ -61,8 +61,8 @@ export class AdditionalCostPopupComponent implements OnInit {
   }
   getAdditionalCostMasterList(){
     this.contractService.getMasterAdditionalCostsList({}).subscribe(res => {
-      this.costList =  res['payload'].filter( e =>e.costType.name !== 'Total' &&e.costType.name !== 'Range' && e.isDeleted == false);
-      this.inactiveCostList = res['payload'].filter( e =>e.costType.name !== 'Total' &&e.costType.name !== 'Range' && e.isDeleted == true);
+      this.costList =  res['payload'].filter( e =>e.costType.name !== 'Total' &&e.costType.name !== 'Range' && e.costType.name !== 'Percent' && e.isDeleted == false);
+      this.inactiveCostList = res['payload'].filter( e =>e.costType.name !== 'Total' && e.costType.name !== 'Range' && e.costType.name !== 'Percent' && e.isDeleted == true);
       this.inactiveCostList.filter(res => {
         this.tableData.filter(inRes => {
           if(res.id == inRes.additionalCostId){
@@ -139,13 +139,12 @@ export class AdditionalCostPopupComponent implements OnInit {
             console.log(element.price);
             let rawPrice = element.price;
             let extras = element.extras;
-            if (typeof element.price != 'number') {
+            if (typeof element.price != 'number' && element.price != null && element.price != '') {
               rawPrice = Number(element.price.replace(/,/g, ''));
             }
-            if (typeof element.extras != 'number') {
+            if (typeof element.extras != 'number' && element.extras != null && element.extras != '') {
               extras = Number(element.extras.replace(/,/g, ''));
             }
-            
             element.costName = cost.name;
             element.additionalCostId = +element.additionalCostId;
             element.price = rawPrice;
