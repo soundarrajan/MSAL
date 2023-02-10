@@ -235,8 +235,9 @@ export class EmailPreviewPopupComponent implements OnInit {
 
   public selectTemplate(val) {
     this.templateName = val;
-    if(this.sellerRowIdsForAmendRFQ.length == 0){
+    if(val == 'ContractNegotiationAmendRFQ' && this.sellerRowIdsForAmendRFQ.length == 0){
       this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated for ' + this.selectedEmailPreview.counterPartyName);
+      this.clearData();
       return;
     }
     this.contractRequestProductOfferIds = this.sellerRowIdsForAmendRFQ;
@@ -254,6 +255,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   addTo(selected, selectedFromLookup) {
+    if(selected === '') return;
     if (this.previewTemplate == null) {
       this.previewTemplate = [];
     }
@@ -282,6 +284,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   addCc(selected, selectedFromLookup) {
+    if(selected === '') return;
     if (this.previewTemplate == null) {
       this.previewTemplate = [];
     }
