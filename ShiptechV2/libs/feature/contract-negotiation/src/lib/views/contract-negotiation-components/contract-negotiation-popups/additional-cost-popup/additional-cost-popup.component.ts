@@ -14,6 +14,7 @@ export class AdditionalCostPopupComponent implements OnInit {
   public myFormGroup;
   public tableData:any;
   public costList;
+  public inactiveCostList;
   newtabledata: any = {}
   getPayload = {}
   uomList: any;
@@ -43,10 +44,7 @@ export class AdditionalCostPopupComponent implements OnInit {
         }
       });
     this.tableData = res;
-    });
-
-    this.contractService.getMasterAdditionalCostsList({}).subscribe(res => {
-    this.costList =  res['payload'].filter( e =>e.costType.name !== 'Total' &&e.costType.name !== 'Range' && e.isDeleted == false);
+    this.getAdditionalCostMasterList();
     });
   }
   constructor(
@@ -60,6 +58,19 @@ export class AdditionalCostPopupComponent implements OnInit {
 
   closeDialog() {
     this.dialogRef.close();
+  }
+  getAdditionalCostMasterList(){
+    this.contractService.getMasterAdditionalCostsList({}).subscribe(res => {
+      this.costList =  res['payload'].filter( e =>e.costType.name !== 'Total' &&e.costType.name !== 'Range' && e.isDeleted == false);
+      this.inactiveCostList = res['payload'].filter( e =>e.costType.name !== 'Total' &&e.costType.name !== 'Range' && e.isDeleted == true);
+      this.inactiveCostList.filter(res => {
+        this.tableData.filter(inRes => {
+          if(res.id == inRes.additionalCostId){
+            this.costList.push(res);
+          }
+        });
+      });
+      });
   }
   onCostNameChange(index,event){
     let cost = this.costList.find(e => e.id == event);
@@ -76,7 +87,7 @@ export class AdditionalCostPopupComponent implements OnInit {
     if(event == 3 || event == 1 ){
       this.tableData[index].priceUomId = null;
     }else{
-      this.tableData[index].priceUomId = this.data.quantityUomId;
+      this.tableData[index].priceUomId = this.data.requestUomId;
     }
   }
   addNew() {
@@ -88,7 +99,7 @@ export class AdditionalCostPopupComponent implements OnInit {
       "costTypeId": null,
       "currencyId": 1,
       "price": null,
-      "priceUomId": this.data.quantityUomId,
+      "priceUomId": this.data.requestUomId,
       "extras": null,
       "comment": null,
       "isDeleted": false
@@ -115,6 +126,9 @@ export class AdditionalCostPopupComponent implements OnInit {
     }
     this.tableData[index].price = this.tenantService.price(price);
   }
+  onExtrsChange(index,extras){
+    this.tableData[index].extras = this.tenantService.price(extras);
+  }
   saveAdditionalCost(){
     
     let checkPrice = false;
@@ -124,13 +138,18 @@ export class AdditionalCostPopupComponent implements OnInit {
             let cost = this.costList.find(e => e.id == element.additionalCostId);
             console.log(element.price);
             let rawPrice = element.price;
+            let extras = element.extras;
             if (typeof element.price != 'number') {
               rawPrice = Number(element.price.replace(/,/g, ''));
+            }
+            if (typeof element.extras != 'number') {
+              extras = Number(element.extras.replace(/,/g, ''));
             }
             
             element.costName = cost.name;
             element.additionalCostId = +element.additionalCostId;
-            element.price = rawPrice
+            element.price = rawPrice;
+            element.extras = extras;
             element.priceUomId = +element.priceUomId;
             element.costTypeId = +element.costTypeId;
             if(element.price == 0 || element.price == null){
@@ -145,7 +164,7 @@ export class AdditionalCostPopupComponent implements OnInit {
     let payload = {
       "contractRequestId": this.data.contractRequestId,
       "contractRequestProductId": this.data.contractRequestProductId,
-      "contractRequestProductUomId": this.data.quantityUomId,
+      "contractRequestProductUomId": this.data.requestUomId,
       "contractRequestProductOfferId": this.data.id,
       "additionalCosts": costList
     }

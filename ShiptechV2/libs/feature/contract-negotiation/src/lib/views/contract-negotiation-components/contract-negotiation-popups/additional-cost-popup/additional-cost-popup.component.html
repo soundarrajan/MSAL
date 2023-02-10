@@ -32,44 +32,52 @@
         <div style="min-height:105px;max-height: 178px; overflow-y: scroll; background: #ffffff;">
         <table>
         <tbody #scrollMe1>
-          <ng-container *ngFor="let tabledata of  tableData; let j = index">
-          <tr class="border-bottom" *ngIf="!tabledata.isDeleted">
+          <ng-container *ngFor="let costData of  tableData; let j = index">
+          <tr class="border-bottom" *ngIf="!costData.isDeleted">
             <td class="decrement-circle-button" style="width:35px;">
               <div class="decrement-circle" (click)="deleteRow(j)">
                 <div class="minus">-</div>
               </div>
             </td>           
             <td class="cell-dashed-border " contenteditable="true" ><mat-form-field appearance="none">
-              <select matNativeControl [(ngModel)]="tabledata.additionalCostId" (ngModelChange)="onCostNameChange(j,$event)">
-                <option  *ngFor="let costDet of costList;let i = index"  [selected] = "tabledata.id == costDet.id" value="{{ costDet.id }}">{{ costDet.name}}</option>
+              <select matNativeControl [(ngModel)]="costData.additionalCostId" (ngModelChange)="onCostNameChange(j,$event)">
+                <option
+                 *ngFor="let costTypeDet of costList;let i = index"
+                 [disabled]="costTypeDet.isDeleted == true"
+                 [selected] = "costData.additionalCostId == costTypeDet.id"
+                 value="{{ costTypeDet.id }}">{{ costTypeDet.name}}</option>
               </select>
             </mat-form-field>
             </td>
             <td class="cell-dashed-border "><mat-form-field appearance="none">
-              <select matNativeControl [(ngModel)]="tabledata.costTypeId" (ngModelChange)="onCostTypeChange(j,$event)">
-                <option value="{{uList.id}}" *ngFor="let uList of costTypeList[j]" [selected] = "tabledata.costTypeId == uList.id">{{uList.name}}</option>
+              <select matNativeControl [(ngModel)]="costData.costTypeId" (ngModelChange)="onCostTypeChange(j,$event)">
+                <option
+                value="{{uList.id}}"
+                *ngFor="let uList of costTypeList[j]"
+                [selected] = "costData.costTypeId == uList.id">
+                {{uList.name}}</option>
               </select>
             </mat-form-field>
             </td>
             <td class="cell-dashed-border">
-              <input [(ngModel)]="tabledata.price" (change)="onPriceChange(j,tabledata.price)" class="form-control" style="width: 100%;border:none" />
+              <input [(ngModel)]="costData.price" (change)="onPriceChange(j,costData.price)" class="form-control" style="width: 100%;border:none" />
             </td>
             <td class="cell-dashed-border">
-              <select matNativeControl [(ngModel)]="tabledata.priceUomId" [disabled]="tabledata.priceUomId == null">
+              <select matNativeControl [(ngModel)]="costData.priceUomId" [disabled]="costData.priceUomId == null">
                 <option *ngFor="let uom of uomList;" value="{{ uom.id }}">{{ uom.name }}</option>
               </select>
             </td>
             <td class="cell-dashed-border">
-              <input [(ngModel)]="tabledata.extras" class="form-control" style="width: 100%;border:none" />
+              <input [(ngModel)]="costData.extras" class="form-control" (change)="onExtrsChange(j,costData.extras)" style="width: 100%;border:none" />
             </td>
             <td class="cell-dashed-border" ><mat-form-field appearance="none">
-              <select disabled matNativeControl [(ngModel)]="tabledata.currencyId" >
+              <select disabled matNativeControl [(ngModel)]="costData.currencyId" >
                 <option value="1">US dollars</option>
               </select>
             </mat-form-field>
             </td>
             <td class="cell-dashed-border">
-              <input [(ngModel)]="tabledata.comment" name="amount"  class="form-control" style="width: 100%;border:none" />
+              <input [(ngModel)]="costData.comment" name="amount"  class="form-control" style="width: 100%;border:none" />
             </td>
           </tr>
         </ng-container>
