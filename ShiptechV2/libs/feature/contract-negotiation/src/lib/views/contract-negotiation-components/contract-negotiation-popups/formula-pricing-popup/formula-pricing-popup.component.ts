@@ -7,7 +7,7 @@ import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designs
 import { AGGridCellRendererV2Component } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-rendererv2.component';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { SearchFormulaPopupComponent } from '../search-formula-popup/search-formula-popup.component';
+import { SearchFormulaPopupComponent } from '../../contract-negotiation-popups/search-formula-popup/search-formula-popup.component';
 
 @Component({
   selector: 'app-formula-pricing-popup',

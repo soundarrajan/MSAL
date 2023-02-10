@@ -856,7 +856,9 @@ export class LocalService {
                     "contractRequestId": response['id'],
                     "contractRequestProductOfferIds" : res2['contractRequestProductOfferIds']??'',
                     "mainProductId" : res1['productId'],
-                    "requestUomId" : quantityOption.id
+                    "requestUomId" : quantityOption.id,
+                    "isFormulaPricing" : false,
+                    "offerPriceFormulaId" : null
                 }
                 data.push(arrDet);
                 arrDet = {};
@@ -886,7 +888,8 @@ export class LocalService {
                 "allowedLocations": res1['allowedLocations'],
                 "allowedProducts": res1['allowedProducts'],
                 "isDeleted": res1['isDeleted'],
-                "maxQuantityUomId" : response['contractRequestProducts'][0]['maxQuantityUomId']
+                "maxQuantityUomId" : response['contractRequestProducts'][0]['maxQuantityUomId']          
+
             }
             contractArray['locations'].push(arrMainDet);
             arrMainDet = {}; data = [];

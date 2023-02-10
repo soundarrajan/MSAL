@@ -6,10 +6,13 @@ import { ToastrService } from 'ngx-toastr';
 import { ContractNegotiationService } from '../../services/contract-negotiation.service';
 import { LocalService } from '../../services/local-service.service';
 import { AdditionalCostPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/additional-cost-popup/additional-cost-popup.component';
-import { FormulaPricingPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/formula-pricing-popup/formula-pricing-popup.component';
+import { negoPricingDetailsComponent } from '../../../../../../core/src/lib/formula-pricing/pricing-details/pricing-details.component';
 import { ModifyOfferPeriodPopupComponent } from '../../views/contract-negotiation-components/contract-negotiation-popups/modify-offer-period-popup/modify-offer-period-popup.component';
-
-
+import { Store } from '@ngxs/store';
+import { ContractNegotiationStoreModel } from '../../store/contract-negotiation.store';
+import { ConfirmdialogComponent } from '../../../../../../core/src/lib/formula-pricing/confirmdialog/confirmdialog.component';
+import { ContractRequest } from '../../store/actions/ag-grid-row.action';
+import _, { cloneDeep } from 'lodash';
 @Component({
     selector: 'cell-click-renderer',
     template: `
@@ -17,12 +20,12 @@ import { ModifyOfferPeriodPopupComponent } from '../../views/contract-negotiatio
     <div [matMenuTriggerFor]="priceMenupopup" #pricePopupTrigger="matMenuTrigger"
         (click)="pricePopupTrigger.closeMenu()" class="cell-input"
         (contextmenu)="$event.preventDefault();$event.stopPropagation();pricePopupTrigger.openMenu();">
-        <input [(ngModel)]="params.value" (change)="onInputChange()" *ngIf="params.node.level != 0">
+        <input [disabled]="(params.data.isFormulaPricing)" [(ngModel)]="params.value" (change)="onInputChange()" *ngIf="params.node.level != 0">
         <span *ngIf="params.value == '432.5'" class="formula-indication-icon" 
         matTooltip="Formula Based Pricing - DOD" matTooltipClass="lightTooltip"></span>
     </div>
     <mat-menu #priceMenupopup="matMenu" class="darkPanel-add big">
-        <div class="add-block" (click)="formulaPricingPopup()">
+        <div class="add-block" (click)="formulaPricingPopup(params)">
             <div></div><span>Add/View Formula pricing</span>
         </div>
         <div class="divider-line"></div>
@@ -33,6 +36,15 @@ import { ModifyOfferPeriodPopupComponent } from '../../views/contract-negotiatio
         <div class="add-block" (click)="modifyOfferPeriod($event,params)">
             <div></div><span>Modify Offer Period</span>
         </div>
+        <ng-container *ngIf="params && (params.data?.isFormulaPricing)">
+        <div class="divider-line"></div>
+        <div class="delete-block"
+        (click)="(!params.data.isFormulaPricing) ? false : removeFormulaPrice(params);"
+          [ngStyle]="{'opacity': (!params.data.isFormulaPricing) ? 0.5 : 1}">
+          <div></div>
+          <span>Remove Formula pricing</span>        
+        </div>
+        </ng-container>
     </mat-menu>
 </div>  
        `,
@@ -50,10 +62,11 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
         public contractService: ContractNegotiationService,
         private tenantService: TenantFormattingService,
         private localService: LocalService,
+        private store : Store,
         ) {
 
     }
-
+  
     agInit(params: any): void {
         this.params = params;
     }
@@ -87,18 +100,63 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
 
     }
 
-    formulaPricingPopup() {
-        const dialogRef = this.dialog.open(FormulaPricingPopupComponent, {
+    formulaPricingPopup(row) {        
+        const dialogRef = this.dialog.open(negoPricingDetailsComponent, {
             width: '1164px',
             maxHeight: '95vh',
             height: 'auto',
             panelClass: ['additional-cost-popup', 'pricing-detail-popup-panel-class', 'scroll-change'],
+            data: {
+                contractRequestOfferId: row.data.id,              
+                productId: row.data.ProductId,
+                offerPriceFormulaId: row.data.offerPriceFormulaId
+              },
         });
 
         dialogRef.afterClosed().subscribe(result => {
             //this.rowData[index].data[rowindex].offPrice = "432.5";
         });
     }
+
+    removeFormulaPrice(param) {
+        var contractRequestData = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+            return state['contractNegotiation'].ContractRequest[0];
+          })));
+        const dialogRef = this.dialog.open(ConfirmdialogComponent, {
+          width: '368px',
+          maxWidth: '80vw',
+          panelClass: 'confirm-dialog',
+          data: {
+            message: 'Are you sure you want to remove this formula?',
+            contractRequestOfferId: param.data.id,   
+            productId: param.data.ProductId,
+            offerPriceFormulaId: param.data.offerPriceFormulaId
+          }
+        });
+     
+        dialogRef.afterClosed().subscribe(result => {
+          
+          if (param) {
+            let contractRequestOfferId = param.data.id;
+            let offerPriceFormulaId = param.data.offerPriceFormulaId;          
+            contractRequestData.locations.map( prod => {
+                if(prod.data.length > 0){
+                     prod.data.map( req => {                 
+                      if(req.id ==  contractRequestOfferId){                
+                          req.isFormulaPricing = false;
+                          req.offerPriceFormulaId = null;     
+                      }
+                  })
+                }
+              });   
+            this.contractService.removeFormula(contractRequestOfferId, offerPriceFormulaId).subscribe();
+            this.store.dispatch(new ContractRequest([contractRequestData]));
+            this.toaster.success('Formula removed successfully');           
+            this.contractService.callGridRedrawService();
+          }
+        });
+      }
+    
 
     additionalCostPopup() {
         if(this.params.node.data.OfferPrice == null || this.params.node.data.OfferPrice == undefined || this.params.node.data.OfferPrice == ''){

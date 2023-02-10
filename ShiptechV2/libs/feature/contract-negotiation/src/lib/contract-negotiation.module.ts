@@ -3,16 +3,17 @@ import { AuthenticationMsalModule } from '@shiptech/core/authentication/authenti
 import { AuthenticationAdalModule } from '@shiptech/core/authentication/authentication-adal.module';
 import { CommonModule } from '@angular/common';
 import { AgGridModule } from 'ag-grid-angular';
+import { TabMenuModule } from 'primeng/tabmenu';
 import 'ag-grid-enterprise';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContractNegotiationRoutingModule } from './contract-negotiation-routing.module';
 import { ContractNegotiationComponent } from './views/contract-negotiation-components/contract-negotiation.component';
 import { RequestListComponent } from './views/contract-negotiation-components/request-list/request-list.component';
 import { ContractRequestDetailsComponent } from './views/contract-negotiation-components/conract-request-details/contract-request-details.component';
-import { FormulaPricingDetailsComponent } from './views/contract-negotiation-components/formula-pricing-details/formula-pricing-details.component';
+import { negoPricingDetailsComponent } from '../../../../core/src/lib/formula-pricing/pricing-details/pricing-details.component';
 import { MainPageComponent } from './views/contract-negotiation-components/main-page/main-page.component';
 import { CreateContractRequestPopupComponent } from './views/contract-negotiation-components/contract-negotiation-popups/create-contract-request-popup/create-contract-request-popup.component';
-import { MaterialModule } from '@shiptech/core/ui/material.module';
+
 //import { SharedModule } from 'src/public_api';
 import { SharedModule } from '@shiptech/core/shared/shared.module';
 import { environment } from '@shiptech/environment';
@@ -22,6 +23,7 @@ import {
 } from './services/api/contract-negotiation-api';
 import { ContractNegotiationService } from './services/contract-negotiation.service';
 import { UIModule } from '@shiptech/core/ui/ui.module';
+import { MasterSelectorModule } from '@shiptech/core/ui/components/master-selector/master-selector.module';
 import { FilterPresetsModule } from '@shiptech/core/ui/components/filter-preferences/filter-presets.module';
 import { BreadcrumbsModule } from '@shiptech/core/ui/components/breadcrumbs/breadcrumbs.module';
 import { AGGridCellClickRendererComponent } from './core/ag-grid-renderers/ag-grid-cell-click-renderer.component';
@@ -47,7 +49,7 @@ import { ModifyOfferPeriodPopupComponent } from './views/contract-negotiation-co
 import { ContractNegoAuditlogComponent } from './views/contract-negotiation-components/contract-nego-auditlog/contract-nego-auditlog.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { FormulaPricingPopupComponent } from './views/contract-negotiation-components/contract-negotiation-popups/formula-pricing-popup/formula-pricing-popup.component';
-import { SearchFormulaPopupComponent } from './views/contract-negotiation-components/contract-negotiation-popups/search-formula-popup/search-formula-popup.component';
+import { SearchFormulaPopupComponent } from '../../../../../libs/core/src/lib/formula-pricing/search-formula-popup/search-formula-popup.component';
 import { AdditionalCostPopupComponent } from './views/contract-negotiation-components/contract-negotiation-popups/additional-cost-popup/additional-cost-popup.component';
 import { ContractNegoTableComponent } from './views/contract-negotiation-components/contract-nego-table/contract-nego-table.component';
 import { SendRfqPopupComponent } from './views/contract-negotiation-components/contract-negotiation-popups/send-rfq-popup/send-rfq-popup.component';
@@ -63,7 +65,9 @@ import { ModuleLoggerFactory } from './core/logging/module-logger-factory';
 import { AgFooterNewModule } from '@shiptech/core/ui/components/ag-footer-new/ag-footer-new.module';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { NgxSpinnerModule } from 'ngx-spinner';
-
+import { PortalModule } from '@angular/cdk/portal';
+import { MaterialModule } from '@shiptech/core/ui/material.module';
+import { MatTableModule } from '@angular/material/table';
 import { SpotNegotiationService } from './../../../spot-negotiation/src/lib/services/spot-negotiation.service';
 import { AgFilterDisplayModule } from '@shiptech/core/ui/components/ag-filter-display/ag-filter-display.module';
 import { CounterpartieNameCellComponent } from './core/ag-grid-renderers/counterpartie-name-cell.component';
@@ -75,6 +79,16 @@ import { AGGridCellActionsDocumentsComponent } from './core/ag-grid-renderers/ag
 import { AGGridCellV2RendererComponent } from './core/ag-grid-renderers/ag-grid-cell-renderer-v2.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { DragDropFileUploadDirective } from './directives/drag-drop-file-upload.directive';
+import { EventBasedContinuous } from '../../../../core/src/lib/formula-pricing/event-based-continuous/event-based-continuous.component';
+import { PricingFormulaSimple } from '../../../../core/src/lib/formula-pricing/pricing-formula-simple/pricing-formula-simple.component';
+import { PricingFormulaComplex } from '../../../../core/src/lib/formula-pricing/pricing-formula-complex/pricing-formula-complex.component';
+import { SpecificDates } from '../../../../core/src/lib/formula-pricing/specific-dates/specific-dates.component';
+import { EventBasedExtended } from '../../../../core/src/lib/formula-pricing/event-based-extended/event-based-extended.component';
+import { ProductBased } from '../../../../core/src/lib/formula-pricing/product-based/product-based.component';
+import { VesselLocationBased } from '../../../../core/src/lib/formula-pricing/vessel-location-based/vessel-location-based.component';
+import { EventBasedSimple } from '../../../../core/src/lib/formula-pricing/event-based-simple/event-based-simple.component';
+import { DateRange } from '../../../../core/src/lib/formula-pricing/date-range/date-range.component';
+import { QuantityBased } from '../../../../core/src/lib/formula-pricing/quantity-based/quantity-based.component';
 //import { RemoveCounterpartyPopupComponent } from './views/contract-negotiation-components/contract-negotiation-popups/remove-counterparty-popup/remove-counterparty-popup.component';
 //import { ConfirmdialogComponent } from './views/contract-negotiation-components/contract-negotiation-popups/confirmdialog/confirmdialog.component';
 
@@ -84,7 +98,7 @@ import { DragDropFileUploadDirective } from './directives/drag-drop-file-upload.
     ContractNegotiationComponent,
     RequestListComponent,
     ContractRequestDetailsComponent,
-    FormulaPricingDetailsComponent,
+    negoPricingDetailsComponent,
     MainPageComponent,
     CreateContractRequestPopupComponent,
     ContractNegotiationHeaderComponent,
@@ -126,16 +140,32 @@ import { DragDropFileUploadDirective } from './directives/drag-drop-file-upload.
    SearchAllCounterpartiesComponent,
    AGGridCellActionsDocumentsComponent,
    AGGridCellV2RendererComponent,
-   DragDropFileUploadDirective
+   DragDropFileUploadDirective,
+   EventBasedContinuous,
+   PricingFormulaSimple,
+   PricingFormulaComplex,
+   SpecificDates,
+   EventBasedExtended,
+   ProductBased,
+   VesselLocationBased,
+   EventBasedSimple,
+   DateRange,
+   QuantityBased
   ],
   imports: [
     CommonModule,
+    TabMenuModule,
     MaterialModule,
+    MatTableModule,
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
+    MasterSelectorModule,
+    PortalModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
     !environment.useAdal
       ? AuthenticationMsalModule.forFeature()
       : AuthenticationAdalModule.forFeature(),
