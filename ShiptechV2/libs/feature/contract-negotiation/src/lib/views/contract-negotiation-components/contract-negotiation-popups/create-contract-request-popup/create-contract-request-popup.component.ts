@@ -1349,6 +1349,20 @@ export class CreateContractRequestPopupComponent implements OnInit {
 
   saveContractRequest() {
     let prodMinMaxChange = [];
+    let rfqSentCounterParties = [];
+    let sellersToAmendRFQ = [];
+    this.reqObj.contractRequestProducts.forEach( (pro) => {
+      if(pro.contractRequestProductOffers.length > 0){
+        pro.contractRequestProductOffers.forEach( sData => {
+          if(sData.status !== 'Open'){
+            rfqSentCounterParties.push({
+              id: sData.id,
+              counterpartyId: sData.counterpartyId
+            });                
+          }
+        });
+      }
+    });
     let requestDetailsUpdated = false;
     if(!this.isNewRequest){
       this.reqObj.sendAmendRFQ = false;
@@ -1402,13 +1416,13 @@ export class CreateContractRequestPopupComponent implements OnInit {
       if(!this.isNewRequest){
         if(this.tempReqObj.contractRequestProducts[i]?.minQuantity !== pro.minQuantity
         || this.tempReqObj.contractRequestProducts[i]?.maxQuantity !== pro.maxQuantity){
-          if(pro.contractRequestProductOffers.length > 0){
+          if(pro.contractRequestProductOffers.length > 0 && !requestDetailsUpdated){
             pro.contractRequestProductOffers.forEach( sData => {
               if(sData.status !== 'Open'){
                 requestDetailsUpdated = true;
                 prodMinMaxChange.push({
                   id: sData.id,
-                  counterpartyId: sData.CounterpartyId
+                  counterpartyId: sData.counterpartyId
                 });                
               }
             });
@@ -1418,8 +1432,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
       pro.maxQuantity = this.convertDecimalSeparatorStringToNumber(pro.maxQuantity);
       pro.minQuantity = this.convertDecimalSeparatorStringToNumber(pro.minQuantity);
     });
-    this.reqObj.conReqProdSellerWithProdDetatilDtos = prodMinMaxChange;
-    
+    sellersToAmendRFQ = prodMinMaxChange.length > 0 ? prodMinMaxChange : rfqSentCounterParties;
+    this.reqObj.conReqProdSellerWithProdDetatilDtos = requestDetailsUpdated ? sellersToAmendRFQ : [];
     if(this.isNewRequest){
       this.saveRequest();
     } else {
@@ -1447,6 +1461,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.contractNegotiationService.updateContractRequest(this.reqObj).subscribe( response => {
       if(response){
         var hasContractRequestUpdated = response['hasContractRequestUpdated'];
+        if(this.reqObj.sendAmendRFQ && response['amendRfqSent'] === false){
+          this.toaster.error('Failed to send amend RFQ email.');
+        }
         if(hasContractRequestUpdated){
           this.toaster.success('Contract Request has been updated successfully');
           this.dialog.closeAll();

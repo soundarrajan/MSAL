@@ -297,10 +297,10 @@ export class MainPageComponent implements OnInit {
       this.toaster.error('Atleast one counterparty should be selected to Amend RFQ');
       return;
     }
-    if (checkedCounterPartyOpenStatus.length > 0 && checkedCounterPartyInquiredStatus.length == 0) {
+    if (checkedCounterPartyOpenStatus.length > 0) {
       this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated for ' + checkedCounterPartyOpenStatus.join(', ') + '');
-      return;
     }
+    if(checkedCounterPartyInquiredStatus.length == 0) return;
 
     let amendRFQPayloyd = {
       loginUserId: this.currentUserId,
