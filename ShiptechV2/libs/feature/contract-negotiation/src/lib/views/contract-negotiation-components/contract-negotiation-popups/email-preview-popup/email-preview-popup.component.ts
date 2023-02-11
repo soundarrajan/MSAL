@@ -259,6 +259,11 @@ export class EmailPreviewPopupComponent implements OnInit {
       return;
     }
     this.contractRequestProductOfferIds = (val == 'ContractNegotiationAmendRFQ') ? this.sellerRowIdsForRFQ : this.sellerRowIdsForRequoteRFQ;
+    
+    if (val == 'ContractNegotiationSendRFQ') {
+      this.contractRequestProductOfferIds = this.sellerRowIdsForSendRFQ;
+    }
+    
     this.previewRFQTemplate();
   }
 
