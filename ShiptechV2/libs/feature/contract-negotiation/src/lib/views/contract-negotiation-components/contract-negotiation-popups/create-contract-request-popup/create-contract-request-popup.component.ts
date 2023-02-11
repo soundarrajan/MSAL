@@ -8,7 +8,6 @@ import { MatSelect } from '@angular/material/select';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { LocalService } from '../../../../services/local-service.service';
-import { SendRfqPopupComponent } from '../send-rfq-popup/send-rfq-popup.component';
 import { UpdateRfqPopupComponent } from '../update-rfq-popup/update-rfq-popup.component';
 import { SearchProductsPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/search-products-popup/search-products-popup.component';
 import { SearchLocationPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/search-location-popup/search-location-popup.component';
