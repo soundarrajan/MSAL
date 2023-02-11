@@ -253,7 +253,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.clearData();
       return;
     }
-    if(val == 'ContractNegotiationRequote' && this.sellerHasNoOfferPrice.length > 0){
+    if(val == 'ContractNegotiationRequote' && this.sellerHasNoOfferPrice.length > 0 && this.sellerRowIdsForRequoteRFQ.length == 0){
       this.toaster.error('Atleast 1 offer price should be captured in order to requote for ' + this.selectedEmailPreview.counterPartyName);
       this.clearData();
       return;
