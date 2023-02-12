@@ -1458,7 +1458,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.contractNegotiationService.updateContractRequest(this.reqObj).subscribe( response => {
       if(response){
         var hasContractRequestUpdated = response['hasContractRequestUpdated'];
-        debugger;
         if(this.reqObj.sendAmendRFQ && response['amendRFQResponse']?.amendRfqSent === false){
           this.toaster.error('Failed to send amend RFQ email.');
         }
