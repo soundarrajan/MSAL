@@ -86,6 +86,8 @@ export class EmailPreviewPopupComponent implements OnInit {
   templateName: string = 'ContractNegotiationSendRFQ';
   sellerRowIdsForSendRFQ = [];
   sellerRowIdsForAmendRFQ = [];
+  sellerRowIdsForRequoteRFQ = [];
+  sellerHasNoOfferPrice = [];
   contractRequestProductOfferIds = [];
 
   constructor(   
@@ -117,9 +119,15 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.sellerRowIdsForSendRFQ = this.selectedEmailPreview.contractRequestProductOfferIds;
       this.contractRequestProductOfferIds = this.sellerRowIdsForSendRFQ;
       this.selectedEmailPreview.sellerData.forEach( data => {
-        if(data.Status == 'Inquired'){
+        if(data.Status == 'Inquired'|| data.Status == 'Quoted'){
           this.sellerRowIdsForAmendRFQ.push(data.id);
-        }
+          if(data.OfferPrice){
+            this.sellerRowIdsForRequoteRFQ.push(data.id);
+          }
+          else if(!data.OfferPrice || data.OfferPrice == null){
+            this.sellerHasNoOfferPrice.push(data.id);
+          }   
+        } 
       });
       this.previewRFQTemplate();
       this.editable = true;
@@ -240,7 +248,22 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.clearData();
       return;
     }
-    this.contractRequestProductOfferIds = this.sellerRowIdsForAmendRFQ;
+    if(val == 'ContractNegotiationRequote' && this.sellerRowIdsForAmendRFQ.length == 0){
+      this.toaster.error('Requote RFQ cannot be sent as RFQ was not communicated for ' + this.selectedEmailPreview.counterPartyName);
+      this.clearData();
+      return;
+    }
+    if(val == 'ContractNegotiationRequote' && this.sellerHasNoOfferPrice.length > 0 && this.sellerRowIdsForRequoteRFQ.length == 0){
+      this.toaster.error('Offer price should be captured to requote for ' + this.selectedEmailPreview.counterPartyName);
+      this.clearData();
+      return;
+    }
+    this.contractRequestProductOfferIds = (val == 'ContractNegotiationAmendRFQ') ? this.sellerRowIdsForAmendRFQ : this.sellerRowIdsForRequoteRFQ;
+    
+    if (val == 'ContractNegotiationSendRFQ') {
+      this.contractRequestProductOfferIds = this.sellerRowIdsForSendRFQ;
+    }
+    
     this.previewRFQTemplate();
   }
 

@@ -99,7 +99,7 @@ export class ContractNegotiationHeaderComponent implements OnInit {
            
           });
 
-          if(response['quantityDetails'].length > 0){
+          if(response['quantityDetails'] && response['quantityDetails'].length > 0){
               this.totalRequestQty(JSON.parse(JSON.stringify(response)));
           } 
         });
@@ -126,8 +126,8 @@ export class ContractNegotiationHeaderComponent implements OnInit {
   }  
 
   totalRequestQty(response){
-    let minMaxDet =  response['quantityDetails'].find(el => el.contractualQuantityOptionId == 1);
-    let ContractualQuantityOption = this.masterData['Uom'].find(el => el.id == minMaxDet.uomId);
+    let minMaxDet =  response['quantityDetails']?.find(el => el.contractualQuantityOptionId == 1);
+    let ContractualQuantityOption = this.masterData['Uom']?.find(el => el.id == minMaxDet.uomId);
     this.totalReqQty = minMaxDet;
     this.totalReqQty['uomId'] = ContractualQuantityOption.name;
   }
