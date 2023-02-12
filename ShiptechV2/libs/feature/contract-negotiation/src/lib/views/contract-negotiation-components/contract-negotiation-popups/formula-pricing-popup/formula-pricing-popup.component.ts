@@ -7,7 +7,6 @@ import { AGGridCellActionsComponent } from '@shiptech/core/ui/components/designs
 import { AGGridCellRendererV2Component } from '@shiptech/core/ui/components/designsystem-v2/ag-grid/ag-grid-cell-rendererv2.component';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { SearchFormulaPopupComponent } from '../../contract-negotiation-popups/search-formula-popup/search-formula-popup.component';
 
 @Component({
   selector: 'app-formula-pricing-popup',
@@ -444,7 +443,7 @@ export class FormulaPricingPopupComponent implements OnInit {
 
   searchFormula(){
     
-    const dialogRef = this.dialog.open(SearchFormulaPopupComponent, {
+  /*  const dialogRef = this.dialog.open(SearchFormulaPopupComponent, {
       width: '80vw',
       height: 'auto',
       maxWidth: '95vw',
@@ -465,7 +464,7 @@ export class FormulaPricingPopupComponent implements OnInit {
       }else{
 
       }
-    });
+    });*/
   }
   hideFormula(){
     this.showFormula = false;
