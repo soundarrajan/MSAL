@@ -112,17 +112,27 @@ export class AdditionalCostPopupComponent implements OnInit {
     }
   }
   onPriceChange(index, price) {
-    let isPriceNagarive = false;
+    if(price == '' || price == null) return;
+    let isPriceNegative = false;
     let cost = this.costList.find(e => e.id == this.tableData[index].additionalCostId);
-    if (Number(price.replace(/,/g, '')) < 0) isPriceNagarive = true;
-    if (!cost.isAllowingNegativeAmmount && isPriceNagarive) {
-      this.toaster.error('Nagative price is not allowed for cost ' + cost.name);
+    if (Number(price.replace(/,/g, '')) < 0) isPriceNegative = true;
+    if (!cost.isAllowingNegativeAmmount && isPriceNegative) {
+      this.toaster.error('Negative price is not allowed for cost ' + cost.name);
       this.tableData[index].price = 0;
       return;
     }
     this.tableData[index].price = this.tenantService.price(price);
   }
   onExtrsChange(index, extras) {
+    if (Number(this.tableData[index].extras.replace(/,/g, '')) < 0) {
+      this.toaster.error('Extra % cannot be negative.');
+      this.tableData[index].extras = 0;
+      return;
+    } else if (Number(this.tableData[index].extras.replace(/,/g, '')) > 100) {
+      this.toaster.error('Extra % cannot be greater than 100.');
+      this.tableData[index].extras = 0;
+      return;
+    }
     this.tableData[index].extras = this.tenantService.price(extras);
   }
   saveAdditionalCost() {
