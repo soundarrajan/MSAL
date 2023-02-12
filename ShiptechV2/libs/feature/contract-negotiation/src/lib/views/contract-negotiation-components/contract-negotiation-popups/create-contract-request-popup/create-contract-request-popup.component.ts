@@ -1383,14 +1383,14 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.tempReqObj.quoteByDate = this.convertToDateObj(this.tempReqObj.quoteByDate);
       this.tempReqObj.minValidity = this.convertToDateObj(this.tempReqObj.minValidity);
       
-      if(!this.tempReqObj.startDate.isSame(this.reqObj.startDate)
+      if(this.reqObj.status !== 'Open' && (!this.tempReqObj.startDate.isSame(this.reqObj.startDate)
       || !this.tempReqObj.endDate.isSame(this.reqObj.endDate)
       || !this.tempReqObj.quoteByDate.isSame(this.reqObj.quoteByDate)
-      || !this.tempReqObj.minValidity.isSame(this.reqObj.minValidity)
+      || !this.tempReqObj.minValidity.isSame(this.reqObj.minValidity))
       ){
         requestDetailsUpdated = true;
       }
-      if(this.reqObj.quantityDetails.length !== this.tempReqObj.quantityDetails.length){
+      if(this.reqObj.quantityDetails.length !== this.tempReqObj.quantityDetails.length && this.reqObj.status !== 'Open'){
         requestDetailsUpdated = true;
       }
     }
@@ -1401,9 +1401,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       q.tolerancePercentage = this.convertDecimalSeparatorStringToNumber(q.tolerancePercentage);
       
       if(!this.isNewRequest){
-        if(this.tempReqObj.quantityDetails[i]?.maxQuantity !== q.maxQuantity
+        if(this.reqObj.status !== 'Open' && (this.tempReqObj.quantityDetails[i]?.maxQuantity !== q.maxQuantity
           || this.tempReqObj.quantityDetails[i]?.minQuantity !== q.minQuantity
-          || this.tempReqObj.quantityDetails[i]?.tolerancePercentage !== q.tolerancePercentage
+          || this.tempReqObj.quantityDetails[i]?.tolerancePercentage !== q.tolerancePercentage)
         ){
             requestDetailsUpdated = true;
         }
