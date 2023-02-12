@@ -17,7 +17,13 @@ import { ModifyOfferPeriodPopupComponent } from '../../views/contract-negotiatio
     <div [matMenuTriggerFor]="priceMenupopup" #pricePopupTrigger="matMenuTrigger"
         (click)="pricePopupTrigger.closeMenu()" class="cell-input"
         (contextmenu)="$event.preventDefault();$event.stopPropagation();pricePopupTrigger.openMenu();">
-        <input [(ngModel)]="params.value" (change)="onInputChange()" *ngIf="params.node.level != 0">
+        <input
+        *ngIf="params.node.level != 0"
+        [(ngModel)]="params.value"
+        (change)="onInputChange()"
+        (focusout)="calculateOfferPrice()"
+        (focusin)="priceSplit()"
+        >
         <span *ngIf="params.value == '432.5'" class="formula-indication-icon" 
         matTooltip="Formula Based Pricing - DOD" matTooltipClass="lightTooltip"></span>
     </div>
@@ -53,7 +59,19 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
         ) {
 
     }
-
+    ngOnInit() {
+        this.calculateOfferPrice();
+    }
+    calculateOfferPrice() {
+        if(this.params.node.data.aditionalCost != null){
+        let offerPrice = typeof this.params.node.data.OfferPrice === 'number' ? this.params.node.data.OfferPrice : Number(this.params.node.data.OfferPrice?.replace(/,/g, '') || 0);
+        offerPrice += (this.params.node.data.aditionalCost || 0);
+        this.params.value = this.tenantService.price(offerPrice);
+        }
+    }
+   priceSplit() {
+        this.params.value = this.params.node.data.OfferPrice;
+    }
     agInit(params: any): void {
         this.params = params;
     }
@@ -144,10 +162,11 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
 
             if(Number(this.params.value.replace(/,/g, '')) > 0 && this.params.value != ''){
                 let newParams = JSON.parse(JSON.stringify(this.params.node.data));
-                newParams.OfferPrice = this.tenantService.price(this.params.value);
+                newParams.OfferPrice = this.params.value.replace(/,/g, '');
                 this.contractService.updatePrices(newParams).subscribe(()=>{
+
                     // ad grid data binding problem. previous value is 123.2 and new value is 123.200 in this scenario grid is not updating.
-                    if(Number(this.params.value) == Number(this.params.node.data.OfferPrice)){
+                    if(Number(this.params.value.toString().replace(/,/g, '')) == Number(this.params.node.data.OfferPrice.replace(/,/g, ''))){
                         this.localService.callGridRefreshService([this.params.node.data.id]);
                     }
                     this.localService.getContractStatus().subscribe((status) => {
