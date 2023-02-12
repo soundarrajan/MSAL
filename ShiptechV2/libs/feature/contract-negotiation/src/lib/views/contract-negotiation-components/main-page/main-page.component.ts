@@ -359,7 +359,7 @@ export class MainPageComponent implements OnInit {
       return;
     }
     if (checkedCounterPartyHasNoOfferPrice.length > 0) {
-      this.toaster.error('Atleast 1 offer price should be captured in order to requote for selected seller(s)');
+      this.toaster.error('Offer price should be captured to requote for selected seller(s)');
       return;
     }
 
