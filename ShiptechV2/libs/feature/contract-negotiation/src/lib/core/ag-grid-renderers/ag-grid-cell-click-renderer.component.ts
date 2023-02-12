@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
@@ -132,7 +132,8 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            //this.rowData[index].data[rowindex].offPrice = Number(this.rowData[index].data[rowindex].offPrice) + 100;
+            if(result?.data)
+            this.localService.addAdditionalCost(result,this.params.node.data.id);
         });
     }
 

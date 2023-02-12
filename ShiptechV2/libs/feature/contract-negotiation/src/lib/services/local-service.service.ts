@@ -912,4 +912,19 @@ export class LocalService {
         });
         return checkedCounterParties;
     }
+    addAdditionalCost(aditionalCost,rowId) {
+        let contractReq = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+            return state['contractNegotiation'].ContractRequest[0];
+          })));
+          contractReq.locations.map( prod => {
+            prod.data.map( item => {
+                if(item.id == rowId && item.aditionalCost != aditionalCost['data']){
+                    item.aditionalCost = aditionalCost['data'];
+                    this.store.dispatch(new ContractRequest([contractReq]));
+                    this.callGridRefreshService([rowId]);
+                    return;
+                }
+            })
+          });
+    }
 }
