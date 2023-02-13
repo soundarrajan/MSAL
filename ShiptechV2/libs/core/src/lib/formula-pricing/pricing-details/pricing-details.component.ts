@@ -968,7 +968,7 @@ export class negoPricingDetailsComponent implements OnInit {
                     if(req.id == this.requestOfferId){                
                         req.isFormulaPricing = true;
                         req.offerPriceFormulaId = payload.priceConfigurationId ;
-                        req.OfferPrice = 100;     
+                        req.OfferPrice = null;     
                     }
                 })
               }
@@ -1003,7 +1003,7 @@ export class negoPricingDetailsComponent implements OnInit {
                     if(req.id == this.requestOfferId){                
                         req.isFormulaPricing = true;
                         req.offerPriceFormulaId = payload.priceConfigurationId   
-                        req.OfferPrice = 100;  
+                        req.OfferPrice = Math.random() * 1000; 
                     }
                 })
               }

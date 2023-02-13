@@ -20,7 +20,7 @@ import _, { cloneDeep } from 'lodash';
     <div [matMenuTriggerFor]="priceMenupopup" #pricePopupTrigger="matMenuTrigger"
         (click)="pricePopupTrigger.closeMenu()" class="cell-input"
         (contextmenu)="$event.preventDefault();$event.stopPropagation();pricePopupTrigger.openMenu();">
-        <input  [disabled]="(params.data.isFormulaPricing)"
+        <input  [disabled]="(params.data?.isFormulaPricing)"
         *ngIf="params.node.level != 0"
         [(ngModel)]="params.value"
         (change)="onInputChange()"
@@ -163,7 +163,8 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
                             prod.data.map( req => {                 
                             if(req.id ==  contractRequestOfferId){                
                                 req.isFormulaPricing = false;
-                                req.offerPriceFormulaId = null;     
+                                req.offerPriceFormulaId = null;   
+                                req.OfferPrice = null;   
                             }
                           })
                         }
