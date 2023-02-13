@@ -9,6 +9,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { SearchAllCounterpartiesComponent } from 'libs/feature/spot-negotiation/src/lib/views/main/details/components/spot-negotiation-popups/search-all-counterparties/search-all-counterparties.component';
 import { ToastrService } from 'ngx-toastr';
 import { SetTenantConfigurations } from '../../../store/actions/request-group-actions';
+import { SpotNegotiationService } from 'libs/feature/spot-negotiation/src/lib/services/spot-negotiation.service';
+import { setFormulaList,SetStaticLists } from 'libs/feature/spot-negotiation/src/lib/store/actions/ag-grid-row.action';
+import { LegacyLookupsDatabase } from '@shiptech/core/legacy-cache/legacy-lookups-database.service';
+import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-contract-negotiation-details',
   templateUrl: './contract-negotiation-details.component.html',
@@ -40,7 +44,10 @@ export class ContractNegotiationDetailsComponent implements OnInit {
   pinnedColumnWidth: any;
 
   ngOnInit(): void {    
-    this.getTenantConfugurations();   
+    this.getTenantConfugurations(); 
+    this.setFormulaList();
+    this.getStaticLists();
+      
   }
 
   ngOnChanges() {
@@ -60,8 +67,89 @@ export class ContractNegotiationDetailsComponent implements OnInit {
     public store : Store,
     private changeDetector: ChangeDetectorRef,
     public dialog: MatDialog,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private spotNegotiationService: SpotNegotiationService,
+    private legacyLookupsDatabase: LegacyLookupsDatabase,
     ) {
+  }
+
+  getStaticLists(): void {    
+    let staticLists = {};
+    forkJoin(
+      { currencies: this.legacyLookupsDatabase.getTableByName('currency'),
+        products: this.legacyLookupsDatabase.getTableByName('product'),
+        // inactiveProducts: this.legacyLookupsDatabase.getTableByName('inactiveProducts'),
+        uoms: this.legacyLookupsDatabase.getTableByName('uom'),
+        otherLists : this.spotNegotiationService.getStaticLists([
+          'Company',
+          'Seller',
+          'PaymentTerm',
+          'Incoterm',
+          'ApplyTo',
+          'ContractualQuantityOption',
+          'Uom',
+          'UomMass',
+          'UomVolume',
+          'ContractConversionFactorOptions',
+          'SpecParameter',
+          'FormulaType',
+          'SystemInstrument',
+          'MarketPriceType',
+          'FormulaPlusMinus',
+          'FormulaFlatPercentage',
+          'Currency',
+          'FormulaOperation',
+          'FormulaFunction',
+          'MarketPriceType',
+          'PricingSchedule',
+          'HolidayRule',
+          'PricingSchedulePeriod',
+          'Event',
+          'DayOfWeek',
+          'BusinessCalendar',
+          'FormulaEventInclude',
+          'ContractTradeBook',
+          'QuantityType',
+          'Product',
+          'Location',
+          'AdditionalCost',
+          'CostType',
+          'Customer'
+        ]),
+        timeZones: this.legacyLookupsDatabase.getTableByName('timeZone')
+      }
+    ).subscribe((res: any)=>{
+      staticLists = {'currency': res.currencies };
+      staticLists = { ...staticLists, 'product': res.products};
+      // staticLists = { ...staticLists, 'inactiveProducts': res.inactiveProducts};
+      staticLists = { ...staticLists, 'uom': res.uoms};
+      staticLists = {...staticLists, 'otherLists': res.otherLists};
+      staticLists = { ...staticLists, 'timeZone': res.timeZones};
+      this.store.dispatch(new SetStaticLists(staticLists));
+    });
+  }
+
+  setFormulaList(){
+    let payload = {
+      PageFilters: {
+        Filters: []
+      },
+      Filters: [
+        {
+          ColumnName: 'ContractId',
+          Value: null
+        }
+      ],
+      SearchText: null,
+      Pagination: {
+        Skip: 0,
+        Take: 9999
+      }
+    };
+    const response =  this.spotNegotiationService.getContractFormulaList(payload)
+    response.subscribe((data: any)=>{
+      this.store.dispatch(new setFormulaList(data.payload));
+    });
   }
 
   getTenantConfugurations(): void {

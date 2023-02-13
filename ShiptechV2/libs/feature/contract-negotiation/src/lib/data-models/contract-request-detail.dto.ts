@@ -40,7 +40,9 @@ export interface IContractRequestDetailDto {
     lastModifiedById: number,
     lastModifiedOn: string,
     allowedProducts: IAllowedProductsDto[],
-    allowedLocations: IAllowedLocationsDto[]
+    allowedLocations: IAllowedLocationsDto[],
+    isFormulaPricing :boolean,
+    offerPriceFormulaId :number    
   }
 
   export interface IAllowedProductsDto {

@@ -9,7 +9,7 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
       matTooltip="{{ params.value }}"
       style="margin:0px"
     >
-      <div class="truncate-125">{{ params.value }}</div>
+      <div class="truncate-125">  {{ params.value }}</div>
     </div>
   `
 })
