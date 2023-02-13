@@ -284,11 +284,7 @@ angular.module('shiptech').config([
                         var routeCall = config.config.url;
                         if (config.config.url.indexOf('/api/') != -1) {
                             routeCall = `api/${ config.config.url.split('/api/')[1]}`;
-                        }
-                        console.log("Vinoth");
-                        console.log(routeCall);
-                        console.log(routeCall.indexOf('/masters/price') );
-                        console.log("Vinoth");
+                        }                    
                         if (routeExceptions.indexOf(routeCall) == -1) {
                             window.openedScreenLoaders = window.openedScreenLoaders - 1;
                             var errorText;
