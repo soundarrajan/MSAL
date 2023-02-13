@@ -9,7 +9,8 @@
           [(ngModel)]="formValues.pricingScheduleOptionEventBasedContinuous.name"
           placeholder="Description"
           autocomplete="off"
-          [disabled]="!formValues.isEditable || hasInvoicedOrder">
+          [disabled]="!formValues.isEditable || hasInvoicedOrder"
+          required>
       </mat-form-field>
   </div>
 </div>

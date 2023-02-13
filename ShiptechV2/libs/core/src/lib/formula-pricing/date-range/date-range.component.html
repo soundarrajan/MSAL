@@ -9,6 +9,7 @@
           [(ngModel)]="formValues.pricingScheduleOptionDateRange.name"
           placeholder="Description"
           autocomplete="off"
+          required
           [disabled]="!formValues.isEditable || hasInvoicedOrder || checkRequestStatus">
       </mat-form-field>
   </div>

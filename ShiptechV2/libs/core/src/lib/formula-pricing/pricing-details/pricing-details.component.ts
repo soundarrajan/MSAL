@@ -828,6 +828,10 @@ export class negoPricingDetailsComponent implements OnInit {
     }
 
     if (this.formValues.pricingScheduleOptionDateRange != undefined) {
+      if (!this.formValues.pricingScheduleOptionDateRange?.name) {
+        this.toastr.error('Description is required in Pricing schedule Section -> Date Range Section');
+        return;
+      }
       if (!this.formValues.pricingScheduleOptionDateRange?.from) {
         this.toastr.error('From date  is required in Pricing schedule -> Date Range Section');
         return;
@@ -839,6 +843,10 @@ export class negoPricingDetailsComponent implements OnInit {
     }
 
     if (this.formValues.pricingScheduleOptionSpecificDate != undefined) {
+      if (!this.formValues.pricingScheduleOptionSpecificDate?.name) {
+        this.toastr.error('Description is required in Pricing schedule Section -> Specific Dates Section');
+        return;
+      }
       let errorCkeck = 0;
       if (!this.formValues.pricingScheduleOptionSpecificDate?.dates) {
         this.toastr.error('Add atleast one date in Pricing schedule -> Specific Dates Section');
@@ -857,6 +865,10 @@ export class negoPricingDetailsComponent implements OnInit {
     }
 
     if (this.formValues.pricingScheduleOptionEventBasedSimple != undefined) {
+      if (!this.formValues.pricingScheduleOptionEventBasedSimple?.name) {
+        this.toastr.error('Description is required in Pricing schedule Section -> Event Based Simple Section');
+        return;
+      }
       this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore = this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore.toString();
       if (this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore == "" || this.formValues.pricingScheduleOptionEventBasedSimple.fromNoOfBusinessDaysBefore.length == 0) {
         this.toastr.error('From - (From No Of Business Days Before) field is required in Pricing schedule -> Event Based Simple Section');
@@ -879,6 +891,10 @@ export class negoPricingDetailsComponent implements OnInit {
 
 
     if (this.formValues.pricingScheduleOptionEventBasedExtended != undefined) {
+      if (!this.formValues.pricingScheduleOptionEventBasedExtended?.name) {
+        this.toastr.error('Description is required in Pricing schedule Section -> Event Based Extended Section');
+        return;
+      }
       this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore = this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore.toString();
       if (this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore == "" || this.formValues.pricingScheduleOptionEventBasedExtended.fromNoOfBusinessDaysBefore.length == 0) {
         this.toastr.error('From - (From No Of Business Days Before) field is required in Pricing schedule -> Event Based Extended Section');
@@ -900,6 +916,10 @@ export class negoPricingDetailsComponent implements OnInit {
     }
 
     if (this.formValues.pricingScheduleOptionEventBasedContinuous != undefined) {
+      if (!this.formValues.pricingScheduleOptionEventBasedContinuous?.name) {
+        this.toastr.error('Description is required in Pricing schedule Section -> Event Based Continuous Section');
+        return;
+      }
       if (!this.formValues.pricingScheduleOptionEventBasedContinuous?.period) {
         this.toastr.error('Type - (Period) field is required in Pricing schedule -> Event Based Continuous Section');
         return;
