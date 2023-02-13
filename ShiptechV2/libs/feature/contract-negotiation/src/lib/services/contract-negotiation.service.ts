@@ -13,6 +13,7 @@ import { ContractNegotiationApi } from './api/contract-negotiation-api';
 import _ from 'lodash';
 import { ContractRequest } from '../store/actions/ag-grid-row.action';
 import moment from 'moment';
+import { TenantFormattingService } from '@shiptech/core/services/formatting/tenant-formatting.service';
 @Injectable()
 export class ContractNegotiationService extends BaseStoreService
   implements OnDestroy {
@@ -32,6 +33,7 @@ export class ContractNegotiationService extends BaseStoreService
     loggerFactory: ModuleLoggerFactory,
     private contractNegotiationApi: ContractNegotiationApi,
     private toastr: ToastrService,
+    private tenantService: TenantFormattingService,
   ) {
     super(store, loggerFactory.createLogger(ContractNegotiationService.name));
   }
@@ -541,9 +543,9 @@ export class ContractNegotiationService extends BaseStoreService
     if(prod.data.length > 0){
       prod.data.map( indata => {       
           if(indata.id == data.id){
-          indata.MinQuantity = data.MinQuantity;
-          indata.MaxQuantity = data.MaxQuantity;
-          indata.OfferPrice = data.OfferPrice;
+          indata.MinQuantity = this.tenantService.quantity(data.MinQuantity);
+          indata.MaxQuantity =this.tenantService.quantity(data.MaxQuantity);
+          indata.OfferPrice = this.tenantService.price(data.OfferPrice);
           indata.ValidityDate = data.ValidityDate;
           indata.quantityUomId = data.quantityUomId;
           indata.SpecGroupId = data.SpecGroupId;
