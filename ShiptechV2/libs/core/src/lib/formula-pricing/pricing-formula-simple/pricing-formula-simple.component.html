@@ -120,7 +120,7 @@
         required
         matInput
         [(ngModel)]="formValues.simpleFormula.amount"
-        (blur)="formValues.simpleFormula.amount = simpleFormulaAmount.value;"
+        (blur)="formValues.simpleFormula.amount = amountFormatValue(simpleFormulaAmount.value);"
         placeholder="Amount"
         autocomplete="off"
         amountFormat
