@@ -163,8 +163,7 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
                             prod.data.map( req => {                 
                             if(req.id ==  contractRequestOfferId){                
                                 req.isFormulaPricing = false;
-                                req.offerPriceFormulaId = null;   
-                                req.OfferPrice = null;   
+                                req.offerPriceFormulaId = null;                               
                             }
                           })
                         }
