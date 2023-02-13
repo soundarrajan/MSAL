@@ -224,34 +224,33 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
   deleteRow(counterpartyId) {
     this.contractService.RemoveCounterparty(counterpartyId).subscribe(res => {
       if(res['isDeleted']){
-      let storeData = this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
-        return state['contractNegotiation'].ContractRequest[0].locations;
-      });
-      let storePayload = JSON.parse(JSON.stringify(storeData));
-      storeData.filter((el1,index1) => {
-        el1['data'].filter((el2,index2) => {
-            if(el2.id == counterpartyId){
-              storePayload[index1]['data'].splice(index2,1);
-              return;
-            }
+        let storeData = this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+          return state['contractNegotiation'].ContractRequest[0];
         });
-      });
-      let noCounterParty = true;
-      storePayload.forEach( loc => {
-        if(loc.data.length > 0){
-          noCounterParty = false;
+        let storePayload = JSON.parse(JSON.stringify(storeData));
+        storeData['locations'].filter((el1,index1) => {
+          el1['data'].filter((el2,index2) => {
+              if(el2.id == counterpartyId){
+                storePayload['locations'][index1]['data'].splice(index2,1);
+                return;
+              }
+          });
+        });
+        let noCounterParty = true;
+        storePayload['locations'].forEach( loc => {
+          if(loc.data.length > 0){
+            noCounterParty = false;
+          }
+        });
+        this.localService.setSendRFQButtonStauts(noCounterParty);
+        this.store.dispatch(new ContractRequest([storePayload]));
+        if(res['contractRequestStatusId'] == 1){
+          this.localService.setContractStatus('Open');
         }
-      });
-      this.localService.setSendRFQButtonStauts(noCounterParty);
-      this.store.dispatch(new ContractRequest([{'locations' : storePayload}]));
-      if(res['contractRequestStatusId'] == 1){
-        this.localService.setContractStatus('Open');
-      }
-      }else{
+      } else {
         this.toaster.error('Data not deleted, Please Refresh the page and try again.')
       }
-  });
-    
+    }); 
   }
 
   decodeSpecificField(modelValue) {
