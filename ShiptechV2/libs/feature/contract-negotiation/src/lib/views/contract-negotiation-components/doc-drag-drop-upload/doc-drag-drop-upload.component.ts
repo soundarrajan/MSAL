@@ -327,43 +327,50 @@ export class DocDragDropUploadComponent implements OnInit {
       headerName: 'Size',
       headerTooltip: 'Size',
       field: 'size',
-      width: 100
+      width: 100,
+      cellRendererFramework: AGGridCellV2RendererComponent
     },
     {
       headerName: 'Document Type',
       headerTooltip: 'Document Type',
       field: 'documentType.name',
-      width: 100
+      width: 100,
+      cellRendererFramework: AGGridCellV2RendererComponent
     },
     {
       headerName: 'File Type',
       headerTooltip: 'File Type',
       field: 'fileType',
-      width: 100
+      width: 100,
+      cellRendererFramework: AGGridCellV2RendererComponent
     },
     {
       headerName: 'Entity',
       headerTooltip: 'Entity',
       field: 'transactionType.name',
-      width: 100
+      width: 100,
+      cellRendererFramework: AGGridCellV2RendererComponent
     },
     {
       headerName: 'Reference No.',
       headerTooltip: 'Reference No.',
       field: 'referenceNo',
-      width: 125
+      width: 125,
+      cellRendererFramework: AGGridCellV2RendererComponent
     },
     {
       headerName: 'Uploaded by',
       headerTooltip: 'Uploaded By',
       field: 'uploadedBy.name',
-      width: 150
+      width: 150,
+      cellRendererFramework: AGGridCellV2RendererComponent
     },
     {
       headerName: 'Uploaded On',
       headerTooltip: 'Uploaded On',
       field: 'uploadedOn',
-      width: 120
+      width: 120,
+      cellRendererFramework: AGGridCellV2RendererComponent
     },
     {
       headerName: 'Status',
@@ -385,13 +392,15 @@ export class DocDragDropUploadComponent implements OnInit {
       headerName: 'Verified By',
       headerTooltip: 'Verified By',
       field: 'verifiedBy.name',
-      width: 100
+      width: 100,
+      cellRendererFramework: AGGridCellV2RendererComponent
     },
     {
       headerName: 'Verified On',
       headerTooltip: 'Verified On',
       field: 'verifiedOn',
-      width: 120
+      width: 120,
+      cellRendererFramework: AGGridCellV2RendererComponent
     },
     {
       headerName: 'Add Views/Notes',
