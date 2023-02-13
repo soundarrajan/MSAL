@@ -162,10 +162,7 @@
                     <ng-container *ngFor="let file of filesList">
                         <div *ngIf="file.isIncludedInMail" class="file-list">
                             <span class="attachment-icon"></span>
-                            <!--span (click)="downloadDocument(file)" class="cust-input-field">{{
-                                file.name
-                            }}</span-->
-                            <span class="cust-input-field">{{
+                            <span (click)="downloadDocument(file)" class="cust-input-field">{{
                                 file.name
                             }}</span>
                             <div
@@ -175,13 +172,6 @@
                             ></div>
                         </div>
                     </ng-container>
-                    <!--div class="file-list" *ngFor="let file of filesList">
-                        <span class="attachment-icon"></span>
-                        <span>{{file}}</span> 
-                        <div class="attachment-icon"></div>
-                        <div class="attachment-name">{{file.name}}</div> 
-                        <div class="close-icon" (click)="removeFile(file)"></div>
-                    </div-->
                 </div>
                 <div class="email-draft">
                     <ckeditor
