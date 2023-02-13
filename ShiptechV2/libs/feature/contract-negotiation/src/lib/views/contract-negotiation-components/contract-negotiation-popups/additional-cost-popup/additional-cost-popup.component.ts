@@ -172,9 +172,9 @@ export class AdditionalCostPopupComponent implements OnInit {
       contractRequestProductOfferId: this.data.id,
       additionalCosts: costList
     };
-    this.dialogRef.close();
+    
     this.contractService.saveAdditionalCost(payload).subscribe(res => {
-      let TotalCostRate = this.tenantService.price(res);
+      this.dialogRef.close({data : res });
     });
   }
 }
