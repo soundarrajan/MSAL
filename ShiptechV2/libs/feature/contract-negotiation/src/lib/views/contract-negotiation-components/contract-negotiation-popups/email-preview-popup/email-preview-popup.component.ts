@@ -89,6 +89,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   sellerRowIdsForRequoteRFQ = [];
   sellerHasNoOfferPrice = [];
   contractRequestProductOfferIds = [];
+  isPreviewRFQTemplate: boolean = false;
 
   constructor(   
     private spinner: NgxSpinnerService,
@@ -116,6 +117,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.getPreviewTemplate();
       this.editable = false;
     } else if(this.selectedEmailPreview.popupSource == 'previewRFQTemplate'){
+      this.isPreviewRFQTemplate = true;
       this.sellerRowIdsForSendRFQ = this.selectedEmailPreview.contractRequestProductOfferIds;
       this.contractRequestProductOfferIds = this.sellerRowIdsForSendRFQ;
       this.selectedEmailPreview.sellerData.forEach( data => {
@@ -213,6 +215,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       errorMsg = res.errors ? JSON.stringify(res.errors) : '';
       errorMsg = res.errorMessage ? res.errorMessage : '';
       if(errorMsg != ''){
+        this.spinner.hide();
         this.toaster.error(errorMsg);
         return;
       }
@@ -231,6 +234,7 @@ export class EmailPreviewPopupComponent implements OnInit {
             this.filesList[i].isIncludedInMail = true;
           }
         }
+        this.editable = true;
         this.changeDetector.markForCheck();
         this.spinner.hide();
       } else {
@@ -397,6 +401,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.content = '';
     this.from = [];
     this.filesList = [];
+    this.editable = false;
   }
 
   getDocumentsList() {
