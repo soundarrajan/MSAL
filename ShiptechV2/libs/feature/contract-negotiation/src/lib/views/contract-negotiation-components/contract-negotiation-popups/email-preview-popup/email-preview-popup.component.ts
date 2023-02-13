@@ -282,7 +282,6 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   addTo(selected, selectedFromLookup) {
-    if(selected === '') return;
     if (this.previewTemplate == null) {
       this.previewTemplate = [];
     }
@@ -295,12 +294,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     if (selectedFromLookup) {
       this.previewTemplate.to.push(this.toList?.find(c => c.name == selected));
     } else {
-      if(this.validateEmail(selected, 'toMail')){
         this.previewTemplate.to.push({ IdEmailAddress: selected, name: selected })
-      } else {
-        this.toaster.warning('Please add valid to email address!');
-        return;
-      }
     }
     this.to = this.previewTemplate.to;
     this.toEmail.setValue("");
@@ -311,7 +305,6 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   addCc(selected, selectedFromLookup) {
-    if(selected === '') return;
     if (this.previewTemplate == null) {
       this.previewTemplate = [];
     }
@@ -324,12 +317,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     if (selectedFromLookup) {
       this.previewTemplate.cc.push(this.ccList?.find(c => c.name == selected));
     } else {
-      if(this.validateEmail(selected, 'ccMail')){
         this.previewTemplate.cc.push({ IdEmailAddress: selected, name: selected })
-      } else {
-        this.toaster.warning('Please add valid cc email address!');
-        return;
-      }
     }
     this.cc = this.previewTemplate.cc;
     this.ccEmail.setValue("");
@@ -487,26 +475,24 @@ export class EmailPreviewPopupComponent implements OnInit {
   }
 
   validateEmail(inputData: string, type: string) {
-    const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const validateemail = regularExpression.test(
-      String(inputData).toLowerCase()
-    );
-    if (validateemail && type == 'ccMail') {
-      return true;
-      //this.addCc(inputData, false);
-    }
-    if (validateemail && type == 'toMail') {
-      //this.addTo(inputData, false);
-      return true;
-    }
-    if (!validateemail && type == 'ccMail') {
-      this.ccEmail.setValue("");
-      return false;
-    }
-    if (!validateemail && type == 'toMail') {
-      this.toEmail.setValue("");
-      return false;
-    }
+    setTimeout(() => {
+      const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const validateemail = regularExpression.test(
+        String(inputData).toLowerCase()
+      );
+      if (validateemail && type == 'ccMail') {
+        this.addCc(inputData, false);
+      }
+      if (validateemail && type == 'toMail') {
+        this.addTo(inputData, false);
+      }
+      if (!validateemail && type == 'ccMail') {
+        this.ccEmail.setValue("");
+      }
+      if (!validateemail && type == 'toMail') {
+        this.toEmail.setValue("");
+      }
+    }, 100);
   }
 
   discardSavedPreview() {
