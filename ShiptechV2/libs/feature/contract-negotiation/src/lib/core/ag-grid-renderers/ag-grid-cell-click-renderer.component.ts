@@ -152,25 +152,29 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
           }
         });
      
-        dialogRef.afterClosed().subscribe(result => {
-          
+        dialogRef.afterClosed().subscribe(result => {      
           if (param) {
             let contractRequestOfferId = param.data.id;
             let offerPriceFormulaId = param.data.offerPriceFormulaId;          
-            contractRequestData.locations.map( prod => {
-                if(prod.data.length > 0){
-                     prod.data.map( req => {                 
-                      if(req.id ==  contractRequestOfferId){                
-                          req.isFormulaPricing = false;
-                          req.offerPriceFormulaId = null;     
-                      }
-                  })
-                }
-              });   
-            this.contractService.removeFormula(contractRequestOfferId, offerPriceFormulaId).subscribe();
-            this.store.dispatch(new ContractRequest([contractRequestData]));
-            this.toaster.success('Formula removed successfully');           
-            this.contractService.callGridRedrawService();
+            if(result.removeFormula){
+                this.contractService.removeFormula(contractRequestOfferId, offerPriceFormulaId).subscribe(result => {                
+                    contractRequestData.locations.map( prod => {
+                        if(prod.data.length > 0){
+                            prod.data.map( req => {                 
+                            if(req.id ==  contractRequestOfferId){                
+                                req.isFormulaPricing = false;
+                                req.offerPriceFormulaId = null;     
+                            }
+                          })
+                        }
+                    });   
+
+                this.store.dispatch(new ContractRequest([contractRequestData]));
+                this.toaster.success('Formula removed successfully');           
+                this.contractService.callGridRedrawService();   
+                this.toaster.error('Offer Price is Required');             
+                });
+              }
           }
         });
       }

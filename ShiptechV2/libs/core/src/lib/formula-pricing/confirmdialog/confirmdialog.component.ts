@@ -22,8 +22,14 @@ export class ConfirmdialogComponent implements OnInit {
     this.sourceRef = this.data?.source;
   }
 
-  close() {
-    this.dialogRef.close();
+  close(removeformula) {
+    
+    if(removeformula){
+      this.dialogRef.close({removeFormula:true});
+    }else{
+      this.dialogRef.close({removeFormula:false});
+    }
+    return false;
   }
 
   
