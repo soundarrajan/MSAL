@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SearchFormulaPopupComponent } from './search-formula-popup.component';
+import { BestcontractpopupComponent } from './bestcontractpopup.component';
 
-describe('SearchFormulaPopupComponent', () => {
-  let component: SearchFormulaPopupComponent;
-  let fixture: ComponentFixture<SearchFormulaPopupComponent>;
+describe('BestcontractpopupComponent', () => {
+  let component: BestcontractpopupComponent;
+  let fixture: ComponentFixture<BestcontractpopupComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchFormulaPopupComponent ]
+      declarations: [ BestcontractpopupComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchFormulaPopupComponent);
+    fixture = TestBed.createComponent(BestcontractpopupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
-import { FormulaPricingPopupComponent } from '../contract-negotiation-popups/formula-pricing-popup/formula-pricing-popup.component';
+import { negoPricingDetailsComponent } from '../../../../../../../../libs/core/src/lib/formula-pricing/pricing-details/pricing-details.component';
 import { LocalService } from '../../../services/local-service.service';
 import { AdditionalCostPopupComponent } from '../contract-negotiation-popups/additional-cost-popup/additional-cost-popup.component';
 import { SellerratingpopupComponent } from '@shiptech/core/ui/components/designsystem-v2/dialog-popup/sellerratingpopup/sellerratingpopup.component';
@@ -294,7 +294,7 @@ export class ContractNegoTableComponent implements OnInit {
     });
   }
   formulaPricingPopup(index, rowindex) {
-    const dialogRef = this.dialog.open(FormulaPricingPopupComponent, {
+    const dialogRef = this.dialog.open(negoPricingDetailsComponent, {
       width: '1164px',
       maxHeight: '95vh',
       height: 'auto',

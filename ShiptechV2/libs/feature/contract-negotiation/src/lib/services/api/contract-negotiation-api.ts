@@ -610,6 +610,53 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
       );
   }
 
+  @ObservableException()
+  //${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigId}
+  getOfferPriceConfiguration(requestOfferId: number, priceConfigId : number): Observable<any> {
+    return this.http.get<any>(`${this._shitechApiUrl}/api/ContractNegotiation/offerFormula/${requestOfferId}/priceConfiguration`)
+    .pipe(
+      map((body: any) => body),
+      catchError((body: any) => this.handleErrorMessage(body))
+    );
+  }
+
+  @ObservableException()
+  addNewFormulaPrice(request: any, requestOfferId : number): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/api/ContractNegotiation/offerFormula/createPriceConfiguration`,
+           request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  // `${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigurationId}`,
+  updateFormulaPrice(request: any, requestOfferId : number, priceConfigurationId: number): Observable<any> {
+    return this.http
+      .put<any>(
+        `${this._shitechApiUrl}/api/ContractNegotiation/offerFormula/updatePriceConfiguration`,
+           request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  //${this._shitechApiUrl}/offers/${requestOfferId}/priceConfiguration/${priceConfigId}
+  removeFormula(requestOfferId: number, priceConfigId : number): Observable<any> {
+    return this.http.delete<any>(`${this._shitechApiUrl}/api/ContractNegotiation/offerFormula/${requestOfferId}/deletecontractpriceConfiguration`)
+    .pipe(
+      map((body: any) => body),
+      catchError((body: any) => this.handleErrorMessage(body))
+    );
+  }
+
 }
 
 export const CONTRACT_NEGOTIATION_API_SERVICE = new InjectionToken<

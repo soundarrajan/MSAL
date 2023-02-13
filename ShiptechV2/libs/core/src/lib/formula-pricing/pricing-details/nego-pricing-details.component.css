@@ -1,0 +1,43 @@
+
+.shiptech-contract-pricing-details-popup .spot-popup-header-container .close{
+    opacity: .5;
+}
+
+.shiptech-contract-pricing-details-popup .spot-popup-header-container .close:hover{
+    opacity: 100;
+}
+.contract-shiptech.shiptech-contract-pricing-details-popup .selected-tab{
+    padding: 5px;
+    background: #364150;
+    border-radius: 3px;
+    color: #fff;
+    min-width: 30%;
+    width: auto;
+    height: 30px;
+}
+.contract-shiptech.shiptech-contract-pricing-details-popup .unselected-tab{
+    padding: 5px;
+    border: 1px solid #364150;
+    box-sizing: border-box;
+    border-radius: 3px;
+    width: auto;
+    min-width: 30%;
+    height: 30px;
+
+}
+.contract-shiptech.shiptech-contract-pricing-details-popup .pricing-container {
+    background: #fcfcfc;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding-left: 10px;
+}
+
+.discount-tab .unselected-tab.grey-bg {
+    background: #e0e0e0;
+    border: none;
+}
+
+.discount-tab .unselected-tab.grey-bg .value{
+    color:#a5a5a5
+}

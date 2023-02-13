@@ -559,4 +559,24 @@ export class ContractNegotiationService extends BaseStoreService
   return this.contractNegotiationApi.updatePrices(payload);
   }
 
+  @ObservableException()
+  getOfferPriceConfiguration(requestOfferId: number, priceConfigurationId: number): Observable<unknown> {
+    return this.contractNegotiationApi.getOfferPriceConfiguration(requestOfferId, priceConfigurationId);
+  }
+  @ObservableException()
+  addNewFormulaPrice(payload, requestOfferId): Observable<unknown> {
+     return this.contractNegotiationApi.addNewFormulaPrice(payload, requestOfferId);
+   }
+
+   @ObservableException()
+   updateFormulaPrice(payload, requestOfferId, priceConfigurationId): Observable<unknown> {
+     return this.contractNegotiationApi.updateFormulaPrice(payload, requestOfferId, priceConfigurationId);
+   }
+
+   @ObservableException()
+  removeFormula(requestOfferId,priceConfigId):Observable<unknown>{
+    return this.contractNegotiationApi.removeFormula(requestOfferId,priceConfigId);
+  }
+
+
 }
