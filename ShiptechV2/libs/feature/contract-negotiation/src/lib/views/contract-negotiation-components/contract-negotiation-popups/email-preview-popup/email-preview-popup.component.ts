@@ -85,7 +85,7 @@ export class EmailPreviewPopupComponent implements OnInit {
   generalTenantSettings: any;
   templateName: string = 'ContractNegotiationSendRFQ';
   sellerRowIdsForSendRFQ = [];
-  sellerRowIdsForRFQ = [];
+  sellerRowIdsForAmendRFQ = [];
   sellerRowIdsForRequoteRFQ = [];
   sellerHasNoOfferPrice = [];
   contractRequestProductOfferIds = [];
@@ -120,7 +120,7 @@ export class EmailPreviewPopupComponent implements OnInit {
       this.contractRequestProductOfferIds = this.sellerRowIdsForSendRFQ;
       this.selectedEmailPreview.sellerData.forEach( data => {
         if(data.Status == 'Inquired'|| data.Status == 'Quoted'){
-          this.sellerRowIdsForRFQ.push(data.id);
+          this.sellerRowIdsForAmendRFQ.push(data.id);
           if(data.OfferPrice){
             this.sellerRowIdsForRequoteRFQ.push(data.id);
           }
@@ -243,22 +243,27 @@ export class EmailPreviewPopupComponent implements OnInit {
 
   public selectTemplate(val) {
     this.templateName = val;
-    if(val == 'ContractNegotiationAmendRFQ' && this.sellerRowIdsForRFQ.length == 0){
+    if(val == 'ContractNegotiationAmendRFQ' && this.sellerRowIdsForAmendRFQ.length == 0){
       this.toaster.error('Amend RFQ cannot be sent as RFQ was not communicated for ' + this.selectedEmailPreview.counterPartyName);
       this.clearData();
       return;
     }
-    if(val == 'ContractNegotiationRequote' && this.sellerRowIdsForRFQ.length == 0){
+    if(val == 'ContractNegotiationRequote' && this.sellerRowIdsForAmendRFQ.length == 0){
       this.toaster.error('Requote RFQ cannot be sent as RFQ was not communicated for ' + this.selectedEmailPreview.counterPartyName);
       this.clearData();
       return;
     }
-    if(val == 'ContractNegotiationRequote' && this.sellerHasNoOfferPrice.length > 0){
-      this.toaster.error('Atleast 1 offer price should be captured in order to requote for ' + this.selectedEmailPreview.counterPartyName);
+    if(val == 'ContractNegotiationRequote' && this.sellerHasNoOfferPrice.length > 0 && this.sellerRowIdsForRequoteRFQ.length == 0){
+      this.toaster.error('Offer price should be captured to requote for ' + this.selectedEmailPreview.counterPartyName);
       this.clearData();
       return;
     }
-    this.contractRequestProductOfferIds = (val == 'ContractNegotiationAmendRFQ') ? this.sellerRowIdsForRFQ : this.sellerRowIdsForRequoteRFQ;
+    this.contractRequestProductOfferIds = (val == 'ContractNegotiationAmendRFQ') ? this.sellerRowIdsForAmendRFQ : this.sellerRowIdsForRequoteRFQ;
+    
+    if (val == 'ContractNegotiationSendRFQ') {
+      this.contractRequestProductOfferIds = this.sellerRowIdsForSendRFQ;
+    }
+    
     this.previewRFQTemplate();
   }
 

@@ -50,7 +50,7 @@
             </mat-form-field>
             </td>
             <td class="cell-dashed-border "><mat-form-field appearance="none">
-              <select matNativeControl [(ngModel)]="costData.costTypeId" (ngModelChange)="onCostTypeChange(j,$event)">
+              <select matNativeControl [(ngModel)]="costData.costTypeId" (ngModelChange)="costTypeChanged(j,$event)">
                 <option
                 value="{{uList.id}}"
                 *ngFor="let uList of costTypeList[j]"

@@ -750,7 +750,7 @@ export class LocalService {
    }
     async contractRequestData(response){
         let minMaxDet =  response['quantityDetails']?.find(el => el.contractualQuantityOptionId == 1);
-        let quantityOption = this.masterData['Uom'].find(el => el.id == minMaxDet.uomId);
+        let quantityOption = this.masterData['Uom'].find(el => el.id == minMaxDet?.uomId);
         let contractArray = { 
             id: response['id'],
             startDate: response['startDate'],
@@ -858,7 +858,8 @@ export class LocalService {
                     "mainProductId" : res1['productId'],
                     "requestUomId" : quantityOption.id,
                     "isFormulaPricing" : false,
-                    "offerPriceFormulaId" : null
+                    "offerPriceFormulaId" : null,
+                    "aditionalCost" : res2['totalCostRate'],
                 }
                 data.push(arrDet);
                 arrDet = {};
@@ -913,5 +914,20 @@ export class LocalService {
             });
         });
         return checkedCounterParties;
+    }
+    addAdditionalCost(aditionalCost,rowId) {
+        let contractReq = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+            return state['contractNegotiation'].ContractRequest[0];
+          })));
+          contractReq.locations.map( prod => {
+            prod.data.map( item => {
+                if(item.id == rowId && item.aditionalCost != aditionalCost['data']){
+                    item.aditionalCost = aditionalCost['data'];
+                    this.store.dispatch(new ContractRequest([contractReq]));
+                    this.callGridRefreshService([rowId]);
+                    return;
+                }
+            })
+          });
     }
 }

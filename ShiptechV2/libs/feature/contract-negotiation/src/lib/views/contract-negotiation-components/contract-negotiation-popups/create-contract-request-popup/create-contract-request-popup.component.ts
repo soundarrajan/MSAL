@@ -7,8 +7,6 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { MatSelect } from '@angular/material/select';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
-import { LocalService } from '../../../../services/local-service.service';
-import { SendRfqPopupComponent } from '../send-rfq-popup/send-rfq-popup.component';
 import { UpdateRfqPopupComponent } from '../update-rfq-popup/update-rfq-popup.component';
 import { SearchProductsPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/search-products-popup/search-products-popup.component';
 import { SearchLocationPopupComponent } from '@shiptech/core/ui/components/designsystem-v2/search-location-popup/search-location-popup.component';
@@ -191,7 +189,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
   quantityFormat: string;
 
   constructor(
-    private localService: LocalService,
     public dialog: MatDialog,
     private toaster: ToastrService,
     iconRegistry: MatIconRegistry,
@@ -721,7 +718,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
   updateRequestWithAmendRFQ() {
     const dialogRef = this.dialog.open(UpdateRfqPopupComponent, {
       width: '425px',
-      data: { message: 'You are sending the updated RFQ to all counterparties you had previously sent the RFQ. Do you want to continue?', toastMsg: 'RFQ(s) updated successfully' },
+      data: { message: 'You are sending the updated RFQ to all counterparties you had previously sent the RFQ. Do you want to continue?'},
       panelClass: ['additional-cost-popup']
     });
 
@@ -1386,14 +1383,14 @@ export class CreateContractRequestPopupComponent implements OnInit {
       this.tempReqObj.quoteByDate = this.convertToDateObj(this.tempReqObj.quoteByDate);
       this.tempReqObj.minValidity = this.convertToDateObj(this.tempReqObj.minValidity);
       
-      if(!this.tempReqObj.startDate.isSame(this.reqObj.startDate)
+      if(this.reqObj.status !== 'Open' && (!this.tempReqObj.startDate.isSame(this.reqObj.startDate)
       || !this.tempReqObj.endDate.isSame(this.reqObj.endDate)
       || !this.tempReqObj.quoteByDate.isSame(this.reqObj.quoteByDate)
-      || !this.tempReqObj.minValidity.isSame(this.reqObj.minValidity)
+      || !this.tempReqObj.minValidity.isSame(this.reqObj.minValidity))
       ){
         requestDetailsUpdated = true;
       }
-      if(this.reqObj.quantityDetails.length !== this.tempReqObj.quantityDetails.length){
+      if(this.reqObj.quantityDetails.length !== this.tempReqObj.quantityDetails.length && this.reqObj.status !== 'Open'){
         requestDetailsUpdated = true;
       }
     }
@@ -1404,9 +1401,9 @@ export class CreateContractRequestPopupComponent implements OnInit {
       q.tolerancePercentage = this.convertDecimalSeparatorStringToNumber(q.tolerancePercentage);
       
       if(!this.isNewRequest){
-        if(this.tempReqObj.quantityDetails[i]?.maxQuantity !== q.maxQuantity
+        if(this.reqObj.status !== 'Open' && (this.tempReqObj.quantityDetails[i]?.maxQuantity !== q.maxQuantity
           || this.tempReqObj.quantityDetails[i]?.minQuantity !== q.minQuantity
-          || this.tempReqObj.quantityDetails[i]?.tolerancePercentage !== q.tolerancePercentage
+          || this.tempReqObj.quantityDetails[i]?.tolerancePercentage !== q.tolerancePercentage)
         ){
             requestDetailsUpdated = true;
         }
@@ -1461,10 +1458,14 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.contractNegotiationService.updateContractRequest(this.reqObj).subscribe( response => {
       if(response){
         var hasContractRequestUpdated = response['hasContractRequestUpdated'];
-        if(this.reqObj.sendAmendRFQ && response['amendRfqSent'] === false){
+        if(this.reqObj.sendAmendRFQ && response['amendRFQResponse']?.amendRfqSent === false){
           this.toaster.error('Failed to send amend RFQ email.');
         }
-        if(hasContractRequestUpdated){
+        if(hasContractRequestUpdated &&  response['amendRFQResponse']?.amendRfqSent){
+          this.toaster.success('Contract Request has been updated successfully and Amend RFQ(s) sent successfully');
+          this.dialog.closeAll();
+        }
+        else if(hasContractRequestUpdated){
           this.toaster.success('Contract Request has been updated successfully');
           this.dialog.closeAll();
         }
