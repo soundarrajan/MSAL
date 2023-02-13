@@ -314,11 +314,17 @@ export class MainPageComponent implements OnInit {
         this.toaster.error(isErrorResponse);
         return;
       }
-      if (response.amendRfqSent) {
+      if (response?.amendRfqSent === true) {
         this.toaster.success('Amend RFQ sent successfully.');
+        if (response.message !== '') {
+          this.toaster.warning(response.message);
+        }
+      }      
+      else if (response?.amendRfqSent === false && response.message !== '') {
+        this.toaster.error(response.message);
       }
-      if (response.message !== '') {
-        this.toaster.warning(response.message);
+      else if(response?.message !== '' && response?.message?.toLowerCase() !== 'unauthorized') {
+        this.toaster.error(response.message);
       }
     });
   }
@@ -375,11 +381,17 @@ export class MainPageComponent implements OnInit {
         this.toaster.error(isErrorResponse);
         return;
       }
-      if (response.requoteRfqSent) {
+      if (response?.requoteRfqSent === true) {
         this.toaster.success('Requote RFQ sent successfully.');
+        if (response.message !== '') {
+          this.toaster.warning(response.message);
+        }
+      }      
+      else if (response?.requoteRfqSent === false && response.message !== '') {
+        this.toaster.error(response.message);
       }
-      if (response.message !== '') {
-        this.toaster.warning(response.message);
+      else if(response?.message !== '' && response?.message?.toLowerCase() !== 'unauthorized') {
+        this.toaster.error(response.message);
       }
     });
   }
@@ -522,9 +534,7 @@ export class MainPageComponent implements OnInit {
 
   checkAndShowError(res) {
     let err = '';
-    if (res.message && res.message !== '') {
-      err = "You don't have access to perform this action";
-    } else if (res.errors) {
+    if (res.errors) {
       err = JSON.stringify(res.errors);
     } else if (res.errorMessage && res.errorMessage !== '') {
       err = res.errorMessage;
