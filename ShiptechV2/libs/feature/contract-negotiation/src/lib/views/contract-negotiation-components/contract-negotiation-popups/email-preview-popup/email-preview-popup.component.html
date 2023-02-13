@@ -2,8 +2,8 @@
     <div class="header">
         <div class="title">Email Preview</div>
         <div style="display: flex;align-items: center;">
-            <span *ngIf="editable" style="color: #364150;font-size: 12px;">Template:</span>
-            <div *ngIf="editable" id="custom-form-field">
+            <span *ngIf="isPreviewRFQTemplate" style="color: #364150;font-size: 12px;">Template:</span>
+            <div *ngIf="isPreviewRFQTemplate" id="custom-form-field">
                 <mat-form-field class="without-search" appearance="none">
                     <mat-select [(value)]="templateName" (selectionChange)="selectTemplate($event.value)" disableOptionCentering>
                         <mat-option value="ContractNegotiationSendRFQ" selected="selected">Send RFQ</mat-option>
@@ -13,11 +13,11 @@
                 </mat-form-field>
             </div>
             <div class="header-btn">
-                <span *ngIf="editable" class="seperator-line"></span>
-                <button *ngIf="editable" class="blue-button h-25" (click)="discardSavedPreview()" style="width: auto !important; ">Discard Saved Preview</button>
-                <button *ngIf="editable" class="blue-button h-25" (click)="saveAndSendRFQ(false)">Save</button>
-                <button *ngIf="editable" class="blue-button h-25" (click)="saveAndSendRFQ(true)">Save & Send</button>
-                <button *ngIf="!editable" class="blue-button h-25" (click)="emailLogResendMail()" [mat-dialog-close]="true">Resend</button>
+                <span *ngIf="isPreviewRFQTemplate" class="seperator-line"></span>
+                <button *ngIf="isPreviewRFQTemplate" class="blue-button h-25" (click)="discardSavedPreview()" style="width: auto !important; ">Discard Saved Preview</button>
+                <button *ngIf="isPreviewRFQTemplate" class="blue-button h-25" (click)="saveAndSendRFQ(false)">Save</button>
+                <button *ngIf="isPreviewRFQTemplate" class="blue-button h-25" (click)="saveAndSendRFQ(true)">Save & Send</button>
+                <button *ngIf="!isPreviewRFQTemplate" class="blue-button h-25" (click)="emailLogResendMail()" [mat-dialog-close]="true">Resend</button>
                 <span class="seperator-line"></span>
                 <span class="close-icon" style="cursor:pointer;" [mat-dialog-close]="true"></span>
             </div>
