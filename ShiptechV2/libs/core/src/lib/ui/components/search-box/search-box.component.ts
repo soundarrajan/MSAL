@@ -45,8 +45,8 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
-  onSearch(): void {
-    this.search$.next(this.searchTextField.value?this.searchTextField.value:'');
+  onSearch(): void {   
+    this.search$.next(this.searchTextField.value?this.searchTextField.value.trim():'');
   }
 
   clear(): void {

@@ -284,35 +284,62 @@ angular.module('shiptech').config([
                         var routeCall = config.config.url;
                         if (config.config.url.indexOf('/api/') != -1) {
                             routeCall = `api/${ config.config.url.split('/api/')[1]}`;
-                        }
+                        }                    
                         if (routeExceptions.indexOf(routeCall) == -1) {
                             window.openedScreenLoaders = window.openedScreenLoaders - 1;
                             var errorText;
                             if (config.data.ErrorMessage && config.status != 200) {
                                 errorText = config.data.ErrorMessage;
-                                if (config.data.reference) {
-                                    errorText = `${errorText } - ${ config.data.reference}`;
-                                }
-                                if (config.data.Reference) {
-                                    errorText = `${errorText } - ${ config.data.Reference}`;
+                                if(routeCall.indexOf('/masters/price') > 0){
+                                    if (config.data.reference) {
+                                        errorText = `${errorText }`;
+                                    }
+                                    if (config.data.Reference) {
+                                        errorText = `${errorText }`;
+                                    }                                
+                                }else{
+                                    if (config.data.reference) {
+                                        errorText = `${errorText } - ${ config.data.reference}`;
+                                    }
+                                    if (config.data.Reference) {
+                                        errorText = `${errorText } - ${ config.data.Reference}`;
+                                    }
                                 }
                                 toastr.error(errorText);
                             } else if (config.data.message && config.status != 200) {
                                 errorText = config.data.message;
-                                if (config.data.reference) {
-                                    errorText = `${errorText } - ${ config.data.reference}`;
-                                }
-                                if (config.data.Reference) {
-                                    errorText = `${errorText } - ${ config.data.Reference}`;
+                                if(routeCall.indexOf('/masters/price') > 0){
+                                    if (config.data.reference) {
+                                        errorText = `${errorText }`;
+                                    }
+                                    if (config.data.Reference) {
+                                        errorText = `${errorText }`;
+                                    }                                
+                                }else{
+                                    if (config.data.reference) {
+                                        errorText = `${errorText } - ${ config.data.reference}`;
+                                    }
+                                    if (config.data.Reference) {
+                                        errorText = `${errorText } - ${ config.data.Reference}`;
+                                    }
                                 }
                                 toastr.error(errorText);
                             } else if (config.data.errorMessage && config.status != 200) {
                                 errorText = config.data.errorMessage;
-                                if (config.data.reference) {
-                                    errorText = `${errorText } - ${ config.data.reference}`;
-                                }
-                                if (config.data.Reference) {
-                                    errorText = `${errorText } - ${ config.data.Reference}`;
+                                if(routeCall.indexOf('/masters/price') > 0){
+                                    if (config.data.reference) {
+                                        errorText = `${errorText }`;
+                                    }
+                                    if (config.data.Reference) {
+                                        errorText = `${errorText }`;
+                                    }                                
+                                }else{
+                                    if (config.data.reference) {
+                                        errorText = `${errorText } - ${ config.data.reference}`;
+                                    }
+                                    if (config.data.Reference) {
+                                        errorText = `${errorText } - ${ config.data.Reference}`;
+                                    }
                                 }
                                 toastr.error(errorText);
                             } else if (config.status == '401') {
