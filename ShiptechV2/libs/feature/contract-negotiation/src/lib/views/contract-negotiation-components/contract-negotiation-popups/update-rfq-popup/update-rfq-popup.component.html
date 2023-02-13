@@ -1,7 +1,7 @@
 <div class="send-rfq-popup">
     <div class="header">
         <span class="warning-title">Update RFQ</span>
-        <span class="close-icon" [mat-dialog-close]="true"></span>
+        <span class="close-icon" (click)="closeIconClick();"></span>
     </div>
     <div class="divider-line"></div>
     <div class="popup-content">
@@ -10,7 +10,7 @@
             <button mat-raised-button class="red-button" (click)="proceed();">    
                 <span>Yes</span>
             </button>
-            <button  class="blue-button" (click)="close();">    
+            <button mat-raised-button class="blue-button" (click)="close();">    
             <span>No</span>
             </button>     
         </div>

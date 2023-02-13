@@ -730,6 +730,8 @@ export class LocalService {
         SpecGroup: await this.db.getSpecGroupList({ orderBy: 'name' }),
         PricingType: await this.db.getPricingTypeList({ orderBy: 'name' }),
         ProductType: await this.db.getProductType({ orderBy: 'name' }),
+        Counterparty: await this.db.getCounterPartyList({ orderBy: 'name' }),
+        contractNegotiationStatus : { 1: "Open", 2: "Inquired", 3: "Quoted", 4: "AwaitingApproval", 5: "Approved", 6: "Rejected", 7: "Contracted", 8: "Closed" },
       }
    }
    async selectNewlyAddedCounterParty(response,newlyAddedCounterparty){
@@ -747,6 +749,8 @@ export class LocalService {
       return response;
    }
     async contractRequestData(response){
+        let minMaxDet =  response['quantityDetails']?.find(el => el.contractualQuantityOptionId == 1);
+        let quantityOption = this.masterData['Uom'].find(el => el.id == minMaxDet?.uomId);
         let contractArray = { 
             id: response['id'],
             startDate: response['startDate'],
@@ -851,7 +855,9 @@ export class LocalService {
                     "contractRequestProductId" : res1['id'],
                     "contractRequestId": response['id'],
                     "contractRequestProductOfferIds" : res2['contractRequestProductOfferIds']??'',
-                    "mainProductId" : res1['productId']
+                    "mainProductId" : res1['productId'],
+                    "requestUomId" : quantityOption.id,
+                    "aditionalCost" : res2['totalCostRate'],
                 }
                 data.push(arrDet);
                 arrDet = {};
@@ -905,5 +911,20 @@ export class LocalService {
             });
         });
         return checkedCounterParties;
+    }
+    addAdditionalCost(aditionalCost,rowId) {
+        let contractReq = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+            return state['contractNegotiation'].ContractRequest[0];
+          })));
+          contractReq.locations.map( prod => {
+            prod.data.map( item => {
+                if(item.id == rowId && item.aditionalCost != aditionalCost['data']){
+                    item.aditionalCost = aditionalCost['data'];
+                    this.store.dispatch(new ContractRequest([contractReq]));
+                    this.callGridRefreshService([rowId]);
+                    return;
+                }
+            })
+          });
     }
 }

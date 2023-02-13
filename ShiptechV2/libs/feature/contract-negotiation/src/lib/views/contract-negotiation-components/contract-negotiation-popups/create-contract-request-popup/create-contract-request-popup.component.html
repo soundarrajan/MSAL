@@ -3,7 +3,7 @@
     <div class="title">Contract Request Details</div>
     <div class="title-right">
       <button class="custom-button" id="saveReq" style="cursor:pointer;" [ngClass]="enableSaveBtn ? 'blue-btn' : 'grey-btn'" [disabled]="!enableSaveBtn"
-      (click)="saveContract();">Save</button>
+      (click)="saveContractRequest();">Save</button>
       <!--button class="custom-button" id="sendRfq" *ngIf="!enableUpdateRfqBtn" [disabled]="!enableRFQBtn"
         [ngClass]="enableRFQBtn ? 'blue-btn' : 'grey-btn'" (click)="sendRFQ()">Send RFQ</button>
       <button class="custom-button" *ngIf="enableUpdateRfqBtn" [disabled]="!enableRFQBtn"

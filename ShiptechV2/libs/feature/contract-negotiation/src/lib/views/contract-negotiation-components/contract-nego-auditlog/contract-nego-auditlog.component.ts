@@ -175,6 +175,10 @@ public overlayNoRowsTemplate = '<span>No rows to show</span>';
       el['user']=el['modifiedBy']?.displayName??el['modifiedBy']?.name;
       let auditlog={...el,...JSON.parse(el['fieldName'])};
       el['field']=auditlog['feild'];
+      if(auditlog['field'].toLowerCase().includes('statusid')){
+        auditlog['newValue']=this.localService.masterData['contractNegotiationStatus'][auditlog['newValue']??''];
+        auditlog['oldValue']=this.localService.masterData['contractNegotiationStatus'][auditlog['oldValue']??''];
+      }
       auditlog['product']=this.localService.masterData['Product']?.find(p => p.id == auditlog['product'])?.name;
       auditlog['counterparty']=this.localService.masterData['Counterparty']?.find(p => p.id == auditlog['counterparty'])?.name;
       auditlog['location']=this.localService.masterData['Location']?.find(p => p.id == auditlog['location'])?.name;   

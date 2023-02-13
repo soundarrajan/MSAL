@@ -90,6 +90,7 @@ export const ContractNegotiationApiPaths = {
   removeCounterparty : 'api/ContractNegotiation/Seller/remove',
   sendRFQ: 'api/ContractNegotiation/RFQ/sendRFQ',
   amendRFQ: 'api/ContractNegotiation/RFQ/amendRFQ',
+  requoteRFQ: 'api/ContractNegotiation/RFQ/requoteRFQ',
   previewRFQ: 'api/ContractNegotiation/RFQ/previewRfqmail',
   discardSavedPreviewRFQ: 'api/ContractNegotiation/RFQ/discardSavedComments',
   saveAndSendRFQ: 'api/ContractNegotiation/RFQ/saveAndSendRFQ',
@@ -515,6 +516,19 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
   }
 
   @ObservableException()
+  requoteRFQ(payload): Observable<any> {
+    if(payload.length == 0) return;
+    return this.http
+      .put<any>(
+        `${this._shitechApiUrl}/${ContractNegotiationApiPaths.requoteRFQ}`, payload
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
   saveAndSendRFQ(payload): Observable<any> {
     if(payload.length == 0) return;
     return this.http
@@ -572,10 +586,10 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     );
   }
   @ObservableException()
-  getAdditionalCost(payload: any): Observable<any> {
+  getAdditionalCost(offerId: number): Observable<any> {
     return this.http
     .get<any>(
-      `${this._shitechApiUrl}/${ContractNegotiationApiPaths.getAdditionalCost}`, payload
+      `${this._shitechApiUrl}/${ContractNegotiationApiPaths.getAdditionalCost}/${offerId}`
     )
     .pipe(
       map((body: any) => body),

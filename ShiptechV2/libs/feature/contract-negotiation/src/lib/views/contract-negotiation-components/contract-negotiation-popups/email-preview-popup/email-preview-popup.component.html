@@ -5,10 +5,10 @@
             <span *ngIf="editable" style="color: #364150;font-size: 12px;">Template:</span>
             <div *ngIf="editable" id="custom-form-field">
                 <mat-form-field class="without-search" appearance="none">
-                    <mat-select [(value)]="selected" disableOptionCentering>
-                        <mat-option value="send_rfq" selected="selected">Send RFQ</mat-option>
-                        <mat-option value="amend_rfq">Amend RFQ</mat-option>
-                        <mat-option value="requote">Requote</mat-option>
+                    <mat-select [(value)]="templateName" (selectionChange)="selectTemplate($event.value)" disableOptionCentering>
+                        <mat-option value="ContractNegotiationSendRFQ" selected="selected">Send RFQ</mat-option>
+                        <mat-option value="ContractNegotiationAmendRFQ">Amend RFQ</mat-option>
+                        <mat-option value="ContractNegotiationRequote">Requote</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -38,7 +38,7 @@
                         </div>
                         <div *ngIf="editable" class="add-new" [style.width.px]="widthTo">
                             <input matInput #addNewAdd placeholder="+Add New" [formControl]="toEmail"
-                                [matAutocomplete]="auto" (keyup.enter)="addTo(addNewAdd.value, false)"
+                                [matAutocomplete]="auto" (focusout)="addTo(addNewAdd.value, false)"
                                 (input)="changeFieldWidthTo()" />
                             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" class=""
                                 (optionSelected)="addTo($event.option.value, true)" class="emailAddressPanelClass">
@@ -62,7 +62,7 @@
                         </div>
                         <div *ngIf="editable" class="add-new" [style.width.px]="widthCC">
                             <input #addNewCcAdd matInput placeholder="+Add New" [formControl]="ccEmail"
-                                [matAutocomplete]="auto1" (keyup.enter)="addCc(addNewCcAdd.value, false)"
+                                [matAutocomplete]="auto1" (focusout)="addCc(addNewCcAdd.value, false)"
                                 (input)="changeFieldWidthCC()">
                             <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete" class=""
                                 (optionSelected)="addCc($event.option.value, true)" class="emailAddressPanelClass">
@@ -162,10 +162,7 @@
                     <ng-container *ngFor="let file of filesList">
                         <div *ngIf="file.isIncludedInMail" class="file-list">
                             <span class="attachment-icon"></span>
-                            <!--span (click)="downloadDocument(file)" class="cust-input-field">{{
-                                file.name
-                            }}</span-->
-                            <span class="cust-input-field">{{
+                            <span (click)="downloadDocument(file)" class="cust-input-field">{{
                                 file.name
                             }}</span>
                             <div
@@ -175,13 +172,6 @@
                             ></div>
                         </div>
                     </ng-container>
-                    <!--div class="file-list" *ngFor="let file of filesList">
-                        <span class="attachment-icon"></span>
-                        <span>{{file}}</span> 
-                        <div class="attachment-icon"></div>
-                        <div class="attachment-name">{{file.name}}</div> 
-                        <div class="close-icon" (click)="removeFile(file)"></div>
-                    </div-->
                 </div>
                 <div class="email-draft">
                     <ckeditor

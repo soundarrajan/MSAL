@@ -21,18 +21,23 @@ export class UpdateRfqPopupComponent implements OnInit {
   }
 
   close(){
-    this.dialogRef.close('close');
+    this.dialogRef.close('no');
+  }
+
+  closeIconClick(){
+    this.dialogRef.close();
   }
 
   proceed(){
-    this.dialogRef.close('close');
+    this.dialogRef.close('yes');
     this.localService.updateSendRFQStatus(true);
-    this.toastr.show('<div class="image-placeholder"><span class="image"></span></div><div class="message">'+this.data.toastMsg+'</div>',
-    '' , {
-             enableHtml: true,
-             toastClass: "toast-alert toast-green", // toast-green, toast-amber, toast-red, toast-grey
-             timeOut: 2000
-         });
+    if(this.data.toastMsg){
+      this.toastr.show('<div class="image-placeholder"><span class="image"></span></div><div class="message">'+this.data.toastMsg+'</div>',
+      '' , {
+               enableHtml: true,
+               toastClass: "toast-alert toast-green", // toast-green, toast-amber, toast-red, toast-grey
+               timeOut: 2000
+           });
+    }
   }
-
 }
