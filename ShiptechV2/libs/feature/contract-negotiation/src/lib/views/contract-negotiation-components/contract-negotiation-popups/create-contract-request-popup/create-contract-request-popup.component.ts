@@ -1458,14 +1458,24 @@ export class CreateContractRequestPopupComponent implements OnInit {
     this.contractNegotiationService.updateContractRequest(this.reqObj).subscribe( response => {
       if(response){
         var hasContractRequestUpdated = response['hasContractRequestUpdated'];
-        if(this.reqObj.sendAmendRFQ && response['amendRFQResponse']?.amendRfqSent === false){
-          this.toaster.error('Failed to send amend RFQ email.');
+        if(hasContractRequestUpdated && this.reqObj.sendAmendRFQ === true && response['amendRFQResponse']?.amendRfqSent === false){
+          this.toaster.success('Contract Request has been updated successfully');
+          if(response['amendRFQResponse']?.message !== ''){
+            this.toaster.warning(response['amendRFQResponse']?.message);
+          }
+          else{
+            this.toaster.warning('Failed to send amend RFQ email.');
+          }
+          this.dialog.closeAll();        
         }
-        if(hasContractRequestUpdated &&  response['amendRFQResponse']?.amendRfqSent){
+        else if(hasContractRequestUpdated &&  response['amendRFQResponse']?.amendRfqSent === true){
           this.toaster.success('Contract Request has been updated successfully and Amend RFQ(s) sent successfully');
+          if(response['amendRFQResponse']?.message !== ''){
+            this.toaster.warning(response['amendRFQResponse']?.message);
+          }
           this.dialog.closeAll();
         }
-        else if(hasContractRequestUpdated){
+        else if(hasContractRequestUpdated && this.reqObj.sendAmendRFQ == false){
           this.toaster.success('Contract Request has been updated successfully');
           this.dialog.closeAll();
         }
