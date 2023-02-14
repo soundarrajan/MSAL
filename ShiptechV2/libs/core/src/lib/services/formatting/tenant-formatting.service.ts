@@ -138,6 +138,19 @@ export class TenantFormattingService {
     return actualValue.toString();
   }
 
+  public getActualValue(value: number | string): string | undefined {
+    if (value === null || value === undefined) return undefined;
+
+    const actualValue =
+      typeof value !== 'number'
+        ? parseFloat(value.toString().replace(/,/g, ''))
+        : value;
+
+    if (isNaN(actualValue)) return undefined;
+
+    return actualValue.toString();
+  }
+
   public date(value: string): string | undefined {
     if (value === null || value === undefined) return undefined;
 
