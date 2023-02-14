@@ -967,20 +967,16 @@ export class negoPricingDetailsComponent implements OnInit {
            
             contractReq.locations.map( prod => {
               if(prod.data.length > 0){
-                prod.data.map( req => { 
-                  //console.log(req);  
-                  //console.log(payload)  ;  
+                prod.data.map( req => {                
                     if(req.id == this.requestOfferId){                
                         req.isFormulaPricing = true;
-                        req.offerPriceFormulaId = this.offerPriceFormulaId; 
-                        console.log(req.aditionalCost); 
+                        req.offerPriceFormulaId = this.offerPriceFormulaId;                  
                         this.additionalCost = (req.aditionalCost)?req.aditionalCost:0
                         req.OfferPrice = (Math.random() * 1000) + (this.additionalCost);                      
                     }
                 })
               }
-            });
-            console.log(contractReq);  
+            });          
             this.store.dispatch(new ContractRequest([contractReq]));
             //close popup with evaluated price item update
             this.closePopup();
@@ -1004,17 +1000,14 @@ export class negoPricingDetailsComponent implements OnInit {
             };         
             contractReq.locations.map( prod => {
               if(prod.data.length > 0){
-                prod.data.map( req => { 
-                  //console.log(req);  
-                  //console.log(payload)  ;  
+                prod.data.map( req => {                    
                     if(req.id == this.requestOfferId){                
                         req.isFormulaPricing = true;
                         req.offerPriceFormulaId = payload.priceConfigurationId;  
                     }
                 })
               }
-            });
-            console.log(contractReq);  
+            });         
             this.store.dispatch(new ContractRequest([contractReq]));
             this.contractNegotiationService.callGridRedrawService();
             this.closePopup();
@@ -1128,7 +1121,7 @@ export class negoPricingDetailsComponent implements OnInit {
           systemInstrument: { id: 0, name: '' }
         });
       }
-      console.log(uiInstruments);
+  
     }
 
     return uiInstruments;
