@@ -36,6 +36,7 @@ import {
   NGX_MAT_DATE_FORMATS
 } from '@angular-material-components/datetime-picker';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import Decimal from 'decimal.js';
 
 @Component({
   selector: 'app-pricing-details',
@@ -110,6 +111,7 @@ export class negoPricingDetailsComponent implements OnInit {
     {"id": 3, "name": "9 months"},
     {"id": 4, "name": "12 months"},   
   ];
+  additionalCost: number;
   constructor(
     public dialogRef: MatDialogRef<negoPricingDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -951,6 +953,7 @@ export class negoPricingDetailsComponent implements OnInit {
             }
             this.requestOfferId = res.requestOfferId;
             this.offerPriceFormulaId = res.id;
+            
           }),
         
         )
@@ -969,7 +972,10 @@ export class negoPricingDetailsComponent implements OnInit {
                   //console.log(payload)  ;  
                     if(req.id == this.requestOfferId){                
                         req.isFormulaPricing = true;
-                        req.offerPriceFormulaId = this.offerPriceFormulaId;                        
+                        req.offerPriceFormulaId = this.offerPriceFormulaId; 
+                        console.log(req.aditionalCost); 
+                        this.additionalCost = (req.aditionalCost)?req.aditionalCost:0
+                        req.OfferPrice = (Math.random() * 1000) + (this.additionalCost);                      
                     }
                 })
               }

@@ -179,16 +179,18 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
                             prod.data.map( req => {                 
                             if(req.id ==  contractRequestOfferId){                
                                 req.isFormulaPricing = false;
-                                req.offerPriceFormulaId = null;                               
+                                req.offerPriceFormulaId = null;  
+                                req.OfferPrice = null ;                          
                             }
                           })
                         }
                     });   
 
                 this.store.dispatch(new ContractRequest([contractRequestData]));
+                this.toaster.error('Offer Price is Required');   
                 this.toaster.success('Formula removed successfully');           
                 this.contractService.callGridRedrawService();   
-                this.toaster.error('Offer Price is Required');             
+                          
                 });
               }
           }
