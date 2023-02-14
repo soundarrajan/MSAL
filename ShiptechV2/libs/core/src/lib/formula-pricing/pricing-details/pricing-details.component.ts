@@ -129,21 +129,12 @@ export class negoPricingDetailsComponent implements OnInit {
     iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
     this.requestOfferId = data.contractRequestOfferId;
     this.offerPriceFormulaId = data.offerPriceFormulaId;
-    this.productId = data.productId;   
+    this.productId = data.productId;  
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
-    PICK_FORMATS.display.dateInput = this.format.dateFormat;
-
-    /* this.store.selectSnapshot<any>((state: any) => {
-      this.staticList = state.spotNegotiation.staticLists.otherLists;
-      this.sessionFormulaList = state.spotNegotiation.formulaList;
-      this.isComplexFormulaWeightEnforced = state.tenantSettings.general.defaultValues.isComplexFormulaWeightEnforced;
-      if (state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed') {
-        this.checkRequestStatus = true;
-      }
-    });*/
+    PICK_FORMATS.display.dateInput = this.format.dateFormat;  
 
     this.store.selectSnapshot<any>((state: any) => {
       this.staticList = state.spotNegotiation.staticLists.otherLists;
@@ -189,9 +180,6 @@ export class negoPricingDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("******formValues******");
-    console.log(this.formValues);
-    console.log("******formValues******");
     this.formulaFlatPercentageList = this.setListFromStaticLists('FormulaFlatPercentage');
     this.formulaPlusMinusList = this.setListFromStaticLists('FormulaPlusMinus');
     this.marketPriceList = this.setListFromStaticLists('MarketPriceType');
@@ -973,10 +961,7 @@ export class negoPricingDetailsComponent implements OnInit {
             return;
           } else {
             this.toastr.success('Operatation completed Successfully.');          
-            let payload = {
-              requestOfferId: this.requestOfferId,
-              priceConfigurationId: this.offerPriceFormulaId
-            };         
+           
             contractReq.locations.map( prod => {
               if(prod.data.length > 0){
                 prod.data.map( req => { 
@@ -984,7 +969,7 @@ export class negoPricingDetailsComponent implements OnInit {
                   //console.log(payload)  ;  
                     if(req.id == this.requestOfferId){                
                         req.isFormulaPricing = true;
-                        req.offerPriceFormulaId = payload.priceConfigurationId;                        
+                        req.offerPriceFormulaId = this.offerPriceFormulaId;                        
                     }
                 })
               }
