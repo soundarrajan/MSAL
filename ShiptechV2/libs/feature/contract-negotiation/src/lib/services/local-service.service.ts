@@ -42,6 +42,7 @@ export class LocalService {
     public uniqueLocations: string;
     public allRequestDetails: { locations: any[]; };
     private gridRefreshService = new Subject<any>();
+    public contractNegotiationStatus = { 1: "Open", 2: "Inquired", 3: "Quoted", 4: "AwaitingApproval", 5: "Approved", 6: "Rejected", 7: "Contracted", 8: "Closed" };
     constructor(
         private http: HttpClient,
         private router: Router,
@@ -579,8 +580,16 @@ export class LocalService {
         return this.userRoleSubject.asObservable();
     }
 
-    setContractStatus(flag: string){
+    setContractStatus(flag: string, storeUpdate: boolean = true){
         this.contractStatus.next(flag);
+        if(storeUpdate === true){
+            let contractReq = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+                return state['contractNegotiation'].ContractRequest[0];
+            })));
+            contractReq.status = flag;
+            contractReq.statusId = Object.keys(this.contractNegotiationStatus).find(key => this.contractNegotiationStatus[key] === flag)
+            this.store.dispatch(new ContractRequest([contractReq]));
+        }
     }
 
     getContractStatus(): Observable<string> {
@@ -731,7 +740,7 @@ export class LocalService {
         PricingType: await this.db.getPricingTypeList({ orderBy: 'name' }),
         ProductType: await this.db.getProductType({ orderBy: 'name' }),
         Counterparty: await this.db.getCounterPartyList({ orderBy: 'name' }),
-        contractNegotiationStatus : { 1: "Open", 2: "Inquired", 3: "Quoted", 4: "AwaitingApproval", 5: "Approved", 6: "Rejected", 7: "Contracted", 8: "Closed" },
+        contractNegotiationStatus : this.contractNegotiationStatus,
       }
    }
    async selectNewlyAddedCounterParty(response,newlyAddedCounterparty){
@@ -780,7 +789,7 @@ export class LocalService {
             SpecGroup : await this.db.getSpecGroupList({ orderBy: 'name' }),
             ProductType: await this.db.getProductType({ orderBy: 'name' })
         }
-        this.setContractStatus(response.status);
+        this.setContractStatus(response.status, false);
         Object.entries(response['contractRequestProducts']).forEach(([key, res1]) => {
             let location = this.masterData['Location'].find(el => el.id == res1['locationId']);
             let mainProduct = this.masterData['Product'].find(el => el.id == res1['productId']);
