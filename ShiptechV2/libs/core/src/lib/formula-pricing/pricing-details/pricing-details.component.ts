@@ -129,10 +129,7 @@ export class negoPricingDetailsComponent implements OnInit {
     iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
     this.requestOfferId = data.contractRequestOfferId;
     this.offerPriceFormulaId = data.offerPriceFormulaId;
-    this.productId = data.productId;
-    console.log("Vinoth");
-    console.log(data);
-    console.log("Vinoth");
+    this.productId = data.productId;   
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
