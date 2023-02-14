@@ -209,6 +209,7 @@ export class EmailPreviewPopupComponent implements OnInit {
     this.contractNegoService.getPreviewRFQEmail(payload).subscribe((res: any) => { 
       if (res?.message == 'Unauthorized' || res?.errors) {   
         this.spinner.hide();      
+        this.clearData();
         return;
       }
       let errorMsg = '';
@@ -217,6 +218,9 @@ export class EmailPreviewPopupComponent implements OnInit {
       if(errorMsg != ''){
         this.spinner.hide();
         this.toaster.error(errorMsg);
+        if(errorMsg.toLowerCase().includes('template not configured')){
+          this.clearData();
+        }
         return;
       }
       if (res.previewResponse) {
