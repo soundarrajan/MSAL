@@ -244,10 +244,15 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
             if(Number(this.params.value.replace(/,/g, '')) > 0 && this.params.value != ''){
                 let newParams = JSON.parse(JSON.stringify(this.params.node.data));
                 newParams.OfferPrice = this.params.value.replace(/,/g, '');
-                this.contractService.updatePrices(newParams).subscribe(()=>{
+                this.contractService.updatePrices(newParams).subscribe((resp)=>{
+                    let isRowAlreadyRefreshed = false;
+                    if(!isNaN(parseFloat(resp))) {
+                        this.localService.addAdditionalCost({ "data": resp },this.params.node.data.id);
+                        isRowAlreadyRefreshed = true;
+                    }
 
                     // ad grid data binding problem. previous value is 123.2 and new value is 123.200 in this scenario grid is not updating.
-                    if(Number(this.params.value.toString().replace(/,/g, '')) == Number(this.params.node.data.OfferPrice.replace(/,/g, ''))){
+                    if(!isRowAlreadyRefreshed && Number(this.params.value.toString().replace(/,/g, '')) == Number(this.params.node.data.OfferPrice.replace(/,/g, ''))){
                         this.localService.callGridRefreshService([this.params.node.data.id]);
                     }
                     this.localService.getContractStatus().subscribe((status) => {
