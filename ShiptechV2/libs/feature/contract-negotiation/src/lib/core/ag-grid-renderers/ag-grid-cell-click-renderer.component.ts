@@ -62,6 +62,8 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
 
     public params: any;
     dummyId = 121;
+    contractRequestOfferId :number;
+    offerPriceFormulaId:number;
     constructor(
         public dialog: MatDialog,
         private toaster: ToastrService,
@@ -118,7 +120,21 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
 
     }
 
-    formulaPricingPopup(row) {        
+    formulaPricingPopup(row) { 
+        console.log(row);    
+          var contractRequestData = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+            return state['contractNegotiation'].ContractRequest[0];
+          })));
+          this.contractRequestOfferId = row.data.id
+          contractRequestData.locations.map( prod => {
+            if(prod.data.length > 0){
+              prod.data.map( req => {                 
+                  if(req.id == this.contractRequestOfferId){
+                    this.offerPriceFormulaId = req.offerPriceFormulaId;                        
+                  }
+              })
+            }
+          });   
         const dialogRef = this.dialog.open(negoPricingDetailsComponent, {
             width: '1164px',
             maxHeight: '95vh',
@@ -127,7 +143,7 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
             data: {
                 contractRequestOfferId: row.data.id,              
                 productId: row.data.ProductId,
-                offerPriceFormulaId: row.data.offerPriceFormulaId
+                offerPriceFormulaId: this.offerPriceFormulaId
               },
         });
 
@@ -163,16 +179,18 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
                             prod.data.map( req => {                 
                             if(req.id ==  contractRequestOfferId){                
                                 req.isFormulaPricing = false;
-                                req.offerPriceFormulaId = null;                               
+                                req.offerPriceFormulaId = null;  
+                                req.OfferPrice = null ;                          
                             }
                           })
                         }
                     });   
 
                 this.store.dispatch(new ContractRequest([contractRequestData]));
+                this.toaster.error('Offer Price is Required');   
                 this.toaster.success('Formula removed successfully');           
                 this.contractService.callGridRedrawService();   
-                this.toaster.error('Offer Price is Required');             
+                          
                 });
               }
           }

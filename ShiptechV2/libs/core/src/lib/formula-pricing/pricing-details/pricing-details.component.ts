@@ -36,6 +36,7 @@ import {
   NGX_MAT_DATE_FORMATS
 } from '@angular-material-components/datetime-picker';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import Decimal from 'decimal.js';
 
 @Component({
   selector: 'app-pricing-details',
@@ -110,6 +111,7 @@ export class negoPricingDetailsComponent implements OnInit {
     {"id": 3, "name": "9 months"},
     {"id": 4, "name": "12 months"},   
   ];
+  additionalCost: number;
   constructor(
     public dialogRef: MatDialogRef<negoPricingDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -129,24 +131,12 @@ export class negoPricingDetailsComponent implements OnInit {
     iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
     this.requestOfferId = data.contractRequestOfferId;
     this.offerPriceFormulaId = data.offerPriceFormulaId;
-    this.productId = data.productId;
-    console.log("Vinoth");
-    console.log(data);
-    console.log("Vinoth");
+    this.productId = data.productId;  
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
     CUSTOM_DATE_FORMATS.display.dateInput = this.format.dateFormat;
-    PICK_FORMATS.display.dateInput = this.format.dateFormat;
-
-    /* this.store.selectSnapshot<any>((state: any) => {
-      this.staticList = state.spotNegotiation.staticLists.otherLists;
-      this.sessionFormulaList = state.spotNegotiation.formulaList;
-      this.isComplexFormulaWeightEnforced = state.tenantSettings.general.defaultValues.isComplexFormulaWeightEnforced;
-      if (state.spotNegotiation.currentRequestSmallInfo.status == 'Stemmed') {
-        this.checkRequestStatus = true;
-      }
-    });*/
+    PICK_FORMATS.display.dateInput = this.format.dateFormat;  
 
     this.store.selectSnapshot<any>((state: any) => {
       this.staticList = state.spotNegotiation.staticLists.otherLists;
@@ -192,9 +182,6 @@ export class negoPricingDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("******formValues******");
-    console.log(this.formValues);
-    console.log("******formValues******");
     this.formulaFlatPercentageList = this.setListFromStaticLists('FormulaFlatPercentage');
     this.formulaPlusMinusList = this.setListFromStaticLists('FormulaPlusMinus');
     this.marketPriceList = this.setListFromStaticLists('MarketPriceType');
@@ -966,6 +953,7 @@ export class negoPricingDetailsComponent implements OnInit {
             }
             this.requestOfferId = res.requestOfferId;
             this.offerPriceFormulaId = res.id;
+            
           }),
         
         )
@@ -976,23 +964,19 @@ export class negoPricingDetailsComponent implements OnInit {
             return;
           } else {
             this.toastr.success('Operatation completed Successfully.');          
-            let payload = {
-              requestOfferId: this.requestOfferId,
-              priceConfigurationId: this.offerPriceFormulaId
-            };         
+           
             contractReq.locations.map( prod => {
               if(prod.data.length > 0){
-                prod.data.map( req => { 
-                  //console.log(req);  
-                  //console.log(payload)  ;  
+                prod.data.map( req => {                
                     if(req.id == this.requestOfferId){                
                         req.isFormulaPricing = true;
-                        req.offerPriceFormulaId = payload.priceConfigurationId;                        
+                        req.offerPriceFormulaId = this.offerPriceFormulaId;                  
+                        this.additionalCost = (req.aditionalCost)?req.aditionalCost:0
+                        req.OfferPrice = (Math.random() * 1000) + (this.additionalCost);                      
                     }
                 })
               }
-            });
-            console.log(contractReq);  
+            });          
             this.store.dispatch(new ContractRequest([contractReq]));
             //close popup with evaluated price item update
             this.closePopup();
@@ -1016,17 +1000,14 @@ export class negoPricingDetailsComponent implements OnInit {
             };         
             contractReq.locations.map( prod => {
               if(prod.data.length > 0){
-                prod.data.map( req => { 
-                  //console.log(req);  
-                  //console.log(payload)  ;  
+                prod.data.map( req => {                    
                     if(req.id == this.requestOfferId){                
                         req.isFormulaPricing = true;
                         req.offerPriceFormulaId = payload.priceConfigurationId;  
                     }
                 })
               }
-            });
-            console.log(contractReq);  
+            });         
             this.store.dispatch(new ContractRequest([contractReq]));
             this.contractNegotiationService.callGridRedrawService();
             this.closePopup();
@@ -1140,7 +1121,7 @@ export class negoPricingDetailsComponent implements OnInit {
           systemInstrument: { id: 0, name: '' }
         });
       }
-      console.log(uiInstruments);
+  
     }
 
     return uiInstruments;
