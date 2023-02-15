@@ -255,12 +255,10 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
                     if(!isRowAlreadyRefreshed && Number(this.params.value.toString().replace(/,/g, '')) == Number(this.params.node.data.OfferPrice.replace(/,/g, ''))){
                         this.localService.callGridRefreshService([this.params.node.data.id]);
                     }
-                    this.localService.getContractStatus().subscribe((status) => {
-                        if(status == 'Inquired'){
-                            this.localService.setContractStatus('Quoted');
-                        }
-                    });
-                });
+                    if(this.localService.getContractStatusFromStore() == 'Inquired'){
+                        this.localService.setContractStatus('Quoted');
+                    }
+                });  
             }else{
                 this.params.value = this.params.node.data.OfferPrice;
                 this.toaster.error('Please enter valid price');

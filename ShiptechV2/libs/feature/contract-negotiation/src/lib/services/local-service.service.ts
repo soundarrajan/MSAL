@@ -592,8 +592,16 @@ export class LocalService {
         }
     }
 
+    /* To use in showing status in header only */
     getContractStatus(): Observable<string> {
         return this.contractStatus.asObservable();
+    }
+
+    /* To get current contract request status from store */
+    getContractStatusFromStore() {
+        return JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+            return state['contractNegotiation'].ContractRequest[0].status;
+        })));
     }
 
     private calculatePrice = new BehaviorSubject<boolean>(false);

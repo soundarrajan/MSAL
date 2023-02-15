@@ -242,11 +242,11 @@ export class CounterpartieNameCellComponent implements OnInit, ICellRendererAngu
             noCounterParty = false;
           }
         });
+        storePayload['status'] = this.localService.contractNegotiationStatus[res['contractRequestStatusId']];
+        storePayload['statusId'] = res['contractRequestStatusId'];
         this.localService.setSendRFQButtonStauts(noCounterParty);
         this.store.dispatch(new ContractRequest([storePayload]));
-        if(res['contractRequestStatusId'] == 1){
-          this.localService.setContractStatus('Open');
-        }
+        this.localService.setContractStatus(this.localService.contractNegotiationStatus[res['contractRequestStatusId']], false);
       } else {
         this.toaster.error('Data not deleted, Please Refresh the page and try again.')
       }
