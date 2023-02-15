@@ -912,7 +912,7 @@ export class LocalService {
                 "allowedLocations": res1['allowedLocations'],
                 "allowedProducts": res1['allowedProducts'],
                 "isDeleted": res1['isDeleted'],
-                "maxQuantityUomId" : response['contractRequestProducts'][0]['maxQuantityUomId']          
+                "maxQuantityUomId" : res1['maxQuantityUomId']          
 
             }
             contractArray['locations'].push(arrMainDet);

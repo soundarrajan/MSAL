@@ -205,32 +205,31 @@ export class ContractNegotiationHeaderComponent implements OnInit {
     //this.child.onClearSearchCounterparty();
   }
   openRequest() {
-    let storeDataObj = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
-      return state['contractNegotiation'];
-    })));
-    if(this.route.snapshot.params.requestId && storeDataObj.ContractRequest === undefined){
-      this.toastr.error('You do not have authorization to perform this action.');
-      return;
-    }
-    const dialogRef = this.dialog.open(CreateContractRequestPopupComponent, {
-      width: '1136px',
-      minHeight: '90vh',
-      maxHeight: '100vh',
-      panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
-      data: { createReqPopup:false,rfqStatus: this.rfqSent, requestId: this.route.snapshot.params.requestId }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result == true) return;
-      const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
-      this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
-      .subscribe(response => {
-        this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
-        this.localService.contractRequestData(response).then(() => {
-          this.uniqueLocationNames = this.localService.uniqueLocations;
-          this.allRequestDetails[0] = this.localService.allRequestDetails;
-        })
-        this.totalRequestQty(JSON.parse(JSON.stringify(response)));
+    this.contractService.getContractRequestDetails(this.route.snapshot.params.requestId)
+    .subscribe(response => {
+      if(response?.message === 'Unauthorized') { return; }
+      this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
+      const dialogRef = this.dialog.open(CreateContractRequestPopupComponent, {
+        width: '1136px',
+        minHeight: '90vh',
+        maxHeight: '100vh',
+        panelClass: ['additional-cost-popup', 'supplier-contact-popup'],
+        data: { createReqPopup:false,rfqStatus: this.rfqSent, contractRequestDetails: JSON.parse(JSON.stringify(response)), requestId: this.route.snapshot.params.requestId }
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if(result == true) return;
+        const contractRequestIdFromUrl = this.route.snapshot.params.requestId;
+        this.contractService.getContractRequestDetails(contractRequestIdFromUrl)
+        .subscribe(response => {
+          if(response?.message === 'Unauthorized') { return; }
+          this.localService.contractRequestDetails = JSON.parse(JSON.stringify(response));
+          this.localService.contractRequestData(response).then(() => {
+            this.uniqueLocationNames = this.localService.uniqueLocations;
+            this.allRequestDetails[0] = this.localService.allRequestDetails;
+          })
+          this.totalRequestQty(JSON.parse(JSON.stringify(response)));
+        });
       });
     });
   }
