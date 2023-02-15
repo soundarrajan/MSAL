@@ -12,7 +12,6 @@ import { LocalService } from '../../../../services/local-service.service';
 export class UpdateRfqPopupComponent implements OnInit {
 
   constructor(
-    private localService: LocalService,
     public router: Router,
     public dialogRef: MatDialogRef<UpdateRfqPopupComponent>,private toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: {message:any,toastMsg:any}) { }
@@ -30,7 +29,6 @@ export class UpdateRfqPopupComponent implements OnInit {
 
   proceed(){
     this.dialogRef.close('yes');
-    this.localService.updateSendRFQStatus(true);
     if(this.data.toastMsg){
       this.toastr.show('<div class="image-placeholder"><span class="image"></span></div><div class="message">'+this.data.toastMsg+'</div>',
       '' , {
