@@ -346,8 +346,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   openRequest(){
-    this.reqObj = JSON.parse(JSON.stringify(this.getAndConstructDataFromStore()));
-    this.tempReqObj = JSON.parse(JSON.stringify(this.getAndConstructDataFromStore()));
+    this.reqObj = JSON.parse(JSON.stringify(this.data.contractRequestDetails));
+    this.tempReqObj = JSON.parse(JSON.stringify(this.data.contractRequestDetails));
     this.reqObj.quantityDetails.forEach((q, i) => {
       q.minQuantity = this.quantityFormatValue(q.minQuantity);
       q.maxQuantity = this.quantityFormatValue(q.maxQuantity);
