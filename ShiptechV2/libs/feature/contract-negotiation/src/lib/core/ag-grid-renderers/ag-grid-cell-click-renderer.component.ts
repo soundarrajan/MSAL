@@ -212,8 +212,9 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            if(result?.data)
-            this.localService.addAdditionalCost(result,this.params.node.data.id);
+            if(result?.data !== undefined && result?.data !== null) {
+                this.localService.addAdditionalCost(result,this.params.node.data.id);
+            }
         });
     }
 
