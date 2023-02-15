@@ -156,3 +156,7 @@
     text-overflow: ellipsis;
     cursor: pointer;
   }
+
+  .mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
+    color: #828282 !important;
+  }
