@@ -18,6 +18,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonApiService } from '@shiptech/core/services/common/common-api.service';
 import { UserProfileState } from '@shiptech/core/store/states/user-profile/user-profile.state';
 import { DocDragDropUploadComponent } from '../doc-drag-drop-upload/doc-drag-drop-upload.component';
+import { ContractRequest } from 'libs/feature/contract-negotiation/src/lib/store/actions/ag-grid-row.action';
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
@@ -423,12 +424,43 @@ export class MainPageComponent implements OnInit {
     this.isNegotiationClosed = true;
   }
 
-  calculatePrice() {
+  calculatePrice() {  
     if (this.rfqSent) {
       this.showCalculatedValue = true;
       this.localService.updatecalculatePriceStatus(true);
-      this.contractStatus = 'Quoted';
+      this.contractStatus = 'Quoted';    
     }
+    let locationsRows = JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
+      return state['contractNegotiation'].ContractRequest[0];
+    })));      
+    let OfferIds = [];  
+    locationsRows.locations.forEach(loc => {    
+      loc.data.forEach(row => {
+        if (row.pricingTypeId == 2) {
+          let offerId = row.id;
+          OfferIds.push(offerId);
+        }
+      });
+    });    
+    this.contractNegoService.evaluatePrices({ RequestOfferIds: OfferIds }).subscribe(async (resp: any) => {
+      if (resp?.message == 'Unauthorized') return;
+          if(resp.offersPrices){
+            locationsRows.locations.map( loc => {
+              loc.data.map( req => {               
+                if(req.pricingTypeId == 2){                   
+                  resp.offersPrices.forEach(offerPrice => {
+                    if(offerPrice.requestOfferId == req.id){
+                      var additionalCost = (req.aditionalCost)?req.aditionalCost:0
+                      req.OfferPrice = (offerPrice.price) + (additionalCost);  
+                    }
+                  })                                     
+                }
+              })
+            }); 
+          }           
+        this.store.dispatch(new ContractRequest([locationsRows]));
+        this.contractNegoService.callGridRedrawService();
+      });
   }
 
   emailPreviewApproval() {

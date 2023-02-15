@@ -20,7 +20,7 @@ import _, { cloneDeep } from 'lodash';
     <div [matMenuTriggerFor]="priceMenupopup" #pricePopupTrigger="matMenuTrigger"
         (click)="pricePopupTrigger.closeMenu()" class="cell-input"
         (contextmenu)="$event.preventDefault();$event.stopPropagation();pricePopupTrigger.openMenu();">
-        <input  [disabled]="(params.data?.isFormulaPricing)"
+        <input  [disabled]="(params.data?.pricingTypeId == 2)"
         *ngIf="params.node.level != 0"
         [(ngModel)]="params.value"
         (change)="onInputChange()"
@@ -42,11 +42,11 @@ import _, { cloneDeep } from 'lodash';
         <div class="add-block" (click)="modifyOfferPeriod($event,params)">
             <div></div><span>Modify Offer Period</span>
         </div>
-        <ng-container *ngIf="params && (params.data?.isFormulaPricing)">
+        <ng-container *ngIf="params && (params.data?.pricingTypeId == 2)">
         <div class="divider-line"></div>
         <div class="delete-block"
-        (click)="(!params.data.isFormulaPricing) ? false : removeFormulaPrice(params);"
-          [ngStyle]="{'opacity': (!params.data.isFormulaPricing) ? 0.5 : 1}">
+        (click)="(params.data.pricingTypeId == 1) ? false : removeFormulaPrice(params);"
+          [ngStyle]="{'opacity': (params.data.pricingTypeId == 1) ? 0.5 : 1}">
           <div></div>
           <span>Remove Formula pricing</span>        
         </div>
@@ -143,7 +143,8 @@ export class AGGridCellClickRendererComponent implements ICellRendererAngularCom
             data: {
                 contractRequestOfferId: row.data.id,              
                 productId: row.data.ProductId,
-                offerPriceFormulaId: this.offerPriceFormulaId
+                offerPriceFormulaId: this.offerPriceFormulaId,
+                pricingTypeId : row.data.pricingTypeId
               },
         });
 
