@@ -955,7 +955,12 @@ export class negoPricingDetailsComponent implements OnInit {
             this.offerPriceFormulaId = res.id;
             
           }),
-        
+          switchMap((res: any) =>
+            this.contractNegotiationService.evaluateFormulaPrice({
+              RequestOfferId: res.requestOfferId,
+              PriceConfigurationId: this.offerPriceFormulaId
+            })
+          )
         )
         .subscribe((item: any) => {
           this.spinner.hide();
@@ -964,7 +969,7 @@ export class negoPricingDetailsComponent implements OnInit {
             return;
           } else {
             this.toastr.success('Operatation completed Successfully.');          
-           
+            this.evaluatedFormulaPrice = item.price;
             contractReq.locations.map( prod => {
               if(prod.data.length > 0){
                 prod.data.map( req => {                
@@ -972,7 +977,7 @@ export class negoPricingDetailsComponent implements OnInit {
                         req.isFormulaPricing = true;
                         req.offerPriceFormulaId = this.offerPriceFormulaId;                  
                         this.additionalCost = (req.aditionalCost)?req.aditionalCost:0
-                        req.OfferPrice = (Math.random() * 1000) + (this.additionalCost);                      
+                        req.OfferPrice = (this.evaluatedFormulaPrice) + (this.additionalCost);                      
                     }
                 })
               }
@@ -985,14 +990,23 @@ export class negoPricingDetailsComponent implements OnInit {
     } else {
       this.spinner.show();
       this.contractNegotiationService
-        .updateFormulaPrice(formulaPayload, this.requestOfferId, this.offerPriceFormulaId)       
+        .updateFormulaPrice(formulaPayload, this.requestOfferId, this.offerPriceFormulaId)  
+        .pipe(
+          switchMap((res: any) =>
+            this.contractNegotiationService.evaluateFormulaPrice({
+              RequestOfferId: res.requestOfferId,
+              PriceConfigurationId: res.id
+            })
+          )
+        )     
         .subscribe((item: any) => {
           this.spinner.hide();
           if (item.errors) {
             this.toastr.error('Failed to Update formula');
             return;
           } else {
-            this.toastr.success('Operation Completed Successfully');         
+            this.toastr.success('Operation Completed Successfully');   
+            this.evaluatedFormulaPrice = item.price;      
             //close popup with evaluated price item update
             let payload = {
               requestOfferId: this.requestOfferId,
@@ -1004,6 +1018,8 @@ export class negoPricingDetailsComponent implements OnInit {
                     if(req.id == this.requestOfferId){                
                         req.isFormulaPricing = true;
                         req.offerPriceFormulaId = payload.priceConfigurationId;  
+                        this.additionalCost = (req.aditionalCost)?req.aditionalCost:0
+                        req.OfferPrice = (this.evaluatedFormulaPrice) + (this.additionalCost); 
                     }
                 })
               }
@@ -1091,7 +1107,7 @@ export class negoPricingDetailsComponent implements OnInit {
       maxContractPeriod : 2
     };
     this.formValues.complexFormulaQuoteLines = [];
-    if (this.offerPriceFormulaId) {
+    if (this.requestOfferId) {
       this.spinner.show();
       this.contractNegotiationService
         .getOfferPriceConfiguration(this.requestOfferId, this.offerPriceFormulaId)

@@ -657,6 +657,32 @@ export class ContractNegotiationApi implements IContractNegotiationApiService {
     );
   }
 
+  @ObservableException()
+  evaluateFormulaPrice(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/contractOfferPriceEvaluations`,
+          request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
+  @ObservableException()
+  evaluatePrices(request: any): Observable<any> {
+    return this.http
+      .post<any>(
+        `${this._shitechApiUrl}/contractOfferPriceEvaluations/ForOffers`,
+          request
+      )
+      .pipe(
+        map((body: any) => body),
+        catchError((body: any) => this.handleErrorMessage(body))
+      );
+  }
+
 }
 
 export const CONTRACT_NEGOTIATION_API_SERVICE = new InjectionToken<
