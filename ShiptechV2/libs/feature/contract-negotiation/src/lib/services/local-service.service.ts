@@ -592,12 +592,18 @@ export class LocalService {
         }
     }
 
-    /* To use in showing status in header only */
+    /**
+     * To use only when showing status in header section
+     * @returns Observable<string>
+     */
     getContractStatus(): Observable<string> {
         return this.contractStatus.asObservable();
     }
 
-    /* To get current contract request status from store */
+    /**
+     * To get current contract request status from store
+     * @returns string
+     */
     getContractStatusFromStore() {
         return JSON.parse(JSON.stringify(this.store.selectSnapshot((state: ContractNegotiationStoreModel) => {
             return state['contractNegotiation'].ContractRequest[0].status;
@@ -906,7 +912,7 @@ export class LocalService {
                 "allowedLocations": res1['allowedLocations'],
                 "allowedProducts": res1['allowedProducts'],
                 "isDeleted": res1['isDeleted'],
-                "maxQuantityUomId" : response['contractRequestProducts'][0]['maxQuantityUomId']          
+                "maxQuantityUomId" : res1['maxQuantityUomId']          
 
             }
             contractArray['locations'].push(arrMainDet);

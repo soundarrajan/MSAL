@@ -346,14 +346,16 @@ export class CreateContractRequestPopupComponent implements OnInit {
   }
 
   openRequest(){
-    this.reqObj = JSON.parse(JSON.stringify(this.getAndConstructDataFromStore()));
-    this.tempReqObj = JSON.parse(JSON.stringify(this.getAndConstructDataFromStore()));
+    this.reqObj = JSON.parse(JSON.stringify(this.data.contractRequestDetails));
     this.reqObj.quantityDetails.forEach((q, i) => {
       q.minQuantity = this.quantityFormatValue(q.minQuantity);
       q.maxQuantity = this.quantityFormatValue(q.maxQuantity);
       q.tolerancePercentage = this.quantityFormatValue(q.tolerancePercentage);
     })
     this.reqObj.contractRequestProducts.forEach( (item, i) => {
+      item.contractRequestProductOffers.forEach( sData => {
+        sData.contractRequestProductOfferIds = (sData.contractRequestProductOfferIds === null) ? "" : sData.contractRequestProductOfferIds;
+      });
       let location = this.staticData.Location.find( x => x.id == item.locationId);
       let newLocation = {
         locationId: location.id,
@@ -394,6 +396,7 @@ export class CreateContractRequestPopupComponent implements OnInit {
     });
     this.selectedLocationId = this.mainLocations[0].locationId;
     this.showMainLocationDropdown = false;
+    this.tempReqObj = JSON.parse(JSON.stringify(this.reqObj));
   }
 
   getLocationProducts(locationId?: number) {
@@ -1347,7 +1350,8 @@ export class CreateContractRequestPopupComponent implements OnInit {
   saveContractRequest() {
     let prodMinMaxChange = [];
     let rfqSentCounterParties = [];
-    let sellersToAmendRFQ = [];
+    let requestDetailsUpdated = false;
+    let requestHeaderDetailsUpdated = false;
     this.reqObj.contractRequestProducts.forEach( (pro) => {
       if(pro.contractRequestProductOffers.length > 0){
         pro.contractRequestProductOffers.forEach( sData => {
@@ -1360,7 +1364,6 @@ export class CreateContractRequestPopupComponent implements OnInit {
         });
       }
     });
-    let requestDetailsUpdated = false;
     if(!this.isNewRequest){
       this.reqObj.sendAmendRFQ = false;
       this.reqObj.conReqProdSellerWithProdDetatilDtos = [];
@@ -1388,49 +1391,45 @@ export class CreateContractRequestPopupComponent implements OnInit {
       || !this.tempReqObj.quoteByDate.isSame(this.reqObj.quoteByDate)
       || !this.tempReqObj.minValidity.isSame(this.reqObj.minValidity))
       ){
-        requestDetailsUpdated = true;
+        requestHeaderDetailsUpdated = true;
       }
       if(this.reqObj.quantityDetails.length !== this.tempReqObj.quantityDetails.length && this.reqObj.status !== 'Open'){
-        requestDetailsUpdated = true;
+        requestHeaderDetailsUpdated = true;
       }
     }
 
     this.reqObj.quantityDetails.forEach((q, i) => {
+      if(!this.isNewRequest && this.reqObj.status !== 'Open' && (this.tempReqObj.quantityDetails[i]?.maxQuantity !== q.maxQuantity
+        || this.tempReqObj.quantityDetails[i]?.minQuantity !== q.minQuantity
+        || this.tempReqObj.quantityDetails[i]?.tolerancePercentage !== q.tolerancePercentage)
+      ){
+        requestHeaderDetailsUpdated = true;
+      }
       q.maxQuantity = this.convertDecimalSeparatorStringToNumber(q.maxQuantity);
       q.minQuantity = this.convertDecimalSeparatorStringToNumber(q.minQuantity);
       q.tolerancePercentage = this.convertDecimalSeparatorStringToNumber(q.tolerancePercentage);
       
-      if(!this.isNewRequest){
-        if(this.reqObj.status !== 'Open' && (this.tempReqObj.quantityDetails[i]?.maxQuantity !== q.maxQuantity
-          || this.tempReqObj.quantityDetails[i]?.minQuantity !== q.minQuantity
-          || this.tempReqObj.quantityDetails[i]?.tolerancePercentage !== q.tolerancePercentage)
-        ){
-            requestDetailsUpdated = true;
-        }
-      }
     });
     this.reqObj.contractRequestProducts.forEach((pro, i) => {
-      if(!this.isNewRequest){
-        if(this.tempReqObj.contractRequestProducts[i]?.minQuantity !== pro.minQuantity
-        || this.tempReqObj.contractRequestProducts[i]?.maxQuantity !== pro.maxQuantity){
-          if(pro.contractRequestProductOffers.length > 0 && !requestDetailsUpdated){
-            pro.contractRequestProductOffers.forEach( sData => {
-              if(sData.status !== 'Open'){
-                requestDetailsUpdated = true;
-                prodMinMaxChange.push({
-                  id: sData.id,
-                  counterpartyId: sData.counterpartyId
-                });                
-              }
+      if(this.tempReqObj.contractRequestProducts[i]?.minQuantity !== pro.minQuantity
+      || this.tempReqObj.contractRequestProducts[i]?.maxQuantity !== pro.maxQuantity
+      || this.tempReqObj.contractRequestProducts[i]?.maxQuantityUomId !== pro.maxQuantityUomId
+      ){
+        let notOpenStatusProdOffers = pro.contractRequestProductOffers.filter( offer => offer.status !== 'Open');
+        if(notOpenStatusProdOffers.length > 0 && !requestHeaderDetailsUpdated){
+          notOpenStatusProdOffers.forEach( sData => {
+            prodMinMaxChange.push({
+              id: sData.id,
+              counterpartyId: sData.counterpartyId
             });
-          }
+          });
         }
       }
       pro.maxQuantity = this.convertDecimalSeparatorStringToNumber(pro.maxQuantity);
       pro.minQuantity = this.convertDecimalSeparatorStringToNumber(pro.minQuantity);
     });
-    sellersToAmendRFQ = prodMinMaxChange.length > 0 ? prodMinMaxChange : rfqSentCounterParties;
-    this.reqObj.conReqProdSellerWithProdDetatilDtos = requestDetailsUpdated ? sellersToAmendRFQ : [];
+    requestDetailsUpdated = (prodMinMaxChange.length > 0 || requestHeaderDetailsUpdated) ? true : false;
+    this.reqObj.conReqProdSellerWithProdDetatilDtos = prodMinMaxChange.length > 0 ? prodMinMaxChange : (requestHeaderDetailsUpdated ? rfqSentCounterParties : []);
     if(this.isNewRequest){
       this.saveRequest();
     } else {
