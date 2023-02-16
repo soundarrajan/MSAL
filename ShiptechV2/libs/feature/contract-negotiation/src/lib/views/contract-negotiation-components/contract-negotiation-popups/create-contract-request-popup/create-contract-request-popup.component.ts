@@ -1411,10 +1411,10 @@ export class CreateContractRequestPopupComponent implements OnInit {
       
     });
     this.reqObj.contractRequestProducts.forEach((pro, i) => {
-      if(this.tempReqObj.contractRequestProducts[i]?.minQuantity !== pro.minQuantity
+      if(!this.isNewRequest && (this.tempReqObj.contractRequestProducts[i]?.minQuantity !== pro.minQuantity
       || this.tempReqObj.contractRequestProducts[i]?.maxQuantity !== pro.maxQuantity
       || this.tempReqObj.contractRequestProducts[i]?.maxQuantityUomId !== pro.maxQuantityUomId
-      ){
+      )){
         let notOpenStatusProdOffers = pro.contractRequestProductOffers.filter( offer => offer.status !== 'Open');
         if(notOpenStatusProdOffers.length > 0 && !requestHeaderDetailsUpdated){
           notOpenStatusProdOffers.forEach( sData => {
