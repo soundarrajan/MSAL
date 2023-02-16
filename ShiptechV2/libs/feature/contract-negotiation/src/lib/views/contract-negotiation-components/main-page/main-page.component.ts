@@ -450,7 +450,7 @@ export class MainPageComponent implements OnInit {
                   resp.offersPrices.forEach(offerPrice => {
                     if(offerPrice.requestOfferId == req.id){
                       var additionalCost = (req.aditionalCost)?req.aditionalCost:0
-                      req.OfferPrice = (offerPrice.price) + (additionalCost) + 100;  
+                      req.OfferPrice = (offerPrice.price) + (additionalCost);  
                     }
                   })                                     
                 }
