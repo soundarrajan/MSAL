@@ -436,9 +436,8 @@ export class MainPageComponent implements OnInit {
     let OfferIds = [];  
     locationsRows.locations.forEach(loc => {    
       loc.data.forEach(row => {
-        if (row.pricingTypeId == 2) {
-          let offerId = row.id;
-          OfferIds.push(offerId);
+        if (row.pricingTypeId == 2) {        
+          OfferIds.push(row.id);
         }
       });
     });    
@@ -451,15 +450,14 @@ export class MainPageComponent implements OnInit {
                   resp.offersPrices.forEach(offerPrice => {
                     if(offerPrice.requestOfferId == req.id){
                       var additionalCost = (req.aditionalCost)?req.aditionalCost:0
-                      req.OfferPrice = (offerPrice.price) + (additionalCost);  
+                      req.OfferPrice = (offerPrice.price) + (additionalCost) + 100;  
                     }
                   })                                     
                 }
               })
             }); 
           }           
-        this.store.dispatch(new ContractRequest([locationsRows]));
-        this.contractNegoService.callGridRedrawService();
+        this.store.dispatch(new ContractRequest([locationsRows]));       
       });
   }
 
