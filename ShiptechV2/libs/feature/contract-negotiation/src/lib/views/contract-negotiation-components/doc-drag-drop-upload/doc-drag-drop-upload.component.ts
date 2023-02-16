@@ -141,9 +141,9 @@ export class DocDragDropUploadComponent implements OnInit {
   }
   radioDocumentTypeChange($event: MatRadioChange) {
     if ($event.value) {
-      this.selectedDocumentType = $event.value;
+      this.selectedDocumentType = {...$event.value};
       this.documentType = null;
-      this.enableUpload($event);
+      this.enableUpload(this.selectedDocumentType);
       this.changeDetector.detectChanges();
     }
   }
