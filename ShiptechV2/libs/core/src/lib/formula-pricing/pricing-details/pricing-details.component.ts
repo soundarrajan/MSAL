@@ -99,6 +99,7 @@ export class negoPricingDetailsComponent implements OnInit {
   offerPriceFormulaId: number;
   evaluatedFormulaPrice: any;
   productId: number;
+  pricingTypeId:number;
   massUom: any;
   uomVolumeList: any;
   defaultConversionRate: number;
@@ -106,10 +107,10 @@ export class negoPricingDetailsComponent implements OnInit {
   isComplexFormulaWeightEnforced: boolean;
   checkRequestStatus: boolean = false;
   public maxContractPeriodOptions = [
-    {"id": 1, "name": "3 month"},
+    {"id": 1, "name": "3 months"},
     {"id": 2, "name": "6 months"},
     {"id": 3, "name": "9 months"},
-    {"id": 4, "name": "12 months"},   
+    {"id": 4, "name": "12 months"}    
   ];
   additionalCost: number;
   constructor(
@@ -131,7 +132,8 @@ export class negoPricingDetailsComponent implements OnInit {
     iconRegistry.addSvgIcon('data-picker-gray', sanitizer.bypassSecurityTrustResourceUrl('../../assets/customicons/calendar-dark.svg'));
     this.requestOfferId = data.contractRequestOfferId;
     this.offerPriceFormulaId = data.offerPriceFormulaId;
-    this.productId = data.productId;  
+    this.productId = data.productId;
+    this.pricingTypeId = data.pricingTypeId;
     this.dateFormats.display.dateInput = this.format.dateFormat;
     this.dateFormats.parse.dateInput = this.format.dateFormat;
     this.dateTimeFormats.display.dateInput = this.format.dateFormat;
@@ -1106,8 +1108,8 @@ export class negoPricingDetailsComponent implements OnInit {
       simpleFormula: {},
       maxContractPeriod : 2
     };
-    this.formValues.complexFormulaQuoteLines = [];
-    if (this.requestOfferId) {
+    this.formValues.complexFormulaQuoteLines = [];  
+    if (this.requestOfferId && this.pricingTypeId == 2) {
       this.spinner.show();
       this.contractNegotiationService
         .getOfferPriceConfiguration(this.requestOfferId, this.offerPriceFormulaId)
